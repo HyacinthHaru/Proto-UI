@@ -1,0 +1,435 @@
+{
+  "head": "e41c8673da766b9e6d08d7dd00091d2c5e80de6c",
+  "tree": "9aeef5a6883706b6f46560e6b0683d86c28c2cb0",
+  "localDraftAdmission": {
+    "sha256": "ae44b882e227090c5a1e09b4838c5cee97d9e01618c51209cc2ed0ac5df39a3f",
+    "scope": "Two internal MDX frontmatter draft flags set false for the local static build. Both restored afterward."
+  },
+  "unchangedTestAndJourneySHA256": {
+    "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "e6590db342bddc56b37fa367ce6b1cc519130cdb201e06e8d14061569d5e0317",
+    "scripts/analysis/shadow-s4-journey.mjs": "16c6af53316d131a06657a303c5d8d92138f64835d23495c4ab261d51d90b7b5"
+  },
+  "originalStartupWaitMs": 60000,
+  "originalPerLocaleLimitMs": 150000,
+  "built": {
+    "exit": 1,
+    "buildExit": 0,
+    "locales": {
+      "zh-cn": {
+        "path": "apps/www/dist/zh-cn/internal/demo-matrix/index.html",
+        "htmlBytes": 1862431,
+        "sha256": "09f64e866da963041ad1c5c963e92d80f5229d892a5c6610542e406b2615eb1d",
+        "previewers": 1268,
+        "distinctPreviewers": 1268
+      },
+      "en": {
+        "path": "apps/www/dist/en/internal/demo-matrix/index.html",
+        "htmlBytes": 1914055,
+        "sha256": "678810c15720a8317af62a9385101bc39ae9e7c074b615f7efd73fa4e66a3f2f",
+        "previewers": 1268,
+        "distinctPreviewers": 1268
+      }
+    },
+    "routes": {
+      "zh-cn": {
+        "route": "/zh-cn/internal/demo-matrix/",
+        "status": 200,
+        "bytes": 1862431,
+        "sha256": "09f64e866da963041ad1c5c963e92d80f5229d892a5c6610542e406b2615eb1d"
+      },
+      "en": {
+        "route": "/en/internal/demo-matrix/",
+        "status": 200,
+        "bytes": 1914055,
+        "sha256": "678810c15720a8317af62a9385101bc39ae9e7c074b615f7efd73fa4e66a3f2f"
+      }
+    },
+    "test": {
+      "sha256": "6f9427fe0d861a7cbe8a7c6a463d8048b52e4490ea48b657833edc6c08d7cc33",
+      "locales": {
+        "zh-cn": {
+          "status": "failed",
+          "durationMs": 150531.151667,
+          "verdictLines": ["Error: Test timed out in 150000ms."],
+          "startupPassed": false,
+          "pageErrors": 0,
+          "consoleErrors": 0,
+          "postVerdict": "rejected",
+          "samples": [
+            {
+              "browserMs": 7389.100000143051,
+              "nodeReceivedMs": 8556.401125,
+              "count": 1268,
+              "ready": false,
+              "firstMissing": {
+                "index": 0,
+                "hostChildren": 0,
+                "runtime": "wc",
+                "demo": "demo-base-accordion",
+                "startupPending": true
+              }
+            },
+            {
+              "browserMs": 16557.700000047684,
+              "nodeReceivedMs": 17724.625834,
+              "count": 1268,
+              "ready": false,
+              "firstMissing": {
+                "index": 1,
+                "hostChildren": 0,
+                "runtime": "react",
+                "demo": "demo-base-accordion",
+                "startupPending": true
+              }
+            }
+          ],
+          "phases": [
+            {
+              "phase": "init-script",
+              "outcome": "begin",
+              "nodeMs": 1162.732125
+            },
+            {
+              "phase": "init-script",
+              "outcome": "return",
+              "nodeMs": 1165.215792
+            },
+            {
+              "phase": "goto",
+              "outcome": "begin",
+              "nodeMs": 1165.251584
+            },
+            {
+              "phase": "goto",
+              "outcome": "return",
+              "nodeMs": 6471.087209
+            },
+            {
+              "phase": "startup-wait",
+              "outcome": "begin",
+              "nodeMs": 6471.266292
+            },
+            {
+              "phase": "startup-wait",
+              "outcome": "error",
+              "nodeMs": 151483.605417
+            },
+            {
+              "phase": "context-close",
+              "outcome": "begin",
+              "nodeMs": 151565.58725
+            },
+            {
+              "phase": "context-close",
+              "outcome": "return",
+              "nodeMs": 151565.616084
+            }
+          ]
+        },
+        "en": {
+          "status": "failed",
+          "durationMs": 150520.09370800003,
+          "verdictLines": ["Error: Test timed out in 150000ms."],
+          "startupPassed": false,
+          "pageErrors": 0,
+          "consoleErrors": 0,
+          "postVerdict": "rejected",
+          "samples": [
+            {
+              "browserMs": 7477.599999904633,
+              "nodeReceivedMs": 159189.726625,
+              "count": 1268,
+              "ready": false,
+              "firstMissing": {
+                "index": 0,
+                "hostChildren": 0,
+                "runtime": "wc",
+                "demo": "demo-base-accordion",
+                "startupPending": true
+              }
+            },
+            {
+              "browserMs": 13275.099999904633,
+              "nodeReceivedMs": 164986.128209,
+              "count": 1268,
+              "ready": false,
+              "firstMissing": {
+                "index": 1,
+                "hostChildren": 0,
+                "runtime": "react",
+                "demo": "demo-base-accordion",
+                "startupPending": true
+              }
+            }
+          ],
+          "phases": [
+            {
+              "phase": "init-script",
+              "outcome": "begin",
+              "nodeMs": 151701.668
+            },
+            {
+              "phase": "init-script",
+              "outcome": "return",
+              "nodeMs": 151708.460625
+            },
+            {
+              "phase": "goto",
+              "outcome": "begin",
+              "nodeMs": 151708.522917
+            },
+            {
+              "phase": "goto",
+              "outcome": "return",
+              "nodeMs": 157089.056334
+            },
+            {
+              "phase": "startup-wait",
+              "outcome": "begin",
+              "nodeMs": 157089.144042
+            },
+            {
+              "phase": "startup-wait",
+              "outcome": "error",
+              "nodeMs": 302004.808625
+            },
+            {
+              "phase": "context-close",
+              "outcome": "begin",
+              "nodeMs": 302170.7295
+            },
+            {
+              "phase": "context-close",
+              "outcome": "return",
+              "nodeMs": 302170.756042
+            }
+          ]
+        }
+      }
+    }
+  },
+  "dev": {
+    "exit": 1,
+    "versions": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+    "test": {
+      "sha256": "542276b3d3c32b38cd352c7768c1b9470c687d1f53370ab256db347fa9855fa8",
+      "locales": {
+        "zh-cn": {
+          "status": "failed",
+          "durationMs": 150526.498458,
+          "verdictLines": ["Error: Test timed out in 150000ms."],
+          "startupPassed": false,
+          "pageErrors": 0,
+          "consoleErrors": 0,
+          "postVerdict": "rejected",
+          "samples": [
+            {
+              "browserMs": 7312.599999904633,
+              "nodeReceivedMs": 47620.657583,
+              "count": 1268,
+              "ready": false,
+              "firstMissing": {
+                "index": 0,
+                "hostChildren": null,
+                "runtime": "wc",
+                "demo": "demo-base-accordion",
+                "startupPending": null
+              }
+            },
+            {
+              "browserMs": 8425.799999952316,
+              "nodeReceivedMs": 48733.732875,
+              "count": 1268,
+              "ready": false,
+              "firstMissing": {
+                "index": 0,
+                "hostChildren": 0,
+                "runtime": "wc",
+                "demo": "demo-base-accordion",
+                "startupPending": true
+              }
+            },
+            {
+              "browserMs": 70126.70000004768,
+              "nodeReceivedMs": 110435.810083,
+              "count": 1268,
+              "ready": false,
+              "firstMissing": {
+                "index": 20,
+                "hostChildren": 0,
+                "runtime": "wc",
+                "demo": "demo-base-calendar",
+                "startupPending": true
+              }
+            }
+          ],
+          "phases": [
+            {
+              "phase": "init-script",
+              "outcome": "begin",
+              "nodeMs": 40301.013708
+            },
+            {
+              "phase": "init-script",
+              "outcome": "return",
+              "nodeMs": 40304.345125
+            },
+            {
+              "phase": "goto",
+              "outcome": "begin",
+              "nodeMs": 40304.415625
+            },
+            {
+              "phase": "goto",
+              "outcome": "return",
+              "nodeMs": 47532.043125
+            },
+            {
+              "phase": "startup-wait",
+              "outcome": "begin",
+              "nodeMs": 47532.419458
+            },
+            {
+              "phase": "startup-wait",
+              "outcome": "error",
+              "nodeMs": 190658.56575
+            },
+            {
+              "phase": "context-close",
+              "outcome": "begin",
+              "nodeMs": 190799.788583
+            },
+            {
+              "phase": "context-close",
+              "outcome": "return",
+              "nodeMs": 190799.82325
+            }
+          ]
+        },
+        "en": {
+          "status": "failed",
+          "durationMs": 86782.37870900001,
+          "verdictLines": ["page.waitForFunction: Timeout 60000ms exceeded."],
+          "startupPassed": false,
+          "pageErrors": 0,
+          "consoleErrors": 0,
+          "postVerdict": "budget-expired",
+          "samples": [
+            {
+              "browserMs": 10661.900000095367,
+              "nodeReceivedMs": 201578.012792,
+              "count": 1268,
+              "ready": false,
+              "firstMissing": {
+                "index": 0,
+                "hostChildren": null,
+                "runtime": "wc",
+                "demo": "demo-base-accordion",
+                "startupPending": null
+              }
+            },
+            {
+              "browserMs": 11598.900000095367,
+              "nodeReceivedMs": 202514.932792,
+              "count": 1268,
+              "ready": false,
+              "firstMissing": {
+                "index": 0,
+                "hostChildren": 0,
+                "runtime": "wc",
+                "demo": "demo-base-accordion",
+                "startupPending": true
+              }
+            },
+            {
+              "browserMs": 66558.20000004768,
+              "nodeReceivedMs": 257476.834125,
+              "count": 1268,
+              "ready": false,
+              "firstMissing": {
+                "index": 20,
+                "hostChildren": 0,
+                "runtime": "wc",
+                "demo": "demo-base-calendar",
+                "startupPending": true
+              }
+            }
+          ],
+          "phases": [
+            {
+              "phase": "init-script",
+              "outcome": "begin",
+              "nodeMs": 190913.117042
+            },
+            {
+              "phase": "init-script",
+              "outcome": "return",
+              "nodeMs": 190914.707875
+            },
+            {
+              "phase": "goto",
+              "outcome": "begin",
+              "nodeMs": 190914.731125
+            },
+            {
+              "phase": "goto",
+              "outcome": "return",
+              "nodeMs": 201396.244167
+            },
+            {
+              "phase": "startup-wait",
+              "outcome": "begin",
+              "nodeMs": 201396.294958
+            },
+            {
+              "phase": "startup-wait",
+              "outcome": "error",
+              "nodeMs": 274831.304167
+            },
+            {
+              "phase": "context-close",
+              "outcome": "begin",
+              "nodeMs": 276917.677292
+            },
+            {
+              "phase": "context-close",
+              "outcome": "return",
+              "nodeMs": 277442.333375
+            }
+          ]
+        }
+      }
+    }
+  },
+  "hostSampler": {
+    "screen": "Only renderer children of the exact local development runner. Operating-system samples do not name JavaScript modules.",
+    "busyRendererSummaries": [
+      {
+        "samples": 27,
+        "firstEpochMs": 1794851464952.21,
+        "lastEpochMs": 1794851595845.92,
+        "wallSeconds": 130.8937099609375,
+        "cpuSeconds": 144.75,
+        "averageCoreFraction": 1.1058590977610583,
+        "peakRssKiB": 3584832
+      },
+      {
+        "samples": 17,
+        "firstEpochMs": 1794851600876.92,
+        "lastEpochMs": 1794851681428.39,
+        "wallSeconds": 80.55146997070312,
+        "cpuSeconds": 97.21,
+        "averageCoreFraction": 1.2068060338980238,
+        "peakRssKiB": 4094416
+      }
+    ],
+    "stackSample": {
+      "started": "2026-11-16T17:52:30.419+00:00",
+      "seconds": 2,
+      "intervalMs": 10,
+      "samplesInFirstMainThread": 161,
+      "sha256": "d329aa1a5fdd8ec9f79915e3434a5950d5ffeda86f5344860983baf01302b539",
+      "boundary": "Stripped Chrome and generated-code addresses, no function attribution."
+    }
+  }
+}
