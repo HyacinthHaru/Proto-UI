@@ -1,0 +1,351 @@
+{
+  "candidate": "928c68550819521a6a0264d57de8a0c647d3f9d2",
+  "tree": "11dcdc2c6c8f2b8af6126edaaa0c4688bcb6c858",
+  "testedCodeHashes": {
+    "packages/adapters/web-component/src/adapt.ts": "009806c0f9d37f9c70de3966dc6b60d969532fa3033467cd37e0923e39fdd1af",
+    "packages/adapters/web-component/src/runtime/modules.ts": "1cd5a58a19170c6542cbcc265394139242c77e1c503047949646ecbaa43c69fa",
+    "packages/adapters/web-component/src/runtime/session.ts": "a1eef54b9e4bf156140b30651fab20631e74fc7670dcb8e882ddedbaed9d84a7",
+    "packages/adapters/web-component/test/owned-decoration.integration.test.ts": "fb7aeae2185ddc221b129f97878cc9ff0004dfcbf1ee8d95842eae1609716a7e"
+  },
+  "specAuthoringExit": 0,
+  "types": {
+    "files": 1240,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 31
+  },
+  "focused": {
+    "ownedDecorationPassed": 15
+  },
+  "adapterSuite": {
+    "passed": 1194,
+    "failed": 8,
+    "files": 161,
+    "sameFailures": true,
+    "baselineFailures": {
+      "adapters/web-component/test/previewer.demo-renderer.test.ts": [
+        {
+          "test": "PrototypePreviewer demo-renderer / wc renders the Base Dropdown demo with keyboard focus entry and portaled positioning",
+          "firstLine": "Error: [PrototypePreviewer] 未找到原型 \"base-dropdown-group\"。"
+        },
+        {
+          "test": "PrototypePreviewer demo-renderer / wc renders shadcn tabs parts with host styles in demo wc mode",
+          "firstLine": "Error: [PrototypePreviewer] 未找到原型 \"shadcn-style-scope\"。"
+        },
+        {
+          "test": "PrototypePreviewer demo-renderer / wc moves focus into the shadcn dialog demo when opened",
+          "firstLine": "Error: [PrototypePreviewer] 未找到原型 \"shadcn-style-scope\"。"
+        }
+      ],
+      "adapters/web-component/test/shadow-s2-admission.test.ts": [
+        {
+          "test": "S2 current public admission boundary shadcn-button: activates the complete prototype and releases resources across reconnect",
+          "firstLine": "Error: [shadcn-button]setup token \"select-none\":missing token; fix: companion or change/remove token"
+        },
+        {
+          "test": "S2 current public admission boundary shadcn-switch-thumb: inventories all unresolved Root tokens, not just the first failure",
+          "firstLine": "AssertionError: expected [ 'bg-background', 'block', …(36) ] to not include 'transition-transform'"
+        }
+      ],
+      "adapters/web-component/test/shadow-split-effects.test.ts": [
+        {
+          "test": "private Shadow split effects rejects unimplemented animated border rounding but retains fixed-border sizing animation",
+          "firstLine": "AssertionError: expected [Function] to throw an error"
+        },
+        {
+          "test": "private Shadow split effects rejects overlapping animated border widths independently of effect entry order",
+          "firstLine": "AssertionError: expected [Function] to throw an error"
+        }
+      ],
+      "adapters/web-component/test/shadow-split-prototype-admission.test.ts": [
+        {
+          "test": "composed Shadow prototype admission rejects an old companion for the full Dialog Mask without claiming current full Mask support",
+          "firstLine": "AssertionError: expected [ 'instance.setup.exit', …(16) ] to not include 'mount.mounted'"
+        }
+      ],
+      "adapters/web-component/test/view-operation-receipt.test.ts": [
+        {
+          "suiteLoad": "The URL must be of scheme file"
+        }
+      ]
+    }
+  },
+  "paint": {
+    "chrome": "156.0.8078.79",
+    "viewport": [880, 580],
+    "scope": "Explicit split WC profile, generated artifact and real native caller input",
+    "before": {
+      "opacity": "0.5",
+      "background": "rgb(0, 0, 0)",
+      "pointerEvents": "none",
+      "hidden": "true",
+      "inert": true,
+      "width": 32
+    },
+    "after": {
+      "sameLeaf": true,
+      "sameInput": true,
+      "assigned": true,
+      "focused": true,
+      "opacity": "1",
+      "selection": [2, 8, "backward"]
+    },
+    "errors": [],
+    "status": "passed"
+  },
+  "paintTokenClosure": {
+    "tokens": ["bg-black", "h-4", "inline-block", "opacity-100", "opacity-50", "w-8"],
+    "rootTokens": ["bg-black", "h-4", "inline-block", "opacity-100", "opacity-50", "w-8"],
+    "templateTokens": ["bg-black", "h-4", "inline-block", "opacity-100", "opacity-50", "w-8"]
+  },
+  "paintPngSha256": "b6dd6c4721b0f105d6f22efc107637e7fc3f4033e3ca091b355532624255a650",
+  "splitScenes": {
+    "chrome": "156.0.8078.79",
+    "scope": "Actual S3/S4/S5 components on an isolated Astro route; original S4 interaction journey",
+    "splitTriggerLeaves": [
+      {
+        "tag": "pui-s3-split-trigger-a-0",
+        "section": "shadow-split-s3",
+        "leaf": true,
+        "onSurface": true,
+        "inert": true,
+        "ariaHidden": "true",
+        "pointerEvents": "none",
+        "declaredPointerEvents": "none",
+        "priority": "important",
+        "hasLayout": true,
+        "slotContent": "设置"
+      },
+      {
+        "tag": "pui-s3-split-trigger-d-0",
+        "section": "shadow-split-s3",
+        "leaf": true,
+        "onSurface": true,
+        "inert": true,
+        "ariaHidden": "true",
+        "pointerEvents": "none",
+        "declaredPointerEvents": "none",
+        "priority": "important",
+        "hasLayout": true,
+        "slotContent": "禁用"
+      },
+      {
+        "tag": "pui-s3-split-trigger-b-0",
+        "section": "shadow-split-s3",
+        "leaf": true,
+        "onSurface": true,
+        "inert": true,
+        "ariaHidden": "true",
+        "pointerEvents": "none",
+        "declaredPointerEvents": "none",
+        "priority": "important",
+        "hasLayout": true,
+        "slotContent": "详情"
+      },
+      {
+        "tag": "pui-s3-split-trigger-c-0",
+        "section": "shadow-split-s3",
+        "leaf": true,
+        "onSurface": true,
+        "inert": true,
+        "ariaHidden": "true",
+        "pointerEvents": "none",
+        "declaredPointerEvents": "none",
+        "priority": "important",
+        "hasLayout": true,
+        "slotContent": "空"
+      },
+      {
+        "tag": "pui-s3-mixed-trigger-a-0",
+        "section": "shadow-split-s3",
+        "leaf": true,
+        "onSurface": true,
+        "inert": true,
+        "ariaHidden": "true",
+        "pointerEvents": "none",
+        "declaredPointerEvents": "none",
+        "priority": "important",
+        "hasLayout": true,
+        "slotContent": "设置"
+      },
+      {
+        "tag": "pui-s3-mixed-trigger-d-0",
+        "section": "shadow-split-s3",
+        "leaf": true,
+        "onSurface": true,
+        "inert": true,
+        "ariaHidden": "true",
+        "pointerEvents": "none",
+        "declaredPointerEvents": "none",
+        "priority": "important",
+        "hasLayout": true,
+        "slotContent": "禁用"
+      },
+      {
+        "tag": "pui-s3-mixed-trigger-b-0",
+        "section": "shadow-split-s3",
+        "leaf": true,
+        "onSurface": true,
+        "inert": true,
+        "ariaHidden": "true",
+        "pointerEvents": "none",
+        "declaredPointerEvents": "none",
+        "priority": "important",
+        "hasLayout": true,
+        "slotContent": "详情"
+      },
+      {
+        "tag": "pui-s3-mixed-trigger-c-0",
+        "section": "shadow-split-s3",
+        "leaf": true,
+        "onSurface": true,
+        "inert": true,
+        "ariaHidden": "true",
+        "pointerEvents": "none",
+        "declaredPointerEvents": "none",
+        "priority": "important",
+        "hasLayout": true,
+        "slotContent": "空"
+      },
+      {
+        "tag": "pui-s3-split-trigger-a-2",
+        "section": "shadow-split-s4",
+        "leaf": true,
+        "onSurface": true,
+        "inert": true,
+        "ariaHidden": "true",
+        "pointerEvents": "",
+        "declaredPointerEvents": "none",
+        "priority": "important",
+        "hasLayout": false,
+        "slotContent": "设置"
+      },
+      {
+        "tag": "pui-s3-split-trigger-d-2",
+        "section": "shadow-split-s4",
+        "leaf": true,
+        "onSurface": true,
+        "inert": true,
+        "ariaHidden": "true",
+        "pointerEvents": "",
+        "declaredPointerEvents": "none",
+        "priority": "important",
+        "hasLayout": false,
+        "slotContent": "禁用"
+      },
+      {
+        "tag": "pui-s3-split-trigger-b-2",
+        "section": "shadow-split-s4",
+        "leaf": true,
+        "onSurface": true,
+        "inert": true,
+        "ariaHidden": "true",
+        "pointerEvents": "",
+        "declaredPointerEvents": "none",
+        "priority": "important",
+        "hasLayout": false,
+        "slotContent": "详情"
+      },
+      {
+        "tag": "pui-s3-split-trigger-c-2",
+        "section": "shadow-split-s4",
+        "leaf": true,
+        "onSurface": true,
+        "inert": true,
+        "ariaHidden": "true",
+        "pointerEvents": "",
+        "declaredPointerEvents": "none",
+        "priority": "important",
+        "hasLayout": false,
+        "slotContent": "空"
+      },
+      {
+        "tag": "pui-s3-mixed-trigger-a-3",
+        "section": "shadow-split-s4",
+        "leaf": true,
+        "onSurface": true,
+        "inert": true,
+        "ariaHidden": "true",
+        "pointerEvents": "",
+        "declaredPointerEvents": "none",
+        "priority": "important",
+        "hasLayout": false,
+        "slotContent": "设置"
+      },
+      {
+        "tag": "pui-s3-mixed-trigger-d-3",
+        "section": "shadow-split-s4",
+        "leaf": true,
+        "onSurface": true,
+        "inert": true,
+        "ariaHidden": "true",
+        "pointerEvents": "",
+        "declaredPointerEvents": "none",
+        "priority": "important",
+        "hasLayout": false,
+        "slotContent": "禁用"
+      },
+      {
+        "tag": "pui-s3-mixed-trigger-b-3",
+        "section": "shadow-split-s4",
+        "leaf": true,
+        "onSurface": true,
+        "inert": true,
+        "ariaHidden": "true",
+        "pointerEvents": "",
+        "declaredPointerEvents": "none",
+        "priority": "important",
+        "hasLayout": false,
+        "slotContent": "详情"
+      },
+      {
+        "tag": "pui-s3-mixed-trigger-c-3",
+        "section": "shadow-split-s4",
+        "leaf": true,
+        "onSurface": true,
+        "inert": true,
+        "ariaHidden": "true",
+        "pointerEvents": "",
+        "declaredPointerEvents": "none",
+        "priority": "important",
+        "hasLayout": false,
+        "slotContent": "空"
+      },
+      {
+        "tag": "pui-s5-split-trigger-a-0",
+        "section": "shadow-split-s5",
+        "leaf": true,
+        "onSurface": true,
+        "inert": true,
+        "ariaHidden": "true",
+        "pointerEvents": "none",
+        "declaredPointerEvents": "none",
+        "priority": "important",
+        "hasLayout": true,
+        "slotContent": "Editor"
+      },
+      {
+        "tag": "pui-s5-split-trigger-b-0",
+        "section": "shadow-split-s5",
+        "leaf": true,
+        "onSurface": true,
+        "inert": true,
+        "ariaHidden": "true",
+        "pointerEvents": "none",
+        "declaredPointerEvents": "none",
+        "priority": "important",
+        "hasLayout": true,
+        "slotContent": "Other"
+      }
+    ],
+    "status": "failed",
+    "stage": "original S4 interaction",
+    "errors": [
+      "[shadcn-dialog-content]setup token \"overflow-y-auto\":unresolved-role; fix: companion or change/remove token"
+    ]
+  },
+  "fixtureCorrections": [
+    "Closed S4 content supplied no computed pointer-events. All leaves retained inline important pointer suppression, with computed checks for laid-out leaves.",
+    "The generic browser fixture uses the CLI-generated fixture token closure so its owned leaf paint is included in the Shadow-local artifact."
+  ]
+}
