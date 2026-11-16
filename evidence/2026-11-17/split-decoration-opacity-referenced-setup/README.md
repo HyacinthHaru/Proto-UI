@@ -1,0 +1,7 @@
+# Split opacity transition and referenced prototype setup
+
+The two findings on `1fac3bf3` produced three red tests. The referenced shorthand and explicit setup properties left percentage padding on Root and failed verified-length preflight. The Chrome split surface had computed opacity zero during a real delayed opacity transition, and equal reuse rejected the physical blueprint.
+
+The candidate follows canonical prototype setup property references through the existing lexical resolver. The opaque escape control still uses Root preflight. The actual compiled CLI emits percentage padding on the Template selector. The WC guard binds the transition that came from the owned zero-to-positive write. It accepts the delayed transition, retains the same caller and accepts equal update after completion. External stylesheet concealment still triggers the original physical blueprint error.
+
+The first corrected implementation run passed the transition and setup behavior but expected the wrong error string for the external concealment control. The final run passed all 301 tests across three suites and workspace types. The broader comparison retains the same 25 baseline test names and first error lines. The initial combination binding detected an existing scrollport change in the effects file. The added combination delta matches that parent's patch ID. All 47 public packages built, isolated original Dialog passed Light, split, and mixed in source and public dist with 15 requests per profile, and the native opacity case passed on the combined tree.

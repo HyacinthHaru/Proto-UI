@@ -1,0 +1,7 @@
+{
+  "outputSHA256": "980b5c6cae685761ed06df12b15a7ec67d753321bdfc503f034f7e0772bc1c26",
+  "inputSHA256": "2e89855252e7be17b6ea86710ba5ce8130808cc2895b9db28b7ccbde93c061b8",
+  "templateSelector": "[data-pui-style~=\"p-[10%]\"]",
+  "padding": "10%",
+  "rootSelectorPresent": false
+}

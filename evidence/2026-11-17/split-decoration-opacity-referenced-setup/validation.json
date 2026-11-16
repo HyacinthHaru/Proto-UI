@@ -1,0 +1,80 @@
+{
+  "authorHead": "4f6057d9910b84381d2c27a69c449696e96d357d",
+  "authorTree": "e5d082a096c3dd74ea42f54ca315a22573f0c6d6",
+  "authorParent": "d6302f6e8301c0c1c5953bc98949a907b5c03199",
+  "combined": {
+    "head": "a729e084b55065a424e3dd61b8775832fd646489",
+    "tree": "2847bb8f16599f1551fba86ee7860af7c6687dda",
+    "parents": [
+      "aec024e168a3297d3cbcf7abf6d4fbcfead7f638",
+      "4f6057d9910b84381d2c27a69c449696e96d357d"
+    ],
+    "packages": 47,
+    "retainedScrollportPatchID": "a4261222b21deafecd9730fbab07c3cf4a074fc5"
+  },
+  "files": {
+    "author": {
+      "packages/adapters/web-component/src/shadow-split-effects.ts": "cb371673b6a2eba1b5c58f4e4c1249f690cb9fbb4439316a253877a80a510518",
+      "packages/adapters/web-component/test/shadow-closeout.browser.test.ts": "c544f157df90d74723b5826aacb03c0c967333bca85cd66c5e89c0af44b08bac",
+      "packages/cli/src/services/hook-source-summary.ts": "62c3e408ee4e8fd0a0840f90afca2aa52a22ed52aec6ca0cbf0889c7d75606e9",
+      "packages/cli/src/services/prototype-style-tokens.ts": "e47823a989317b4d601b591e966018bfa69b8c0e61221a4ffb0e38ae32f5ed64",
+      "packages/cli/test/shadow-template-style.test.ts": "e5110f7bff28e32ce03d0dd577930ec7e3dded00c2cf16e13e49587e0734a4a6"
+    },
+    "combined": {
+      "packages/adapters/web-component/src/shadow-split-effects.ts": "c092e784d5c0559b1fd049e96e5366d3377654086877d264a2da8c0ae1738e79",
+      "packages/adapters/web-component/test/shadow-closeout.browser.test.ts": "c544f157df90d74723b5826aacb03c0c967333bca85cd66c5e89c0af44b08bac",
+      "packages/cli/src/services/hook-source-summary.ts": "62c3e408ee4e8fd0a0840f90afca2aa52a22ed52aec6ca0cbf0889c7d75606e9",
+      "packages/cli/src/services/prototype-style-tokens.ts": "e47823a989317b4d601b591e966018bfa69b8c0e61221a4ffb0e38ae32f5ed64",
+      "packages/cli/test/shadow-template-style.test.ts": "e5110f7bff28e32ce03d0dd577930ec7e3dded00c2cf16e13e49587e0734a4a6"
+    }
+  },
+  "baselines": {
+    "reviewHead": "1fac3bf39c73d9df060e3d40f8e3b2489d1b79dc",
+    "originalFocused": {
+      "failed": 3,
+      "passed": 1,
+      "unselected": 245,
+      "logSHA256": "6db09c2daf12e871ca1fa8d8a64c8cec1b987881e3ac15fda24ade68e5747115"
+    },
+    "firstCandidate": {
+      "failed": 1,
+      "passed": 3,
+      "reason": "The concealment control initially expected the wrong error text."
+    },
+    "firstCombined": {
+      "behavior": "Stopped before build at identical file check and identified prior scrollport behavior."
+    }
+  },
+  "test": {
+    "focused": {
+      "passed": 301,
+      "failed": 0,
+      "suites": 3,
+      "logSHA256": "bbdea5bbfb2da437a109255ff086c8f4eb4b18287bc1e0fc478580998f5c9fea"
+    },
+    "types": {
+      "exit": 0,
+      "logSHA256": "1e14fa87e413ec8ef9585ae214d5f036450d3cc636c31a34c01c2346df2a4d42"
+    },
+    "chrome": "156.0.8078.79",
+    "isolatedDialog": {
+      "source": {
+        "light": 15,
+        "split": 15,
+        "mixed": 15
+      },
+      "dist": {
+        "light": 15,
+        "split": 15,
+        "mixed": 15
+      },
+      "sourceTotal": 45,
+      "distTotal": 45,
+      "sourceErrors": []
+    },
+    "combinedOpacity": {
+      "nativePassed": 1,
+      "logSHA256": "8e53344dacbebe52c9dbfe88f6e15726627e2851d275c901a14f8e9b39dc6267"
+    }
+  }
+}
