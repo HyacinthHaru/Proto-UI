@@ -1,0 +1,1031 @@
+{
+  "source": {
+    "head": "d13fd147acefbb15f9b7b7f71bb947ea18b336bb",
+    "tree": "9d43dbc7e3074551beab528406fbb015c1161df5",
+    "parents": [
+      "d08ac5fb2e219df22dcbd3754053dbebb0b16a0d",
+      "fe6a32f41ad952adb012b61d65723270a9aaa108"
+    ],
+    "overlaySHA256": "40b8e330fbc9b26041c7e88faa96d15e30d3f285301418aa6b5e2fa170e676a0",
+    "diagnosticModuleSHA256": "4e0a0a9735e5f5bdf96fa26dd6392d1a7a3a61871fc4e2b7744227679af693ef",
+    "inputs": {
+      "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "b6646b6f444c04b8b93e39533229a8fad17dff09d0538ad8dee6c2a68f723579",
+      "apps/www/src/content/docs/zh-cn/query-dispatch-trace.mjs": "6c823802fe89b1f6010308c8ffb41b92f8dd550e738c997319d250b27828a39f",
+      "apps/www/src/components/PrototypePreviewer/previewer-client.ts": "e1449905562168bd93fc6518d107f9d1e1540906e2e12a71b276ffbf141caf0f",
+      "apps/www/src/components/PrototypePreviewer/prototype-modules.ts": "9152c71891a204327c60cac410e97e752757c7b4d97af57d9c339c017194e2db",
+      "apps/www/src/components/PrototypePreviewer/finf-prototype-modules.ts": "86c6f4b661e39157126e3b0933cd95d0dba05acb74c0e9697762adf6c36bc1ab",
+      "apps/www/src/content/docs/zh-cn/s4-calendar-wire-local.ts": "4e0a0a9735e5f5bdf96fa26dd6392d1a7a3a61871fc4e2b7744227679af693ef"
+    }
+  },
+  "environment": {
+    "node": "v24.21.0",
+    "pnpm": "10.32.1",
+    "chrome": "Google Chrome for Testing 156.0.8078.79",
+    "workers": 1
+  },
+  "verdict": {
+    "startedAt": "2026-11-16T19:58:44Z",
+    "finishedAt": "2026-11-16T20:01:19Z",
+    "locale": "zh-cn",
+    "otherLocale": "unselected",
+    "exit": 1,
+    "suite": [0, 1, 1],
+    "status": {
+      "startupPassed": false,
+      "errors": [],
+      "consoleErrors": [],
+      "collectionOutcome": "budget-expired",
+      "predicateSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+    },
+    "messages": ["page.waitForFunction: Timeout 60000ms exceeded."],
+    "readinessChanges": [
+      {
+        "timeOrigin": 1794859168023.5,
+        "pageMs": 7077.700000047684,
+        "dateNow": 1794859175101,
+        "count": 1268,
+        "ready": false,
+        "firstMissing": {
+          "previewerId": "pp-0cqhfyl85ku8",
+          "index": 0,
+          "inited": null,
+          "hostChildren": null
+        },
+        "firstMissingOwner": {
+          "demoId": "demo-base-accordion",
+          "prototypeId": "",
+          "declaredRuntime": "wc",
+          "projectionMode": null,
+          "projectionState": null,
+          "mounting": "1",
+          "hostTag": null,
+          "hostOwner": null,
+          "startupPending": null,
+          "hostOwnInert": null,
+          "hostText": null
+        }
+      },
+      {
+        "timeOrigin": 1794859168023.5,
+        "pageMs": 8953.599999904633,
+        "dateNow": 1794859176977,
+        "count": 1268,
+        "ready": false,
+        "firstMissing": {
+          "previewerId": "pp-0cqhfyl85ku8",
+          "index": 0,
+          "inited": "1",
+          "hostChildren": 0
+        },
+        "firstMissingOwner": {
+          "demoId": "demo-base-accordion",
+          "prototypeId": "",
+          "declaredRuntime": "wc",
+          "projectionMode": null,
+          "projectionState": null,
+          "mounting": null,
+          "hostTag": "DIV",
+          "hostOwner": "pp-0cqhfyl85ku8",
+          "startupPending": true,
+          "hostOwnInert": true,
+          "hostText": ""
+        }
+      },
+      {
+        "timeOrigin": 1794859168023.5,
+        "pageMs": 20180.799999952316,
+        "dateNow": 1794859188204,
+        "count": 1268,
+        "ready": false,
+        "firstMissing": {
+          "previewerId": "pp-rbsfu210vbp",
+          "index": 1,
+          "inited": "1",
+          "hostChildren": 0
+        },
+        "firstMissingOwner": {
+          "demoId": "demo-base-accordion",
+          "prototypeId": "",
+          "declaredRuntime": "react",
+          "projectionMode": null,
+          "projectionState": null,
+          "mounting": null,
+          "hostTag": "DIV",
+          "hostOwner": "pp-rbsfu210vbp",
+          "startupPending": true,
+          "hostOwnInert": true,
+          "hostText": ""
+        }
+      },
+      {
+        "timeOrigin": 1794859168023.5,
+        "pageMs": 47530.799999952316,
+        "dateNow": 1794859215554,
+        "count": 1268,
+        "ready": false,
+        "firstMissing": {
+          "previewerId": "pp-qg6gf7bwrzp",
+          "index": 3,
+          "inited": "1",
+          "hostChildren": 0
+        },
+        "firstMissingOwner": {
+          "demoId": "demo-base-accordion",
+          "prototypeId": "",
+          "declaredRuntime": "vue2",
+          "projectionMode": null,
+          "projectionState": null,
+          "mounting": null,
+          "hostTag": "DIV",
+          "hostOwner": "pp-qg6gf7bwrzp",
+          "startupPending": true,
+          "hostOwnInert": true,
+          "hostText": ""
+        }
+      },
+      {
+        "timeOrigin": 1794859168023.5,
+        "pageMs": 73305.40000009537,
+        "dateNow": 1794859241328,
+        "count": 1268,
+        "ready": false,
+        "firstMissing": {
+          "previewerId": "pp-vfgwoib6iyn",
+          "index": 20,
+          "inited": "1",
+          "hostChildren": 0
+        },
+        "firstMissingOwner": {
+          "demoId": "demo-base-calendar",
+          "prototypeId": "",
+          "declaredRuntime": "wc",
+          "projectionMode": null,
+          "projectionState": null,
+          "mounting": null,
+          "hostTag": "DIV",
+          "hostOwner": "pp-vfgwoib6iyn",
+          "startupPending": true,
+          "hostOwnInert": true,
+          "hostText": ""
+        }
+      }
+    ],
+    "originalLimitsMs": [60000, 150000],
+    "previews": 1268
+  },
+  "calendarReplicaPhases": {
+    "vue": [
+      {
+        "phase": "demo-import-begin",
+        "id": "pp-ybcm59emdcb",
+        "runtime": "vue",
+        "pageMs": 8182.900000095367,
+        "timeOrigin": 1794859168023.5,
+        "children": 0,
+        "inert": true,
+        "receiptNodeMs": 50375.95175
+      },
+      {
+        "phase": "demo-import-return",
+        "id": "pp-ybcm59emdcb",
+        "runtime": "vue",
+        "pageMs": 14735.799999952316,
+        "timeOrigin": 1794859168023.5,
+        "children": 0,
+        "inert": true,
+        "receiptNodeMs": 56928.74
+      },
+      {
+        "phase": "prototype-imports-begin",
+        "details": [
+          "base-calendar-root",
+          "base-calendar-caption",
+          "base-calendar-previous",
+          "lucide-chevron-left-icon",
+          "base-select-root",
+          "base-select-trigger",
+          "base-select-value",
+          "lucide-chevron-down-icon",
+          "base-select-content",
+          "base-select-item",
+          "base-calendar-next",
+          "lucide-chevron-right-icon",
+          "base-calendar-heading",
+          "base-calendar-grid",
+          "base-calendar-weekdays",
+          "base-calendar-weekday",
+          "base-calendar-row",
+          "base-calendar-day"
+        ],
+        "id": "pp-ybcm59emdcb",
+        "runtime": "vue",
+        "pageMs": 14735.900000095367,
+        "timeOrigin": 1794859168023.5,
+        "children": 0,
+        "inert": true,
+        "receiptNodeMs": 56928.82275
+      }
+    ],
+    "react": [
+      {
+        "phase": "demo-import-begin",
+        "id": "pp-twkz1ohm08m",
+        "runtime": "react",
+        "pageMs": 8187,
+        "timeOrigin": 1794859168023.5,
+        "children": 0,
+        "inert": true,
+        "receiptNodeMs": 50379.917541
+      },
+      {
+        "phase": "demo-import-return",
+        "id": "pp-twkz1ohm08m",
+        "runtime": "react",
+        "pageMs": 14643.5,
+        "timeOrigin": 1794859168023.5,
+        "children": 0,
+        "inert": true,
+        "receiptNodeMs": 56836.217375
+      },
+      {
+        "phase": "prototype-imports-begin",
+        "details": [
+          "base-calendar-root",
+          "base-calendar-caption",
+          "base-calendar-previous",
+          "lucide-chevron-left-icon",
+          "base-select-root",
+          "base-select-trigger",
+          "base-select-value",
+          "lucide-chevron-down-icon",
+          "base-select-content",
+          "base-select-item",
+          "base-calendar-next",
+          "lucide-chevron-right-icon",
+          "base-calendar-heading",
+          "base-calendar-grid",
+          "base-calendar-weekdays",
+          "base-calendar-weekday",
+          "base-calendar-row",
+          "base-calendar-day"
+        ],
+        "id": "pp-twkz1ohm08m",
+        "runtime": "react",
+        "pageMs": 14643.5,
+        "timeOrigin": 1794859168023.5,
+        "children": 0,
+        "inert": true,
+        "receiptNodeMs": 56836.277291
+      }
+    ],
+    "vue2": [
+      {
+        "phase": "demo-import-begin",
+        "id": "pp-sah2ijhjctl",
+        "runtime": "vue2",
+        "pageMs": 8398.799999952316,
+        "timeOrigin": 1794859168023.5,
+        "children": 0,
+        "inert": true,
+        "receiptNodeMs": 50591.50275
+      },
+      {
+        "phase": "demo-import-return",
+        "id": "pp-sah2ijhjctl",
+        "runtime": "vue2",
+        "pageMs": 14642.299999952316,
+        "timeOrigin": 1794859168023.5,
+        "children": 0,
+        "inert": true,
+        "receiptNodeMs": 56834.949625
+      },
+      {
+        "phase": "prototype-imports-begin",
+        "details": [
+          "base-calendar-root",
+          "base-calendar-caption",
+          "base-calendar-previous",
+          "lucide-chevron-left-icon",
+          "base-select-root",
+          "base-select-trigger",
+          "base-select-value",
+          "lucide-chevron-down-icon",
+          "base-select-content",
+          "base-select-item",
+          "base-calendar-next",
+          "lucide-chevron-right-icon",
+          "base-calendar-heading",
+          "base-calendar-grid",
+          "base-calendar-weekdays",
+          "base-calendar-weekday",
+          "base-calendar-row",
+          "base-calendar-day"
+        ],
+        "id": "pp-sah2ijhjctl",
+        "runtime": "vue2",
+        "pageMs": 14642.400000095367,
+        "timeOrigin": 1794859168023.5,
+        "children": 0,
+        "inert": true,
+        "receiptNodeMs": 56835.104791
+      }
+    ],
+    "wc": [
+      {
+        "phase": "demo-import-begin",
+        "id": "pp-vfgwoib6iyn",
+        "runtime": "wc",
+        "pageMs": 8622.799999952316,
+        "timeOrigin": 1794859168023.5,
+        "children": 0,
+        "inert": true,
+        "receiptNodeMs": 50815.723041
+      },
+      {
+        "phase": "demo-import-return",
+        "id": "pp-vfgwoib6iyn",
+        "runtime": "wc",
+        "pageMs": 14642.900000095367,
+        "timeOrigin": 1794859168023.5,
+        "children": 0,
+        "inert": true,
+        "receiptNodeMs": 56835.48175
+      },
+      {
+        "phase": "prototype-imports-begin",
+        "details": [
+          "base-calendar-root",
+          "base-calendar-caption",
+          "base-calendar-previous",
+          "lucide-chevron-left-icon",
+          "base-select-root",
+          "base-select-trigger",
+          "base-select-value",
+          "lucide-chevron-down-icon",
+          "base-select-content",
+          "base-select-item",
+          "base-calendar-next",
+          "lucide-chevron-right-icon",
+          "base-calendar-heading",
+          "base-calendar-grid",
+          "base-calendar-weekdays",
+          "base-calendar-weekday",
+          "base-calendar-row",
+          "base-calendar-day"
+        ],
+        "id": "pp-vfgwoib6iyn",
+        "runtime": "wc",
+        "pageMs": 14642.900000095367,
+        "timeOrigin": 1794859168023.5,
+        "children": 0,
+        "inert": true,
+        "receiptNodeMs": 56835.515125
+      }
+    ]
+  },
+  "exactImportEntries": {
+    "base-calendar-root": {
+      "markers": [
+        {
+          "id": "base-calendar-root",
+          "stage": "import-begin",
+          "pageMs": 14642.5,
+          "timeOrigin": 1794859168023.5,
+          "receiptNodeMs": 56835.221833
+        }
+      ],
+      "moduleBindings": [
+        {
+          "transformedOwner": "/src/components/PrototypePreviewer/finf-prototype-modules.ts",
+          "module": "packages/prototypes/base/src/calendar/index.ts",
+          "requests": [
+            [
+              {
+                "kind": "request",
+                "requestId": "72389.1209",
+                "pageMs": 10440.747
+              },
+              {
+                "kind": "response",
+                "requestId": "72389.1209",
+                "pageMs": 10720.97,
+                "status": 200,
+                "fromDiskCache": false,
+                "fromServiceWorker": false
+              },
+              {
+                "kind": "finish",
+                "requestId": "72389.1209",
+                "pageMs": 10551.466,
+                "bytes": 681
+              }
+            ]
+          ],
+          "engineEvents": []
+        }
+      ]
+    },
+    "base-calendar-caption": {
+      "markers": [
+        {
+          "id": "base-calendar-caption",
+          "stage": "import-begin",
+          "pageMs": 14642.5,
+          "timeOrigin": 1794859168023.5,
+          "receiptNodeMs": 56835.312333
+        }
+      ],
+      "moduleBindings": [
+        {
+          "transformedOwner": "/src/components/PrototypePreviewer/finf-prototype-modules.ts",
+          "module": "packages/prototypes/base/src/calendar/index.ts",
+          "requests": [
+            [
+              {
+                "kind": "request",
+                "requestId": "72389.1209",
+                "pageMs": 10440.747
+              },
+              {
+                "kind": "response",
+                "requestId": "72389.1209",
+                "pageMs": 10720.97,
+                "status": 200,
+                "fromDiskCache": false,
+                "fromServiceWorker": false
+              },
+              {
+                "kind": "finish",
+                "requestId": "72389.1209",
+                "pageMs": 10551.466,
+                "bytes": 681
+              }
+            ]
+          ],
+          "engineEvents": []
+        }
+      ]
+    },
+    "base-calendar-previous": {
+      "markers": [
+        {
+          "id": "base-calendar-previous",
+          "stage": "import-begin",
+          "pageMs": 14642.5,
+          "timeOrigin": 1794859168023.5,
+          "receiptNodeMs": 56835.331958
+        }
+      ],
+      "moduleBindings": [
+        {
+          "transformedOwner": "/src/components/PrototypePreviewer/finf-prototype-modules.ts",
+          "module": "packages/prototypes/base/src/calendar/index.ts",
+          "requests": [
+            [
+              {
+                "kind": "request",
+                "requestId": "72389.1209",
+                "pageMs": 10440.747
+              },
+              {
+                "kind": "response",
+                "requestId": "72389.1209",
+                "pageMs": 10720.97,
+                "status": 200,
+                "fromDiskCache": false,
+                "fromServiceWorker": false
+              },
+              {
+                "kind": "finish",
+                "requestId": "72389.1209",
+                "pageMs": 10551.466,
+                "bytes": 681
+              }
+            ]
+          ],
+          "engineEvents": []
+        }
+      ]
+    },
+    "base-calendar-next": {
+      "markers": [
+        {
+          "id": "base-calendar-next",
+          "stage": "import-begin",
+          "pageMs": 14642.599999904633,
+          "timeOrigin": 1794859168023.5,
+          "receiptNodeMs": 56835.3495
+        }
+      ],
+      "moduleBindings": [
+        {
+          "transformedOwner": "/src/components/PrototypePreviewer/finf-prototype-modules.ts",
+          "module": "packages/prototypes/base/src/calendar/index.ts",
+          "requests": [
+            [
+              {
+                "kind": "request",
+                "requestId": "72389.1209",
+                "pageMs": 10440.747
+              },
+              {
+                "kind": "response",
+                "requestId": "72389.1209",
+                "pageMs": 10720.97,
+                "status": 200,
+                "fromDiskCache": false,
+                "fromServiceWorker": false
+              },
+              {
+                "kind": "finish",
+                "requestId": "72389.1209",
+                "pageMs": 10551.466,
+                "bytes": 681
+              }
+            ]
+          ],
+          "engineEvents": []
+        }
+      ]
+    },
+    "base-calendar-weekdays": {
+      "markers": [
+        {
+          "id": "base-calendar-weekdays",
+          "stage": "import-begin",
+          "pageMs": 14642.700000047684,
+          "timeOrigin": 1794859168023.5,
+          "receiptNodeMs": 56835.397416
+        }
+      ],
+      "moduleBindings": [
+        {
+          "transformedOwner": "/src/components/PrototypePreviewer/finf-prototype-modules.ts",
+          "module": "packages/prototypes/base/src/calendar/index.ts",
+          "requests": [
+            [
+              {
+                "kind": "request",
+                "requestId": "72389.1209",
+                "pageMs": 10440.747
+              },
+              {
+                "kind": "response",
+                "requestId": "72389.1209",
+                "pageMs": 10720.97,
+                "status": 200,
+                "fromDiskCache": false,
+                "fromServiceWorker": false
+              },
+              {
+                "kind": "finish",
+                "requestId": "72389.1209",
+                "pageMs": 10551.466,
+                "bytes": 681
+              }
+            ]
+          ],
+          "engineEvents": []
+        }
+      ]
+    },
+    "base-calendar-weekday": {
+      "markers": [
+        {
+          "id": "base-calendar-weekday",
+          "stage": "import-begin",
+          "pageMs": 14642.799999952316,
+          "timeOrigin": 1794859168023.5,
+          "receiptNodeMs": 56835.415458
+        }
+      ],
+      "moduleBindings": [
+        {
+          "transformedOwner": "/src/components/PrototypePreviewer/finf-prototype-modules.ts",
+          "module": "packages/prototypes/base/src/calendar/index.ts",
+          "requests": [
+            [
+              {
+                "kind": "request",
+                "requestId": "72389.1209",
+                "pageMs": 10440.747
+              },
+              {
+                "kind": "response",
+                "requestId": "72389.1209",
+                "pageMs": 10720.97,
+                "status": 200,
+                "fromDiskCache": false,
+                "fromServiceWorker": false
+              },
+              {
+                "kind": "finish",
+                "requestId": "72389.1209",
+                "pageMs": 10551.466,
+                "bytes": 681
+              }
+            ]
+          ],
+          "engineEvents": []
+        }
+      ]
+    },
+    "base-calendar-day": {
+      "markers": [
+        {
+          "id": "base-calendar-day",
+          "stage": "import-begin",
+          "pageMs": 14642.799999952316,
+          "timeOrigin": 1794859168023.5,
+          "receiptNodeMs": 56835.47225
+        }
+      ],
+      "moduleBindings": [
+        {
+          "transformedOwner": "/src/components/PrototypePreviewer/finf-prototype-modules.ts",
+          "module": "packages/prototypes/base/src/calendar/index.ts",
+          "requests": [
+            [
+              {
+                "kind": "request",
+                "requestId": "72389.1209",
+                "pageMs": 10440.747
+              },
+              {
+                "kind": "response",
+                "requestId": "72389.1209",
+                "pageMs": 10720.97,
+                "status": 200,
+                "fromDiskCache": false,
+                "fromServiceWorker": false
+              },
+              {
+                "kind": "finish",
+                "requestId": "72389.1209",
+                "pageMs": 10551.466,
+                "bytes": 681
+              }
+            ]
+          ],
+          "engineEvents": []
+        }
+      ]
+    },
+    "base-calendar-heading": {
+      "markers": [
+        {
+          "id": "base-calendar-heading",
+          "stage": "import-begin",
+          "pageMs": 10440.700000047684,
+          "timeOrigin": 1794859168023.5,
+          "receiptNodeMs": 52633.619333
+        },
+        {
+          "id": "base-calendar-heading",
+          "stage": "import-return",
+          "pageMs": 14644.299999952316,
+          "timeOrigin": 1794859168023.5,
+          "receiptNodeMs": 56836.864583
+        },
+        {
+          "id": "base-calendar-heading",
+          "stage": "register-return",
+          "pageMs": 14644.299999952316,
+          "timeOrigin": 1794859168023.5,
+          "receiptNodeMs": 56836.88675
+        }
+      ],
+      "moduleBindings": [
+        {
+          "transformedOwner": "/src/components/PrototypePreviewer/prototype-modules.ts",
+          "module": "packages/prototypes/base/src/calendar/index.ts",
+          "requests": [
+            [
+              {
+                "kind": "request",
+                "requestId": "72389.1209",
+                "pageMs": 10440.747
+              },
+              {
+                "kind": "response",
+                "requestId": "72389.1209",
+                "pageMs": 10720.97,
+                "status": 200,
+                "fromDiskCache": false,
+                "fromServiceWorker": false
+              },
+              {
+                "kind": "finish",
+                "requestId": "72389.1209",
+                "pageMs": 10551.466,
+                "bytes": 681
+              }
+            ]
+          ],
+          "engineEvents": []
+        }
+      ]
+    },
+    "base-calendar-grid": {
+      "markers": [
+        {
+          "id": "base-calendar-grid",
+          "stage": "import-begin",
+          "pageMs": 10440.799999952316,
+          "timeOrigin": 1794859168023.5,
+          "receiptNodeMs": 52633.670916
+        },
+        {
+          "id": "base-calendar-grid",
+          "stage": "import-return",
+          "pageMs": 14643.799999952316,
+          "timeOrigin": 1794859168023.5,
+          "receiptNodeMs": 56836.39675
+        },
+        {
+          "id": "base-calendar-grid",
+          "stage": "register-return",
+          "pageMs": 14643.799999952316,
+          "timeOrigin": 1794859168023.5,
+          "receiptNodeMs": 56836.456
+        }
+      ],
+      "moduleBindings": [
+        {
+          "transformedOwner": "/src/components/PrototypePreviewer/prototype-modules.ts",
+          "module": "packages/prototypes/base/src/calendar/index.ts",
+          "requests": [
+            [
+              {
+                "kind": "request",
+                "requestId": "72389.1209",
+                "pageMs": 10440.747
+              },
+              {
+                "kind": "response",
+                "requestId": "72389.1209",
+                "pageMs": 10720.97,
+                "status": 200,
+                "fromDiskCache": false,
+                "fromServiceWorker": false
+              },
+              {
+                "kind": "finish",
+                "requestId": "72389.1209",
+                "pageMs": 10551.466,
+                "bytes": 681
+              }
+            ]
+          ],
+          "engineEvents": []
+        }
+      ]
+    },
+    "base-calendar-row": {
+      "markers": [
+        {
+          "id": "base-calendar-row",
+          "stage": "import-begin",
+          "pageMs": 10440.799999952316,
+          "timeOrigin": 1794859168023.5,
+          "receiptNodeMs": 52633.768375
+        },
+        {
+          "id": "base-calendar-row",
+          "stage": "import-return",
+          "pageMs": 14644.200000047684,
+          "timeOrigin": 1794859168023.5,
+          "receiptNodeMs": 56836.733125
+        },
+        {
+          "id": "base-calendar-row",
+          "stage": "register-return",
+          "pageMs": 14644.200000047684,
+          "timeOrigin": 1794859168023.5,
+          "receiptNodeMs": 56836.777666
+        }
+      ],
+      "moduleBindings": [
+        {
+          "transformedOwner": "/src/components/PrototypePreviewer/prototype-modules.ts",
+          "module": "packages/prototypes/base/src/calendar/index.ts",
+          "requests": [
+            [
+              {
+                "kind": "request",
+                "requestId": "72389.1209",
+                "pageMs": 10440.747
+              },
+              {
+                "kind": "response",
+                "requestId": "72389.1209",
+                "pageMs": 10720.97,
+                "status": 200,
+                "fromDiskCache": false,
+                "fromServiceWorker": false
+              },
+              {
+                "kind": "finish",
+                "requestId": "72389.1209",
+                "pageMs": 10551.466,
+                "bytes": 681
+              }
+            ]
+          ],
+          "engineEvents": []
+        }
+      ]
+    },
+    "lucide-chevron-left-icon": {
+      "markers": [
+        {
+          "id": "lucide-chevron-left-icon",
+          "stage": "import-begin",
+          "pageMs": 14641,
+          "timeOrigin": 1794859168023.5,
+          "receiptNodeMs": 56833.897208
+        }
+      ],
+      "moduleBindings": [
+        {
+          "transformedOwner": "/src/components/PrototypePreviewer/prototype-modules.ts",
+          "module": "packages/prototypes/lucide/src/icons/chevron-left.ts",
+          "requests": [
+            [
+              {
+                "kind": "request",
+                "requestId": "72389.2799",
+                "pageMs": 13772.525
+              },
+              {
+                "kind": "response",
+                "requestId": "72389.2799",
+                "pageMs": 13874.547,
+                "status": 200,
+                "fromDiskCache": false,
+                "fromServiceWorker": false
+              },
+              {
+                "kind": "finish",
+                "requestId": "72389.2799",
+                "pageMs": 13802.435,
+                "bytes": 3325
+              }
+            ]
+          ],
+          "engineEvents": []
+        }
+      ]
+    },
+    "lucide-chevron-right-icon": {
+      "markers": [
+        {
+          "id": "lucide-chevron-right-icon",
+          "stage": "import-begin",
+          "pageMs": 14641.099999904633,
+          "timeOrigin": 1794859168023.5,
+          "receiptNodeMs": 56834.024375
+        }
+      ],
+      "moduleBindings": [
+        {
+          "transformedOwner": "/src/components/PrototypePreviewer/prototype-modules.ts",
+          "module": "packages/prototypes/lucide/src/icons/chevron-right.ts",
+          "requests": [
+            [
+              {
+                "kind": "request",
+                "requestId": "72389.2800",
+                "pageMs": 13772.541
+              },
+              {
+                "kind": "response",
+                "requestId": "72389.2800",
+                "pageMs": 13874.597,
+                "status": 200,
+                "fromDiskCache": false,
+                "fromServiceWorker": false
+              },
+              {
+                "kind": "finish",
+                "requestId": "72389.2800",
+                "pageMs": 13802.524,
+                "bytes": 3346
+              }
+            ]
+          ],
+          "engineEvents": []
+        }
+      ]
+    },
+    "lucide-chevron-down-icon": {
+      "markers": [
+        {
+          "id": "lucide-chevron-down-icon",
+          "stage": "import-begin",
+          "pageMs": 10434.299999952316,
+          "timeOrigin": 1794859168023.5,
+          "receiptNodeMs": 52628.165291
+        },
+        {
+          "id": "lucide-chevron-down-icon",
+          "stage": "import-return",
+          "pageMs": 11794.099999904633,
+          "timeOrigin": 1794859168023.5,
+          "receiptNodeMs": 53987.881041
+        },
+        {
+          "id": "lucide-chevron-down-icon",
+          "stage": "register-return",
+          "pageMs": 11794.099999904633,
+          "timeOrigin": 1794859168023.5,
+          "receiptNodeMs": 53988.385791
+        }
+      ],
+      "moduleBindings": [
+        {
+          "transformedOwner": "/src/components/PrototypePreviewer/prototype-modules.ts",
+          "module": "packages/prototypes/lucide/src/icons/chevron-down.ts",
+          "requests": [
+            [
+              {
+                "kind": "request",
+                "requestId": "72389.1195",
+                "pageMs": 10434.364
+              },
+              {
+                "kind": "response",
+                "requestId": "72389.1195",
+                "pageMs": 10697.981,
+                "status": 200,
+                "fromDiskCache": false,
+                "fromServiceWorker": false
+              },
+              {
+                "kind": "finish",
+                "requestId": "72389.1195",
+                "pageMs": 10530.251,
+                "bytes": 3319
+              }
+            ]
+          ],
+          "engineEvents": []
+        }
+      ]
+    }
+  },
+  "engine": {
+    "traceFileSHA256": "e1b53c4b0a92f7f90c5740a994bf583f03c71e5582e49d48650da8d225711d6f",
+    "report": {
+      "complete": false,
+      "bytes": 33554432,
+      "dataLossOccurred": true,
+      "sha256": "e1b53c4b0a92f7f90c5740a994bf583f03c71e5582e49d48650da8d225711d6f"
+    },
+    "eventNames": {},
+    "clockMarkers": 0,
+    "longestTasks": [],
+    "parseablePrefixEventCount": 125472,
+    "prefixSpanMs": 8242.752
+  },
+  "interpretation": {
+    "networkRows": 12210,
+    "observedRequestIds": 4070,
+    "transformedSourceEntries": [
+      "/src/components/PrototypePreviewer/prototype-modules.ts",
+      "/src/components/PrototypePreviewer/finf-prototype-modules.ts",
+      "/src/content/docs/zh-cn/calendar-demo.shared.ts"
+    ],
+    "matchedDeadlineScope": "Entry URLs read from the transformed importer. The capture does not prove the full transitive graph.",
+    "wireLogSHA256": "f833232595ea7d8624d4292f8d7f858e07febee3d2a46d4748c088eaef903551",
+    "transformLogSHA256": "ad230fbb821a7d5cd4bf3eb4ec1121a32d0762ce5ced10019b26e1180908ecd4",
+    "consoleSHA256": "de8dff61f9f09771443a3285be92ed8304e86f383d858e12f703ed2cf4a7c134"
+  },
+  "iconRequests": {
+    "count": 1695,
+    "initiatorChains": {
+      "chevron-left.ts": [
+        "icons/chevron-left.ts",
+        "icon/icons.generated.ts",
+        "icon/icons.ts",
+        "icon/index.ts",
+        "components/PrototypePreviewer/prototype-modules.ts",
+        "components/PrototypePreviewer/projection-materializer.ts",
+        "components/site-search-commands.ts",
+        "components/override/Search.astro",
+        ""
+      ],
+      "chevron-right.ts": [
+        "icons/chevron-right.ts",
+        "icon/icons.generated.ts",
+        "icon/icons.ts",
+        "icon/index.ts",
+        "components/PrototypePreviewer/prototype-modules.ts",
+        "components/PrototypePreviewer/projection-materializer.ts",
+        "components/site-search-commands.ts",
+        "components/override/Search.astro",
+        ""
+      ]
+    }
+  }
+}

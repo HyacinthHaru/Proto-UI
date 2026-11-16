@@ -1,0 +1,9 @@
+# S4 exact Calendar import entries and one shared-promise control
+
+Both runs kept the full 1,268 Chinese previews, the 60-second readiness assertion and the 150-second outer deadline. Both failed the original readiness assertion. The English case was unselected. The same WC Base Calendar host was still empty. The wire run includes #1484 head `fe6a32f4` in signed composition `d13fd147`. The alternative `ff1b04ce` changes only the two preview loader tables to share one Base Calendar module Promise. The diagnostic overlays differ. Chromium, Node, pnpm and one-worker selection come from the same pinned setup.
+
+The wire run observed browser-supplied request IDs and read the actual Vite-transformed import statements. All ten instrumented Base Calendar parts reference the same module URL and request ID. That request had HTTP 200 and a completion notification. Three earlier imports from the manual registry resumed and registered the corresponding parts. Seven overlapping imports in the Finf registry made it to the import expression and never emitted a return or registration marker during the run. The two pending Lucide chevrons both had HTTP 200 and completion notifications.
+
+Both chevron requests were initiated by the generated Lucide shape registry. CDP recorded 1,695 Lucide icon module requests under that tree. The initiator chains and matched entrance request IDs describe the observed scope. They do not prove that the aggregate caused the timeout. The trace prefix filled at about 8.24 seconds and contains no import marker. Evaluation timing therefore remains unverified.
+
+In the shared-promise control, all seven previously pending Calendar loaders returned. Both Lucide chevrons remained pending and prevented the preview from entering render. No timeout or assertion was weakened. This is local counterfactual evidence and not a full S4 or hosted acceptance result.
