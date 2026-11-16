@@ -1,0 +1,29 @@
+{
+  "head": "4e189adad1d05cbb9fe98ee5ecba95b14c6f0023",
+  "tree": "ab67829861ca237741a8ec957bf17f22e2b14623",
+  "parent": "97c18a7e4c233046958bd93dcf11606d4ab65df6",
+  "priorFocused": {
+    "failed": 3,
+    "passed": 58
+  },
+  "correctedFocused": {
+    "passed": 61
+  },
+  "correctedRelated": {
+    "files": 5,
+    "passed": 220
+  },
+  "workspaceTypes": "passed",
+  "builtCli": "1/47",
+  "checkedInputsSHA256": {
+    "packages/cli/src/services/prototype-style-tokens.ts": "eabc276f77bddf39f57cf3b3ac3b10790a595fc6c0865b21552aee6be680be10",
+    "packages/cli/test/shadow-template-style.test.ts": "5ff4bd39f724fbacfb53bc17dfc111a69a5111b5cd65eb6bacbc6b72a2236db9"
+  },
+  "nativeFixtureSHA256": {
+    "native.mts": "928c92e600e83e88439493a346663eda7de4c557b5a2990e46c93c85f634fc9e",
+    "used-native.astro": "387b7e6fc7270df16dd3ada968c564e90dbd287c596a703f82c9cd81b99a8a04",
+    "used-native.ts": "03867358e3e1d7ee2a5c1a67643c91f34799c6b58cfb3a238a41a3b9bb233d34",
+    "used-native-paint.ts": "3cb253f1472a83242df5a34a916cddf131c3bc255e924b94ad965b0f9adc9b40",
+    "used-native-artifact.json": "317a84275e50df81486241571b750d742cfe493cf7e66aa9e8596ca5e09a1e8f"
+  }
+}

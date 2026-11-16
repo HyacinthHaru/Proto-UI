@@ -1,0 +1,5 @@
+# Split decoration callback provenance
+
+[PR #1484](https://github.com/Proto-UI/Proto-UI/pull/1484) at `4e189adad1d05cbb9fe98ee5ecba95b14c6f0023` uses verified lexical callback membership for targeted decoration calls and setup-helper call sites. The compiler recognizes a Rule declared inside a proven helper, a targeted call whose disposer is retained, and a proven helper called in a conditional setup block. An unverified nested callback retains Root preflight.
+
+The preceding exact head failed the three added positive cases and passed the other 58. The corrected narrow suite passed all 61. The related CLI selection passed 220 tests across five files, workspace types passed and the CLI build completed. The actual compiled fixture combined an imported helper, a conditional setup call, a retained disposer and a helper-local Rule. Chrome verified the generated decoration computed 64px padding in a 640px layout and retained the caller slot and focus during valid reuse. Two deliberate inline concealment mutations still rejected.
