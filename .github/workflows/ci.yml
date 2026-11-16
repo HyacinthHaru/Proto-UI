@@ -1,5 +1,5 @@
 name: CI
-run-name: Verify original Contents shard without S4 sampling profiler
+run-name: Verify exact Contents wheel guard on original shard
 
 on: workflow_dispatch
 permissions:
@@ -18,17 +18,14 @@ jobs:
             trace: '1'
             order: candidate
     env:
-      BASELINE_CARRIER: c3886f9150ec6608e2e91aa30e0f862b91ceb22f
-      CANDIDATE_CARRIER: c3886f9150ec6608e2e91aa30e0f862b91ceb22f
+      BASELINE_CARRIER: 7e5fdc43fb6d3166e660a963721b261ee08ec8a5
+      CANDIDATE_CARRIER: 7e5fdc43fb6d3166e660a963721b261ee08ec8a5
       CHROME_VERSION: 157.0.8103.50
       CHROME_ZIP_SHA256: d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9
       PROTO_UI_RUNTIME_PHASE: browser
       PROTO_UI_RUNTIME_SHARD: ${{ matrix.shard }}
       PROTO_UI_RUNTIME_SLOT: ${{ matrix.slot }}
-      PROTO_UI_FAMILY_DISPATCH_PROBE: ${{ matrix.trace }}
-      PROTO_UI_S4_HOSTED_DIAGNOSTIC: '1'
       ARM_ORDER: ${{ matrix.order }}
-      PROTO_UI_CONTENTS_REACT_PROBE: ${{ matrix.trace }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -116,7 +113,7 @@ jobs:
               git status --porcelain=v1 | tee "$PROTO_UI_RUNTIME_EVIDENCE_DIR/source-status.txt"
               test ! -s "$PROTO_UI_RUNTIME_EVIDENCE_DIR/source-status.txt"
               printf '%s\n' "$GITHUB_SHA" > "$PROTO_UI_RUNTIME_EVIDENCE_DIR/source-sha.txt"
-              git rev-parse HEAD^2 > "$PROTO_UI_RUNTIME_EVIDENCE_DIR/product-parent.txt"
+              git rev-parse HEAD > "$PROTO_UI_RUNTIME_EVIDENCE_DIR/product-parent.txt"
               git rev-parse 'HEAD^{tree}' > "$PROTO_UI_RUNTIME_EVIDENCE_DIR/source-tree.txt"
               set +e
               timeout --signal=TERM --kill-after=10s 900s \
