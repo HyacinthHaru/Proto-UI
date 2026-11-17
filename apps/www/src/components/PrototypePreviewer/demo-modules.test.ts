@@ -1,6 +1,6 @@
 import { readdirSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import canonicalCheckbox from '../../content/docs/demo_components/base-checkbox/demo-base-checkbox.demo';
 import controlledCheckbox from '../../content/docs/zh-cn/demo-base-checkbox-controlled-states.demo';
 import { buildDemoRegistry } from './demo-registry';
@@ -51,6 +51,29 @@ describe('production demo registry', () => {
       expect(await loadDemo(demoId)).toMatchObject({ type: 'demo' });
     }
   );
+
+  it('shares pending and completed acquisition for the same recipe', async () => {
+    const mod = { default: canonicalCheckbox };
+    const loader = vi.fn(async () => mod);
+    const { demoModules } = buildDemoRegistry({ '../../content/demo-shared.demo.ts': loader });
+    const first = demoModules['demo-shared']();
+    const second = demoModules['demo-shared']();
+    expect(first).toBe(second);
+    expect(await first).toBe(mod);
+    expect(demoModules['demo-shared']()).toBe(first);
+    expect(loader).toHaveBeenCalledTimes(1);
+  });
+
+  it('releases a rejected acquisition so the next call can retry', async () => {
+    const failure = new Error('demo dependency unavailable');
+    const mod = { default: canonicalCheckbox };
+    const loader = vi.fn(async () => mod).mockRejectedValueOnce(failure);
+    const { demoModules } = buildDemoRegistry({ '../../content/demo-retry.demo.ts': loader });
+    await expect(demoModules['demo-retry']()).rejects.toBe(failure);
+    await expect(demoModules['demo-retry']()).resolves.toBe(mod);
+    await expect(demoModules['demo-retry']()).resolves.toBe(mod);
+    expect(loader).toHaveBeenCalledTimes(2);
+  });
 
   it('rejects the original cross-directory duplicate basename instead of overwriting it', () => {
     const canonicalPath =

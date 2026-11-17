@@ -23,7 +23,12 @@ export function buildDemoRegistry(demoModuleLoaders: Record<string, DemoModuleLo
           `冲突文件: ${path}`
       );
     }
-    demoModules[id] = loader as DemoModuleLoader;
+    let acquisition: ReturnType<DemoModuleLoader> | undefined;
+    demoModules[id] = () =>
+      (acquisition ??= loader().catch((error: unknown) => {
+        acquisition = undefined;
+        throw error;
+      }));
     demoSourcePaths[id] = path.replace('../../content/', 'apps/www/src/content/');
   }
   return { demoModules, demoSourcePaths };
