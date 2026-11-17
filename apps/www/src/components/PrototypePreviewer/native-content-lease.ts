@@ -42,6 +42,11 @@ export function withNativeContentLease(scope: HTMLElement, move: () => void): vo
   const document = scope.ownerDocument;
   const focused = document.activeElement as HTMLElement | null;
   const ownedFocus = focused && (focused === scope || scope.contains(focused));
+  const input = ownedFocus ? (focused as HTMLInputElement | HTMLTextAreaElement) : null;
+  const inputSelection =
+    input && typeof input.selectionStart === 'number'
+      ? ([input.selectionStart, input.selectionEnd, input.selectionDirection ?? undefined] as const)
+      : null;
   const selection = document.getSelection();
   const anchorNode = selection?.anchorNode;
   const focusNode = selection?.focusNode;
@@ -63,19 +68,28 @@ export function withNativeContentLease(scope: HTMLElement, move: () => void): vo
   move();
   if (ownedFocus && focused.isConnected && document.activeElement !== focused)
     focused.focus({ preventScroll: true });
-  if (!ownedSelection) return;
-  const nextAnchor = resolve(anchor),
-    nextExtent = resolve(extent);
-  if (nextAnchor && nextExtent) {
-    try {
-      selection!.setBaseAndExtent(
-        nextAnchor.node,
-        nextAnchor.offset,
-        nextExtent.node,
-        nextExtent.offset
-      );
-    } catch {
-      /* Connected callbacks may edit source lengths. Cleanup still completes. */
+  if (ownedSelection) {
+    const nextAnchor = resolve(anchor),
+      nextExtent = resolve(extent);
+    if (nextAnchor && nextExtent) {
+      try {
+        selection!.setBaseAndExtent(
+          nextAnchor.node,
+          nextAnchor.offset,
+          nextExtent.node,
+          nextExtent.offset
+        );
+      } catch {
+        /* Connected callbacks may edit source lengths. Cleanup still completes. */
+      }
     }
   }
+  // Restoring the document range can reset the focused text control's caret.
+  if (
+    inputSelection &&
+    input?.isConnected &&
+    document.activeElement === input &&
+    typeof input.selectionStart === 'number'
+  )
+    input.setSelectionRange(...inputSelection);
 }
