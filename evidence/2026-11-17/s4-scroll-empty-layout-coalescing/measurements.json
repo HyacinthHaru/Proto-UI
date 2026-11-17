@@ -1,0 +1,643 @@
+{
+  "source": {
+    "head": "46739a57faecdaf2366ab4da181d662d04ea6c29",
+    "tree": "1dfbfb19aadf6fca88e3d6529dd466abe89e14f4",
+    "parent": "2151a22f3b6d8da578ec21fe243c9b25cf0e7756",
+    "signature": "G",
+    "inputs": [
+      "82fa32e3a1768761d4f725ddbf088cdb5a55c9e3c36710754f9294d8c73e0122  packages/modules/scroll/src/caps.ts",
+      "2715b25a31ca23e93b288fd19e5f4bed1a6ee84d4ba7d5d789f6f8a4b5c723b0  packages/modules/scroll/src/impl.ts",
+      "99cdff595098acd5977cba203fe275ee3e6a9efa38e8e96c9b7829db95ed1bac  packages/modules/scroll/src/web/create-bound-web-scroll-host.ts",
+      "27b716698c5c4dafa19ea0a33e271c9e6bec369b64b3c3b67d5c2830c69fa116  packages/modules/scroll/src/web/create-web-scroll-host.ts",
+      "71cd0efd31ada729dee9861cd5bb5d754229e342e9b84379b5f15236ab89c407  packages/modules/scroll/test/web-scroll-host.test.ts"
+    ],
+    "integration": {
+      "head": "2151a22f3b6d8da578ec21fe243c9b25cf0e7756",
+      "tree": "f3fc9480761a7f82797632edee6a6e8be9d316e1",
+      "parents": [
+        "5a6e9755bd346ad4cd8a1667cb7097db90b7e277",
+        "0f0955a9d624e0ef5e250f56a0eaa0fc52bbfb53"
+      ],
+      "signature": "G"
+    }
+  },
+  "environment": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+  "diagnostic": {
+    "scope": "Independent Chinese Matrix runs. May have different timing and readiness progress. Experimental control extends to active end-follow; signed product limits the queued work to end-follow off.",
+    "notificationReasons": {
+      "head": "5a6e9755bd346ad4cd8a1667cb7097db90b7e277",
+      "scope": "Independent Chinese original Matrix probe on exact built artifact. Unchanged counts compare observed snapshots within previous measured update on the same lease. Scope identity and snapshot equality do not imply all geometry equal.",
+      "input": {
+        "asset": "site-shadcn-controls.Dv6geumf.js",
+        "source": "f990498ee0ebd98cbd531bee46f989ee14d4d5ae0483484450c2943fe2afd256",
+        "instrumented": "55e2ca0c9623d3c4521b6d90360fe89e0be9a7a0fb1d1633bc5aabd981a16c26"
+      },
+      "nativeExit": 1,
+      "latest": {
+        "chrome": {
+          "kind": "chrome",
+          "updates": 2560,
+          "empty": 1833,
+          "samePhysical": 2528,
+          "updateMs": 2046.7999980449677,
+          "emptyUpdateMs": 2022.2999985218048,
+          "byCause": {
+            "targets": {
+              "updates": 2550,
+              "empty": 1828,
+              "ms": 2046.1999983787537
+            },
+            "order": {
+              "updates": 10,
+              "empty": 5,
+              "ms": 0.5999996662139893
+            }
+          },
+          "byPublisher": {
+            "fallback/root/other": {
+              "updates": 803,
+              "empty": 580,
+              "ms": 1063.9000005722046
+            },
+            "fallback/viewport/other": {
+              "updates": 807,
+              "empty": 582,
+              "ms": 750.7999985218048
+            },
+            "fallback/scrollbar/chrome": {
+              "updates": 450,
+              "empty": 331,
+              "ms": 9.600000143051147
+            },
+            "retained-current/scrollbar/chrome": {
+              "updates": 15,
+              "empty": 7,
+              "ms": 3.6999995708465576
+            },
+            "fallback/thumb/chrome": {
+              "updates": 457,
+              "empty": 328,
+              "ms": 216.599999666214
+            },
+            "retained-current/thumb/chrome": {
+              "updates": 18,
+              "empty": 0,
+              "ms": 1.5999999046325684
+            }
+          },
+          "byReason": {
+            "structure/root": {
+              "updates": 434,
+              "empty": 314,
+              "facts": 434,
+              "unchanged": 431,
+              "ms": 397.19999980926514
+            },
+            "structure/viewport": {
+              "updates": 438,
+              "empty": 316,
+              "facts": 438,
+              "unchanged": 435,
+              "ms": 264.4999997615814
+            },
+            "caps/root": {
+              "updates": 369,
+              "empty": 266,
+              "facts": 369,
+              "unchanged": 358,
+              "ms": 666.7000007629395
+            },
+            "caps/viewport": {
+              "updates": 369,
+              "empty": 266,
+              "facts": 369,
+              "unchanged": 369,
+              "ms": 486.2999987602234
+            },
+            "caps/scrollbar": {
+              "updates": 198,
+              "empty": 148,
+              "facts": 198,
+              "unchanged": 196,
+              "ms": 4.299999952316284
+            },
+            "structure/scrollbar": {
+              "updates": 255,
+              "empty": 185,
+              "facts": 255,
+              "unchanged": 250,
+              "ms": 5.5
+            },
+            "mounted/scrollbar": {
+              "updates": 12,
+              "empty": 5,
+              "facts": 12,
+              "unchanged": 12,
+              "ms": 3.499999761581421
+            },
+            "caps/thumb": {
+              "updates": 205,
+              "empty": 145,
+              "facts": 205,
+              "unchanged": 204,
+              "ms": 199.89999961853027
+            },
+            "structure/thumb": {
+              "updates": 258,
+              "empty": 183,
+              "facts": 258,
+              "unchanged": 256,
+              "ms": 17.49999976158142
+            },
+            "mounted/thumb": {
+              "updates": 12,
+              "empty": 0,
+              "facts": 12,
+              "unchanged": 12,
+              "ms": 0.8000001907348633
+            }
+          },
+          "pageMs": 55527.59999990463
+        },
+        "thumb": {
+          "kind": "thumb",
+          "projection": 320,
+          "skipped": {
+            "width": 316,
+            "--proto-ui-scroll-thumb-size": 297,
+            "--proto-ui-scroll-thumb-offset": 312,
+            "height": 316,
+            "transform": 312
+          },
+          "changed": {
+            "--proto-ui-scroll-thumb-size": 23,
+            "--proto-ui-scroll-thumb-offset": 8,
+            "height": 4,
+            "transform": 8,
+            "width": 4
+          },
+          "targets": 8,
+          "pageMs": 55337.59999990463
+        }
+      },
+      "logSha256": "b59e96797562c321979a8bdd5942bfa766bd13581e173ed8e15d945c9eb7b9a1"
+    },
+    "emptyLayoutControl": {
+      "head": "5a6e9755bd346ad4cd8a1667cb7097db90b7e277",
+      "scope": "Independent Chinese original Matrix probe on exact built artifact. Unchanged counts compare observed snapshots within previous measured update on the same lease. Scope identity and snapshot equality do not imply all geometry equal.",
+      "input": {
+        "asset": "site-shadcn-controls.Dv6geumf.js",
+        "source": "f990498ee0ebd98cbd531bee46f989ee14d4d5ae0483484450c2943fe2afd256",
+        "instrumented": "7f1e91bf706d00e960deef99cab06b03dbd67dbc32ca3ac873fa7a5e540293ec"
+      },
+      "nativeExit": 1,
+      "latest": {
+        "chrome": {
+          "kind": "chrome",
+          "updates": 2560,
+          "empty": 1833,
+          "samePhysical": 2528,
+          "updateMs": 1935.1999986171722,
+          "emptyUpdateMs": 7.299999952316284,
+          "byCause": {
+            "targets": {
+              "updates": 2550,
+              "empty": 1828,
+              "ms": 1934.6999986171722
+            },
+            "order": {
+              "updates": 10,
+              "empty": 5,
+              "ms": 0.5
+            }
+          },
+          "byPublisher": {
+            "fallback/root/other": {
+              "updates": 803,
+              "empty": 580,
+              "ms": 999.5000002384186
+            },
+            "fallback/viewport/other": {
+              "updates": 807,
+              "empty": 582,
+              "ms": 709.6000003814697
+            },
+            "fallback/scrollbar/chrome": {
+              "updates": 450,
+              "empty": 331,
+              "ms": 7.999999523162842
+            },
+            "retained-current/scrollbar/chrome": {
+              "updates": 15,
+              "empty": 7,
+              "ms": 3.0999999046325684
+            },
+            "fallback/thumb/chrome": {
+              "updates": 457,
+              "empty": 328,
+              "ms": 212.39999866485596
+            },
+            "retained-current/thumb/chrome": {
+              "updates": 18,
+              "empty": 0,
+              "ms": 2.0999999046325684
+            }
+          },
+          "byReason": {
+            "structure/root": {
+              "updates": 434,
+              "empty": 314,
+              "facts": 120,
+              "unchanged": 119,
+              "ms": 383.099999666214
+            },
+            "structure/viewport": {
+              "updates": 438,
+              "empty": 316,
+              "facts": 122,
+              "unchanged": 121,
+              "ms": 242.40000081062317
+            },
+            "caps/root": {
+              "updates": 369,
+              "empty": 266,
+              "facts": 103,
+              "unchanged": 103,
+              "ms": 616.4000005722046
+            },
+            "caps/viewport": {
+              "updates": 369,
+              "empty": 266,
+              "facts": 103,
+              "unchanged": 103,
+              "ms": 467.19999957084656
+            },
+            "caps/scrollbar": {
+              "updates": 198,
+              "empty": 148,
+              "facts": 50,
+              "unchanged": 50,
+              "ms": 2.999999761581421
+            },
+            "structure/scrollbar": {
+              "updates": 255,
+              "empty": 185,
+              "facts": 70,
+              "unchanged": 65,
+              "ms": 4.999999761581421
+            },
+            "mounted/scrollbar": {
+              "updates": 12,
+              "empty": 5,
+              "facts": 7,
+              "unchanged": 7,
+              "ms": 3.0999999046325684
+            },
+            "caps/thumb": {
+              "updates": 205,
+              "empty": 145,
+              "facts": 60,
+              "unchanged": 56,
+              "ms": 196.39999914169312
+            },
+            "structure/thumb": {
+              "updates": 258,
+              "empty": 183,
+              "facts": 75,
+              "unchanged": 75,
+              "ms": 17.19999933242798
+            },
+            "mounted/thumb": {
+              "updates": 12,
+              "empty": 0,
+              "facts": 12,
+              "unchanged": 12,
+              "ms": 0.9000000953674316
+            }
+          },
+          "pageMs": 56027.90000009537
+        },
+        "geometry": {
+          "kind": "geometry",
+          "requests": 1873,
+          "queued": 271,
+          "run": 256,
+          "skips": 10,
+          "runMs": 274.099999666214,
+          "pageMs": 56125.200000047684
+        },
+        "thumb": {
+          "kind": "thumb",
+          "projection": 320,
+          "skipped": {
+            "width": 316,
+            "--proto-ui-scroll-thumb-size": 297,
+            "--proto-ui-scroll-thumb-offset": 312,
+            "height": 316,
+            "transform": 312
+          },
+          "changed": {
+            "--proto-ui-scroll-thumb-size": 23,
+            "--proto-ui-scroll-thumb-offset": 8,
+            "height": 4,
+            "transform": 8,
+            "width": 4
+          },
+          "targets": 8,
+          "pageMs": 55837.700000047684
+        }
+      },
+      "logSha256": "415716527b82c33df53f16e0d67fd84d79702437f430450f79c25d9b2acfe635"
+    },
+    "compiledProduct": {
+      "head": "46739a57faecdaf2366ab4da181d662d04ea6c29",
+      "nativeExit": 1,
+      "asset": {
+        "asset": "site-shadcn-controls.D7nqfiZl.js",
+        "source": "dd90decbbeaf3053d07e55e20fd7381f4f337b85bf919a8ac5eb0b3ebe515794",
+        "instrumented": "66f4e95bff12c264b1240c18d7a03c52218dca006a444102a6a019aacdab80b4"
+      },
+      "logSha256": "fdfb6617df6afb357cba2977330cd96b405844a76a68b6ad3de7872609bfc4b5",
+      "scope": "Delivered exact compiled product counters during the original Chinese Matrix predicate. Sample duration is inclusive and capture times are page clock.",
+      "latest": {
+        "requests": 867,
+        "coalesced": 735,
+        "queued": 132,
+        "ran": 128,
+        "cancelled": 4,
+        "revoked": 0,
+        "sampleMs": 186.79999995231628,
+        "pageMs": 56547.5
+      },
+      "checkpoints": [
+        {
+          "requests": 11,
+          "coalesced": 9,
+          "queued": 2,
+          "ran": 1,
+          "cancelled": 1,
+          "revoked": 0,
+          "sampleMs": 0,
+          "pageMs": 10081
+        },
+        {
+          "requests": 21,
+          "coalesced": 18,
+          "queued": 3,
+          "ran": 2,
+          "cancelled": 1,
+          "revoked": 0,
+          "sampleMs": 0,
+          "pageMs": 10135.600000143051
+        },
+        {
+          "requests": 41,
+          "coalesced": 35,
+          "queued": 6,
+          "ran": 3,
+          "cancelled": 1,
+          "revoked": 0,
+          "sampleMs": 0,
+          "pageMs": 10150.5
+        },
+        {
+          "requests": 41,
+          "coalesced": 35,
+          "queued": 6,
+          "ran": 4,
+          "cancelled": 1,
+          "revoked": 0,
+          "sampleMs": 0,
+          "pageMs": 10150.600000143051
+        },
+        {
+          "requests": 336,
+          "coalesced": 265,
+          "queued": 71,
+          "ran": 64,
+          "cancelled": 2,
+          "revoked": 0,
+          "sampleMs": 101.2000002861023,
+          "pageMs": 43261.800000190735
+        },
+        {
+          "requests": 867,
+          "coalesced": 735,
+          "queued": 132,
+          "ran": 128,
+          "cancelled": 4,
+          "revoked": 0,
+          "sampleMs": 186.79999995231628,
+          "pageMs": 56547.5
+        }
+      ]
+    }
+  },
+  "verification": {
+    "sourceRedPass": 15,
+    "sourceRedFail": 1,
+    "focusedTests": 219,
+    "focusedFiles": 12,
+    "native": {
+      "scroll-native": {
+        "passed": 8,
+        "failed": 0,
+        "skips": 0,
+        "failedCases": [],
+        "reportSha256": "07667462de71ba17dc723c20a168292652f06294f72100260e5aa830fbd4bf03"
+      },
+      "native": {
+        "passed": 0,
+        "failed": 2,
+        "skips": 0,
+        "failedCases": [
+          "zh-cn: native Light/split/mixed acceptance",
+          "en: native Light/split/mixed acceptance"
+        ],
+        "reportSha256": "0f943e6a80a40b0b549829b70bed5310f9884dbdc6290c0916d561bb94d3e169"
+      },
+      "accordion-native": {
+        "passed": 4,
+        "failed": 0,
+        "skips": 29,
+        "failedCases": [],
+        "reportSha256": "304129a847b4215af1f8b228cabc863bf4cb7eea0462376f9bb68c3a3db2b378"
+      },
+      "optics-native": {
+        "passed": 3,
+        "failed": 0,
+        "skips": 1,
+        "failedCases": [],
+        "reportSha256": "12e529df8b3d90aae01db612b67051a1e2640ee2b0fe89d380ccb002a7458170"
+      },
+      "portal-native": {
+        "passed": 5,
+        "failed": 0,
+        "skips": 50,
+        "failedCases": [],
+        "reportSha256": "1f5df57a9306f45d3fe275a4f0315fdad5cfbd8e22f5687ffecd5b7637088eac"
+      },
+      "preview-browser": {
+        "passed": 11,
+        "failed": 0,
+        "skips": 13,
+        "failedCases": [],
+        "reportSha256": "bd84dbdd191e9e10dec4cf4b4855c2be37758b07560b3f7754b6aa4b293d1288"
+      }
+    },
+    "packages": 47,
+    "pages": 685,
+    "typesExit": 0,
+    "manifestsExit": 0,
+    "finfPolicyExit": 0,
+    "packageBudgetChanges": [
+      {
+        "syncedParent": "ADVISORY runtime root: 101213 / 78500 gzip bytes; overBudget=22713; minified=390460 sha256=0b0e275b387d948bf58ae9596d85f34adc3fd37b07339d19821fc3daafa6d28c",
+        "current": "ADVISORY runtime root: 101217 / 78500 gzip bytes; overBudget=22717; minified=390470 sha256=84ddbb8b9e893f050fb5c5bdb55a115d1ad522ead59198ec22eedeb94bc57d00"
+      },
+      {
+        "syncedParent": "ADVISORY adapter-react root: 163634 / 106000 gzip bytes; overBudget=57634; minified=576933 sha256=bb855974d086aa4047af53bbd5da77e9744c87be83dd2a3e5d659e979c133fd6",
+        "current": "ADVISORY adapter-react root: 163734 / 106000 gzip bytes; overBudget=57734; minified=577277 sha256=0661d6d49ca082facd6fb09070651bac3825a39b5caf1b3da031ce26d6d7cdb5"
+      },
+      {
+        "syncedParent": "ADVISORY adapter-vue root: 162422 / 106000 gzip bytes; overBudget=56422; minified=572177 sha256=bd2111ba24df34185f81cb59bfb5076e3492e678c09ceef4a3d97776559fa39a",
+        "current": "ADVISORY adapter-vue root: 162507 / 106000 gzip bytes; overBudget=56507; minified=572527 sha256=fe68c329936bacff374a36205d44f87f3017e9910c3d28d3b6aa010667219cb7"
+      },
+      {
+        "syncedParent": "ADVISORY adapter-web-component root: 195311 / 132000 gzip bytes; overBudget=63311; minified=670792 sha256=88a2ddff801e2eaeb4fc3d6b26d2e2b9f432fbea93abd84e12f2618e46ed0cf3",
+        "current": "ADVISORY adapter-web-component root: 195437 / 132000 gzip bytes; overBudget=63437; minified=671176 sha256=7ac8dbeaea5d91207dff7187e3783701823b6b9741367d349e7fbfa5fe32f975"
+      }
+    ],
+    "originalReadyMs": 60000,
+    "originalOuterMs": 150000,
+    "servedPreviews": {
+      "zh-cn": {
+        "bytes": 1862557,
+        "sha256": "7363d21b064a1f104bda08637affc179b84811bed83b8305149f105e98d4dc5f",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914153,
+        "sha256": "38b21e350fb9fdde290561270cde8c0dec7789da96c0bde977c248570286900f",
+        "previews": 1268
+      }
+    },
+    "preview": {
+      "head": "46739a57faecdaf2366ab4da181d662d04ea6c29",
+      "tree": "1dfbfb19aadf6fca88e3d6529dd466abe89e14f4",
+      "distHashes": {
+        "zh-cn/index.html": "ef2a656f4731527b0055a7e2e9dce93f0636896ef10cc8fe324718ffcb6628d3",
+        "zh-cn/ui-libraries/shadcn/button/index.html": "b78240c2ee75e795979a60fec03448d4faa481ad2c2e6d8b1f15335684e400b2",
+        "zh-cn/ui-libraries/brutalist/components/button/index.html": "874f486fe4f164e364bdc82dd7f8cbe38c93d3705e0a180a895dd4cbe7ec407c"
+      },
+      "sourceCodeExamples": 9,
+      "renderedCodeExamples": 9,
+      "packedHeaderExit": 0,
+      "previewBrowserExit": 0,
+      "selector": "uses real family Popover Triggers|uses the same mobile shell|live available region|keeps Runtime Tabs outside"
+    },
+    "header": {
+      "head": "46739a57faecdaf2366ab4da181d662d04ea6c29",
+      "browser": "156.0.8078.79",
+      "scope": "First animation frame control on the exact static Astro preview. Geometry reads can force layout.",
+      "results": [
+        {
+          "width": 320,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1574,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1693.3999998569489,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1712.6999998092651,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        },
+        {
+          "width": 390,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1511.1000001430511,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1628.5,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1647.1000001430511,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        }
+      ]
+    }
+  }
+}
