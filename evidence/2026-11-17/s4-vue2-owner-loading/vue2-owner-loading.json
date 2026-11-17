@@ -1,0 +1,667 @@
+[
+  {
+    "run": "normal-dispatch",
+    "source": {
+      "head": "5d4f911370ca5e9cb4e4a17f20eca0b1945d6862",
+      "tree": "84b1020b1d8fdd3511e6f9d4215aad6fa94bf83b",
+      "parents": [
+        "621355701553eb1bded8537b0ae5a1881038d61f",
+        "624b878c166658ee99f798eaba2ee6b20f1a6bd5"
+      ],
+      "suiteOverlaySHA256": "c6e356cb2e5991b900a7204fae7901fcc303570101a2fc2fba6504397120dd85",
+      "observerSHA256": "b56ec096f72172a42e3f9d05275c82802c641e1fec5574d841a9b17defcc91e6",
+      "htmlSHA256": "9e397ace2d4a9af31b295ea4e4c40d2e1e62ffd6505d4240110dfc2c91fbc7a4"
+    },
+    "environment": {
+      "node": "v24.21.0",
+      "pnpm": "10.32.1",
+      "chrome": "Google Chrome for Testing 156.0.8078.79",
+      "workers": 1
+    },
+    "limits": [1268, 60000, 150000],
+    "exit": 1,
+    "failures": ["Error: Test timed out in 150000ms."],
+    "verdict": {
+      "startupPassed": false,
+      "errors": [],
+      "consoleErrors": [],
+      "collectionOutcome": "rejected",
+      "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+    },
+    "latestReadiness": {
+      "timeOrigin": 1794876343845.4,
+      "pageMs": 50137.700000047684,
+      "dateNow": 1794876393983,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-fyj7felv0ed",
+        "index": 3,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "declaredRuntime": "vue2",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-fyj7felv0ed",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      }
+    },
+    "markers": [
+      {
+        "stage": "vue2-owner-demo-import-begin",
+        "owner": "pp-fyj7felv0ed",
+        "pageMs": 7627.5,
+        "timeOrigin": 1794876343845.4,
+        "children": 0,
+        "receivedNodeMs": 8471.227708
+      },
+      {
+        "stage": "vue2-adapter-import-begin",
+        "pageMs": 11395.600000143051,
+        "timeOrigin": 1794876343845.4,
+        "receivedNodeMs": 12239.385958
+      },
+      {
+        "stage": "vue2-wrapper-import-begin",
+        "pageMs": 11396,
+        "timeOrigin": 1794876343845.4,
+        "receivedNodeMs": 12239.722541
+      },
+      {
+        "stage": "vue2-owner-demo-import-return",
+        "owner": "pp-fyj7felv0ed",
+        "pageMs": 12009.400000095367,
+        "timeOrigin": 1794876343845.4,
+        "children": 0,
+        "receivedNodeMs": 12853.295666
+      },
+      {
+        "stage": "vue2-owner-prototype-imports-begin",
+        "owner": "pp-fyj7felv0ed",
+        "pageMs": 12018.200000047684,
+        "timeOrigin": 1794876343845.4,
+        "children": 0,
+        "details": [
+          "base-accordion-root",
+          "base-accordion-item",
+          "base-accordion-heading",
+          "base-accordion-trigger",
+          "base-accordion-content",
+          "base-button"
+        ],
+        "receivedNodeMs": 12861.832208
+      },
+      {
+        "stage": "vue2-wrapper-import-return",
+        "pageMs": 14270.700000047684,
+        "timeOrigin": 1794876343845.4,
+        "receivedNodeMs": 15114.671583
+      },
+      {
+        "stage": "vue2-import-begin",
+        "pageMs": 14270.900000095367,
+        "timeOrigin": 1794876343845.4,
+        "receivedNodeMs": 15114.807375
+      },
+      {
+        "stage": "vue2-native-import-dispatch",
+        "pageMs": 14270.900000095367,
+        "timeOrigin": 1794876343845.4,
+        "receivedNodeMs": 15114.833916
+      },
+      {
+        "stage": "vue2-adapter-import-return",
+        "pageMs": 14271.100000143051,
+        "timeOrigin": 1794876343845.4,
+        "receivedNodeMs": 15114.965708
+      },
+      {
+        "stage": "vue2-owner-prototype-imports-return",
+        "owner": "pp-fyj7felv0ed",
+        "pageMs": 49656.40000009537,
+        "timeOrigin": 1794876343845.4,
+        "children": 0,
+        "receivedNodeMs": 50500.542458
+      },
+      {
+        "stage": "vue2-owner-render-call",
+        "owner": "pp-fyj7felv0ed",
+        "pageMs": 49656.5,
+        "timeOrigin": 1794876343845.4,
+        "children": 0,
+        "receivedNodeMs": 50500.668833
+      },
+      {
+        "stage": "vue2-owner-runtime-join-begin",
+        "pageMs": 49657,
+        "timeOrigin": 1794876343845.4,
+        "owner": "pp-fyj7felv0ed",
+        "children": 0,
+        "receivedNodeMs": 50501.175166
+      }
+    ],
+    "runtimeNetwork": {
+      "/_astro/index.K1KQNPct.js": [
+        {
+          "id": "34629.559",
+          "requestType": "Script",
+          "initiatorType": "script",
+          "initiatorFile": "client",
+          "events": [
+            {
+              "phase": "request",
+              "serial": 28,
+              "timestamp": 1247073.574725,
+              "nodeMs": 12239.867625,
+              "alignedPageMs": 11395.874
+            },
+            {
+              "phase": "response",
+              "status": 200,
+              "protocol": "http/1.1",
+              "mime": "text/javascript",
+              "serial": 47,
+              "timestamp": 1247074.131372,
+              "nodeMs": 12796.659208,
+              "alignedPageMs": 11952.521
+            },
+            {
+              "phase": "data",
+              "bytes": 29960,
+              "serial": 48,
+              "timestamp": 1247074.131377,
+              "nodeMs": 12796.663375,
+              "alignedPageMs": 11952.526
+            },
+            {
+              "phase": "data",
+              "bytes": 0,
+              "serial": 49,
+              "timestamp": 1247074.131388,
+              "nodeMs": 12796.667,
+              "alignedPageMs": 11952.537
+            },
+            {
+              "phase": "finish",
+              "bytes": 10870,
+              "serial": 50,
+              "timestamp": 1247073.591583,
+              "nodeMs": 12796.671291,
+              "alignedPageMs": 11412.732
+            }
+          ]
+        }
+      ],
+      "/_astro/vue2-runtime.CFiQwzob.js": [
+        {
+          "id": "34629.560",
+          "requestType": "Script",
+          "initiatorType": "script",
+          "initiatorFile": "client",
+          "events": [
+            {
+              "phase": "request",
+              "serial": 29,
+              "timestamp": 1247073.57503,
+              "nodeMs": 12239.88375,
+              "alignedPageMs": 11396.167
+            },
+            {
+              "phase": "response",
+              "status": 200,
+              "protocol": "http/1.1",
+              "mime": "text/javascript",
+              "serial": 43,
+              "timestamp": 1247074.131327,
+              "nodeMs": 12796.477,
+              "alignedPageMs": 11952.464
+            },
+            {
+              "phase": "data",
+              "bytes": 2071,
+              "serial": 44,
+              "timestamp": 1247074.13133,
+              "nodeMs": 12796.482333,
+              "alignedPageMs": 11952.467
+            },
+            {
+              "phase": "data",
+              "bytes": 0,
+              "serial": 45,
+              "timestamp": 1247074.131342,
+              "nodeMs": 12796.486791,
+              "alignedPageMs": 11952.479
+            },
+            {
+              "phase": "finish",
+              "bytes": 1369,
+              "serial": 46,
+              "timestamp": 1247073.591674,
+              "nodeMs": 12796.491208,
+              "alignedPageMs": 11412.811
+            }
+          ]
+        }
+      ],
+      "/_astro/vue.runtime.esm.BiV49BqY.js": [
+        {
+          "id": "34629.925",
+          "requestType": "Script",
+          "initiatorType": "script",
+          "initiatorFile": "/_astro/vue2-runtime.CFiQwzob.js",
+          "events": [
+            {
+              "phase": "request",
+              "serial": 96,
+              "timestamp": 1247076.449783,
+              "nodeMs": 15114.953333,
+              "alignedPageMs": 14270.94
+            },
+            {
+              "phase": "response",
+              "status": 200,
+              "protocol": "http/1.1",
+              "mime": "text/javascript",
+              "serial": 97,
+              "timestamp": 1247112.329492,
+              "nodeMs": 50994.459583,
+              "alignedPageMs": 50150.649
+            },
+            {
+              "phase": "data",
+              "bytes": 8884,
+              "serial": 98,
+              "timestamp": 1247112.32951,
+              "nodeMs": 50994.48175,
+              "alignedPageMs": 50150.667
+            },
+            {
+              "phase": "data",
+              "bytes": 57068,
+              "serial": 99,
+              "timestamp": 1247112.329511,
+              "nodeMs": 50994.483625,
+              "alignedPageMs": 50150.668
+            },
+            {
+              "phase": "data",
+              "bytes": 0,
+              "serial": 100,
+              "timestamp": 1247112.329571,
+              "nodeMs": 50994.485041,
+              "alignedPageMs": 50150.728
+            },
+            {
+              "phase": "finish",
+              "bytes": 24547,
+              "serial": 101,
+              "timestamp": 1247076.453941,
+              "nodeMs": 50994.48675,
+              "alignedPageMs": 14275.098
+            }
+          ]
+        }
+      ]
+    },
+    "observations": {
+      "assetOverlays": [
+        {
+          "asset": "demo-renderer.B7Ear75z.js",
+          "before": "e7a4209e1ffe80fcb5fc649cbf3d483019911287a7bb40cfbf19686906c85f90",
+          "after": "db84de866a5bc20a7786d4ba992c3fb8e9be9b9c83be5b6f24ed418194c431d6",
+          "original": "1b82864878c378f606afaa3ea6b6f3a0e23afaf1a4c83212039f3cfac4e694de"
+        },
+        {
+          "asset": "previewer-client.BhKnQCQC.js",
+          "before": "38318b8165f0c906a3ac6fe6c2f91dfec73124c0d1a020d67c623f01a40b19e3",
+          "after": "7c5aa06252f51d199110e1e37a72abdf2c8d4bca5586308241a9b95e0ce2f810",
+          "original": "76ff20702ffd199e15e4e8fed9c5e797145862454bdd60a4733ced8ead7e7485"
+        },
+        {
+          "asset": "vue2-runtime.CFiQwzob.js",
+          "before": "afdfeb83eff79e42697d3c2fba6bb0cd553c1e3be1a5f9480afcb416b5a98cdc",
+          "after": "e2b7a28b5b9e85db9453457d80fd839c0b0938573db85493914a055e9815b739",
+          "original": "afdfeb83eff79e42697d3c2fba6bb0cd553c1e3be1a5f9480afcb416b5a98cdc"
+        }
+      ],
+      "overlaySHA256": "c6e356cb2e5991b900a7204fae7901fcc303570101a2fc2fba6504397120dd85",
+      "htmlSHA256": "9e397ace2d4a9af31b295ea4e4c40d2e1e62ffd6505d4240110dfc2c91fbc7a4"
+    }
+  },
+  {
+    "run": "early-loader",
+    "source": {
+      "head": "5d4f911370ca5e9cb4e4a17f20eca0b1945d6862",
+      "tree": "84b1020b1d8fdd3511e6f9d4215aad6fa94bf83b",
+      "parents": [
+        "621355701553eb1bded8537b0ae5a1881038d61f",
+        "624b878c166658ee99f798eaba2ee6b20f1a6bd5"
+      ],
+      "suiteOverlaySHA256": "fcf64c8a037ba03a4b001881ab6d92ea9f399b2180dc12b17e601546332e0f57",
+      "observerSHA256": "b56ec096f72172a42e3f9d05275c82802c641e1fec5574d841a9b17defcc91e6",
+      "htmlSHA256": "9e397ace2d4a9af31b295ea4e4c40d2e1e62ffd6505d4240110dfc2c91fbc7a4"
+    },
+    "environment": {
+      "node": "v24.21.0",
+      "pnpm": "10.32.1",
+      "chrome": "Google Chrome for Testing 156.0.8078.79",
+      "workers": 1
+    },
+    "limits": [1268, 60000, 150000],
+    "exit": 1,
+    "failures": ["page.waitForFunction: Timeout 60000ms exceeded."],
+    "verdict": {
+      "startupPassed": false,
+      "errors": [],
+      "consoleErrors": [],
+      "collectionOutcome": "budget-expired",
+      "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+    },
+    "latestReadiness": null,
+    "markers": [
+      {
+        "stage": "early-vue2-warm-start",
+        "pageMs": 5245.399999856949,
+        "timeOrigin": 1794876701563.2,
+        "receivedNodeMs": 6378.216125
+      },
+      {
+        "stage": "vue2-owner-demo-import-begin",
+        "owner": "pp-fyj7felv0ed",
+        "pageMs": 8810.899999856949,
+        "timeOrigin": 1794876701563.2,
+        "children": 0,
+        "receivedNodeMs": 9943.689667
+      },
+      {
+        "stage": "vue2-adapter-import-begin",
+        "pageMs": 11697.299999952316,
+        "timeOrigin": 1794876701563.2,
+        "receivedNodeMs": 12830.543792
+      },
+      {
+        "stage": "vue2-wrapper-import-begin",
+        "pageMs": 11697.799999952316,
+        "timeOrigin": 1794876701563.2,
+        "receivedNodeMs": 12830.715208
+      },
+      {
+        "stage": "early-vue2-wrapper-return",
+        "pageMs": 12113,
+        "timeOrigin": 1794876701563.2,
+        "receivedNodeMs": 13246.07725
+      },
+      {
+        "stage": "vue2-import-begin",
+        "pageMs": 12113.099999904633,
+        "timeOrigin": 1794876701563.2,
+        "receivedNodeMs": 13246.197417
+      },
+      {
+        "stage": "vue2-native-import-dispatch",
+        "pageMs": 12113.099999904633,
+        "timeOrigin": 1794876701563.2,
+        "receivedNodeMs": 13246.54825
+      },
+      {
+        "stage": "vue2-owner-demo-import-return",
+        "owner": "pp-fyj7felv0ed",
+        "pageMs": 12619,
+        "timeOrigin": 1794876701563.2,
+        "children": 0,
+        "receivedNodeMs": 13751.880042
+      },
+      {
+        "stage": "vue2-owner-prototype-imports-begin",
+        "owner": "pp-fyj7felv0ed",
+        "pageMs": 12619.099999904633,
+        "timeOrigin": 1794876701563.2,
+        "children": 0,
+        "details": [
+          "base-accordion-root",
+          "base-accordion-item",
+          "base-accordion-heading",
+          "base-accordion-trigger",
+          "base-accordion-content",
+          "base-button"
+        ],
+        "receivedNodeMs": 13751.984792
+      },
+      {
+        "stage": "vue2-wrapper-import-return",
+        "pageMs": 12900,
+        "timeOrigin": 1794876701563.2,
+        "receivedNodeMs": 14033.321708
+      },
+      {
+        "stage": "vue2-import-return",
+        "pageMs": 13421.899999856949,
+        "timeOrigin": 1794876701563.2,
+        "receivedNodeMs": 14554.681
+      },
+      {
+        "stage": "early-vue2-runtime-return",
+        "pageMs": 13421.899999856949,
+        "timeOrigin": 1794876701563.2,
+        "receivedNodeMs": 14554.765333
+      },
+      {
+        "stage": "vue2-adapter-import-return",
+        "pageMs": 13905.399999856949,
+        "timeOrigin": 1794876701563.2,
+        "receivedNodeMs": 15038.529042
+      }
+    ],
+    "runtimeNetwork": {
+      "/_astro/vue2-runtime.CFiQwzob.js": [
+        {
+          "id": "36881.210",
+          "requestType": "Script",
+          "initiatorType": "script",
+          "initiatorFile": "/zh-cn/internal/demo-matrix/",
+          "events": [
+            {
+              "phase": "request",
+              "serial": 19,
+              "timestamp": 1247425.165888,
+              "nodeMs": 6402.293583,
+              "alignedPageMs": 5269.223
+            },
+            {
+              "phase": "response",
+              "status": 200,
+              "protocol": "http/1.1",
+              "mime": "text/javascript",
+              "serial": 24,
+              "timestamp": 1247425.232655,
+              "nodeMs": 6469.027125,
+              "alignedPageMs": 5335.99
+            },
+            {
+              "phase": "data",
+              "bytes": 2071,
+              "serial": 25,
+              "timestamp": 1247425.232659,
+              "nodeMs": 6469.028792,
+              "alignedPageMs": 5335.994
+            },
+            {
+              "phase": "data",
+              "bytes": 0,
+              "serial": 26,
+              "timestamp": 1247425.232673,
+              "nodeMs": 6469.030208,
+              "alignedPageMs": 5336.008
+            },
+            {
+              "phase": "finish",
+              "bytes": 1369,
+              "serial": 27,
+              "timestamp": 1247425.17107,
+              "nodeMs": 6469.031583,
+              "alignedPageMs": 5274.405
+            }
+          ]
+        }
+      ],
+      "/_astro/index.K1KQNPct.js": [
+        {
+          "id": "36881.564",
+          "requestType": "Script",
+          "initiatorType": "script",
+          "initiatorFile": "client",
+          "events": [
+            {
+              "phase": "request",
+              "serial": 32,
+              "timestamp": 1247431.594349,
+              "nodeMs": 12830.93325,
+              "alignedPageMs": 11697.685
+            },
+            {
+              "phase": "response",
+              "status": 200,
+              "protocol": "http/1.1",
+              "mime": "text/javascript",
+              "serial": 44,
+              "timestamp": 1247432.216056,
+              "nodeMs": 13453.213333,
+              "alignedPageMs": 12319.392
+            },
+            {
+              "phase": "data",
+              "bytes": 29960,
+              "serial": 45,
+              "timestamp": 1247432.216059,
+              "nodeMs": 13453.235375,
+              "alignedPageMs": 12319.395
+            },
+            {
+              "phase": "data",
+              "bytes": 0,
+              "serial": 46,
+              "timestamp": 1247432.216074,
+              "nodeMs": 13453.239,
+              "alignedPageMs": 12319.41
+            },
+            {
+              "phase": "finish",
+              "bytes": 10870,
+              "serial": 47,
+              "timestamp": 1247431.613276,
+              "nodeMs": 13453.241042,
+              "alignedPageMs": 11716.612
+            }
+          ]
+        }
+      ],
+      "/_astro/vue.runtime.esm.BiV49BqY.js": [
+        {
+          "id": "36881.729",
+          "requestType": "Script",
+          "initiatorType": "script",
+          "initiatorFile": "/_astro/vue2-runtime.CFiQwzob.js",
+          "events": [
+            {
+              "phase": "request",
+              "serial": 35,
+              "timestamp": 1247432.009813,
+              "nodeMs": 13246.572667,
+              "alignedPageMs": 12113.152
+            },
+            {
+              "phase": "response",
+              "status": 200,
+              "protocol": "http/1.1",
+              "mime": "text/javascript",
+              "serial": 73,
+              "timestamp": 1247432.792,
+              "nodeMs": 14028.397375,
+              "alignedPageMs": 12895.339
+            },
+            {
+              "phase": "data",
+              "bytes": 8884,
+              "serial": 74,
+              "timestamp": 1247432.792003,
+              "nodeMs": 14028.400625,
+              "alignedPageMs": 12895.342
+            },
+            {
+              "phase": "data",
+              "bytes": 35495,
+              "serial": 75,
+              "timestamp": 1247432.792004,
+              "nodeMs": 14028.402167,
+              "alignedPageMs": 12895.343
+            },
+            {
+              "phase": "data",
+              "bytes": 16415,
+              "serial": 76,
+              "timestamp": 1247432.792004,
+              "nodeMs": 14028.403542,
+              "alignedPageMs": 12895.343
+            },
+            {
+              "phase": "data",
+              "bytes": 5158,
+              "serial": 77,
+              "timestamp": 1247432.792005,
+              "nodeMs": 14028.404875,
+              "alignedPageMs": 12895.344
+            },
+            {
+              "phase": "data",
+              "bytes": 0,
+              "serial": 78,
+              "timestamp": 1247432.792026,
+              "nodeMs": 14028.40625,
+              "alignedPageMs": 12895.365
+            },
+            {
+              "phase": "finish",
+              "bytes": 24547,
+              "serial": 79,
+              "timestamp": 1247432.029451,
+              "nodeMs": 14028.407667,
+              "alignedPageMs": 12132.79
+            }
+          ]
+        }
+      ]
+    },
+    "observations": {
+      "assetOverlays": [
+        {
+          "asset": "demo-renderer.B7Ear75z.js",
+          "before": "e7a4209e1ffe80fcb5fc649cbf3d483019911287a7bb40cfbf19686906c85f90",
+          "after": "db84de866a5bc20a7786d4ba992c3fb8e9be9b9c83be5b6f24ed418194c431d6",
+          "original": "1b82864878c378f606afaa3ea6b6f3a0e23afaf1a4c83212039f3cfac4e694de"
+        },
+        {
+          "asset": "previewer-client.BhKnQCQC.js",
+          "before": "38318b8165f0c906a3ac6fe6c2f91dfec73124c0d1a020d67c623f01a40b19e3",
+          "after": "7c5aa06252f51d199110e1e37a72abdf2c8d4bca5586308241a9b95e0ce2f810",
+          "original": "76ff20702ffd199e15e4e8fed9c5e797145862454bdd60a4733ced8ead7e7485"
+        },
+        {
+          "asset": "vue2-runtime.CFiQwzob.js",
+          "before": "afdfeb83eff79e42697d3c2fba6bb0cd553c1e3be1a5f9480afcb416b5a98cdc",
+          "after": "e2b7a28b5b9e85db9453457d80fd839c0b0938573db85493914a055e9815b739",
+          "original": "afdfeb83eff79e42697d3c2fba6bb0cd553c1e3be1a5f9480afcb416b5a98cdc"
+        }
+      ],
+      "overlaySHA256": "fcf64c8a037ba03a4b001881ab6d92ea9f399b2180dc12b17e601546332e0f57",
+      "htmlSHA256": "9e397ace2d4a9af31b295ea4e4c40d2e1e62ffd6505d4240110dfc2c91fbc7a4"
+    }
+  }
+]
