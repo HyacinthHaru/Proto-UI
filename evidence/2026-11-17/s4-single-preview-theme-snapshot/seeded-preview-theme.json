@@ -1,0 +1,746 @@
+{
+  "source": {
+    "head": "df3e516aa67e303e8634f4513a8d4f62e393d2f6",
+    "tree": "bb8cc682e842dea4cec5e366947c0e6399894a27",
+    "parent": "a90f994bd8c842f6d112bd3b9ff9d6520f516254",
+    "signature": "G"
+  },
+  "baseline": {
+    "head": "2794924930e3243dd697d24aa233dbd136da6e29",
+    "tree": "423a577706184b6b6db2bb13b88aca241e7a25dc",
+    "parent": "3b473b5e6230b7f72f9517acaeec3a1f1fd60dd1",
+    "signature": "G"
+  },
+  "changedInputs": {
+    "apps/www/src/components/PrototypePreviewer/previewer-client.test.ts": "10c770d50cd98fac8d849fa5e2a77a04fddcb8784452b97a13ce35afa31e31a9",
+    "apps/www/src/components/PrototypePreviewer/previewer-client.ts": "abf4182b2539098ab0a3bdf9a6ef5a44a29fdbfbd4fd52dcd6aeef5c973ac26a",
+    "apps/www/src/components/PrototypePreviewer/previewer-client.post-render-cleanup.test.ts": "e06996cc9af6b92e55e789d44f06f87bc72cca888b79cc25a7bee892d191f424",
+    "apps/www/src/components/PrototypePreviewer/projection-theme.ts": "ee4fb31737f5342a63b9f2f782af9db07d681a63fd7d048bfadc7c11b9f6bf8a"
+  },
+  "buildInputs": {
+    "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "e6590db342bddc56b37fa367ce6b1cc519130cdb201e06e8d14061569d5e0317",
+    "apps/www/dist/zh-cn/internal/demo-matrix/index.html": "a1f3f055c25f0e20e249bc3dfeca51e8c893cc0e06e7ec3a614d7307bfc12a9b",
+    "apps/www/dist/en/internal/demo-matrix/index.html": "45cb6c6923d8b8474ff90bc73c5af886fedeeb1b333a81c39484cf7150aea2bc"
+  },
+  "pages": {
+    "zh-cn": {
+      "bytes": 1862432,
+      "sha256": "a1f3f055c25f0e20e249bc3dfeca51e8c893cc0e06e7ec3a614d7307bfc12a9b",
+      "previews": 1268
+    },
+    "en": {
+      "bytes": 1914074,
+      "sha256": "45cb6c6923d8b8474ff90bc73c5af886fedeeb1b333a81c39484cf7150aea2bc",
+      "previews": 1268
+    }
+  },
+  "versions": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79"],
+  "red": {
+    "tests": {
+      "numTotalTests": 14,
+      "numPassedTests": 13,
+      "numFailedTests": 1,
+      "numPendingTests": 0,
+      "cases": [
+        {
+          "name": "generic preview post-render preparation cleanup shares the post-ready theme read and observes preparation changes (mutation false)",
+          "status": "failed",
+          "duration": 119.11233300000004,
+          "firstMessages": [
+            "AssertionError: expected [ [ <div …(3)>…(2)</div> ], …(1) ] to have a length of 1 but got 2"
+          ]
+        },
+        {
+          "name": "generic preview post-render preparation cleanup shares the post-ready theme read and observes preparation changes (mutation true)",
+          "status": "passed",
+          "duration": 164.1047920000001,
+          "firstMessages": []
+        },
+        {
+          "name": "generic preview post-render preparation cleanup wc: releases the real mounted demo when latest-family theme fails",
+          "status": "passed",
+          "duration": 114.70799999999986,
+          "firstMessages": []
+        },
+        {
+          "name": "generic preview post-render preparation cleanup wc: releases the real mounted demo when latest-family surface-load fails",
+          "status": "passed",
+          "duration": 114.49020800000017,
+          "firstMessages": []
+        },
+        {
+          "name": "generic preview post-render preparation cleanup wc: releases the real mounted demo when latest-family theme-watch fails",
+          "status": "passed",
+          "duration": 113.03879099999995,
+          "firstMessages": []
+        },
+        {
+          "name": "generic preview post-render preparation cleanup react: releases the real mounted demo when latest-family theme fails",
+          "status": "passed",
+          "duration": 159.90762500000005,
+          "firstMessages": []
+        },
+        {
+          "name": "generic preview post-render preparation cleanup react: releases the real mounted demo when latest-family surface-load fails",
+          "status": "passed",
+          "duration": 110.70116699999994,
+          "firstMessages": []
+        },
+        {
+          "name": "generic preview post-render preparation cleanup react: releases the real mounted demo when latest-family theme-watch fails",
+          "status": "passed",
+          "duration": 111.63020800000004,
+          "firstMessages": []
+        },
+        {
+          "name": "generic preview post-render preparation cleanup vue: releases the real mounted demo when latest-family theme fails",
+          "status": "passed",
+          "duration": 161.36291699999992,
+          "firstMessages": []
+        },
+        {
+          "name": "generic preview post-render preparation cleanup vue: releases the real mounted demo when latest-family surface-load fails",
+          "status": "passed",
+          "duration": 111.84258399999999,
+          "firstMessages": []
+        },
+        {
+          "name": "generic preview post-render preparation cleanup vue: releases the real mounted demo when latest-family theme-watch fails",
+          "status": "passed",
+          "duration": 113.81787500000019,
+          "firstMessages": []
+        },
+        {
+          "name": "generic preview post-render preparation cleanup vue2: releases the real mounted demo when latest-family theme fails",
+          "status": "passed",
+          "duration": 112.97299999999996,
+          "firstMessages": []
+        },
+        {
+          "name": "generic preview post-render preparation cleanup vue2: releases the real mounted demo when latest-family surface-load fails",
+          "status": "passed",
+          "duration": 110.62504200000012,
+          "firstMessages": []
+        },
+        {
+          "name": "generic preview post-render preparation cleanup vue2: releases the real mounted demo when latest-family theme-watch fails",
+          "status": "passed",
+          "duration": 110.79970800000001,
+          "firstMessages": []
+        }
+      ]
+    },
+    "logSHA256": "bb700c23058cf29e51db69f5cbe7c6c919c34ef274dd7049d9c519a34025baba"
+  },
+  "focused": {
+    "cases": 145,
+    "logSHA256": "b0f96a6e8ec061ee91bd807bd28b0fdd9b58f0d95468b90dbd74006815296b55"
+  },
+  "previousMockFailure": {
+    "baseline": {
+      "numTotalTests": 17,
+      "numPassedTests": 12,
+      "numFailedTests": 5,
+      "numPendingTests": 0,
+      "cases": [
+        {
+          "name": "PrototypePreviewer adapter preference synchronization retains the original live loading status through module loading and renderer preparation",
+          "status": "failed",
+          "duration": 1115.7438339999999,
+          "firstMessages": ["AssertionError: expected null to be 'wc' // Object.is equality"]
+        },
+        {
+          "name": "PrototypePreviewer adapter preference synchronization releases the initial status on failure without retaining a busy shell",
+          "status": "passed",
+          "duration": 108.86641699999973,
+          "firstMessages": []
+        },
+        {
+          "name": "PrototypePreviewer adapter preference synchronization releases the initial status on destroy without retaining a busy shell",
+          "status": "passed",
+          "duration": 54.92604200000005,
+          "firstMessages": []
+        },
+        {
+          "name": "PrototypePreviewer adapter preference synchronization keeps an uncataloged demo on the legacy demo renderer",
+          "status": "failed",
+          "duration": 57.89408400000002,
+          "firstMessages": ["AssertionError: expected null to be 'wc' // Object.is equality"]
+        },
+        {
+          "name": "PrototypePreviewer adapter preference synchronization ignores legacy data-loader URLs and keeps the static prototype module path",
+          "status": "passed",
+          "duration": 54.252040999999736,
+          "firstMessages": []
+        },
+        {
+          "name": "PrototypePreviewer adapter preference synchronization uses the persisted page-level adapter preference for its first mount",
+          "status": "passed",
+          "duration": 54.52954200000022,
+          "firstMessages": []
+        },
+        {
+          "name": "PrototypePreviewer adapter preference synchronization aligns the projected selector with a non-wc initial runtime",
+          "status": "passed",
+          "duration": 56.45166700000027,
+          "firstMessages": []
+        },
+        {
+          "name": "PrototypePreviewer adapter preference synchronization routes a projected selection through one page-level remount path",
+          "status": "passed",
+          "duration": 159.30229199999985,
+          "firstMessages": []
+        },
+        {
+          "name": "PrototypePreviewer adapter preference synchronization remounts when the page-level adapter selector broadcasts a compatible runtime",
+          "status": "passed",
+          "duration": 111.0919170000002,
+          "firstMessages": []
+        },
+        {
+          "name": "PrototypePreviewer adapter preference synchronization commits the latest generic family when it changes while the renderer is pending",
+          "status": "failed",
+          "duration": 1054.4745000000003,
+          "firstMessages": ["AssertionError: expected null to be 'wc' // Object.is equality"]
+        },
+        {
+          "name": "PrototypePreviewer adapter preference synchronization does not let a stale runtime completion replace the current runtime",
+          "status": "failed",
+          "duration": 1110.1101250000002,
+          "firstMessages": ["AssertionError: expected null to be 'vue2' // Object.is equality"]
+        },
+        {
+          "name": "PrototypePreviewer adapter preference synchronization does not remount when duplicate adapter events target the active runtime",
+          "status": "passed",
+          "duration": 109.2411660000007,
+          "firstMessages": []
+        },
+        {
+          "name": "PrototypePreviewer adapter preference synchronization lets a newer adapter event replace an in-flight runtime request",
+          "status": "failed",
+          "duration": 162.7836670000006,
+          "firstMessages": ["AssertionError: expected null to be 'wc' // Object.is equality"]
+        },
+        {
+          "name": "PrototypePreviewer adapter preference synchronization clears the active runtime before a failed remount",
+          "status": "passed",
+          "duration": 106.96033299999999,
+          "firstMessages": []
+        },
+        {
+          "name": "PrototypePreviewer adapter preference synchronization offers a recovery path when a lazy-loaded chunk fails to load",
+          "status": "passed",
+          "duration": 55.03916599999957,
+          "firstMessages": []
+        },
+        {
+          "name": "PrototypePreviewer adapter preference synchronization keeps unrelated preview failures free of the chunk recovery controls",
+          "status": "passed",
+          "duration": 107.8514580000001,
+          "firstMessages": []
+        },
+        {
+          "name": "PrototypePreviewer adapter preference synchronization invalidates the host before every switch and terminal destroy",
+          "status": "passed",
+          "duration": 55.05083299999933,
+          "firstMessages": []
+        }
+      ]
+    },
+    "logSHA256": "89a4dc9b66d359f8a71d8e0ab9b9b6072d3f70b232e3467b9c0d06f36e50932f"
+  },
+  "nativeThemeControl": {
+    "chrome": "156.0.8078.79",
+    "route": "/en/ui-libraries/base/accordion/",
+    "rows": [
+      {
+        "arm": "before",
+        "ordinal": 1,
+        "head": "2794924930e3243dd697d24aa233dbd136da6e29",
+        "htmlSHA256": "9ec1f8522e9431a0fc6ca62ccc8f2304d518510443276316ef428fbb4ff3a52c",
+        "at": {
+          "calls": 3,
+          "runtime": "wc"
+        },
+        "beforeStyle": "lab(100% 0 0)",
+        "afterMutation": 4,
+        "preserved": true,
+        "errors": []
+      },
+      {
+        "arm": "after",
+        "ordinal": 2,
+        "head": "df3e516aa67e303e8634f4513a8d4f62e393d2f6",
+        "htmlSHA256": "a642d497bfff42d4edffe31c112974293779762709338fb8354a29b57206a51a",
+        "at": {
+          "calls": 2,
+          "runtime": "wc"
+        },
+        "beforeStyle": "lab(100% 0 0)",
+        "afterMutation": 3,
+        "preserved": true,
+        "errors": []
+      },
+      {
+        "arm": "after",
+        "ordinal": 3,
+        "head": "df3e516aa67e303e8634f4513a8d4f62e393d2f6",
+        "htmlSHA256": "a642d497bfff42d4edffe31c112974293779762709338fb8354a29b57206a51a",
+        "at": {
+          "calls": 2,
+          "runtime": "wc"
+        },
+        "beforeStyle": "lab(100% 0 0)",
+        "afterMutation": 3,
+        "preserved": true,
+        "errors": []
+      },
+      {
+        "arm": "before",
+        "ordinal": 4,
+        "head": "2794924930e3243dd697d24aa233dbd136da6e29",
+        "htmlSHA256": "9ec1f8522e9431a0fc6ca62ccc8f2304d518510443276316ef428fbb4ff3a52c",
+        "at": {
+          "calls": 3,
+          "runtime": "wc"
+        },
+        "beforeStyle": "lab(100% 0 0)",
+        "afterMutation": 4,
+        "preserved": true,
+        "errors": []
+      }
+    ]
+  },
+  "nativeProbeSHA256": "3c4f2607609633e39f4197ec05dc6abd095c7fcd4850f6b5523a6e01e8c4664d",
+  "originalMatrix": {
+    "tests": {
+      "numTotalTests": 2,
+      "numPassedTests": 0,
+      "numFailedTests": 2,
+      "numPendingTests": 0,
+      "cases": [
+        {
+          "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+          "status": "failed",
+          "duration": 150531.02458300002,
+          "firstMessages": ["Error: Test timed out in 150000ms."]
+        },
+        {
+          "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+          "status": "failed",
+          "duration": 150525.398667,
+          "firstMessages": ["Error: Test timed out in 150000ms."]
+        }
+      ]
+    },
+    "guardMs": {
+      "readiness": 60000,
+      "case": 150000
+    },
+    "rawLogSHA256": "dd2704c0b7aede7371a74355c6b68223e1fba7245170951c2cb259249a60f088",
+    "startupByLocale": {
+      "zh-cn": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      },
+      "en": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      }
+    }
+  },
+  "timing": {
+    "before": {
+      "binding": {
+        "file": "projection-theme.gSbmFaZb.js",
+        "inputSHA256": "40d53a9f55b19553bd38abb021d0f6c0aaffb80de63d89bf2193df14eb20edf3",
+        "outputSHA256": "ae2405cb6812942f861b11adf84fc16afd7c313f9e4cd486da71b53748e1c367"
+      },
+      "overlaySHA256": "07a82eb37f0e321fcdb927db7a80e8b1ce473fce4130065c61b10b7b511383b6",
+      "rawLogSHA256": "596b80600d3c5242430d5ee42023a427e24828c9fb8455e577325838ef474136",
+      "runnerOverlaySHA256": "f4dfdc5a855a801dbdb35f05d6d1f669eba23af4c0bfd169cd41c4b5eaa4b65f",
+      "native": {
+        "numTotalTests": 2,
+        "numPassedTests": 0,
+        "numFailedTests": 1,
+        "numPendingTests": 1,
+        "cases": [
+          {
+            "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+            "status": "failed",
+            "duration": 150529.730291,
+            "firstMessages": ["Error: Test timed out in 150000ms."]
+          },
+          {
+            "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+            "status": "skipped",
+            "duration": null,
+            "firstMessages": []
+          }
+        ]
+      },
+      "startup": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      },
+      "exit": 1
+    },
+    "after": {
+      "binding": {
+        "file": "projection-theme.glgKE2UX.js",
+        "inputSHA256": "559379e0e37c84df07b46adf54d35378200f1b314950c2af0b45126ce3a4248d",
+        "outputSHA256": "446a620f6ac2dfbf655e9b67b8ee01a74ea03024df8e50e8b395c2634b687a19"
+      },
+      "overlaySHA256": "07a82eb37f0e321fcdb927db7a80e8b1ce473fce4130065c61b10b7b511383b6",
+      "rawLogSHA256": "1a33d644fadd41ffd18c9733556b640301a44de905923ff638db2a0fe7dbd671",
+      "runnerOverlaySHA256": "f4dfdc5a855a801dbdb35f05d6d1f669eba23af4c0bfd169cd41c4b5eaa4b65f",
+      "native": {
+        "numTotalTests": 2,
+        "numPassedTests": 0,
+        "numFailedTests": 1,
+        "numPendingTests": 1,
+        "cases": [
+          {
+            "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+            "status": "failed",
+            "duration": 150637.283708,
+            "firstMessages": ["Error: Test timed out in 150000ms."]
+          },
+          {
+            "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+            "status": "skipped",
+            "duration": null,
+            "firstMessages": []
+          }
+        ]
+      },
+      "startup": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      },
+      "exit": 1
+    },
+    "comparison": {
+      "before": [
+        {
+          "kind": "shadcn-theme-cost",
+          "sampleEvery": 64,
+          "calls": 1,
+          "uniqueScopes": 1,
+          "repeats": 0,
+          "samples": 1,
+          "computedMs": 0,
+          "tokenMs": 10.200000047683716,
+          "pageMs": 321.89999985694885,
+          "timeOrigin": 1794896849317.4
+        },
+        {
+          "kind": "shadcn-theme-cost",
+          "sampleEvery": 64,
+          "calls": 2,
+          "uniqueScopes": 2,
+          "repeats": 0,
+          "samples": 1,
+          "computedMs": 0,
+          "tokenMs": 10.200000047683716,
+          "pageMs": 326.7999999523163,
+          "timeOrigin": 1794896849317.4
+        },
+        {
+          "kind": "shadcn-theme-cost",
+          "sampleEvery": 64,
+          "calls": 4,
+          "uniqueScopes": 3,
+          "repeats": 1,
+          "samples": 1,
+          "computedMs": 0,
+          "tokenMs": 10.200000047683716,
+          "pageMs": 390.89999985694885,
+          "timeOrigin": 1794896849317.4
+        },
+        {
+          "kind": "shadcn-theme-cost",
+          "sampleEvery": 64,
+          "calls": 8,
+          "uniqueScopes": 7,
+          "repeats": 1,
+          "samples": 1,
+          "computedMs": 0,
+          "tokenMs": 10.200000047683716,
+          "pageMs": 472.5,
+          "timeOrigin": 1794896849317.4
+        },
+        {
+          "kind": "shadcn-theme-cost",
+          "sampleEvery": 64,
+          "calls": 16,
+          "uniqueScopes": 15,
+          "repeats": 1,
+          "samples": 1,
+          "computedMs": 0,
+          "tokenMs": 10.200000047683716,
+          "pageMs": 487.2999999523163,
+          "timeOrigin": 1794896849317.4
+        },
+        {
+          "kind": "shadcn-theme-cost",
+          "sampleEvery": 64,
+          "calls": 32,
+          "uniqueScopes": 28,
+          "repeats": 4,
+          "samples": 1,
+          "computedMs": 0,
+          "tokenMs": 10.200000047683716,
+          "pageMs": 6332,
+          "timeOrigin": 1794896849317.4
+        },
+        {
+          "kind": "shadcn-theme-cost",
+          "sampleEvery": 64,
+          "calls": 64,
+          "uniqueScopes": 60,
+          "repeats": 4,
+          "samples": 1,
+          "computedMs": 0,
+          "tokenMs": 10.200000047683716,
+          "pageMs": 6337.099999904633,
+          "timeOrigin": 1794896849317.4
+        },
+        {
+          "kind": "shadcn-theme-cost",
+          "sampleEvery": 64,
+          "calls": 128,
+          "uniqueScopes": 122,
+          "repeats": 6,
+          "samples": 2,
+          "computedMs": 0,
+          "tokenMs": 10.200000047683716,
+          "pageMs": 6384.899999856949,
+          "timeOrigin": 1794896849317.4
+        },
+        {
+          "kind": "shadcn-theme-cost",
+          "sampleEvery": 64,
+          "calls": 256,
+          "uniqueScopes": 248,
+          "repeats": 8,
+          "samples": 4,
+          "computedMs": 0,
+          "tokenMs": 10.300000190734863,
+          "pageMs": 6410,
+          "timeOrigin": 1794896849317.4
+        },
+        {
+          "kind": "shadcn-theme-cost",
+          "sampleEvery": 64,
+          "calls": 512,
+          "uniqueScopes": 444,
+          "repeats": 68,
+          "samples": 8,
+          "computedMs": 0,
+          "tokenMs": 10.300000190734863,
+          "pageMs": 6509.199999809265,
+          "timeOrigin": 1794896849317.4
+        },
+        {
+          "kind": "shadcn-theme-cost",
+          "sampleEvery": 64,
+          "calls": 1024,
+          "uniqueScopes": 888,
+          "repeats": 136,
+          "samples": 16,
+          "computedMs": 0,
+          "tokenMs": 10.500000238418579,
+          "pageMs": 7616.599999904633,
+          "timeOrigin": 1794896849317.4
+        },
+        {
+          "kind": "shadcn-theme-cost",
+          "sampleEvery": 64,
+          "calls": 2048,
+          "uniqueScopes": 1098,
+          "repeats": 950,
+          "samples": 32,
+          "computedMs": 0,
+          "tokenMs": 613.4999997615814,
+          "pageMs": 119777.69999980927,
+          "timeOrigin": 1794896849317.4
+        }
+      ],
+      "after": [
+        {
+          "kind": "shadcn-theme-cost",
+          "sampleEvery": 64,
+          "calls": 1,
+          "uniqueScopes": 1,
+          "repeats": 0,
+          "samples": 1,
+          "computedMs": 0,
+          "tokenMs": 6.400000095367432,
+          "pageMs": 389,
+          "timeOrigin": 1794898012440.4
+        },
+        {
+          "kind": "shadcn-theme-cost",
+          "sampleEvery": 64,
+          "calls": 2,
+          "uniqueScopes": 2,
+          "repeats": 0,
+          "samples": 1,
+          "computedMs": 0,
+          "tokenMs": 6.400000095367432,
+          "pageMs": 393.59999990463257,
+          "timeOrigin": 1794898012440.4
+        },
+        {
+          "kind": "shadcn-theme-cost",
+          "sampleEvery": 64,
+          "calls": 4,
+          "uniqueScopes": 3,
+          "repeats": 1,
+          "samples": 1,
+          "computedMs": 0,
+          "tokenMs": 6.400000095367432,
+          "pageMs": 466.19999980926514,
+          "timeOrigin": 1794898012440.4
+        },
+        {
+          "kind": "shadcn-theme-cost",
+          "sampleEvery": 64,
+          "calls": 8,
+          "uniqueScopes": 7,
+          "repeats": 1,
+          "samples": 1,
+          "computedMs": 0,
+          "tokenMs": 6.400000095367432,
+          "pageMs": 556.3999998569489,
+          "timeOrigin": 1794898012440.4
+        },
+        {
+          "kind": "shadcn-theme-cost",
+          "sampleEvery": 64,
+          "calls": 16,
+          "uniqueScopes": 15,
+          "repeats": 1,
+          "samples": 1,
+          "computedMs": 0,
+          "tokenMs": 6.400000095367432,
+          "pageMs": 574.3999998569489,
+          "timeOrigin": 1794898012440.4
+        },
+        {
+          "kind": "shadcn-theme-cost",
+          "sampleEvery": 64,
+          "calls": 32,
+          "uniqueScopes": 28,
+          "repeats": 4,
+          "samples": 1,
+          "computedMs": 0,
+          "tokenMs": 6.400000095367432,
+          "pageMs": 6990.299999952316,
+          "timeOrigin": 1794898012440.4
+        },
+        {
+          "kind": "shadcn-theme-cost",
+          "sampleEvery": 64,
+          "calls": 64,
+          "uniqueScopes": 60,
+          "repeats": 4,
+          "samples": 1,
+          "computedMs": 0,
+          "tokenMs": 6.400000095367432,
+          "pageMs": 7000.899999856949,
+          "timeOrigin": 1794898012440.4
+        },
+        {
+          "kind": "shadcn-theme-cost",
+          "sampleEvery": 64,
+          "calls": 128,
+          "uniqueScopes": 123,
+          "repeats": 5,
+          "samples": 2,
+          "computedMs": 0,
+          "tokenMs": 6.400000095367432,
+          "pageMs": 7068.699999809265,
+          "timeOrigin": 1794898012440.4
+        },
+        {
+          "kind": "shadcn-theme-cost",
+          "sampleEvery": 64,
+          "calls": 256,
+          "uniqueScopes": 245,
+          "repeats": 11,
+          "samples": 4,
+          "computedMs": 0,
+          "tokenMs": 6.400000095367432,
+          "pageMs": 7133.599999904633,
+          "timeOrigin": 1794898012440.4
+        },
+        {
+          "kind": "shadcn-theme-cost",
+          "sampleEvery": 64,
+          "calls": 512,
+          "uniqueScopes": 439,
+          "repeats": 73,
+          "samples": 8,
+          "computedMs": 0.09999990463256836,
+          "tokenMs": 6.5,
+          "pageMs": 7265.699999809265,
+          "timeOrigin": 1794898012440.4
+        },
+        {
+          "kind": "shadcn-theme-cost",
+          "sampleEvery": 64,
+          "calls": 1024,
+          "uniqueScopes": 916,
+          "repeats": 108,
+          "samples": 16,
+          "computedMs": 0.09999990463256836,
+          "tokenMs": 8.700000047683716,
+          "pageMs": 8549.599999904633,
+          "timeOrigin": 1794898012440.4
+        }
+      ],
+      "lastBefore": {
+        "kind": "shadcn-theme-cost",
+        "sampleEvery": 64,
+        "calls": 2048,
+        "uniqueScopes": 1098,
+        "repeats": 950,
+        "samples": 32,
+        "computedMs": 0,
+        "tokenMs": 613.4999997615814,
+        "pageMs": 119777.69999980927,
+        "timeOrigin": 1794896849317.4
+      },
+      "lastAfter": {
+        "kind": "shadcn-theme-cost",
+        "sampleEvery": 64,
+        "calls": 1024,
+        "uniqueScopes": 916,
+        "repeats": 108,
+        "samples": 16,
+        "computedMs": 0.09999990463256836,
+        "tokenMs": 8.700000047683716,
+        "pageMs": 8549.599999904633,
+        "timeOrigin": 1794898012440.4
+      }
+    }
+  }
+}
