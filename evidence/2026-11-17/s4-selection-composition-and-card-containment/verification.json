@@ -1,0 +1,321 @@
+{
+  "beforeSelection": {
+    "head": "01159b2ab270b16698e91a53fa9bbf0f5b0d7c25",
+    "tree": "3ae5f3025cb8d708aaef4417752c4cfdd0f70af6",
+    "parent": "04c433c426b8a2e01baca474464656a9a3615fcf",
+    "packages": 47,
+    "pathList": [
+      "apps/www/src/components/PrototypePreviewer/demo-modules.test.ts",
+      "apps/www/src/components/PrototypePreviewer/demo-registry.ts"
+    ],
+    "html": {
+      "zh-cn": {
+        "bytes": 1862394,
+        "sha256": "9e2acad586b9db46588b158f1b49281b7094f727b196cfd3ecc78b786a344570",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914026,
+        "sha256": "ab3aa22ddfd610176e22310ba9f04fde9f8da3e72eadb93ca026355c9b1f9940",
+        "previews": 1268
+      }
+    },
+    "admissionOverlaySHA256": "ae44b882e227090c5a1e09b4838c5cee97d9e01618c51209cc2ed0ac5df39a3f",
+    "exit": 1,
+    "tests": [
+      {
+        "title": "zh-cn: native Light/split/mixed acceptance",
+        "status": "failed",
+        "elapsedMs": 150527.551542,
+        "firstFailure": "Error: Test timed out in 150000ms."
+      },
+      {
+        "title": "en: native Light/split/mixed acceptance",
+        "status": "failed",
+        "elapsedMs": 150525.56033399998,
+        "firstFailure": "Error: Test timed out in 150000ms."
+      }
+    ],
+    "nativeLogSHA256": "033f8ad2534bfd9e730c6447b7fd0f44ef471aa31feff4de56b2b09c1ee9ae5a",
+    "startup": {
+      "zh-cn": {
+        "source": {
+          "sha": "01159b2ab270b16698e91a53fa9bbf0f5b0d7c25",
+          "dirty": false
+        },
+        "startupPassed": false,
+        "collection": "rejected",
+        "last": null,
+        "predicateSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+        "lastStreamed": {
+          "receivedNodeMs": 28365.153792,
+          "nodePhase": "startup-wait",
+          "timeOrigin": 1794884512545.3,
+          "pageMs": 27139.60000014305,
+          "dateNow": 1794884539684,
+          "count": 1268,
+          "ready": false,
+          "firstMissing": {
+            "previewerId": "pp-2fj86iyed4v",
+            "index": 1,
+            "inited": "1",
+            "hostChildren": 0
+          },
+          "firstMissingOwner": {
+            "demoId": "demo-base-accordion",
+            "prototypeId": "",
+            "declaredRuntime": "react",
+            "projectionMode": null,
+            "projectionState": null,
+            "mounting": null,
+            "hostTag": "DIV",
+            "hostOwner": "pp-2fj86iyed4v",
+            "startupPending": true,
+            "hostOwnInert": true,
+            "hostText": ""
+          }
+        }
+      },
+      "en": {
+        "source": {
+          "sha": "01159b2ab270b16698e91a53fa9bbf0f5b0d7c25",
+          "dirty": false
+        },
+        "startupPassed": false,
+        "collection": "rejected",
+        "last": null,
+        "predicateSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+        "lastStreamed": {
+          "receivedNodeMs": 184422.491792,
+          "nodePhase": "startup-wait",
+          "timeOrigin": 1794884663070.2,
+          "pageMs": 32672.200000047684,
+          "dateNow": 1794884695742,
+          "count": 1268,
+          "ready": false,
+          "firstMissing": {
+            "previewerId": "pp-5i7r89sgz5n",
+            "index": 1,
+            "inited": "1",
+            "hostChildren": 0
+          },
+          "firstMissingOwner": {
+            "demoId": "demo-base-accordion",
+            "prototypeId": "",
+            "declaredRuntime": "react",
+            "projectionMode": null,
+            "projectionState": null,
+            "mounting": null,
+            "hostTag": "DIV",
+            "hostOwner": "pp-5i7r89sgz5n",
+            "startupPending": true,
+            "hostOwnInert": true,
+            "hostText": ""
+          }
+        }
+      }
+    }
+  },
+  "withSelection": {
+    "head": "0696ce62c773dbb4c6880eca500705e7781e9d97",
+    "tree": "d99396287a22c27734d9bb3c7a4c47453b334dc8",
+    "parent": "01159b2ab270b16698e91a53fa9bbf0f5b0d7c25",
+    "packages": 47,
+    "pathList": [
+      "apps/www/src/components/PrototypePreviewer/native-content-lease.test.ts",
+      "apps/www/src/components/PrototypePreviewer/native-content-lease.ts"
+    ],
+    "html": {
+      "zh-cn": {
+        "bytes": 1862354,
+        "sha256": "46c91845fc3bd87182d00ac05d51aba65d042ee0640fe9320cf4c2cfc48a1f6f",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914012,
+        "sha256": "12cf6a4c80dd935463eb21b0658c0b8ed34f4d37b8d295a471a46da1fbc3a2d0",
+        "previews": 1268
+      }
+    },
+    "admissionOverlaySHA256": "ae44b882e227090c5a1e09b4838c5cee97d9e01618c51209cc2ed0ac5df39a3f",
+    "exit": 1,
+    "tests": [
+      {
+        "title": "zh-cn: native Light/split/mixed acceptance",
+        "status": "failed",
+        "elapsedMs": 150530.009542,
+        "firstFailure": "Error: Test timed out in 150000ms."
+      },
+      {
+        "title": "en: native Light/split/mixed acceptance",
+        "status": "failed",
+        "elapsedMs": 150525.873083,
+        "firstFailure": "Error: Test timed out in 150000ms."
+      }
+    ],
+    "nativeLogSHA256": "662b296bda01cd9eb4fe48cd8194e4b7777fffe1b99b8a1d367faec5236ae60f",
+    "startup": {
+      "zh-cn": {
+        "source": {
+          "sha": "0696ce62c773dbb4c6880eca500705e7781e9d97",
+          "dirty": false
+        },
+        "startupPassed": false,
+        "collection": "rejected",
+        "last": null,
+        "predicateSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+        "lastStreamed": {
+          "receivedNodeMs": 25388.010042,
+          "nodePhase": "startup-wait",
+          "timeOrigin": 1794885789215,
+          "pageMs": 24158.299999952316,
+          "dateNow": 1794885813373,
+          "count": 1268,
+          "ready": false,
+          "firstMissing": {
+            "previewerId": "pp-icc4et293hi",
+            "index": 1,
+            "inited": "1",
+            "hostChildren": 0
+          },
+          "firstMissingOwner": {
+            "demoId": "demo-base-accordion",
+            "prototypeId": "",
+            "declaredRuntime": "react",
+            "projectionMode": null,
+            "projectionState": null,
+            "mounting": null,
+            "hostTag": "DIV",
+            "hostOwner": "pp-icc4et293hi",
+            "startupPending": true,
+            "hostOwnInert": true,
+            "hostText": ""
+          }
+        }
+      },
+      "en": {
+        "source": {
+          "sha": "0696ce62c773dbb4c6880eca500705e7781e9d97",
+          "dirty": false
+        },
+        "startupPassed": false,
+        "collection": "rejected",
+        "last": null,
+        "predicateSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+        "lastStreamed": {
+          "receivedNodeMs": 181076.664334,
+          "nodePhase": "startup-wait",
+          "timeOrigin": 1794885939730,
+          "pageMs": 29332.199999809265,
+          "dateNow": 1794885969062,
+          "count": 1268,
+          "ready": false,
+          "firstMissing": {
+            "previewerId": "pp-ma9m8rsc3i",
+            "index": 1,
+            "inited": "1",
+            "hostChildren": 0
+          },
+          "firstMissingOwner": {
+            "demoId": "demo-base-accordion",
+            "prototypeId": "",
+            "declaredRuntime": "react",
+            "projectionMode": null,
+            "projectionState": null,
+            "mounting": null,
+            "hostTag": "DIV",
+            "hostOwner": "pp-ma9m8rsc3i",
+            "startupPending": true,
+            "hostOwnInert": true,
+            "hostText": ""
+          }
+        }
+      }
+    }
+  },
+  "containment": {
+    "cssBinding": {
+      "file": "DemoMatrix_astro_astro_type_style_index_0_lang.Cq0XHJAK.css",
+      "inputSHA256": "ecf165666509a4fa4f00c23ed0cb9f5fe581385cba006654636c0b57716fddae",
+      "outputSHA256": "056e348b237cad607cb89007249a024b5ba9a1e6d2cf549291553b41c596c3c9",
+      "diagnosticCSS": ".demo-matrix__item{content-visibility:auto;contain-intrinsic-block-size:auto 512px}"
+    },
+    "activeStartup": {
+      "source": {
+        "sha": "0696ce62c773dbb4c6880eca500705e7781e9d97",
+        "dirty": true
+      },
+      "startupPassed": false,
+      "collection": "rejected",
+      "last": null,
+      "predicateSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+    },
+    "activeExit": 1,
+    "nativeLogSHA256": "2fdb235073873ba44f3b70b902b2aae9a22f1c80ec8ed7cefad17348f6d5cf49",
+    "activeTests": [
+      {
+        "title": "zh-cn: native Light/split/mixed acceptance",
+        "status": "failed",
+        "elapsedMs": 150533.20254199998,
+        "firstFailure": "Error: Test timed out in 150000ms."
+      },
+      {
+        "title": "en: native Light/split/mixed acceptance",
+        "status": "skipped",
+        "elapsedMs": null,
+        "firstFailure": null
+      }
+    ],
+    "activeStateChangeEvents": {},
+    "lastActiveStreamed": {
+      "receivedNodeMs": 28718.357917,
+      "nodePhase": "startup-wait",
+      "timeOrigin": 1794886098932.5,
+      "pageMs": 27845.200000047684,
+      "dateNow": 1794886126777,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-icc4et293hi",
+        "index": 1,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "declaredRuntime": "react",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-icc4et293hi",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      }
+    },
+    "separateNoJSSheetDelivery": {
+      "chrome": "156.0.8078.79",
+      "javaScriptEnabled": false,
+      "results": [
+        {
+          "name": "before",
+          "servedSHA256": "ecf165666509a4fa4f00c23ed0cb9f5fe581385cba006654636c0b57716fddae",
+          "cards": 317,
+          "previews": 1268,
+          "contentVisibility": "visible",
+          "intrinsicBlockSize": "none"
+        },
+        {
+          "name": "containment",
+          "servedSHA256": "056e348b237cad607cb89007249a024b5ba9a1e6d2cf549291553b41c596c3c9",
+          "cards": 317,
+          "previews": 1268,
+          "contentVisibility": "auto",
+          "intrinsicBlockSize": "auto 512px"
+        }
+      ]
+    }
+  }
+}
