@@ -1283,6 +1283,9 @@ function applySnapshot(
   includeRelations = true
 ): void {
   for (const [attr, value] of attributes) {
+    // ID projection participates in the registry's own-write bookkeeping.
+    // Matching non-ID values can retain ownership without a DOM mutation.
+    if (attr !== 'id' && el.getAttribute(attr) === (value ?? null)) continue;
     if (value === undefined) el.removeAttribute(attr);
     else el.setAttribute(attr, value);
   }
