@@ -1,0 +1,1702 @@
+{
+  "source": {
+    "head": "58f38cdca1657b6a17eb4ae48856462b4a3d6628",
+    "tree": "f50531ff5397276ad808928306405a9d2b8ad71f",
+    "parent": "68756b8fb2861c1b76dc2bbcd6fbc058544bcd19",
+    "signature": "G",
+    "files": [
+      "190c0c35fa6f83b5ca0a5ba9d7e1a8da5f5b1fdbaad62276a7a0fa514e7dc688  apps/www/src/components/PrototypePreviewer/previewer-bootstrap.test.ts",
+      "a59c70cb26380a3d1be0c4e6ae4aec507479ce65461babb4918ae98aea39b9ea  apps/www/src/components/PrototypePreviewer/previewer-bootstrap.ts"
+    ]
+  },
+  "environment": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+  "originalReadinessMs": 60000,
+  "originalCaseMs": 150000,
+  "expectedPerLocale": 1268,
+  "unit": {
+    "red": {
+      "passed": 20,
+      "failed": 1,
+      "skipped": 0,
+      "files": 1,
+      "failures": [
+        {
+          "title": "does not inspect pending owners for additions or removed text",
+          "messageFirstLine": "AssertionError: expected \"spy\" to not be called at all, but actually been called 1 times"
+        }
+      ],
+      "reportSha256": "b38746a6cf1af2034988b3339d133e57bd26bdfbc4f86516bfa413f5344c7cb5"
+    },
+    "focused": {
+      "passed": 182,
+      "failed": 0,
+      "skipped": 0,
+      "files": 7,
+      "failures": [],
+      "reportSha256": "ce841e15dba9b88c037ebe86bed284975180248730642c268bcac34db1c816a5"
+    },
+    "initialTestObserverIssue": "An inherited-getter spy recursed in the first test run. The final source assertions use the original getter with an own-property probe."
+  },
+  "validation": {
+    "sourceTests": 182,
+    "packages": 47,
+    "staticPages": 685,
+    "typesExit": 0,
+    "manifestExit": 0,
+    "budgetPolicyExit": 0,
+    "unchangedBudgetRows": [
+      "PASS lucide/icons/x: 2879 / 3000 gzip bytes; overBudget=0; minified=8695 sha256=da30ebe409a83a09d2569fe2a47880a133fcbe4d554d93ea305795356c4fccdb",
+      "PASS lucide root: 637306 / 700000 gzip bytes; overBudget=0; minified=4087403 sha256=eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c",
+      "ADVISORY core root: 11378 / 7600 gzip bytes; overBudget=3778; minified=35782 sha256=0e3c868d3ef719af46085b83881b15787a94acbaf893566ceae4047ceff72b44",
+      "ADVISORY runtime root: 101217 / 78500 gzip bytes; overBudget=22717; minified=390470 sha256=84ddbb8b9e893f050fb5c5bdb55a115d1ad522ead59198ec22eedeb94bc57d00",
+      "ADVISORY adapter-react root: 163762 / 106000 gzip bytes; overBudget=57762; minified=577441 sha256=69654062662feb78422f4c258ca95ba33de96c4d6bae8e629c8b81ce78f7f0f6",
+      "ADVISORY adapter-vue root: 162544 / 106000 gzip bytes; overBudget=56544; minified=572695 sha256=19927292cac56a4da5e770e4590e4bb49abe29822f0d4879c7da9c62be8c5548",
+      "ADVISORY adapter-web-component root: 195497 / 132000 gzip bytes; overBudget=63497; minified=671343 sha256=e97da598db9bac8aaa750efff2d718cea2f095fa0173b50183bb625a93d28a29",
+      "PASS prototypes-base/button: 5274 / 6000 gzip bytes; overBudget=0; minified=18158 sha256=6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67",
+      "ADVISORY prototypes-shadcn/button: 7803 / 7000 gzip bytes; overBudget=803; minified=34485 sha256=60b4ff9277e59fba01c34162ec9418282ce82c6b43e24f223a05c9e1df19db57"
+    ],
+    "packed": {
+      "passed": 11,
+      "failed": 0,
+      "skipped": 13,
+      "files": 3,
+      "failures": [],
+      "reportSha256": "3feaac88dcfc6609511a04a153d78bf06219657669a5cd18ed326746fc73711d"
+    },
+    "matrix": {
+      "passed": 0,
+      "failed": 2,
+      "skipped": 0,
+      "files": 1,
+      "failures": [
+        {
+          "title": "zh-cn: native Light/split/mixed acceptance",
+          "messageFirstLine": "page.waitForFunction: Timeout 60000ms exceeded."
+        },
+        {
+          "title": "en: native Light/split/mixed acceptance",
+          "messageFirstLine": "page.waitForFunction: Timeout 60000ms exceeded."
+        }
+      ],
+      "reportSha256": "c44c1d87d95af8d4b52dae77c2b1ca7e1848547f7e8a813262afede6a6176e20"
+    },
+    "html": {
+      "zh-cn": {
+        "bytes": 1862496,
+        "sha256": "ccc97208b136be443a0f9a62fde0cd50612f7544265bd2effd64fd2484befa2f",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914105,
+        "sha256": "267a7d6a345dc1fe70b81dbf5966fd3e2612045e1f9b31a4fd8b63c3e71cad6a",
+        "previews": 1268
+      }
+    },
+    "preview": {
+      "head": "58f38cdca1657b6a17eb4ae48856462b4a3d6628",
+      "tree": "f50531ff5397276ad808928306405a9d2b8ad71f",
+      "distHashes": {
+        "zh-cn/index.html": "40be9c36d77404ce52e2486cb737ed58d679108b27043f880ef19210ae9d2e91",
+        "zh-cn/ui-libraries/shadcn/button/index.html": "a37cd837a6a5b5a7f763c642edbd010c7d59b14fdec07e1d29d5bdc7dbf62083",
+        "zh-cn/ui-libraries/brutalist/components/button/index.html": "a95784930083ec83e6cd35c2b34966d6d4deb8c5c61431b2c027a7f69e8c9db5"
+      },
+      "sourceCodeExamples": 9,
+      "renderedCodeExamples": 9,
+      "packedHeaderExit": 0,
+      "previewBrowserExit": 0,
+      "selector": "uses real family Popover Triggers|uses the same mobile shell|live available region|keeps Runtime Tabs outside"
+    },
+    "header": {
+      "head": "58f38cdca1657b6a17eb4ae48856462b4a3d6628",
+      "browser": "156.0.8078.79",
+      "scope": "First animation frame control on the exact static Astro preview. Geometry reads can force layout.",
+      "results": [
+        {
+          "width": 320,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1560.9000000953674,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1678.0999999046326,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1712.9000000953674,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        },
+        {
+          "width": 390,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1524.2999999523163,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1641.2999999523163,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1663.0999999046326,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        }
+      ]
+    }
+  },
+  "diagnostics": {
+    "scope": "Two separate observer runs. Times and counts are delivered prefixes. The checkout and built JS were restored after each.",
+    "before": {
+      "head": "62278681e86047f4eacf225dbf6811fef10d1089",
+      "assets": {
+        "asset": "PrototypePreviewer.astro_astro_type_script_index_0_lang.CVVTlZ25.js",
+        "source": "6bc9add81f4920d2175b0ff73d35b59fd78324e068c86043f80c7b13bce41356",
+        "instrumented": "421abce8acbfe83fabc43eff363715eec9849070aed51208bfd05e9cfa5c780f"
+      },
+      "postrestoreExit": 1,
+      "nativeExit": 1,
+      "rawLogSha256": "b4fa7cf5e427bace337acfbc7342d2df6ec37905509ec041e9f8e85cdaa1fdb2",
+      "delivered": {
+        "total": 2816,
+        "kinds": {
+          "add-only": {
+            "callbacks": 1419,
+            "records": 9725,
+            "checks": 1799292,
+            "releases": 0,
+            "scanMs": 23.799997091293335
+          },
+          "element-removal": {
+            "callbacks": 1116,
+            "records": 17473,
+            "checks": 1415088,
+            "releases": 0,
+            "scanMs": 22.199997663497925
+          },
+          "non-element-removal": {
+            "callbacks": 281,
+            "records": 1902,
+            "checks": 356308,
+            "releases": 0,
+            "scanMs": 4.200000524520874
+          }
+        },
+        "peakPending": 1268,
+        "pageMs": 71502.39999985695,
+        "callbackStart": 71502.39999985695
+      }
+    },
+    "after": {
+      "head": "58f38cdca1657b6a17eb4ae48856462b4a3d6628",
+      "assets": {
+        "assets": [
+          {
+            "asset": "previewer-client.DVtryNTO.js",
+            "source": "03819561d604f93f3262d8115c9c775cd5d0f50ce2aa2308223eeb93bdd7d541",
+            "instrumented": "afaa8b31c9f948a61d7cef147a70afb0d89ab137cce480a189894b50254f221b"
+          },
+          {
+            "asset": "prototype-modules.n-Z7Lm8f.js",
+            "source": "c85b53667ea541de23ffe81b130b4f482166c1071cbac82666cfd20a001d504e",
+            "instrumented": "4426b9618e72286a93034f1a99c1a488f7b191d29e22ce06cc73372ea2f2e15b"
+          },
+          {
+            "asset": "index.DeXdSjsX.js",
+            "source": "d6b41a2e86f330736332a354b417ad3453e5691fbe184148d042f91bb61ea8f9",
+            "instrumented": "cac52aab89f6634fc7e398f0f2cb3dd36444f892d4e55499ba43705f77b98ac1"
+          },
+          {
+            "asset": "index.DrIFBR4j.js",
+            "source": "f5a61ec15f9097241922f1f5bf3dd98b50a33ae28a3b42ab614124836ad32488",
+            "instrumented": "e8ccc0df4b79fbf865dd9081130890e413a22d6402f5d1d9ab5e66f620da2ed0"
+          },
+          {
+            "asset": "PrototypePreviewer.astro_astro_type_script_index_0_lang.ClfguvN1.js",
+            "source": "6b16c976cf74913bdcd5085de33dfde4a3796363fe1df8dd1c56ef1763a271d4",
+            "instrumented": "4954859722b08820a08616820ee04be0ddd703717299fed2a6c022f54f678c18"
+          }
+        ],
+        "loaderPlans": {
+          "bootstrap-2-3-2-drawer-header": {
+            "entry": "index.DeXdSjsX.js",
+            "deps": [
+              "_astro/index.DeXdSjsX.js",
+              "_astro/site-shadcn-controls.B6xZXX7C.js",
+              "_astro/handle.proto.D1XLvTjt.js",
+              "_astro/visual.DiWImmBr.js",
+              "_astro/paint.Dporulws.js",
+              "_astro/footer.proto.DLSVnEak.js"
+            ]
+          },
+          "bootstrap-2-3-2-drawer-footer": {
+            "entry": "index.DeXdSjsX.js",
+            "deps": [
+              "_astro/index.DeXdSjsX.js",
+              "_astro/site-shadcn-controls.B6xZXX7C.js",
+              "_astro/handle.proto.D1XLvTjt.js",
+              "_astro/visual.DiWImmBr.js",
+              "_astro/paint.Dporulws.js",
+              "_astro/footer.proto.DLSVnEak.js"
+            ]
+          },
+          "bootstrap-2-3-2-drawer-root": {
+            "entry": "index.DeXdSjsX.js",
+            "deps": [
+              "_astro/index.DeXdSjsX.js",
+              "_astro/site-shadcn-controls.B6xZXX7C.js",
+              "_astro/handle.proto.D1XLvTjt.js",
+              "_astro/visual.DiWImmBr.js",
+              "_astro/paint.Dporulws.js",
+              "_astro/footer.proto.DLSVnEak.js"
+            ]
+          },
+          "bootstrap-2-3-2-drawer-trigger": {
+            "entry": "index.DeXdSjsX.js",
+            "deps": [
+              "_astro/index.DeXdSjsX.js",
+              "_astro/site-shadcn-controls.B6xZXX7C.js",
+              "_astro/handle.proto.D1XLvTjt.js",
+              "_astro/visual.DiWImmBr.js",
+              "_astro/paint.Dporulws.js",
+              "_astro/footer.proto.DLSVnEak.js"
+            ]
+          },
+          "bootstrap-2-3-2-drawer-content": {
+            "entry": "index.DeXdSjsX.js",
+            "deps": [
+              "_astro/index.DeXdSjsX.js",
+              "_astro/site-shadcn-controls.B6xZXX7C.js",
+              "_astro/handle.proto.D1XLvTjt.js",
+              "_astro/visual.DiWImmBr.js",
+              "_astro/paint.Dporulws.js",
+              "_astro/footer.proto.DLSVnEak.js"
+            ]
+          },
+          "bootstrap-2-3-2-drawer-title": {
+            "entry": "index.DeXdSjsX.js",
+            "deps": [
+              "_astro/index.DeXdSjsX.js",
+              "_astro/site-shadcn-controls.B6xZXX7C.js",
+              "_astro/handle.proto.D1XLvTjt.js",
+              "_astro/visual.DiWImmBr.js",
+              "_astro/paint.Dporulws.js",
+              "_astro/footer.proto.DLSVnEak.js"
+            ]
+          },
+          "bootstrap-2-3-2-drawer-description": {
+            "entry": "index.DeXdSjsX.js",
+            "deps": [
+              "_astro/index.DeXdSjsX.js",
+              "_astro/site-shadcn-controls.B6xZXX7C.js",
+              "_astro/handle.proto.D1XLvTjt.js",
+              "_astro/visual.DiWImmBr.js",
+              "_astro/paint.Dporulws.js",
+              "_astro/footer.proto.DLSVnEak.js"
+            ]
+          },
+          "bootstrap-2-3-2-drawer-close": {
+            "entry": "index.DeXdSjsX.js",
+            "deps": [
+              "_astro/index.DeXdSjsX.js",
+              "_astro/site-shadcn-controls.B6xZXX7C.js",
+              "_astro/handle.proto.D1XLvTjt.js",
+              "_astro/visual.DiWImmBr.js",
+              "_astro/paint.Dporulws.js",
+              "_astro/footer.proto.DLSVnEak.js"
+            ]
+          },
+          "bootstrap-2-3-2-drawer-mask": {
+            "entry": "index.DeXdSjsX.js",
+            "deps": [
+              "_astro/index.DeXdSjsX.js",
+              "_astro/site-shadcn-controls.B6xZXX7C.js",
+              "_astro/handle.proto.D1XLvTjt.js",
+              "_astro/visual.DiWImmBr.js",
+              "_astro/paint.Dporulws.js",
+              "_astro/footer.proto.DLSVnEak.js"
+            ]
+          },
+          "bootstrap-2-3-2-drawer-handle": {
+            "entry": "index.DeXdSjsX.js",
+            "deps": [
+              "_astro/index.DeXdSjsX.js",
+              "_astro/site-shadcn-controls.B6xZXX7C.js",
+              "_astro/handle.proto.D1XLvTjt.js",
+              "_astro/visual.DiWImmBr.js",
+              "_astro/paint.Dporulws.js",
+              "_astro/footer.proto.DLSVnEak.js"
+            ]
+          },
+          "bootstrap-2-3-2-calendar-root": {
+            "entry": "index.DrIFBR4j.js",
+            "deps": [
+              "_astro/index.DrIFBR4j.js",
+              "_astro/site-shadcn-controls.B6xZXX7C.js",
+              "_astro/calendar.proto.CL2IMdha.js",
+              "_astro/shared.CneTlUGf.js",
+              "_astro/paint.Dporulws.js",
+              "_astro/day-paint.BF7JH2BI.js"
+            ]
+          },
+          "bootstrap-2-3-2-calendar-grid": {
+            "entry": "index.DrIFBR4j.js",
+            "deps": [
+              "_astro/index.DrIFBR4j.js",
+              "_astro/site-shadcn-controls.B6xZXX7C.js",
+              "_astro/calendar.proto.CL2IMdha.js",
+              "_astro/shared.CneTlUGf.js",
+              "_astro/paint.Dporulws.js",
+              "_astro/day-paint.BF7JH2BI.js"
+            ]
+          },
+          "bootstrap-2-3-2-calendar-row": {
+            "entry": "index.DrIFBR4j.js",
+            "deps": [
+              "_astro/index.DrIFBR4j.js",
+              "_astro/site-shadcn-controls.B6xZXX7C.js",
+              "_astro/calendar.proto.CL2IMdha.js",
+              "_astro/shared.CneTlUGf.js",
+              "_astro/paint.Dporulws.js",
+              "_astro/day-paint.BF7JH2BI.js"
+            ]
+          },
+          "bootstrap-2-3-2-calendar-day": {
+            "entry": "index.DrIFBR4j.js",
+            "deps": [
+              "_astro/index.DrIFBR4j.js",
+              "_astro/site-shadcn-controls.B6xZXX7C.js",
+              "_astro/calendar.proto.CL2IMdha.js",
+              "_astro/shared.CneTlUGf.js",
+              "_astro/paint.Dporulws.js",
+              "_astro/day-paint.BF7JH2BI.js"
+            ]
+          },
+          "bootstrap-2-3-2-calendar-heading": {
+            "entry": "index.DrIFBR4j.js",
+            "deps": [
+              "_astro/index.DrIFBR4j.js",
+              "_astro/site-shadcn-controls.B6xZXX7C.js",
+              "_astro/calendar.proto.CL2IMdha.js",
+              "_astro/shared.CneTlUGf.js",
+              "_astro/paint.Dporulws.js",
+              "_astro/day-paint.BF7JH2BI.js"
+            ]
+          },
+          "bootstrap-2-3-2-calendar-previous": {
+            "entry": "index.DrIFBR4j.js",
+            "deps": [
+              "_astro/index.DrIFBR4j.js",
+              "_astro/site-shadcn-controls.B6xZXX7C.js",
+              "_astro/calendar.proto.CL2IMdha.js",
+              "_astro/shared.CneTlUGf.js",
+              "_astro/paint.Dporulws.js",
+              "_astro/day-paint.BF7JH2BI.js"
+            ]
+          },
+          "bootstrap-2-3-2-calendar-next": {
+            "entry": "index.DrIFBR4j.js",
+            "deps": [
+              "_astro/index.DrIFBR4j.js",
+              "_astro/site-shadcn-controls.B6xZXX7C.js",
+              "_astro/calendar.proto.CL2IMdha.js",
+              "_astro/shared.CneTlUGf.js",
+              "_astro/paint.Dporulws.js",
+              "_astro/day-paint.BF7JH2BI.js"
+            ]
+          },
+          "bootstrap-2-3-2-calendar-caption": {
+            "entry": "index.DrIFBR4j.js",
+            "deps": [
+              "_astro/index.DrIFBR4j.js",
+              "_astro/site-shadcn-controls.B6xZXX7C.js",
+              "_astro/calendar.proto.CL2IMdha.js",
+              "_astro/shared.CneTlUGf.js",
+              "_astro/paint.Dporulws.js",
+              "_astro/day-paint.BF7JH2BI.js"
+            ]
+          },
+          "bootstrap-2-3-2-calendar-weekdays": {
+            "entry": "index.DrIFBR4j.js",
+            "deps": [
+              "_astro/index.DrIFBR4j.js",
+              "_astro/site-shadcn-controls.B6xZXX7C.js",
+              "_astro/calendar.proto.CL2IMdha.js",
+              "_astro/shared.CneTlUGf.js",
+              "_astro/paint.Dporulws.js",
+              "_astro/day-paint.BF7JH2BI.js"
+            ]
+          },
+          "bootstrap-2-3-2-calendar-weekday": {
+            "entry": "index.DrIFBR4j.js",
+            "deps": [
+              "_astro/index.DrIFBR4j.js",
+              "_astro/site-shadcn-controls.B6xZXX7C.js",
+              "_astro/calendar.proto.CL2IMdha.js",
+              "_astro/shared.CneTlUGf.js",
+              "_astro/paint.Dporulws.js",
+              "_astro/day-paint.BF7JH2BI.js"
+            ]
+          }
+        }
+      },
+      "postrestoreExit": 1,
+      "nativeExit": 1,
+      "rawLogSha256": "a155b8a547227aac55ad7cd62b09308821b583a67430f918dcc3ec22cdde0721",
+      "delivered": {
+        "total": 2816,
+        "peakPending": 1268,
+        "kinds": {
+          "add-only": {
+            "checks": 0,
+            "releases": 0,
+            "callbacks": 1422,
+            "records": 9823,
+            "scanMs": 0
+          },
+          "element-removal": {
+            "checks": 1408748,
+            "releases": 0,
+            "callbacks": 1111,
+            "records": 17404,
+            "scanMs": 26.399999380111694
+          },
+          "non-element-removal": {
+            "checks": 0,
+            "releases": 0,
+            "callbacks": 283,
+            "records": 1973,
+            "scanMs": 0
+          }
+        },
+        "pageMs": 71774.20000004768
+      }
+    },
+    "late": [
+      {
+        "locale": "zh-cn",
+        "nodeMs": 5915.810916,
+        "kind": "resource",
+        "asset": "site-shadcn-controls.B6xZXX7C.js",
+        "initiator": "script",
+        "startTime": 92,
+        "responseEnd": 174.09999990463257,
+        "at": 5033.700000047684
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 5915.93075,
+        "kind": "resource",
+        "asset": "paint.Dporulws.js",
+        "initiator": "script",
+        "startTime": 92.79999995231628,
+        "responseEnd": 179,
+        "at": 5033.899999856949
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 6839.479041,
+        "kind": "resource",
+        "asset": "calendar.proto.CL2IMdha.js",
+        "initiator": "script",
+        "startTime": 5875.700000047684,
+        "responseEnd": 5911,
+        "at": 5957.299999952316
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 6839.532958,
+        "kind": "resource",
+        "asset": "shared.CneTlUGf.js",
+        "initiator": "script",
+        "startTime": 5875.799999952316,
+        "responseEnd": 5904.899999856949,
+        "at": 5957.299999952316
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 7227.236291,
+        "kind": "resource",
+        "asset": "handle.proto.D1XLvTjt.js",
+        "initiator": "script",
+        "startTime": 5949,
+        "responseEnd": 5978.799999952316,
+        "at": 6345.200000047684
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 7227.329291,
+        "kind": "resource",
+        "asset": "footer.proto.DLSVnEak.js",
+        "initiator": "script",
+        "startTime": 5949.099999904633,
+        "responseEnd": 5979,
+        "at": 6345.200000047684
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 31632.376916,
+        "kind": "preview",
+        "phase": "initial-switch",
+        "root": "pp-1qondpiej87",
+        "demo": "demo-bootstrap-2-3-2-calendar",
+        "runtime": "wc",
+        "children": 1,
+        "at": 30750.299999952316
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 31632.505916,
+        "kind": "preview",
+        "phase": "demo-start",
+        "root": "pp-1qondpiej87",
+        "demo": "demo-bootstrap-2-3-2-calendar",
+        "runtime": "wc",
+        "children": 0,
+        "at": 30750.299999952316
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 46898.47975,
+        "kind": "preview",
+        "phase": "initial-switch",
+        "root": "pp-9cy2wdqwbpl",
+        "demo": "demo-bootstrap-2-3-2-drawer",
+        "runtime": "wc",
+        "children": 1,
+        "at": 46016.299999952316
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 46898.635208,
+        "kind": "preview",
+        "phase": "demo-start",
+        "root": "pp-9cy2wdqwbpl",
+        "demo": "demo-bootstrap-2-3-2-drawer",
+        "runtime": "wc",
+        "children": 0,
+        "at": 46016.5
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 48831.083625,
+        "kind": "preview",
+        "phase": "demo-return",
+        "root": "pp-1qondpiej87",
+        "demo": "demo-bootstrap-2-3-2-calendar",
+        "runtime": "wc",
+        "children": 0,
+        "at": 47949
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 48833.242666,
+        "kind": "preview",
+        "phase": "prototype-start",
+        "root": "pp-1qondpiej87",
+        "demo": "demo-bootstrap-2-3-2-calendar",
+        "runtime": "wc",
+        "children": 0,
+        "ids": [
+          "bootstrap-2-3-2-calendar-root",
+          "bootstrap-2-3-2-calendar-caption",
+          "bootstrap-2-3-2-calendar-previous",
+          "lucide-chevron-left-icon",
+          "bootstrap-2-3-2-select-root",
+          "bootstrap-2-3-2-select-trigger",
+          "bootstrap-2-3-2-select-value",
+          "bootstrap-2-3-2-select-content",
+          "bootstrap-2-3-2-select-item",
+          "bootstrap-2-3-2-calendar-next",
+          "lucide-chevron-right-icon",
+          "bootstrap-2-3-2-calendar-heading",
+          "bootstrap-2-3-2-calendar-grid",
+          "bootstrap-2-3-2-calendar-weekdays",
+          "bootstrap-2-3-2-calendar-weekday",
+          "bootstrap-2-3-2-calendar-row",
+          "bootstrap-2-3-2-calendar-day"
+        ],
+        "at": 47951.200000047684
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 48838.89225,
+        "kind": "inner-import",
+        "id": "bootstrap-2-3-2-calendar-root",
+        "assets": [
+          {
+            "asset": "index.DrIFBR4j.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/index.DrIFBR4j.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.B6xZXX7C.js",
+            "responseEnd": 174.09999990463257
+          },
+          {
+            "asset": "_astro/calendar.proto.CL2IMdha.js",
+            "responseEnd": 5911
+          },
+          {
+            "asset": "_astro/shared.CneTlUGf.js",
+            "responseEnd": 5904.899999856949
+          },
+          {
+            "asset": "_astro/paint.Dporulws.js",
+            "responseEnd": 179
+          },
+          {
+            "asset": "_astro/day-paint.BF7JH2BI.js",
+            "responseEnd": null
+          }
+        ],
+        "at": 47956.700000047684
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 48838.989291,
+        "kind": "inner-import",
+        "id": "bootstrap-2-3-2-calendar-caption",
+        "assets": [
+          {
+            "asset": "index.DrIFBR4j.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/index.DrIFBR4j.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.B6xZXX7C.js",
+            "responseEnd": 174.09999990463257
+          },
+          {
+            "asset": "_astro/calendar.proto.CL2IMdha.js",
+            "responseEnd": 5911
+          },
+          {
+            "asset": "_astro/shared.CneTlUGf.js",
+            "responseEnd": 5904.899999856949
+          },
+          {
+            "asset": "_astro/paint.Dporulws.js",
+            "responseEnd": 179
+          },
+          {
+            "asset": "_astro/day-paint.BF7JH2BI.js",
+            "responseEnd": null
+          }
+        ],
+        "at": 47956.799999952316
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 48839.021166,
+        "kind": "inner-import",
+        "id": "bootstrap-2-3-2-calendar-previous",
+        "assets": [
+          {
+            "asset": "index.DrIFBR4j.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/index.DrIFBR4j.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.B6xZXX7C.js",
+            "responseEnd": 174.09999990463257
+          },
+          {
+            "asset": "_astro/calendar.proto.CL2IMdha.js",
+            "responseEnd": 5911
+          },
+          {
+            "asset": "_astro/shared.CneTlUGf.js",
+            "responseEnd": 5904.899999856949
+          },
+          {
+            "asset": "_astro/paint.Dporulws.js",
+            "responseEnd": 179
+          },
+          {
+            "asset": "_astro/day-paint.BF7JH2BI.js",
+            "responseEnd": null
+          }
+        ],
+        "at": 47956.799999952316
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 48839.051958,
+        "kind": "inner-import",
+        "id": "bootstrap-2-3-2-calendar-next",
+        "assets": [
+          {
+            "asset": "index.DrIFBR4j.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/index.DrIFBR4j.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.B6xZXX7C.js",
+            "responseEnd": 174.09999990463257
+          },
+          {
+            "asset": "_astro/calendar.proto.CL2IMdha.js",
+            "responseEnd": 5911
+          },
+          {
+            "asset": "_astro/shared.CneTlUGf.js",
+            "responseEnd": 5904.899999856949
+          },
+          {
+            "asset": "_astro/paint.Dporulws.js",
+            "responseEnd": 179
+          },
+          {
+            "asset": "_astro/day-paint.BF7JH2BI.js",
+            "responseEnd": null
+          }
+        ],
+        "at": 47956.89999985695
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 48839.125375,
+        "kind": "inner-import",
+        "id": "bootstrap-2-3-2-calendar-heading",
+        "assets": [
+          {
+            "asset": "index.DrIFBR4j.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/index.DrIFBR4j.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.B6xZXX7C.js",
+            "responseEnd": 174.09999990463257
+          },
+          {
+            "asset": "_astro/calendar.proto.CL2IMdha.js",
+            "responseEnd": 5911
+          },
+          {
+            "asset": "_astro/shared.CneTlUGf.js",
+            "responseEnd": 5904.899999856949
+          },
+          {
+            "asset": "_astro/paint.Dporulws.js",
+            "responseEnd": 179
+          },
+          {
+            "asset": "_astro/day-paint.BF7JH2BI.js",
+            "responseEnd": null
+          }
+        ],
+        "at": 47956.89999985695
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 48839.148041,
+        "kind": "inner-import",
+        "id": "bootstrap-2-3-2-calendar-grid",
+        "assets": [
+          {
+            "asset": "index.DrIFBR4j.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/index.DrIFBR4j.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.B6xZXX7C.js",
+            "responseEnd": 174.09999990463257
+          },
+          {
+            "asset": "_astro/calendar.proto.CL2IMdha.js",
+            "responseEnd": 5911
+          },
+          {
+            "asset": "_astro/shared.CneTlUGf.js",
+            "responseEnd": 5904.899999856949
+          },
+          {
+            "asset": "_astro/paint.Dporulws.js",
+            "responseEnd": 179
+          },
+          {
+            "asset": "_astro/day-paint.BF7JH2BI.js",
+            "responseEnd": null
+          }
+        ],
+        "at": 47957
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 48839.169875,
+        "kind": "inner-import",
+        "id": "bootstrap-2-3-2-calendar-weekdays",
+        "assets": [
+          {
+            "asset": "index.DrIFBR4j.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/index.DrIFBR4j.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.B6xZXX7C.js",
+            "responseEnd": 174.09999990463257
+          },
+          {
+            "asset": "_astro/calendar.proto.CL2IMdha.js",
+            "responseEnd": 5911
+          },
+          {
+            "asset": "_astro/shared.CneTlUGf.js",
+            "responseEnd": 5904.899999856949
+          },
+          {
+            "asset": "_astro/paint.Dporulws.js",
+            "responseEnd": 179
+          },
+          {
+            "asset": "_astro/day-paint.BF7JH2BI.js",
+            "responseEnd": null
+          }
+        ],
+        "at": 47957
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 48839.245416,
+        "kind": "inner-import",
+        "id": "bootstrap-2-3-2-calendar-weekday",
+        "assets": [
+          {
+            "asset": "index.DrIFBR4j.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/index.DrIFBR4j.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.B6xZXX7C.js",
+            "responseEnd": 174.09999990463257
+          },
+          {
+            "asset": "_astro/calendar.proto.CL2IMdha.js",
+            "responseEnd": 5911
+          },
+          {
+            "asset": "_astro/shared.CneTlUGf.js",
+            "responseEnd": 5904.899999856949
+          },
+          {
+            "asset": "_astro/paint.Dporulws.js",
+            "responseEnd": 179
+          },
+          {
+            "asset": "_astro/day-paint.BF7JH2BI.js",
+            "responseEnd": null
+          }
+        ],
+        "at": 47957.09999990463
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 48839.263791,
+        "kind": "inner-import",
+        "id": "bootstrap-2-3-2-calendar-row",
+        "assets": [
+          {
+            "asset": "index.DrIFBR4j.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/index.DrIFBR4j.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.B6xZXX7C.js",
+            "responseEnd": 174.09999990463257
+          },
+          {
+            "asset": "_astro/calendar.proto.CL2IMdha.js",
+            "responseEnd": 5911
+          },
+          {
+            "asset": "_astro/shared.CneTlUGf.js",
+            "responseEnd": 5904.899999856949
+          },
+          {
+            "asset": "_astro/paint.Dporulws.js",
+            "responseEnd": 179
+          },
+          {
+            "asset": "_astro/day-paint.BF7JH2BI.js",
+            "responseEnd": null
+          }
+        ],
+        "at": 47957.09999990463
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 48839.28075,
+        "kind": "inner-import",
+        "id": "bootstrap-2-3-2-calendar-day",
+        "assets": [
+          {
+            "asset": "index.DrIFBR4j.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/index.DrIFBR4j.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.B6xZXX7C.js",
+            "responseEnd": 174.09999990463257
+          },
+          {
+            "asset": "_astro/calendar.proto.CL2IMdha.js",
+            "responseEnd": 5911
+          },
+          {
+            "asset": "_astro/shared.CneTlUGf.js",
+            "responseEnd": 5904.899999856949
+          },
+          {
+            "asset": "_astro/paint.Dporulws.js",
+            "responseEnd": 179
+          },
+          {
+            "asset": "_astro/day-paint.BF7JH2BI.js",
+            "responseEnd": null
+          }
+        ],
+        "at": 47957.09999990463
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 51353.978958,
+        "kind": "resource",
+        "asset": "index.DrIFBR4j.js",
+        "initiator": "script",
+        "startTime": 47952.09999990463,
+        "responseEnd": 47960.200000047684,
+        "at": 50471.89999985695
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 51354.083208,
+        "kind": "resource",
+        "asset": "day-paint.BF7JH2BI.js",
+        "initiator": "script",
+        "startTime": 47952.299999952316,
+        "responseEnd": 47960.299999952316,
+        "at": 50472
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 51354.109083,
+        "kind": "resource",
+        "asset": "visual.DiWImmBr.js",
+        "initiator": "script",
+        "startTime": 47953.59999990463,
+        "responseEnd": 47960.299999952316,
+        "at": 50472
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 51354.303041,
+        "kind": "preview",
+        "phase": "demo-return",
+        "root": "pp-9cy2wdqwbpl",
+        "demo": "demo-bootstrap-2-3-2-drawer",
+        "runtime": "wc",
+        "children": 0,
+        "at": 50472.09999990463
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 51355.909041,
+        "kind": "preview",
+        "phase": "prototype-start",
+        "root": "pp-9cy2wdqwbpl",
+        "demo": "demo-bootstrap-2-3-2-drawer",
+        "runtime": "wc",
+        "children": 0,
+        "ids": [
+          "bootstrap-2-3-2-drawer-root",
+          "bootstrap-2-3-2-drawer-trigger",
+          "bootstrap-2-3-2-drawer-mask",
+          "bootstrap-2-3-2-drawer-content",
+          "bootstrap-2-3-2-drawer-handle",
+          "bootstrap-2-3-2-drawer-title",
+          "bootstrap-2-3-2-drawer-description",
+          "bootstrap-2-3-2-drawer-close"
+        ],
+        "at": 50473.89999985695
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 51358.767291,
+        "kind": "inner-import",
+        "id": "bootstrap-2-3-2-drawer-root",
+        "assets": [
+          {
+            "asset": "index.DeXdSjsX.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/index.DeXdSjsX.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.B6xZXX7C.js",
+            "responseEnd": 174.09999990463257
+          },
+          {
+            "asset": "_astro/handle.proto.D1XLvTjt.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/visual.DiWImmBr.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/paint.Dporulws.js",
+            "responseEnd": 179
+          },
+          {
+            "asset": "_astro/footer.proto.DLSVnEak.js",
+            "responseEnd": null
+          }
+        ],
+        "at": 50476.299999952316
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 51358.853166,
+        "kind": "inner-import",
+        "id": "bootstrap-2-3-2-drawer-trigger",
+        "assets": [
+          {
+            "asset": "index.DeXdSjsX.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/index.DeXdSjsX.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.B6xZXX7C.js",
+            "responseEnd": 174.09999990463257
+          },
+          {
+            "asset": "_astro/handle.proto.D1XLvTjt.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/visual.DiWImmBr.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/paint.Dporulws.js",
+            "responseEnd": 179
+          },
+          {
+            "asset": "_astro/footer.proto.DLSVnEak.js",
+            "responseEnd": null
+          }
+        ],
+        "at": 50476.299999952316
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 51358.947375,
+        "kind": "inner-import",
+        "id": "bootstrap-2-3-2-drawer-mask",
+        "assets": [
+          {
+            "asset": "index.DeXdSjsX.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/index.DeXdSjsX.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.B6xZXX7C.js",
+            "responseEnd": 174.09999990463257
+          },
+          {
+            "asset": "_astro/handle.proto.D1XLvTjt.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/visual.DiWImmBr.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/paint.Dporulws.js",
+            "responseEnd": 179
+          },
+          {
+            "asset": "_astro/footer.proto.DLSVnEak.js",
+            "responseEnd": null
+          }
+        ],
+        "at": 50476.5
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 51358.964416,
+        "kind": "inner-import",
+        "id": "bootstrap-2-3-2-drawer-content",
+        "assets": [
+          {
+            "asset": "index.DeXdSjsX.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/index.DeXdSjsX.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.B6xZXX7C.js",
+            "responseEnd": 174.09999990463257
+          },
+          {
+            "asset": "_astro/handle.proto.D1XLvTjt.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/visual.DiWImmBr.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/paint.Dporulws.js",
+            "responseEnd": 179
+          },
+          {
+            "asset": "_astro/footer.proto.DLSVnEak.js",
+            "responseEnd": null
+          }
+        ],
+        "at": 50476.5
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 51359.135291,
+        "kind": "inner-import",
+        "id": "bootstrap-2-3-2-drawer-handle",
+        "assets": [
+          {
+            "asset": "index.DeXdSjsX.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/index.DeXdSjsX.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.B6xZXX7C.js",
+            "responseEnd": 174.09999990463257
+          },
+          {
+            "asset": "_astro/handle.proto.D1XLvTjt.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/visual.DiWImmBr.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/paint.Dporulws.js",
+            "responseEnd": 179
+          },
+          {
+            "asset": "_astro/footer.proto.DLSVnEak.js",
+            "responseEnd": null
+          }
+        ],
+        "at": 50476.5
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 51359.150291,
+        "kind": "inner-import",
+        "id": "bootstrap-2-3-2-drawer-title",
+        "assets": [
+          {
+            "asset": "index.DeXdSjsX.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/index.DeXdSjsX.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.B6xZXX7C.js",
+            "responseEnd": 174.09999990463257
+          },
+          {
+            "asset": "_astro/handle.proto.D1XLvTjt.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/visual.DiWImmBr.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/paint.Dporulws.js",
+            "responseEnd": 179
+          },
+          {
+            "asset": "_astro/footer.proto.DLSVnEak.js",
+            "responseEnd": null
+          }
+        ],
+        "at": 50476.5
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 51359.163458,
+        "kind": "inner-import",
+        "id": "bootstrap-2-3-2-drawer-description",
+        "assets": [
+          {
+            "asset": "index.DeXdSjsX.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/index.DeXdSjsX.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.B6xZXX7C.js",
+            "responseEnd": 174.09999990463257
+          },
+          {
+            "asset": "_astro/handle.proto.D1XLvTjt.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/visual.DiWImmBr.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/paint.Dporulws.js",
+            "responseEnd": 179
+          },
+          {
+            "asset": "_astro/footer.proto.DLSVnEak.js",
+            "responseEnd": null
+          }
+        ],
+        "at": 50476.59999990463
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 51359.176875,
+        "kind": "inner-import",
+        "id": "bootstrap-2-3-2-drawer-close",
+        "assets": [
+          {
+            "asset": "index.DeXdSjsX.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/index.DeXdSjsX.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.B6xZXX7C.js",
+            "responseEnd": 174.09999990463257
+          },
+          {
+            "asset": "_astro/handle.proto.D1XLvTjt.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/visual.DiWImmBr.js",
+            "responseEnd": null
+          },
+          {
+            "asset": "_astro/paint.Dporulws.js",
+            "responseEnd": 179
+          },
+          {
+            "asset": "_astro/footer.proto.DLSVnEak.js",
+            "responseEnd": null
+          }
+        ],
+        "at": 50476.59999990463
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 56157.022083,
+        "kind": "resource",
+        "asset": "index.DeXdSjsX.js",
+        "initiator": "script",
+        "startTime": 50474.59999990463,
+        "responseEnd": 50476.89999985695,
+        "at": 55275.09999990463
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 60880.168625,
+        "kind": "entry-body-start",
+        "asset": "index.DrIFBR4j.js",
+        "at": 59997.799999952316
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 60880.224083,
+        "kind": "entry-body-end",
+        "asset": "index.DrIFBR4j.js",
+        "at": 59998
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 60880.349458,
+        "kind": "registered-loader-return",
+        "id": "bootstrap-2-3-2-calendar-caption",
+        "at": 59998
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 60880.369541,
+        "kind": "registered-loader-return",
+        "id": "bootstrap-2-3-2-calendar-heading",
+        "at": 59998.09999990463
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 60880.385166,
+        "kind": "registered-loader-return",
+        "id": "bootstrap-2-3-2-calendar-day",
+        "at": 59998.09999990463
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 60880.402916,
+        "kind": "registered-loader-return",
+        "id": "bootstrap-2-3-2-calendar-weekdays",
+        "at": 59998.09999990463
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 60880.416125,
+        "kind": "registered-loader-return",
+        "id": "bootstrap-2-3-2-calendar-grid",
+        "at": 59998.200000047684
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 60880.547791,
+        "kind": "registered-loader-return",
+        "id": "bootstrap-2-3-2-calendar-next",
+        "at": 59998.200000047684
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 60880.5635,
+        "kind": "registered-loader-return",
+        "id": "bootstrap-2-3-2-calendar-previous",
+        "at": 59998.200000047684
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 60880.589541,
+        "kind": "registered-loader-return",
+        "id": "bootstrap-2-3-2-calendar-weekday",
+        "at": 59998.200000047684
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 60880.630541,
+        "kind": "registered-loader-return",
+        "id": "bootstrap-2-3-2-calendar-row",
+        "at": 59998.200000047684
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 60880.6485,
+        "kind": "registered-loader-return",
+        "id": "bootstrap-2-3-2-calendar-root",
+        "at": 59998.299999952316
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 60880.66375,
+        "kind": "preview",
+        "phase": "prototype-return",
+        "root": "pp-1qondpiej87",
+        "demo": "demo-bootstrap-2-3-2-calendar",
+        "runtime": "wc",
+        "children": 0,
+        "at": 59998.299999952316
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 60880.676416,
+        "kind": "preview",
+        "phase": "render-start",
+        "root": "pp-1qondpiej87",
+        "demo": "demo-bootstrap-2-3-2-calendar",
+        "runtime": "wc",
+        "children": 0,
+        "at": 59998.39999985695
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 61445.701291,
+        "kind": "preview",
+        "phase": "render-return",
+        "root": "pp-1qondpiej87",
+        "demo": "demo-bootstrap-2-3-2-calendar",
+        "runtime": "wc",
+        "children": 1,
+        "at": 60563.5
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 63245.50625,
+        "kind": "preview",
+        "phase": "surface-ready",
+        "root": "pp-1qondpiej87",
+        "demo": "demo-bootstrap-2-3-2-calendar",
+        "runtime": "wc",
+        "children": 1,
+        "at": 62363.299999952316
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 68989.466916,
+        "kind": "preview",
+        "phase": "publish",
+        "root": "pp-1qondpiej87",
+        "demo": "demo-bootstrap-2-3-2-calendar",
+        "runtime": "wc",
+        "children": 1,
+        "at": 68107.29999995232
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 70348.721666,
+        "kind": "entry-body-start",
+        "asset": "index.DeXdSjsX.js",
+        "at": 69464.5
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 70348.763083,
+        "kind": "entry-body-end",
+        "asset": "index.DeXdSjsX.js",
+        "at": 69464.59999990463
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 70348.786791,
+        "kind": "registered-loader-return",
+        "id": "bootstrap-2-3-2-drawer-root",
+        "at": 69464.59999990463
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 70348.805958,
+        "kind": "registered-loader-return",
+        "id": "bootstrap-2-3-2-drawer-description",
+        "at": 69464.70000004768
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 70348.823458,
+        "kind": "registered-loader-return",
+        "id": "bootstrap-2-3-2-drawer-handle",
+        "at": 69464.70000004768
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 70348.839708,
+        "kind": "registered-loader-return",
+        "id": "bootstrap-2-3-2-drawer-mask",
+        "at": 69464.70000004768
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 70348.854541,
+        "kind": "registered-loader-return",
+        "id": "bootstrap-2-3-2-drawer-title",
+        "at": 69464.79999995232
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 70348.868875,
+        "kind": "registered-loader-return",
+        "id": "bootstrap-2-3-2-drawer-close",
+        "at": 69464.79999995232
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 70348.882,
+        "kind": "registered-loader-return",
+        "id": "bootstrap-2-3-2-drawer-trigger",
+        "at": 69464.79999995232
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 70348.895958,
+        "kind": "registered-loader-return",
+        "id": "bootstrap-2-3-2-drawer-content",
+        "at": 69464.79999995232
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 70348.909416,
+        "kind": "preview",
+        "phase": "prototype-return",
+        "root": "pp-9cy2wdqwbpl",
+        "demo": "demo-bootstrap-2-3-2-drawer",
+        "runtime": "wc",
+        "children": 0,
+        "at": 69464.79999995232
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 70348.925125,
+        "kind": "preview",
+        "phase": "render-start",
+        "root": "pp-9cy2wdqwbpl",
+        "demo": "demo-bootstrap-2-3-2-drawer",
+        "runtime": "wc",
+        "children": 0,
+        "at": 69464.79999995232
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 70432.094583,
+        "kind": "preview",
+        "phase": "render-return",
+        "root": "pp-9cy2wdqwbpl",
+        "demo": "demo-bootstrap-2-3-2-drawer",
+        "runtime": "wc",
+        "children": 1,
+        "at": 69549.89999985695
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 70937.757875,
+        "kind": "preview",
+        "phase": "surface-ready",
+        "root": "pp-9cy2wdqwbpl",
+        "demo": "demo-bootstrap-2-3-2-drawer",
+        "runtime": "wc",
+        "children": 1,
+        "at": 70055.59999990463
+      },
+      {
+        "locale": "zh-cn",
+        "nodeMs": 72259.43625,
+        "kind": "preview",
+        "phase": "publish",
+        "root": "pp-9cy2wdqwbpl",
+        "demo": "demo-bootstrap-2-3-2-drawer",
+        "runtime": "wc",
+        "children": 1,
+        "at": 71377.29999995232
+      }
+    ],
+    "lastOriginalPredicate": {
+      "zh-cn": {
+        "at": 52848.89999985695,
+        "firstMissing": {
+          "previewerId": "pp-fzje2664ou",
+          "index": 572,
+          "inited": "1",
+          "hostChildren": 0
+        },
+        "demo": "demo-shadcn-tree"
+      }
+    }
+  }
+}
