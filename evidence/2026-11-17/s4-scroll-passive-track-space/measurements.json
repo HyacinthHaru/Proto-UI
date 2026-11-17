@@ -1,0 +1,1076 @@
+{
+  "source": {
+    "head": "946793b2d22afa24a97d27d58ad84748ec0557c3",
+    "tree": "408f58c00fd4102a75f88a7f84eeae10c439caaf",
+    "parent": "46739a57faecdaf2366ab4da181d662d04ea6c29",
+    "signature": "G",
+    "inputs": [
+      "384ae8d4d6800d11caaa1c3281803266713c9c1a23a193a668d8b30296c42bef  packages/modules/scroll/src/web/create-web-scroll-host.ts",
+      "a1d03a89c31cb036daad240789c72570c29046f8563fee3eaad18d0229247068  packages/modules/scroll/test/web-scroll-host.test.ts"
+    ]
+  },
+  "environment": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+  "diagnostics": {
+    "scope": "Separate pinned Chromium Chinese Matrix runs with observer overlays. Counts and durations refer to delivered checkpoints.",
+    "baseline": [
+      {
+        "name": "s4-scroll-control-geometry-probe",
+        "head": "46739a57faecdaf2366ab4da181d662d04ea6c29",
+        "nativeExit": 1,
+        "asset": {
+          "asset": "site-shadcn-controls.D7nqfiZl.js",
+          "source": "dd90decbbeaf3053d07e55e20fd7381f4f337b85bf919a8ac5eb0b3ebe515794",
+          "instrumented": "beaf653b1dbbc5ce884fe787528d3f960b6f98a15c90f6fbcac39f9a4a031ad9"
+        },
+        "logSha256": "f9bc93966b5f0a871bad9ce6278a57423510de8460c1b1b04479d91743eb4553",
+        "latest": {
+          "publish": 2048,
+          "nonempty": 759,
+          "byPhase": {
+            "empty/host/viewport": {
+              "calls": 343,
+              "ms": 752.5999999046326
+            },
+            "empty/host/chrome": {
+              "calls": 343,
+              "ms": 0.5
+            },
+            "empty/host/publish": {
+              "calls": 343,
+              "ms": 10.000000238418579
+            },
+            "empty/anatomy/viewport": {
+              "calls": 946,
+              "ms": 1.4999992847442627
+            },
+            "empty/anatomy/chrome": {
+              "calls": 946,
+              "ms": 0.8000001907348633
+            },
+            "empty/anatomy/publish": {
+              "calls": 946,
+              "ms": 1.599999189376831
+            },
+            "controls/anatomy/viewport": {
+              "calls": 727,
+              "ms": 5.300000190734863
+            },
+            "controls/anatomy/chrome": {
+              "calls": 727,
+              "ms": 12.299999713897705
+            },
+            "controls/anatomy/publish": {
+              "calls": 727,
+              "ms": 1.3999998569488525
+            },
+            "controls/host/viewport": {
+              "calls": 32,
+              "ms": 41.700000286102295
+            },
+            "controls/host/chrome": {
+              "calls": 32,
+              "ms": 1.4000000953674316
+            },
+            "controls/host/publish": {
+              "calls": 32,
+              "ms": 0.40000009536743164
+            },
+            "track-rect": {
+              "calls": 396,
+              "ms": 6.099999666213989
+            },
+            "thumb-rect": {
+              "calls": 396,
+              "ms": 0.20000004768371582
+            },
+            "track-inner": {
+              "calls": 396,
+              "ms": 0.40000033378601074
+            }
+          },
+          "passive": 396,
+          "sameAvailable": 365,
+          "sameFull": 342,
+          "active": false,
+          "pageMs": 64671.90000009537
+        },
+        "origins": {},
+        "readPhase": [],
+        "slowReads": 0
+      },
+      {
+        "name": "s4-scroll-viewport-layout-source",
+        "head": "46739a57faecdaf2366ab4da181d662d04ea6c29",
+        "nativeExit": 1,
+        "asset": {
+          "asset": "site-shadcn-controls.D7nqfiZl.js",
+          "source": "dd90decbbeaf3053d07e55e20fd7381f4f337b85bf919a8ac5eb0b3ebe515794",
+          "instrumented": "49bca27a19b274863ba447c967222128d4dcbf1e7eb87c4b0482b8acc2176882"
+        },
+        "logSha256": "b5dae9862512a84f4461317b116d3d0b84bdbdd44d04c20fdc33330ba3daa44c",
+        "latest": {
+          "publish": 2048,
+          "nonempty": 759,
+          "byPhase": {
+            "empty/host/viewport": {
+              "calls": 343,
+              "ms": 886.7999997138977
+            },
+            "empty/host/chrome": {
+              "calls": 343,
+              "ms": 3.8999991416931152
+            },
+            "empty/host/publish": {
+              "calls": 343,
+              "ms": 8.699999570846558
+            },
+            "empty/anatomy/viewport": {
+              "calls": 946,
+              "ms": 1.0999996662139893
+            },
+            "empty/anatomy/chrome": {
+              "calls": 946,
+              "ms": 0.2999997138977051
+            },
+            "empty/anatomy/publish": {
+              "calls": 946,
+              "ms": 1.700000524520874
+            },
+            "controls/anatomy/viewport": {
+              "calls": 727,
+              "ms": 5.300000190734863
+            },
+            "controls/anatomy/chrome": {
+              "calls": 727,
+              "ms": 11.299999952316284
+            },
+            "controls/anatomy/publish": {
+              "calls": 727,
+              "ms": 1.0000004768371582
+            },
+            "controls/host/viewport": {
+              "calls": 32,
+              "ms": 41.10000014305115
+            },
+            "controls/host/chrome": {
+              "calls": 32,
+              "ms": 1.7999999523162842
+            },
+            "controls/host/publish": {
+              "calls": 32,
+              "ms": 0.2999997138977051
+            },
+            "track-rect": {
+              "calls": 396,
+              "ms": 5.8999998569488525
+            },
+            "thumb-rect": {
+              "calls": 396,
+              "ms": 0.20000004768371582
+            },
+            "track-inner": {
+              "calls": 396,
+              "ms": 0.39999985694885254
+            }
+          },
+          "passive": 396,
+          "sameAvailable": 365,
+          "sameFull": 342,
+          "active": false,
+          "slowViewport": 30,
+          "pageMs": 64005.59999990463
+        },
+        "origins": {
+          "attachStatic": {
+            "count": 7,
+            "ms": 217.79999995231628
+          },
+          "MutationObserver": {
+            "count": 5,
+            "ms": 168.70000004768372
+          },
+          "65:400": {
+            "count": 9,
+            "ms": 225.89999961853027
+          },
+          "other": {
+            "count": 7,
+            "ms": 217.2000002861023
+          },
+          "attach (": {
+            "count": 2,
+            "ms": 67.40000009536743
+          }
+        },
+        "readPhase": [],
+        "slowReads": 30
+      },
+      {
+        "name": "s4-scroll-layout-read-phase-control",
+        "head": "46739a57faecdaf2366ab4da181d662d04ea6c29",
+        "nativeExit": 1,
+        "asset": {
+          "asset": "site-shadcn-controls.D7nqfiZl.js",
+          "source": "dd90decbbeaf3053d07e55e20fd7381f4f337b85bf919a8ac5eb0b3ebe515794",
+          "instrumented": "3bc4110cdd72783526d6d14a3d2c53adcd844831efc366f041dfb732c6a01ee5"
+        },
+        "logSha256": "fcd5510dcb5293500de87e20e2e5c6fe1d09c4d47d1dc40998717923d3fc2ec0",
+        "latest": {
+          "publish": 1792,
+          "nonempty": 736,
+          "byPhase": {
+            "empty/host/viewport": {
+              "calls": 186,
+              "ms": 358.1000003814697
+            },
+            "empty/host/chrome": {
+              "calls": 186,
+              "ms": 0.39999985694885254
+            },
+            "empty/host/publish": {
+              "calls": 186,
+              "ms": 8.799999952316284
+            },
+            "empty/anatomy/viewport": {
+              "calls": 870,
+              "ms": 1.2999999523162842
+            },
+            "empty/anatomy/chrome": {
+              "calls": 870,
+              "ms": 0.39999985694885254
+            },
+            "empty/anatomy/publish": {
+              "calls": 870,
+              "ms": 0.5999999046325684
+            },
+            "controls/anatomy/viewport": {
+              "calls": 704,
+              "ms": 6.300001382827759
+            },
+            "controls/anatomy/chrome": {
+              "calls": 704,
+              "ms": 10.40000033378601
+            },
+            "controls/anatomy/publish": {
+              "calls": 704,
+              "ms": 0.8000004291534424
+            },
+            "controls/host/viewport": {
+              "calls": 32,
+              "ms": 41.200000524520874
+            },
+            "controls/host/chrome": {
+              "calls": 32,
+              "ms": 1.6999993324279785
+            },
+            "controls/host/publish": {
+              "calls": 32,
+              "ms": 0.6000001430511475
+            },
+            "track-rect": {
+              "calls": 356,
+              "ms": 6.200000047683716
+            },
+            "thumb-rect": {
+              "calls": 356,
+              "ms": 0.4999997615814209
+            },
+            "track-inner": {
+              "calls": 356,
+              "ms": 0
+            }
+          },
+          "passive": 356,
+          "sameAvailable": 325,
+          "sameFull": 302,
+          "active": false,
+          "pageMs": 57532.40000009537
+        },
+        "origins": {},
+        "readPhase": [
+          {
+            "kind": "read-phase",
+            "queued": 1,
+            "measured": 0,
+            "published": 0,
+            "flushes": 1,
+            "maxBatch": 1,
+            "measureMs": 0,
+            "publishMs": 0,
+            "pageMs": 8396.599999904633
+          },
+          {
+            "kind": "read-phase",
+            "queued": 2,
+            "measured": 1,
+            "published": 1,
+            "flushes": 2,
+            "maxBatch": 1,
+            "measureMs": 0,
+            "publishMs": 0,
+            "pageMs": 8425.400000095367
+          },
+          {
+            "kind": "read-phase",
+            "queued": 4,
+            "measured": 3,
+            "published": 3,
+            "flushes": 3,
+            "maxBatch": 2,
+            "measureMs": 0,
+            "publishMs": 0.09999990463256836,
+            "pageMs": 8436.299999952316
+          },
+          {
+            "kind": "read-phase",
+            "queued": 6,
+            "measured": 5,
+            "published": 5,
+            "flushes": 4,
+            "maxBatch": 2,
+            "measureMs": 10.200000047683716,
+            "publishMs": 0.20000004768371582,
+            "pageMs": 9260.400000095367
+          }
+        ],
+        "slowReads": 0
+      }
+    ],
+    "exactProduct": {
+      "head": "946793b2d22afa24a97d27d58ad84748ec0557c3",
+      "nativeExit": 1,
+      "asset": {
+        "asset": "site-shadcn-controls.B6xZXX7C.js",
+        "source": "9a3f281e42ac578424dfab4a2523d6a5a0aef0c66f270bbf78d0d6e3f210bb98",
+        "instrumented": "0eec8ed29a7ee86faf682a459c5ec679387919ea57377a04389ed165bceaa6d9"
+      },
+      "logSha256": "1946c9be7961b98aecf49f771dd1db8e7df268bef7409d509653e99010f021cb",
+      "scope": "Delivered call-site counts on the exact compiled product during the original Chinese matrix readiness check.",
+      "latest": {
+        "fullBounds": 0,
+        "passiveExtent": 383,
+        "fitting": 1,
+        "total": 384,
+        "pageMs": 56272.799999952316
+      },
+      "checkpoints": [
+        {
+          "fullBounds": 0,
+          "passiveExtent": 1,
+          "fitting": 0,
+          "total": 1,
+          "pageMs": 46840
+        },
+        {
+          "fullBounds": 0,
+          "passiveExtent": 2,
+          "fitting": 0,
+          "total": 2,
+          "pageMs": 46842.60000014305
+        },
+        {
+          "fullBounds": 0,
+          "passiveExtent": 3,
+          "fitting": 0,
+          "total": 3,
+          "pageMs": 46842.799999952316
+        },
+        {
+          "fullBounds": 0,
+          "passiveExtent": 4,
+          "fitting": 0,
+          "total": 4,
+          "pageMs": 46843.200000047684
+        },
+        {
+          "fullBounds": 0,
+          "passiveExtent": 64,
+          "fitting": 0,
+          "total": 64,
+          "pageMs": 47081.799999952316
+        },
+        {
+          "fullBounds": 0,
+          "passiveExtent": 127,
+          "fitting": 1,
+          "total": 128,
+          "pageMs": 47469.299999952316
+        },
+        {
+          "fullBounds": 0,
+          "passiveExtent": 191,
+          "fitting": 1,
+          "total": 192,
+          "pageMs": 47485.700000047684
+        },
+        {
+          "fullBounds": 0,
+          "passiveExtent": 255,
+          "fitting": 1,
+          "total": 256,
+          "pageMs": 55424.10000014305
+        },
+        {
+          "fullBounds": 0,
+          "passiveExtent": 319,
+          "fitting": 1,
+          "total": 320,
+          "pageMs": 55891.10000014305
+        },
+        {
+          "fullBounds": 0,
+          "passiveExtent": 383,
+          "fitting": 1,
+          "total": 384,
+          "pageMs": 56272.799999952316
+        }
+      ]
+    }
+  },
+  "verification": {
+    "sourceRedPass": 15,
+    "sourceRedFail": 1,
+    "focusedTests": 219,
+    "focusedFiles": 12,
+    "native": {
+      "scroll-native": {
+        "passed": 8,
+        "failed": 0,
+        "skips": 0,
+        "failedCases": [],
+        "reportSha256": "df64bcef204d401326d19342ca28b6eeff3f5af73ba64d34c97218824223e0ca"
+      },
+      "native": {
+        "passed": 0,
+        "failed": 2,
+        "skips": 0,
+        "failedCases": [
+          "zh-cn: native Light/split/mixed acceptance",
+          "en: native Light/split/mixed acceptance"
+        ],
+        "reportSha256": "f3d7711b1a4331b9b464bd5c730299a1d5d4ddcef129d1ad33f26498b3eca754"
+      },
+      "scroll-corner-native": {
+        "passed": 1,
+        "failed": 1,
+        "skips": 0,
+        "failedCases": [
+          "'shadcn' reserves a non-control corner through layout, overflow, focus, and drag transitions"
+        ],
+        "reportSha256": "751273ba82e24e273b8fc692376bdf38a1f80bfbbb1c9f7cfc6ecd2ad004a922"
+      },
+      "accordion-native": {
+        "passed": 4,
+        "failed": 0,
+        "skips": 29,
+        "failedCases": [],
+        "reportSha256": "2c1aa14b309d15ac3535f5e9a08feef260611946387c5fa85186b7c49044b239"
+      },
+      "optics-native": {
+        "passed": 3,
+        "failed": 0,
+        "skips": 1,
+        "failedCases": [],
+        "reportSha256": "fd9442172860f04187001ba6ab8218390c83f0224f01e67c6e5d2bbfac84e440"
+      },
+      "portal-native": {
+        "passed": 5,
+        "failed": 0,
+        "skips": 50,
+        "failedCases": [],
+        "reportSha256": "88a28003856ffdff957251209bf613e60b36ea3249ed064c08c8b0a01395eb51"
+      },
+      "preview-browser": {
+        "passed": 11,
+        "failed": 0,
+        "skips": 13,
+        "failedCases": [],
+        "reportSha256": "f235540dd26a94b701a9f3992b338c1eaad2d20390ffa5a62a136cd068649f69"
+      }
+    },
+    "packages": 47,
+    "pages": 685,
+    "typesExit": 0,
+    "manifestsExit": 0,
+    "finfPolicyExit": 0,
+    "packageBudgetChanges": [
+      {
+        "parent": "ADVISORY adapter-react root: 163734 / 106000 gzip bytes; overBudget=57734; minified=577277 sha256=0661d6d49ca082facd6fb09070651bac3825a39b5caf1b3da031ce26d6d7cdb5",
+        "current": "ADVISORY adapter-react root: 163762 / 106000 gzip bytes; overBudget=57762; minified=577441 sha256=69654062662feb78422f4c258ca95ba33de96c4d6bae8e629c8b81ce78f7f0f6"
+      },
+      {
+        "parent": "ADVISORY adapter-vue root: 162507 / 106000 gzip bytes; overBudget=56507; minified=572527 sha256=fe68c329936bacff374a36205d44f87f3017e9910c3d28d3b6aa010667219cb7",
+        "current": "ADVISORY adapter-vue root: 162544 / 106000 gzip bytes; overBudget=56544; minified=572695 sha256=19927292cac56a4da5e770e4590e4bb49abe29822f0d4879c7da9c62be8c5548"
+      },
+      {
+        "parent": "ADVISORY adapter-web-component root: 195437 / 132000 gzip bytes; overBudget=63437; minified=671176 sha256=7ac8dbeaea5d91207dff7187e3783701823b6b9741367d349e7fbfa5fe32f975",
+        "current": "ADVISORY adapter-web-component root: 195497 / 132000 gzip bytes; overBudget=63497; minified=671343 sha256=e97da598db9bac8aaa750efff2d718cea2f095fa0173b50183bb625a93d28a29"
+      }
+    ],
+    "originalReadyMs": 60000,
+    "originalOuterMs": 150000,
+    "servedPreviews": {
+      "zh-cn": {
+        "bytes": 1862476,
+        "sha256": "131c7665df8b6cb49a61e4b0e4aa217ba5dd165e111804dbe10571075c003cf9",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914154,
+        "sha256": "7f06526496dc87b6a088bbb231d4dc78a5afa30745bad36bbf63e23ddd751d41",
+        "previews": 1268
+      }
+    },
+    "preview": {
+      "head": "946793b2d22afa24a97d27d58ad84748ec0557c3",
+      "tree": "408f58c00fd4102a75f88a7f84eeae10c439caaf",
+      "distHashes": {
+        "zh-cn/index.html": "908de0ea59182c3e70e21c832b3674eedf10f2bb3523c598c95fcf4ca9f69be4",
+        "zh-cn/ui-libraries/shadcn/button/index.html": "d2f6cad9f1b252c0b0cd4ebb1a3ee76fcfe73bdbecb6edba012deb2c475a41f7",
+        "zh-cn/ui-libraries/brutalist/components/button/index.html": "de48d6305f9a8ce240823f1a5603c900e044048d86c00009d4b25e4b4fb7e996"
+      },
+      "sourceCodeExamples": 9,
+      "renderedCodeExamples": 9,
+      "packedHeaderExit": 0,
+      "previewBrowserExit": 0,
+      "selector": "uses real family Popover Triggers|uses the same mobile shell|live available region|keeps Runtime Tabs outside"
+    },
+    "scrollCornerControls": {
+      "scope": "Uncommitted ordinary geometry expectation trial. The four paint checks were soft only in diagnostic copies. Every Shadcn case remains red.",
+      "ordinaryGeometryPatchSha256": "5aaa429b4f71ea84b2a9b6270cf49d034d5e61a19acd467fdc5fb13fee516aa8",
+      "ordinaryGeometrySuiteSha256": "331bf4adb0d844b2b4a77400637c0535261ba248a466ba246438d75188e97b4b",
+      "controls": [
+        {
+          "name": "s4-scroll-corner-parent-control",
+          "servedProductHead": "46739a57faecdaf2366ab4da181d662d04ea6c29",
+          "reportSha256": "4292f3d3a30c2410bd079181c2c0b5613816c9ecaefbebe95b180eba1e77b693",
+          "logSha256": "a174a1f8219fae1cedf253b17bc9aa5113db05516caa802e4f887a85f123e921",
+          "passed": 1,
+          "failed": 1,
+          "assertions": ["expected 1 to be less than or equal to 0.5"],
+          "observations": {}
+        },
+        {
+          "name": "s4-scroll-corner-fixture",
+          "servedProductHead": "946793b2d22afa24a97d27d58ad84748ec0557c3",
+          "reportSha256": "4542c33e9e9e34481638adfe137b86045012af45cf22f3fb896328767820d7a0",
+          "logSha256": "3e9fb6c0b3e594bcb9154a6baf299811b91a319793cfa796f69e9d163534d987",
+          "passed": 1,
+          "failed": 1,
+          "assertions": ["expected '0px' to be '1px' // Object.is equality"],
+          "observations": {}
+        },
+        {
+          "name": "s4-scroll-corner-parent-with-geometry",
+          "servedProductHead": "46739a57faecdaf2366ab4da181d662d04ea6c29",
+          "reportSha256": "7b999226b7dd0d0078a1f0b8a4bab14c0825bf20d5bce818c2a9096348d31d83",
+          "logSha256": "f528b4e956689d4341e203ccc3b5ccfddae94aa3b6830437843a3faa61af4f30",
+          "passed": 1,
+          "failed": 1,
+          "assertions": ["expected '0px' to be '1px' // Object.is equality"],
+          "observations": {}
+        },
+        {
+          "name": "s4-scroll-corner-forced-color-diagnostic",
+          "servedProductHead": "946793b2d22afa24a97d27d58ad84748ec0557c3",
+          "reportSha256": "95b42e16228caefaae12a3935f8ca57eda29b207ae9ba887411aa270980141b2",
+          "logSha256": "c60c4a81656b38ddeb9c5ccf1de23c3c0735ee3cb47caeb4010eb9b81cb83812",
+          "passed": 1,
+          "failed": 1,
+          "assertions": [
+            "expected '0px' to be '1px' // Object.is equality",
+            "expected 159 to be less than or equal to 0.5"
+          ],
+          "observations": {
+            "Scroll forced-color": [
+              {
+                "runtime": "wc",
+                "surface": "rgb(255, 255, 255)",
+                "thumbs": [
+                  {
+                    "background": "rgb(255, 255, 255)",
+                    "borderColor": "rgb(0, 0, 0)",
+                    "borderWidth": "0px",
+                    "borderStyle": "solid",
+                    "display": "block",
+                    "forcedColorAdjust": "auto"
+                  },
+                  {
+                    "background": "rgb(255, 255, 255)",
+                    "borderColor": "rgb(0, 0, 0)",
+                    "borderWidth": "0px",
+                    "borderStyle": "solid",
+                    "display": "block",
+                    "forcedColorAdjust": "auto"
+                  }
+                ]
+              }
+            ],
+            "scroll-corner-minimum-thumb-assertion-failure": [
+              {
+                "family": "shadcn",
+                "runtime": "wc",
+                "nodeTimeOrigin": 1794927077284.866,
+                "nodeNow": 5931.757667,
+                "scope": "Original assertion rectangles; separate earlier reads, not atomic",
+                "rectangles": {
+                  "vertical": {
+                    "x": 830,
+                    "y": 989.5,
+                    "width": 10,
+                    "height": 180
+                  },
+                  "horizontal": {
+                    "x": 522,
+                    "y": 1169.5,
+                    "width": 308,
+                    "height": 10
+                  },
+                  "verticalThumb": {
+                    "x": 832,
+                    "y": 990.5,
+                    "width": 7,
+                    "height": 18
+                  },
+                  "horizontalThumb": {
+                    "x": 523,
+                    "y": 1171.5,
+                    "width": 18,
+                    "height": 7
+                  }
+                },
+                "expectedTrailingEdges": {
+                  "vertical": 1167.5,
+                  "horizontal": 828
+                },
+                "testCheckoutHead": "946793b2d22afa24a97d27d58ad84748ec0557c3"
+              }
+            ],
+            "scroll-corner-minimum-thumb-after-failure": [
+              {
+                "family": "shadcn",
+                "runtime": "wc",
+                "scope": "Post-failure only; viewport, vertical thumb, horizontal thumb; not original assertion evidence",
+                "observations": [
+                  {
+                    "scrollTop": 9810,
+                    "scrollLeft": 9682,
+                    "scrollHeight": 10000,
+                    "scrollWidth": 10000,
+                    "clientHeight": 190,
+                    "clientWidth": 318,
+                    "connected": true,
+                    "browserNow": 1479.7000000476837,
+                    "browserTimeOrigin": 1794927081742.4
+                  },
+                  {
+                    "matches": 1,
+                    "connected": true,
+                    "offset": 0,
+                    "size": 18,
+                    "browserNow": 1476.6000001430511,
+                    "browserTimeOrigin": 1794927081742.4
+                  },
+                  {
+                    "matches": 1,
+                    "connected": true,
+                    "offset": 0,
+                    "size": 18,
+                    "browserNow": 1476.6000001430511,
+                    "browserTimeOrigin": 1794927081742.4
+                  }
+                ],
+                "testCheckoutHead": "946793b2d22afa24a97d27d58ad84748ec0557c3"
+              }
+            ]
+          }
+        },
+        {
+          "name": "s4-scroll-corner-parent-endpoint",
+          "servedProductHead": "46739a57faecdaf2366ab4da181d662d04ea6c29",
+          "reportSha256": "8424cd5ed2fa3f09965f8506c4fee4c6b29f521838a3df51352a2e850ece8d41",
+          "logSha256": "73f139b2bfaac6b0f09f2cf61ce707fca8364db600a724160a5571d434b3a1bf",
+          "passed": 1,
+          "failed": 1,
+          "assertions": [
+            "expected '0px' to be '1px' // Object.is equality",
+            "expected 159 to be less than or equal to 0.5"
+          ],
+          "observations": {
+            "Scroll forced-color": [
+              {
+                "runtime": "wc",
+                "surface": "rgb(255, 255, 255)",
+                "thumbs": [
+                  {
+                    "background": "rgb(255, 255, 255)",
+                    "borderColor": "rgb(0, 0, 0)",
+                    "borderWidth": "0px",
+                    "borderStyle": "solid",
+                    "display": "block",
+                    "forcedColorAdjust": "auto"
+                  },
+                  {
+                    "background": "rgb(255, 255, 255)",
+                    "borderColor": "rgb(0, 0, 0)",
+                    "borderWidth": "0px",
+                    "borderStyle": "solid",
+                    "display": "block",
+                    "forcedColorAdjust": "auto"
+                  }
+                ]
+              }
+            ],
+            "scroll-corner-minimum-thumb-assertion-failure": [
+              {
+                "family": "shadcn",
+                "runtime": "wc",
+                "nodeTimeOrigin": 1794927122012.071,
+                "nodeNow": 6080.268667,
+                "scope": "Original assertion rectangles; separate earlier reads, not atomic",
+                "rectangles": {
+                  "vertical": {
+                    "x": 830,
+                    "y": 989.5,
+                    "width": 10,
+                    "height": 180
+                  },
+                  "horizontal": {
+                    "x": 522,
+                    "y": 1169.5,
+                    "width": 308,
+                    "height": 10
+                  },
+                  "verticalThumb": {
+                    "x": 832,
+                    "y": 990.5,
+                    "width": 7,
+                    "height": 18
+                  },
+                  "horizontalThumb": {
+                    "x": 523,
+                    "y": 1171.5,
+                    "width": 18,
+                    "height": 7
+                  }
+                },
+                "expectedTrailingEdges": {
+                  "vertical": 1167.5,
+                  "horizontal": 828
+                },
+                "testCheckoutHead": "946793b2d22afa24a97d27d58ad84748ec0557c3"
+              }
+            ],
+            "scroll-corner-minimum-thumb-after-failure": [
+              {
+                "family": "shadcn",
+                "runtime": "wc",
+                "scope": "Post-failure only; viewport, vertical thumb, horizontal thumb; not original assertion evidence",
+                "observations": [
+                  {
+                    "scrollTop": 9810,
+                    "scrollLeft": 9682,
+                    "scrollHeight": 10000,
+                    "scrollWidth": 10000,
+                    "clientHeight": 190,
+                    "clientWidth": 318,
+                    "connected": true,
+                    "browserNow": 1596.3000001907349,
+                    "browserTimeOrigin": 1794927126504.1
+                  },
+                  {
+                    "matches": 1,
+                    "connected": true,
+                    "offset": 160,
+                    "size": 18,
+                    "browserNow": 1592.3000001907349,
+                    "browserTimeOrigin": 1794927126504.1
+                  },
+                  {
+                    "matches": 1,
+                    "connected": true,
+                    "offset": 288,
+                    "size": 18,
+                    "browserNow": 1594.5,
+                    "browserTimeOrigin": 1794927126504.1
+                  }
+                ],
+                "testCheckoutHead": "946793b2d22afa24a97d27d58ad84748ec0557c3"
+              }
+            ]
+          }
+        },
+        {
+          "name": "s4-scroll-corner-scroll-delivery",
+          "servedProductHead": "946793b2d22afa24a97d27d58ad84748ec0557c3",
+          "reportSha256": "a61103f3dec55d1e56f9d09dc031996657f3019b0f46e34341c54043c18a39ba",
+          "logSha256": "95c5fa257c1d6b12cfea5ff7803a6f9a66fdf70f7efba96b6c870c37d672c64c",
+          "passed": 1,
+          "failed": 1,
+          "assertions": [
+            "expected '0px' to be '1px' // Object.is equality",
+            "expected 1 to be less than or equal to 0.5"
+          ],
+          "observations": {
+            "Scroll forced-color": [
+              {
+                "runtime": "wc",
+                "surface": "rgb(255, 255, 255)",
+                "thumbs": [
+                  {
+                    "background": "rgb(255, 255, 255)",
+                    "borderColor": "rgb(0, 0, 0)",
+                    "borderWidth": "0px",
+                    "borderStyle": "solid",
+                    "display": "block",
+                    "forcedColorAdjust": "auto"
+                  },
+                  {
+                    "background": "rgb(255, 255, 255)",
+                    "borderColor": "rgb(0, 0, 0)",
+                    "borderWidth": "0px",
+                    "borderStyle": "solid",
+                    "display": "block",
+                    "forcedColorAdjust": "auto"
+                  }
+                ]
+              }
+            ],
+            "scroll-corner-minimum-thumb-assertion-failure": [
+              {
+                "family": "shadcn",
+                "runtime": "wc",
+                "nodeTimeOrigin": 1794927202506.402,
+                "nodeNow": 5874.183583,
+                "scope": "Original assertion rectangles; separate earlier reads, not atomic",
+                "rectangles": {
+                  "vertical": {
+                    "x": 830,
+                    "y": 989.5,
+                    "width": 10,
+                    "height": 180
+                  },
+                  "horizontal": {
+                    "x": 522,
+                    "y": 1169.5,
+                    "width": 308,
+                    "height": 10
+                  },
+                  "verticalThumb": {
+                    "x": 832,
+                    "y": 1150.5,
+                    "width": 7,
+                    "height": 18
+                  },
+                  "horizontalThumb": {
+                    "x": 811,
+                    "y": 1171.5,
+                    "width": 18,
+                    "height": 7
+                  }
+                },
+                "expectedTrailingEdges": {
+                  "vertical": 1167.5,
+                  "horizontal": 828
+                },
+                "testCheckoutHead": "946793b2d22afa24a97d27d58ad84748ec0557c3"
+              }
+            ],
+            "scroll-corner-minimum-thumb-after-failure": [
+              {
+                "family": "shadcn",
+                "runtime": "wc",
+                "scope": "Post-failure only; viewport, vertical thumb, horizontal thumb; not original assertion evidence",
+                "observations": [
+                  {
+                    "scrollTop": 9810,
+                    "scrollLeft": 9682,
+                    "scrollHeight": 10000,
+                    "scrollWidth": 10000,
+                    "clientHeight": 190,
+                    "clientWidth": 318,
+                    "connected": true,
+                    "browserNow": 1493.2999999523163,
+                    "browserTimeOrigin": 1794927206890.2
+                  },
+                  {
+                    "matches": 1,
+                    "connected": true,
+                    "offset": 160,
+                    "size": 18,
+                    "browserNow": 1492.5999999046326,
+                    "browserTimeOrigin": 1794927206890.2
+                  },
+                  {
+                    "matches": 1,
+                    "connected": true,
+                    "offset": 288,
+                    "size": 18,
+                    "browserNow": 1492.7000000476837,
+                    "browserTimeOrigin": 1794927206890.2
+                  }
+                ],
+                "testCheckoutHead": "946793b2d22afa24a97d27d58ad84748ec0557c3"
+              }
+            ],
+            "Scroll delivery around endpoint": [
+              [
+                {
+                  "phase": "before-request",
+                  "browserNow": 1477.5999999046326,
+                  "browserTimeOrigin": 1794927206890.2,
+                  "scrollTop": 0,
+                  "scrollLeft": 0,
+                  "offsets": ["0px", "0px"]
+                },
+                {
+                  "phase": "after-request",
+                  "browserNow": 1477.7000000476837,
+                  "browserTimeOrigin": 1794927206890.2,
+                  "scrollTop": 9810,
+                  "scrollLeft": 9682,
+                  "offsets": ["0px", "0px"]
+                },
+                {
+                  "phase": "scroll-capture",
+                  "browserNow": 1480.8999998569489,
+                  "browserTimeOrigin": 1794927206890.2,
+                  "scrollTop": 9810,
+                  "scrollLeft": 9682,
+                  "offsets": ["0px", "0px"]
+                },
+                {
+                  "phase": "scroll-microtask",
+                  "browserNow": 1480.8999998569489,
+                  "browserTimeOrigin": 1794927206890.2,
+                  "scrollTop": 9810,
+                  "scrollLeft": 9682,
+                  "offsets": ["0px", "0px"]
+                },
+                {
+                  "phase": "scroll-listener",
+                  "browserNow": 1482.7000000476837,
+                  "browserTimeOrigin": 1794927206890.2,
+                  "scrollTop": 9810,
+                  "scrollLeft": 9682,
+                  "offsets": ["160px", "288px"]
+                },
+                {
+                  "phase": "rendering-tick",
+                  "browserNow": 1482.7000000476837,
+                  "browserTimeOrigin": 1794927206890.2,
+                  "scrollTop": 9810,
+                  "scrollLeft": 9682,
+                  "offsets": ["160px", "288px"]
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "header": {
+      "head": "946793b2d22afa24a97d27d58ad84748ec0557c3",
+      "browser": "156.0.8078.79",
+      "scope": "First animation frame control on the exact static Astro preview. Geometry reads can force layout.",
+      "results": [
+        {
+          "width": 320,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1556.4000000953674,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1674.9000000953674,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1699.2000000476837,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        },
+        {
+          "width": 390,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1506.2000000476837,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1623.0999999046326,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1650,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        }
+      ]
+    }
+  }
+}
