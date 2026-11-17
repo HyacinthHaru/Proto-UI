@@ -100,6 +100,15 @@ function resize() {
   }
 }
 describe('bounded visible Previewer source layout', () => {
+  it('initializes the visible backdrop without a second refresh', () => {
+    const scene = createPreviewMaterialScene(document.body);
+    cleanups.push(() => scene.dispose());
+    const source = scene.lease.current();
+    expect(source).toMatchObject({ width: 420, height: 104 });
+    const reads = vi.mocked(Element.prototype.getBoundingClientRect).mock.contexts;
+    expect(reads.filter((target) => target === source!.canvas)).toHaveLength(2);
+  });
+
   it('owns scene spacing without a second centered preview reserve or outside overrides', () => {
     const parent = document.createElement('div');
     parent.style.setProperty('--runtime-box-content-min', '10rem');

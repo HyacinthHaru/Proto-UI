@@ -395,7 +395,6 @@ function createScene(
       refresh();
     };
     releases.push(() => resolution?.removeEventListener('change', resolutionChanged));
-    resolutionChanged();
     const scheme = win.matchMedia?.('(prefers-color-scheme: dark)');
     scheme?.addEventListener('change', refresh);
     releases.push(() => scheme?.removeEventListener('change', refresh));
@@ -405,7 +404,7 @@ function createScene(
     releases.push(() => doc.removeEventListener('visibilitychange', refresh));
     win.addEventListener('resize', refresh);
     releases.push(() => win.removeEventListener('resize', refresh));
-    refresh();
+    resolutionChanged();
     return {
       mount,
       scope,
