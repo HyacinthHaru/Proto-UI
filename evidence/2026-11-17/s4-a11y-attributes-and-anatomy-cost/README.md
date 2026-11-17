@@ -1,0 +1,15 @@
+# S4 A11y attribute writes and Anatomy startup observations
+
+## Built Matrix
+
+Signed composition `f995aa53e525f3bf35d83d64dbd99b4d686685d1` adds the two Scroll changes to `15731928`. It built all 47 public packages, passed workspace types and manifest checks, and completed the Finf size command with six advisory excesses under the existing numbers. The original zh-cn and en browser cases each served 1,268 previews from verified static build bytes. Both reached the 150-second outer guard before any Dialog interaction. The original 60-second readiness and 150-second outer guards were preserved. Post-verdict collection was rejected after browser context closure. No page or console errors were delivered.
+
+A separate Chinese diagnostic used the same served HTML with one temporarily instrumented emitted script and a runner console stream. It reached the same 150-second outer guard. The last structure checkpoint covered 8,192 calls at page time 70.513 s. It recorded 1.3 ms in prune, 3,610.4 ms in ordering and 8,772.1 ms in target notification. The last target checkpoint covered 32,768 calls at page time 119.284 s. It recorded 10,762 requests for the scoped path, 17,149.7 ms under those requests, and 32,537.6 ms under the family path. These are inclusive, overlapping cumulative times sampled at powers of two. The requested scope does not prove that a particular dispatch narrowed, and the two timers cannot be added into a total page cost. The source and build asset were restored byte-for-byte after the diagnostic.
+
+## A11y and Label
+
+Signed local A11y change `a4c1b5b2` keeps already-matching non-ID projection attributes in place. The regression fails on the original write path and all 122 focused A11y cases pass with the fix. An isolated four-arm run in Chrome 156.0.8078.79 records three matching attribute writes in each original arm and zero in each fixed arm. Each arm applies subsequent changed values and restores the initial attributes on disposal. These counts come from an isolated fixture.
+
+The original native Label suite fails on the 1-second input append assertion. The WC and React Base cases reproduce on the unmodified production A11y file. On the original Label page, trusted End events reach the input without cancellation and the selection remains at zero through the first beforeinput event. The bare Chromium input control moves the caret on End. The test-only follow-up uses Darwin's Meta+ArrowRight for the input and Meta+ArrowDown for the textarea. Both sampled original-production cases pass with that fixture correction, and all 12 candidate cases pass across three families and four adapters with the existing assertions and deadlines. The unedited screenshot shows text and textarea edit results in the Base WC case.
+
+The next composition `d288a27d` adds only the A11y patch to the built comparison. A whole-file preflight caught existing A11y differences between the two bases. Exact changed paths and stable patch identity match, and the actual composed file hashes are recorded separately. The Label fixture change is separate. Bilingual Matrix results are pending at publication.

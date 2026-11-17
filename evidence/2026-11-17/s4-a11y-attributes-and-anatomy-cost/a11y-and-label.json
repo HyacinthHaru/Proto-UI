@@ -1,0 +1,486 @@
+{
+  "a11y": {
+    "source": {
+      "head": "a4c1b5b27b2c84c57ba84297ffa32a393881caa5",
+      "tree": "a03e59c3a3e2463d8601c2a7c70fd475d649dd09",
+      "parent": "7497a49047728a6668b154b887c6a8421ece763f",
+      "signature": "G"
+    },
+    "sha256": {
+      "packages/modules/a11y/src/web.ts": "3ead65f1da0f1370695ec64ee9a28078bcdab02ecd7f99a5fa0fb8bec4292864",
+      "packages/modules/a11y/test/web-reference.test.ts": "bc5d74f0face7c539c09d77d1492a9bee02b0afbd948bc0460de38d50f9097ac"
+    },
+    "redExit": 1,
+    "redLogSHA256": "9c811c385baa6cb0381e9742c1e272553da1515d209aee18e784462417ae91b1",
+    "focused": {
+      "sha256": "795ddfc35f95198b35cf015ad0c7945f2d8fbc051cbb2015c929130c11f3a7eb",
+      "totals": {
+        "numTotalTests": 122,
+        "numPassedTests": 122,
+        "numFailedTests": 0,
+        "numPendingTests": 0,
+        "numPassedTestSuites": 17
+      }
+    },
+    "nativeScalar": {
+      "chrome": "156.0.8078.79",
+      "beforeSHA256": "a2681b6e92d432c9c5972d6ddcc0518541a102c0c609b8b0903a5ca4bbc4fd76",
+      "afterSHA256": "3ead65f1da0f1370695ec64ee9a28078bcdab02ecd7f99a5fa0fb8bec4292864",
+      "rows": [
+        {
+          "arm": "before",
+          "matchingWrites": ["role", "aria-label", "aria-hidden"],
+          "applied": ["link", "New name", "true", true],
+          "restored": ["button", "Search", "false", false]
+        },
+        {
+          "arm": "after",
+          "matchingWrites": [],
+          "applied": ["link", "New name", "true", true],
+          "restored": ["button", "Search", "false", false]
+        },
+        {
+          "arm": "after",
+          "matchingWrites": [],
+          "applied": ["link", "New name", "true", true],
+          "restored": ["button", "Search", "false", false]
+        },
+        {
+          "arm": "before",
+          "matchingWrites": ["role", "aria-label", "aria-hidden"],
+          "applied": ["link", "New name", "true", true],
+          "restored": ["button", "Search", "false", false]
+        }
+      ]
+    }
+  },
+  "label": {
+    "fixture": {
+      "head": "72bf63e60165481b1f02c7d614878ae2accbac10",
+      "tree": "08e87d66e330ef6d80270cadc5bbe8548d6205de",
+      "parent": "a4c1b5b27b2c84c57ba84297ffa32a393881caa5",
+      "signature": "G"
+    },
+    "sha256": {
+      "apps/www/src/content/docs/zh-cn/demo-control-label.browser.test.ts": "983ff51086c5c212cfed2f0a4a900907fa34d5fba80f79378941d9a9b3190b3e"
+    },
+    "originalSafetyMs": 1000,
+    "actualEvents": [
+      {
+        "type": "keydown",
+        "capture": true,
+        "key": "End",
+        "trusted": true,
+        "defaultPrevented": false,
+        "target": "input",
+        "editor": "input",
+        "start": 0,
+        "end": 0,
+        "pageMs": 1815.5
+      },
+      {
+        "type": "keydown",
+        "capture": false,
+        "key": "End",
+        "trusted": true,
+        "defaultPrevented": false,
+        "target": "input",
+        "editor": "input",
+        "start": 0,
+        "end": 0,
+        "pageMs": 1815.6000001430511
+      },
+      {
+        "type": "keyup",
+        "capture": true,
+        "key": "End",
+        "trusted": true,
+        "defaultPrevented": false,
+        "target": "input",
+        "editor": "input",
+        "start": 0,
+        "end": 0,
+        "pageMs": 1816.3000001907349
+      },
+      {
+        "type": "keyup",
+        "capture": false,
+        "key": "End",
+        "trusted": true,
+        "defaultPrevented": false,
+        "target": "input",
+        "editor": "input",
+        "start": 0,
+        "end": 0,
+        "pageMs": 1816.3000001907349
+      },
+      {
+        "type": "keydown",
+        "capture": true,
+        "key": " ",
+        "trusted": true,
+        "defaultPrevented": false,
+        "target": "input",
+        "editor": "input",
+        "start": 0,
+        "end": 0,
+        "pageMs": 1817
+      },
+      {
+        "type": "keydown",
+        "capture": false,
+        "key": " ",
+        "trusted": true,
+        "defaultPrevented": false,
+        "target": "input",
+        "editor": "input",
+        "start": 0,
+        "end": 0,
+        "pageMs": 1817
+      }
+    ],
+    "tracedRunExit": 1,
+    "rawTraceSHA256": "b83efe4cc2b046a4f9e5d4e3889f8cd68217e21ddc71308edd4c3508908b1169",
+    "testedDarwinKeys": {
+      "input": "Meta+ArrowRight",
+      "textarea": "Meta+ArrowDown"
+    },
+    "originalCandidate": {
+      "sha256": "4e4bfb44b07d01a2dc96d6b58aa806b49f21e78928d7488c8ca4e126901f9e3a",
+      "totals": {
+        "numTotalTests": 12,
+        "numPassedTests": 0,
+        "numFailedTests": 12,
+        "numPendingTests": 0,
+        "numPassedTestSuites": 0
+      },
+      "cases": [
+        {
+          "name": "Independent Label public consumer journeys 'base' 'wc' names five real target types and preserves their operation owners",
+          "status": "failed",
+          "duration": 3183.308584000006,
+          "firstMessages": ["Error: Matcher did not succeed in 1000ms"]
+        },
+        {
+          "name": "Independent Label public consumer journeys 'base' 'react' names five real target types and preserves their operation owners",
+          "status": "failed",
+          "duration": 2726.070749999999,
+          "firstMessages": ["Error: Matcher did not succeed in 1000ms"]
+        },
+        {
+          "name": "Independent Label public consumer journeys 'base' 'vue' names five real target types and preserves their operation owners",
+          "status": "failed",
+          "duration": 2672.2594580000004,
+          "firstMessages": ["Error: Matcher did not succeed in 1000ms"]
+        },
+        {
+          "name": "Independent Label public consumer journeys 'base' 'vue2' names five real target types and preserves their operation owners",
+          "status": "failed",
+          "duration": 2625.657874999997,
+          "firstMessages": ["Error: Matcher did not succeed in 1000ms"]
+        },
+        {
+          "name": "Independent Label public consumer journeys 'shadcn' 'wc' names five real target types and preserves their operation owners",
+          "status": "failed",
+          "duration": 2734.991915999999,
+          "firstMessages": ["Error: Matcher did not succeed in 1000ms"]
+        },
+        {
+          "name": "Independent Label public consumer journeys 'shadcn' 'react' names five real target types and preserves their operation owners",
+          "status": "failed",
+          "duration": 2902.884125000004,
+          "firstMessages": ["Error: Matcher did not succeed in 1000ms"]
+        },
+        {
+          "name": "Independent Label public consumer journeys 'shadcn' 'vue' names five real target types and preserves their operation owners",
+          "status": "failed",
+          "duration": 2857.9342499999984,
+          "firstMessages": ["Error: Matcher did not succeed in 1000ms"]
+        },
+        {
+          "name": "Independent Label public consumer journeys 'shadcn' 'vue2' names five real target types and preserves their operation owners",
+          "status": "failed",
+          "duration": 2918.676707999999,
+          "firstMessages": ["Error: Matcher did not succeed in 1000ms"]
+        },
+        {
+          "name": "Independent Label public consumer journeys 'brutalist' 'wc' names five real target types and preserves their operation owners",
+          "status": "failed",
+          "duration": 2672.1094999999987,
+          "firstMessages": ["Error: Matcher did not succeed in 1000ms"]
+        },
+        {
+          "name": "Independent Label public consumer journeys 'brutalist' 'react' names five real target types and preserves their operation owners",
+          "status": "failed",
+          "duration": 2775.0091660000035,
+          "firstMessages": ["Error: Matcher did not succeed in 1000ms"]
+        },
+        {
+          "name": "Independent Label public consumer journeys 'brutalist' 'vue' names five real target types and preserves their operation owners",
+          "status": "failed",
+          "duration": 2742.6040000000066,
+          "firstMessages": ["Error: Matcher did not succeed in 1000ms"]
+        },
+        {
+          "name": "Independent Label public consumer journeys 'brutalist' 'vue2' names five real target types and preserves their operation owners",
+          "status": "failed",
+          "duration": 2745.7866670000076,
+          "firstMessages": ["Error: Matcher did not succeed in 1000ms"]
+        }
+      ]
+    },
+    "originalBaseline": {
+      "sha256": "d77e99f352ba6e68292fba78ce00d42c9c2bba5b868b1bcdb10ca275ab3e1dff",
+      "totals": {
+        "numTotalTests": 12,
+        "numPassedTests": 0,
+        "numFailedTests": 2,
+        "numPendingTests": 10,
+        "numPassedTestSuites": 0
+      },
+      "cases": [
+        {
+          "name": "Independent Label public consumer journeys 'base' 'wc' names five real target types and preserves their operation owners",
+          "status": "failed",
+          "duration": 3137.0265,
+          "firstMessages": ["Error: Matcher did not succeed in 1000ms"]
+        },
+        {
+          "name": "Independent Label public consumer journeys 'base' 'react' names five real target types and preserves their operation owners",
+          "status": "failed",
+          "duration": 2754.8724590000056,
+          "firstMessages": ["Error: Matcher did not succeed in 1000ms"]
+        },
+        {
+          "name": "Independent Label public consumer journeys 'base' 'vue' names five real target types and preserves their operation owners",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'base' 'vue2' names five real target types and preserves their operation owners",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'shadcn' 'wc' names five real target types and preserves their operation owners",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'shadcn' 'react' names five real target types and preserves their operation owners",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'shadcn' 'vue' names five real target types and preserves their operation owners",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'shadcn' 'vue2' names five real target types and preserves their operation owners",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'brutalist' 'wc' names five real target types and preserves their operation owners",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'brutalist' 'react' names five real target types and preserves their operation owners",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'brutalist' 'vue' names five real target types and preserves their operation owners",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'brutalist' 'vue2' names five real target types and preserves their operation owners",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        }
+      ]
+    },
+    "correctedBaseline": {
+      "sha256": "080c55bd2d93c229d1313ce55fb896a029cee6575941c964da931e06e25e0740",
+      "totals": {
+        "numTotalTests": 12,
+        "numPassedTests": 2,
+        "numFailedTests": 0,
+        "numPendingTests": 10,
+        "numPassedTestSuites": 2
+      },
+      "cases": [
+        {
+          "name": "Independent Label public consumer journeys 'base' 'wc' names five real target types and preserves their operation owners",
+          "status": "passed",
+          "duration": 4607.740459000001,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'base' 'react' names five real target types and preserves their operation owners",
+          "status": "passed",
+          "duration": 3951.0961250000037,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'base' 'vue' names five real target types and preserves their operation owners",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'base' 'vue2' names five real target types and preserves their operation owners",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'shadcn' 'wc' names five real target types and preserves their operation owners",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'shadcn' 'react' names five real target types and preserves their operation owners",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'shadcn' 'vue' names five real target types and preserves their operation owners",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'shadcn' 'vue2' names five real target types and preserves their operation owners",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'brutalist' 'wc' names five real target types and preserves their operation owners",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'brutalist' 'react' names five real target types and preserves their operation owners",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'brutalist' 'vue' names five real target types and preserves their operation owners",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'brutalist' 'vue2' names five real target types and preserves their operation owners",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        }
+      ]
+    },
+    "correctedCandidate": {
+      "sha256": "588c7aa41a331f0c24b2a7c54fb23d5cbcfdec4082d8281ac22d39ea58f4e7ec",
+      "totals": {
+        "numTotalTests": 12,
+        "numPassedTests": 12,
+        "numFailedTests": 0,
+        "numPendingTests": 0,
+        "numPassedTestSuites": 2
+      },
+      "cases": [
+        {
+          "name": "Independent Label public consumer journeys 'base' 'wc' names five real target types and preserves their operation owners",
+          "status": "passed",
+          "duration": 4587.499541999998,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'base' 'react' names five real target types and preserves their operation owners",
+          "status": "passed",
+          "duration": 3954.3907919999983,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'base' 'vue' names five real target types and preserves their operation owners",
+          "status": "passed",
+          "duration": 3926.8577499999956,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'base' 'vue2' names five real target types and preserves their operation owners",
+          "status": "passed",
+          "duration": 3843.796374999998,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'shadcn' 'wc' names five real target types and preserves their operation owners",
+          "status": "passed",
+          "duration": 4332.239874999999,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'shadcn' 'react' names five real target types and preserves their operation owners",
+          "status": "passed",
+          "duration": 4376.033457999998,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'shadcn' 'vue' names five real target types and preserves their operation owners",
+          "status": "passed",
+          "duration": 4264.384916999996,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'shadcn' 'vue2' names five real target types and preserves their operation owners",
+          "status": "passed",
+          "duration": 4422.5534999999945,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'brutalist' 'wc' names five real target types and preserves their operation owners",
+          "status": "passed",
+          "duration": 4222.105041999996,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'brutalist' 'react' names five real target types and preserves their operation owners",
+          "status": "passed",
+          "duration": 4213.367459000001,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'brutalist' 'vue' names five real target types and preserves their operation owners",
+          "status": "passed",
+          "duration": 4150.779541999989,
+          "firstMessages": []
+        },
+        {
+          "name": "Independent Label public consumer journeys 'brutalist' 'vue2' names five real target types and preserves their operation owners",
+          "status": "passed",
+          "duration": 4199.5665420000005,
+          "firstMessages": []
+        }
+      ]
+    },
+    "typesExit": 0
+  }
+}

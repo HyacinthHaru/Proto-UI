@@ -1,0 +1,495 @@
+{
+  "source": {
+    "head": "f995aa53e525f3bf35d83d64dbd99b4d686685d1",
+    "tree": "e5433e056055ceabbfb592a82cfdce872ab03ad9",
+    "parent": "6ac56a795a6b0ab8a75b58680a669e3c80963c9a",
+    "signature": "G"
+  },
+  "sha256": {
+    "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "e6590db342bddc56b37fa367ce6b1cc519130cdb201e06e8d14061569d5e0317",
+    "apps/www/dist/zh-cn/internal/demo-matrix/index.html": "9ba6f2ada2014b5f7a6a86a539b236397149bf16813bf2a441413eec7127e095",
+    "apps/www/dist/en/internal/demo-matrix/index.html": "e6a881a335f35b2f1e266d172445cd4517874e88d05bd9cbdcfb3f41cd1ba2cc"
+  },
+  "pages": {
+    "zh-cn": {
+      "bytes": 1862454,
+      "sha256": "9ba6f2ada2014b5f7a6a86a539b236397149bf16813bf2a441413eec7127e095",
+      "previews": 1268
+    },
+    "en": {
+      "bytes": 1914083,
+      "sha256": "e6a881a335f35b2f1e266d172445cd4517874e88d05bd9cbdcfb3f41cd1ba2cc",
+      "previews": 1268
+    }
+  },
+  "guardsMs": {
+    "readiness": 60000,
+    "case": 150000
+  },
+  "original": {
+    "exit": 1,
+    "tests": {
+      "sha256": "4343d362a7b97478ccc44ff1c08459514a360b0eddb68454e8cb330aad5f9333",
+      "totals": {
+        "numTotalTests": 2,
+        "numPassedTests": 0,
+        "numFailedTests": 2,
+        "numPendingTests": 0,
+        "numPassedTestSuites": 0
+      },
+      "cases": [
+        {
+          "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+          "status": "failed",
+          "duration": 150529.654667,
+          "firstMessages": ["Error: Test timed out in 150000ms."]
+        },
+        {
+          "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+          "status": "failed",
+          "duration": 150526.333875,
+          "firstMessages": ["Error: Test timed out in 150000ms."]
+        }
+      ]
+    },
+    "startup": {
+      "zh-cn": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      },
+      "en": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      }
+    }
+  },
+  "anatomyDiagnostic": {
+    "binding": {
+      "file": "site-shadcn-controls.so7_Xi1Q.js",
+      "inputSHA256": "0d318721677fec158e39c6e61cf1ab21a791fc8917d9d027ef7af00300fdc896",
+      "outputSHA256": "ec994a3757145889b0a212fa7ba2592e15f2fd1e7c700aa6edcc8d6d7c1353f4"
+    },
+    "browserSideCumulativeCheckpoints": [
+      {
+        "receivedNodeMs": 1382.244042,
+        "locale": "zh-cn",
+        "phase": "goto",
+        "kind": "target",
+        "calls": 1,
+        "requestedScope": 0,
+        "requestedScopeMs": 0,
+        "familyPathMs": 0,
+        "pageMs": 234.5,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 1382.458959,
+        "locale": "zh-cn",
+        "phase": "goto",
+        "kind": "target",
+        "calls": 2,
+        "requestedScope": 0,
+        "requestedScopeMs": 0,
+        "familyPathMs": 0,
+        "pageMs": 235.89999985694885,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 1384.449042,
+        "locale": "zh-cn",
+        "phase": "goto",
+        "kind": "structure",
+        "calls": 1,
+        "pruneMs": 0,
+        "orderingMs": 0,
+        "targetMs": 0,
+        "pageMs": 238.29999995231628,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 1385.011417,
+        "locale": "zh-cn",
+        "phase": "goto",
+        "kind": "target",
+        "calls": 4,
+        "requestedScope": 1,
+        "requestedScopeMs": 0,
+        "familyPathMs": 0,
+        "pageMs": 238.79999995231628,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 1393.337,
+        "locale": "zh-cn",
+        "phase": "goto",
+        "kind": "structure",
+        "calls": 2,
+        "pruneMs": 0,
+        "orderingMs": 0,
+        "targetMs": 0,
+        "pageMs": 246.39999985694885,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 1393.685417,
+        "locale": "zh-cn",
+        "phase": "goto",
+        "kind": "target",
+        "calls": 8,
+        "requestedScope": 2,
+        "requestedScopeMs": 0,
+        "familyPathMs": 0,
+        "pageMs": 246.69999980926514,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 1397.078959,
+        "locale": "zh-cn",
+        "phase": "goto",
+        "kind": "structure",
+        "calls": 4,
+        "pruneMs": 0,
+        "orderingMs": 0.20000028610229492,
+        "targetMs": 0,
+        "pageMs": 250.79999995231628,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 1397.308084,
+        "locale": "zh-cn",
+        "phase": "goto",
+        "kind": "target",
+        "calls": 16,
+        "requestedScope": 4,
+        "requestedScopeMs": 0,
+        "familyPathMs": 0,
+        "pageMs": 250.89999985694885,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 1413.115209,
+        "locale": "zh-cn",
+        "phase": "goto",
+        "kind": "structure",
+        "calls": 8,
+        "pruneMs": 0,
+        "orderingMs": 0.20000028610229492,
+        "targetMs": 0,
+        "pageMs": 266.69999980926514,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 1413.391792,
+        "locale": "zh-cn",
+        "phase": "goto",
+        "kind": "target",
+        "calls": 32,
+        "requestedScope": 8,
+        "requestedScopeMs": 0,
+        "familyPathMs": 0.09999990463256836,
+        "pageMs": 266.7999999523163,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 1425.535375,
+        "locale": "zh-cn",
+        "phase": "goto",
+        "kind": "structure",
+        "calls": 16,
+        "pruneMs": 0,
+        "orderingMs": 1.3000006675720215,
+        "targetMs": 0,
+        "pageMs": 279,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 1425.758292,
+        "locale": "zh-cn",
+        "phase": "goto",
+        "kind": "target",
+        "calls": 64,
+        "requestedScope": 16,
+        "requestedScopeMs": 0,
+        "familyPathMs": 0.09999990463256836,
+        "pageMs": 279.2999999523163,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 1433.155292,
+        "locale": "zh-cn",
+        "phase": "goto",
+        "kind": "structure",
+        "calls": 32,
+        "pruneMs": 0,
+        "orderingMs": 2.2000012397766113,
+        "targetMs": 0,
+        "pageMs": 286.7999999523163,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 1499.092584,
+        "locale": "zh-cn",
+        "phase": "goto",
+        "kind": "target",
+        "calls": 128,
+        "requestedScope": 28,
+        "requestedScopeMs": 0,
+        "familyPathMs": 0.09999990463256836,
+        "pageMs": 351.19999980926514,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 1523.656084,
+        "locale": "zh-cn",
+        "phase": "goto",
+        "kind": "structure",
+        "calls": 64,
+        "pruneMs": 0,
+        "orderingMs": 3.100001811981201,
+        "targetMs": 0.40000033378601074,
+        "pageMs": 377.19999980926514,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 2301.114292,
+        "locale": "zh-cn",
+        "phase": "goto",
+        "kind": "target",
+        "calls": 256,
+        "requestedScope": 54,
+        "requestedScopeMs": 0.20000004768371582,
+        "familyPathMs": 1.0000004768371582,
+        "pageMs": 1154.6999998092651,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 3113.951792,
+        "locale": "zh-cn",
+        "phase": "goto",
+        "kind": "structure",
+        "calls": 128,
+        "pruneMs": 0,
+        "orderingMs": 4.900002479553223,
+        "targetMs": 1.8000009059906006,
+        "pageMs": 1967.6999998092651,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 4677.803709,
+        "locale": "zh-cn",
+        "phase": "goto",
+        "kind": "target",
+        "calls": 512,
+        "requestedScope": 178,
+        "requestedScopeMs": 8.000000238418579,
+        "familyPathMs": 5.600000858306885,
+        "pageMs": 3531.2999999523163,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 8535.023042,
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "kind": "structure",
+        "calls": 256,
+        "pruneMs": 0,
+        "orderingMs": 16.300002813339233,
+        "targetMs": 10.800001382827759,
+        "pageMs": 7388.699999809265,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 9823.700042,
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "kind": "target",
+        "calls": 1024,
+        "requestedScope": 341,
+        "requestedScopeMs": 19.6999990940094,
+        "familyPathMs": 11.200001001358032,
+        "pageMs": 8677.5,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 10802.897667,
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "kind": "structure",
+        "calls": 512,
+        "pruneMs": 0,
+        "orderingMs": 27.600003004074097,
+        "targetMs": 18.80000138282776,
+        "pageMs": 9656.799999952316,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 11716.489584,
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "kind": "target",
+        "calls": 2048,
+        "requestedScope": 572,
+        "requestedScopeMs": 51.79999804496765,
+        "familyPathMs": 173.2000014781952,
+        "pageMs": 10570.099999904633,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 12915.2445,
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "kind": "structure",
+        "calls": 1024,
+        "pruneMs": 0,
+        "orderingMs": 76.50000500679016,
+        "targetMs": 168.80000042915344,
+        "pageMs": 11769,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 14451.499959,
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "kind": "target",
+        "calls": 4096,
+        "requestedScope": 1329,
+        "requestedScopeMs": 134.69999766349792,
+        "familyPathMs": 272.60000228881836,
+        "pageMs": 13305.099999904633,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 15226.150167,
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "kind": "structure",
+        "calls": 2048,
+        "pruneMs": 0.19999980926513672,
+        "orderingMs": 268.4000024795532,
+        "targetMs": 225.9000005722046,
+        "pageMs": 14079.899999856949,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 20620.097542,
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "kind": "target",
+        "calls": 8192,
+        "requestedScope": 2539,
+        "requestedScopeMs": 357.69999647140503,
+        "familyPathMs": 682.3000028133392,
+        "pageMs": 19473.799999952316,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 25801.008375,
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "kind": "structure",
+        "calls": 4096,
+        "pruneMs": 0.39999985694885254,
+        "orderingMs": 1476.8999996185303,
+        "targetMs": 905.0000033378601,
+        "pageMs": 24654.699999809265,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 50698.679667,
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "kind": "target",
+        "calls": 16384,
+        "requestedScope": 5009,
+        "requestedScopeMs": 2971.7000002861023,
+        "familyPathMs": 6597.500004291534,
+        "pageMs": 49549.59999990463,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 71660.061292,
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "kind": "structure",
+        "calls": 8192,
+        "pruneMs": 1.3000001907348633,
+        "orderingMs": 3610.3999979496,
+        "targetMs": 8772.100009202957,
+        "pageMs": 70512.69999980927,
+        "timeOrigin": 1794889152703.9
+      },
+      {
+        "receivedNodeMs": 120433.092209,
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "kind": "target",
+        "calls": 32768,
+        "requestedScope": 10762,
+        "requestedScopeMs": 17149.699996471405,
+        "familyPathMs": 32537.600006103516,
+        "pageMs": 119284.29999995232,
+        "timeOrigin": 1794889152703.9
+      }
+    ],
+    "runnerOverlaySHA256": "f4dfdc5a855a801dbdb35f05d6d1f669eba23af4c0bfd169cd41c4b5eaa4b65f",
+    "sourceOverlaySHA256": "8466ad912cb6542733ac20aec211903ad76eabe259f1578030c2661536f06792",
+    "rawLogSHA256": "b4a5f00995fcca80e7b1ed1aba70660760203756adc256e7507a58ea1288569c",
+    "exit": 1,
+    "tests": {
+      "sha256": "7f8a99b575be9a20b21c37e6f9f9d85c2936f0e679848c1c7486ae97627ae74a",
+      "totals": {
+        "numTotalTests": 2,
+        "numPassedTests": 0,
+        "numFailedTests": 1,
+        "numPendingTests": 1,
+        "numPassedTestSuites": 0
+      },
+      "cases": [
+        {
+          "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+          "status": "failed",
+          "duration": 150611.517917,
+          "firstMessages": ["Error: Test timed out in 150000ms."]
+        },
+        {
+          "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        }
+      ]
+    },
+    "startup": {
+      "startupPassed": false,
+      "collectionComplete": true,
+      "collectionOutcome": "rejected",
+      "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+      "errors": [],
+      "consoleErrors": []
+    }
+  },
+  "nextAB": {
+    "source": {
+      "head": "d288a27dbf9b6d6178d6c0ee5bf2688308cf4369",
+      "tree": "973cc8332dfed1692db84fe04fcb35e79daee57e",
+      "parent": "f995aa53e525f3bf35d83d64dbd99b4d686685d1",
+      "signature": "G"
+    },
+    "localCompositionFileHashes": {
+      "packages/modules/a11y/src/web.ts": "50187af557beb84c7ca4737be77fe4e02a08f3abebf089fa3b23faebbade0041",
+      "packages/modules/a11y/test/web-reference.test.ts": "9d0d18567047701b5da6dac7cf225ff694049bd8979f1545aca63db7831007b5"
+    },
+    "matchingStablePatchID": "bdbf4746cc1effb1232bab8f012c5ecd07786201",
+    "fullFileHashesDifferBecauseBaseIncludesExistingA11yChanges": true,
+    "preflightExit": 1,
+    "nativeVerdictAtPublication": null
+  }
+}
