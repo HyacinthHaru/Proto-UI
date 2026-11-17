@@ -121,6 +121,65 @@ afterEach(async () => {
 });
 
 describe('generic preview post-render preparation cleanup', () => {
+  it.each([false, true])(
+    'shares the post-ready theme read and observes preparation changes (mutation %s)',
+    async (mutateDuringApply) => {
+      control.demo = { type: 'demo', root: { kind: 'box', children: ['Preview content'] } };
+      let release!: () => void;
+      control.gate = new Promise<void>((resolve) => {
+        release = resolve;
+      });
+      const root = document.createElement('div') as (typeof roots)[number];
+      root.dataset.siteLibraryFamily = 'shadcn';
+      for (const token of WEBSITE_SHADCN_THEME_TOKENS)
+        root.style.setProperty(`--pui-${token}`, token.startsWith('radius') ? '4px' : '#ffffff');
+      root.innerHTML = '<select></select><div class="host"></div>';
+      document.body.append(root);
+      roots.push(root);
+      const published = vi.fn();
+      root.addEventListener('runtime:changed', published);
+      initPreviewer({
+        root,
+        demoId: 'stable-theme-fixture',
+        initialRuntime: 'wc',
+        demoProps: {},
+        runtimeList: ['wc'],
+      });
+
+      await vi.waitFor(() => expect(control.committed).toHaveBeenCalledOnce());
+      const surface = await vi.waitFor(() => {
+        const element = root.querySelector<HTMLElement>('.pui-runtime-preview-surface');
+        expect(element).not.toBeNull();
+        return element!;
+      });
+      const computed = vi.spyOn(window, 'getComputedStyle');
+      if (mutateDuringApply) {
+        const set = surface.style.setProperty.bind(surface.style);
+        vi.spyOn(surface.style, 'setProperty').mockImplementation((name, value, priority) => {
+          set(name, value, priority);
+          if (name === '--pui-background' && value === '#223344')
+            root.style.setProperty('--pui-background', '#334455');
+        });
+      }
+      root.style.setProperty('--pui-background', '#223344');
+      release();
+      await vi.waitFor(() => expect(published).toHaveBeenCalledOnce());
+      await vi.waitFor(() =>
+        expect(surface.style.getPropertyValue('--pui-background')).toBe(
+          mutateDuringApply ? '#334455' : '#223344'
+        )
+      );
+      if (!mutateDuringApply)
+        expect(computed.mock.calls.filter(([scope]) => scope === root)).toHaveLength(1);
+
+      root.style.setProperty('--pui-background', '#445566');
+      await vi.waitFor(() =>
+        expect(surface.style.getPropertyValue('--pui-background')).toBe('#445566')
+      );
+      expect(root.querySelector('.pui-runtime-preview-surface')).toBe(surface);
+    }
+  );
+
   for (const runtime of ['wc', 'react', 'vue', 'vue2'] as RuntimeId[]) {
     for (const fault of ['theme', 'surface-load', 'theme-watch'] as const) {
       it(`${runtime}: releases the real mounted demo when latest-family ${fault} fails`, async () => {

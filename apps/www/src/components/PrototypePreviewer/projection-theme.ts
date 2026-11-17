@@ -187,7 +187,8 @@ export function applyProjectionThemeSurfaceStyle(
 export function watchProjectionThemeSurfaceStyle(
   projectionFamilyId: ProjectionFamilyId,
   scope: Element,
-  onChange: (theme: ProjectionThemeSurfaceStyle) => void
+  onChange: (theme: ProjectionThemeSurfaceStyle) => void,
+  initialTheme?: ProjectionThemeSurfaceStyle
 ): () => void {
   const doc = scope.ownerDocument;
   const view = doc.defaultView;
@@ -198,10 +199,10 @@ export function watchProjectionThemeSurfaceStyle(
   let cleaned = false;
   let queued = false;
   let lastFingerprint: string | undefined;
-  const emit = () => {
+  const emit = (sample?: ProjectionThemeSurfaceStyle) => {
     queued = false;
     if (cleaned) return;
-    const theme = resolveProjectionThemeSurfaceStyle(projectionFamilyId, scope);
+    const theme = sample ?? resolveProjectionThemeSurfaceStyle(projectionFamilyId, scope);
     const fingerprint = JSON.stringify(Object.entries(theme));
     if (fingerprint === lastFingerprint) return;
     lastFingerprint = fingerprint;
@@ -239,7 +240,7 @@ export function watchProjectionThemeSurfaceStyle(
   const colorScheme = view.matchMedia?.('(prefers-color-scheme: dark)');
   colorScheme?.addEventListener?.('change', schedule);
   try {
-    emit();
+    emit(initialTheme);
   } catch (error) {
     cleaned = true;
     observer.disconnect();

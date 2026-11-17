@@ -383,12 +383,17 @@ export function initPreviewer(options: PreviewerOptions) {
           .setAppearance(family, theme)
           .catch((error) => console.error('[RuntimeBox] Shell family update failed.', error));
       };
-      const watchTheme = () =>
-        watchProjectionThemeSurfaceStyle(family, root, (theme) => {
-          if (destroyed || myVersion !== version) return;
-          if (activeSurface === surface) applyTheme(theme);
-          else pendingTheme = theme;
-        });
+      const watchTheme = (initialTheme?: ProjectionThemeSurfaceStyle) =>
+        watchProjectionThemeSurfaceStyle(
+          family,
+          root,
+          (theme) => {
+            if (destroyed || myVersion !== version) return;
+            if (activeSurface === surface) applyTheme(theme);
+            else pendingTheme = theme;
+          },
+          initialTheme
+        );
       try {
         await surface.ready;
         if (!destroyed && myVersion === version) {
@@ -397,20 +402,25 @@ export function initPreviewer(options: PreviewerOptions) {
           const appearance = await scheduleProjectionThemeRead(root, () => {
             if (destroyed || myVersion !== version) return null;
             const nextFamily = runtimePreviewFamily(root);
-            return {
-              family: nextFamily,
-              theme: resolveProjectionThemeSurfaceStyle(nextFamily, root),
-            };
+            const theme = resolveProjectionThemeSurfaceStyle(nextFamily, root);
+            if (nextFamily === family) {
+              // Observe before applying the sampled values. Only later
+              // deliveries need a separate post-publication application.
+              stopPreparedTheme = watchTheme(theme);
+              pendingTheme = undefined;
+            }
+            return { family: nextFamily, theme };
           });
           if (appearance && !destroyed && myVersion === version) {
             family = appearance.family;
             await surface.setAppearance(family, appearance.theme);
           }
-          // Prepare the initial watch with the other pending theme reads.
-          // Hold its first value until publication so this batch only reads.
-          stopPreparedTheme = await scheduleProjectionThemeRead(root, () =>
-            destroyed || myVersion !== version ? null : watchTheme()
-          );
+          // A family replacement prepares its watch after the new shell.
+          if (!stopPreparedTheme) {
+            stopPreparedTheme = await scheduleProjectionThemeRead(root, () =>
+              destroyed || myVersion !== version ? null : watchTheme()
+            );
+          }
         }
       } catch (error) {
         stopPreparedTheme?.();
