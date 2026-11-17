@@ -1,0 +1,605 @@
+{
+  "head": "9427750cc760e092914087f2e88d365d115ccad9",
+  "parent": "0f0955a9d624e0ef5e250f56a0eaa0fc52bbfb53",
+  "reconciliation": {
+    "candidate": {
+      "head": "9427750cc760e092914087f2e88d365d115ccad9",
+      "files": 160,
+      "pass": 1182,
+      "fail": 8,
+      "failedFiles": 5,
+      "loadError": "view-operation-receipt.test.ts: The URL must be of scheme file"
+    },
+    "parentControl": {
+      "source": "exact parent0f modules source blob, other tracked runtime source same; actual942HEAD",
+      "files": 5,
+      "pass": 48,
+      "fail": 8,
+      "sameFailedAssertions": true,
+      "sameLoadError": true,
+      "restoredClean": true
+    },
+    "failedAssertions": [
+      {
+        "file": "previewer.demo-renderer.test.ts",
+        "case": "PrototypePreviewer demo-renderer / wc moves focus into the shadcn dialog demo when opened"
+      },
+      {
+        "file": "previewer.demo-renderer.test.ts",
+        "case": "PrototypePreviewer demo-renderer / wc renders shadcn tabs parts with host styles in demo wc mode"
+      },
+      {
+        "file": "previewer.demo-renderer.test.ts",
+        "case": "PrototypePreviewer demo-renderer / wc renders the Base Dropdown demo with keyboard focus entry and portaled positioning"
+      },
+      {
+        "file": "shadow-s2-admission.test.ts",
+        "case": "S2 current public admission boundary shadcn-button: activates the complete prototype and releases resources across reconnect"
+      },
+      {
+        "file": "shadow-s2-admission.test.ts",
+        "case": "S2 current public admission boundary shadcn-switch-thumb: inventories all unresolved Root tokens, not just the first failure"
+      },
+      {
+        "file": "shadow-split-effects.test.ts",
+        "case": "private Shadow split effects rejects overlapping animated border widths independently of effect entry order"
+      },
+      {
+        "file": "shadow-split-effects.test.ts",
+        "case": "private Shadow split effects rejects unimplemented animated border rounding but retains fixed-border sizing animation"
+      },
+      {
+        "file": "shadow-split-prototype-admission.test.ts",
+        "case": "composed Shadow prototype admission rejects an old companion for the full Dialog Mask without claiming current full Mask support"
+      }
+    ],
+    "scope": "The expanded check is red in both variants for the same original failing cases. Do not claim the entire WC package passes. Investigate/fix confirmed C-group baseline failures independently of the bounded transition patch."
+  },
+  "candidate": {
+    "rawSha256": "8cfb4f70716d1101f53619ae6ad145d8cebb21db5b5d2887f3b5b5978f87ffe6",
+    "passed": 1182,
+    "failed": 8,
+    "files": 160,
+    "failures": [
+      {
+        "file": "$PRODUCT_ROOT/packages/adapters/web-component/test/previewer.demo-renderer.test.ts",
+        "loadMessage": "",
+        "assertions": [
+          {
+            "case": "PrototypePreviewer demo-renderer / wc renders the Base Dropdown demo with keyboard focus entry and portaled positioning",
+            "messages": [
+              "Error: [PrototypePreviewer] \u672a\u627e\u5230\u539f\u578b \"base-dropdown-group\"\u3002\n\u5df2\u6ce8\u518c\u7684\u539f\u578b: base-textarea-root, base-dropdown-trigger, base-dropdown-item, base-dropdown-root, base-dropdown-content\n\u63d0\u793a: \u8bf7\u786e\u4fdd\u5728\u5ba2\u6237\u7aef\u8c03\u7528 registerPrototype() \u4e4b\u540e\u518d\u4f7f\u7528\u3002\n    at Module.getPrototype ($PRODUCT_ROOT/apps/www/src/components/PrototypePreviewer/registry.ts:39:11)\n    at renderDemoWc ($PRODUCT_ROOT/apps/www/src/components/PrototypePreviewer/demo-renderer.ts:464:51)\n    at Module.renderDemo ($PRODUCT_ROOT/apps/www/src/components/PrototypePreviewer/demo-renderer.ts:1954:22)\n    at $PRODUCT_ROOT/packages/adapters/web-component/test/previewer.demo-renderer.test.ts:69:27\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)"
+            ]
+          },
+          {
+            "case": "PrototypePreviewer demo-renderer / wc renders shadcn tabs parts with host styles in demo wc mode",
+            "messages": [
+              "Error: [PrototypePreviewer] \u672a\u627e\u5230\u539f\u578b \"shadcn-style-scope\"\u3002\n\u5df2\u6ce8\u518c\u7684\u539f\u578b: base-textarea-root, base-dropdown-trigger, base-dropdown-item, base-dropdown-root, base-dropdown-content, base-hover-card-root, base-hover-card-trigger, base-hover-card-content, shadcn-tabs-content, shadcn-tabs-trigger, shadcn-tabs-root, shadcn-tabs-list, shadcn-button\n\u63d0\u793a: \u8bf7\u786e\u4fdd\u5728\u5ba2\u6237\u7aef\u8c03\u7528 registerPrototype() \u4e4b\u540e\u518d\u4f7f\u7528\u3002\n    at Module.getPrototype ($PRODUCT_ROOT/apps/www/src/components/PrototypePreviewer/registry.ts:39:11)\n    at renderDemoWc ($PRODUCT_ROOT/apps/www/src/components/PrototypePreviewer/demo-renderer.ts:464:51)\n    at Module.renderDemo ($PRODUCT_ROOT/apps/www/src/components/PrototypePreviewer/demo-renderer.ts:1954:22)\n    at $PRODUCT_ROOT/packages/adapters/web-component/test/previewer.demo-renderer.test.ts:138:27\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)"
+            ]
+          },
+          {
+            "case": "PrototypePreviewer demo-renderer / wc moves focus into the shadcn dialog demo when opened",
+            "messages": [
+              "Error: [PrototypePreviewer] \u672a\u627e\u5230\u539f\u578b \"shadcn-style-scope\"\u3002\n\u5df2\u6ce8\u518c\u7684\u539f\u578b: base-textarea-root, base-dropdown-trigger, base-dropdown-item, base-dropdown-root, base-dropdown-content, base-hover-card-root, base-hover-card-trigger, base-hover-card-content, shadcn-tabs-content, shadcn-tabs-trigger, shadcn-tabs-root, shadcn-tabs-list, shadcn-button, base-dialog-root, base-dialog-title, base-dialog-description, base-dialog-mask, base-dialog-content, base-dialog-close, base-dialog-trigger, shadcn-dialog-trigger, shadcn-dialog-close, shadcn-dialog-root, shadcn-dialog-mask, shadcn-dialog-content, shadcn-dialog-footer, shadcn-dialog-description, shadcn-dialog-header, shadcn-dialog-title, shadcn-dialog-close-icon\n\u63d0\u793a: \u8bf7\u786e\u4fdd\u5728\u5ba2\u6237\u7aef\u8c03\u7528 registerPrototype() \u4e4b\u540e\u518d\u4f7f\u7528\u3002\n    at Module.getPrototype ($PRODUCT_ROOT/apps/www/src/components/PrototypePreviewer/registry.ts:39:11)\n    at renderDemoWc ($PRODUCT_ROOT/apps/www/src/components/PrototypePreviewer/demo-renderer.ts:464:51)\n    at Module.renderDemo ($PRODUCT_ROOT/apps/www/src/components/PrototypePreviewer/demo-renderer.ts:1954:22)\n    at $PRODUCT_ROOT/packages/adapters/web-component/test/previewer.demo-renderer.test.ts:247:27\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)"
+            ]
+          }
+        ]
+      },
+      {
+        "file": "$PRODUCT_ROOT/packages/adapters/web-component/test/shadow-s2-admission.test.ts",
+        "loadMessage": "",
+        "assertions": [
+          {
+            "case": "S2 current public admission boundary shadcn-button: activates the complete prototype and releases resources across reconnect",
+            "messages": [
+              "Error: [shadcn-button]setup token \"select-none\":missing token; fix: companion or change/remove token\n    at invalid ($PRODUCT_ROOT/packages/adapters/web-component/src/shadow-split-effects.ts:358:39)\n    at fail ($PRODUCT_ROOT/packages/adapters/web-component/src/shadow-split-effects.ts:389:11)\n    at prepare ($PRODUCT_ROOT/packages/adapters/web-component/src/shadow-split-effects.ts:465:9)\n    at Object.queueStyle ($PRODUCT_ROOT/packages/adapters/web-component/src/shadow-split-effects.ts:554:16)\n    at $PRODUCT_ROOT/packages/adapters/web-component/src/adapt.ts:1005:68\n    at project ($PRODUCT_ROOT/packages/adapters/web-component/src/adapt.ts:995:15)\n    at Object.queueStyle ($PRODUCT_ROOT/packages/adapters/web-component/src/adapt.ts:1005:41)\n    at Impl.projectFinalStyle ($PRODUCT_ROOT/packages/modules/feedback/src/create.ts:628:23)\n    at Impl.afterRenderCommit ($PRODUCT_ROOT/packages/modules/feedback/src/create.ts:682:16)\n    at Impl.onMountPhase ($PRODUCT_ROOT/packages/modules/feedback/src/create.ts:509:18)"
+            ]
+          },
+          {
+            "case": "S2 current public admission boundary shadcn-switch-thumb: inventories all unresolved Root tokens, not just the first failure",
+            "messages": [
+              "AssertionError: expected [ 'bg-background', 'block', \u2026(36) ] to not include 'transition-transform'\n    at Proxy.<anonymous> (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+expect@2.1.9/node_modules/@vitest/expect/dist/index.js:1196:17)\n    at Proxy.<anonymous> (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+expect@2.1.9/node_modules/@vitest/expect/dist/index.js:972:17)\n    at Proxy.methodWrapper (file://$PRODUCT_ROOT/node_modules/.pnpm/chai@5.3.3/node_modules/chai/index.js:1686:25)\n    at $PRODUCT_ROOT/packages/adapters/web-component/test/shadow-s2-admission.test.ts:72:28\n    at file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)\n    at startTests (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1271:3)"
+            ]
+          }
+        ]
+      },
+      {
+        "file": "$PRODUCT_ROOT/packages/adapters/web-component/test/shadow-split-effects.test.ts",
+        "loadMessage": "",
+        "assertions": [
+          {
+            "case": "private Shadow split effects rejects unimplemented animated border rounding but retains fixed-border sizing animation",
+            "messages": [
+              "AssertionError: expected [Function] to throw an error\n    at Proxy.<anonymous> (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+expect@2.1.9/node_modules/@vitest/expect/dist/index.js:1509:21)\n    at Proxy.<anonymous> (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+expect@2.1.9/node_modules/@vitest/expect/dist/index.js:972:17)\n    at Proxy.methodWrapper (file://$PRODUCT_ROOT/node_modules/.pnpm/chai@5.3.3/node_modules/chai/index.js:1686:25)\n    at $PRODUCT_ROOT/packages/adapters/web-component/test/shadow-split-effects.test.ts:178:7\n    at file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:146:14\n    at file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:11\n    at runWithTimeout (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:39:7)\n    at runTest (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:17)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at runSuite (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)"
+            ]
+          },
+          {
+            "case": "private Shadow split effects rejects overlapping animated border widths independently of effect entry order",
+            "messages": [
+              "AssertionError: expected [Function] to throw an error\n    at Proxy.<anonymous> (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+expect@2.1.9/node_modules/@vitest/expect/dist/index.js:1509:21)\n    at Proxy.<anonymous> (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+expect@2.1.9/node_modules/@vitest/expect/dist/index.js:972:17)\n    at Proxy.methodWrapper (file://$PRODUCT_ROOT/node_modules/.pnpm/chai@5.3.3/node_modules/chai/index.js:1686:25)\n    at $PRODUCT_ROOT/packages/adapters/web-component/test/shadow-split-effects.test.ts:199:7\n    at file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:146:14\n    at file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:11\n    at runWithTimeout (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:39:7)\n    at runTest (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:17)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at runSuite (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)"
+            ]
+          }
+        ]
+      },
+      {
+        "file": "$PRODUCT_ROOT/packages/adapters/web-component/test/shadow-split-prototype-admission.test.ts",
+        "loadMessage": "",
+        "assertions": [
+          {
+            "case": "composed Shadow prototype admission rejects an old companion for the full Dialog Mask without claiming current full Mask support",
+            "messages": [
+              "AssertionError: expected [ 'instance.setup.exit', \u2026(16) ] to not include 'mount.mounted'\n    at Proxy.<anonymous> (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+expect@2.1.9/node_modules/@vitest/expect/dist/index.js:1196:17)\n    at Proxy.<anonymous> (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+expect@2.1.9/node_modules/@vitest/expect/dist/index.js:972:17)\n    at Proxy.methodWrapper (file://$PRODUCT_ROOT/node_modules/.pnpm/chai@5.3.3/node_modules/chai/index.js:1686:25)\n    at $PRODUCT_ROOT/packages/adapters/web-component/test/shadow-split-prototype-admission.test.ts:84:35\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)"
+            ]
+          }
+        ]
+      },
+      {
+        "file": "$PRODUCT_ROOT/packages/adapters/web-component/test/view-operation-receipt.test.ts",
+        "loadMessage": "The URL must be of scheme file",
+        "assertions": []
+      }
+    ]
+  },
+  "parentControl": {
+    "rawSha256": "06cf3dc4643c939bc43208ee7206010e87ea5925ac89de78e687e9cbf40d4a25",
+    "passed": 48,
+    "failed": 8,
+    "files": 5,
+    "failures": [
+      {
+        "file": "$PRODUCT_ROOT/packages/adapters/web-component/test/previewer.demo-renderer.test.ts",
+        "loadMessage": "",
+        "assertions": [
+          {
+            "case": "PrototypePreviewer demo-renderer / wc renders the Base Dropdown demo with keyboard focus entry and portaled positioning",
+            "messages": [
+              "Error: [PrototypePreviewer] \u672a\u627e\u5230\u539f\u578b \"base-dropdown-group\"\u3002\n\u5df2\u6ce8\u518c\u7684\u539f\u578b: base-textarea-root, base-dropdown-trigger, base-dropdown-item, base-dropdown-root, base-dropdown-content\n\u63d0\u793a: \u8bf7\u786e\u4fdd\u5728\u5ba2\u6237\u7aef\u8c03\u7528 registerPrototype() \u4e4b\u540e\u518d\u4f7f\u7528\u3002\n    at Module.getPrototype ($PRODUCT_ROOT/apps/www/src/components/PrototypePreviewer/registry.ts:39:11)\n    at renderDemoWc ($PRODUCT_ROOT/apps/www/src/components/PrototypePreviewer/demo-renderer.ts:464:51)\n    at Module.renderDemo ($PRODUCT_ROOT/apps/www/src/components/PrototypePreviewer/demo-renderer.ts:1954:22)\n    at $PRODUCT_ROOT/packages/adapters/web-component/test/previewer.demo-renderer.test.ts:69:27\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)"
+            ]
+          },
+          {
+            "case": "PrototypePreviewer demo-renderer / wc renders shadcn tabs parts with host styles in demo wc mode",
+            "messages": [
+              "Error: [PrototypePreviewer] \u672a\u627e\u5230\u539f\u578b \"shadcn-style-scope\"\u3002\n\u5df2\u6ce8\u518c\u7684\u539f\u578b: base-textarea-root, base-dropdown-trigger, base-dropdown-item, base-dropdown-root, base-dropdown-content, base-hover-card-trigger, base-hover-card-root, base-hover-card-content, shadcn-button, shadcn-tabs-content, shadcn-tabs-trigger, shadcn-tabs-root, shadcn-tabs-list\n\u63d0\u793a: \u8bf7\u786e\u4fdd\u5728\u5ba2\u6237\u7aef\u8c03\u7528 registerPrototype() \u4e4b\u540e\u518d\u4f7f\u7528\u3002\n    at Module.getPrototype ($PRODUCT_ROOT/apps/www/src/components/PrototypePreviewer/registry.ts:39:11)\n    at renderDemoWc ($PRODUCT_ROOT/apps/www/src/components/PrototypePreviewer/demo-renderer.ts:464:51)\n    at Module.renderDemo ($PRODUCT_ROOT/apps/www/src/components/PrototypePreviewer/demo-renderer.ts:1954:22)\n    at $PRODUCT_ROOT/packages/adapters/web-component/test/previewer.demo-renderer.test.ts:138:27\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)"
+            ]
+          },
+          {
+            "case": "PrototypePreviewer demo-renderer / wc moves focus into the shadcn dialog demo when opened",
+            "messages": [
+              "Error: [PrototypePreviewer] \u672a\u627e\u5230\u539f\u578b \"shadcn-style-scope\"\u3002\n\u5df2\u6ce8\u518c\u7684\u539f\u578b: base-textarea-root, base-dropdown-trigger, base-dropdown-item, base-dropdown-root, base-dropdown-content, base-hover-card-trigger, base-hover-card-root, base-hover-card-content, shadcn-button, shadcn-tabs-content, shadcn-tabs-trigger, shadcn-tabs-root, shadcn-tabs-list, base-dialog-title, base-dialog-root, base-dialog-description, base-dialog-content, base-dialog-mask, base-dialog-close, base-dialog-trigger, shadcn-dialog-root, shadcn-dialog-close, shadcn-dialog-trigger, shadcn-dialog-mask, shadcn-dialog-description, shadcn-dialog-header, shadcn-dialog-footer, shadcn-dialog-content, shadcn-dialog-title, shadcn-dialog-close-icon\n\u63d0\u793a: \u8bf7\u786e\u4fdd\u5728\u5ba2\u6237\u7aef\u8c03\u7528 registerPrototype() \u4e4b\u540e\u518d\u4f7f\u7528\u3002\n    at Module.getPrototype ($PRODUCT_ROOT/apps/www/src/components/PrototypePreviewer/registry.ts:39:11)\n    at renderDemoWc ($PRODUCT_ROOT/apps/www/src/components/PrototypePreviewer/demo-renderer.ts:464:51)\n    at Module.renderDemo ($PRODUCT_ROOT/apps/www/src/components/PrototypePreviewer/demo-renderer.ts:1954:22)\n    at $PRODUCT_ROOT/packages/adapters/web-component/test/previewer.demo-renderer.test.ts:247:27\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)"
+            ]
+          }
+        ]
+      },
+      {
+        "file": "$PRODUCT_ROOT/packages/adapters/web-component/test/shadow-s2-admission.test.ts",
+        "loadMessage": "",
+        "assertions": [
+          {
+            "case": "S2 current public admission boundary shadcn-button: activates the complete prototype and releases resources across reconnect",
+            "messages": [
+              "Error: [shadcn-button]setup token \"select-none\":missing token; fix: companion or change/remove token\n    at invalid ($PRODUCT_ROOT/packages/adapters/web-component/src/shadow-split-effects.ts:358:39)\n    at fail ($PRODUCT_ROOT/packages/adapters/web-component/src/shadow-split-effects.ts:389:11)\n    at prepare ($PRODUCT_ROOT/packages/adapters/web-component/src/shadow-split-effects.ts:465:9)\n    at Object.queueStyle ($PRODUCT_ROOT/packages/adapters/web-component/src/shadow-split-effects.ts:554:16)\n    at $PRODUCT_ROOT/packages/adapters/web-component/src/adapt.ts:1005:68\n    at project ($PRODUCT_ROOT/packages/adapters/web-component/src/adapt.ts:995:15)\n    at Object.queueStyle ($PRODUCT_ROOT/packages/adapters/web-component/src/adapt.ts:1005:41)\n    at Impl.projectFinalStyle ($PRODUCT_ROOT/packages/modules/feedback/src/create.ts:628:23)\n    at Impl.afterRenderCommit ($PRODUCT_ROOT/packages/modules/feedback/src/create.ts:682:16)\n    at Impl.onMountPhase ($PRODUCT_ROOT/packages/modules/feedback/src/create.ts:509:18)"
+            ]
+          },
+          {
+            "case": "S2 current public admission boundary shadcn-switch-thumb: inventories all unresolved Root tokens, not just the first failure",
+            "messages": [
+              "AssertionError: expected [ 'bg-background', 'block', \u2026(36) ] to not include 'transition-transform'\n    at Proxy.<anonymous> (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+expect@2.1.9/node_modules/@vitest/expect/dist/index.js:1196:17)\n    at Proxy.<anonymous> (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+expect@2.1.9/node_modules/@vitest/expect/dist/index.js:972:17)\n    at Proxy.methodWrapper (file://$PRODUCT_ROOT/node_modules/.pnpm/chai@5.3.3/node_modules/chai/index.js:1686:25)\n    at $PRODUCT_ROOT/packages/adapters/web-component/test/shadow-s2-admission.test.ts:72:28\n    at file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)\n    at startTests (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1271:3)"
+            ]
+          }
+        ]
+      },
+      {
+        "file": "$PRODUCT_ROOT/packages/adapters/web-component/test/shadow-split-effects.test.ts",
+        "loadMessage": "",
+        "assertions": [
+          {
+            "case": "private Shadow split effects rejects unimplemented animated border rounding but retains fixed-border sizing animation",
+            "messages": [
+              "AssertionError: expected [Function] to throw an error\n    at Proxy.<anonymous> (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+expect@2.1.9/node_modules/@vitest/expect/dist/index.js:1509:21)\n    at Proxy.<anonymous> (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+expect@2.1.9/node_modules/@vitest/expect/dist/index.js:972:17)\n    at Proxy.methodWrapper (file://$PRODUCT_ROOT/node_modules/.pnpm/chai@5.3.3/node_modules/chai/index.js:1686:25)\n    at $PRODUCT_ROOT/packages/adapters/web-component/test/shadow-split-effects.test.ts:178:7\n    at file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:146:14\n    at file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:11\n    at runWithTimeout (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:39:7)\n    at runTest (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:17)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at runSuite (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)"
+            ]
+          },
+          {
+            "case": "private Shadow split effects rejects overlapping animated border widths independently of effect entry order",
+            "messages": [
+              "AssertionError: expected [Function] to throw an error\n    at Proxy.<anonymous> (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+expect@2.1.9/node_modules/@vitest/expect/dist/index.js:1509:21)\n    at Proxy.<anonymous> (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+expect@2.1.9/node_modules/@vitest/expect/dist/index.js:972:17)\n    at Proxy.methodWrapper (file://$PRODUCT_ROOT/node_modules/.pnpm/chai@5.3.3/node_modules/chai/index.js:1686:25)\n    at $PRODUCT_ROOT/packages/adapters/web-component/test/shadow-split-effects.test.ts:199:7\n    at file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:146:14\n    at file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:11\n    at runWithTimeout (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:39:7)\n    at runTest (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:17)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at runSuite (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)"
+            ]
+          }
+        ]
+      },
+      {
+        "file": "$PRODUCT_ROOT/packages/adapters/web-component/test/shadow-split-prototype-admission.test.ts",
+        "loadMessage": "",
+        "assertions": [
+          {
+            "case": "composed Shadow prototype admission rejects an old companion for the full Dialog Mask without claiming current full Mask support",
+            "messages": [
+              "AssertionError: expected [ 'instance.setup.exit', \u2026(16) ] to not include 'mount.mounted'\n    at Proxy.<anonymous> (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+expect@2.1.9/node_modules/@vitest/expect/dist/index.js:1196:17)\n    at Proxy.<anonymous> (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+expect@2.1.9/node_modules/@vitest/expect/dist/index.js:972:17)\n    at Proxy.methodWrapper (file://$PRODUCT_ROOT/node_modules/.pnpm/chai@5.3.3/node_modules/chai/index.js:1686:25)\n    at $PRODUCT_ROOT/packages/adapters/web-component/test/shadow-split-prototype-admission.test.ts:84:35\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://$PRODUCT_ROOT/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)"
+            ]
+          }
+        ]
+      },
+      {
+        "file": "$PRODUCT_ROOT/packages/adapters/web-component/test/view-operation-receipt.test.ts",
+        "loadMessage": "The URL must be of scheme file",
+        "assertions": []
+      }
+    ]
+  },
+  "commands": [
+    {
+      "head": "9427750cc760e092914087f2e88d365d115ccad9",
+      "files": [
+        "packages/adapters/web-component/test/accordion.test.ts",
+        "packages/adapters/web-component/test/anatomy-reparent-rollback.test.ts",
+        "packages/adapters/web-component/test/anatomy.integration.test.ts",
+        "packages/adapters/web-component/test/available-space-adoption.integration.test.ts",
+        "packages/adapters/web-component/test/axis-input.integration.test.ts",
+        "packages/adapters/web-component/test/boundary.integration.test.ts",
+        "packages/adapters/web-component/test/code-block-composition.test.ts",
+        "packages/adapters/web-component/test/collapsible.test.ts",
+        "packages/adapters/web-component/test/collection.integration.test.ts",
+        "packages/adapters/web-component/test/color-scheme-source.test.ts",
+        "packages/adapters/web-component/test/color-scheme.integration.test.ts",
+        "packages/adapters/web-component/test/commit.failure-atomicity.test.ts",
+        "packages/adapters/web-component/test/commit.session-failure-atomicity.test.ts",
+        "packages/adapters/web-component/test/commit.test.ts",
+        "packages/adapters/web-component/test/context-ancestor.test.ts",
+        "packages/adapters/web-component/test/context-menu-input.integration.test.ts",
+        "packages/adapters/web-component/test/context-reentrancy.test.ts",
+        "packages/adapters/web-component/test/context.integration.test.ts",
+        "packages/adapters/web-component/test/contract/a11y.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/anatomy.runtime-access.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/commit.full-rebuild.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/context.basic.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/context.state-sync.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/event.disabled.after-unmount.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/event.router.dispose.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/event.router.dual-path.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/event.router.extension.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/event.router.gate.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/event.router.host-bound.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/event.router.host.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/event.router.mapping.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/event.router.no-dedupe.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/event.router.proto.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/event.router.remove.precise.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/expose-state-web.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/expose.basic.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/feedback.style.apply-to-host.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/lifecycle-checkpoints.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/lifecycle-events.v1.contract.test.ts",
+        "packages/adapters/web-component/test/contract/lifecycle-wc-adapter.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/lifecycle.disposal-boundary.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/props-host-source.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/props-json-value-boundary.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/props-normalization.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/resolved-snapshot-shape.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/rule.expose-state-web.optimize.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/rule.state-style.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/slot-light-dom.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/slot-shadow-dom.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/sys-lifecycle.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/template.adapter-boundary.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/template.no-prototype-composition.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/template.slot.illegal-shape.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/template.slot.multi.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/template.slot.protocol.v0.contract.test.ts",
+        "packages/adapters/web-component/test/control-label.integration.test.ts",
+        "packages/adapters/web-component/test/dialog-overlay.test.ts",
+        "packages/adapters/web-component/test/dialog-portal-owner.test.ts",
+        "packages/adapters/web-component/test/drawer-close-request-lifetime.test.ts",
+        "packages/adapters/web-component/test/event-gate.effectiveness.test.ts",
+        "packages/adapters/web-component/test/event-gate.order.strict.test.ts",
+        "packages/adapters/web-component/test/expose-state-web.integration.test.ts",
+        "packages/adapters/web-component/test/expose.test.ts",
+        "packages/adapters/web-component/test/feedback-style.test.ts",
+        "packages/adapters/web-component/test/feedback.integration.test.ts",
+        "packages/adapters/web-component/test/field-sizing.integration.test.ts",
+        "packages/adapters/web-component/test/field.test.ts",
+        "packages/adapters/web-component/test/focus-catalog.integration.test.ts",
+        "packages/adapters/web-component/test/focus-entry-motion-origin.test.ts",
+        "packages/adapters/web-component/test/focus-entry-observer.test.ts",
+        "packages/adapters/web-component/test/focus-entry-refresh-coalescing.test.ts",
+        "packages/adapters/web-component/test/focus-initialization-cleanup.integration.test.ts",
+        "packages/adapters/web-component/test/focus-intent-retries.integration.test.ts",
+        "packages/adapters/web-component/test/focus-portal-parent-release.integration.test.ts",
+        "packages/adapters/web-component/test/focus-readiness-fanout.integration.test.ts",
+        "packages/adapters/web-component/test/focus-sampled-request-kind.test.ts",
+        "packages/adapters/web-component/test/focus-scope-targets.test.ts",
+        "packages/adapters/web-component/test/focus-shadow-acquisition.integration.test.ts",
+        "packages/adapters/web-component/test/focus-teardown-readiness.integration.test.ts",
+        "packages/adapters/web-component/test/focus-terminal-cleanup.integration.test.ts",
+        "packages/adapters/web-component/test/focus-terminal-reconnect.integration.test.ts",
+        "packages/adapters/web-component/test/focus.test.ts",
+        "packages/adapters/web-component/test/hit.integration.test.ts",
+        "packages/adapters/web-component/test/host-display.test.ts",
+        "packages/adapters/web-component/test/i1-root-projection.test.ts",
+        "packages/adapters/web-component/test/image-view.integration.test.ts",
+        "packages/adapters/web-component/test/k1-root-projection.test.ts",
+        "packages/adapters/web-component/test/lifecycle-view-intent.test.ts",
+        "packages/adapters/web-component/test/material-border-geometry.test.ts",
+        "packages/adapters/web-component/test/material-feedback.integration.test.ts",
+        "packages/adapters/web-component/test/material-release-reentry.test.ts",
+        "packages/adapters/web-component/test/message-composition.test.ts",
+        "packages/adapters/web-component/test/native-link.integration.test.ts",
+        "packages/adapters/web-component/test/native-text-layout.integration.test.ts",
+        "packages/adapters/web-component/test/native-text-layout.test.ts",
+        "packages/adapters/web-component/test/overlay-catalog.integration.test.ts",
+        "packages/adapters/web-component/test/overlay-focus.integration.test.ts",
+        "packages/adapters/web-component/test/owned-blueprint-reuse.test.ts",
+        "packages/adapters/web-component/test/owned-decoration.integration.test.ts",
+        "packages/adapters/web-component/test/owned-slot-relocation.test.ts",
+        "packages/adapters/web-component/test/placeholder-color.integration.test.ts",
+        "packages/adapters/web-component/test/placeholder-color.split.integration.test.ts",
+        "packages/adapters/web-component/test/pointer-facts.integration.test.ts",
+        "packages/adapters/web-component/test/portal-adoption-review.test.ts",
+        "packages/adapters/web-component/test/portal-body-destination.test.ts",
+        "packages/adapters/web-component/test/portal-conceal.test.ts",
+        "packages/adapters/web-component/test/portal-destination-lifetimes.integration.test.ts",
+        "packages/adapters/web-component/test/portal-destination-reentry.test.ts",
+        "packages/adapters/web-component/test/portal-mount-ownership.test.ts",
+        "packages/adapters/web-component/test/portal-owned-relocation.test.ts",
+        "packages/adapters/web-component/test/positioning.integration.test.ts",
+        "packages/adapters/web-component/test/presence-adoption.test.ts",
+        "packages/adapters/web-component/test/previewer.demo-renderer.test.ts",
+        "packages/adapters/web-component/test/props-reprovide.test.ts",
+        "packages/adapters/web-component/test/radio-group.test.ts",
+        "packages/adapters/web-component/test/reconnect-move.test.ts",
+        "packages/adapters/web-component/test/root-role-compatibility.test.ts",
+        "packages/adapters/web-component/test/router.spec.test.ts",
+        "packages/adapters/web-component/test/rule-expose-state-web.integration.test.ts",
+        "packages/adapters/web-component/test/rule.integration.test.ts",
+        "packages/adapters/web-component/test/scroll-catalog.integration.test.ts",
+        "packages/adapters/web-component/test/scroll-target-subscription.test.ts",
+        "packages/adapters/web-component/test/scroll.test.ts",
+        "packages/adapters/web-component/test/shadcn-card-style.test.ts",
+        "packages/adapters/web-component/test/shadcn-textarea-style.test.ts",
+        "packages/adapters/web-component/test/shadow-color-scheme-environment.test.ts",
+        "packages/adapters/web-component/test/shadow-finf-reconciliation.test.ts",
+        "packages/adapters/web-component/test/shadow-inner-surface.test.ts",
+        "packages/adapters/web-component/test/shadow-intrinsic-recipe.test.ts",
+        "packages/adapters/web-component/test/shadow-owner-shell.test.ts",
+        "packages/adapters/web-component/test/shadow-s2-admission.test.ts",
+        "packages/adapters/web-component/test/shadow-split-effects.test.ts",
+        "packages/adapters/web-component/test/shadow-split-meta.test.ts",
+        "packages/adapters/web-component/test/shadow-split-profile.test.ts",
+        "packages/adapters/web-component/test/shadow-split-prototype-admission.test.ts",
+        "packages/adapters/web-component/test/shadow-split-resource-generation.test.ts",
+        "packages/adapters/web-component/test/shadow-split-resources.test.ts",
+        "packages/adapters/web-component/test/shadow-split-runtime.test.ts",
+        "packages/adapters/web-component/test/shadow-style-artifact.test.ts",
+        "packages/adapters/web-component/test/shadow-stylesheet-owner.test.ts",
+        "packages/adapters/web-component/test/shadow-text-control.test.ts",
+        "packages/adapters/web-component/test/slot-light-dom.test.ts",
+        "packages/adapters/web-component/test/slot-visual-ownership.test.ts",
+        "packages/adapters/web-component/test/stale-connected-reaction.integration.test.ts",
+        "packages/adapters/web-component/test/state-no-auto-render.v0.test.ts",
+        "packages/adapters/web-component/test/state-number-list.test.ts",
+        "packages/adapters/web-component/test/surface-projection.test.ts",
+        "packages/adapters/web-component/test/table-reentrant-projection.test.ts",
+        "packages/adapters/web-component/test/table-retained-membership.test.ts",
+        "packages/adapters/web-component/test/table.test.ts",
+        "packages/adapters/web-component/test/tabs.test.ts",
+        "packages/adapters/web-component/test/template-props-style.test.ts",
+        "packages/adapters/web-component/test/template-style.integration.test.ts",
+        "packages/adapters/web-component/test/text-control.integration.test.ts",
+        "packages/adapters/web-component/test/translucent-surface.integration.test.ts",
+        "packages/adapters/web-component/test/trigger.integration.test.ts",
+        "packages/adapters/web-component/test/types.test.ts",
+        "packages/adapters/web-component/test/view-operation-receipt.test.ts",
+        "packages/adapters/web-component/test/viewport-width.test.ts",
+        "packages/adapters/web-component/test/visual-acquisition-transaction.test.ts"
+      ],
+      "command": [
+        "corepack",
+        "pnpm@10.32.1",
+        "exec",
+        "vitest",
+        "run",
+        "--maxWorkers",
+        "2",
+        "--minWorkers",
+        "1",
+        "packages/adapters/web-component/test/accordion.test.ts",
+        "packages/adapters/web-component/test/anatomy-reparent-rollback.test.ts",
+        "packages/adapters/web-component/test/anatomy.integration.test.ts",
+        "packages/adapters/web-component/test/available-space-adoption.integration.test.ts",
+        "packages/adapters/web-component/test/axis-input.integration.test.ts",
+        "packages/adapters/web-component/test/boundary.integration.test.ts",
+        "packages/adapters/web-component/test/code-block-composition.test.ts",
+        "packages/adapters/web-component/test/collapsible.test.ts",
+        "packages/adapters/web-component/test/collection.integration.test.ts",
+        "packages/adapters/web-component/test/color-scheme-source.test.ts",
+        "packages/adapters/web-component/test/color-scheme.integration.test.ts",
+        "packages/adapters/web-component/test/commit.failure-atomicity.test.ts",
+        "packages/adapters/web-component/test/commit.session-failure-atomicity.test.ts",
+        "packages/adapters/web-component/test/commit.test.ts",
+        "packages/adapters/web-component/test/context-ancestor.test.ts",
+        "packages/adapters/web-component/test/context-menu-input.integration.test.ts",
+        "packages/adapters/web-component/test/context-reentrancy.test.ts",
+        "packages/adapters/web-component/test/context.integration.test.ts",
+        "packages/adapters/web-component/test/contract/a11y.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/anatomy.runtime-access.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/commit.full-rebuild.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/context.basic.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/context.state-sync.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/event.disabled.after-unmount.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/event.router.dispose.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/event.router.dual-path.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/event.router.extension.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/event.router.gate.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/event.router.host-bound.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/event.router.host.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/event.router.mapping.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/event.router.no-dedupe.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/event.router.proto.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/event.router.remove.precise.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/expose-state-web.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/expose.basic.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/feedback.style.apply-to-host.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/lifecycle-checkpoints.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/lifecycle-events.v1.contract.test.ts",
+        "packages/adapters/web-component/test/contract/lifecycle-wc-adapter.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/lifecycle.disposal-boundary.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/props-host-source.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/props-json-value-boundary.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/props-normalization.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/resolved-snapshot-shape.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/rule.expose-state-web.optimize.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/rule.state-style.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/slot-light-dom.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/slot-shadow-dom.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/sys-lifecycle.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/template.adapter-boundary.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/template.no-prototype-composition.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/template.slot.illegal-shape.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/template.slot.multi.v0.contract.test.ts",
+        "packages/adapters/web-component/test/contract/template.slot.protocol.v0.contract.test.ts",
+        "packages/adapters/web-component/test/control-label.integration.test.ts",
+        "packages/adapters/web-component/test/dialog-overlay.test.ts",
+        "packages/adapters/web-component/test/dialog-portal-owner.test.ts",
+        "packages/adapters/web-component/test/drawer-close-request-lifetime.test.ts",
+        "packages/adapters/web-component/test/event-gate.effectiveness.test.ts",
+        "packages/adapters/web-component/test/event-gate.order.strict.test.ts",
+        "packages/adapters/web-component/test/expose-state-web.integration.test.ts",
+        "packages/adapters/web-component/test/expose.test.ts",
+        "packages/adapters/web-component/test/feedback-style.test.ts",
+        "packages/adapters/web-component/test/feedback.integration.test.ts",
+        "packages/adapters/web-component/test/field-sizing.integration.test.ts",
+        "packages/adapters/web-component/test/field.test.ts",
+        "packages/adapters/web-component/test/focus-catalog.integration.test.ts",
+        "packages/adapters/web-component/test/focus-entry-motion-origin.test.ts",
+        "packages/adapters/web-component/test/focus-entry-observer.test.ts",
+        "packages/adapters/web-component/test/focus-entry-refresh-coalescing.test.ts",
+        "packages/adapters/web-component/test/focus-initialization-cleanup.integration.test.ts",
+        "packages/adapters/web-component/test/focus-intent-retries.integration.test.ts",
+        "packages/adapters/web-component/test/focus-portal-parent-release.integration.test.ts",
+        "packages/adapters/web-component/test/focus-readiness-fanout.integration.test.ts",
+        "packages/adapters/web-component/test/focus-sampled-request-kind.test.ts",
+        "packages/adapters/web-component/test/focus-scope-targets.test.ts",
+        "packages/adapters/web-component/test/focus-shadow-acquisition.integration.test.ts",
+        "packages/adapters/web-component/test/focus-teardown-readiness.integration.test.ts",
+        "packages/adapters/web-component/test/focus-terminal-cleanup.integration.test.ts",
+        "packages/adapters/web-component/test/focus-terminal-reconnect.integration.test.ts",
+        "packages/adapters/web-component/test/focus.test.ts",
+        "packages/adapters/web-component/test/hit.integration.test.ts",
+        "packages/adapters/web-component/test/host-display.test.ts",
+        "packages/adapters/web-component/test/i1-root-projection.test.ts",
+        "packages/adapters/web-component/test/image-view.integration.test.ts",
+        "packages/adapters/web-component/test/k1-root-projection.test.ts",
+        "packages/adapters/web-component/test/lifecycle-view-intent.test.ts",
+        "packages/adapters/web-component/test/material-border-geometry.test.ts",
+        "packages/adapters/web-component/test/material-feedback.integration.test.ts",
+        "packages/adapters/web-component/test/material-release-reentry.test.ts",
+        "packages/adapters/web-component/test/message-composition.test.ts",
+        "packages/adapters/web-component/test/native-link.integration.test.ts",
+        "packages/adapters/web-component/test/native-text-layout.integration.test.ts",
+        "packages/adapters/web-component/test/native-text-layout.test.ts",
+        "packages/adapters/web-component/test/overlay-catalog.integration.test.ts",
+        "packages/adapters/web-component/test/overlay-focus.integration.test.ts",
+        "packages/adapters/web-component/test/owned-blueprint-reuse.test.ts",
+        "packages/adapters/web-component/test/owned-decoration.integration.test.ts",
+        "packages/adapters/web-component/test/owned-slot-relocation.test.ts",
+        "packages/adapters/web-component/test/placeholder-color.integration.test.ts",
+        "packages/adapters/web-component/test/placeholder-color.split.integration.test.ts",
+        "packages/adapters/web-component/test/pointer-facts.integration.test.ts",
+        "packages/adapters/web-component/test/portal-adoption-review.test.ts",
+        "packages/adapters/web-component/test/portal-body-destination.test.ts",
+        "packages/adapters/web-component/test/portal-conceal.test.ts",
+        "packages/adapters/web-component/test/portal-destination-lifetimes.integration.test.ts",
+        "packages/adapters/web-component/test/portal-destination-reentry.test.ts",
+        "packages/adapters/web-component/test/portal-mount-ownership.test.ts",
+        "packages/adapters/web-component/test/portal-owned-relocation.test.ts",
+        "packages/adapters/web-component/test/positioning.integration.test.ts",
+        "packages/adapters/web-component/test/presence-adoption.test.ts",
+        "packages/adapters/web-component/test/previewer.demo-renderer.test.ts",
+        "packages/adapters/web-component/test/props-reprovide.test.ts",
+        "packages/adapters/web-component/test/radio-group.test.ts",
+        "packages/adapters/web-component/test/reconnect-move.test.ts",
+        "packages/adapters/web-component/test/root-role-compatibility.test.ts",
+        "packages/adapters/web-component/test/router.spec.test.ts",
+        "packages/adapters/web-component/test/rule-expose-state-web.integration.test.ts",
+        "packages/adapters/web-component/test/rule.integration.test.ts",
+        "packages/adapters/web-component/test/scroll-catalog.integration.test.ts",
+        "packages/adapters/web-component/test/scroll-target-subscription.test.ts",
+        "packages/adapters/web-component/test/scroll.test.ts",
+        "packages/adapters/web-component/test/shadcn-card-style.test.ts",
+        "packages/adapters/web-component/test/shadcn-textarea-style.test.ts",
+        "packages/adapters/web-component/test/shadow-color-scheme-environment.test.ts",
+        "packages/adapters/web-component/test/shadow-finf-reconciliation.test.ts",
+        "packages/adapters/web-component/test/shadow-inner-surface.test.ts",
+        "packages/adapters/web-component/test/shadow-intrinsic-recipe.test.ts",
+        "packages/adapters/web-component/test/shadow-owner-shell.test.ts",
+        "packages/adapters/web-component/test/shadow-s2-admission.test.ts",
+        "packages/adapters/web-component/test/shadow-split-effects.test.ts",
+        "packages/adapters/web-component/test/shadow-split-meta.test.ts",
+        "packages/adapters/web-component/test/shadow-split-profile.test.ts",
+        "packages/adapters/web-component/test/shadow-split-prototype-admission.test.ts",
+        "packages/adapters/web-component/test/shadow-split-resource-generation.test.ts",
+        "packages/adapters/web-component/test/shadow-split-resources.test.ts",
+        "packages/adapters/web-component/test/shadow-split-runtime.test.ts",
+        "packages/adapters/web-component/test/shadow-style-artifact.test.ts",
+        "packages/adapters/web-component/test/shadow-stylesheet-owner.test.ts",
+        "packages/adapters/web-component/test/shadow-text-control.test.ts",
+        "packages/adapters/web-component/test/slot-light-dom.test.ts",
+        "packages/adapters/web-component/test/slot-visual-ownership.test.ts",
+        "packages/adapters/web-component/test/stale-connected-reaction.integration.test.ts",
+        "packages/adapters/web-component/test/state-no-auto-render.v0.test.ts",
+        "packages/adapters/web-component/test/state-number-list.test.ts",
+        "packages/adapters/web-component/test/surface-projection.test.ts",
+        "packages/adapters/web-component/test/table-reentrant-projection.test.ts",
+        "packages/adapters/web-component/test/table-retained-membership.test.ts",
+        "packages/adapters/web-component/test/table.test.ts",
+        "packages/adapters/web-component/test/tabs.test.ts",
+        "packages/adapters/web-component/test/template-props-style.test.ts",
+        "packages/adapters/web-component/test/template-style.integration.test.ts",
+        "packages/adapters/web-component/test/text-control.integration.test.ts",
+        "packages/adapters/web-component/test/translucent-surface.integration.test.ts",
+        "packages/adapters/web-component/test/trigger.integration.test.ts",
+        "packages/adapters/web-component/test/types.test.ts",
+        "packages/adapters/web-component/test/view-operation-receipt.test.ts",
+        "packages/adapters/web-component/test/viewport-width.test.ts",
+        "packages/adapters/web-component/test/visual-acquisition-transaction.test.ts",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=$TASK_STATE/adapter-nonbrowser.json"
+      ],
+      "exit": 1,
+      "reason": "Official repository CI policy-skipped full tests/package; expand to the whole affected WC non-browser package, no new #848 native execution."
+    },
+    {
+      "actualHead": "9427750cc760e092914087f2e88d365d115ccad9",
+      "runtimeVariant": "exact parent0f modules blob, other tracked source unchanged",
+      "files": [
+        "$PRODUCT_ROOT/packages/adapters/web-component/test/previewer.demo-renderer.test.ts",
+        "$PRODUCT_ROOT/packages/adapters/web-component/test/shadow-s2-admission.test.ts",
+        "$PRODUCT_ROOT/packages/adapters/web-component/test/shadow-split-effects.test.ts",
+        "$PRODUCT_ROOT/packages/adapters/web-component/test/shadow-split-prototype-admission.test.ts",
+        "$PRODUCT_ROOT/packages/adapters/web-component/test/view-operation-receipt.test.ts"
+      ],
+      "exit": 1,
+      "command": [
+        "corepack",
+        "pnpm@10.32.1",
+        "exec",
+        "vitest",
+        "run",
+        "--maxWorkers",
+        "2",
+        "--minWorkers",
+        "1",
+        "$PRODUCT_ROOT/packages/adapters/web-component/test/previewer.demo-renderer.test.ts",
+        "$PRODUCT_ROOT/packages/adapters/web-component/test/shadow-s2-admission.test.ts",
+        "$PRODUCT_ROOT/packages/adapters/web-component/test/shadow-split-effects.test.ts",
+        "$PRODUCT_ROOT/packages/adapters/web-component/test/shadow-split-prototype-admission.test.ts",
+        "$PRODUCT_ROOT/packages/adapters/web-component/test/view-operation-receipt.test.ts",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=$TASK_STATE/adapter-failed-parent-control.json"
+      ],
+      "restoredCandidateSha256": "3f1c1e21297f11878a012fe58f9c2d7e0712d38b1de860e3dc7c0b3bd3bbd6ca"
+    }
+  ],
+  "scope": "Additional WC non-browser evidence because official CI policy-skipped full tests. No new #848 native run. Candidate full160files red; only original5failed files retested with exact parent modules source to attribute the8same failing assertion IDs andsameURLload error. Not a full160file parent run. Candidate source restored clean.",
+  "privacy": "JSON is a path-sanitized derivative. Raw local reports retained by SHA; original assertions/deadlines not changed."
+}
