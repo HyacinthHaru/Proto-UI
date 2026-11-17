@@ -1,0 +1,1922 @@
+{
+  "product": {
+    "head": "58f38cdca1657b6a17eb4ae48856462b4a3d6628",
+    "tree": "f50531ff5397276ad808928306405a9d2b8ad71f",
+    "parent": "68756b8fb2861c1b76dc2bbcd6fbc058544bcd19",
+    "signature": "G",
+    "originalGateMs": 60000,
+    "caseDeadlineMs": 150000,
+    "expectedPreviewCount": 1268
+  },
+  "priorExactProductCheck": {
+    "record": "e661b25d3368cc90ab68399a64cf7d1e514a7fd6"
+  },
+  "experiments": {
+    "lookahead": "One pending eager cohort of no more than 32 preview owners, distinct recipe IDs only.",
+    "renderYield": "For large initial generic preview startup only, grant up to eight render starts per task after prototype acquisition."
+  },
+  "runs": {
+    "boundaries": {
+      "meta": {
+        "plans": {
+          "demo-bootstrap-2-3-2-drawer": {
+            "entry": "demo-bootstrap-2-3-2-drawer.demo.D5ESS1JM.js",
+            "mapped": ["demo-bootstrap-2-3-2-drawer.demo.D5ESS1JM.js"]
+          },
+          "demo-bootstrap-2-3-2-calendar": {
+            "entry": "demo-bootstrap-2-3-2-calendar.demo.OWPuICtm.js",
+            "mapped": [
+              "demo-bootstrap-2-3-2-calendar.demo.OWPuICtm.js",
+              "calendar-demo.shared.C639z_7l.js",
+              "caption-composition.CDeYNojy.js"
+            ]
+          },
+          "demo-shadcn-tree": {
+            "entry": "demo-shadcn-tree.demo.BJQCy4I6.js",
+            "mapped": ["demo-shadcn-tree.demo.BJQCy4I6.js", "shadcn-demo-style.CBmguV5p.js"]
+          }
+        },
+        "assets": [
+          {
+            "asset": "projection-materializer.yeICPDTE.js",
+            "source": "d2ad7d8bd58ab8811967034ffd116daa0291495078f7defc0be7038dc34de44d",
+            "instrumented": "04fc80d0f954fa34025d438b687aadf75d77481a641e9451dce10a5490b744f2"
+          },
+          {
+            "asset": "calendar-demo.shared.C639z_7l.js",
+            "source": "be24a27eddf7479c6eeccd5e308f75dadf405adf2c6d779ced28f344694d4352",
+            "instrumented": "f855aa6418c22f103a480fd967431628e5052cb52d60b876b0c457c4a796f1c3"
+          },
+          {
+            "asset": "caption-composition.CDeYNojy.js",
+            "source": "41b158a31f6bf5ffff08005b1427b95ea144a696029782b2a9929a66ae2aafad",
+            "instrumented": "89c611d97a992a1ec0f30aae80970dcc26d95364f9c72e4e29c1ccfebe415f8e"
+          },
+          {
+            "asset": "demo-bootstrap-2-3-2-calendar.demo.OWPuICtm.js",
+            "source": "9406f7fce3c6dd3ffaf00a2bae4b1c46b5d2842ef1bb6f9d150a28fe47df38c7",
+            "instrumented": "d1dff2e0c9f5f5693e87f3a3b8196a864c6de3fa3240bd30f52f16b9373de262"
+          },
+          {
+            "asset": "demo-bootstrap-2-3-2-drawer.demo.D5ESS1JM.js",
+            "source": "9ec300e5057cf84357007285f76f326f3db10f6e38d0dfd24c9dd67a3580da3e",
+            "instrumented": "f3433aae46ab9baff31d8e803b62bc4fcbeca18e51b7f154719e49b4025dbf19"
+          },
+          {
+            "asset": "demo-shadcn-tree.demo.BJQCy4I6.js",
+            "source": "4b750294a1d3a992c46258b5a552a7ee217a8934ff3d03568e5a50fcf619c488",
+            "instrumented": "22a4a729175ecabf84e2b6dda0d5a00c693e7b901cc6aee3d4779b6b84aa7ab5"
+          },
+          {
+            "asset": "shadcn-demo-style.CBmguV5p.js",
+            "source": "3d7655a567e1972c4d0ef3e52c8c05005545c9eee01c4d4500eab3d6bc77d891",
+            "instrumented": "ebff73b64f7f291d6d804eab506d273e2553c46ee01b7831f7ab44bdd3b9957f"
+          }
+        ]
+      },
+      "servedHtmlSha256": "ccc97208b136be443a0f9a62fde0cd50612f7544265bd2effd64fd2484befa2f",
+      "logSha256": "7a1509a46b8ef654f24344c229ad7682c5846cdd89b077f9aedde014f1dabaec",
+      "nativeExit": 1,
+      "cases": "0 passed, 1 failed, 1 unselected",
+      "deliveredLastOriginal": {
+        "pageMs": 61580.5,
+        "firstMissing": {
+          "previewerId": "pp-rd2tcmt0rtf",
+          "index": 608,
+          "inited": "1",
+          "hostChildren": 0
+        },
+        "demo": "demo-bootstrap-2-3-2-checkbox-group"
+      },
+      "profiles": {
+        "demo-bootstrap-2-3-2-drawer": {
+          "warmStarts": [],
+          "loadRequests": 4,
+          "firstLoad": 47840.59999990463,
+          "executedPreloads": 1,
+          "innerImports": 1,
+          "currentBodies": 1,
+          "mappedResourceEnd": 47868.59999990463,
+          "firstBodyStart": 50471.5,
+          "firstBodyEnd": 50471.5,
+          "replies": 4,
+          "firstImportReturn": 50471.5,
+          "firstValidation": 50471.5,
+          "mappedResponseToEntryBodyMs": 2602.9000000953674,
+          "maxValidationMs": 0.09999990463256836,
+          "firstRenderQueued": [],
+          "firstRenderStarts": []
+        },
+        "demo-bootstrap-2-3-2-calendar": {
+          "warmStarts": [],
+          "loadRequests": 4,
+          "firstLoad": 35781,
+          "executedPreloads": 1,
+          "innerImports": 1,
+          "currentBodies": 1,
+          "mappedResourceEnd": 35784.59999990463,
+          "firstBodyStart": 48164.799999952316,
+          "firstBodyEnd": 48165,
+          "replies": 4,
+          "firstImportReturn": 48165.09999990463,
+          "firstValidation": 48165.299999952316,
+          "mappedResponseToEntryBodyMs": 12380.200000047684,
+          "maxValidationMs": 0.20000004768371582,
+          "firstRenderQueued": [],
+          "firstRenderStarts": []
+        },
+        "demo-shadcn-tree": {
+          "warmStarts": [],
+          "loadRequests": 4,
+          "firstLoad": 29862.599999904633,
+          "executedPreloads": 1,
+          "innerImports": 1,
+          "currentBodies": 1,
+          "mappedResourceEnd": 29871.799999952316,
+          "firstBodyStart": 45958.09999990463,
+          "firstBodyEnd": 45958.299999952316,
+          "replies": 4,
+          "firstImportReturn": 45958.299999952316,
+          "firstValidation": 45958.299999952316,
+          "mappedResponseToEntryBodyMs": 16086.299999952316,
+          "maxValidationMs": 0.0,
+          "firstRenderQueued": [],
+          "firstRenderStarts": []
+        }
+      },
+      "rows": [
+        {
+          "observerNodeMs": 6631.361833,
+          "phase": "resource",
+          "asset": "calendar-demo.shared.C639z_7l.js",
+          "initiator": "script",
+          "start": 5759.699999809265,
+          "end": 5768.399999856949,
+          "transferBytes": 2867,
+          "pageMs": 5783.799999952316
+        },
+        {
+          "observerNodeMs": 6631.386541,
+          "phase": "resource",
+          "asset": "caption-composition.CDeYNojy.js",
+          "initiator": "script",
+          "start": 5759.899999856949,
+          "end": 5769,
+          "transferBytes": 1015,
+          "pageMs": 5783.899999856949
+        },
+        {
+          "observerNodeMs": 6656.019041,
+          "phase": "module-body-start",
+          "asset": "caption-composition.CDeYNojy.js",
+          "pageMs": 5808.399999856949
+        },
+        {
+          "observerNodeMs": 6656.14475,
+          "phase": "module-body-end",
+          "asset": "caption-composition.CDeYNojy.js",
+          "pageMs": 5808.5
+        },
+        {
+          "observerNodeMs": 6656.169958,
+          "phase": "module-body-start",
+          "asset": "calendar-demo.shared.C639z_7l.js",
+          "pageMs": 5808.5
+        },
+        {
+          "observerNodeMs": 6656.197208,
+          "phase": "module-body-end",
+          "asset": "calendar-demo.shared.C639z_7l.js",
+          "pageMs": 5808.5
+        },
+        {
+          "observerNodeMs": 11228.614666,
+          "phase": "resource",
+          "asset": "shadcn-demo-style.CBmguV5p.js",
+          "initiator": "script",
+          "start": 6448,
+          "end": 6457.099999904633,
+          "transferBytes": 743,
+          "pageMs": 10380.899999856949
+        },
+        {
+          "observerNodeMs": 12937.4385,
+          "phase": "module-body-start",
+          "asset": "shadcn-demo-style.CBmguV5p.js",
+          "pageMs": 12089.799999952316
+        },
+        {
+          "observerNodeMs": 12937.494291,
+          "phase": "module-body-end",
+          "asset": "shadcn-demo-style.CBmguV5p.js",
+          "pageMs": 12089.899999856949
+        },
+        {
+          "observerNodeMs": 30718.746125,
+          "phase": "load-start",
+          "id": "demo-shadcn-tree",
+          "call": 1,
+          "pageMs": 29862.599999904633
+        },
+        {
+          "observerNodeMs": 30718.906375,
+          "phase": "recipe-preload",
+          "id": "demo-shadcn-tree",
+          "asset": "demo-shadcn-tree.demo.BJQCy4I6.js",
+          "pageMs": 29862.699999809265
+        },
+        {
+          "observerNodeMs": 30719.449291,
+          "phase": "load-start",
+          "id": "demo-shadcn-tree",
+          "call": 2,
+          "pageMs": 29863.199999809265
+        },
+        {
+          "observerNodeMs": 30719.494833,
+          "phase": "load-start",
+          "id": "demo-shadcn-tree",
+          "call": 3,
+          "pageMs": 29863.5
+        },
+        {
+          "observerNodeMs": 30719.524875,
+          "phase": "load-start",
+          "id": "demo-shadcn-tree",
+          "call": 4,
+          "pageMs": 29863.599999904633
+        },
+        {
+          "observerNodeMs": 30721.377125,
+          "phase": "inner-import",
+          "id": "demo-shadcn-tree",
+          "asset": "demo-shadcn-tree.demo.BJQCy4I6.js",
+          "pageMs": 29873.799999952316
+        },
+        {
+          "observerNodeMs": 36628.750333,
+          "phase": "load-start",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 5,
+          "pageMs": 35781
+        },
+        {
+          "observerNodeMs": 36628.893208,
+          "phase": "recipe-preload",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "asset": "demo-bootstrap-2-3-2-calendar.demo.OWPuICtm.js",
+          "pageMs": 35781.09999990463
+        },
+        {
+          "observerNodeMs": 36629.16,
+          "phase": "load-start",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 6,
+          "pageMs": 35781.699999809265
+        },
+        {
+          "observerNodeMs": 36629.290666,
+          "phase": "load-start",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 7,
+          "pageMs": 35781.89999985695
+        },
+        {
+          "observerNodeMs": 36629.471,
+          "phase": "load-start",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 8,
+          "pageMs": 35782.09999990463
+        },
+        {
+          "observerNodeMs": 36645.619833,
+          "phase": "inner-import",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "asset": "demo-bootstrap-2-3-2-calendar.demo.OWPuICtm.js",
+          "pageMs": 35797.699999809265
+        },
+        {
+          "observerNodeMs": 42394.039083,
+          "phase": "resource",
+          "asset": "demo-shadcn-tree.demo.BJQCy4I6.js",
+          "initiator": "script",
+          "start": 29863.099999904633,
+          "end": 29871.799999952316,
+          "transferBytes": 769,
+          "pageMs": 41546.299999952316
+        },
+        {
+          "observerNodeMs": 46806.194916,
+          "phase": "module-body-start",
+          "asset": "demo-shadcn-tree.demo.BJQCy4I6.js",
+          "pageMs": 45958.09999990463
+        },
+        {
+          "observerNodeMs": 46806.282625,
+          "phase": "module-body-end",
+          "asset": "demo-shadcn-tree.demo.BJQCy4I6.js",
+          "pageMs": 45958.299999952316
+        },
+        {
+          "observerNodeMs": 46806.67375,
+          "phase": "import-return",
+          "id": "demo-shadcn-tree",
+          "call": 1,
+          "pageMs": 45958.299999952316
+        },
+        {
+          "observerNodeMs": 46806.752166,
+          "phase": "validation-return",
+          "id": "demo-shadcn-tree",
+          "call": 1,
+          "pageMs": 45958.299999952316
+        },
+        {
+          "observerNodeMs": 46806.795208,
+          "phase": "import-return",
+          "id": "demo-shadcn-tree",
+          "call": 2,
+          "pageMs": 45958.299999952316
+        },
+        {
+          "observerNodeMs": 46806.834458,
+          "phase": "validation-return",
+          "id": "demo-shadcn-tree",
+          "call": 2,
+          "pageMs": 45958.299999952316
+        },
+        {
+          "observerNodeMs": 46806.874083,
+          "phase": "import-return",
+          "id": "demo-shadcn-tree",
+          "call": 3,
+          "pageMs": 45958.299999952316
+        },
+        {
+          "observerNodeMs": 46806.91075,
+          "phase": "validation-return",
+          "id": "demo-shadcn-tree",
+          "call": 3,
+          "pageMs": 45958.299999952316
+        },
+        {
+          "observerNodeMs": 46806.950083,
+          "phase": "import-return",
+          "id": "demo-shadcn-tree",
+          "call": 4,
+          "pageMs": 45958.299999952316
+        },
+        {
+          "observerNodeMs": 46807.012625,
+          "phase": "validation-return",
+          "id": "demo-shadcn-tree",
+          "call": 4,
+          "pageMs": 45958.299999952316
+        },
+        {
+          "observerNodeMs": 46811.488208,
+          "phase": "resource",
+          "asset": "demo-bootstrap-2-3-2-calendar.demo.OWPuICtm.js",
+          "initiator": "script",
+          "start": 35781.59999990463,
+          "end": 35784.59999990463,
+          "transferBytes": 752,
+          "pageMs": 45963.699999809265
+        },
+        {
+          "observerNodeMs": 48688.132458,
+          "phase": "load-start",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 9,
+          "pageMs": 47840.59999990463
+        },
+        {
+          "observerNodeMs": 48688.253375,
+          "phase": "recipe-preload",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "asset": "demo-bootstrap-2-3-2-drawer.demo.D5ESS1JM.js",
+          "pageMs": 47840.59999990463
+        },
+        {
+          "observerNodeMs": 48688.365541,
+          "phase": "load-start",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 10,
+          "pageMs": 47840.89999985695
+        },
+        {
+          "observerNodeMs": 48688.518583,
+          "phase": "load-start",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 11,
+          "pageMs": 47841.09999990463
+        },
+        {
+          "observerNodeMs": 48688.724958,
+          "phase": "load-start",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 12,
+          "pageMs": 47841.39999985695
+        },
+        {
+          "observerNodeMs": 48710.068333,
+          "phase": "inner-import",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "asset": "demo-bootstrap-2-3-2-drawer.demo.D5ESS1JM.js",
+          "pageMs": 47862.09999990463
+        },
+        {
+          "observerNodeMs": 49012.315125,
+          "phase": "module-body-start",
+          "asset": "demo-bootstrap-2-3-2-calendar.demo.OWPuICtm.js",
+          "pageMs": 48164.799999952316
+        },
+        {
+          "observerNodeMs": 49012.466208,
+          "phase": "module-body-end",
+          "asset": "demo-bootstrap-2-3-2-calendar.demo.OWPuICtm.js",
+          "pageMs": 48165
+        },
+        {
+          "observerNodeMs": 49012.565208,
+          "phase": "import-return",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 5,
+          "pageMs": 48165.09999990463
+        },
+        {
+          "observerNodeMs": 49012.657166,
+          "phase": "validation-return",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 5,
+          "pageMs": 48165.299999952316
+        },
+        {
+          "observerNodeMs": 49012.676333,
+          "phase": "import-return",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 6,
+          "pageMs": 48165.299999952316
+        },
+        {
+          "observerNodeMs": 49012.745625,
+          "phase": "validation-return",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 6,
+          "pageMs": 48165.299999952316
+        },
+        {
+          "observerNodeMs": 49012.761375,
+          "phase": "import-return",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 7,
+          "pageMs": 48165.39999985695
+        },
+        {
+          "observerNodeMs": 49012.949166,
+          "phase": "validation-return",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 7,
+          "pageMs": 48165.5
+        },
+        {
+          "observerNodeMs": 49012.982291,
+          "phase": "import-return",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 8,
+          "pageMs": 48165.59999990463
+        },
+        {
+          "observerNodeMs": 49013.064458,
+          "phase": "validation-return",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 8,
+          "pageMs": 48165.59999990463
+        },
+        {
+          "observerNodeMs": 51307.172083,
+          "phase": "resource",
+          "asset": "demo-bootstrap-2-3-2-drawer.demo.D5ESS1JM.js",
+          "initiator": "script",
+          "start": 47862.199999809265,
+          "end": 47868.59999990463,
+          "transferBytes": 955,
+          "pageMs": 50459.699999809265
+        },
+        {
+          "observerNodeMs": 51318.905833,
+          "phase": "module-body-start",
+          "asset": "demo-bootstrap-2-3-2-drawer.demo.D5ESS1JM.js",
+          "pageMs": 50471.5
+        },
+        {
+          "observerNodeMs": 51319.020125,
+          "phase": "module-body-end",
+          "asset": "demo-bootstrap-2-3-2-drawer.demo.D5ESS1JM.js",
+          "pageMs": 50471.5
+        },
+        {
+          "observerNodeMs": 51319.043916,
+          "phase": "import-return",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 9,
+          "pageMs": 50471.5
+        },
+        {
+          "observerNodeMs": 51319.062333,
+          "phase": "validation-return",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 9,
+          "pageMs": 50471.5
+        },
+        {
+          "observerNodeMs": 51319.174708,
+          "phase": "import-return",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 10,
+          "pageMs": 50471.5
+        },
+        {
+          "observerNodeMs": 51319.207958,
+          "phase": "validation-return",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 10,
+          "pageMs": 50471.5
+        },
+        {
+          "observerNodeMs": 51319.228291,
+          "phase": "import-return",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 11,
+          "pageMs": 50471.5
+        },
+        {
+          "observerNodeMs": 51319.244,
+          "phase": "validation-return",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 11,
+          "pageMs": 50471.59999990463
+        },
+        {
+          "observerNodeMs": 51319.259291,
+          "phase": "import-return",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 12,
+          "pageMs": 50471.59999990463
+        },
+        {
+          "observerNodeMs": 51319.274958,
+          "phase": "validation-return",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 12,
+          "pageMs": 50471.59999990463
+        }
+      ]
+    },
+    "lookahead": {
+      "meta": {
+        "plans": {
+          "demo-bootstrap-2-3-2-drawer": {
+            "entry": "demo-bootstrap-2-3-2-drawer.demo.D5ESS1JM.js",
+            "mapped": ["demo-bootstrap-2-3-2-drawer.demo.D5ESS1JM.js"]
+          },
+          "demo-bootstrap-2-3-2-calendar": {
+            "entry": "demo-bootstrap-2-3-2-calendar.demo.OWPuICtm.js",
+            "mapped": [
+              "demo-bootstrap-2-3-2-calendar.demo.OWPuICtm.js",
+              "calendar-demo.shared.C639z_7l.js",
+              "caption-composition.CDeYNojy.js"
+            ]
+          },
+          "demo-shadcn-tree": {
+            "entry": "demo-shadcn-tree.demo.BJQCy4I6.js",
+            "mapped": ["demo-shadcn-tree.demo.BJQCy4I6.js", "shadcn-demo-style.CBmguV5p.js"]
+          }
+        },
+        "assets": [
+          {
+            "asset": "projection-materializer.yeICPDTE.js",
+            "source": "d2ad7d8bd58ab8811967034ffd116daa0291495078f7defc0be7038dc34de44d",
+            "instrumented": "04fc80d0f954fa34025d438b687aadf75d77481a641e9451dce10a5490b744f2"
+          },
+          {
+            "asset": "calendar-demo.shared.C639z_7l.js",
+            "source": "be24a27eddf7479c6eeccd5e308f75dadf405adf2c6d779ced28f344694d4352",
+            "instrumented": "f855aa6418c22f103a480fd967431628e5052cb52d60b876b0c457c4a796f1c3"
+          },
+          {
+            "asset": "caption-composition.CDeYNojy.js",
+            "source": "41b158a31f6bf5ffff08005b1427b95ea144a696029782b2a9929a66ae2aafad",
+            "instrumented": "89c611d97a992a1ec0f30aae80970dcc26d95364f9c72e4e29c1ccfebe415f8e"
+          },
+          {
+            "asset": "demo-bootstrap-2-3-2-calendar.demo.OWPuICtm.js",
+            "source": "9406f7fce3c6dd3ffaf00a2bae4b1c46b5d2842ef1bb6f9d150a28fe47df38c7",
+            "instrumented": "d1dff2e0c9f5f5693e87f3a3b8196a864c6de3fa3240bd30f52f16b9373de262"
+          },
+          {
+            "asset": "demo-bootstrap-2-3-2-drawer.demo.D5ESS1JM.js",
+            "source": "9ec300e5057cf84357007285f76f326f3db10f6e38d0dfd24c9dd67a3580da3e",
+            "instrumented": "f3433aae46ab9baff31d8e803b62bc4fcbeca18e51b7f154719e49b4025dbf19"
+          },
+          {
+            "asset": "demo-shadcn-tree.demo.BJQCy4I6.js",
+            "source": "4b750294a1d3a992c46258b5a552a7ee217a8934ff3d03568e5a50fcf619c488",
+            "instrumented": "22a4a729175ecabf84e2b6dda0d5a00c693e7b901cc6aee3d4779b6b84aa7ab5"
+          },
+          {
+            "asset": "shadcn-demo-style.CBmguV5p.js",
+            "source": "3d7655a567e1972c4d0ef3e52c8c05005545c9eee01c4d4500eab3d6bc77d891",
+            "instrumented": "ebff73b64f7f291d6d804eab506d273e2553c46ee01b7831f7ab44bdd3b9957f"
+          },
+          {
+            "asset": "previewer-client.DVtryNTO.js",
+            "source": "03819561d604f93f3262d8115c9c775cd5d0f50ce2aa2308223eeb93bdd7d541",
+            "instrumented": "db15916b4bcac90e61e8e5501999715e8418cc7f148c804d3c57e88a138d6e8b"
+          },
+          {
+            "asset": "PrototypePreviewer.astro_astro_type_script_index_0_lang.ClfguvN1.js",
+            "source": "6b16c976cf74913bdcd5085de33dfde4a3796363fe1df8dd1c56ef1763a271d4",
+            "instrumented": "a053c788ac0f12003c74323140e397c5f10a92a78d19e2e603faa33fafd3baac"
+          }
+        ]
+      },
+      "servedHtmlSha256": "ccc97208b136be443a0f9a62fde0cd50612f7544265bd2effd64fd2484befa2f",
+      "logSha256": "d3007f893c2eaf99df4e805acb4160bc669f4b4954cb22f289d7e9e394e60ec7",
+      "nativeExit": 1,
+      "cases": "0 passed, 1 failed, 1 unselected",
+      "deliveredLastOriginal": {
+        "pageMs": 66059.70000004768,
+        "firstMissing": {
+          "previewerId": "pp-1qondpiej87",
+          "index": 596,
+          "inited": "1",
+          "hostChildren": 0
+        },
+        "demo": "demo-bootstrap-2-3-2-calendar"
+      },
+      "profiles": {
+        "demo-bootstrap-2-3-2-drawer": {
+          "warmStarts": [50334.799999952316],
+          "loadRequests": 5,
+          "firstLoad": 50334.90000009537,
+          "executedPreloads": 1,
+          "innerImports": 1,
+          "currentBodies": 1,
+          "mappedResourceEnd": 50358.700000047684,
+          "firstBodyStart": 56111.90000009537,
+          "firstBodyEnd": 56112,
+          "replies": 5,
+          "firstImportReturn": 56112.10000014305,
+          "firstValidation": 56112.10000014305,
+          "mappedResponseToEntryBodyMs": 5753.200000047684,
+          "maxValidationMs": 0.0,
+          "firstRenderQueued": [],
+          "firstRenderStarts": []
+        },
+        "demo-bootstrap-2-3-2-calendar": {
+          "warmStarts": [33584.90000009537],
+          "loadRequests": 5,
+          "firstLoad": 33584.90000009537,
+          "executedPreloads": 1,
+          "innerImports": 1,
+          "currentBodies": 1,
+          "mappedResourceEnd": 33591.299999952316,
+          "firstBodyStart": 52545.60000014305,
+          "firstBodyEnd": 52546.5,
+          "replies": 5,
+          "firstImportReturn": 52546.60000014305,
+          "firstValidation": 52546.799999952316,
+          "mappedResponseToEntryBodyMs": 18954.300000190735,
+          "maxValidationMs": 0.20000004768371582,
+          "firstRenderQueued": [],
+          "firstRenderStarts": []
+        },
+        "demo-shadcn-tree": {
+          "warmStarts": [28094.10000014305],
+          "loadRequests": 5,
+          "firstLoad": 28094.200000047684,
+          "executedPreloads": 1,
+          "innerImports": 1,
+          "currentBodies": 1,
+          "mappedResourceEnd": 28108.5,
+          "firstBodyStart": 50308.700000047684,
+          "firstBodyEnd": 50308.90000009537,
+          "replies": 5,
+          "firstImportReturn": 50308.90000009537,
+          "firstValidation": 50308.90000009537,
+          "mappedResponseToEntryBodyMs": 22200.200000047684,
+          "maxValidationMs": 0.09999990463256836,
+          "firstRenderQueued": [],
+          "firstRenderStarts": []
+        }
+      },
+      "rows": [
+        {
+          "observerNodeMs": 6657.25575,
+          "phase": "resource",
+          "asset": "calendar-demo.shared.C639z_7l.js",
+          "initiator": "script",
+          "start": 5783.5,
+          "end": 5792.200000047684,
+          "transferBytes": 2867,
+          "pageMs": 5823.900000095367
+        },
+        {
+          "observerNodeMs": 6657.320792,
+          "phase": "resource",
+          "asset": "caption-composition.CDeYNojy.js",
+          "initiator": "script",
+          "start": 5783.700000047684,
+          "end": 5792,
+          "transferBytes": 1015,
+          "pageMs": 5824
+        },
+        {
+          "observerNodeMs": 6678.170458,
+          "phase": "module-body-start",
+          "asset": "caption-composition.CDeYNojy.js",
+          "pageMs": 5845.100000143051
+        },
+        {
+          "observerNodeMs": 6678.268708,
+          "phase": "module-body-end",
+          "asset": "caption-composition.CDeYNojy.js",
+          "pageMs": 5845.200000047684
+        },
+        {
+          "observerNodeMs": 6678.345083,
+          "phase": "module-body-start",
+          "asset": "calendar-demo.shared.C639z_7l.js",
+          "pageMs": 5845.200000047684
+        },
+        {
+          "observerNodeMs": 6678.364917,
+          "phase": "module-body-end",
+          "asset": "calendar-demo.shared.C639z_7l.js",
+          "pageMs": 5845.200000047684
+        },
+        {
+          "observerNodeMs": 7343.651875,
+          "phase": "resource",
+          "asset": "shadcn-demo-style.CBmguV5p.js",
+          "initiator": "script",
+          "start": 6016.700000047684,
+          "end": 6039.100000143051,
+          "transferBytes": 743,
+          "pageMs": 6510.200000047684
+        },
+        {
+          "observerNodeMs": 8388.127167,
+          "phase": "module-body-start",
+          "asset": "shadcn-demo-style.CBmguV5p.js",
+          "pageMs": 7554.700000047684
+        },
+        {
+          "observerNodeMs": 8388.213625,
+          "phase": "module-body-end",
+          "asset": "shadcn-demo-style.CBmguV5p.js",
+          "pageMs": 7554.799999952316
+        },
+        {
+          "observerNodeMs": 28927.664667,
+          "phase": "warm-request",
+          "id": "demo-shadcn-tree",
+          "pageMs": 28094.10000014305
+        },
+        {
+          "observerNodeMs": 28927.740375,
+          "phase": "load-start",
+          "id": "demo-shadcn-tree",
+          "call": 1,
+          "pageMs": 28094.200000047684
+        },
+        {
+          "observerNodeMs": 28927.766333,
+          "phase": "recipe-preload",
+          "id": "demo-shadcn-tree",
+          "asset": "demo-shadcn-tree.demo.BJQCy4I6.js",
+          "pageMs": 28094.299999952316
+        },
+        {
+          "observerNodeMs": 28936.108125,
+          "phase": "inner-import",
+          "id": "demo-shadcn-tree",
+          "asset": "demo-shadcn-tree.demo.BJQCy4I6.js",
+          "pageMs": 28102.900000095367
+        },
+        {
+          "observerNodeMs": 34415.963542,
+          "phase": "load-start",
+          "id": "demo-shadcn-tree",
+          "call": 2,
+          "pageMs": 33582.700000047684
+        },
+        {
+          "observerNodeMs": 34416.11925,
+          "phase": "load-start",
+          "id": "demo-shadcn-tree",
+          "call": 3,
+          "pageMs": 33582.90000009537
+        },
+        {
+          "observerNodeMs": 34416.178875,
+          "phase": "load-start",
+          "id": "demo-shadcn-tree",
+          "call": 4,
+          "pageMs": 33583.10000014305
+        },
+        {
+          "observerNodeMs": 34416.233042,
+          "phase": "load-start",
+          "id": "demo-shadcn-tree",
+          "call": 5,
+          "pageMs": 33583.299999952316
+        },
+        {
+          "observerNodeMs": 34418.175917,
+          "phase": "warm-request",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "pageMs": 33584.90000009537
+        },
+        {
+          "observerNodeMs": 34418.221917,
+          "phase": "load-start",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 6,
+          "pageMs": 33584.90000009537
+        },
+        {
+          "observerNodeMs": 34418.245375,
+          "phase": "recipe-preload",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "asset": "demo-bootstrap-2-3-2-calendar.demo.OWPuICtm.js",
+          "pageMs": 33585
+        },
+        {
+          "observerNodeMs": 34428.909042,
+          "phase": "inner-import",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "asset": "demo-bootstrap-2-3-2-calendar.demo.OWPuICtm.js",
+          "pageMs": 33595.60000014305
+        },
+        {
+          "observerNodeMs": 45887.578625,
+          "phase": "resource",
+          "asset": "demo-shadcn-tree.demo.BJQCy4I6.js",
+          "initiator": "script",
+          "start": 28094.60000014305,
+          "end": 28108.5,
+          "transferBytes": 769,
+          "pageMs": 45053
+        },
+        {
+          "observerNodeMs": 45890.844583,
+          "phase": "load-start",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 7,
+          "pageMs": 45057.700000047684
+        },
+        {
+          "observerNodeMs": 45890.95975,
+          "phase": "load-start",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 8,
+          "pageMs": 45057.90000009537
+        },
+        {
+          "observerNodeMs": 45891.121083,
+          "phase": "load-start",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 9,
+          "pageMs": 45058.10000014305
+        },
+        {
+          "observerNodeMs": 45891.238125,
+          "phase": "load-start",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 10,
+          "pageMs": 45058.299999952316
+        },
+        {
+          "observerNodeMs": 51142.397083,
+          "phase": "module-body-start",
+          "asset": "demo-shadcn-tree.demo.BJQCy4I6.js",
+          "pageMs": 50308.700000047684
+        },
+        {
+          "observerNodeMs": 51142.659708,
+          "phase": "module-body-end",
+          "asset": "demo-shadcn-tree.demo.BJQCy4I6.js",
+          "pageMs": 50308.90000009537
+        },
+        {
+          "observerNodeMs": 51142.693167,
+          "phase": "import-return",
+          "id": "demo-shadcn-tree",
+          "call": 1,
+          "pageMs": 50308.90000009537
+        },
+        {
+          "observerNodeMs": 51142.715333,
+          "phase": "validation-return",
+          "id": "demo-shadcn-tree",
+          "call": 1,
+          "pageMs": 50308.90000009537
+        },
+        {
+          "observerNodeMs": 51142.732583,
+          "phase": "import-return",
+          "id": "demo-shadcn-tree",
+          "call": 2,
+          "pageMs": 50308.90000009537
+        },
+        {
+          "observerNodeMs": 51142.757042,
+          "phase": "validation-return",
+          "id": "demo-shadcn-tree",
+          "call": 2,
+          "pageMs": 50308.90000009537
+        },
+        {
+          "observerNodeMs": 51142.792208,
+          "phase": "import-return",
+          "id": "demo-shadcn-tree",
+          "call": 3,
+          "pageMs": 50308.90000009537
+        },
+        {
+          "observerNodeMs": 51142.807958,
+          "phase": "validation-return",
+          "id": "demo-shadcn-tree",
+          "call": 3,
+          "pageMs": 50309
+        },
+        {
+          "observerNodeMs": 51142.823167,
+          "phase": "import-return",
+          "id": "demo-shadcn-tree",
+          "call": 4,
+          "pageMs": 50309
+        },
+        {
+          "observerNodeMs": 51142.838167,
+          "phase": "validation-return",
+          "id": "demo-shadcn-tree",
+          "call": 4,
+          "pageMs": 50309
+        },
+        {
+          "observerNodeMs": 51142.962458,
+          "phase": "import-return",
+          "id": "demo-shadcn-tree",
+          "call": 5,
+          "pageMs": 50309
+        },
+        {
+          "observerNodeMs": 51142.978542,
+          "phase": "validation-return",
+          "id": "demo-shadcn-tree",
+          "call": 5,
+          "pageMs": 50309
+        },
+        {
+          "observerNodeMs": 51145.74425,
+          "phase": "resource",
+          "asset": "demo-bootstrap-2-3-2-calendar.demo.OWPuICtm.js",
+          "initiator": "script",
+          "start": 33585.40000009537,
+          "end": 33591.299999952316,
+          "transferBytes": 752,
+          "pageMs": 50312.700000047684
+        },
+        {
+          "observerNodeMs": 51167.914375,
+          "phase": "warm-request",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "pageMs": 50334.799999952316
+        },
+        {
+          "observerNodeMs": 51168.040667,
+          "phase": "load-start",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 11,
+          "pageMs": 50334.90000009537
+        },
+        {
+          "observerNodeMs": 51168.087792,
+          "phase": "recipe-preload",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "asset": "demo-bootstrap-2-3-2-drawer.demo.D5ESS1JM.js",
+          "pageMs": 50335
+        },
+        {
+          "observerNodeMs": 51185.176458,
+          "phase": "inner-import",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "asset": "demo-bootstrap-2-3-2-drawer.demo.D5ESS1JM.js",
+          "pageMs": 50351.90000009537
+        },
+        {
+          "observerNodeMs": 53378.703625,
+          "phase": "module-body-start",
+          "asset": "demo-bootstrap-2-3-2-calendar.demo.OWPuICtm.js",
+          "pageMs": 52545.60000014305
+        },
+        {
+          "observerNodeMs": 53379.673292,
+          "phase": "module-body-end",
+          "asset": "demo-bootstrap-2-3-2-calendar.demo.OWPuICtm.js",
+          "pageMs": 52546.5
+        },
+        {
+          "observerNodeMs": 53379.885125,
+          "phase": "import-return",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 6,
+          "pageMs": 52546.60000014305
+        },
+        {
+          "observerNodeMs": 53380.007125,
+          "phase": "validation-return",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 6,
+          "pageMs": 52546.799999952316
+        },
+        {
+          "observerNodeMs": 53380.166625,
+          "phase": "import-return",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 7,
+          "pageMs": 52546.799999952316
+        },
+        {
+          "observerNodeMs": 53380.186042,
+          "phase": "validation-return",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 7,
+          "pageMs": 52546.90000009537
+        },
+        {
+          "observerNodeMs": 53380.201542,
+          "phase": "import-return",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 8,
+          "pageMs": 52546.90000009537
+        },
+        {
+          "observerNodeMs": 53380.223708,
+          "phase": "validation-return",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 8,
+          "pageMs": 52547.10000014305
+        },
+        {
+          "observerNodeMs": 53380.257458,
+          "phase": "import-return",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 9,
+          "pageMs": 52547.10000014305
+        },
+        {
+          "observerNodeMs": 53380.323792,
+          "phase": "validation-return",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 9,
+          "pageMs": 52547.200000047684
+        },
+        {
+          "observerNodeMs": 53380.3385,
+          "phase": "import-return",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 10,
+          "pageMs": 52547.200000047684
+        },
+        {
+          "observerNodeMs": 53380.383292,
+          "phase": "validation-return",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 10,
+          "pageMs": 52547.40000009537
+        },
+        {
+          "observerNodeMs": 53419.572875,
+          "phase": "load-start",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 12,
+          "pageMs": 52586.5
+        },
+        {
+          "observerNodeMs": 53419.768083,
+          "phase": "load-start",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 13,
+          "pageMs": 52586.799999952316
+        },
+        {
+          "observerNodeMs": 53419.963167,
+          "phase": "load-start",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 14,
+          "pageMs": 52587.10000014305
+        },
+        {
+          "observerNodeMs": 53420.208208,
+          "phase": "load-start",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 15,
+          "pageMs": 52587.299999952316
+        },
+        {
+          "observerNodeMs": 56930.307208,
+          "phase": "resource",
+          "asset": "demo-bootstrap-2-3-2-drawer.demo.D5ESS1JM.js",
+          "initiator": "script",
+          "start": 50352.10000014305,
+          "end": 50358.700000047684,
+          "transferBytes": 955,
+          "pageMs": 56096.5
+        },
+        {
+          "observerNodeMs": 56945.183042,
+          "phase": "module-body-start",
+          "asset": "demo-bootstrap-2-3-2-drawer.demo.D5ESS1JM.js",
+          "pageMs": 56111.90000009537
+        },
+        {
+          "observerNodeMs": 56945.334833,
+          "phase": "module-body-end",
+          "asset": "demo-bootstrap-2-3-2-drawer.demo.D5ESS1JM.js",
+          "pageMs": 56112
+        },
+        {
+          "observerNodeMs": 56945.854292,
+          "phase": "import-return",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 11,
+          "pageMs": 56112.10000014305
+        },
+        {
+          "observerNodeMs": 56946.002,
+          "phase": "validation-return",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 11,
+          "pageMs": 56112.10000014305
+        },
+        {
+          "observerNodeMs": 56946.049125,
+          "phase": "import-return",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 12,
+          "pageMs": 56112.10000014305
+        },
+        {
+          "observerNodeMs": 56947.304167,
+          "phase": "validation-return",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 12,
+          "pageMs": 56112.10000014305
+        },
+        {
+          "observerNodeMs": 56947.357833,
+          "phase": "import-return",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 13,
+          "pageMs": 56112.10000014305
+        },
+        {
+          "observerNodeMs": 56947.376208,
+          "phase": "validation-return",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 13,
+          "pageMs": 56112.10000014305
+        },
+        {
+          "observerNodeMs": 56947.3925,
+          "phase": "import-return",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 14,
+          "pageMs": 56112.200000047684
+        },
+        {
+          "observerNodeMs": 56947.407833,
+          "phase": "validation-return",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 14,
+          "pageMs": 56112.200000047684
+        },
+        {
+          "observerNodeMs": 56947.422083,
+          "phase": "import-return",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 15,
+          "pageMs": 56112.200000047684
+        },
+        {
+          "observerNodeMs": 56947.435625,
+          "phase": "validation-return",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 15,
+          "pageMs": 56112.200000047684
+        }
+      ]
+    },
+    "renderYield": {
+      "meta": {
+        "plans": {
+          "demo-bootstrap-2-3-2-drawer": {
+            "entry": "demo-bootstrap-2-3-2-drawer.demo.D5ESS1JM.js",
+            "mapped": ["demo-bootstrap-2-3-2-drawer.demo.D5ESS1JM.js"]
+          },
+          "demo-bootstrap-2-3-2-calendar": {
+            "entry": "demo-bootstrap-2-3-2-calendar.demo.OWPuICtm.js",
+            "mapped": [
+              "demo-bootstrap-2-3-2-calendar.demo.OWPuICtm.js",
+              "calendar-demo.shared.C639z_7l.js",
+              "caption-composition.CDeYNojy.js"
+            ]
+          },
+          "demo-shadcn-tree": {
+            "entry": "demo-shadcn-tree.demo.BJQCy4I6.js",
+            "mapped": ["demo-shadcn-tree.demo.BJQCy4I6.js", "shadcn-demo-style.CBmguV5p.js"]
+          }
+        },
+        "assets": [
+          {
+            "asset": "projection-materializer.yeICPDTE.js",
+            "source": "d2ad7d8bd58ab8811967034ffd116daa0291495078f7defc0be7038dc34de44d",
+            "instrumented": "04fc80d0f954fa34025d438b687aadf75d77481a641e9451dce10a5490b744f2"
+          },
+          {
+            "asset": "calendar-demo.shared.C639z_7l.js",
+            "source": "be24a27eddf7479c6eeccd5e308f75dadf405adf2c6d779ced28f344694d4352",
+            "instrumented": "f855aa6418c22f103a480fd967431628e5052cb52d60b876b0c457c4a796f1c3"
+          },
+          {
+            "asset": "caption-composition.CDeYNojy.js",
+            "source": "41b158a31f6bf5ffff08005b1427b95ea144a696029782b2a9929a66ae2aafad",
+            "instrumented": "89c611d97a992a1ec0f30aae80970dcc26d95364f9c72e4e29c1ccfebe415f8e"
+          },
+          {
+            "asset": "demo-bootstrap-2-3-2-calendar.demo.OWPuICtm.js",
+            "source": "9406f7fce3c6dd3ffaf00a2bae4b1c46b5d2842ef1bb6f9d150a28fe47df38c7",
+            "instrumented": "d1dff2e0c9f5f5693e87f3a3b8196a864c6de3fa3240bd30f52f16b9373de262"
+          },
+          {
+            "asset": "demo-bootstrap-2-3-2-drawer.demo.D5ESS1JM.js",
+            "source": "9ec300e5057cf84357007285f76f326f3db10f6e38d0dfd24c9dd67a3580da3e",
+            "instrumented": "f3433aae46ab9baff31d8e803b62bc4fcbeca18e51b7f154719e49b4025dbf19"
+          },
+          {
+            "asset": "demo-shadcn-tree.demo.BJQCy4I6.js",
+            "source": "4b750294a1d3a992c46258b5a552a7ee217a8934ff3d03568e5a50fcf619c488",
+            "instrumented": "22a4a729175ecabf84e2b6dda0d5a00c693e7b901cc6aee3d4779b6b84aa7ab5"
+          },
+          {
+            "asset": "shadcn-demo-style.CBmguV5p.js",
+            "source": "3d7655a567e1972c4d0ef3e52c8c05005545c9eee01c4d4500eab3d6bc77d891",
+            "instrumented": "ebff73b64f7f291d6d804eab506d273e2553c46ee01b7831f7ab44bdd3b9957f"
+          },
+          {
+            "asset": "previewer-client.DVtryNTO.js",
+            "source": "03819561d604f93f3262d8115c9c775cd5d0f50ce2aa2308223eeb93bdd7d541",
+            "instrumented": "c7bb86727f7d826836b0142fb5af53eb6d36b4e1a100a2f703ec0cf8af3fc361"
+          }
+        ]
+      },
+      "servedHtmlSha256": "ccc97208b136be443a0f9a62fde0cd50612f7544265bd2effd64fd2484befa2f",
+      "logSha256": "c42e519734439a12c39cb78047343c79c18fde21737efddb2533b553ce16801d",
+      "nativeExit": 1,
+      "cases": "0 passed, 1 failed, 1 unselected",
+      "deliveredLastOriginal": {
+        "pageMs": 61428.90000009537,
+        "firstMissing": {
+          "previewerId": "pp-vw1om5vm5k",
+          "index": 216,
+          "inited": "1",
+          "hostChildren": 0
+        },
+        "demo": "demo-base-tooltip"
+      },
+      "profiles": {
+        "demo-bootstrap-2-3-2-drawer": {
+          "warmStarts": [],
+          "loadRequests": 4,
+          "firstLoad": 18003.299999952316,
+          "executedPreloads": 1,
+          "innerImports": 1,
+          "currentBodies": 1,
+          "mappedResourceEnd": 18019.400000095367,
+          "firstBodyStart": 20991.900000095367,
+          "firstBodyEnd": 20992.10000014305,
+          "replies": 4,
+          "firstImportReturn": 20992.10000014305,
+          "firstValidation": 20992.10000014305,
+          "mappedResponseToEntryBodyMs": 2972.5,
+          "maxValidationMs": 0.0,
+          "firstRenderQueued": [
+            {
+              "runtime": "wc",
+              "pageMs": 26196.200000047684
+            },
+            {
+              "runtime": "react",
+              "pageMs": 26196.299999952316
+            },
+            {
+              "runtime": "vue",
+              "pageMs": 26196.299999952316
+            },
+            {
+              "runtime": "vue2",
+              "pageMs": 26196.299999952316
+            }
+          ],
+          "firstRenderStarts": []
+        },
+        "demo-bootstrap-2-3-2-calendar": {
+          "warmStarts": [],
+          "loadRequests": 4,
+          "firstLoad": 13861.200000047684,
+          "executedPreloads": 1,
+          "innerImports": 1,
+          "currentBodies": 1,
+          "mappedResourceEnd": 13866.100000143051,
+          "firstBodyStart": 19525.900000095367,
+          "firstBodyEnd": 19526.200000047684,
+          "replies": 4,
+          "firstImportReturn": 19526.200000047684,
+          "firstValidation": 19526.400000095367,
+          "mappedResponseToEntryBodyMs": 5659.799999952316,
+          "maxValidationMs": 0.20000004768371582,
+          "firstRenderQueued": [
+            {
+              "runtime": "wc",
+              "pageMs": 24724.10000014305
+            },
+            {
+              "runtime": "react",
+              "pageMs": 24724.10000014305
+            },
+            {
+              "runtime": "vue",
+              "pageMs": 24724.200000047684
+            },
+            {
+              "runtime": "vue2",
+              "pageMs": 24724.200000047684
+            }
+          ],
+          "firstRenderStarts": []
+        },
+        "demo-shadcn-tree": {
+          "warmStarts": [],
+          "loadRequests": 4,
+          "firstLoad": 11379.799999952316,
+          "executedPreloads": 1,
+          "innerImports": 1,
+          "currentBodies": 1,
+          "mappedResourceEnd": 11391.700000047684,
+          "firstBodyStart": 17990,
+          "firstBodyEnd": 17990.10000014305,
+          "replies": 4,
+          "firstImportReturn": 17990.10000014305,
+          "firstValidation": 17990.200000047684,
+          "mappedResponseToEntryBodyMs": 6598.299999952316,
+          "maxValidationMs": 0.09999990463256836,
+          "firstRenderQueued": [
+            {
+              "runtime": "wc",
+              "pageMs": 24723.799999952316
+            },
+            {
+              "runtime": "react",
+              "pageMs": 24723.900000095367
+            },
+            {
+              "runtime": "vue",
+              "pageMs": 24723.900000095367
+            },
+            {
+              "runtime": "vue2",
+              "pageMs": 24723.900000095367
+            }
+          ],
+          "firstRenderStarts": []
+        }
+      },
+      "rows": [
+        {
+          "observerNodeMs": 7617.237959,
+          "phase": "resource",
+          "asset": "calendar-demo.shared.C639z_7l.js",
+          "initiator": "script",
+          "start": 6121.200000047684,
+          "end": 6132.200000047684,
+          "transferBytes": 2867,
+          "pageMs": 6149.600000143051
+        },
+        {
+          "observerNodeMs": 7617.270584,
+          "phase": "resource",
+          "asset": "caption-composition.CDeYNojy.js",
+          "initiator": "script",
+          "start": 6121.299999952316,
+          "end": 6136.700000047684,
+          "transferBytes": 1015,
+          "pageMs": 6149.700000047684
+        },
+        {
+          "observerNodeMs": 7634.362292,
+          "phase": "module-body-start",
+          "asset": "caption-composition.CDeYNojy.js",
+          "pageMs": 6167
+        },
+        {
+          "observerNodeMs": 7634.439792,
+          "phase": "module-body-end",
+          "asset": "caption-composition.CDeYNojy.js",
+          "pageMs": 6167.100000143051
+        },
+        {
+          "observerNodeMs": 7634.540667,
+          "phase": "module-body-start",
+          "asset": "calendar-demo.shared.C639z_7l.js",
+          "pageMs": 6167.100000143051
+        },
+        {
+          "observerNodeMs": 7634.576667,
+          "phase": "module-body-end",
+          "asset": "calendar-demo.shared.C639z_7l.js",
+          "pageMs": 6167.200000047684
+        },
+        {
+          "observerNodeMs": 8015.040542,
+          "phase": "resource",
+          "asset": "shadcn-demo-style.CBmguV5p.js",
+          "initiator": "script",
+          "start": 6397.400000095367,
+          "end": 6406.600000143051,
+          "transferBytes": 743,
+          "pageMs": 6547.600000143051
+        },
+        {
+          "observerNodeMs": 8736.709375,
+          "phase": "module-body-start",
+          "asset": "shadcn-demo-style.CBmguV5p.js",
+          "pageMs": 7269.100000143051
+        },
+        {
+          "observerNodeMs": 8736.833,
+          "phase": "module-body-end",
+          "asset": "shadcn-demo-style.CBmguV5p.js",
+          "pageMs": 7269.200000047684
+        },
+        {
+          "observerNodeMs": 12847.215792,
+          "phase": "load-start",
+          "id": "demo-shadcn-tree",
+          "call": 1,
+          "pageMs": 11379.799999952316
+        },
+        {
+          "observerNodeMs": 12847.348792,
+          "phase": "recipe-preload",
+          "id": "demo-shadcn-tree",
+          "asset": "demo-shadcn-tree.demo.BJQCy4I6.js",
+          "pageMs": 11379.900000095367
+        },
+        {
+          "observerNodeMs": 12847.453459,
+          "phase": "load-start",
+          "id": "demo-shadcn-tree",
+          "call": 2,
+          "pageMs": 11380.200000047684
+        },
+        {
+          "observerNodeMs": 12847.543709,
+          "phase": "load-start",
+          "id": "demo-shadcn-tree",
+          "call": 3,
+          "pageMs": 11380.299999952316
+        },
+        {
+          "observerNodeMs": 12847.606125,
+          "phase": "load-start",
+          "id": "demo-shadcn-tree",
+          "call": 4,
+          "pageMs": 11380.299999952316
+        },
+        {
+          "observerNodeMs": 12850.483959,
+          "phase": "inner-import",
+          "id": "demo-shadcn-tree",
+          "asset": "demo-shadcn-tree.demo.BJQCy4I6.js",
+          "pageMs": 11383.200000047684
+        },
+        {
+          "observerNodeMs": 15328.799834,
+          "phase": "load-start",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 5,
+          "pageMs": 13861.200000047684
+        },
+        {
+          "observerNodeMs": 15328.9145,
+          "phase": "recipe-preload",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "asset": "demo-bootstrap-2-3-2-calendar.demo.OWPuICtm.js",
+          "pageMs": 13861.299999952316
+        },
+        {
+          "observerNodeMs": 15329.05825,
+          "phase": "load-start",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 6,
+          "pageMs": 13861.700000047684
+        },
+        {
+          "observerNodeMs": 15329.117375,
+          "phase": "load-start",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 7,
+          "pageMs": 13861.799999952316
+        },
+        {
+          "observerNodeMs": 15329.166084,
+          "phase": "load-start",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 8,
+          "pageMs": 13862
+        },
+        {
+          "observerNodeMs": 15334.360667,
+          "phase": "inner-import",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "asset": "demo-bootstrap-2-3-2-calendar.demo.OWPuICtm.js",
+          "pageMs": 13867
+        },
+        {
+          "observerNodeMs": 18783.722917,
+          "phase": "resource",
+          "asset": "demo-shadcn-tree.demo.BJQCy4I6.js",
+          "initiator": "script",
+          "start": 11380.200000047684,
+          "end": 11391.700000047684,
+          "transferBytes": 769,
+          "pageMs": 17316
+        },
+        {
+          "observerNodeMs": 19457.655042,
+          "phase": "module-body-start",
+          "asset": "demo-shadcn-tree.demo.BJQCy4I6.js",
+          "pageMs": 17990
+        },
+        {
+          "observerNodeMs": 19457.719167,
+          "phase": "module-body-end",
+          "asset": "demo-shadcn-tree.demo.BJQCy4I6.js",
+          "pageMs": 17990.10000014305
+        },
+        {
+          "observerNodeMs": 19457.744959,
+          "phase": "import-return",
+          "id": "demo-shadcn-tree",
+          "call": 1,
+          "pageMs": 17990.10000014305
+        },
+        {
+          "observerNodeMs": 19457.776084,
+          "phase": "validation-return",
+          "id": "demo-shadcn-tree",
+          "call": 1,
+          "pageMs": 17990.200000047684
+        },
+        {
+          "observerNodeMs": 19457.919792,
+          "phase": "import-return",
+          "id": "demo-shadcn-tree",
+          "call": 2,
+          "pageMs": 17990.200000047684
+        },
+        {
+          "observerNodeMs": 19457.948334,
+          "phase": "validation-return",
+          "id": "demo-shadcn-tree",
+          "call": 2,
+          "pageMs": 17990.200000047684
+        },
+        {
+          "observerNodeMs": 19457.972167,
+          "phase": "import-return",
+          "id": "demo-shadcn-tree",
+          "call": 3,
+          "pageMs": 17990.200000047684
+        },
+        {
+          "observerNodeMs": 19457.987084,
+          "phase": "validation-return",
+          "id": "demo-shadcn-tree",
+          "call": 3,
+          "pageMs": 17990.200000047684
+        },
+        {
+          "observerNodeMs": 19458.001417,
+          "phase": "import-return",
+          "id": "demo-shadcn-tree",
+          "call": 4,
+          "pageMs": 17990.200000047684
+        },
+        {
+          "observerNodeMs": 19458.015209,
+          "phase": "validation-return",
+          "id": "demo-shadcn-tree",
+          "call": 4,
+          "pageMs": 17990.200000047684
+        },
+        {
+          "observerNodeMs": 19459.69175,
+          "phase": "resource",
+          "asset": "demo-bootstrap-2-3-2-calendar.demo.OWPuICtm.js",
+          "initiator": "script",
+          "start": 13861.700000047684,
+          "end": 13866.100000143051,
+          "transferBytes": 752,
+          "pageMs": 17992.299999952316
+        },
+        {
+          "observerNodeMs": 19470.533917,
+          "phase": "load-start",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 9,
+          "pageMs": 18003.299999952316
+        },
+        {
+          "observerNodeMs": 19470.6225,
+          "phase": "recipe-preload",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "asset": "demo-bootstrap-2-3-2-drawer.demo.D5ESS1JM.js",
+          "pageMs": 18003.299999952316
+        },
+        {
+          "observerNodeMs": 19470.694959,
+          "phase": "load-start",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 10,
+          "pageMs": 18003.400000095367
+        },
+        {
+          "observerNodeMs": 19470.775209,
+          "phase": "load-start",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 11,
+          "pageMs": 18003.5
+        },
+        {
+          "observerNodeMs": 19470.872959,
+          "phase": "load-start",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 12,
+          "pageMs": 18003.60000014305
+        },
+        {
+          "observerNodeMs": 19480.554834,
+          "phase": "inner-import",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "asset": "demo-bootstrap-2-3-2-drawer.demo.D5ESS1JM.js",
+          "pageMs": 18013
+        },
+        {
+          "observerNodeMs": 20993.421542,
+          "phase": "module-body-start",
+          "asset": "demo-bootstrap-2-3-2-calendar.demo.OWPuICtm.js",
+          "pageMs": 19525.900000095367
+        },
+        {
+          "observerNodeMs": 20993.561334,
+          "phase": "module-body-end",
+          "asset": "demo-bootstrap-2-3-2-calendar.demo.OWPuICtm.js",
+          "pageMs": 19526.200000047684
+        },
+        {
+          "observerNodeMs": 20993.586834,
+          "phase": "import-return",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 5,
+          "pageMs": 19526.200000047684
+        },
+        {
+          "observerNodeMs": 20993.661959,
+          "phase": "validation-return",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 5,
+          "pageMs": 19526.400000095367
+        },
+        {
+          "observerNodeMs": 20993.679084,
+          "phase": "import-return",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 6,
+          "pageMs": 19526.400000095367
+        },
+        {
+          "observerNodeMs": 20993.731834,
+          "phase": "validation-return",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 6,
+          "pageMs": 19526.5
+        },
+        {
+          "observerNodeMs": 20993.796209,
+          "phase": "import-return",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 7,
+          "pageMs": 19526.5
+        },
+        {
+          "observerNodeMs": 20993.876459,
+          "phase": "validation-return",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 7,
+          "pageMs": 19526.60000014305
+        },
+        {
+          "observerNodeMs": 20993.931625,
+          "phase": "import-return",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 8,
+          "pageMs": 19526.60000014305
+        },
+        {
+          "observerNodeMs": 20993.987417,
+          "phase": "validation-return",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "call": 8,
+          "pageMs": 19526.799999952316
+        },
+        {
+          "observerNodeMs": 22450.179209,
+          "phase": "resource",
+          "asset": "demo-bootstrap-2-3-2-drawer.demo.D5ESS1JM.js",
+          "initiator": "script",
+          "start": 18013.10000014305,
+          "end": 18019.400000095367,
+          "transferBytes": 955,
+          "pageMs": 20982.60000014305
+        },
+        {
+          "observerNodeMs": 22459.430167,
+          "phase": "module-body-start",
+          "asset": "demo-bootstrap-2-3-2-drawer.demo.D5ESS1JM.js",
+          "pageMs": 20991.900000095367
+        },
+        {
+          "observerNodeMs": 22459.491834,
+          "phase": "module-body-end",
+          "asset": "demo-bootstrap-2-3-2-drawer.demo.D5ESS1JM.js",
+          "pageMs": 20992.10000014305
+        },
+        {
+          "observerNodeMs": 22459.577709,
+          "phase": "import-return",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 9,
+          "pageMs": 20992.10000014305
+        },
+        {
+          "observerNodeMs": 22459.597042,
+          "phase": "validation-return",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 9,
+          "pageMs": 20992.10000014305
+        },
+        {
+          "observerNodeMs": 22459.706875,
+          "phase": "import-return",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 10,
+          "pageMs": 20992.10000014305
+        },
+        {
+          "observerNodeMs": 22459.72225,
+          "phase": "validation-return",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 10,
+          "pageMs": 20992.10000014305
+        },
+        {
+          "observerNodeMs": 22459.736334,
+          "phase": "import-return",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 11,
+          "pageMs": 20992.10000014305
+        },
+        {
+          "observerNodeMs": 22459.75025,
+          "phase": "validation-return",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 11,
+          "pageMs": 20992.10000014305
+        },
+        {
+          "observerNodeMs": 22459.765167,
+          "phase": "import-return",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 12,
+          "pageMs": 20992.10000014305
+        },
+        {
+          "observerNodeMs": 22459.785542,
+          "phase": "validation-return",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "call": 12,
+          "pageMs": 20992.10000014305
+        },
+        {
+          "observerNodeMs": 26191.642584,
+          "phase": "first-render-queued",
+          "id": "demo-shadcn-tree",
+          "runtime": "wc",
+          "pageMs": 24723.799999952316
+        },
+        {
+          "observerNodeMs": 26192.078834,
+          "phase": "first-render-queued",
+          "id": "demo-shadcn-tree",
+          "runtime": "react",
+          "pageMs": 24723.900000095367
+        },
+        {
+          "observerNodeMs": 26192.128042,
+          "phase": "first-render-queued",
+          "id": "demo-shadcn-tree",
+          "runtime": "vue",
+          "pageMs": 24723.900000095367
+        },
+        {
+          "observerNodeMs": 26192.155667,
+          "phase": "first-render-queued",
+          "id": "demo-shadcn-tree",
+          "runtime": "vue2",
+          "pageMs": 24723.900000095367
+        },
+        {
+          "observerNodeMs": 26192.172125,
+          "phase": "first-render-queued",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "runtime": "wc",
+          "pageMs": 24724.10000014305
+        },
+        {
+          "observerNodeMs": 26192.186959,
+          "phase": "first-render-queued",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "runtime": "react",
+          "pageMs": 24724.10000014305
+        },
+        {
+          "observerNodeMs": 26192.2035,
+          "phase": "first-render-queued",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "runtime": "vue",
+          "pageMs": 24724.200000047684
+        },
+        {
+          "observerNodeMs": 26192.217584,
+          "phase": "first-render-queued",
+          "id": "demo-bootstrap-2-3-2-calendar",
+          "runtime": "vue2",
+          "pageMs": 24724.200000047684
+        },
+        {
+          "observerNodeMs": 27663.816167,
+          "phase": "first-render-queued",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "runtime": "wc",
+          "pageMs": 26196.200000047684
+        },
+        {
+          "observerNodeMs": 27663.867959,
+          "phase": "first-render-queued",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "runtime": "react",
+          "pageMs": 26196.299999952316
+        },
+        {
+          "observerNodeMs": 27663.974,
+          "phase": "first-render-queued",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "runtime": "vue",
+          "pageMs": 26196.299999952316
+        },
+        {
+          "observerNodeMs": 27663.996459,
+          "phase": "first-render-queued",
+          "id": "demo-bootstrap-2-3-2-drawer",
+          "runtime": "vue2",
+          "pageMs": 26196.299999952316
+        }
+      ]
+    }
+  }
+}
