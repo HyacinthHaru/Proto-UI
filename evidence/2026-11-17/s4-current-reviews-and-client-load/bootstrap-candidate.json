@@ -1,0 +1,16 @@
+{
+  "head": "1943f5defbb22813abeb66cf6ee5e538d526d273",
+  "tree": "f38ea8b7c09cd0ab49350ff682843893ad33dee2",
+  "parent": "8660756e75ea2ada29a9197d3d8a86ca8f279002",
+  "signature": "G",
+  "inputs": [
+    "a82bda5e7f83a1bc21bd58b891fa3813f49a69f4506f924fa94455d43a3b5833  apps/www/src/components/PrototypePreviewer/previewer-bootstrap.test.ts",
+    "34e60e758f824914ddf8d74df274e7f3703b6293e84ebd48c7cd8a2bb01a79c7  apps/www/src/components/PrototypePreviewer/previewer-bootstrap.ts"
+  ],
+  "baselineFailed": 2,
+  "baselinePassed": 13,
+  "baselineLogSHA256": "1f4a87b0cf4623a8eed5c5a75c16ef77cdeeaf057eb6c591f5c23c2766e41deb",
+  "focusedPassed": 48,
+  "focusedLogSHA256": "5b5bc4452db3a1d37102d14ad76618873c834e34415d5dc2bd48aa6d94fde87b",
+  "workspaceTypesExit": 0
+}

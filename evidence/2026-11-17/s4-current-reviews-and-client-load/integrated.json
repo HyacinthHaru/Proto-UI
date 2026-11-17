@@ -1,0 +1,133 @@
+{
+  "head": "aa8d3d381b8790c43d4473dad8b8a18921c66d04",
+  "tree": "a1567f693282d95b4c39ba3cd7c1ed41a20a0dda",
+  "parent": "d2e176cf8ea1748e6e094923f52ae8f9fd7deddf",
+  "signature": "G",
+  "components": {
+    "upstreamMain": "aa6d6b15d4aedb2863a935168dac73ea5f26ace1",
+    "updates": [
+      "947a65ebd02d9331ad67663ed1647d061b3b6316",
+      "b523c052cb39081241de16fd04db5c925608f791",
+      "99e656b3e3155847df6a6926b59896a058b79ef6"
+    ]
+  },
+  "paths": [
+    "apps/www/src/components/PrototypePreviewer/demo-renderer.expose-events.test.ts",
+    "packages/adapters/base/src/host/exposes.ts",
+    "packages/adapters/base/test/contract/expose-record.v0.contract.test.ts",
+    "packages/adapters/web-component/src/runtime/session.ts",
+    "packages/adapters/web-component/src/shadow-split-effects.ts",
+    "packages/adapters/web-component/test/shadow-closeout.browser.test.ts",
+    "packages/cli/src/services/hook-source-summary.ts",
+    "packages/cli/src/services/prototype-style-tokens.ts",
+    "packages/cli/test/shadow-template-style.test.ts"
+  ],
+  "build": {
+    "packages": 47,
+    "typesExit": 0,
+    "manifestsExit": 0
+  },
+  "matrix": {
+    "exit": 1,
+    "html": {
+      "zh-cn": {
+        "bytes": 1862481,
+        "sha256": "03f871082af517f142daa597d4cad71465078ee76339132690c996c118c62e56",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914189,
+        "sha256": "3e779378b4d40a6feba45de9f72c2b1f236851f8d30307d1e6bc6cf600f2ea36",
+        "previews": 1268
+      }
+    },
+    "observations": [
+      {
+        "locale": "zh-cn",
+        "status": "failed",
+        "elapsedMs": 150533.5055,
+        "firstError": "Error: Test timed out in 150000ms.",
+        "postVerdictCollection": "rejected",
+        "lastStreamed": {
+          "receivedNodeMs": 26728.541667,
+          "timeOrigin": 1794886452693.7,
+          "pageMs": 25524.200000047684,
+          "dateNow": 1794886478217,
+          "count": 1268,
+          "ready": false,
+          "firstMissing": {
+            "previewerId": "pp-fpe4kqvugz",
+            "index": 1,
+            "inited": "1",
+            "hostChildren": 0
+          },
+          "firstMissingOwner": {
+            "demoId": "demo-base-accordion",
+            "prototypeId": "",
+            "declaredRuntime": "react",
+            "projectionMode": null,
+            "projectionState": null,
+            "mounting": null,
+            "hostTag": "DIV",
+            "hostOwner": "pp-fpe4kqvugz",
+            "startupPending": true,
+            "hostOwnInert": true,
+            "hostText": ""
+          }
+        },
+        "predicateSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+      },
+      {
+        "locale": "en",
+        "status": "failed",
+        "elapsedMs": 150525.073583,
+        "firstError": "Error: Test timed out in 150000ms.",
+        "postVerdictCollection": "rejected",
+        "lastStreamed": {
+          "receivedNodeMs": 178361.708834,
+          "timeOrigin": 1794886603241.2,
+          "pageMs": 26610.599999904633,
+          "dateNow": 1794886629851,
+          "count": 1268,
+          "ready": false,
+          "firstMissing": {
+            "previewerId": "pp-vpgkvjgem0e",
+            "index": 1,
+            "inited": "1",
+            "hostChildren": 0
+          },
+          "firstMissingOwner": {
+            "demoId": "demo-base-accordion",
+            "prototypeId": "",
+            "declaredRuntime": "react",
+            "projectionMode": null,
+            "projectionState": null,
+            "mounting": null,
+            "hostTag": "DIV",
+            "hostOwner": "pp-vpgkvjgem0e",
+            "startupPending": true,
+            "hostOwnInert": true,
+            "hostText": ""
+          }
+        },
+        "predicateSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+      }
+    ],
+    "logSHA256": "b107c20450657e17458701228ccb0cee00709e94756f87d23db869dbaaff0728"
+  },
+  "isolatedDialog": {
+    "chrome": "156.0.8078.79",
+    "source": {
+      "light": 15,
+      "split": 15,
+      "mixed": 15
+    },
+    "publicDist": {
+      "light": 15,
+      "split": 15,
+      "mixed": 15
+    },
+    "sourceLogSHA256": "2cc6ee174a7541c45eb1632b024afc00c6ad362d2bd235fd1be0371dc2ea40e8",
+    "distLogSHA256": "05bbf2e5a0e32d720dc2e79049267ceda9e847a1e30c357aa33f9479ce115907"
+  }
+}

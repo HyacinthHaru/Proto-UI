@@ -1,0 +1,7 @@
+# Current review composition and shared preview client load
+
+The signed local composition `aa8d3d38` incorporates the current split review fixes through `947a65eb`, the independently verified State terminal cleanup, the raw callback fixture correction and the earlier preview candidates. It builds all 47 public packages and passes workspace types and the package manifest check. The original two static Matrix cases each have 1,268 previews. Both still hit the 150s outer limit before Dialog. The last streamed samples point to empty React Base Accordion hosts. The browser context closes before the post-verdict journal collection succeeds.
+
+On the same signed composition and pinned Chrome, all three original isolated Dialog profiles pass on both source and public dist package outputs. Each profile records 15 requests in each path. Those cases exercise the complete isolated journey with its actual controls.
+
+Local source candidate `1943f5de` shares pending previewer-client import work within a document generation. It clears settled or retired acquisitions so subsequent activation and error recovery can start a fresh request. Existing owner visibility, Astro swap cancellation and observer lifecycle behavior remain covered. The exact red comparison has two failing concurrency cases, and four focused files pass all 48 cases after the fix. Workspace types pass. The full built Matrix comparison is a separate run.
