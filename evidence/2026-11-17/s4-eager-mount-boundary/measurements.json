@@ -1,0 +1,2379 @@
+{
+  "source": {
+    "head": "4d4298fdaa53ee57ecb21828044e53754a03fbbb",
+    "tree": "d66dfd749e505599f726deed01ff08ba7c16ac8e",
+    "parent": "9acbe4338ce72126c3ceea61575b2e3828a89645",
+    "signature": "G",
+    "changedInputs": [
+      "306f507046c99f67bd9b768c4abee5e6399ea39f70eeaa1d02665c018a56877e  apps/www/src/components/PrototypePreviewer/previewer-bootstrap.test.ts",
+      "e594e2666780212bcbea662ba7f84d203dc5caa07bb1fbc60da7171516657c5b  apps/www/src/components/PrototypePreviewer/previewer-bootstrap.ts"
+    ],
+    "integratedMain": {
+      "merge": "9acbe4338ce72126c3ceea61575b2e3828a89645",
+      "tree": "2b3edb62e028d578cbaa4767e0351ea0b18b707f",
+      "parents": [
+        "9d37a9590d22281e1fe0b243afea5e337ce10d07",
+        "ff75a0a2b356005d8d2d3b73268d7e7a9a258447"
+      ]
+    }
+  },
+  "environment": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+  "diagnostics": {
+    "scope": "Separate Chromium runs; source and build bound. Track sums overlap. The bounded comparison carries console counts and a truncated trace.",
+    "wave": [
+      {
+        "receipt": {
+          "categories": "toplevel,devtools.timeline,v8,blink.user_timing",
+          "requestedAt": 1187.34025,
+          "beginNodeMs": 1188.753083,
+          "activeNodeMs": 1237.6605,
+          "endNodeMs": 46189.859375,
+          "traceBytes": 261204906,
+          "eof": true,
+          "dataLoss": false
+        },
+        "binding": {
+          "asset": "PrototypePreviewer.astro_astro_type_script_index_0_lang.Cteyk5_i.js",
+          "source": "682997e14fea0947415d40364cc25551e3818af2fe428ee140e2b882a6d9b31f",
+          "instrumented": "d76f62949fe7214b93abc1865659ba63e7dfb18273236fe63c4062ae4d6d7d7b"
+        },
+        "lastMarker": {
+          "stage": "init-return",
+          "count": 704,
+          "pageMs": 74296.60000014305,
+          "batch": 11,
+          "awaiting": 0,
+          "returned": 704,
+          "initStarted": 704,
+          "initReturned": 704,
+          "peakAwaiting": 448
+        },
+        "stages": [
+          {
+            "stage": "start",
+            "pageMs": 5186,
+            "owners": 1268
+          },
+          {
+            "stage": "demo-return",
+            "pageMs": 6449.100000143051,
+            "total": 317,
+            "passed": 317
+          },
+          {
+            "stage": "prototype-return",
+            "pageMs": 6969,
+            "total": 1149,
+            "passed": 1149
+          },
+          {
+            "stage": "runtime-return",
+            "pageMs": 6969.100000143051,
+            "runtimes": ["fulfilled", "fulfilled", "fulfilled"],
+            "elapsed": 1783.1000001430511
+          },
+          {
+            "stage": "batch",
+            "batch": 1,
+            "queue": 1204,
+            "at": 6969.200000047684,
+            "gap": null,
+            "dispatchMs": 2.299999952316284
+          },
+          {
+            "stage": "batch",
+            "batch": 2,
+            "queue": 1140,
+            "at": 6973,
+            "gap": 1.5,
+            "dispatchMs": 0.10000014305114746
+          },
+          {
+            "stage": "batch",
+            "batch": 3,
+            "queue": 1076,
+            "at": 6973.400000095367,
+            "gap": 0.20000004768371582,
+            "dispatchMs": 0.09999990463256836
+          },
+          {
+            "stage": "batch",
+            "batch": 4,
+            "queue": 1012,
+            "at": 6973.700000047684,
+            "gap": 0.09999990463256836,
+            "dispatchMs": 0.20000004768371582
+          },
+          {
+            "stage": "batch",
+            "batch": 5,
+            "queue": 948,
+            "at": 6974,
+            "gap": 0.09999990463256836,
+            "dispatchMs": 0.20000004768371582
+          },
+          {
+            "stage": "batch",
+            "batch": 6,
+            "queue": 884,
+            "at": 6974.300000190735,
+            "gap": 0.10000014305114746,
+            "dispatchMs": 0.19999980926513672
+          },
+          {
+            "stage": "batch",
+            "batch": 7,
+            "queue": 820,
+            "at": 6974.800000190735,
+            "gap": 0.3000001907348633,
+            "dispatchMs": 0.09999990463256836
+          },
+          {
+            "stage": "batch",
+            "batch": 8,
+            "queue": 756,
+            "at": 35168.200000047684,
+            "gap": 28193.299999952316,
+            "dispatchMs": 0.7999999523162842
+          },
+          {
+            "stage": "batch",
+            "batch": 9,
+            "queue": 692,
+            "at": 44538.10000014305,
+            "gap": 9369.100000143051,
+            "dispatchMs": 0.8999998569488525
+          },
+          {
+            "stage": "batch",
+            "batch": 10,
+            "queue": 628,
+            "at": 61250.800000190735,
+            "gap": 16711.700000047684,
+            "dispatchMs": 1.0999999046325684
+          },
+          {
+            "stage": "batch",
+            "batch": 11,
+            "queue": 564,
+            "at": 74284.40000009537,
+            "gap": 13032.400000095367,
+            "dispatchMs": 1.2000000476837158
+          }
+        ],
+        "firstMarkers": [
+          {
+            "stage": "client-return",
+            "count": 1,
+            "pageMs": 6975.600000143051,
+            "batch": 7,
+            "awaiting": 447,
+            "returned": 1,
+            "initStarted": 0,
+            "initReturned": 0,
+            "peakAwaiting": 448
+          },
+          {
+            "stage": "init-start",
+            "count": 1,
+            "pageMs": 6975.600000143051,
+            "batch": 7,
+            "awaiting": 447,
+            "returned": 1,
+            "initStarted": 1,
+            "initReturned": 0,
+            "peakAwaiting": 448
+          },
+          {
+            "stage": "init-return",
+            "count": 1,
+            "pageMs": 6976,
+            "batch": 7,
+            "awaiting": 447,
+            "returned": 1,
+            "initStarted": 1,
+            "initReturned": 1,
+            "peakAwaiting": 448
+          }
+        ],
+        "initReturns448": {
+          "stage": "init-return",
+          "count": 448,
+          "pageMs": 6986.200000047684,
+          "batch": 7,
+          "awaiting": 0,
+          "returned": 448,
+          "initStarted": 448,
+          "initReturned": 448,
+          "peakAwaiting": 448
+        },
+        "logSha256": "6c5c2ee0539f1cbcf9cb8f7ab6f3685a20122cae875b8d7dc5c5fce5da229c28",
+        "nativeExit": 1
+      },
+      {
+        "receipt": {
+          "categories": "toplevel,devtools.timeline,v8,blink.user_timing",
+          "requestedAt": 942.808208,
+          "beginNodeMs": 944.361375,
+          "activeNodeMs": 995.001041,
+          "endNodeMs": 45945.614083,
+          "traceBytes": 268435456,
+          "eof": false,
+          "dataLoss": false
+        },
+        "binding": {
+          "asset": "PrototypePreviewer.astro_astro_type_script_index_0_lang.Cteyk5_i.js",
+          "source": "682997e14fea0947415d40364cc25551e3818af2fe428ee140e2b882a6d9b31f",
+          "instrumented": "4caeec2656a3ce86c75406b091fb771c7683cba00e6528d5e5ae7abcc8e36dea"
+        },
+        "lastMarker": {
+          "stage": "init-return",
+          "count": 768,
+          "pageMs": 82005.5,
+          "batch": 12,
+          "awaiting": 0,
+          "returned": 768,
+          "initStarted": 768,
+          "initReturned": 768,
+          "peakAwaiting": 64
+        },
+        "stages": [
+          {
+            "stage": "start",
+            "pageMs": 5148.399999856949,
+            "owners": 1268
+          },
+          {
+            "stage": "demo-return",
+            "pageMs": 6463.700000047684,
+            "total": 317,
+            "passed": 317
+          },
+          {
+            "stage": "prototype-return",
+            "pageMs": 6982.700000047684,
+            "total": 1149,
+            "passed": 1149
+          },
+          {
+            "stage": "runtime-return",
+            "pageMs": 6982.700000047684,
+            "runtimes": ["fulfilled", "fulfilled", "fulfilled"],
+            "elapsed": 1834.3000001907349
+          },
+          {
+            "stage": "batch",
+            "batch": 1,
+            "queue": 1204,
+            "at": 6982.700000047684,
+            "gap": null,
+            "dispatchMs": 2.299999952316284
+          },
+          {
+            "stage": "batch",
+            "batch": 2,
+            "queue": 1140,
+            "at": 8473.399999856949,
+            "gap": 1488.2999999523163,
+            "dispatchMs": 0.20000004768371582
+          },
+          {
+            "stage": "batch",
+            "batch": 3,
+            "queue": 1076,
+            "at": 10537.099999904633,
+            "gap": 2063.2999999523163,
+            "dispatchMs": 0.40000009536743164
+          },
+          {
+            "stage": "batch",
+            "batch": 4,
+            "queue": 1012,
+            "at": 12416.200000047684,
+            "gap": 1878.7000000476837,
+            "dispatchMs": 0.2999999523162842
+          },
+          {
+            "stage": "batch",
+            "batch": 5,
+            "queue": 948,
+            "at": 14243.099999904633,
+            "gap": 1826.5,
+            "dispatchMs": 0.5
+          },
+          {
+            "stage": "batch",
+            "batch": 6,
+            "queue": 884,
+            "at": 16384.200000047684,
+            "gap": 2140.600000143051,
+            "dispatchMs": 0.5
+          },
+          {
+            "stage": "batch",
+            "batch": 7,
+            "queue": 820,
+            "at": 25193,
+            "gap": 8808.299999952316,
+            "dispatchMs": 0.7000000476837158
+          },
+          {
+            "stage": "batch",
+            "batch": 8,
+            "queue": 756,
+            "at": 33487.200000047684,
+            "gap": 8293.400000095367,
+            "dispatchMs": 0.7999999523162842
+          },
+          {
+            "stage": "batch",
+            "batch": 9,
+            "queue": 692,
+            "at": 44122,
+            "gap": 10633.900000095367,
+            "dispatchMs": 1.0999999046325684
+          },
+          {
+            "stage": "batch",
+            "batch": 10,
+            "queue": 628,
+            "at": 51119.299999952316,
+            "gap": 6996.200000047684,
+            "dispatchMs": 1.0999999046325684
+          },
+          {
+            "stage": "batch",
+            "batch": 11,
+            "queue": 564,
+            "at": 65997.5,
+            "gap": 14877.100000143051,
+            "dispatchMs": 1.2000000476837158
+          },
+          {
+            "stage": "batch",
+            "batch": 12,
+            "queue": 500,
+            "at": 81992.79999995232,
+            "gap": 15993.900000095367,
+            "dispatchMs": 1.2999999523162842
+          }
+        ],
+        "firstMarkers": [
+          {
+            "stage": "client-return",
+            "count": 1,
+            "pageMs": 6988.399999856949,
+            "batch": 1,
+            "awaiting": 63,
+            "returned": 1,
+            "initStarted": 0,
+            "initReturned": 0,
+            "peakAwaiting": 64
+          },
+          {
+            "stage": "init-start",
+            "count": 1,
+            "pageMs": 6988.5,
+            "batch": 1,
+            "awaiting": 63,
+            "returned": 1,
+            "initStarted": 1,
+            "initReturned": 0,
+            "peakAwaiting": 64
+          },
+          {
+            "stage": "init-return",
+            "count": 1,
+            "pageMs": 6988.899999856949,
+            "batch": 1,
+            "awaiting": 63,
+            "returned": 1,
+            "initStarted": 1,
+            "initReturned": 1,
+            "peakAwaiting": 64
+          }
+        ],
+        "initReturns448": {
+          "stage": "init-return",
+          "count": 448,
+          "pageMs": 25200.39999985695,
+          "batch": 7,
+          "awaiting": 0,
+          "returned": 448,
+          "initStarted": 448,
+          "initReturned": 448,
+          "peakAwaiting": 64
+        },
+        "logSha256": "9d82294803b0028986066859e7c4ef364b4992142f607112021c11f5cd82de05",
+        "nativeExit": 1
+      }
+    ],
+    "completeStockTrace": {
+      "receipt": {
+        "categories": "toplevel,devtools.timeline,v8,blink.user_timing",
+        "requestedAt": 1187.34025,
+        "beginNodeMs": 1188.753083,
+        "activeNodeMs": 1237.6605,
+        "endNodeMs": 46189.859375,
+        "traceBytes": 261204906,
+        "eof": true,
+        "dataLoss": false
+      },
+      "source": "246e21faef8305abaa66993699b62ba8fa767273",
+      "traceSha256": "2cd03d326d7f530534e29a6f1d867221f64b730f3dc5c990f84a583b3f681888",
+      "largestCapturedGap": {
+        "gapStart": {
+          "kind": "dequeue",
+          "tracePageMs": 6974.843,
+          "batch": 7,
+          "pageMs": 6974.800000190735,
+          "awaiting": 384,
+          "initStarted": 0,
+          "initReturned": 0
+        },
+        "gapEnd": {
+          "kind": "dequeue",
+          "tracePageMs": 35168.251,
+          "batch": 8,
+          "pageMs": 35168.200000047684,
+          "awaiting": 0,
+          "initStarted": 448,
+          "initReturned": 448
+        },
+        "gapMs": 28193.408,
+        "mainCategoryUnionsMs": [
+          ["v8.callFunction", 16538.571, 263397],
+          ["BlinkScheduler_PerformMicrotaskCheckpoint", 16277.873, 251],
+          ["UpdateLayoutTree", 13238.927, 585],
+          ["ThreadControllerImpl::RunTask", 11914.201, 824],
+          ["FireAnimationFrame", 10840.06, 7043],
+          ["FunctionCall", 7117.604, 201936],
+          ["MinorGC", 479.839, 263],
+          ["V8.GCScavenger", 474.912, 263],
+          ["V8.GC_SCAVENGER", 472.171, 263],
+          ["V8.GC_SCAVENGER_SCAVENGE", 470.325, 263],
+          ["Layout", 383.319, 486],
+          ["TimerFire", 345.214, 57],
+          ["EventDispatch", 341.05, 3746],
+          ["V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE", 296.605, 263],
+          ["V8.GC_SCAVENGER_SCAVENGE_COLLECT_OLD_TO_NEW_PAGES", 84.839, 263],
+          ["V8.GC_SCAVENGER_SCAVENGE_PARALLEL", 52.651, 194],
+          ["MajorGC", 36.866, 2],
+          ["V8.GCFinalizeMC", 36.831, 2],
+          ["V8.GC_MARK_COMPACTOR", 36.819, 2],
+          ["V8.GCIncrementalMarking", 34.877, 1729]
+        ],
+        "taskAndMicrotaskUnionMs": 28192.074,
+        "mainTasks": [
+          {
+            "pageMs": 25358.263,
+            "durationMs": 9281.03,
+            "source": "ScheduledActionSendBeginMainFrame"
+          },
+          {
+            "pageMs": 35168.224,
+            "durationMs": 4099.462,
+            "source": "DOMTimer"
+          },
+          {
+            "pageMs": 23254.41,
+            "durationMs": 2002.491,
+            "source": "ScheduledActionSendBeginMainFrame"
+          },
+          {
+            "pageMs": 34663.264,
+            "durationMs": 256.964,
+            "source": "DOMTimer"
+          },
+          {
+            "pageMs": 34920.283,
+            "durationMs": 247.91,
+            "source": "ScheduledActionSendBeginMainFrame"
+          }
+        ],
+        "callSites": [
+          [["site-shadcn-controls.Drqoz6Tz.js", 18, 32973, "connectedCallback"], 2683.461, 2857],
+          [["site-shadcn-controls.Drqoz6Tz.js", 9, 432764, ""], 817.228, 6287],
+          [["site-shadcn-controls.Drqoz6Tz.js", 9, 417037, ""], 780.61, 1270],
+          [["site-shadcn-controls.Drqoz6Tz.js", 15, 43470, ""], 493.458, 50],
+          [["site-shadcn-controls.Drqoz6Tz.js", 9, 169783, ""], 352.141, 1259],
+          [
+            [
+              "DocumentationImagePreview.astro_astro_type_script_index_0_lang.DxrsjSss.js",
+              1,
+              15440,
+              ""
+            ],
+            236.872,
+            5186
+          ],
+          [["demo-renderer.mYXQQWdf.js", 4, 960, "O"], 209.975, 1205],
+          [["web.C0It5tGv.js", 1, 2528, "I.M"], 196.828, 6],
+          [["site-shadcn-controls.Drqoz6Tz.js", 9, 390242, "re"], 180.193, 6],
+          [["site-shadcn-controls.Drqoz6Tz.js", 15, 48382, "Ol"], 175.998, 132019],
+          [["site-typography-client.BnMF8MyB.js", 1, 1921, ""], 166.17, 1236],
+          [["site-shadcn-controls.Drqoz6Tz.js", 9, 396484, "ot"], 156.453, 29]
+        ],
+        "inGapFirstMarkers": [
+          {
+            "kind": "dequeue",
+            "tracePageMs": 6974.843,
+            "batch": 7,
+            "pageMs": 6974.800000190735,
+            "awaiting": 384,
+            "initStarted": 0,
+            "initReturned": 0
+          },
+          {
+            "kind": "client-return",
+            "tracePageMs": 6975.596,
+            "stage": "client-return",
+            "count": 1,
+            "pageMs": 6975.600000143051,
+            "batch": 7,
+            "awaiting": 447,
+            "returned": 1,
+            "initStarted": 0,
+            "initReturned": 0,
+            "peakAwaiting": 448
+          },
+          {
+            "kind": "init-start",
+            "tracePageMs": 6975.637,
+            "stage": "init-start",
+            "count": 1,
+            "pageMs": 6975.600000143051,
+            "batch": 7,
+            "awaiting": 447,
+            "returned": 1,
+            "initStarted": 1,
+            "initReturned": 0,
+            "peakAwaiting": 448
+          },
+          {
+            "kind": "init-return",
+            "tracePageMs": 6976.087,
+            "stage": "init-return",
+            "count": 1,
+            "pageMs": 6976,
+            "batch": 7,
+            "awaiting": 447,
+            "returned": 1,
+            "initStarted": 1,
+            "initReturned": 1,
+            "peakAwaiting": 448
+          },
+          {
+            "kind": "client-return",
+            "tracePageMs": 6976.884,
+            "stage": "client-return",
+            "count": 32,
+            "pageMs": 6976.900000095367,
+            "batch": 7,
+            "awaiting": 416,
+            "returned": 32,
+            "initStarted": 31,
+            "initReturned": 31,
+            "peakAwaiting": 448
+          },
+          {
+            "kind": "init-start",
+            "tracePageMs": 6976.902,
+            "stage": "init-start",
+            "count": 32,
+            "pageMs": 6976.900000095367,
+            "batch": 7,
+            "awaiting": 416,
+            "returned": 32,
+            "initStarted": 32,
+            "initReturned": 31,
+            "peakAwaiting": 448
+          },
+          {
+            "kind": "init-return",
+            "tracePageMs": 6976.945,
+            "stage": "init-return",
+            "count": 32,
+            "pageMs": 6976.900000095367,
+            "batch": 7,
+            "awaiting": 416,
+            "returned": 32,
+            "initStarted": 32,
+            "initReturned": 32,
+            "peakAwaiting": 448
+          }
+        ]
+      },
+      "frame": {
+        "sourceHead": "246e21faef8305abaa66993699b62ba8fa767273",
+        "traceSha256": "2cd03d326d7f530534e29a6f1d867221f64b730f3dc5c990f84a583b3f681888",
+        "source": "Captured native renderer task spans, categories overlap",
+        "pageMs": 25358.263,
+        "durationMs": 9281.03,
+        "groups": [
+          ["ThreadControllerImpl::RunTask", 1, 9281.03],
+          ["v8.callFunction", 22225, 9234.652],
+          ["FireAnimationFrame", 3407, 9088.948],
+          ["UpdateLayoutTree", 258, 7632.258],
+          ["FunctionCall", 21583, 1029.586],
+          ["Layout", 237, 171.922],
+          ["EventDispatch", 77, 39.402],
+          ["MinorGC", 13, 23.319],
+          ["V8.GCScavenger", 13, 23.059],
+          ["V8.GC_SCAVENGER", 13, 22.996],
+          ["V8.GC_SCAVENGER_SCAVENGE", 13, 22.883],
+          ["V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE", 13, 10.236],
+          ["PrePaint", 2, 8.05],
+          ["V8.GC_SCAVENGER_SCAVENGE_COLLECT_OLD_TO_NEW_PAGES", 13, 6.27],
+          ["V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_PROCESS", 13, 1.768],
+          ["V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_IDENTIFY", 13, 1.732],
+          ["V8.GC_SCAVENGER_SCAVENGE_PARALLEL", 4, 1.626],
+          ["V8.GC_SCAVENGER_TRACED_HANDLES_RESET_PARALLEL", 13, 1.586],
+          ["V8.GC_SCAVENGER_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL", 13, 1.417],
+          ["V8.GC_SCAVENGER_SCAVENGE_ROOTS", 13, 1.331]
+        ],
+        "callSites": [
+          [["site-shadcn-controls.Drqoz6Tz.js", 9, 169783, ""], 498, 281.943],
+          [["demo-renderer.mYXQQWdf.js", 4, 960, "O"], 491, 160.623],
+          [["site-shadcn-controls.Drqoz6Tz.js", 9, 417037, ""], 502, 123.14],
+          [
+            [
+              "DocumentationImagePreview.astro_astro_type_script_index_0_lang.DxrsjSss.js",
+              1,
+              15440,
+              ""
+            ],
+            3838,
+            104.903
+          ],
+          [["web.C0It5tGv.js", 1, 2528, "I.M"], 3, 97.777],
+          [["site-shadcn-controls.Drqoz6Tz.js", 9, 396484, "ot"], 8, 62.924],
+          [["site-shadcn-controls.Drqoz6Tz.js", 9, 394939, "Ye"], 4, 36.848],
+          [["web.C0It5tGv.js", 1, 690, ""], 1, 35.318],
+          [["projection-materializer.CJQ7gEbJ.js", 5, 59727, ""], 491, 18.693],
+          [["projection-materializer.CJQ7gEbJ.js", 5, 80709, ""], 725, 18.568],
+          [["index.Bj9nnvUJ.js", 1, 25541, ""], 3491, 17.602],
+          [["site-typography-client.BnMF8MyB.js", 1, 1921, ""], 491, 13.322]
+        ]
+      }
+    },
+    "exactProductProbe": {
+      "builtHead": "4d4298fdaa53ee57ecb21828044e53754a03fbbb",
+      "nativeExit": 1,
+      "asset": {
+        "asset": "PrototypePreviewer.astro_astro_type_script_index_0_lang.ByglJ5Br.js",
+        "source": "ad57290649a7021fc6cd65307fe25f57765b060ddf820f10136e3f68a2d27fcd",
+        "instrumented": "823b5bfe2799c2ff124941591558387cf45f3db7f44f7207cf397f66df6038c3"
+      },
+      "logSha256": "57223494aa15cf00892b5b583c19253cfca3ca6fc5dd1d78dee8f8ad2847cf2c",
+      "rawPreviewCount": 1268,
+      "maxPending": 32,
+      "scope": "Exact compiled product with observer overlays. Batch counts are client-call phases. Frame script arrays retain the first 12 long frames, at most 10 scripts ranked by forced style/layout.",
+      "batches": [
+        {
+          "stage": "batch-start",
+          "pageMs": 5100.799999952316,
+          "batch": 1,
+          "mounting": 0,
+          "peakMounting": 0,
+          "initStarted": 0,
+          "initReturned": 0,
+          "clientLoads": 0,
+          "lastAt": null,
+          "gapMs": null,
+          "queue": 1268
+        },
+        {
+          "stage": "batch-settled",
+          "pageMs": 5862.799999952316,
+          "batch": 1,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 32,
+          "initReturned": 32,
+          "clientLoads": 1,
+          "lastAt": null,
+          "queue": 1236,
+          "batchElapsedMs": 762
+        },
+        {
+          "stage": "batch-start",
+          "pageMs": 5878.5,
+          "batch": 2,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 32,
+          "initReturned": 32,
+          "clientLoads": 1,
+          "lastAt": 5862.799999952316,
+          "gapMs": 15.700000047683716,
+          "queue": 1236
+        },
+        {
+          "stage": "batch-settled",
+          "pageMs": 5881.899999856949,
+          "batch": 2,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 64,
+          "initReturned": 64,
+          "clientLoads": 1,
+          "lastAt": 5862.799999952316,
+          "queue": 1204,
+          "batchElapsedMs": 3.3999998569488525
+        },
+        {
+          "stage": "batch-start",
+          "pageMs": 5882.299999952316,
+          "batch": 3,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 64,
+          "initReturned": 64,
+          "clientLoads": 1,
+          "lastAt": 5881.899999856949,
+          "gapMs": 0.40000009536743164,
+          "queue": 1204
+        },
+        {
+          "stage": "batch-settled",
+          "pageMs": 5885.299999952316,
+          "batch": 3,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 96,
+          "initReturned": 96,
+          "clientLoads": 1,
+          "lastAt": 5881.899999856949,
+          "queue": 1172,
+          "batchElapsedMs": 3
+        },
+        {
+          "stage": "batch-start",
+          "pageMs": 5895.899999856949,
+          "batch": 4,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 96,
+          "initReturned": 96,
+          "clientLoads": 1,
+          "lastAt": 5885.399999856949,
+          "gapMs": 10.5,
+          "queue": 1172
+        },
+        {
+          "stage": "batch-settled",
+          "pageMs": 5899.099999904633,
+          "batch": 4,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 128,
+          "initReturned": 128,
+          "clientLoads": 1,
+          "lastAt": 5885.399999856949,
+          "queue": 1140,
+          "batchElapsedMs": 3.200000047683716
+        },
+        {
+          "stage": "batch-start",
+          "pageMs": 5923.399999856949,
+          "batch": 5,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 128,
+          "initReturned": 128,
+          "clientLoads": 1,
+          "lastAt": 5899.099999904633,
+          "gapMs": 24.299999952316284,
+          "queue": 1140
+        },
+        {
+          "stage": "batch-settled",
+          "pageMs": 5926.399999856949,
+          "batch": 5,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 160,
+          "initReturned": 160,
+          "clientLoads": 1,
+          "lastAt": 5899.099999904633,
+          "queue": 1108,
+          "batchElapsedMs": 3
+        },
+        {
+          "stage": "batch-start",
+          "pageMs": 5958.700000047684,
+          "batch": 6,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 160,
+          "initReturned": 160,
+          "clientLoads": 1,
+          "lastAt": 5926.5,
+          "gapMs": 32.200000047683716,
+          "queue": 1108
+        },
+        {
+          "stage": "batch-settled",
+          "pageMs": 5962.099999904633,
+          "batch": 6,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 192,
+          "initReturned": 192,
+          "clientLoads": 1,
+          "lastAt": 5926.5,
+          "queue": 1076,
+          "batchElapsedMs": 3.3999998569488525
+        },
+        {
+          "stage": "batch-start",
+          "pageMs": 5998.5,
+          "batch": 7,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 192,
+          "initReturned": 192,
+          "clientLoads": 1,
+          "lastAt": 5962.099999904633,
+          "gapMs": 36.299999952316284,
+          "queue": 1076
+        },
+        {
+          "stage": "batch-settled",
+          "pageMs": 6001.5,
+          "batch": 7,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 224,
+          "initReturned": 224,
+          "clientLoads": 1,
+          "lastAt": 5962.099999904633,
+          "queue": 1044,
+          "batchElapsedMs": 3.1000001430511475
+        },
+        {
+          "stage": "batch-start",
+          "pageMs": 6106.899999856949,
+          "batch": 8,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 224,
+          "initReturned": 224,
+          "clientLoads": 1,
+          "lastAt": 6001.599999904633,
+          "gapMs": 105.29999995231628,
+          "queue": 1044
+        },
+        {
+          "stage": "batch-settled",
+          "pageMs": 6109.700000047684,
+          "batch": 8,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 256,
+          "initReturned": 256,
+          "clientLoads": 1,
+          "lastAt": 6001.599999904633,
+          "queue": 1012,
+          "batchElapsedMs": 2.8000001907348633
+        },
+        {
+          "stage": "batch-start",
+          "pageMs": 6368.799999952316,
+          "batch": 9,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 256,
+          "initReturned": 256,
+          "clientLoads": 1,
+          "lastAt": 6109.899999856949,
+          "gapMs": 258.90000009536743,
+          "queue": 1012
+        },
+        {
+          "stage": "batch-settled",
+          "pageMs": 6372.399999856949,
+          "batch": 9,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 288,
+          "initReturned": 288,
+          "clientLoads": 1,
+          "lastAt": 6109.899999856949,
+          "queue": 980,
+          "batchElapsedMs": 3.5999999046325684
+        },
+        {
+          "stage": "batch-start",
+          "pageMs": 6766.5,
+          "batch": 10,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 288,
+          "initReturned": 288,
+          "clientLoads": 1,
+          "lastAt": 6372.5,
+          "gapMs": 394,
+          "queue": 980
+        },
+        {
+          "stage": "batch-settled",
+          "pageMs": 6770.399999856949,
+          "batch": 10,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 320,
+          "initReturned": 320,
+          "clientLoads": 1,
+          "lastAt": 6372.5,
+          "queue": 948,
+          "batchElapsedMs": 3.8999998569488525
+        },
+        {
+          "stage": "batch-start",
+          "pageMs": 8249.899999856949,
+          "batch": 11,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 320,
+          "initReturned": 320,
+          "clientLoads": 1,
+          "lastAt": 6770.5,
+          "gapMs": 1479.3999998569489,
+          "queue": 948
+        },
+        {
+          "stage": "batch-settled",
+          "pageMs": 8256.5,
+          "batch": 11,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 352,
+          "initReturned": 352,
+          "clientLoads": 1,
+          "lastAt": 6770.5,
+          "queue": 916,
+          "batchElapsedMs": 6.6000001430511475
+        },
+        {
+          "stage": "batch-start",
+          "pageMs": 11991.899999856949,
+          "batch": 12,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 352,
+          "initReturned": 352,
+          "clientLoads": 1,
+          "lastAt": 8256.599999904633,
+          "gapMs": 3735.2999999523163,
+          "queue": 916
+        },
+        {
+          "stage": "batch-settled",
+          "pageMs": 12002.799999952316,
+          "batch": 12,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 384,
+          "initReturned": 384,
+          "clientLoads": 1,
+          "lastAt": 8256.599999904633,
+          "queue": 884,
+          "batchElapsedMs": 10.900000095367432
+        },
+        {
+          "stage": "batch-start",
+          "pageMs": 14688.399999856949,
+          "batch": 13,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 384,
+          "initReturned": 384,
+          "clientLoads": 1,
+          "lastAt": 12002.799999952316,
+          "gapMs": 2685.5999999046326,
+          "queue": 884
+        },
+        {
+          "stage": "batch-settled",
+          "pageMs": 14699.399999856949,
+          "batch": 13,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 416,
+          "initReturned": 416,
+          "clientLoads": 1,
+          "lastAt": 12002.799999952316,
+          "queue": 852,
+          "batchElapsedMs": 11
+        },
+        {
+          "stage": "batch-start",
+          "pageMs": 15734.299999952316,
+          "batch": 14,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 416,
+          "initReturned": 416,
+          "clientLoads": 1,
+          "lastAt": 14699.5,
+          "gapMs": 1034.7999999523163,
+          "queue": 852
+        },
+        {
+          "stage": "batch-settled",
+          "pageMs": 15746.399999856949,
+          "batch": 14,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 448,
+          "initReturned": 448,
+          "clientLoads": 1,
+          "lastAt": 14699.5,
+          "queue": 820,
+          "batchElapsedMs": 12.099999904632568
+        },
+        {
+          "stage": "batch-start",
+          "pageMs": 15966.799999952316,
+          "batch": 15,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 448,
+          "initReturned": 448,
+          "clientLoads": 1,
+          "lastAt": 15746.5,
+          "gapMs": 220.20000004768372,
+          "queue": 820
+        },
+        {
+          "stage": "batch-settled",
+          "pageMs": 15980.399999856949,
+          "batch": 15,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 480,
+          "initReturned": 480,
+          "clientLoads": 1,
+          "lastAt": 15746.5,
+          "queue": 788,
+          "batchElapsedMs": 13.699999809265137
+        },
+        {
+          "stage": "batch-start",
+          "pageMs": 16966.099999904633,
+          "batch": 16,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 480,
+          "initReturned": 480,
+          "clientLoads": 1,
+          "lastAt": 15980.5,
+          "gapMs": 985.5999999046326,
+          "queue": 788
+        },
+        {
+          "stage": "batch-settled",
+          "pageMs": 16977.799999952316,
+          "batch": 16,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 512,
+          "initReturned": 512,
+          "clientLoads": 1,
+          "lastAt": 15980.5,
+          "queue": 756,
+          "batchElapsedMs": 11.700000047683716
+        },
+        {
+          "stage": "batch-start",
+          "pageMs": 22190.89999985695,
+          "batch": 17,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 512,
+          "initReturned": 512,
+          "clientLoads": 1,
+          "lastAt": 16977.89999985695,
+          "gapMs": 5213,
+          "queue": 756
+        },
+        {
+          "stage": "batch-settled",
+          "pageMs": 22206.200000047684,
+          "batch": 17,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 544,
+          "initReturned": 544,
+          "clientLoads": 1,
+          "lastAt": 16977.89999985695,
+          "queue": 724,
+          "batchElapsedMs": 15.300000190734863
+        },
+        {
+          "stage": "batch-start",
+          "pageMs": 25881.799999952316,
+          "batch": 18,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 544,
+          "initReturned": 544,
+          "clientLoads": 1,
+          "lastAt": 22206.200000047684,
+          "gapMs": 3675.5999999046326,
+          "queue": 724
+        },
+        {
+          "stage": "batch-settled",
+          "pageMs": 25897.200000047684,
+          "batch": 18,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 576,
+          "initReturned": 576,
+          "clientLoads": 1,
+          "lastAt": 22206.200000047684,
+          "queue": 692,
+          "batchElapsedMs": 15.400000095367432
+        },
+        {
+          "stage": "batch-start",
+          "pageMs": 30331.700000047684,
+          "batch": 19,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 576,
+          "initReturned": 576,
+          "clientLoads": 1,
+          "lastAt": 25897.200000047684,
+          "gapMs": 4434.5,
+          "queue": 692
+        },
+        {
+          "stage": "batch-settled",
+          "pageMs": 30348,
+          "batch": 19,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 608,
+          "initReturned": 608,
+          "clientLoads": 1,
+          "lastAt": 25897.200000047684,
+          "queue": 660,
+          "batchElapsedMs": 16.199999809265137
+        },
+        {
+          "stage": "batch-start",
+          "pageMs": 41515,
+          "batch": 20,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 608,
+          "initReturned": 608,
+          "clientLoads": 1,
+          "lastAt": 30348,
+          "gapMs": 11167,
+          "queue": 660
+        },
+        {
+          "stage": "batch-settled",
+          "pageMs": 41537.299999952316,
+          "batch": 20,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 640,
+          "initReturned": 640,
+          "clientLoads": 1,
+          "lastAt": 30348,
+          "queue": 628,
+          "batchElapsedMs": 22.299999952316284
+        },
+        {
+          "stage": "batch-start",
+          "pageMs": 45990.200000047684,
+          "batch": 21,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 640,
+          "initReturned": 640,
+          "clientLoads": 1,
+          "lastAt": 41537.39999985695,
+          "gapMs": 4452.800000190735,
+          "queue": 628
+        },
+        {
+          "stage": "batch-settled",
+          "pageMs": 46013.799999952316,
+          "batch": 21,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 672,
+          "initReturned": 672,
+          "clientLoads": 1,
+          "lastAt": 41537.39999985695,
+          "queue": 596,
+          "batchElapsedMs": 23.59999990463257
+        },
+        {
+          "stage": "batch-start",
+          "pageMs": 47846.5,
+          "batch": 22,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 672,
+          "initReturned": 672,
+          "clientLoads": 1,
+          "lastAt": 46013.799999952316,
+          "gapMs": 1832.7000000476837,
+          "queue": 596
+        },
+        {
+          "stage": "batch-settled",
+          "pageMs": 47870.299999952316,
+          "batch": 22,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 704,
+          "initReturned": 704,
+          "clientLoads": 1,
+          "lastAt": 46013.799999952316,
+          "queue": 564,
+          "batchElapsedMs": 23.799999952316284
+        },
+        {
+          "stage": "batch-start",
+          "pageMs": 50400.200000047684,
+          "batch": 23,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 704,
+          "initReturned": 704,
+          "clientLoads": 1,
+          "lastAt": 47870.299999952316,
+          "gapMs": 2529.9000000953674,
+          "queue": 564
+        },
+        {
+          "stage": "batch-settled",
+          "pageMs": 50423.89999985695,
+          "batch": 23,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 736,
+          "initReturned": 736,
+          "clientLoads": 1,
+          "lastAt": 47870.299999952316,
+          "queue": 532,
+          "batchElapsedMs": 23.699999809265137
+        },
+        {
+          "stage": "batch-start",
+          "pageMs": 55180.200000047684,
+          "batch": 24,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 736,
+          "initReturned": 736,
+          "clientLoads": 1,
+          "lastAt": 50424,
+          "gapMs": 4756.200000047684,
+          "queue": 532
+        },
+        {
+          "stage": "batch-settled",
+          "pageMs": 55196.89999985695,
+          "batch": 24,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 768,
+          "initReturned": 768,
+          "clientLoads": 1,
+          "lastAt": 50424,
+          "queue": 500,
+          "batchElapsedMs": 16.699999809265137
+        },
+        {
+          "stage": "batch-start",
+          "pageMs": 67728.89999985695,
+          "batch": 25,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 768,
+          "initReturned": 768,
+          "clientLoads": 1,
+          "lastAt": 55196.89999985695,
+          "gapMs": 12532,
+          "queue": 500
+        },
+        {
+          "stage": "batch-settled",
+          "pageMs": 67753.59999990463,
+          "batch": 25,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 800,
+          "initReturned": 800,
+          "clientLoads": 1,
+          "lastAt": 55196.89999985695,
+          "queue": 468,
+          "batchElapsedMs": 24.700000047683716
+        },
+        {
+          "stage": "batch-start",
+          "pageMs": 71322.20000004768,
+          "batch": 26,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 800,
+          "initReturned": 800,
+          "clientLoads": 1,
+          "lastAt": 67753.70000004768,
+          "gapMs": 3568.5,
+          "queue": 468
+        },
+        {
+          "stage": "batch-settled",
+          "pageMs": 71342.79999995232,
+          "batch": 26,
+          "mounting": 0,
+          "peakMounting": 32,
+          "initStarted": 832,
+          "initReturned": 832,
+          "clientLoads": 1,
+          "lastAt": 67753.70000004768,
+          "queue": 436,
+          "batchElapsedMs": 20.59999990463257
+        }
+      ],
+      "inventory": [
+        {
+          "pageMs": 45130.5,
+          "inventory": {
+            "wc": {
+              "total": 317,
+              "childReady": 136,
+              "pending": 34,
+              "examples": [
+                "demo-shadcn-resizable",
+                "demo-shadcn-scroll-area",
+                "demo-shadcn-table",
+                "demo-shadcn-tabs-preset-new-york-v4",
+                "demo-shadcn-tabs-preset-nova"
+              ]
+            },
+            "react": {
+              "total": 317,
+              "childReady": 136,
+              "pending": 37,
+              "examples": [
+                "demo-shadcn-resizable",
+                "demo-shadcn-scroll-area",
+                "demo-shadcn-table",
+                "demo-shadcn-tabs-preset-new-york-v4",
+                "demo-shadcn-tabs-preset-nova"
+              ]
+            },
+            "vue": {
+              "total": 317,
+              "childReady": 136,
+              "pending": 34,
+              "examples": [
+                "demo-shadcn-resizable",
+                "demo-shadcn-scroll-area",
+                "demo-shadcn-table",
+                "demo-shadcn-tabs-preset-new-york-v4",
+                "demo-shadcn-tabs-preset-nova"
+              ]
+            },
+            "vue2": {
+              "total": 317,
+              "childReady": 136,
+              "pending": 34,
+              "examples": [
+                "demo-shadcn-resizable",
+                "demo-shadcn-scroll-area",
+                "demo-shadcn-table",
+                "demo-shadcn-tabs-preset-new-york-v4",
+                "demo-shadcn-tabs-preset-nova"
+              ]
+            }
+          },
+          "inspectionMs": 0.2999999523162842
+        },
+        {
+          "pageMs": 56145.299999952316,
+          "inventory": {
+            "wc": {
+              "total": 317,
+              "childReady": 163,
+              "pending": 30,
+              "examples": [
+                "demo-shadcn-tree",
+                "demo-bootstrap-2-3-2-async-region",
+                "demo-bootstrap-2-3-2-calendar",
+                "demo-bootstrap-2-3-2-checkbox-group",
+                "demo-bootstrap-2-3-2-combobox"
+              ]
+            },
+            "react": {
+              "total": 317,
+              "childReady": 163,
+              "pending": 31,
+              "examples": [
+                "demo-shadcn-tree",
+                "demo-bootstrap-2-3-2-async-region",
+                "demo-bootstrap-2-3-2-calendar",
+                "demo-bootstrap-2-3-2-checkbox-group",
+                "demo-bootstrap-2-3-2-combobox"
+              ]
+            },
+            "vue": {
+              "total": 317,
+              "childReady": 163,
+              "pending": 30,
+              "examples": [
+                "demo-shadcn-tree",
+                "demo-bootstrap-2-3-2-async-region",
+                "demo-bootstrap-2-3-2-calendar",
+                "demo-bootstrap-2-3-2-checkbox-group",
+                "demo-bootstrap-2-3-2-combobox"
+              ]
+            },
+            "vue2": {
+              "total": 317,
+              "childReady": 163,
+              "pending": 30,
+              "examples": [
+                "demo-shadcn-tree",
+                "demo-bootstrap-2-3-2-async-region",
+                "demo-bootstrap-2-3-2-calendar",
+                "demo-bootstrap-2-3-2-checkbox-group",
+                "demo-bootstrap-2-3-2-combobox"
+              ]
+            }
+          },
+          "inspectionMs": 0.20000004768371582
+        },
+        {
+          "pageMs": 65870.89999985695,
+          "inventory": {
+            "wc": {
+              "total": 317,
+              "childReady": 170,
+              "pending": 30,
+              "examples": [
+                "demo-bootstrap-2-3-2-checkbox-group",
+                "demo-bootstrap-2-3-2-date-picker",
+                "demo-bootstrap-2-3-2-drawer",
+                "demo-bootstrap-2-3-2-drawer-scroll",
+                "demo-bootstrap-2-3-2-drawer-snap"
+              ]
+            },
+            "react": {
+              "total": 317,
+              "childReady": 170,
+              "pending": 31,
+              "examples": [
+                "demo-bootstrap-2-3-2-checkbox-group",
+                "demo-bootstrap-2-3-2-date-picker",
+                "demo-bootstrap-2-3-2-drawer",
+                "demo-bootstrap-2-3-2-drawer-scroll",
+                "demo-bootstrap-2-3-2-drawer-snap"
+              ]
+            },
+            "vue": {
+              "total": 317,
+              "childReady": 170,
+              "pending": 30,
+              "examples": [
+                "demo-bootstrap-2-3-2-checkbox-group",
+                "demo-bootstrap-2-3-2-date-picker",
+                "demo-bootstrap-2-3-2-drawer",
+                "demo-bootstrap-2-3-2-drawer-scroll",
+                "demo-bootstrap-2-3-2-drawer-snap"
+              ]
+            },
+            "vue2": {
+              "total": 317,
+              "childReady": 170,
+              "pending": 30,
+              "examples": [
+                "demo-bootstrap-2-3-2-checkbox-group",
+                "demo-bootstrap-2-3-2-date-picker",
+                "demo-bootstrap-2-3-2-drawer",
+                "demo-bootstrap-2-3-2-drawer-scroll",
+                "demo-bootstrap-2-3-2-drawer-snap"
+              ]
+            }
+          },
+          "inspectionMs": 0.3000001907348633
+        }
+      ],
+      "frames": [
+        {
+          "startMs": 648.5,
+          "durationMs": 412.5,
+          "blockingMs": 362.5,
+          "renderStart": 1047.2999999523163,
+          "styleAndLayoutStart": 1047.3999998569489,
+          "scripts": [
+            {
+              "source": "ShadowSplitS2.astro_astro_type_script_index_0_lang.BeYysw2F.js",
+              "character": 0,
+              "function": "",
+              "invocation": "module-script",
+              "duration": 398.7000000476837,
+              "forcedStyleAndLayout": 0
+            }
+          ]
+        },
+        {
+          "startMs": 1061.7999999523163,
+          "durationMs": 1415.7999999523163,
+          "blockingMs": 1365.8,
+          "renderStart": 2436.5999999046326,
+          "styleAndLayoutStart": 2467.7999999523163,
+          "scripts": [
+            {
+              "source": "ShadowSplitS3.astro_astro_type_script_index_0_lang.nbLqJ_37.js",
+              "character": 0,
+              "function": "",
+              "invocation": "module-script",
+              "duration": 1374.7999999523163,
+              "forcedStyleAndLayout": 127.4
+            },
+            {
+              "source": "shadow-split-s3.D0IgesXe.js",
+              "character": 1764,
+              "function": "O",
+              "invocation": "user-callback",
+              "duration": 13.900000095367432,
+              "forcedStyleAndLayout": 6.2
+            },
+            {
+              "source": "shadow-split-s3.D0IgesXe.js",
+              "character": 1764,
+              "function": "O",
+              "invocation": "user-callback",
+              "duration": 10.700000047683716,
+              "forcedStyleAndLayout": 5.8
+            }
+          ]
+        },
+        {
+          "startMs": 2478.899999856949,
+          "durationMs": 1608.5,
+          "blockingMs": 1558.4,
+          "renderStart": 4075.0999999046326,
+          "styleAndLayoutStart": 4077,
+          "scripts": [
+            {
+              "source": "ShadowSplitS4.astro_astro_type_script_index_0_lang.B8eiY40a.js",
+              "character": 0,
+              "function": "",
+              "invocation": "module-script",
+              "duration": 1596.2000000476837,
+              "forcedStyleAndLayout": 56.9
+            }
+          ]
+        },
+        {
+          "startMs": 4088.2000000476837,
+          "durationMs": 987.1999998092651,
+          "blockingMs": 937.1,
+          "renderStart": 5064.200000047684,
+          "styleAndLayoutStart": 5068.399999856949,
+          "scripts": [
+            {
+              "source": "ShadowSplitS5.astro_astro_type_script_index_0_lang.D0nZk_zY.js",
+              "character": 0,
+              "function": "",
+              "invocation": "module-script",
+              "duration": 975.8999998569489,
+              "forcedStyleAndLayout": 206.5
+            }
+          ]
+        },
+        {
+          "startMs": 5154.5,
+          "durationMs": 692.2999999523163,
+          "blockingMs": 606.1,
+          "renderStart": 5801.200000047684,
+          "styleAndLayoutStart": 5801.899999856949,
+          "scripts": [
+            {
+              "source": "prototype-modules.D3OGCzy1.js",
+              "character": 186076,
+              "function": "",
+              "invocation": "resolve-promise",
+              "duration": 610.4000000953674,
+              "forcedStyleAndLayout": 55.1
+            },
+            {
+              "source": "prototype-modules.D3OGCzy1.js",
+              "character": 199972,
+              "function": "",
+              "invocation": "resolve-promise",
+              "duration": 32.200000047683716,
+              "forcedStyleAndLayout": 0
+            }
+          ]
+        },
+        {
+          "startMs": 7411.799999952316,
+          "durationMs": 834.7000000476837,
+          "blockingMs": 743.6,
+          "renderStart": 8135.799999952316,
+          "styleAndLayoutStart": 8241.599999904633,
+          "scripts": [
+            {
+              "source": "vue-runtime.DZ7c1FTP.js",
+              "character": 371,
+              "function": "",
+              "invocation": "resolve-promise",
+              "duration": 682.3000001907349,
+              "forcedStyleAndLayout": 175.6
+            },
+            {
+              "source": "prototype-modules.D3OGCzy1.js",
+              "character": 198177,
+              "function": "",
+              "invocation": "resolve-promise",
+              "duration": 40.90000009536743,
+              "forcedStyleAndLayout": 33.5
+            },
+            {
+              "source": "site-shadcn-controls.CBp0gmjU.js",
+              "character": 524764,
+              "function": "re",
+              "invocation": "user-callback",
+              "duration": 13.400000095367432,
+              "forcedStyleAndLayout": 13
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 23.600000143051147,
+              "forcedStyleAndLayout": 0
+            }
+          ]
+        },
+        {
+          "startMs": 8247.399999856949,
+          "durationMs": 588.1000001430511,
+          "blockingMs": 528.7,
+          "renderStart": 8370.099999904633,
+          "styleAndLayoutStart": 8818.399999856949,
+          "scripts": [
+            {
+              "source": "prototype-modules.D3OGCzy1.js",
+              "character": 195694,
+              "function": "",
+              "invocation": "resolve-promise",
+              "duration": 113.20000004768372,
+              "forcedStyleAndLayout": 63.1
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 12,
+              "forcedStyleAndLayout": 11.3
+            },
+            {
+              "source": "site-shadcn-controls.CBp0gmjU.js",
+              "character": 603670,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 10.700000047683716,
+              "forcedStyleAndLayout": 10.6
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 11.400000095367432,
+              "forcedStyleAndLayout": 10
+            },
+            {
+              "source": "site-shadcn-controls.CBp0gmjU.js",
+              "character": 529461,
+              "function": "Ye",
+              "invocation": "event-listener",
+              "duration": 9.700000047683716,
+              "forcedStyleAndLayout": 9.7
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 10.5,
+              "forcedStyleAndLayout": 9.6
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 10.900000095367432,
+              "forcedStyleAndLayout": 9.4
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 10.100000143051147,
+              "forcedStyleAndLayout": 9.3
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 10.400000095367432,
+              "forcedStyleAndLayout": 9
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 9.799999952316284,
+              "forcedStyleAndLayout": 9
+            }
+          ]
+        },
+        {
+          "startMs": 8836.700000047684,
+          "durationMs": 1069.1999998092651,
+          "blockingMs": 1018.8,
+          "renderStart": 9684.5,
+          "styleAndLayoutStart": 9886.099999904633,
+          "scripts": [
+            {
+              "source": "vue2-runtime.BOjburv7.js",
+              "character": 371,
+              "function": "",
+              "invocation": "resolve-promise",
+              "duration": 846.9000000953674,
+              "forcedStyleAndLayout": 224.5
+            },
+            {
+              "source": "site-shadcn-controls.CBp0gmjU.js",
+              "character": 524764,
+              "function": "re",
+              "invocation": "user-callback",
+              "duration": 16.899999856948853,
+              "forcedStyleAndLayout": 16.6
+            },
+            {
+              "source": "site-shadcn-controls.CBp0gmjU.js",
+              "character": 524764,
+              "function": "re",
+              "invocation": "user-callback",
+              "duration": 15.200000047683716,
+              "forcedStyleAndLayout": 14.9
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 12.099999904632568,
+              "forcedStyleAndLayout": 11.3
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 11.599999904632568,
+              "forcedStyleAndLayout": 10.6
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 11.300000190734863,
+              "forcedStyleAndLayout": 10.4
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 11,
+              "forcedStyleAndLayout": 10
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 5,
+              "forcedStyleAndLayout": 0
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 21.09999990463257,
+              "forcedStyleAndLayout": 0
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 5.200000047683716,
+              "forcedStyleAndLayout": 0
+            }
+          ]
+        },
+        {
+          "startMs": 9907.099999904633,
+          "durationMs": 674.1000001430511,
+          "blockingMs": 588.2,
+          "renderStart": 10015.099999904633,
+          "styleAndLayoutStart": 10564.799999952316,
+          "scripts": [
+            {
+              "source": "prototype-modules.D3OGCzy1.js",
+              "character": 99206,
+              "function": "",
+              "invocation": "resolve-promise",
+              "duration": 72.10000014305115,
+              "forcedStyleAndLayout": 16.4
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 13.400000095367432,
+              "forcedStyleAndLayout": 12.5
+            },
+            {
+              "source": "prototype-modules.D3OGCzy1.js",
+              "character": 98047,
+              "function": "",
+              "invocation": "resolve-promise",
+              "duration": 35.69999980926514,
+              "forcedStyleAndLayout": 12.1
+            },
+            {
+              "source": "site-shadcn-controls.CBp0gmjU.js",
+              "character": 529461,
+              "function": "Ye",
+              "invocation": "event-listener",
+              "duration": 12.100000143051147,
+              "forcedStyleAndLayout": 12
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 12.599999904632568,
+              "forcedStyleAndLayout": 11
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 11.799999952316284,
+              "forcedStyleAndLayout": 10.9
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 11.799999952316284,
+              "forcedStyleAndLayout": 10.6
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 12.400000095367432,
+              "forcedStyleAndLayout": 10.6
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 11.399999856948853,
+              "forcedStyleAndLayout": 10.4
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 11.5,
+              "forcedStyleAndLayout": 10.3
+            }
+          ]
+        },
+        {
+          "startMs": 10760.599999904633,
+          "durationMs": 1134.1000001430511,
+          "blockingMs": 986.4,
+          "renderStart": 11826.599999904633,
+          "styleAndLayoutStart": 11889.299999952316,
+          "scripts": [
+            {
+              "source": "react-runtime.BxlRYHws.js",
+              "character": 752,
+              "function": "",
+              "invocation": "resolve-promise",
+              "duration": 968.2000000476837,
+              "forcedStyleAndLayout": 181.7
+            },
+            {
+              "source": "site-shadcn-controls.CBp0gmjU.js",
+              "character": 529461,
+              "function": "Ye",
+              "invocation": "event-listener",
+              "duration": 15.199999809265137,
+              "forcedStyleAndLayout": 15.2
+            },
+            {
+              "source": "site-shadcn-controls.CBp0gmjU.js",
+              "character": 524764,
+              "function": "re",
+              "invocation": "user-callback",
+              "duration": 12.600000143051147,
+              "forcedStyleAndLayout": 12.4
+            },
+            {
+              "source": "prototype-modules.D3OGCzy1.js",
+              "character": 95141,
+              "function": "",
+              "invocation": "resolve-promise",
+              "duration": 31.300000190734863,
+              "forcedStyleAndLayout": 12
+            },
+            {
+              "source": "prototype-modules.D3OGCzy1.js",
+              "character": 94992,
+              "function": "",
+              "invocation": "resolve-promise",
+              "duration": 30.09999990463257,
+              "forcedStyleAndLayout": 11.8
+            },
+            {
+              "source": "prototype-modules.D3OGCzy1.js",
+              "character": 197693,
+              "function": "",
+              "invocation": "resolve-promise",
+              "duration": 23.40000009536743,
+              "forcedStyleAndLayout": 11.7
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 12.900000095367432,
+              "forcedStyleAndLayout": 11.7
+            },
+            {
+              "source": "site-shadcn-controls.CBp0gmjU.js",
+              "character": 529660,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 10.599999904632568,
+              "forcedStyleAndLayout": 10.6
+            }
+          ]
+        },
+        {
+          "startMs": 11896.099999904633,
+          "durationMs": 388.60000014305115,
+          "blockingMs": 283.7,
+          "renderStart": 12002.899999856949,
+          "styleAndLayoutStart": 12263.399999856949,
+          "scripts": [
+            {
+              "source": "projection-materializer.DsfcIznO.js",
+              "character": 36984,
+              "function": "",
+              "invocation": "resolve-promise",
+              "duration": 51.89999985694885,
+              "forcedStyleAndLayout": 27.3
+            },
+            {
+              "source": "site-shadcn-controls.CBp0gmjU.js",
+              "character": 603670,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 17.399999856948853,
+              "forcedStyleAndLayout": 17.5
+            },
+            {
+              "source": "projection-materializer.DsfcIznO.js",
+              "character": 36524,
+              "function": "",
+              "invocation": "resolve-promise",
+              "duration": 37.60000014305115,
+              "forcedStyleAndLayout": 14.8
+            },
+            {
+              "source": "site-shadcn-controls.CBp0gmjU.js",
+              "character": 529461,
+              "function": "Ye",
+              "invocation": "event-listener",
+              "duration": 14.700000047683716,
+              "forcedStyleAndLayout": 14.5
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 12.900000095367432,
+              "forcedStyleAndLayout": 11.6
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 12.5,
+              "forcedStyleAndLayout": 11.3
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 12.400000095367432,
+              "forcedStyleAndLayout": 11.2
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 12.299999952316284,
+              "forcedStyleAndLayout": 11
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 12.099999904632568,
+              "forcedStyleAndLayout": 10.9
+            },
+            {
+              "source": "PrototypePreviewer.astro_astro_type_script_index_0_lang.ByglJ5Br.js",
+              "character": 4168,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 11,
+              "forcedStyleAndLayout": 0
+            }
+          ]
+        },
+        {
+          "startMs": 12497.200000047684,
+          "durationMs": 966.6999998092651,
+          "blockingMs": 838.8,
+          "renderStart": 12652.899999856949,
+          "styleAndLayoutStart": 13444.899999856949,
+          "scripts": [
+            {
+              "source": "prototype-modules.D3OGCzy1.js",
+              "character": 213553,
+              "function": "",
+              "invocation": "resolve-promise",
+              "duration": 77.79999995231628,
+              "forcedStyleAndLayout": 46.5
+            },
+            {
+              "source": "prototype-modules.D3OGCzy1.js",
+              "character": 62791,
+              "function": "",
+              "invocation": "resolve-promise",
+              "duration": 39.299999952316284,
+              "forcedStyleAndLayout": 13.9
+            },
+            {
+              "source": "prototype-modules.D3OGCzy1.js",
+              "character": 60166,
+              "function": "",
+              "invocation": "resolve-promise",
+              "duration": 38.299999952316284,
+              "forcedStyleAndLayout": 13.3
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 14.399999856948853,
+              "forcedStyleAndLayout": 13.3
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 14.200000047683716,
+              "forcedStyleAndLayout": 12.2
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 13.400000095367432,
+              "forcedStyleAndLayout": 12.2
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 13.799999952316284,
+              "forcedStyleAndLayout": 12.2
+            },
+            {
+              "source": "site-shadcn-controls.CBp0gmjU.js",
+              "character": 699241,
+              "function": "Ol",
+              "invocation": "event-listener",
+              "duration": 12.199999809265137,
+              "forcedStyleAndLayout": 12.1
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 14,
+              "forcedStyleAndLayout": 11.6
+            },
+            {
+              "source": "",
+              "character": -1,
+              "function": "",
+              "invocation": "user-callback",
+              "duration": 13.300000190734863,
+              "forcedStyleAndLayout": 11.6
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "verification": {
+    "focusedPass": 142,
+    "focusedFiles": 9,
+    "sourceRedPass": 18,
+    "sourceRedFail": 1,
+    "originalReadyMs": 60000,
+    "originalOuterMs": 150000,
+    "packages": 47,
+    "pages": 685,
+    "typesExit": 0,
+    "manifestsExit": 0,
+    "finfPolicyExit": 0,
+    "unchangedWholeEntries": [
+      "PASS lucide/icons/x: 2879 / 3000 gzip bytes; overBudget=0; minified=8695 sha256=da30ebe409a83a09d2569fe2a47880a133fcbe4d554d93ea305795356c4fccdb",
+      "PASS lucide root: 637306 / 700000 gzip bytes; overBudget=0; minified=4087403 sha256=eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c",
+      "ADVISORY core root: 11378 / 7600 gzip bytes; overBudget=3778; minified=35782 sha256=0e3c868d3ef719af46085b83881b15787a94acbaf893566ceae4047ceff72b44",
+      "ADVISORY runtime root: 101213 / 78500 gzip bytes; overBudget=22713; minified=390460 sha256=0b0e275b387d948bf58ae9596d85f34adc3fd37b07339d19821fc3daafa6d28c",
+      "ADVISORY adapter-react root: 163435 / 106000 gzip bytes; overBudget=57435; minified=576464 sha256=d9fb104467b102f685e625abe18e3f768f2a93123aee28af66f4d8460a98b5fd",
+      "ADVISORY adapter-vue root: 162215 / 106000 gzip bytes; overBudget=56215; minified=571708 sha256=f0d17946712d52eff65fbe78dc65c86296306ec51df5790aecde736da0c2cf28",
+      "ADVISORY adapter-web-component root: 195119 / 132000 gzip bytes; overBudget=63119; minified=670323 sha256=bfafdab334becdb12664a80811daca6946cc88abb1d4457ef2c20af1622ff7bc",
+      "PASS prototypes-base/button: 5274 / 6000 gzip bytes; overBudget=0; minified=18158 sha256=6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67",
+      "ADVISORY prototypes-shadcn/button: 7803 / 7000 gzip bytes; overBudget=803; minified=34485 sha256=60b4ff9277e59fba01c34162ec9418282ce82c6b43e24f223a05c9e1df19db57"
+    ],
+    "cases": {
+      "native": {
+        "passed": 0,
+        "failed": 2,
+        "skips": 0,
+        "failedCases": [
+          "zh-cn: native Light/split/mixed acceptance",
+          "en: native Light/split/mixed acceptance"
+        ],
+        "reportSha256": "745a33d2ab62fb0e824f428f92b9b1c0ca5c642fa74a73423fc87a38b2aba83d"
+      },
+      "accordion-native": {
+        "passed": 4,
+        "failed": 0,
+        "skips": 29,
+        "failedCases": [],
+        "reportSha256": "d09970fe87e8d0d4df780dbab59679a7fcb055a6fc19f42ad3b3e376f4307a1f"
+      },
+      "optics-native": {
+        "passed": 3,
+        "failed": 0,
+        "skips": 1,
+        "failedCases": [],
+        "reportSha256": "da42c02aee6f002222433f4f3cd52b604630b1dd19623aaaff4c6d1f79dcfe8c"
+      },
+      "portal-native": {
+        "passed": 5,
+        "failed": 0,
+        "skips": 50,
+        "failedCases": [],
+        "reportSha256": "3b8efd57a0064536f3f69667dc6208a88306a9998dfca1fb7ec18a831a9ae95d"
+      },
+      "preview-browser": {
+        "passed": 11,
+        "failed": 0,
+        "skips": 13,
+        "failedCases": [],
+        "reportSha256": "b6a1aa1183099496850f61a15a1d973c7fcffaa5961557522e8357a5f5ead0aa"
+      }
+    },
+    "servedPreviews": {
+      "zh-cn": {
+        "bytes": 1862509,
+        "sha256": "33a51f57521b2752511f02236d922c2e6ae2a6f3441381cf42601c3cad9f7a06",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914129,
+        "sha256": "4d785f231b5eec4fb8cc9e40859b71ced591400d8a4fc0f9580deef2bddc9d0a",
+        "previews": 1268
+      }
+    },
+    "preview": {
+      "head": "4d4298fdaa53ee57ecb21828044e53754a03fbbb",
+      "tree": "d66dfd749e505599f726deed01ff08ba7c16ac8e",
+      "distHashes": {
+        "zh-cn/index.html": "07434b0959f4822649e81d31acb340e45c7f57c9a88c17d882c2a7353b4c8a3e",
+        "zh-cn/ui-libraries/shadcn/button/index.html": "5d9158d04c4fe3c795ab73d9ca5904bc15936af7c2bce7f8a6bc9d0819a87ddd",
+        "zh-cn/ui-libraries/brutalist/components/button/index.html": "f89abbf0db6fe651e095391cf5de68772f7006080b87d58a85c5280f9091dd8c"
+      },
+      "sourceCodeExamples": 9,
+      "renderedCodeExamples": 9,
+      "packedHeaderExit": 0,
+      "previewBrowserExit": 0,
+      "selector": "uses real family Popover Triggers|uses the same mobile shell|live available region|keeps Runtime Tabs outside"
+    },
+    "header": {
+      "head": "4d4298fdaa53ee57ecb21828044e53754a03fbbb",
+      "browser": "156.0.8078.79",
+      "scope": "First animation frame control on the exact static Astro preview. Geometry reads can force layout.",
+      "results": [
+        {
+          "width": 320,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1544.2000000476837,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1664.2999999523163,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1682.6000001430511,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        },
+        {
+          "width": 390,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1526.3999998569489,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1642.5,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1664.7000000476837,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        }
+      ]
+    }
+  }
+}
