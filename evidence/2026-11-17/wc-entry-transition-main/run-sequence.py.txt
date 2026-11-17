@@ -1,0 +1,20 @@
+from pathlib import Path
+import subprocess,os,json,hashlib
+b=Path('$TASK_STATE_ROOT');q=b/'wc-entry-transition-main';w=b/'wc-entry-transition-main-worktree';source='packages/adapters/web-component/src/runtime/modules.ts';test='packages/adapters/web-component/test/focus-entry-motion-origin.test.ts';f=w/source;candidate=f.read_bytes();baseline=subprocess.check_output(['git','show','HEAD^:'+source],cwd=w);steps=[]
+def run(label,cmd,output=q):
+ with (output/(label+'-sequence.log')).open('w') as log:r=subprocess.run(cmd,cwd=w,stdout=log,stderr=subprocess.STDOUT)
+ steps.append(dict(label=label,command=cmd,exit=r.returncode));print(label,r.returncode,flush=True);(q/'sequence-receipt.json').write_text(json.dumps(dict(head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=w,text=True).strip(),steps=steps),indent=2)+'\n');return r.returncode
+def inputs(out):
+ (out/'changed-inputs.sha256').write_text(''.join(hashlib.sha256((w/p).read_bytes()).hexdigest()+'  '+p+'\n' for p in [source,test]))
+f.write_bytes(baseline)
+try:
+ inputs(q/'baseline-product');(q/'baseline-product/source-control.json').write_text(json.dumps(dict(actualHead='9427750cc760e092914087f2e88d365d115ccad9',runtimeSource='0f0955a9d624e0ef5e250f56a0eaa0fc52bbfb53',scope='One WC source file reverted to exact parent blob during control build; other tracked runtime source matches main. New7case test is not part of runtime artifact. Not an exact-head CI claim.',sourceSha256=hashlib.sha256(baseline).hexdigest()),indent=2)+'\n');run('baseline-original-S4',['bash',str(q/'baseline-product/run-product.sh')],q/'baseline-product')
+finally:f.write_bytes(candidate)
+assert subprocess.check_output(['git','status','--porcelain'],cwd=w,text=True)==''
+inputs(q);run('candidate-original-S4',['bash',str(q/'run-product.sh')]);assert (q/'production-build.exit').read_text().strip()=='0'
+run('candidate-pack',['node',str(q/'pack-focus-consumer.mjs'),str(q),'candidate-tarballs'])
+for label,mode,consumer in [('source-candidate','source',None),('tarball-candidate','installed',str(q/'candidate-tarballs/consumer'))]:
+ args=['node',str(q/'build-native.mjs'),str(q),label,mode]+([consumer] if consumer else []);assert run(label+'-build',args)==0
+ data=json.loads((q/(label+'-binding.json')).read_text());paths=[v['path'] for v in data['inputs']];assert sum('/web-component/src/' in p for p in paths)>0 if mode=='source' else all('/src/' not in p for p in paths)
+ assert run(label+'-native',['node',str(q/'native-control.mjs'),str(q),label])==0
+head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=w,text=True).strip();tree=subprocess.check_output(['git','rev-parse','HEAD^{tree}'],cwd=w,text=True).strip();(q/'product.txt').write_text(head+' '+tree+'\n');run('preview-combination',['python3',str(q/'run-preview-combination.py')]);print('main source/packed/preview sequence complete',flush=True)

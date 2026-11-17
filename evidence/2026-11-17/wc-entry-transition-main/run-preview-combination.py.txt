@@ -1,0 +1,119 @@
+from hashlib import sha256
+from html.parser import HTMLParser
+from pathlib import Path
+import json
+import os
+import signal
+import socket
+import subprocess
+import sys
+import time
+import urllib.request
+
+output = Path(__file__).resolve().parent
+source = Path.cwd()
+head, tree = (output / 'product.txt').read_text().split()
+def git(*args):
+    return subprocess.check_output(['git', *args], text=True).strip()
+
+assert git('rev-parse', 'HEAD') == head
+assert git('rev-parse', 'HEAD^{tree}') == tree
+assert not git('status', '--porcelain')
+assert (output / 'production-build.exit').read_text().strip() == '0'
+dist = source / 'apps/www/dist'
+targets = [
+    'zh-cn/index.html',
+    'zh-cn/ui-libraries/shadcn/button/index.html',
+    'zh-cn/ui-libraries/brutalist/components/button/index.html',
+]
+hashes = {target: sha256((dist / target).read_bytes()).hexdigest() for target in targets}
+
+class CodeExamples(HTMLParser):
+    count = 0
+
+    def handle_starttag(self, tag, attrs):
+        if 'data-code-example' in dict(attrs):
+            self.count += 1
+
+article = source / 'apps/www/src/content/docs/zh-cn/ui-libraries/shadcn/button.mdx'
+code = CodeExamples()
+code.feed((dist / targets[1]).read_text())
+source_examples = article.read_text().count('<CodeExample ')
+assert code.count == source_examples == 9
+
+with socket.socket() as sock:
+    sock.bind(('127.0.0.1', 0))
+    port = sock.getsockname()[1]
+
+env = os.environ.copy()
+env['PROTO_UI_BROWSER_BASE_URL'] = f'http://127.0.0.1:{port}'
+env['RUNNER_TEMP'] = env['PROTO_UI_RUNTIME_EVIDENCE_DIR'] = str(output / 'preview-native')
+env['PUI_WWW_PACKAGE'] = str(source / 'apps/www/package.json')
+env['PUI_OUTPUT'] = str(output / 'packed-header-frames.json')
+env['PUI_PRODUCT_SHA'] = head
+Path(env['RUNNER_TEMP']).mkdir()
+
+def stop(child):
+    if child.poll() is None:
+        os.killpg(child.pid, signal.SIGTERM)
+        try:
+            child.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            os.killpg(child.pid, signal.SIGKILL)
+            child.wait(timeout=5)
+
+def run(label, argv, timeout):
+    with (output / f'{label}.log').open('w') as log:
+        child = subprocess.Popen(argv, env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+        try:
+            result = child.wait(timeout=timeout)
+        except subprocess.TimeoutExpired:
+            result = 124
+            log.write('\nReceipt wrapper deadline expired.\n')
+        finally:
+            stop(child)
+    (output / f'{label}.exit').write_text(f'{result}\n')
+    print(label, result, flush=True)
+    return result
+
+source_paths = [
+    'apps/www/src/content/docs/zh-cn/' + name + '.browser.test.ts'
+    for name in ('homepage-dogfood', 'dialog-available-space', 'runtime-preview-surface')
+]
+selector = 'uses real family Popover Triggers|uses the same mobile shell|live available region|keeps Runtime Tabs outside'
+command = [
+    'corepack', 'pnpm@10.32.1', 'exec', 'vitest', 'run', '--maxWorkers', '1', '--minWorkers', '1',
+    *source_paths, '-t', selector,
+    '--reporter=default', '--reporter=json', '--outputFile=' + str(output / 'preview-browser.json')
+]
+with (output / 'preview-server.log').open('w') as server_log:
+    server = subprocess.Popen(
+        ['corepack', 'pnpm@10.32.1', '--filter', 'apps-www', 'preview',
+         '--host', '127.0.0.1', '--port', str(port), '--strictPort'],
+        env=env, stdout=server_log, stderr=subprocess.STDOUT, start_new_session=True
+    )
+    try:
+        for attempt in range(45):
+            if server.poll() is not None:
+                raise RuntimeError(f'Astro preview stopped with exit {server.returncode}')
+            try:
+                with urllib.request.urlopen(env['PROTO_UI_BROWSER_BASE_URL'] + '/zh-cn/', timeout=5) as response:
+                    if response.status == 200:
+                        break
+            except (OSError, TimeoutError):
+                time.sleep(1)
+        else:
+            raise RuntimeError('Astro preview startup unavailable')
+        frame_exit = run('packed-header-frames', ['node', str(output / 'packed-header-frames.mjs')], 180)
+        browser_exit = run('preview-browser', command, 1000)
+    finally:
+        stop(server)
+
+assert not git('status', '--porcelain')
+assert all(sha256((dist / target).read_bytes()).hexdigest() == digest for target, digest in hashes.items())
+receipt = dict(
+    head=head, tree=tree, distHashes=hashes, sourceCodeExamples=source_examples, renderedCodeExamples=code.count,
+    packedHeaderExit=frame_exit, previewBrowserExit=browser_exit, selector=selector,
+)
+(output / 'preview-receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
+sys.exit(int(bool(frame_exit or browser_exit)))
