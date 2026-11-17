@@ -279,10 +279,11 @@ export function initProjectedPreviewer(options: ProjectedPreviewerOptions): void
           componentId
         ]!.recipeId
       );
+      const initialMountTheme = resolveProjectionThemeSurfaceStyle(projectionFamilyId, mount);
       const surface = createRuntimePreviewSurface(
         originalDemo,
         projectionFamilyId,
-        resolveProjectionThemeSurfaceStyle(projectionFamilyId, mount),
+        initialMountTheme,
         request.selection.runtimeId as RuntimeId
       );
       const childCandidate = await materializeProjectionCandidate(request, {
@@ -295,6 +296,7 @@ export function initProjectedPreviewer(options: ProjectedPreviewerOptions): void
         content: {
           demo: surface.demo,
           recipe: runtimePreviewRecipe(projectionFamilyId, componentId),
+          initialMountTheme,
         },
       });
       try {

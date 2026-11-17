@@ -449,6 +449,9 @@ describe('PrototypePreviewer fixed-family projection', () => {
 
   it('uses the first watcher sample and still reads live theme on replacement', async () => {
     const root = createRoot();
+    const mount = root.querySelector('.host');
+    const mountTheme = { '--pui-background': '#111' };
+    projection.resolveTheme.mockReturnValue(mountTheme);
     const observedTheme = { '--pui-background': '#222' };
     projection.watchTheme.mockImplementation((family, scope, onChange) => {
       expect(scope).toBe(root);
@@ -462,6 +465,10 @@ describe('PrototypePreviewer fixed-family projection', () => {
     expect(projection.resolveTheme.mock.calls.filter(([, scope]) => scope === root)).toHaveLength(
       1
     );
+    expect(projection.resolveTheme.mock.calls.filter(([, scope]) => scope === mount)).toHaveLength(
+      1
+    );
+    expect(projection.materialize.mock.calls[0]![1].content.initialMountTheme).toBe(mountTheme);
     expect(candidates[0]!.setThemeSurfaceStyle.mock.calls).toEqual([[observedTheme]]);
     const replacementTheme = { '--pui-background': '#333' };
     projection.resolveTheme.mockReturnValue(replacementTheme);

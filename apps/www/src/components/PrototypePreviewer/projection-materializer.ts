@@ -49,7 +49,12 @@ export type ProjectionMaterializerOptions = Readonly<{
   controls: ProjectionCompositionControls;
   controlIds?: readonly ProjectionControlId[];
   /** Website-owned host composition, checked against an explicit recipe. */
-  content?: Readonly<{ demo: DemoSpec; recipe: ProjectionContentRecipe }>;
+  content?: Readonly<{
+    demo: DemoSpec;
+    recipe: ProjectionContentRecipe;
+    /** Theme already sampled from this mount when composing the content. */
+    initialMountTheme?: ProjectionThemeSurfaceStyle;
+  }>;
   /** Let independent consumers finish preparation in a task after the frame. */
   yieldAfterPaint?: boolean;
   /** First-view preparation can yield while another consumer is preparing. */
@@ -70,12 +75,12 @@ export type MaterializedProjectionCandidate = ProjectionScopeCandidate &
     host: HTMLElement;
     scope: HTMLElement;
     setThemeSurfaceStyle(theme: ProjectionThemeSurfaceStyle): void;
-   /**
-    * Seal this generation's open external portals without switching.
-    * Candidates that do not own external portals (e.g. typography) may omit
-    * this; the callback is a no-op for them.
-    */
-   sealExternalPortals?(): void;
+    /**
+     * Seal this generation's open external portals without switching.
+     * Candidates that do not own external portals (e.g. typography) may omit
+     * this; the callback is a no-op for them.
+     */
+    sealExternalPortals?(): void;
   }>;
 
 // A focus lease belongs to the exact materialized composition, not a DOM role.
@@ -357,7 +362,9 @@ async function prepareProjectionCandidate(
   }
 
   const themeSurfaceStyle =
-    initialTheme ?? resolveProjectionThemeSurfaceStyle(projectionFamilyId, options.mount);
+    initialTheme ??
+    options.content?.initialMountTheme ??
+    resolveProjectionThemeSurfaceStyle(projectionFamilyId, options.mount);
   const childDemo = options.content?.demo ?? (await loadDemo(componentManifest.recipeId));
   // Seed the scope in the renderer's mount so the initial theme and subtree
   // reach ancestor observers in the same delivery.

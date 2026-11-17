@@ -148,6 +148,54 @@ describe('Website projection materializer', () => {
     expect(stopTheme).toHaveBeenCalledTimes(1);
   });
 
+  it('seeds the composed content and scope from the same mount theme', async () => {
+    const mount = document.createElement('div');
+    document.body.append(mount);
+    const initialMountTheme = { '--pui-background': '#222', '--pui-radius': '17px' };
+    fakes.createComposition.mockReturnValue({
+      demo: childDemo,
+      setLocked: vi.fn(),
+      setEventGateOpen: vi.fn(),
+      setThemeSurfaceStyle: vi.fn(),
+    });
+    fakes.renderDemo.mockImplementation(async ({ host }: { host: HTMLElement }) => {
+      const scope = document.createElement('section');
+      scope.dataset.projectionScope = 'themed-owner';
+      host.append(scope);
+      return { destroy: fakes.destroyRender };
+    });
+    const candidate = await materializeProjectionCandidate(
+      { generation: 1, selection: { runtimeId: 'wc', projectionFamilyId: 'shadcn' } },
+      {
+        mount,
+        ownerId: 'themed-owner',
+        componentId: 'button',
+        controls: controls(),
+        content: {
+          demo: childDemo,
+          recipe: {
+            id: 'test-button',
+            rootPrototypeId: 'shadcn-button',
+            prototypeIds: ['shadcn-button'],
+          },
+          initialMountTheme,
+        },
+      }
+    );
+    try {
+      expect(fakes.resolveTheme).not.toHaveBeenCalled();
+      expect(fakes.createComposition).toHaveBeenCalledWith(
+        expect.objectContaining({
+          themeSurfaceStyle: initialMountTheme,
+          scopeInlineStyle: '--pui-background: #222; --pui-radius: 17px;',
+        })
+      );
+      expect(fakes.applyTheme).toHaveBeenCalledWith(candidate.scope, initialMountTheme);
+    } finally {
+      await candidate.dispose();
+    }
+  });
+
   it.each(['theme', 'render'] as const)(
     'revokes an independent background %s task on owner disposal',
     async (phase) => {
