@@ -64,6 +64,11 @@ const clampRatio = (value: number) =>
 // Existing discrete wheel/key classification, separate from contact lifetime.
 const DISCRETE_READER_INTENT_WINDOW_MS = 250;
 const BASE_CONTENT_OBSERVER_OPTIONS = Object.freeze({ childList: true });
+const EXCLUSIVE_CONTENT_OBSERVER_OPTIONS = Object.freeze({
+  childList: true,
+  attributes: true,
+  attributeFilter: ['style', 'data-pui-scroll-projection'],
+});
 const END_FOLLOW_CONTENT_OBSERVER_OPTIONS = Object.freeze({
   attributes: true,
   characterData: true,
@@ -993,33 +998,47 @@ export function createWebScrollSurfaceHost(
         }
         onLayoutChange();
       };
+      let observedGeometry: {
+        children: readonly Element[];
+        tracks: readonly HTMLElement[];
+        contentOptions: MutationObserverInit;
+      } | null = null;
+      const sameObservedTargets = (previous: readonly Element[], next: readonly Element[]) =>
+        previous.length === next.length &&
+        previous.every((element, index) => element === next[index]);
+
       function observeGeometry() {
+        const children = Array.from(target.children);
+        const tracks = (connection.composedChrome?.controls ?? [])
+          .filter(isWebControl)
+          .map((control) => control.trackTarget);
+        const contentOptions = configuredFollowAxis()
+          ? END_FOLLOW_CONTENT_OBSERVER_OPTIONS
+          : options.exclusivePolicy
+            ? EXCLUSIVE_CONTENT_OBSERVER_OPTIONS
+            : BASE_CONTENT_OBSERVER_OPTIONS;
+        if (
+          observedGeometry?.contentOptions === contentOptions &&
+          sameObservedTargets(observedGeometry.children, children) &&
+          sameObservedTargets(observedGeometry.tracks, tracks)
+        ) {
+          return;
+        }
+
+        observedGeometry = null;
         resizeObserver?.disconnect();
         mutationObserver?.disconnect();
         resizeObserver?.observe(target);
-        for (const contentTarget of Array.from(target.children)) {
-          resizeObserver?.observe(contentTarget);
-        }
-        mutationObserver?.observe(
-          target,
-          configuredFollowAxis()
-            ? END_FOLLOW_CONTENT_OBSERVER_OPTIONS
-            : options.exclusivePolicy
-              ? {
-                  childList: true,
-                  attributes: true,
-                  attributeFilter: ['style', 'data-pui-scroll-projection'],
-                }
-              : BASE_CONTENT_OBSERVER_OPTIONS
-        );
-        for (const control of connection.composedChrome?.controls ?? []) {
-          if (!isWebControl(control)) continue;
-          resizeObserver?.observe(control.trackTarget);
-          mutationObserver?.observe(control.trackTarget, {
+        for (const contentTarget of children) resizeObserver?.observe(contentTarget);
+        mutationObserver?.observe(target, contentOptions);
+        for (const trackTarget of tracks) {
+          resizeObserver?.observe(trackTarget);
+          mutationObserver?.observe(trackTarget, {
             attributes: true,
             attributeFilter: ['class', 'style'],
           });
         }
+        observedGeometry = { children, tracks, contentOptions };
       }
       const resetEndFollow = () => {
         resetReaderInput();

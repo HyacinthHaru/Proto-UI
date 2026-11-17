@@ -348,6 +348,101 @@ describe('module-scroll: Web scroll surface host', () => {
     expect(thumb.style.getPropertyValue('--proto-ui-scroll-thumb-size')).toBe('');
   });
 
+  it('keeps geometry observation attached across an update with the same targets', () => {
+    const resizeObserve = vi.fn<(target: Element) => void>();
+    const resizeDisconnect = vi.fn();
+    const mutationObserve = vi.fn<(target: Node, options: MutationObserverInit) => void>();
+    const mutationDisconnect = vi.fn();
+    vi.stubGlobal(
+      'ResizeObserver',
+      class {
+        observe = resizeObserve;
+        disconnect = resizeDisconnect;
+      }
+    );
+    vi.stubGlobal(
+      'MutationObserver',
+      class {
+        observe = mutationObserve;
+        disconnect = mutationDisconnect;
+      }
+    );
+
+    const target = document.createElement('div');
+    const first = document.createElement('div');
+    const second = document.createElement('div');
+    const track = document.createElement('div');
+    const replacementTrack = document.createElement('div');
+    const thumb = document.createElement('div');
+    const replacementThumb = document.createElement('div');
+    target.append(first);
+    track.append(thumb);
+    replacementTrack.append(replacementThumb);
+    document.body.append(target, track, replacementTrack);
+    const initial = { clientWidth: 100, scrollWidth: 100, clientHeight: 100, scrollHeight: 400 };
+    setMetrics(target, initial);
+    const onFacts = vi.fn<(facts: ScrollSurfaceSnapshot) => void>();
+    const connection = (trackTarget = track, thumbTarget = thumb, follow = false) => ({
+      config: {
+        axes: 'vertical' as const,
+        projection: 'composed' as const,
+        endFollow: follow
+          ? ({ mode: 'while-at-end', axis: 'vertical' } as const)
+          : ({ mode: 'off' } as const),
+      },
+      projection: 'composed' as const,
+      composedChrome: {
+        scope: {},
+        controls: [{ getAxis: () => 'vertical' as const, trackTarget, thumbTarget }],
+      },
+      onFacts,
+    });
+    const lease = createWebScrollSurfaceHost(target, {
+      moveGestureHost: createMoveHarness().host,
+    }).attach(connection());
+
+    try {
+      expect(resizeObserve.mock.calls.some(([element]) => element === first)).toBe(true);
+      resizeObserve.mockClear();
+      resizeDisconnect.mockClear();
+      mutationObserve.mockClear();
+      mutationDisconnect.mockClear();
+      onFacts.mockClear();
+
+      setMetrics(target, { ...initial, scrollHeight: 600 });
+      target.scrollTop = 100;
+      lease.update(connection());
+      expect(resizeDisconnect).not.toHaveBeenCalled();
+      expect(mutationDisconnect).not.toHaveBeenCalled();
+      expect(resizeObserve).not.toHaveBeenCalled();
+      expect(mutationObserve).not.toHaveBeenCalled();
+      expect(onFacts.mock.lastCall?.[0].vertical.position).toBeCloseTo(0.2);
+
+      first.replaceWith(second);
+      lease.update(connection());
+      expect(resizeDisconnect).toHaveBeenCalledTimes(1);
+      expect(mutationDisconnect).toHaveBeenCalledTimes(1);
+      expect(resizeObserve.mock.calls.some(([element]) => element === second)).toBe(true);
+      expect(resizeObserve.mock.calls.some(([element]) => element === first)).toBe(false);
+
+      lease.update(connection(replacementTrack, replacementThumb));
+      expect(resizeDisconnect).toHaveBeenCalledTimes(2);
+      expect(mutationDisconnect).toHaveBeenCalledTimes(2);
+      expect(resizeObserve.mock.calls.some(([element]) => element === replacementTrack)).toBe(true);
+      expect(mutationObserve.mock.calls.some(([node]) => node === replacementTrack)).toBe(true);
+
+      lease.update(connection(replacementTrack, replacementThumb, true));
+      expect(mutationDisconnect).toHaveBeenCalledTimes(3);
+      expect(
+        mutationObserve.mock.calls.some(
+          ([node, options]) => node === target && options.characterData
+        )
+      ).toBe(true);
+    } finally {
+      lease.dispose();
+    }
+  });
+
   it('reconciles every direct content resize target across insertion and replacement', async () => {
     const observed = new Set<Element>();
     let resizeCallback: ResizeObserverCallback | undefined;
