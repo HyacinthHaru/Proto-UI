@@ -1,0 +1,914 @@
+{
+  "source": "157319283b0de04743acf9a635e800be163b82dc",
+  "tree": "2ce6ca3530cceadee58068f825b862cc172f2819",
+  "parent": "aa8d3d381b8790c43d4473dad8b8a18921c66d04",
+  "signature": "G",
+  "htmlSHA256": "1f1ea2bb44cacb9e60dd1425cf91b512776e9ca86db1d09be1d175aa9f29cff7",
+  "scripts": {
+    "file": "PrototypePreviewer.astro_astro_type_script_index_0_lang.B0x4TkGA.js",
+    "originalSHA256": "324916009b78f61fdfba584207ca634403ecd11fdae4a4f521295056c4444b03",
+    "diagnosticSHA256": "733693a0055d0ecd249ddfbef5195f90b0239cebe73efd764c60feb933f62743"
+  },
+  "runnerOverlaySHA256": "8e3a10faa19bc38a9f994b4c6d47f4194da57e75c7dcd678e44062c108e50833",
+  "observerSHA256": "645c005494ff4d398fc0b1c8a701cbdea51f39e25d804229821c570254ec9c49",
+  "nativeLogSHA256": "87be90e4d2b49a1c2e1461f49d2595df69bde536f17ba93501d2acdf36d958e7",
+  "startupPredicateSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+  "startupPassed": false,
+  "postVerdictCollection": "rejected",
+  "exit": 1,
+  "nativeFailure": "Error: Test timed out in 150000ms.",
+  "samples": {
+    "[S4 removal-observer]": [
+      {
+        "receivedNodeMs": 6253.187417,
+        "nodePhase": "goto",
+        "callbacks": 1,
+        "addingOnly": 1,
+        "rootReads": 1268,
+        "wallMs": 0.09999990463256836,
+        "peakPending": 1268,
+        "timeOrigin": 1794887439604.6,
+        "pageMs": 5182.700000047684
+      },
+      {
+        "receivedNodeMs": 6292.468667,
+        "nodePhase": "startup-wait",
+        "callbacks": 2,
+        "addingOnly": 2,
+        "rootReads": 2536,
+        "wallMs": 0.09999990463256836,
+        "peakPending": 1268,
+        "timeOrigin": 1794887439604.6,
+        "pageMs": 5222.5
+      },
+      {
+        "receivedNodeMs": 6329.811958,
+        "nodePhase": "startup-wait",
+        "callbacks": 4,
+        "addingOnly": 3,
+        "rootReads": 5072,
+        "wallMs": 0.2999999523162842,
+        "peakPending": 1268,
+        "timeOrigin": 1794887439604.6,
+        "pageMs": 5259.800000190735
+      },
+      {
+        "receivedNodeMs": 6647.803125,
+        "nodePhase": "startup-wait",
+        "callbacks": 8,
+        "addingOnly": 5,
+        "rootReads": 10144,
+        "wallMs": 0.39999985694885254,
+        "peakPending": 1268,
+        "timeOrigin": 1794887439604.6,
+        "pageMs": 5577.700000047684
+      },
+      {
+        "receivedNodeMs": 7539.00875,
+        "nodePhase": "startup-wait",
+        "callbacks": 16,
+        "addingOnly": 9,
+        "rootReads": 20288,
+        "wallMs": 0.6999995708465576,
+        "peakPending": 1268,
+        "timeOrigin": 1794887439604.6,
+        "pageMs": 6469
+      },
+      {
+        "receivedNodeMs": 7579.852708,
+        "nodePhase": "startup-wait",
+        "callbacks": 32,
+        "addingOnly": 25,
+        "rootReads": 40576,
+        "wallMs": 0.8999998569488525,
+        "peakPending": 1268,
+        "timeOrigin": 1794887439604.6,
+        "pageMs": 6509.800000190735
+      },
+      {
+        "receivedNodeMs": 7708.339583,
+        "nodePhase": "startup-wait",
+        "callbacks": 64,
+        "addingOnly": 55,
+        "rootReads": 81152,
+        "wallMs": 2.5999999046325684,
+        "peakPending": 1268,
+        "timeOrigin": 1794887439604.6,
+        "pageMs": 6638.400000095367
+      },
+      {
+        "receivedNodeMs": 7949.805375,
+        "nodePhase": "startup-wait",
+        "callbacks": 128,
+        "addingOnly": 119,
+        "rootReads": 162304,
+        "wallMs": 3.8999991416931152,
+        "peakPending": 1268,
+        "timeOrigin": 1794887439604.6,
+        "pageMs": 6879.800000190735
+      },
+      {
+        "receivedNodeMs": 9320.758375,
+        "nodePhase": "startup-wait",
+        "callbacks": 256,
+        "addingOnly": 215,
+        "rootReads": 324608,
+        "wallMs": 5.299998998641968,
+        "peakPending": 1268,
+        "timeOrigin": 1794887439604.6,
+        "pageMs": 8250.600000143051
+      },
+      {
+        "receivedNodeMs": 14166.991542,
+        "nodePhase": "startup-wait",
+        "callbacks": 512,
+        "addingOnly": 352,
+        "rootReads": 649216,
+        "wallMs": 11.199999570846558,
+        "peakPending": 1268,
+        "timeOrigin": 1794887439604.6,
+        "pageMs": 13096.900000095367
+      },
+      {
+        "receivedNodeMs": 37283.455083,
+        "nodePhase": "startup-wait",
+        "callbacks": 1024,
+        "addingOnly": 544,
+        "rootReads": 1298432,
+        "wallMs": 22.19999933242798,
+        "peakPending": 1268,
+        "timeOrigin": 1794887439604.6,
+        "pageMs": 36213.10000014305
+      },
+      {
+        "receivedNodeMs": 89848.971583,
+        "nodePhase": "startup-wait",
+        "callbacks": 2048,
+        "addingOnly": 1416,
+        "rootReads": 2596864,
+        "wallMs": 41.599998474121094,
+        "peakPending": 1268,
+        "timeOrigin": 1794887439604.6,
+        "pageMs": 88776.30000019073
+      }
+    ],
+    "[S4 startup change]": [
+      {
+        "receivedNodeMs": 7531.772958,
+        "nodePhase": "startup-wait",
+        "timeOrigin": 1794887439604.6,
+        "pageMs": 6458.5,
+        "dateNow": 1794887446063,
+        "count": 1268,
+        "ready": false,
+        "firstMissing": {
+          "previewerId": "pp-hcebkjuax0f",
+          "index": 0,
+          "inited": "1",
+          "hostChildren": 0
+        },
+        "firstMissingOwner": {
+          "demoId": "demo-base-accordion",
+          "prototypeId": "",
+          "declaredRuntime": "wc",
+          "projectionMode": null,
+          "projectionState": null,
+          "mounting": null,
+          "hostTag": "DIV",
+          "hostOwner": "pp-hcebkjuax0f",
+          "startupPending": true,
+          "hostOwnInert": true,
+          "hostText": ""
+        }
+      },
+      {
+        "receivedNodeMs": 12941.14375,
+        "nodePhase": "startup-wait",
+        "timeOrigin": 1794887439604.6,
+        "pageMs": 11871.100000143051,
+        "dateNow": 1794887451475,
+        "count": 1268,
+        "ready": false,
+        "firstMissing": {
+          "previewerId": "pp-rklc46trfmd",
+          "index": 1,
+          "inited": "1",
+          "hostChildren": 0
+        },
+        "firstMissingOwner": {
+          "demoId": "demo-base-accordion",
+          "prototypeId": "",
+          "declaredRuntime": "react",
+          "projectionMode": null,
+          "projectionState": null,
+          "mounting": null,
+          "hostTag": "DIV",
+          "hostOwner": "pp-rklc46trfmd",
+          "startupPending": true,
+          "hostOwnInert": true,
+          "hostText": ""
+        }
+      }
+    ],
+    "[S4 mounted]": [
+      {
+        "receivedNodeMs": 7603.716625,
+        "nodePhase": "startup-wait",
+        "count": 1,
+        "timelines": {
+          "wc": 1,
+          "react": 0,
+          "vue": 0,
+          "vue2": 0
+        },
+        "pageMs": 6533.800000190735,
+        "timeOrigin": 1794887439604.6
+      },
+      {
+        "receivedNodeMs": 8071.314833,
+        "nodePhase": "startup-wait",
+        "count": 2,
+        "timelines": {
+          "wc": 2,
+          "react": 0,
+          "vue": 0,
+          "vue2": 0
+        },
+        "pageMs": 7001,
+        "timeOrigin": 1794887439604.6
+      },
+      {
+        "receivedNodeMs": 8307.43725,
+        "nodePhase": "startup-wait",
+        "count": 4,
+        "timelines": {
+          "wc": 4,
+          "react": 0,
+          "vue": 0,
+          "vue2": 0
+        },
+        "pageMs": 7237.300000190735,
+        "timeOrigin": 1794887439604.6
+      },
+      {
+        "receivedNodeMs": 8307.649292,
+        "nodePhase": "startup-wait",
+        "count": 8,
+        "timelines": {
+          "wc": 8,
+          "react": 0,
+          "vue": 0,
+          "vue2": 0
+        },
+        "pageMs": 7237.800000190735,
+        "timeOrigin": 1794887439604.6
+      },
+      {
+        "receivedNodeMs": 8618.500917,
+        "nodePhase": "startup-wait",
+        "count": 16,
+        "timelines": {
+          "wc": 16,
+          "react": 0,
+          "vue": 0,
+          "vue2": 0
+        },
+        "pageMs": 7548.5,
+        "timeOrigin": 1794887439604.6
+      },
+      {
+        "receivedNodeMs": 9930.482292,
+        "nodePhase": "startup-wait",
+        "count": 32,
+        "timelines": {
+          "wc": 32,
+          "react": 0,
+          "vue": 0,
+          "vue2": 0
+        },
+        "pageMs": 8860.600000143051,
+        "timeOrigin": 1794887439604.6
+      },
+      {
+        "receivedNodeMs": 12328.78925,
+        "nodePhase": "startup-wait",
+        "count": 64,
+        "timelines": {
+          "wc": 64,
+          "react": 0,
+          "vue": 0,
+          "vue2": 0
+        },
+        "pageMs": 11258.700000047684,
+        "timeOrigin": 1794887439604.6
+      },
+      {
+        "receivedNodeMs": 21279.7535,
+        "nodePhase": "startup-wait",
+        "count": 128,
+        "timelines": {
+          "wc": 128,
+          "react": 0,
+          "vue": 0,
+          "vue2": 0
+        },
+        "pageMs": 20209.60000014305,
+        "timeOrigin": 1794887439604.6
+      },
+      {
+        "receivedNodeMs": 47898.889958,
+        "nodePhase": "startup-wait",
+        "count": 256,
+        "timelines": {
+          "wc": 256,
+          "react": 0,
+          "vue": 0,
+          "vue2": 0
+        },
+        "pageMs": 46828.800000190735,
+        "timeOrigin": 1794887439604.6
+      }
+    ]
+  },
+  "debugger": [
+    {
+      "stage": "requested",
+      "phase": "startup-wait",
+      "elapsedMs": 22007.855,
+      "nodeTimeOrigin": 1794887438534.969,
+      "requested": 22000
+    },
+    {
+      "stage": "acknowledged",
+      "phase": "startup-wait",
+      "elapsedMs": 22017.576,
+      "nodeTimeOrigin": 1794887438534.969,
+      "offset": 22000
+    },
+    {
+      "stage": "paused",
+      "phase": "startup-wait",
+      "elapsedMs": 22128.443,
+      "nodeTimeOrigin": 1794887438534.969,
+      "requested": 22000,
+      "reason": "other",
+      "frames": [
+        {
+          "name": "re",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 387979
+        },
+        {
+          "name": "Q",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 390693
+        },
+        {
+          "name": "update",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 397114
+        },
+        {
+          "name": "update",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 399412
+        },
+        {
+          "name": "n",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 365070
+        },
+        {
+          "name": "",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 102280
+        },
+        {
+          "name": "",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 426435
+        },
+        {
+          "name": "runInScope",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 425231
+        },
+        {
+          "name": "runNoSync",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 424914
+        },
+        {
+          "name": "",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 426415
+        },
+        {
+          "name": "notifyTargetChange",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 102170
+        },
+        {
+          "name": "syncStructure",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 93314
+        },
+        {
+          "name": "_connectOwner",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 17,
+          "column": 33919
+        },
+        {
+          "name": "connectedCallback",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 17,
+          "column": 33392
+        },
+        {
+          "name": "",
+          "path": "/_astro/runtime-preview-surface.BbESJilB.js",
+          "line": 0,
+          "column": 1688
+        },
+        {
+          "name": "O",
+          "path": "/_astro/native-content-lease.BkYU4WVV.js",
+          "line": 0,
+          "column": 892
+        },
+        {
+          "name": "P",
+          "path": "/_astro/runtime-preview-surface.BbESJilB.js",
+          "line": 0,
+          "column": 1677
+        },
+        {
+          "name": "publish",
+          "path": "/_astro/runtime-preview-surface.BbESJilB.js",
+          "line": 0,
+          "column": 3815
+        },
+        {
+          "name": "B",
+          "path": "/_astro/projection-scope.C38VOVYm.js",
+          "line": 0,
+          "column": 4834
+        }
+      ]
+    },
+    {
+      "stage": "resumed",
+      "phase": "startup-wait",
+      "elapsedMs": 22136.82,
+      "nodeTimeOrigin": 1794887438534.969,
+      "requested": 22000
+    },
+    {
+      "stage": "requested",
+      "phase": "startup-wait",
+      "elapsedMs": 38008.267,
+      "nodeTimeOrigin": 1794887438534.969,
+      "requested": 38000
+    },
+    {
+      "stage": "acknowledged",
+      "phase": "startup-wait",
+      "elapsedMs": 38009.384,
+      "nodeTimeOrigin": 1794887438534.969,
+      "offset": 38000
+    },
+    {
+      "stage": "paused",
+      "phase": "startup-wait",
+      "elapsedMs": 38015.299,
+      "nodeTimeOrigin": 1794887438534.969,
+      "requested": 38000,
+      "reason": "other",
+      "frames": [
+        {
+          "name": "sw",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 183791
+        },
+        {
+          "name": "ne",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 178066
+        },
+        {
+          "name": "$",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 179607
+        },
+        {
+          "name": "projectSnapshot",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 163069
+        },
+        {
+          "name": "applyProjection",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 162765
+        },
+        {
+          "name": "commitRelation",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 159291
+        },
+        {
+          "name": "setRelation",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 154469
+        },
+        {
+          "name": "",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 4,
+          "column": 99160
+        },
+        {
+          "name": "n.pendingProjection",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 4,
+          "column": 97148
+        },
+        {
+          "name": "project",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 4,
+          "column": 97321
+        },
+        {
+          "name": "applyCell",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 4,
+          "column": 98621
+        },
+        {
+          "name": "recompute",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 4,
+          "column": 97054
+        },
+        {
+          "name": "notifyRoot",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 4,
+          "column": 94996
+        },
+        {
+          "name": "",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 4,
+          "column": 93977
+        },
+        {
+          "name": "",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 102280
+        },
+        {
+          "name": "",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 426435
+        },
+        {
+          "name": "runInScope",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 425231
+        },
+        {
+          "name": "runNoSync",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 424914
+        },
+        {
+          "name": "",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 426415
+        },
+        {
+          "name": "notifyTargetChange",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 102170
+        },
+        {
+          "name": "syncStructure",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 93314
+        },
+        {
+          "name": "onProtoPhase",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 96857
+        },
+        {
+          "name": "onProtoPhase",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 110513
+        },
+        {
+          "name": "setProtoPhase",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 423461
+        },
+        {
+          "name": "j",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 430767
+        },
+        {
+          "name": "",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 430903
+        },
+        {
+          "name": "done",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 429053
+        },
+        {
+          "name": "commit",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 17,
+          "column": 22124
+        },
+        {
+          "name": "N",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 428828
+        },
+        {
+          "name": "P",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 430674
+        },
+        {
+          "name": "mount",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 434224
+        },
+        {
+          "name": "attachView",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 437957
+        },
+        {
+          "name": "de",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 17,
+          "column": 42451
+        },
+        {
+          "name": "_connectOwner",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 17,
+          "column": 45688
+        },
+        {
+          "name": "connectedCallback",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 17,
+          "column": 33392
+        },
+        {
+          "name": "Re",
+          "path": "/_astro/demo-renderer.CaEa_gz6.js",
+          "line": 8,
+          "column": 27056
+        },
+        {
+          "name": "Re",
+          "path": "/_astro/demo-renderer.CaEa_gz6.js",
+          "line": 8,
+          "column": 26676
+        },
+        {
+          "name": "Re",
+          "path": "/_astro/demo-renderer.CaEa_gz6.js",
+          "line": 8,
+          "column": 26676
+        },
+        {
+          "name": "Tt",
+          "path": "/_astro/demo-renderer.CaEa_gz6.js",
+          "line": 8,
+          "column": 28802
+        },
+        {
+          "name": "Qt",
+          "path": "/_astro/demo-renderer.CaEa_gz6.js",
+          "line": 8,
+          "column": 49057
+        }
+      ]
+    },
+    {
+      "stage": "resumed",
+      "phase": "startup-wait",
+      "elapsedMs": 38049.678,
+      "nodeTimeOrigin": 1794887438534.969,
+      "requested": 38000
+    },
+    {
+      "stage": "requested",
+      "phase": "startup-wait",
+      "elapsedMs": 54008.248,
+      "nodeTimeOrigin": 1794887438534.969,
+      "requested": 54000
+    },
+    {
+      "stage": "acknowledged",
+      "phase": "startup-wait",
+      "elapsedMs": 54009.392,
+      "nodeTimeOrigin": 1794887438534.969,
+      "offset": 54000
+    },
+    {
+      "stage": "paused",
+      "phase": "startup-wait",
+      "elapsedMs": 54189.97,
+      "nodeTimeOrigin": 1794887438534.969,
+      "requested": 54000,
+      "reason": "other",
+      "frames": [
+        {
+          "name": "runInScope",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 424966
+        },
+        {
+          "name": "runNoSync",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 424914
+        },
+        {
+          "name": "",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 426415
+        },
+        {
+          "name": "notifyTargetChange",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 102170
+        },
+        {
+          "name": "onCapsEpoch",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 97795
+        },
+        {
+          "name": "",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 4,
+          "column": 27087
+        },
+        {
+          "name": "bump",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 4,
+          "column": 26898
+        },
+        {
+          "name": "attach",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 4,
+          "column": 26656
+        },
+        {
+          "name": "attach",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 423327
+        },
+        {
+          "name": "attach",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 422361
+        },
+        {
+          "name": "o",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 4,
+          "column": 106914
+        },
+        {
+          "name": "replace",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 4,
+          "column": 107063
+        },
+        {
+          "name": "attachView",
+          "path": "/_astro/site-shadcn-controls.FELPplmI.js",
+          "line": 8,
+          "column": 437854
+        },
+        {
+          "name": "Ee",
+          "path": "/_astro/index.Cpoilo-8.js",
+          "line": 0,
+          "column": 20260
+        },
+        {
+          "name": "",
+          "path": "/_astro/index.Cpoilo-8.js",
+          "line": 0,
+          "column": 20601
+        },
+        {
+          "name": "",
+          "path": "/_astro/vue.runtime.esm-bundler.CyM3F5Ti.js",
+          "line": 29,
+          "column": 6606
+        },
+        {
+          "name": "Gt",
+          "path": "/_astro/vue.runtime.esm-bundler.CyM3F5Ti.js",
+          "line": 15,
+          "column": 1937
+        },
+        {
+          "name": "Ue",
+          "path": "/_astro/vue.runtime.esm-bundler.CyM3F5Ti.js",
+          "line": 15,
+          "column": 2007
+        },
+        {
+          "name": "As.t.__weh.t.__weh",
+          "path": "/_astro/vue.runtime.esm-bundler.CyM3F5Ti.js",
+          "line": 29,
+          "column": 6486
+        },
+        {
+          "name": "Xn",
+          "path": "/_astro/vue.runtime.esm-bundler.CyM3F5Ti.js",
+          "line": 15,
+          "column": 3514
+        },
+        {
+          "name": "co",
+          "path": "/_astro/vue.runtime.esm-bundler.CyM3F5Ti.js",
+          "line": 15,
+          "column": 3823
+        },
+        {
+          "name": "co",
+          "path": "/_astro/vue.runtime.esm-bundler.CyM3F5Ti.js",
+          "line": 15,
+          "column": 3860
+        }
+      ]
+    },
+    {
+      "stage": "resumed",
+      "phase": "startup-wait",
+      "elapsedMs": 54238.284,
+      "nodeTimeOrigin": 1794887438534.969,
+      "requested": 54000
+    }
+  ]
+}

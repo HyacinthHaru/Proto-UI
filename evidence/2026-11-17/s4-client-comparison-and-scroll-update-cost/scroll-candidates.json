@@ -1,0 +1,37 @@
+{
+  "geometry": {
+    "head": "58e318bba016da62f9430cae46547f3c8f3a0ea2",
+    "tree": "6d8a7aace13fc881e929e5d3927fc46aa5936587",
+    "parent": "1943f5defbb22813abeb66cf6ee5e538d526d273",
+    "signature": "G",
+    "inputs": [
+      "fe94855e708d0457d98be7575f399ff4df277c752d5d0cee006ddc1ac4ba1671  packages/modules/scroll/src/web/create-web-scroll-host.ts",
+      "5eb7430e89af0c9a799d929b58aea9a283006688a3825be73411f631a61f502b  packages/modules/scroll/test/end-follow.test.ts"
+    ],
+    "baselineFailed": 1,
+    "redLogSHA256": "e37030357b03c5a72932a609a78e9f4ea84c2b77f657f2859d83cdbdaa309055",
+    "moduleTestsPassed": 215,
+    "moduleLogSHA256": "6c724ed26bb3e909c431e3ae81012f0d182da27036dccc1be64699da2b563ad2",
+    "chromeTestsPassed": 6,
+    "nativeLogSHA256": "4abe0d53e0e4106efe44d627f01c0ef620af7582f255f489222f0e35bb79eced",
+    "workspaceTypesExit": 0
+  },
+  "policy": {
+    "head": "7497a49047728a6668b154b887c6a8421ece763f",
+    "tree": "2d5007f16692523812bca324829206da3c429909",
+    "parent": "58e318bba016da62f9430cae46547f3c8f3a0ea2",
+    "signature": "G",
+    "inputs": [
+      "a1650bab307f0cf2c76ded553c3b3a08103e80346d360a14eb2ab1d4dcdd2d2b  packages/modules/scroll/src/web/create-web-scroll-host.ts",
+      "198c194c885480af2b4478c3d19ee0e756c970d2c769b87da082d17af0d4dfff  packages/modules/scroll/src/web/scroll-policy-lease.ts",
+      "8cef5173957f937e2971696e700d7221e27855230e581c8d5853b2648ce85f0c  packages/modules/scroll/test/web-scroll-host.test.ts"
+    ],
+    "baselineFailed": 2,
+    "redLogSHA256": "64d39388a809f2e831b39d95eb23e66efe04067fb81e30c715a609f9e5deb3d7",
+    "moduleTestsPassed": 217,
+    "moduleLogSHA256": "402a1db8193bf483017d5e5ab1adf5cab6fbe565b744012a579d3f43be94f1ef",
+    "chromeTestsPassed": 8,
+    "nativeLogSHA256": "fc240090a3f95a4da4b7ef96b18716146aa50c9f2977ddfd9b539fe78d24c1e9",
+    "workspaceTypesExit": 0
+  }
+}

@@ -1,0 +1,333 @@
+{
+  "current": {
+    "head": "aa8d3d381b8790c43d4473dad8b8a18921c66d04",
+    "tree": "a1567f693282d95b4c39ba3cd7c1ed41a20a0dda",
+    "parent": "d2e176cf8ea1748e6e094923f52ae8f9fd7deddf",
+    "signature": "G",
+    "changedPaths": [
+      "apps/www/src/components/PrototypePreviewer/demo-renderer.expose-events.test.ts",
+      "packages/adapters/base/src/host/exposes.ts",
+      "packages/adapters/base/test/contract/expose-record.v0.contract.test.ts",
+      "packages/adapters/web-component/src/runtime/session.ts",
+      "packages/adapters/web-component/src/shadow-split-effects.ts",
+      "packages/adapters/web-component/test/shadow-closeout.browser.test.ts",
+      "packages/cli/src/services/hook-source-summary.ts",
+      "packages/cli/src/services/prototype-style-tokens.ts",
+      "packages/cli/test/shadow-template-style.test.ts"
+    ],
+    "sourceTypes": 0,
+    "manifests": 0,
+    "build": {
+      "packages": 47,
+      "logSHA256": "e873b592c48967edc24909484dca597097725e6725efe3945a167310d811910a"
+    },
+    "environment": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+    "localAdmissionOverlaySHA256": "ae44b882e227090c5a1e09b4838c5cee97d9e01618c51209cc2ed0ac5df39a3f",
+    "nativeExit": 1,
+    "cases": [
+      {
+        "locale": "zh-cn",
+        "status": "failed",
+        "runMs": 150533.5055,
+        "failure": "Error: Test timed out in 150000ms.",
+        "originalPredicateSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+        "countInBuiltHTML": 1268,
+        "htmlSHA256": "03f871082af517f142daa597d4cad71465078ee76339132690c996c118c62e56",
+        "pagesErrors": 0,
+        "consoleErrors": 0,
+        "startupPassed": false,
+        "postVerdictCollection": "rejected",
+        "lastObservedPredicate": null,
+        "streamedSamples": [
+          {
+            "receivedNodeMs": 12815.389417,
+            "timeOrigin": 1794886452693.7,
+            "pageMs": 11611.399999856949,
+            "dateNow": 1794886464305,
+            "count": 1268,
+            "ready": false,
+            "firstMissing": {
+              "previewerId": "pp-aiy59b8mn84",
+              "index": 0,
+              "inited": "1",
+              "hostChildren": 0
+            },
+            "firstMissingOwner": {
+              "demoId": "demo-base-accordion",
+              "prototypeId": "",
+              "declaredRuntime": "wc",
+              "projectionMode": null,
+              "projectionState": null,
+              "mounting": null,
+              "hostTag": "DIV",
+              "hostOwner": "pp-aiy59b8mn84",
+              "startupPending": true,
+              "hostOwnInert": true,
+              "hostText": ""
+            }
+          },
+          {
+            "receivedNodeMs": 26728.541667,
+            "timeOrigin": 1794886452693.7,
+            "pageMs": 25524.200000047684,
+            "dateNow": 1794886478217,
+            "count": 1268,
+            "ready": false,
+            "firstMissing": {
+              "previewerId": "pp-fpe4kqvugz",
+              "index": 1,
+              "inited": "1",
+              "hostChildren": 0
+            },
+            "firstMissingOwner": {
+              "demoId": "demo-base-accordion",
+              "prototypeId": "",
+              "declaredRuntime": "react",
+              "projectionMode": null,
+              "projectionState": null,
+              "mounting": null,
+              "hostTag": "DIV",
+              "hostOwner": "pp-fpe4kqvugz",
+              "startupPending": true,
+              "hostOwnInert": true,
+              "hostText": ""
+            }
+          }
+        ]
+      },
+      {
+        "locale": "en",
+        "status": "failed",
+        "runMs": 150525.073583,
+        "failure": "Error: Test timed out in 150000ms.",
+        "originalPredicateSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+        "countInBuiltHTML": 1268,
+        "htmlSHA256": "3e779378b4d40a6feba45de9f72c2b1f236851f8d30307d1e6bc6cf600f2ea36",
+        "pagesErrors": 0,
+        "consoleErrors": 0,
+        "startupPassed": false,
+        "postVerdictCollection": "rejected",
+        "lastObservedPredicate": null,
+        "streamedSamples": [
+          {
+            "receivedNodeMs": 163362.536042,
+            "timeOrigin": 1794886603241.2,
+            "pageMs": 11611.599999904633,
+            "dateNow": 1794886614852,
+            "count": 1268,
+            "ready": false,
+            "firstMissing": {
+              "previewerId": "pp-t6o6qoir59i",
+              "index": 0,
+              "inited": "1",
+              "hostChildren": 0
+            },
+            "firstMissingOwner": {
+              "demoId": "demo-base-accordion",
+              "prototypeId": "",
+              "declaredRuntime": "wc",
+              "projectionMode": null,
+              "projectionState": null,
+              "mounting": null,
+              "hostTag": "DIV",
+              "hostOwner": "pp-t6o6qoir59i",
+              "startupPending": true,
+              "hostOwnInert": true,
+              "hostText": ""
+            }
+          },
+          {
+            "receivedNodeMs": 178361.708834,
+            "timeOrigin": 1794886603241.2,
+            "pageMs": 26610.599999904633,
+            "dateNow": 1794886629851,
+            "count": 1268,
+            "ready": false,
+            "firstMissing": {
+              "previewerId": "pp-vpgkvjgem0e",
+              "index": 1,
+              "inited": "1",
+              "hostChildren": 0
+            },
+            "firstMissingOwner": {
+              "demoId": "demo-base-accordion",
+              "prototypeId": "",
+              "declaredRuntime": "react",
+              "projectionMode": null,
+              "projectionState": null,
+              "mounting": null,
+              "hostTag": "DIV",
+              "hostOwner": "pp-vpgkvjgem0e",
+              "startupPending": true,
+              "hostOwnInert": true,
+              "hostText": ""
+            }
+          }
+        ]
+      }
+    ],
+    "nativeLogSHA256": "b107c20450657e17458701228ccb0cee00709e94756f87d23db869dbaaff0728"
+  },
+  "sharedClient": {
+    "head": "157319283b0de04743acf9a635e800be163b82dc",
+    "tree": "2ce6ca3530cceadee58068f825b862cc172f2819",
+    "parent": "aa8d3d381b8790c43d4473dad8b8a18921c66d04",
+    "signature": "G",
+    "changedPaths": [
+      "apps/www/src/components/PrototypePreviewer/previewer-bootstrap.test.ts",
+      "apps/www/src/components/PrototypePreviewer/previewer-bootstrap.ts"
+    ],
+    "sourceTypes": 0,
+    "manifests": 0,
+    "build": {
+      "packages": 47,
+      "logSHA256": "a5fbde08e7c62560ddb5b8e8b9a4e4517ba52ad31caecda3d4958ef771cfcd00"
+    },
+    "environment": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+    "localAdmissionOverlaySHA256": "ae44b882e227090c5a1e09b4838c5cee97d9e01618c51209cc2ed0ac5df39a3f",
+    "nativeExit": 1,
+    "cases": [
+      {
+        "locale": "zh-cn",
+        "status": "failed",
+        "runMs": 150538.729541,
+        "failure": "Error: Test timed out in 150000ms.",
+        "originalPredicateSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+        "countInBuiltHTML": 1268,
+        "htmlSHA256": "1f1ea2bb44cacb9e60dd1425cf91b512776e9ca86db1d09be1d175aa9f29cff7",
+        "pagesErrors": 0,
+        "consoleErrors": 0,
+        "startupPassed": false,
+        "postVerdictCollection": "rejected",
+        "lastObservedPredicate": null,
+        "streamedSamples": [
+          {
+            "receivedNodeMs": 7733.03925,
+            "timeOrigin": 1794887129920.5,
+            "pageMs": 6501,
+            "dateNow": 1794887136421,
+            "count": 1268,
+            "ready": false,
+            "firstMissing": {
+              "previewerId": "pp-hcebkjuax0f",
+              "index": 0,
+              "inited": "1",
+              "hostChildren": 0
+            },
+            "firstMissingOwner": {
+              "demoId": "demo-base-accordion",
+              "prototypeId": "",
+              "declaredRuntime": "wc",
+              "projectionMode": null,
+              "projectionState": null,
+              "mounting": null,
+              "hostTag": "DIV",
+              "hostOwner": "pp-hcebkjuax0f",
+              "startupPending": true,
+              "hostOwnInert": true,
+              "hostText": ""
+            }
+          },
+          {
+            "receivedNodeMs": 12537.511625,
+            "timeOrigin": 1794887129920.5,
+            "pageMs": 11306,
+            "dateNow": 1794887141226,
+            "count": 1268,
+            "ready": false,
+            "firstMissing": {
+              "previewerId": "pp-rklc46trfmd",
+              "index": 1,
+              "inited": "1",
+              "hostChildren": 0
+            },
+            "firstMissingOwner": {
+              "demoId": "demo-base-accordion",
+              "prototypeId": "",
+              "declaredRuntime": "react",
+              "projectionMode": null,
+              "projectionState": null,
+              "mounting": null,
+              "hostTag": "DIV",
+              "hostOwner": "pp-rklc46trfmd",
+              "startupPending": true,
+              "hostOwnInert": true,
+              "hostText": ""
+            }
+          }
+        ]
+      },
+      {
+        "locale": "en",
+        "status": "failed",
+        "runMs": 150527.62791699998,
+        "failure": "Error: Test timed out in 150000ms.",
+        "originalPredicateSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+        "countInBuiltHTML": 1268,
+        "htmlSHA256": "e93f53f14f8ae22430bb2c83f5f36e9a0c9820f4d2a55b12d8d707bf58eff82c",
+        "pagesErrors": 0,
+        "consoleErrors": 0,
+        "startupPassed": false,
+        "postVerdictCollection": "rejected",
+        "lastObservedPredicate": null,
+        "streamedSamples": [
+          {
+            "receivedNodeMs": 158311.923417,
+            "timeOrigin": 1794887280500.4,
+            "pageMs": 6500.199999809265,
+            "dateNow": 1794887287000,
+            "count": 1268,
+            "ready": false,
+            "firstMissing": {
+              "previewerId": "pp-xkcgel4ldt8",
+              "index": 0,
+              "inited": "1",
+              "hostChildren": 0
+            },
+            "firstMissingOwner": {
+              "demoId": "demo-base-accordion",
+              "prototypeId": "",
+              "declaredRuntime": "wc",
+              "projectionMode": null,
+              "projectionState": null,
+              "mounting": null,
+              "hostTag": "DIV",
+              "hostOwner": "pp-xkcgel4ldt8",
+              "startupPending": true,
+              "hostOwnInert": true,
+              "hostText": ""
+            }
+          },
+          {
+            "receivedNodeMs": 162808.867375,
+            "timeOrigin": 1794887280500.4,
+            "pageMs": 10997.399999856949,
+            "dateNow": 1794887291497,
+            "count": 1268,
+            "ready": false,
+            "firstMissing": {
+              "previewerId": "pp-p29u8ubj06",
+              "index": 1,
+              "inited": "1",
+              "hostChildren": 0
+            },
+            "firstMissingOwner": {
+              "demoId": "demo-base-accordion",
+              "prototypeId": "",
+              "declaredRuntime": "react",
+              "projectionMode": null,
+              "projectionState": null,
+              "mounting": null,
+              "hostTag": "DIV",
+              "hostOwner": "pp-p29u8ubj06",
+              "startupPending": true,
+              "hostOwnInert": true,
+              "hostText": ""
+            }
+          }
+        ]
+      }
+    ],
+    "nativeLogSHA256": "f3c4ab368518e7206680c5ae865df1425d96126f8bf71a435762f7c4e1037be9"
+  }
+}
