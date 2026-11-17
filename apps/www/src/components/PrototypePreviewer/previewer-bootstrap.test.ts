@@ -95,6 +95,61 @@ describe('RuntimeBox lazy bootstrap lifetime', () => {
     expect(element.dataset.mounting).toBeUndefined();
   });
 
+  it('shares a pending eager client load only within one page generation', async () => {
+    const first = root();
+    const second = root();
+    first.dataset.lazy = 'false';
+    second.dataset.lazy = 'false';
+    const initPreviewer = vi.fn();
+    let resolve!: (client: { initPreviewer: typeof initPreviewer }) => void;
+    const imported = new Promise<{ initPreviewer: typeof initPreviewer }>((done) => {
+      resolve = done;
+    });
+    const load = vi.fn(async () => ({ initPreviewer })).mockImplementationOnce(() => imported);
+    dispose = initPreviewerBootstrap(document, load);
+    document.dispatchEvent(new Event('astro:page-load'));
+    expect(load).toHaveBeenCalledTimes(1);
+    document.dispatchEvent(new Event('astro:before-swap'));
+    first.remove();
+    second.remove();
+    const later = root();
+    later.dataset.lazy = 'false';
+    document.dispatchEvent(new Event('astro:page-load'));
+    await flush();
+    expect(load).toHaveBeenCalledTimes(2);
+    expect(initPreviewer).toHaveBeenCalledTimes(1);
+    expect(initPreviewer.mock.calls[0]![0].root).toBe(later);
+    resolve({ initPreviewer });
+    await flush();
+    expect(initPreviewer).toHaveBeenCalledTimes(1);
+  });
+
+  it('shares a rejecting client load and retries for a later eager owner', async () => {
+    root().dataset.lazy = 'false';
+    root().dataset.lazy = 'false';
+    const initPreviewer = vi.fn();
+    const load = vi
+      .fn(async () => ({ initPreviewer }))
+      .mockRejectedValueOnce(new Error('preview client unavailable'));
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+    try {
+      dispose = initPreviewerBootstrap(document, load);
+      document.dispatchEvent(new Event('astro:page-load'));
+      await flush();
+      expect(load).toHaveBeenCalledTimes(1);
+      expect(initPreviewer).not.toHaveBeenCalled();
+      const later = root();
+      later.dataset.lazy = 'false';
+      document.dispatchEvent(new Event('astro:page-load'));
+      await flush();
+      expect(load).toHaveBeenCalledTimes(2);
+      expect(initPreviewer).toHaveBeenCalledTimes(1);
+      expect(initPreviewer.mock.calls[0]![0].root).toBe(later);
+    } finally {
+      log.mockRestore();
+    }
+  });
+
   it('disconnects a never-visible removed card and calls a mounted owner cleanup only once', async () => {
     const element = root();
     const destroy = vi.fn();

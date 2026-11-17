@@ -19,6 +19,15 @@ export function initPreviewerBootstrap(
   if (!view) return () => {};
   const pending = new Map<PreviewerRoot, PendingPreview>();
   let disposed = false;
+  let clientLoad: ReturnType<typeof loadClient> | undefined;
+  const acquireClient = () => {
+    if (clientLoad) return clientLoad;
+    const loading = loadClient().finally(() => {
+      if (clientLoad === loading) clientLoad = undefined;
+    });
+    clientLoad = loading;
+    return loading;
+  };
   const release = (root: PreviewerRoot) => {
     const entry = pending.get(root);
     if (!entry) return;
@@ -52,7 +61,7 @@ export function initPreviewerBootstrap(
       return;
     root.dataset.mounting = '1';
     try {
-      const { initPreviewer } = await loadClient();
+      const { initPreviewer } = await acquireClient();
       if (
         disposed ||
         !entry.active ||
@@ -130,6 +139,7 @@ export function initPreviewerBootstrap(
     for (const root of pending.keys()) void mount(root);
   });
   const clear = () => {
+    clientLoad = undefined;
     visibility.disconnect();
     for (const root of pending.keys()) release(root);
   };
