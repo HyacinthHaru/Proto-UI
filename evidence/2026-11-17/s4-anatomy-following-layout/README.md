@@ -1,6 +1,6 @@
 # Coalesce idle following layout refreshes
 
-Signed product candidate `0774aa5009d62f20f3770e8fff3c6cecdc0371e9` includes `5c8229e198c7b6a17eb4ae48856462b4a3d6628` and its rejected-reveal correction. A following Web scroll lease can share a layout sample for matching Anatomy targets with the same policy, projection, scope and empty chrome while no reader input is active. Recognized departure keys and wheel input, contact starts, explicit moves, and reveals resolve queued follow layout before using it. After publishing facts, the input path rechecks its scope and policy. Rejecting a stale reveal leaves otherwise valid queued layout intact.
+Signed product candidate `0774aa5009d62f20f3770e8fff3c6cecdc0371e9` includes `5c8229e198c7b0c270dd9d394703d7aee480fb6c` and its rejected-reveal correction. A following Web scroll lease can share a layout sample for matching Anatomy targets with the same policy, projection, scope and empty chrome while no reader input is active. Recognized departure keys and wheel input, contact starts, explicit moves, and reveals resolve queued follow layout before using it. After publishing facts, the input path rechecks its scope and policy. Rejecting a stale reveal leaves otherwise valid queued layout intact.
 
 ## Matrix measurements
 
