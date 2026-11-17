@@ -1,0 +1,922 @@
+{
+  "source": {
+    "head": "5a6e9755bd346ad4cd8a1667cb7097db90b7e277",
+    "tree": "f50db5d5a908379e0aa185c5ff3944f839ff6701",
+    "parent": "4d4298fdaa53ee57ecb21828044e53754a03fbbb",
+    "signature": "G",
+    "inputs": [
+      "90e16956540aaa9b67455a518eca5340cfd01e98e1a5ea03128836d2ed7fb303  packages/modules/scroll/src/web/create-web-scroll-host.ts",
+      "65f41285d554b3c7111dd6f9e7a169adcdfb9caa65f8fe1e6b8a6f1c56a2a48a  packages/modules/scroll/test/web-scroll-host.test.ts"
+    ]
+  },
+  "environment": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+  "probes": {
+    "scope": "Independent original Chinese guarded cases with checked product bytes and diagnostic overlays. Sampled CSSOM timings are durations for recorded API calls.",
+    "sampledLateReads": {
+      "head": "4d4298fdaa53ee57ecb21828044e53754a03fbbb",
+      "asset": {
+        "asset": "PrototypePreviewer.astro_astro_type_script_index_0_lang.ByglJ5Br.js",
+        "source": "ad57290649a7021fc6cd65307fe25f57765b060ddf820f10136e3f68a2d27fcd",
+        "instrumented": "823b5bfe2799c2ff124941591558387cf45f3db7f44f7207cf397f66df6038c3"
+      },
+      "categories": [
+        {
+          "api": "clientHeight",
+          "arg": null,
+          "site": "site-shadcn-controls",
+          "samples": 47,
+          "sumMs": 1946.2
+        },
+        {
+          "api": "css.getPropertyValue",
+          "arg": "--pui-radius",
+          "site": "prepareCommit",
+          "samples": 51,
+          "sumMs": 1836.2
+        },
+        {
+          "api": "css.getPropertyValue",
+          "arg": "display",
+          "site": " at Th ",
+          "samples": 30,
+          "sumMs": 1148.8
+        },
+        {
+          "api": "getBoundingClientRect",
+          "arg": null,
+          "site": "other",
+          "samples": 16,
+          "sumMs": 673.2
+        },
+        {
+          "api": "getBoundingClientRect",
+          "arg": null,
+          "site": "demo-renderer",
+          "samples": 4,
+          "sumMs": 182.8
+        },
+        {
+          "api": "css.getPropertyValue",
+          "arg": "--pui-radius",
+          "site": "projection-theme",
+          "samples": 3,
+          "sumMs": 113.7
+        },
+        {
+          "api": "getBoundingClientRect",
+          "arg": null,
+          "site": "sink.",
+          "samples": 1,
+          "sumMs": 33.5
+        }
+      ],
+      "logSha256": "76bd9a17c5cc8de6254880f834400299cb14e179f49b1d4df0c1be42af04ba51",
+      "sampleCount": 152
+    },
+    "plannedThumbWrites": {
+      "head": "4d4298fdaa53ee57ecb21828044e53754a03fbbb",
+      "nativeExit": 1,
+      "asset": {
+        "asset": "site-shadcn-controls.CBp0gmjU.js",
+        "source": "c78a46a9e79c3c5ca4b73f40877cfce6fc11ba2eea56cfbf9eec5b283985a961",
+        "instrumented": "78e628a1686c20299a4d646de649b397e239ea9ae792e023e10f12b4a028eeac"
+      },
+      "logSha256": "9be8924cd04d705b3aeae4aad77ff8ee33ba439e16ff8f6344c247a53c55948c",
+      "rows": [
+        {
+          "projection": 1,
+          "matching": {
+            "width": 1
+          },
+          "changed": {
+            "--proto-ui-scroll-thumb-size": 1,
+            "--proto-ui-scroll-thumb-offset": 1,
+            "height": 1,
+            "transform": 1
+          },
+          "targets": 1,
+          "pageMs": 46363.200000047684
+        },
+        {
+          "projection": 2,
+          "matching": {
+            "width": 2,
+            "--proto-ui-scroll-thumb-size": 1,
+            "--proto-ui-scroll-thumb-offset": 1,
+            "height": 1,
+            "transform": 1
+          },
+          "changed": {
+            "--proto-ui-scroll-thumb-size": 1,
+            "--proto-ui-scroll-thumb-offset": 1,
+            "height": 1,
+            "transform": 1
+          },
+          "targets": 1,
+          "pageMs": 46365
+        },
+        {
+          "projection": 3,
+          "matching": {
+            "width": 3,
+            "--proto-ui-scroll-thumb-size": 2,
+            "--proto-ui-scroll-thumb-offset": 2,
+            "height": 2,
+            "transform": 2
+          },
+          "changed": {
+            "--proto-ui-scroll-thumb-size": 1,
+            "--proto-ui-scroll-thumb-offset": 1,
+            "height": 1,
+            "transform": 1
+          },
+          "targets": 1,
+          "pageMs": 46365.5
+        },
+        {
+          "projection": 4,
+          "matching": {
+            "width": 4,
+            "--proto-ui-scroll-thumb-size": 3,
+            "--proto-ui-scroll-thumb-offset": 3,
+            "height": 3,
+            "transform": 3
+          },
+          "changed": {
+            "--proto-ui-scroll-thumb-size": 1,
+            "--proto-ui-scroll-thumb-offset": 1,
+            "height": 1,
+            "transform": 1
+          },
+          "targets": 1,
+          "pageMs": 46366
+        },
+        {
+          "projection": 64,
+          "matching": {
+            "width": 62,
+            "--proto-ui-scroll-thumb-size": 58,
+            "--proto-ui-scroll-thumb-offset": 60,
+            "height": 62,
+            "transform": 60
+          },
+          "changed": {
+            "--proto-ui-scroll-thumb-size": 6,
+            "--proto-ui-scroll-thumb-offset": 4,
+            "height": 2,
+            "transform": 4,
+            "width": 2
+          },
+          "targets": 4,
+          "pageMs": 46607.299999952316
+        },
+        {
+          "projection": 128,
+          "matching": {
+            "width": 126,
+            "--proto-ui-scroll-thumb-size": 116,
+            "--proto-ui-scroll-thumb-offset": 124,
+            "height": 126,
+            "transform": 124
+          },
+          "changed": {
+            "--proto-ui-scroll-thumb-size": 12,
+            "--proto-ui-scroll-thumb-offset": 4,
+            "height": 2,
+            "transform": 4,
+            "width": 2
+          },
+          "targets": 4,
+          "pageMs": 46966.799999952316
+        },
+        {
+          "projection": 192,
+          "matching": {
+            "width": 189,
+            "--proto-ui-scroll-thumb-size": 174,
+            "--proto-ui-scroll-thumb-offset": 185,
+            "height": 188,
+            "transform": 185
+          },
+          "changed": {
+            "--proto-ui-scroll-thumb-size": 18,
+            "--proto-ui-scroll-thumb-offset": 7,
+            "height": 4,
+            "transform": 7,
+            "width": 3
+          },
+          "targets": 7,
+          "pageMs": 46990.09999990463
+        },
+        {
+          "projection": 256,
+          "matching": {
+            "width": 252,
+            "--proto-ui-scroll-thumb-size": 233,
+            "--proto-ui-scroll-thumb-offset": 248,
+            "height": 252,
+            "transform": 248
+          },
+          "changed": {
+            "--proto-ui-scroll-thumb-size": 23,
+            "--proto-ui-scroll-thumb-offset": 8,
+            "height": 4,
+            "transform": 8,
+            "width": 4
+          },
+          "targets": 8,
+          "pageMs": 56405.200000047684
+        },
+        {
+          "projection": 320,
+          "matching": {
+            "width": 316,
+            "--proto-ui-scroll-thumb-size": 297,
+            "--proto-ui-scroll-thumb-offset": 312,
+            "height": 316,
+            "transform": 312
+          },
+          "changed": {
+            "--proto-ui-scroll-thumb-size": 23,
+            "--proto-ui-scroll-thumb-offset": 8,
+            "height": 4,
+            "transform": 8,
+            "width": 4
+          },
+          "targets": 8,
+          "pageMs": 56941.59999990463
+        }
+      ],
+      "matching": 1553,
+      "writes": 1600
+    },
+    "compiledProductProbe": {
+      "head": "5a6e9755bd346ad4cd8a1667cb7097db90b7e277",
+      "nativeExit": 1,
+      "binding": {
+        "asset": "site-shadcn-controls.Dv6geumf.js",
+        "source": "f990498ee0ebd98cbd531bee46f989ee14d4d5ae0483484450c2943fe2afd256",
+        "instrumented": "824029eed300faf82148bea8500c016dfb30c7766dda1392e7cc83c13a81714c"
+      },
+      "logSha256": "3e96621c746a15ebf8fa37ca2a16f92b3000bcffcd0820c6d6987b2c6ca9e6d7",
+      "thumbLatest": {
+        "kind": "thumb",
+        "projection": 320,
+        "skipped": {
+          "width": 316,
+          "--proto-ui-scroll-thumb-size": 297,
+          "--proto-ui-scroll-thumb-offset": 312,
+          "height": 316,
+          "transform": 312
+        },
+        "changed": {
+          "--proto-ui-scroll-thumb-size": 23,
+          "--proto-ui-scroll-thumb-offset": 8,
+          "height": 4,
+          "transform": 8,
+          "width": 4
+        },
+        "targets": 8,
+        "pageMs": 55965.40000009537
+      },
+      "skipTotal": 1553,
+      "changedTotal": 47,
+      "chromeLatest": {
+        "kind": "chrome",
+        "updates": 2560,
+        "empty": 1825,
+        "samePhysical": 2528,
+        "updateMs": 2148.300000190735,
+        "emptyUpdateMs": 2124.4000012874603,
+        "byCause": {
+          "targets": {
+            "updates": 2550,
+            "empty": 1820,
+            "ms": 2147.400000333786
+          },
+          "order": {
+            "updates": 10,
+            "empty": 5,
+            "ms": 0.8999998569488525
+          }
+        },
+        "pageMs": 56206.90000009537
+      },
+      "checkpoints": {
+        "thumb": [
+          {
+            "kind": "thumb",
+            "projection": 1,
+            "skipped": {
+              "width": 1
+            },
+            "changed": {
+              "--proto-ui-scroll-thumb-size": 1,
+              "--proto-ui-scroll-thumb-offset": 1,
+              "height": 1,
+              "transform": 1
+            },
+            "targets": 1,
+            "pageMs": 46878.60000014305
+          },
+          {
+            "kind": "thumb",
+            "projection": 2,
+            "skipped": {
+              "width": 2,
+              "--proto-ui-scroll-thumb-size": 1,
+              "--proto-ui-scroll-thumb-offset": 1,
+              "height": 1,
+              "transform": 1
+            },
+            "changed": {
+              "--proto-ui-scroll-thumb-size": 1,
+              "--proto-ui-scroll-thumb-offset": 1,
+              "height": 1,
+              "transform": 1
+            },
+            "targets": 1,
+            "pageMs": 46879.10000014305
+          },
+          {
+            "kind": "thumb",
+            "projection": 3,
+            "skipped": {
+              "width": 3,
+              "--proto-ui-scroll-thumb-size": 2,
+              "--proto-ui-scroll-thumb-offset": 2,
+              "height": 2,
+              "transform": 2
+            },
+            "changed": {
+              "--proto-ui-scroll-thumb-size": 1,
+              "--proto-ui-scroll-thumb-offset": 1,
+              "height": 1,
+              "transform": 1
+            },
+            "targets": 1,
+            "pageMs": 46879.40000009537
+          },
+          {
+            "kind": "thumb",
+            "projection": 4,
+            "skipped": {
+              "width": 4,
+              "--proto-ui-scroll-thumb-size": 3,
+              "--proto-ui-scroll-thumb-offset": 3,
+              "height": 3,
+              "transform": 3
+            },
+            "changed": {
+              "--proto-ui-scroll-thumb-size": 1,
+              "--proto-ui-scroll-thumb-offset": 1,
+              "height": 1,
+              "transform": 1
+            },
+            "targets": 1,
+            "pageMs": 46879.799999952316
+          },
+          {
+            "kind": "thumb",
+            "projection": 64,
+            "skipped": {
+              "width": 62,
+              "--proto-ui-scroll-thumb-size": 58,
+              "--proto-ui-scroll-thumb-offset": 60,
+              "height": 62,
+              "transform": 60
+            },
+            "changed": {
+              "--proto-ui-scroll-thumb-size": 6,
+              "--proto-ui-scroll-thumb-offset": 4,
+              "height": 2,
+              "transform": 4,
+              "width": 2
+            },
+            "targets": 4,
+            "pageMs": 47118.10000014305
+          },
+          {
+            "kind": "thumb",
+            "projection": 128,
+            "skipped": {
+              "width": 126,
+              "--proto-ui-scroll-thumb-size": 116,
+              "--proto-ui-scroll-thumb-offset": 124,
+              "height": 126,
+              "transform": 124
+            },
+            "changed": {
+              "--proto-ui-scroll-thumb-size": 12,
+              "--proto-ui-scroll-thumb-offset": 4,
+              "height": 2,
+              "transform": 4,
+              "width": 2
+            },
+            "targets": 4,
+            "pageMs": 47473.60000014305
+          },
+          {
+            "kind": "thumb",
+            "projection": 192,
+            "skipped": {
+              "width": 189,
+              "--proto-ui-scroll-thumb-size": 174,
+              "--proto-ui-scroll-thumb-offset": 185,
+              "height": 188,
+              "transform": 185
+            },
+            "changed": {
+              "--proto-ui-scroll-thumb-size": 18,
+              "--proto-ui-scroll-thumb-offset": 7,
+              "height": 4,
+              "transform": 7,
+              "width": 3
+            },
+            "targets": 7,
+            "pageMs": 47491.200000047684
+          },
+          {
+            "kind": "thumb",
+            "projection": 256,
+            "skipped": {
+              "width": 252,
+              "--proto-ui-scroll-thumb-size": 233,
+              "--proto-ui-scroll-thumb-offset": 248,
+              "height": 252,
+              "transform": 248
+            },
+            "changed": {
+              "--proto-ui-scroll-thumb-size": 23,
+              "--proto-ui-scroll-thumb-offset": 8,
+              "height": 4,
+              "transform": 8,
+              "width": 4
+            },
+            "targets": 8,
+            "pageMs": 55453
+          },
+          {
+            "kind": "thumb",
+            "projection": 320,
+            "skipped": {
+              "width": 316,
+              "--proto-ui-scroll-thumb-size": 297,
+              "--proto-ui-scroll-thumb-offset": 312,
+              "height": 316,
+              "transform": 312
+            },
+            "changed": {
+              "--proto-ui-scroll-thumb-size": 23,
+              "--proto-ui-scroll-thumb-offset": 8,
+              "height": 4,
+              "transform": 8,
+              "width": 4
+            },
+            "targets": 8,
+            "pageMs": 55965.40000009537
+          }
+        ],
+        "chrome": [
+          {
+            "kind": "chrome",
+            "updates": 1,
+            "empty": 1,
+            "samePhysical": 0,
+            "updateMs": 7.800000190734863,
+            "emptyUpdateMs": 7.800000190734863,
+            "byCause": {
+              "targets": {
+                "updates": 1,
+                "empty": 1,
+                "ms": 7.800000190734863
+              }
+            },
+            "pageMs": 7191.600000143051
+          },
+          {
+            "kind": "chrome",
+            "updates": 2,
+            "empty": 2,
+            "samePhysical": 1,
+            "updateMs": 7.900000333786011,
+            "emptyUpdateMs": 7.900000333786011,
+            "byCause": {
+              "targets": {
+                "updates": 2,
+                "empty": 2,
+                "ms": 7.900000333786011
+              }
+            },
+            "pageMs": 7192.900000095367
+          },
+          {
+            "kind": "chrome",
+            "updates": 3,
+            "empty": 3,
+            "samePhysical": 2,
+            "updateMs": 16.90000033378601,
+            "emptyUpdateMs": 16.90000033378601,
+            "byCause": {
+              "targets": {
+                "updates": 3,
+                "empty": 3,
+                "ms": 16.90000033378601
+              }
+            },
+            "pageMs": 7432.200000047684
+          },
+          {
+            "kind": "chrome",
+            "updates": 4,
+            "empty": 4,
+            "samePhysical": 3,
+            "updateMs": 16.90000033378601,
+            "emptyUpdateMs": 16.90000033378601,
+            "byCause": {
+              "targets": {
+                "updates": 4,
+                "empty": 4,
+                "ms": 16.90000033378601
+              }
+            },
+            "pageMs": 7433
+          },
+          {
+            "kind": "chrome",
+            "updates": 512,
+            "empty": 344,
+            "samePhysical": 496,
+            "updateMs": 472.00000047683716,
+            "emptyUpdateMs": 470.1000008583069,
+            "byCause": {
+              "targets": {
+                "updates": 509,
+                "empty": 342,
+                "ms": 471.9000005722046
+              },
+              "order": {
+                "updates": 3,
+                "empty": 2,
+                "ms": 0.09999990463256836
+              }
+            },
+            "pageMs": 15288
+          },
+          {
+            "kind": "chrome",
+            "updates": 1024,
+            "empty": 735,
+            "samePhysical": 1002,
+            "updateMs": 1066.8000013828278,
+            "emptyUpdateMs": 1063.900002002716,
+            "byCause": {
+              "targets": {
+                "updates": 1021,
+                "empty": 733,
+                "ms": 1066.7000014781952
+              },
+              "order": {
+                "updates": 3,
+                "empty": 2,
+                "ms": 0.09999990463256836
+              }
+            },
+            "pageMs": 46874.90000009537
+          },
+          {
+            "kind": "chrome",
+            "updates": 1536,
+            "empty": 1113,
+            "samePhysical": 1508,
+            "updateMs": 1317.2000012397766,
+            "emptyUpdateMs": 1307.50000166893,
+            "byCause": {
+              "targets": {
+                "updates": 1526,
+                "empty": 1108,
+                "ms": 1316.3000013828278
+              },
+              "order": {
+                "updates": 10,
+                "empty": 5,
+                "ms": 0.8999998569488525
+              }
+            },
+            "pageMs": 47206.299999952316
+          },
+          {
+            "kind": "chrome",
+            "updates": 2048,
+            "empty": 1478,
+            "samePhysical": 2019,
+            "updateMs": 1569.0000009536743,
+            "emptyUpdateMs": 1551.300002336502,
+            "byCause": {
+              "targets": {
+                "updates": 2038,
+                "empty": 1473,
+                "ms": 1568.1000010967255
+              },
+              "order": {
+                "updates": 10,
+                "empty": 5,
+                "ms": 0.8999998569488525
+              }
+            },
+            "pageMs": 47490.200000047684
+          },
+          {
+            "kind": "chrome",
+            "updates": 2560,
+            "empty": 1825,
+            "samePhysical": 2528,
+            "updateMs": 2148.300000190735,
+            "emptyUpdateMs": 2124.4000012874603,
+            "byCause": {
+              "targets": {
+                "updates": 2550,
+                "empty": 1820,
+                "ms": 2147.400000333786
+              },
+              "order": {
+                "updates": 10,
+                "empty": 5,
+                "ms": 0.8999998569488525
+              }
+            },
+            "pageMs": 56206.90000009537
+          }
+        ]
+      },
+      "scope": "Delivered diagnostic counters from separate call sites. Matching physical controls do not imply matching geometry or logical owner identity. Timing is inclusive."
+    },
+    "publisher": {
+      "head": "5a6e9755bd346ad4cd8a1667cb7097db90b7e277",
+      "binding": {
+        "asset": "site-shadcn-controls.Dv6geumf.js",
+        "source": "f990498ee0ebd98cbd531bee46f989ee14d4d5ae0483484450c2943fe2afd256",
+        "instrumented": "668765332510faf5c5f794f69fa4ed1be34fc64abb00e819c4da3084805e9145"
+      },
+      "logSha256": "ff5845fb7452c9cf7f1ef2c6905ed9532aeda03773f31bac6b63a37a300bd75c",
+      "nativeExit": 1,
+      "chromeLatest": {
+        "kind": "chrome",
+        "updates": 2560,
+        "empty": 1852,
+        "samePhysical": 2528,
+        "updateMs": 1972.4000027179718,
+        "emptyUpdateMs": 1950.1000020503998,
+        "byCause": {
+          "targets": {
+            "updates": 2550,
+            "empty": 1847,
+            "ms": 1971.3000028133392
+          },
+          "order": {
+            "updates": 10,
+            "empty": 5,
+            "ms": 1.0999999046325684
+          }
+        },
+        "byPublisher": {
+          "fallback/root/other": {
+            "updates": 799,
+            "empty": 584,
+            "ms": 1034.7999999523163
+          },
+          "fallback/viewport/other": {
+            "updates": 803,
+            "empty": 587,
+            "ms": 723.4000017642975
+          },
+          "fallback/scrollbar/chrome": {
+            "updates": 454,
+            "empty": 336,
+            "ms": 9.200000286102295
+          },
+          "retained-current/scrollbar/chrome": {
+            "updates": 15,
+            "empty": 7,
+            "ms": 4.200000286102295
+          },
+          "fallback/thumb/chrome": {
+            "updates": 461,
+            "empty": 333,
+            "ms": 198.30000066757202
+          },
+          "retained-current/thumb/chrome": {
+            "updates": 18,
+            "empty": 0,
+            "ms": 1.3999998569488525
+          }
+        },
+        "pageMs": 57916.5
+      },
+      "scope": "Fallback includes all deliveries without a proven retained same-domain publisher at that callback."
+    }
+  },
+  "verification": {
+    "focusedTests": 218,
+    "focusedFiles": 12,
+    "sourceRedTests": 1,
+    "sourceRedOtherPass": 14,
+    "native": {
+      "scroll-native": {
+        "passed": 8,
+        "failed": 0,
+        "skips": 0,
+        "failedCases": [],
+        "reportSha256": "008f06c178c1ec385993ab667fc8e65a1ed6440067b88261562cacca9940e550"
+      },
+      "native": {
+        "passed": 0,
+        "failed": 2,
+        "skips": 0,
+        "failedCases": [
+          "zh-cn: native Light/split/mixed acceptance",
+          "en: native Light/split/mixed acceptance"
+        ],
+        "reportSha256": "6d92606d599ae7f6ee2f0aef9d26582917f728a8986547f0dda6d8e18c9daff6"
+      },
+      "accordion-native": {
+        "passed": 4,
+        "failed": 0,
+        "skips": 29,
+        "failedCases": [],
+        "reportSha256": "e6da7c5ee5a66e54f515b785e7cb583459c5aded5114743b701b9d550d4e52c5"
+      },
+      "optics-native": {
+        "passed": 3,
+        "failed": 0,
+        "skips": 1,
+        "failedCases": [],
+        "reportSha256": "1f251e2126dff2291437e545566becaa9b0b95155ff373a913dbf4957ce6a9ba"
+      },
+      "portal-native": {
+        "passed": 5,
+        "failed": 0,
+        "skips": 50,
+        "failedCases": [],
+        "reportSha256": "099a78a25366a83c311c51bb2b3cfe64fd4c63570cccc254afacc99aa69c9ccf"
+      },
+      "preview-browser": {
+        "passed": 11,
+        "failed": 0,
+        "skips": 13,
+        "failedCases": [],
+        "reportSha256": "2c638cb7303001495750cab309eb37ef3c24b9ad4449d5c850e63760b10209b3"
+      }
+    },
+    "packages": 47,
+    "pages": 685,
+    "typesExit": 0,
+    "manifestsExit": 0,
+    "finfPolicyExit": 0,
+    "packageBudgetChanges": [
+      {
+        "parent": "ADVISORY adapter-react root: 163435 / 106000 gzip bytes; overBudget=57435; minified=576464 sha256=d9fb104467b102f685e625abe18e3f768f2a93123aee28af66f4d8460a98b5fd",
+        "current": "ADVISORY adapter-react root: 163459 / 106000 gzip bytes; overBudget=57459; minified=576460 sha256=d258550edc65a5eb50af39b7dac030b09888b7e314e754f976f2fad2604979d8"
+      },
+      {
+        "parent": "ADVISORY adapter-vue root: 162215 / 106000 gzip bytes; overBudget=56215; minified=571708 sha256=f0d17946712d52eff65fbe78dc65c86296306ec51df5790aecde736da0c2cf28",
+        "current": "ADVISORY adapter-vue root: 162242 / 106000 gzip bytes; overBudget=56242; minified=571704 sha256=4c2d1c31c34c4a335207dd9eb4c447ec97de76b1afaf4feebc37ed13a87322a7"
+      },
+      {
+        "parent": "ADVISORY adapter-web-component root: 195119 / 132000 gzip bytes; overBudget=63119; minified=670323 sha256=bfafdab334becdb12664a80811daca6946cc88abb1d4457ef2c20af1622ff7bc",
+        "current": "ADVISORY adapter-web-component root: 195127 / 132000 gzip bytes; overBudget=63127; minified=670319 sha256=0486a8182b2c5fd5a5df8a6aeb29444163f39edf432470fafc048c4b5a60cd07"
+      }
+    ],
+    "originalReadyMs": 60000,
+    "originalOuterMs": 150000,
+    "servedPreviews": {
+      "zh-cn": {
+        "bytes": 1862513,
+        "sha256": "b46150fe92159acfc2956bf26e3cdcc2ae0c9a90e3a4fd32d8abec0ecaf3b633",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914109,
+        "sha256": "61d02ae3d9c4a43aab15eed73b9d2fd8b5b8059286d658bd6a25361f19e995d5",
+        "previews": 1268
+      }
+    },
+    "preview": {
+      "head": "5a6e9755bd346ad4cd8a1667cb7097db90b7e277",
+      "tree": "f50db5d5a908379e0aa185c5ff3944f839ff6701",
+      "distHashes": {
+        "zh-cn/index.html": "145b26446f66a5a076966f60fff4075161d79b5f6be15a1eb2f6c2212cd70f59",
+        "zh-cn/ui-libraries/shadcn/button/index.html": "2595c1440d85669aedb84909ff673c62ea93b6a43a8619aa5a422e4c0a6fd92f",
+        "zh-cn/ui-libraries/brutalist/components/button/index.html": "28d5b073594f4538a01bad79edc3db6a8c4862c17936e98105298851b397dda5"
+      },
+      "sourceCodeExamples": 9,
+      "renderedCodeExamples": 9,
+      "packedHeaderExit": 0,
+      "previewBrowserExit": 0,
+      "selector": "uses real family Popover Triggers|uses the same mobile shell|live available region|keeps Runtime Tabs outside"
+    },
+    "header": {
+      "head": "5a6e9755bd346ad4cd8a1667cb7097db90b7e277",
+      "browser": "156.0.8078.79",
+      "scope": "First animation frame control on the exact static Astro preview. Geometry reads can force layout.",
+      "results": [
+        {
+          "width": 320,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1553.9000000953674,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1671.7000000476837,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1694.4000000953674,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        },
+        {
+          "width": 390,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1484.2000000476837,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1623.8000001907349,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1644,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        }
+      ]
+    }
+  }
+}
