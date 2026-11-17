@@ -1,0 +1,77 @@
+{
+  "author": {
+    "head": "abedb8888964ecb41cb7ac54a230ec7099f3ff4a",
+    "tree": "6b4d6bc4b1a48c87c21590f4d0a00244065bdf4f",
+    "parent": "0b066d644c2069ec5e408a6629030dd14fe0bd0b",
+    "files": {
+      "packages/adapters/web-component/src/runtime/session.ts": "55d4f895afb82ddf8da800e4ce7b7538c086003334f4f95422374c25bbe85b0a",
+      "packages/adapters/web-component/src/shadow-split-effects.ts": "6db30964edd8bdc37954b8a9b87defb36432e8a6ffe8a882f7bb2d33ffa91a5d",
+      "packages/adapters/web-component/test/shadow-closeout.browser.test.ts": "f3e78cfb6aee9e938c144d455b54ea75210a00ddf49e4de0a033bfd92a8c38d4",
+      "packages/cli/src/services/hook-source-summary.ts": "8e92ab37bb8da99075af23ffe5b729dc6f2ec6cab8af6db5488bf24f0ad5f19f",
+      "packages/cli/src/services/prototype-style-tokens.ts": "c66c7f20107635aafddb60679b3ff45240697aed589eb82f58921a8853703de8",
+      "packages/cli/test/shadow-template-style.test.ts": "da3cdfd1d3e4c9186fb4fca5bd824bedd559dcd7b224aa8e992f14d762f03e40"
+    }
+  },
+  "combined": {
+    "head": "034764033d31c2e14085214b321db5ae4bb81f90",
+    "tree": "e1443c64bd1ab6ca9c499e2e32da6cb9bfcb409d",
+    "parents": [
+      "3a686b72b8a4b8188402c33b1717d9e113296867",
+      "abedb8888964ecb41cb7ac54a230ec7099f3ff4a"
+    ],
+    "files": {
+      "packages/adapters/web-component/src/runtime/session.ts": "55d4f895afb82ddf8da800e4ce7b7538c086003334f4f95422374c25bbe85b0a",
+      "packages/adapters/web-component/src/shadow-split-effects.ts": "9984a216c86790d938ae4f9715b87f15dde7b26ab629d6bb1bf7f32d21891f4c",
+      "packages/adapters/web-component/test/shadow-closeout.browser.test.ts": "f3e78cfb6aee9e938c144d455b54ea75210a00ddf49e4de0a033bfd92a8c38d4",
+      "packages/cli/src/services/hook-source-summary.ts": "8e92ab37bb8da99075af23ffe5b729dc6f2ec6cab8af6db5488bf24f0ad5f19f",
+      "packages/cli/src/services/prototype-style-tokens.ts": "c66c7f20107635aafddb60679b3ff45240697aed589eb82f58921a8853703de8",
+      "packages/cli/test/shadow-template-style.test.ts": "da3cdfd1d3e4c9186fb4fca5bd824bedd559dcd7b224aa8e992f14d762f03e40"
+    },
+    "packages": 47,
+    "retainedScrollportPatchID": "a4261222b21deafecd9730fbab07c3cf4a074fc5"
+  },
+  "baseline": {
+    "head": "9efd5cd7d5adb6ed98bf51d73ed1aeca990a669f",
+    "reviewFailures": 3,
+    "redSHA256": "0f7bdbcee9dbf01e5026447bbb1bce834c1362829bbdf15e391509671b223c77",
+    "initialMemberGuard": {
+      "failed": 1,
+      "passed": 2,
+      "logSHA256": "f656349a4bda782a21c875f09baa694aad30e64264d46803e62c0fc1aa1302a9"
+    }
+  },
+  "tests": {
+    "focused": {
+      "suites": 3,
+      "passed": 326,
+      "logSHA256": "28d8475763beb9632e61a88b8cae2f66a2d16fff380820dced16095c09cdf6a3"
+    },
+    "types": {
+      "exit": 0,
+      "logSHA256": "1e14fa87e413ec8ef9585ae214d5f036450d3cc636c31a34c01c2346df2a4d42"
+    },
+    "chrome": "156.0.8078.79",
+    "combinedReviewCases": {
+      "passed": 3,
+      "logSHA256": "a167eb7cb605b4477ee5786dc571bdd626e7be8ae004628ea34a24220b7e8e33"
+    },
+    "isolatedDialog": {
+      "source": {
+        "light": 15,
+        "split": 15,
+        "mixed": 15
+      },
+      "dist": {
+        "light": 15,
+        "split": 15,
+        "mixed": 15
+      },
+      "sourceTotal": 45,
+      "distTotal": 45,
+      "sourceErrors": [],
+      "distChrome": "156.0.8078.79",
+      "firstDistChrome": "157.0.8103.79",
+      "firstDistLogSHA256": "cd4b724e11ac4eca1f819b4854ed129faf144a4d4656144a6c95cd53eefb3191"
+    }
+  }
+}

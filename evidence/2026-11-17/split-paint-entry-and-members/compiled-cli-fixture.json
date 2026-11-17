@@ -1,0 +1,8 @@
+{
+  "targetSHA256": "980b5c6cae685761ed06df12b15a7ec67d753321bdfc503f034f7e0772bc1c26",
+  "templateSelector": "[data-pui-style~=\"p-[10%]\"]",
+  "padding": "10%",
+  "rootSelectorPresent": false,
+  "mutableRootPreflightExit": 1,
+  "mutableRootPreflight": "padding contribution needs a verified length recipe: padding: 10%;"
+}
