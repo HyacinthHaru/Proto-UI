@@ -73,9 +73,15 @@ type ClaimRecord = {
 // No cached read survives a notification or an author callback.
 type OrderComparisons = Map<AnatomyRootTarget, Map<AnatomyRootTarget, number>>;
 type DomainClaims = Map<AnatomyInstanceToken, ClaimRecord[]>;
+type OrderSnapshot = {
+  targets: (AnatomyRootTarget | null)[];
+  comparators: AnatomyRootTarget['compareDocumentPosition'][];
+  ordered: ClaimRecord[];
+};
 type OrderNotificationReads = {
   comparisons: OrderComparisons;
   domains: Map<AnatomyParentGetter, DomainClaims>;
+  orders: Map<ClaimRecord[], OrderSnapshot>;
 };
 
 const CLAIM_BY_PART_VIEW = new WeakMap<AnatomyPartView, ClaimRecord>();
@@ -932,7 +938,11 @@ export class AnatomyModuleImpl extends ModuleBase {
   }
 
   private static notifyStructuralChange(family: AnatomyFamily): void {
-    const reads: OrderNotificationReads = { comparisons: new Map(), domains: new Map() };
+    const reads: OrderNotificationReads = {
+      comparisons: new Map(),
+      domains: new Map(),
+      orders: new Map(),
+    };
     for (const impl of this.subscribers(this.orderSubscribers, family)) {
       impl.emitOrderChangeIfNeeded(family, reads);
     }
@@ -1023,7 +1033,11 @@ export class AnatomyModuleImpl extends ModuleBase {
       const observer = this.caps.get(ANATOMY_ORDER_OBSERVER_CAP) as AnatomyOrderObserver;
       const listeners = new Set<AnatomyModuleImpl>();
       const off = observer(target, () => {
-        const reads: OrderNotificationReads = { comparisons: new Map(), domains: new Map() };
+        const reads: OrderNotificationReads = {
+          comparisons: new Map(),
+          domains: new Map(),
+          orders: new Map(),
+        };
         for (const impl of listeners) {
           impl.emitOrderChangeIfNeeded(family, reads);
         }
@@ -1083,6 +1097,7 @@ export class AnatomyModuleImpl extends ModuleBase {
     // Later recipients must read the resulting structure and order afresh.
     reads?.comparisons.clear();
     reads?.domains.clear();
+    reads?.orders.clear();
     try {
       this.orderDispatch((ctx) => {
         for (const listener of listeners) listener(ctx);
@@ -1090,13 +1105,14 @@ export class AnatomyModuleImpl extends ModuleBase {
     } finally {
       reads?.comparisons.clear();
       reads?.domains.clear();
+      reads?.orders.clear();
     }
   }
 
   private computeOrderSignature(family: AnatomyFamily, reads?: OrderNotificationReads): string {
     const domain = this.resolveCurrentDomain(family, false, reads?.domains);
     if (!domain.rootInstance) return 'missing-domain';
-    const ordered = this.sortClaims(domain.claims, reads?.comparisons);
+    const ordered = this.sortClaims(domain.claims, reads);
     return ordered.map((claim) => `${claim.role}:${this.getIdentityId(claim.instance)}`).join('|');
   }
 
@@ -1118,18 +1134,32 @@ export class AnatomyModuleImpl extends ModuleBase {
     return next;
   }
 
-  private sortClaims(claims: ClaimRecord[], comparisons?: OrderComparisons): ClaimRecord[] {
+  private sortClaims(claims: ClaimRecord[], reads?: OrderNotificationReads): ClaimRecord[] {
     if (claims.length < 2) return claims.slice();
-    // Read each current target once per sort. Later recipients resolve their
-    // own targets after callbacks can replace or move them.
-    return claims
-      .map((claim, index) => ({ claim, index, target: claim.getRootTarget(claim.instance) }))
+    // Every reader resolves its current targets. Only the ordering work can
+    // be shared when this notification still sees the same inputs.
+    const targets = claims.map((claim) => claim.getRootTarget(claim.instance));
+    const comparators = reads && targets.map((target) => target?.compareDocumentPosition);
+    const cached = reads?.orders.get(claims);
+    if (
+      cached &&
+      comparators &&
+      targets.every(
+        (target, index) =>
+          target === cached.targets[index] && comparators[index] === cached.comparators[index]
+      )
+    )
+      return cached.ordered;
+
+    const ordered = claims
+      .map((_, index) => index)
       .sort((left, right) => {
-        const cmp = this.compareTargets(left.target, right.target, comparisons);
-        if (cmp !== 0) return cmp;
-        return left.index - right.index;
+        const cmp = this.compareTargets(targets[left]!, targets[right]!, reads?.comparisons);
+        return cmp || left - right;
       })
-      .map((entry) => entry.claim);
+      .map((index) => claims[index]!);
+    if (reads && comparators) reads.orders.set(claims, { targets, comparators, ordered });
+    return ordered;
   }
 
   private compareTargets(

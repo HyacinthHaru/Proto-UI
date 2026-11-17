@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   createAnatomyFamily,
   definePrototype,
@@ -25,7 +25,7 @@ afterEach(async () => {
 });
 
 /** Real Runtime sessions with instrumented DOM order capabilities, not elapsed-time assertions. */
-function createDomain(subscriberCount: number, itemCount = 12) {
+function createDomain(subscriberCount: number, itemCount = 12, shareBridge = false) {
   const family = createAnatomyFamily('runtime-order-fanout-cost', {
     roles: {
       root: { cardinality: { min: 1, max: 1 } },
@@ -37,6 +37,7 @@ function createDomain(subscriberCount: number, itemCount = 12) {
   document.body.append(element);
   const targets = new Map<Owner, HTMLElement>([[root, element]]);
   const parents = new Map<Owner, Owner | null>([[root, null]]);
+  const getParent = (instance: unknown) => parents.get(instance as Owner) ?? null;
   const prototypes = new Map<Owner, Prototype<any>>();
   const executions = new Map<Owner, Execution>();
   const notifications = new Map<Owner, string[][]>();
@@ -86,7 +87,10 @@ function createDomain(subscriberCount: number, itemCount = 12) {
       onRuntimeReady(wiring) {
         wiring.attach('anatomy', [
           [ANATOMY_INSTANCE_TOKEN_CAP, owner],
-          [ANATOMY_PARENT_CAP, (instance: unknown) => parents.get(instance as Owner) ?? null],
+          [
+            ANATOMY_PARENT_CAP,
+            shareBridge ? getParent : (instance: unknown) => getParent(instance),
+          ],
           [ANATOMY_GET_PROTO_CAP, (instance: unknown) => prototypes.get(instance as Owner) ?? null],
           [
             ANATOMY_ROOT_TARGET_CAP,
@@ -194,6 +198,25 @@ describe('Runtime Anatomy synchronous order fanout cost', () => {
       expect(many.comparisons()).toBeLessThanOrEqual(singleReaderComparisons * 2);
       expect(many.targetReads.size).toBe(many.items.length + 1);
       expect(Math.max(...many.targetReads.values())).toBeLessThanOrEqual(many.items.length);
+    });
+  }
+
+  for (const source of ['sync', 'notify'] as const) {
+    it(`${source}: sorts a stable shared domain once per notification`, () => {
+      const domain = createDomain(12, 12, true);
+      const sort = vi.spyOn(Array.prototype, 'sort');
+      let domainSorts: number;
+      try {
+        domain[source]();
+        domainSorts = sort.mock.contexts.filter(
+          (receiver) => Array.isArray(receiver) && receiver.length === domain.items.length + 1
+        ).length;
+      } finally {
+        sort.mockRestore();
+      }
+      expect(domainSorts).toBe(1);
+      expect([...domain.notifications.values()].flat()).toEqual([]);
+      expect(Math.max(...domain.targetReads.values())).toBe(domain.items.length);
     });
   }
 
