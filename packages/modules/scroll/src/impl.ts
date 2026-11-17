@@ -207,7 +207,7 @@ export class ScrollModuleImpl extends ModuleBase {
     if (!this.offAnatomyOrder) {
       const refresh = () => {
         if (!this.mounted || !this.lease) return;
-        this.lease.update(this.createHostAttachment());
+        this.lease.update(this.createHostAttachment(), 'anatomy');
       };
       this.offAnatomyOrder = this.anatomyPort.subscribeOrder(binding.anatomy, refresh);
       this.offAnatomyTargets = this.anatomyPort.subscribeTargets(

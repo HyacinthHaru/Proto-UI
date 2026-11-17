@@ -217,14 +217,17 @@ export function createBoundWebScrollSurfaceHost(
         throw new ScrollSurfaceBindingError('target-retired');
       }
       const wrapped: ScrollSurfaceHostLease = {
-        update(next) {
+        update(next, source) {
           if (active && current())
-            lease.update({
-              ...next,
-              onFacts(snapshot) {
-                if (active && current()) next.onFacts(snapshot);
+            lease.update(
+              {
+                ...next,
+                onFacts(snapshot) {
+                  if (active && current()) next.onFacts(snapshot);
+                },
               },
-            });
+              source
+            );
         },
         request(request) {
           if (active && current()) lease.request(request);

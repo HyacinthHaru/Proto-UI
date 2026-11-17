@@ -5,7 +5,7 @@ import type {
   MoveGestureSample,
   ScrollSurfaceSnapshot,
 } from '@proto.ui/core';
-import { createWebScrollSurfaceHost } from '../src';
+import { createWebScrollSurfaceHost, type ScrollSurfaceHostAttachment } from '../src';
 
 function createMoveHarness(): {
   host: MoveGestureHost;
@@ -351,6 +351,55 @@ describe('module-scroll: Web scroll surface host', () => {
     expect(thumb.style.height).toBe('7px');
     expect(thumb.style.transform).toBe('scale(1)');
     expect(thumb.style.getPropertyValue('--proto-ui-scroll-thumb-size')).toBe('');
+  });
+
+  it('coalesces Anatomy updates with empty chrome and samples the latest geometry', async () => {
+    const target = document.createElement('div');
+    const metrics = (scrollHeight: number) =>
+      setMetrics(target, { clientWidth: 100, scrollWidth: 100, clientHeight: 100, scrollHeight });
+    metrics(200);
+    document.body.append(target);
+    const move = createMoveHarness();
+    const facts: number[] = [];
+    const connection: ScrollSurfaceHostAttachment = {
+      config: { axes: 'vertical', projection: 'system', endFollow: { mode: 'off' } },
+      projection: 'system',
+      composedChrome: { scope: {}, controls: [] },
+      onFacts: (snapshot) => facts.push(snapshot.vertical.visibleRatio),
+    };
+    const lease = createWebScrollSurfaceHost(target, { moveGestureHost: move.host }).attach(
+      connection
+    );
+    expect(facts).toEqual([0.5]);
+
+    metrics(250);
+    lease.update(connection, 'anatomy');
+    metrics(400);
+    lease.update(connection, 'anatomy');
+    expect(facts).toEqual([0.5]);
+    await Promise.resolve();
+    expect(facts).toEqual([0.5, 0.25]);
+
+    metrics(500);
+    lease.update(connection, 'anatomy');
+    const replacementScope = { ...connection, composedChrome: { scope: {}, controls: [] } };
+    lease.update(replacementScope, 'anatomy');
+    expect(facts).toEqual([0.5, 0.25, 0.2]);
+    await Promise.resolve();
+    expect(facts).toEqual([0.5, 0.25, 0.2]);
+
+    metrics(1000);
+    lease.update(replacementScope, 'anatomy');
+    lease.update(replacementScope);
+    expect(facts).toEqual([0.5, 0.25, 0.2, 0.1]);
+    await Promise.resolve();
+    expect(facts).toEqual([0.5, 0.25, 0.2, 0.1]);
+
+    metrics(2000);
+    lease.update(replacementScope, 'anatomy');
+    lease.dispose();
+    await Promise.resolve();
+    expect(facts).toEqual([0.5, 0.25, 0.2, 0.1]);
   });
 
   it('keeps geometry observation attached across an update with the same targets', () => {

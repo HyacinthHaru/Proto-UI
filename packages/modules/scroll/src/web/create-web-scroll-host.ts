@@ -703,7 +703,9 @@ export function createWebScrollSurfaceHost(
         projectComposedChrome(facts);
         connection.onFacts(facts);
       };
+      let pendingLayoutSample: object | null = null;
       const onLayoutChange = () => {
+        pendingLayoutSample = null;
         if (disposed) return;
         const axis = configuredFollowAxis();
         if (!axis) {
@@ -737,6 +739,16 @@ export function createWebScrollSurfaceHost(
           endFollowState = 'following';
         }
         publish();
+      };
+      const scheduleLayoutChange = () => {
+        if (disposed || pendingLayoutSample) return;
+        const sample = {};
+        pendingLayoutSample = sample;
+        queueMicrotask(() => {
+          if (pendingLayoutSample !== sample) return;
+          pendingLayoutSample = null;
+          if (policyCurrent()) onLayoutChange();
+        });
       };
       const armReaderIntent = () => {
         requestedDepartureAxis = null;
@@ -1060,6 +1072,7 @@ export function createWebScrollSurfaceHost(
         observedGeometry = { children, tracks, contentOptions };
       }
       const resetEndFollow = () => {
+        pendingLayoutSample = null;
         resetReaderInput();
         cancelScheduledEnd(false);
         requestedDepartureAxis = null;
@@ -1082,6 +1095,7 @@ export function createWebScrollSurfaceHost(
       const dispose = () => {
         if (disposed) return;
         disposed = true;
+        pendingLayoutSample = null;
         let failed = false;
         let failure: unknown;
         const attempt = (action: () => void) => {
@@ -1184,10 +1198,20 @@ export function createWebScrollSurfaceHost(
       }
 
       return {
-        update(nextConnection: ScrollSurfaceHostAttachment) {
+        update(nextConnection: ScrollSurfaceHostAttachment, source?: 'anatomy') {
           if (disposed || !policyCurrent()) return;
           const previousAxis = configuredFollowAxis();
           const previousAxes = connection.config.axes;
+          // Empty chrome notifications can share fresh geometry in this
+          // checkpoint while the scroll policy and scope stay the same.
+          const coalesceLayout =
+            source === 'anatomy' &&
+            previousAxis === null &&
+            connection.config === nextConnection.config &&
+            connection.projection === nextConnection.projection &&
+            Object.is(connection.composedChrome?.scope, nextConnection.composedChrome?.scope) &&
+            !connection.composedChrome?.controls.length &&
+            !nextConnection.composedChrome?.controls.length;
           connection = nextConnection;
           projectPolicy();
           reconcileMoveGestures();
@@ -1196,6 +1220,8 @@ export function createWebScrollSurfaceHost(
           reconcileGestureObservation();
           if (previousAxis !== configuredFollowAxis() || previousAxes !== connection.config.axes) {
             resetEndFollow();
+          } else if (coalesceLayout) {
+            scheduleLayoutChange();
           } else {
             onLayoutChange();
           }

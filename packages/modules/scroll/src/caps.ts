@@ -23,7 +23,8 @@ export type ScrollSurfaceHostAttachment = ScrollSurfaceHostConnection &
   }>;
 
 export interface ScrollSurfaceHostLease {
-  update(connection: ScrollSurfaceHostAttachment): void;
+  /** Anatomy refreshes may share a layout sample within the current Web view. */
+  update(connection: ScrollSurfaceHostAttachment, source?: 'anatomy'): void;
   request(request: import('@proto.ui/core').ScrollSurfacePositionRequest): void;
   /** Internal target resolution only; absent support rejects the portable request. */
   reveal?(target: unknown, axis: 'vertical', isCurrentTarget: () => boolean): boolean;
