@@ -8,6 +8,7 @@ import { createRuntimePreviewSurface, runtimePreviewFamily } from './runtime-pre
 import {
   resolveProjectionThemeSurfaceStyle,
   scheduleProjectionThemeRead,
+  type ProjectionThemeSurfaceStyle,
   watchProjectionThemeSurfaceStyle,
 } from './projection-theme';
 import { releaseHostMount } from './runtimes/host-mount';
@@ -375,6 +376,19 @@ export function initPreviewer(options: PreviewerOptions) {
         host,
         isCurrent: () => !destroyed && myVersion === version,
       });
+      let pendingTheme: ProjectionThemeSurfaceStyle | undefined;
+      let stopPreparedTheme: (() => void) | null = null;
+      const applyTheme = (theme: ProjectionThemeSurfaceStyle) => {
+        void surface
+          .setAppearance(family, theme)
+          .catch((error) => console.error('[RuntimeBox] Shell family update failed.', error));
+      };
+      const watchTheme = () =>
+        watchProjectionThemeSurfaceStyle(family, root, (theme) => {
+          if (destroyed || myVersion !== version) return;
+          if (activeSurface === surface) applyTheme(theme);
+          else pendingTheme = theme;
+        });
       try {
         await surface.ready;
         if (!destroyed && myVersion === version) {
@@ -392,27 +406,27 @@ export function initPreviewer(options: PreviewerOptions) {
             family = appearance.family;
             await surface.setAppearance(family, appearance.theme);
           }
+          // Prepare the initial watch with the other pending theme reads.
+          // Hold its first value until publication so this batch only reads.
+          stopPreparedTheme = await scheduleProjectionThemeRead(root, () =>
+            destroyed || myVersion !== version ? null : watchTheme()
+          );
         }
       } catch (error) {
+        stopPreparedTheme?.();
         await result.destroy();
         throw error;
       }
       if (destroyed || myVersion !== version) {
+        stopPreparedTheme?.();
         await result.destroy();
         return;
       }
       finishStartup();
       currentDemo = { id, destroy: result.destroy };
       activeSurface = surface;
-      const watchTheme = () =>
-        watchProjectionThemeSurfaceStyle(family, root, (theme) => {
-          if (!destroyed && myVersion === version && activeSurface === surface) {
-            void surface
-              .setAppearance(family, theme)
-              .catch((error) => console.error('[RuntimeBox] Shell family update failed.', error));
-          }
-        });
-      stopThemeWatcher = watchTheme();
+      stopThemeWatcher = stopPreparedTheme;
+      if (pendingTheme) applyTheme(pendingTheme);
       const familyObserver = new MutationObserver(() => {
         if (destroyed || myVersion !== version || activeSurface !== surface) return;
         const nextFamily = runtimePreviewFamily(root);
