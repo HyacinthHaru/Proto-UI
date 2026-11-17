@@ -1,0 +1,15 @@
+{
+  "before": {
+    "suites": 34,
+    "passed": 773,
+    "failed": 25
+  },
+  "after": {
+    "suites": 34,
+    "passed": 778,
+    "failed": 25
+  },
+  "newFailures": [],
+  "missingFailures": [],
+  "changedFirstFailures": []
+}

@@ -1,0 +1,7 @@
+# Split opacity and tuple provenance
+
+The four review findings on exact `614b88ca` reproduce with four passing controls. A finished entry animation remains in the browser's animation list. External opacity can still hide the caller, and the corrected proof requires the currently sampled owned endpoint. Native split reuse now also rejects a computed zero-opacity filter while retaining a nonzero filter control.
+
+Readonly tuple spreads preserve direct and lexically held decoration handles. Intercepted simple member writes, opaque escapes, and shared Root spreads retain preflight. Stable dynamic import strings resolve through the authored source module resolver. The first candidate exposed two fixture and traversal gaps. The margin fixture was changed to a supported padding token and the final test also verifies that a plain tuple member assignment retires the target-only proof. Final red and green executions use the same fixtures.
+
+The final source passes 296 cases across two files and workspace types. The 34-file comparison passes 778 with the same 25 baseline failure names and first messages. The signed combination preserves the known scrollport patch, matches the other five changed files and builds 47 packages. Built CLI emits 10% and 15% Template padding and rejects dynamic Root use. Three pinned Chrome opacity controls and the original isolated Dialog Light, split and mixed profiles pass on source and public dist, with 15 requests per profile in each path.

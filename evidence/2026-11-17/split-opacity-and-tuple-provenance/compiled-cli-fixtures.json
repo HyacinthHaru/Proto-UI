@@ -1,0 +1,6 @@
+{
+  "artifactSHA256": "4eba56734253c428cc3f278022553a19cd5fd6f87e54d80093d3535d356986f1",
+  "templatePadding": ["10%", "15%"],
+  "rootSelectorPresent": false,
+  "stableDynamicRootPreflightExit": 1
+}
