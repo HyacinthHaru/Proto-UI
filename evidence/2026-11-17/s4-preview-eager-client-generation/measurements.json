@@ -1,0 +1,2271 @@
+{
+  "source": {
+    "head": "9d37a9590d22281e1fe0b243afea5e337ce10d07",
+    "tree": "ad0bac971d39b02f5def07ca3edeb6e3223c908e",
+    "parent": "552d6dfb5c322c5151734f6483771b749c7b4703",
+    "signature": "G",
+    "definitionFixture": {
+      "head": "552d6dfb5c322c5151734f6483771b749c7b4703",
+      "tree": "db315e6fe10af79f62ae45a72df911b5d094b3c6",
+      "parent": "246e21faef8305abaa66993699b62ba8fa767273",
+      "signature": "G"
+    },
+    "inputs": [
+      "796cbf29cdfcab523260efed53f175fc2f83c09915f98be872bcf11c4fb5384b  apps/www/src/components/PrototypePreviewer/previewer-bootstrap.test.ts",
+      "895f45fb20f91df22f8c6eef12f5d43911d933b4526337bf2a8e480d5346f0d9  apps/www/src/components/PrototypePreviewer/previewer-bootstrap.ts",
+      "a230d8f52f3797363dca79bb44012d5307f167288b7452922f5b8666fbab30d7  apps/www/src/content/docs/zh-cn/demo-matrix-observation.test.ts"
+    ]
+  },
+  "environment": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+  "exactSourceChecks": {
+    "loadCountRed": 2,
+    "loadCountGreen": 1,
+    "fixtureParentFailed": 1,
+    "focusedPass": 141,
+    "focusedFiles": 9,
+    "originalFixtureReportSha256": "6211464207a088afa27c997d7c88ef0f9a9c053257ffc23bc4d67262d1d1a9ba",
+    "focusedReportSha256": "7f0820e55a43549be3f20d6f6699f10b5771925f44d366d2e959fa10fd222d84"
+  },
+  "traceScope": "Separate exact-stock and one-asset control runs with the same rendered HTML. Native times and counters refer to delivered snapshots, not a paired whole-page benchmark.",
+  "traces": [
+    {
+      "label": "s4-shared-bootstrap-acquisition",
+      "scope": "Unchanged Chinese readiness predicate with asset/observer diagnostics",
+      "nativeExit": 1,
+      "bootstrap": {
+        "asset": "PrototypePreviewer.astro_astro_type_script_index_0_lang.Cteyk5_i.js",
+        "source": "682997e14fea0947415d40364cc25551e3818af2fe428ee140e2b882a6d9b31f",
+        "instrumented": "445e0c89cd4bbd1034b1c1c54d74c705799397d2245fca3d300ac2cd97aed2d1"
+      },
+      "client": {
+        "asset": "previewer-client.Ac4EJfJR.js",
+        "sourceSha256": "b064e19a99171fbe459359dc37814dc8863c27c9f2c856d2fb187bf37c540682",
+        "instrumentedSha256": "d3d0938e81b75ca494a7f484a6ea61dc1a4d8859a3123020111e6a8091371853"
+      },
+      "prototype": {
+        "asset": "prototype-modules.DmXR831Z.js",
+        "sourceSha256": "e67784c884d6fadc1a45e3a6c4674be0f4c08feb80c8029d78a3a8a9d70626ac",
+        "instrumentedSha256": "7930bf98d00d8e60f4d9fcc345bffa26e5da96b8667a982eeebe51ae1bf3645b",
+        "mappedImportCount": 1193
+      },
+      "entries": [
+        {
+          "asset": "_astro/demo-bootstrap-2-3-2-async-region.demo.CO76pJMm.js",
+          "sourceSha256": "5e3df1e609c6afdb5eb1554cea85fb8acb813c80eab9a5d6015f20daf717cfa1",
+          "instrumentedSha256": "ff79742a88425411f95d8a638cabf3d7416e92aaa8cc2796765256f3bf595728"
+        },
+        {
+          "asset": "_astro/demo-bootstrap-2-3-2-calendar.demo.OWPuICtm.js",
+          "sourceSha256": "9406f7fce3c6dd3ffaf00a2bae4b1c46b5d2842ef1bb6f9d150a28fe47df38c7",
+          "instrumentedSha256": "0cddb634e0e0a6aeabde17fcbae8ca8f53fe80a44d34b06f05513f95da94b624"
+        },
+        {
+          "asset": "_astro/demo-bootstrap-2-3-2-checkbox-group.demo.3tLMvlNz.js",
+          "sourceSha256": "f9cad1a8599279e6a5a5217e56168f897cda2c2bd142cd639af70b88af1c4ae3",
+          "instrumentedSha256": "d980a2b61ae0f578c37c86c857d5d242d6c838562e0fa1905c97bb32f69fe567"
+        },
+        {
+          "asset": "_astro/demo-bootstrap-2-3-2-drawer.demo.D5ESS1JM.js",
+          "sourceSha256": "9ec300e5057cf84357007285f76f326f3db10f6e38d0dfd24c9dd67a3580da3e",
+          "instrumentedSha256": "7dd7f124cb03d3376b926dc835497e463d6c0f65badd57c375f90951e530f086"
+        },
+        {
+          "asset": "_astro/demo-bootstrap-2-3-2-drawer-scroll.demo.Bs5tdtaG.js",
+          "sourceSha256": "f82b72b2703d79818aad9a2cb90491bad0618538c403ed0ba7bd6d948f984837",
+          "instrumentedSha256": "4a616cffc9b2b5985d802c41e88e7297c819cce4ce9d270221db7f0fb3c7268f"
+        }
+      ],
+      "logSha256": "f19e17007ddaf75fac23f422d6ce548ba7bfec4d786ab7ace69c65e0579ca3ae",
+      "deliveredAtPageMs": 64125.89999985695,
+      "batches": 25,
+      "queue": 468,
+      "admitted": 800,
+      "clientRequests": 12,
+      "inventory": {
+        "wc/generic": {
+          "total": 239,
+          "inited": 153,
+          "nonempty": 132,
+          "empty": 21,
+          "uninit": 86,
+          "mounting": 6,
+          "pending": 24
+        },
+        "react/generic": {
+          "total": 239,
+          "inited": 153,
+          "nonempty": 132,
+          "empty": 21,
+          "uninit": 86,
+          "mounting": 6,
+          "pending": 27
+        },
+        "vue/generic": {
+          "total": 239,
+          "inited": 153,
+          "nonempty": 132,
+          "empty": 21,
+          "uninit": 86,
+          "mounting": 6,
+          "pending": 25
+        },
+        "vue2/generic": {
+          "total": 239,
+          "inited": 153,
+          "nonempty": 132,
+          "empty": 21,
+          "uninit": 86,
+          "mounting": 6,
+          "pending": 25
+        },
+        "wc/fixed": {
+          "total": 78,
+          "inited": 39,
+          "nonempty": 39,
+          "empty": 0,
+          "uninit": 39,
+          "mounting": 2,
+          "pending": 0
+        },
+        "react/fixed": {
+          "total": 78,
+          "inited": 39,
+          "nonempty": 39,
+          "empty": 0,
+          "uninit": 39,
+          "mounting": 2,
+          "pending": 0
+        },
+        "vue/fixed": {
+          "total": 78,
+          "inited": 39,
+          "nonempty": 39,
+          "empty": 0,
+          "uninit": 39,
+          "mounting": 2,
+          "pending": 0
+        },
+        "vue2/fixed": {
+          "total": 78,
+          "inited": 39,
+          "nonempty": 39,
+          "empty": 0,
+          "uninit": 39,
+          "mounting": 2,
+          "pending": 0
+        }
+      },
+      "owners": [
+        {
+          "runtime": "wc",
+          "demo": "demo-bootstrap-2-3-2-async-region",
+          "boot": {
+            "scan": 5169.700000047684,
+            "drain": 26052.099999904633,
+            "client-request": 26052.099999904633,
+            "client-return": 36332.89999985695,
+            "mount": 36332.89999985695
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 36333.09999990463,
+              "runtime": "wc"
+            },
+            {
+              "phase": "demo-return",
+              "at": 48188.59999990463,
+              "runtime": "wc"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 48190.200000047684,
+              "runtime": "wc",
+              "ids": ["bootstrap-2-3-2-async-region-root", "bootstrap-2-3-2-button"]
+            },
+            {
+              "phase": "prototype-return",
+              "at": 63786.39999985695,
+              "runtime": "wc"
+            },
+            {
+              "phase": "render-start",
+              "at": 63786.39999985695,
+              "runtime": "wc"
+            },
+            {
+              "phase": "render-return",
+              "at": 63800.89999985695,
+              "runtime": "wc"
+            },
+            {
+              "phase": "surface-ready",
+              "at": 63884.700000047684,
+              "runtime": "wc"
+            },
+            {
+              "phase": "appearance-start",
+              "at": 63884.700000047684,
+              "runtime": "wc"
+            }
+          ]
+        },
+        {
+          "runtime": "react",
+          "demo": "demo-bootstrap-2-3-2-async-region",
+          "boot": {
+            "scan": 5169.700000047684,
+            "drain": 26052.099999904633,
+            "client-request": 26052.099999904633,
+            "client-return": 36333.5,
+            "mount": 36333.5
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 36333.59999990463,
+              "runtime": "react"
+            },
+            {
+              "phase": "demo-return",
+              "at": 48190.200000047684,
+              "runtime": "react"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 48190.200000047684,
+              "runtime": "react",
+              "ids": ["bootstrap-2-3-2-async-region-root", "bootstrap-2-3-2-button"]
+            },
+            {
+              "phase": "prototype-return",
+              "at": 63795.200000047684,
+              "runtime": "react"
+            },
+            {
+              "phase": "render-start",
+              "at": 63795.200000047684,
+              "runtime": "react"
+            }
+          ]
+        },
+        {
+          "runtime": "vue",
+          "demo": "demo-bootstrap-2-3-2-async-region",
+          "boot": {
+            "scan": 5169.700000047684,
+            "drain": 26052.099999904633,
+            "client-request": 26052.200000047684,
+            "client-return": 36333.59999990463,
+            "mount": 36333.59999990463
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 36333.700000047684,
+              "runtime": "vue"
+            },
+            {
+              "phase": "demo-return",
+              "at": 48190.299999952316,
+              "runtime": "vue"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 48190.299999952316,
+              "runtime": "vue",
+              "ids": ["bootstrap-2-3-2-async-region-root", "bootstrap-2-3-2-button"]
+            },
+            {
+              "phase": "prototype-return",
+              "at": 63795.299999952316,
+              "runtime": "vue"
+            },
+            {
+              "phase": "render-start",
+              "at": 63795.299999952316,
+              "runtime": "vue"
+            }
+          ]
+        },
+        {
+          "runtime": "vue2",
+          "demo": "demo-bootstrap-2-3-2-async-region",
+          "boot": {
+            "scan": 5169.700000047684,
+            "drain": 26052.200000047684,
+            "client-request": 26052.200000047684,
+            "client-return": 36333.799999952316,
+            "mount": 36333.799999952316
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 36333.89999985695,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "demo-return",
+              "at": 48190.299999952316,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 48190.299999952316,
+              "runtime": "vue2",
+              "ids": ["bootstrap-2-3-2-async-region-root", "bootstrap-2-3-2-button"]
+            },
+            {
+              "phase": "prototype-return",
+              "at": 63795.299999952316,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "render-start",
+              "at": 63795.299999952316,
+              "runtime": "vue2"
+            }
+          ]
+        },
+        {
+          "runtime": "wc",
+          "demo": "demo-bootstrap-2-3-2-calendar",
+          "boot": {
+            "scan": 5169.700000047684,
+            "drain": 26052.299999952316,
+            "client-request": 26052.299999952316,
+            "client-return": 36334.5,
+            "mount": 36334.5
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 36334.59999990463,
+              "runtime": "wc"
+            },
+            {
+              "phase": "demo-return",
+              "at": 48194.5,
+              "runtime": "wc"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 48195.89999985695,
+              "runtime": "wc",
+              "ids": [
+                "bootstrap-2-3-2-calendar-root",
+                "bootstrap-2-3-2-calendar-caption",
+                "bootstrap-2-3-2-calendar-previous",
+                "lucide-chevron-left-icon",
+                "bootstrap-2-3-2-select-root",
+                "bootstrap-2-3-2-select-trigger",
+                "bootstrap-2-3-2-select-value",
+                "bootstrap-2-3-2-select-content",
+                "bootstrap-2-3-2-select-item",
+                "bootstrap-2-3-2-calendar-next",
+                "lucide-chevron-right-icon",
+                "bootstrap-2-3-2-calendar-heading",
+                "bootstrap-2-3-2-calendar-grid",
+                "bootstrap-2-3-2-calendar-weekdays",
+                "bootstrap-2-3-2-calendar-weekday",
+                "bootstrap-2-3-2-calendar-row",
+                "bootstrap-2-3-2-calendar-day"
+              ]
+            }
+          ]
+        },
+        {
+          "runtime": "react",
+          "demo": "demo-bootstrap-2-3-2-calendar",
+          "boot": {
+            "scan": 5169.700000047684,
+            "drain": 26052.299999952316,
+            "client-request": 26052.299999952316,
+            "client-return": 36335.09999990463,
+            "mount": 36335.09999990463
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 36335.299999952316,
+              "runtime": "react"
+            },
+            {
+              "phase": "demo-return",
+              "at": 48195.89999985695,
+              "runtime": "react"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 48195.89999985695,
+              "runtime": "react",
+              "ids": [
+                "bootstrap-2-3-2-calendar-root",
+                "bootstrap-2-3-2-calendar-caption",
+                "bootstrap-2-3-2-calendar-previous",
+                "lucide-chevron-left-icon",
+                "bootstrap-2-3-2-select-root",
+                "bootstrap-2-3-2-select-trigger",
+                "bootstrap-2-3-2-select-value",
+                "bootstrap-2-3-2-select-content",
+                "bootstrap-2-3-2-select-item",
+                "bootstrap-2-3-2-calendar-next",
+                "lucide-chevron-right-icon",
+                "bootstrap-2-3-2-calendar-heading",
+                "bootstrap-2-3-2-calendar-grid",
+                "bootstrap-2-3-2-calendar-weekdays",
+                "bootstrap-2-3-2-calendar-weekday",
+                "bootstrap-2-3-2-calendar-row",
+                "bootstrap-2-3-2-calendar-day"
+              ]
+            }
+          ]
+        },
+        {
+          "runtime": "vue",
+          "demo": "demo-bootstrap-2-3-2-calendar",
+          "boot": {
+            "scan": 5169.700000047684,
+            "drain": 26052.299999952316,
+            "client-request": 26052.299999952316,
+            "client-return": 36335.299999952316,
+            "mount": 36335.299999952316
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 36335.39999985695,
+              "runtime": "vue"
+            },
+            {
+              "phase": "demo-return",
+              "at": 48195.89999985695,
+              "runtime": "vue"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 48195.89999985695,
+              "runtime": "vue",
+              "ids": [
+                "bootstrap-2-3-2-calendar-root",
+                "bootstrap-2-3-2-calendar-caption",
+                "bootstrap-2-3-2-calendar-previous",
+                "lucide-chevron-left-icon",
+                "bootstrap-2-3-2-select-root",
+                "bootstrap-2-3-2-select-trigger",
+                "bootstrap-2-3-2-select-value",
+                "bootstrap-2-3-2-select-content",
+                "bootstrap-2-3-2-select-item",
+                "bootstrap-2-3-2-calendar-next",
+                "lucide-chevron-right-icon",
+                "bootstrap-2-3-2-calendar-heading",
+                "bootstrap-2-3-2-calendar-grid",
+                "bootstrap-2-3-2-calendar-weekdays",
+                "bootstrap-2-3-2-calendar-weekday",
+                "bootstrap-2-3-2-calendar-row",
+                "bootstrap-2-3-2-calendar-day"
+              ]
+            }
+          ]
+        },
+        {
+          "runtime": "vue2",
+          "demo": "demo-bootstrap-2-3-2-calendar",
+          "boot": {
+            "scan": 5169.700000047684,
+            "drain": 26052.299999952316,
+            "client-request": 26052.299999952316,
+            "client-return": 36335.39999985695,
+            "mount": 36335.39999985695
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 36335.5,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "demo-return",
+              "at": 48195.89999985695,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 48195.89999985695,
+              "runtime": "vue2",
+              "ids": [
+                "bootstrap-2-3-2-calendar-root",
+                "bootstrap-2-3-2-calendar-caption",
+                "bootstrap-2-3-2-calendar-previous",
+                "lucide-chevron-left-icon",
+                "bootstrap-2-3-2-select-root",
+                "bootstrap-2-3-2-select-trigger",
+                "bootstrap-2-3-2-select-value",
+                "bootstrap-2-3-2-select-content",
+                "bootstrap-2-3-2-select-item",
+                "bootstrap-2-3-2-calendar-next",
+                "lucide-chevron-right-icon",
+                "bootstrap-2-3-2-calendar-heading",
+                "bootstrap-2-3-2-calendar-grid",
+                "bootstrap-2-3-2-calendar-weekdays",
+                "bootstrap-2-3-2-calendar-weekday",
+                "bootstrap-2-3-2-calendar-row",
+                "bootstrap-2-3-2-calendar-day"
+              ]
+            }
+          ]
+        },
+        {
+          "runtime": "wc",
+          "demo": "demo-bootstrap-2-3-2-checkbox-group",
+          "boot": {
+            "scan": 5169.700000047684,
+            "drain": 34067,
+            "client-request": 34067.09999990463,
+            "client-return": 36336.5,
+            "mount": 36336.5
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 36336.59999990463,
+              "runtime": "wc"
+            },
+            {
+              "phase": "demo-return",
+              "at": 48191.299999952316,
+              "runtime": "wc"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 48192.5,
+              "runtime": "wc",
+              "ids": [
+                "bootstrap-2-3-2-checkbox-group-root",
+                "bootstrap-2-3-2-checkbox-group-all",
+                "bootstrap-2-3-2-checkbox-group-item"
+              ]
+            },
+            {
+              "phase": "prototype-return",
+              "at": 63884.799999952316,
+              "runtime": "wc"
+            },
+            {
+              "phase": "render-start",
+              "at": 63884.799999952316,
+              "runtime": "wc"
+            },
+            {
+              "phase": "render-return",
+              "at": 63932.39999985695,
+              "runtime": "wc"
+            },
+            {
+              "phase": "surface-ready",
+              "at": 64125,
+              "runtime": "wc"
+            },
+            {
+              "phase": "appearance-start",
+              "at": 64125,
+              "runtime": "wc"
+            }
+          ]
+        },
+        {
+          "runtime": "react",
+          "demo": "demo-bootstrap-2-3-2-checkbox-group",
+          "boot": {
+            "scan": 5169.700000047684,
+            "drain": 34067.09999990463,
+            "client-request": 34067.09999990463,
+            "client-return": 36337.09999990463,
+            "mount": 36337.09999990463
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 36337.200000047684,
+              "runtime": "react"
+            },
+            {
+              "phase": "demo-return",
+              "at": 48192.5,
+              "runtime": "react"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 48192.59999990463,
+              "runtime": "react",
+              "ids": [
+                "bootstrap-2-3-2-checkbox-group-root",
+                "bootstrap-2-3-2-checkbox-group-all",
+                "bootstrap-2-3-2-checkbox-group-item"
+              ]
+            },
+            {
+              "phase": "prototype-return",
+              "at": 63921.5,
+              "runtime": "react"
+            },
+            {
+              "phase": "render-start",
+              "at": 63921.5,
+              "runtime": "react"
+            }
+          ]
+        },
+        {
+          "runtime": "vue",
+          "demo": "demo-bootstrap-2-3-2-checkbox-group",
+          "boot": {
+            "scan": 5169.700000047684,
+            "drain": 34067.09999990463,
+            "client-request": 34067.09999990463,
+            "client-return": 36337.200000047684,
+            "mount": 36337.200000047684
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 36337.39999985695,
+              "runtime": "vue"
+            },
+            {
+              "phase": "demo-return",
+              "at": 48192.59999990463,
+              "runtime": "vue"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 48192.59999990463,
+              "runtime": "vue",
+              "ids": [
+                "bootstrap-2-3-2-checkbox-group-root",
+                "bootstrap-2-3-2-checkbox-group-all",
+                "bootstrap-2-3-2-checkbox-group-item"
+              ]
+            },
+            {
+              "phase": "prototype-return",
+              "at": 63921.5,
+              "runtime": "vue"
+            },
+            {
+              "phase": "render-start",
+              "at": 63921.5,
+              "runtime": "vue"
+            }
+          ]
+        },
+        {
+          "runtime": "vue2",
+          "demo": "demo-bootstrap-2-3-2-checkbox-group",
+          "boot": {
+            "scan": 5169.700000047684,
+            "drain": 34067.09999990463,
+            "client-request": 34067.200000047684,
+            "client-return": 36337.39999985695,
+            "mount": 36337.39999985695
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 36337.59999990463,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "demo-return",
+              "at": 48192.59999990463,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 48192.59999990463,
+              "runtime": "vue2",
+              "ids": [
+                "bootstrap-2-3-2-checkbox-group-root",
+                "bootstrap-2-3-2-checkbox-group-all",
+                "bootstrap-2-3-2-checkbox-group-item"
+              ]
+            },
+            {
+              "phase": "prototype-return",
+              "at": 63921.59999990463,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "render-start",
+              "at": 63921.59999990463,
+              "runtime": "vue2"
+            }
+          ]
+        },
+        {
+          "runtime": "wc",
+          "demo": "demo-bootstrap-2-3-2-drawer",
+          "boot": {
+            "scan": 5169.700000047684,
+            "drain": 37279.799999952316,
+            "client-request": 37279.89999985695,
+            "client-return": 47880.700000047684,
+            "mount": 47880.700000047684
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 47880.89999985695,
+              "runtime": "wc"
+            },
+            {
+              "phase": "demo-return",
+              "at": 53512.799999952316,
+              "runtime": "wc"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 53514.09999990463,
+              "runtime": "wc",
+              "ids": [
+                "bootstrap-2-3-2-drawer-root",
+                "bootstrap-2-3-2-drawer-trigger",
+                "bootstrap-2-3-2-drawer-mask",
+                "bootstrap-2-3-2-drawer-content",
+                "bootstrap-2-3-2-drawer-handle",
+                "bootstrap-2-3-2-drawer-title",
+                "bootstrap-2-3-2-drawer-description",
+                "bootstrap-2-3-2-drawer-close"
+              ]
+            }
+          ]
+        },
+        {
+          "runtime": "react",
+          "demo": "demo-bootstrap-2-3-2-drawer",
+          "boot": {
+            "scan": 5169.700000047684,
+            "drain": 37280.299999952316,
+            "client-request": 37280.39999985695,
+            "client-return": 47881,
+            "mount": 47881
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 47881.200000047684,
+              "runtime": "react"
+            },
+            {
+              "phase": "demo-return",
+              "at": 53514.09999990463,
+              "runtime": "react"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 53514.09999990463,
+              "runtime": "react",
+              "ids": [
+                "bootstrap-2-3-2-drawer-root",
+                "bootstrap-2-3-2-drawer-trigger",
+                "bootstrap-2-3-2-drawer-mask",
+                "bootstrap-2-3-2-drawer-content",
+                "bootstrap-2-3-2-drawer-handle",
+                "bootstrap-2-3-2-drawer-title",
+                "bootstrap-2-3-2-drawer-description",
+                "bootstrap-2-3-2-drawer-close"
+              ]
+            }
+          ]
+        },
+        {
+          "runtime": "vue",
+          "demo": "demo-bootstrap-2-3-2-drawer",
+          "boot": {
+            "scan": 5169.700000047684,
+            "drain": 37280.39999985695,
+            "client-request": 37280.39999985695,
+            "client-return": 47881.200000047684,
+            "mount": 47881.200000047684
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 47881.39999985695,
+              "runtime": "vue"
+            },
+            {
+              "phase": "demo-return",
+              "at": 53514.09999990463,
+              "runtime": "vue"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 53514.09999990463,
+              "runtime": "vue",
+              "ids": [
+                "bootstrap-2-3-2-drawer-root",
+                "bootstrap-2-3-2-drawer-trigger",
+                "bootstrap-2-3-2-drawer-mask",
+                "bootstrap-2-3-2-drawer-content",
+                "bootstrap-2-3-2-drawer-handle",
+                "bootstrap-2-3-2-drawer-title",
+                "bootstrap-2-3-2-drawer-description",
+                "bootstrap-2-3-2-drawer-close"
+              ]
+            }
+          ]
+        },
+        {
+          "runtime": "vue2",
+          "demo": "demo-bootstrap-2-3-2-drawer",
+          "boot": {
+            "scan": 5169.700000047684,
+            "drain": 37280.39999985695,
+            "client-request": 37280.39999985695,
+            "client-return": 47881.39999985695,
+            "mount": 47881.39999985695
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 47881.5,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "demo-return",
+              "at": 53514.09999990463,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 53514.09999990463,
+              "runtime": "vue2",
+              "ids": [
+                "bootstrap-2-3-2-drawer-root",
+                "bootstrap-2-3-2-drawer-trigger",
+                "bootstrap-2-3-2-drawer-mask",
+                "bootstrap-2-3-2-drawer-content",
+                "bootstrap-2-3-2-drawer-handle",
+                "bootstrap-2-3-2-drawer-title",
+                "bootstrap-2-3-2-drawer-description",
+                "bootstrap-2-3-2-drawer-close"
+              ]
+            }
+          ]
+        },
+        {
+          "runtime": "wc",
+          "demo": "demo-bootstrap-2-3-2-drawer-scroll",
+          "boot": {
+            "scan": 5169.700000047684,
+            "drain": 37280.39999985695,
+            "client-request": 37280.39999985695,
+            "client-return": 47881.5,
+            "mount": 47881.5
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 47881.700000047684,
+              "runtime": "wc"
+            },
+            {
+              "phase": "demo-return",
+              "at": 53514.39999985695,
+              "runtime": "wc"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 53514.39999985695,
+              "runtime": "wc",
+              "ids": [
+                "bootstrap-2-3-2-drawer-root",
+                "bootstrap-2-3-2-drawer-trigger",
+                "bootstrap-2-3-2-drawer-mask",
+                "bootstrap-2-3-2-drawer-content",
+                "bootstrap-2-3-2-drawer-handle",
+                "bootstrap-2-3-2-drawer-title",
+                "bootstrap-2-3-2-drawer-description",
+                "bootstrap-2-3-2-drawer-close"
+              ]
+            }
+          ]
+        },
+        {
+          "runtime": "react",
+          "demo": "demo-bootstrap-2-3-2-drawer-scroll",
+          "boot": {
+            "scan": 5169.700000047684,
+            "drain": 37280.39999985695,
+            "client-request": 37280.5,
+            "client-return": 47881.700000047684,
+            "mount": 47881.700000047684
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 47881.89999985695,
+              "runtime": "react"
+            },
+            {
+              "phase": "demo-return",
+              "at": 53514.39999985695,
+              "runtime": "react"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 53514.39999985695,
+              "runtime": "react",
+              "ids": [
+                "bootstrap-2-3-2-drawer-root",
+                "bootstrap-2-3-2-drawer-trigger",
+                "bootstrap-2-3-2-drawer-mask",
+                "bootstrap-2-3-2-drawer-content",
+                "bootstrap-2-3-2-drawer-handle",
+                "bootstrap-2-3-2-drawer-title",
+                "bootstrap-2-3-2-drawer-description",
+                "bootstrap-2-3-2-drawer-close"
+              ]
+            }
+          ]
+        },
+        {
+          "runtime": "vue",
+          "demo": "demo-bootstrap-2-3-2-drawer-scroll",
+          "boot": {
+            "scan": 5169.700000047684,
+            "drain": 37280.5,
+            "client-request": 37280.5,
+            "client-return": 47881.89999985695,
+            "mount": 47881.89999985695
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 47882.09999990463,
+              "runtime": "vue"
+            },
+            {
+              "phase": "demo-return",
+              "at": 53514.39999985695,
+              "runtime": "vue"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 53514.39999985695,
+              "runtime": "vue",
+              "ids": [
+                "bootstrap-2-3-2-drawer-root",
+                "bootstrap-2-3-2-drawer-trigger",
+                "bootstrap-2-3-2-drawer-mask",
+                "bootstrap-2-3-2-drawer-content",
+                "bootstrap-2-3-2-drawer-handle",
+                "bootstrap-2-3-2-drawer-title",
+                "bootstrap-2-3-2-drawer-description",
+                "bootstrap-2-3-2-drawer-close"
+              ]
+            }
+          ]
+        },
+        {
+          "runtime": "vue2",
+          "demo": "demo-bootstrap-2-3-2-drawer-scroll",
+          "boot": {
+            "scan": 5169.700000047684,
+            "drain": 37280.5,
+            "client-request": 37280.5,
+            "client-return": 47882.09999990463,
+            "mount": 47882.09999990463
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 47882.200000047684,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "demo-return",
+              "at": 53514.39999985695,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 53514.39999985695,
+              "runtime": "vue2",
+              "ids": [
+                "bootstrap-2-3-2-drawer-root",
+                "bootstrap-2-3-2-drawer-trigger",
+                "bootstrap-2-3-2-drawer-mask",
+                "bootstrap-2-3-2-drawer-content",
+                "bootstrap-2-3-2-drawer-handle",
+                "bootstrap-2-3-2-drawer-title",
+                "bootstrap-2-3-2-drawer-description",
+                "bootstrap-2-3-2-drawer-close"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "s4-bootstrap-eager-client-control",
+      "scope": "Unchanged Chinese readiness predicate with asset/observer diagnostics",
+      "nativeExit": 1,
+      "bootstrap": {
+        "asset": "PrototypePreviewer.astro_astro_type_script_index_0_lang.Cteyk5_i.js",
+        "source": "682997e14fea0947415d40364cc25551e3818af2fe428ee140e2b882a6d9b31f",
+        "instrumented": "cd75b411241e6dc03c020850577cfe219a2956617bd41ab69b0599d54ce13dd5"
+      },
+      "client": {
+        "asset": "previewer-client.Ac4EJfJR.js",
+        "sourceSha256": "b064e19a99171fbe459359dc37814dc8863c27c9f2c856d2fb187bf37c540682",
+        "instrumentedSha256": "d3d0938e81b75ca494a7f484a6ea61dc1a4d8859a3123020111e6a8091371853"
+      },
+      "prototype": {
+        "asset": "prototype-modules.DmXR831Z.js",
+        "sourceSha256": "e67784c884d6fadc1a45e3a6c4674be0f4c08feb80c8029d78a3a8a9d70626ac",
+        "instrumentedSha256": "7930bf98d00d8e60f4d9fcc345bffa26e5da96b8667a982eeebe51ae1bf3645b",
+        "mappedImportCount": 1193
+      },
+      "entries": [
+        {
+          "asset": "_astro/demo-bootstrap-2-3-2-async-region.demo.CO76pJMm.js",
+          "sourceSha256": "5e3df1e609c6afdb5eb1554cea85fb8acb813c80eab9a5d6015f20daf717cfa1",
+          "instrumentedSha256": "ff79742a88425411f95d8a638cabf3d7416e92aaa8cc2796765256f3bf595728"
+        },
+        {
+          "asset": "_astro/demo-bootstrap-2-3-2-calendar.demo.OWPuICtm.js",
+          "sourceSha256": "9406f7fce3c6dd3ffaf00a2bae4b1c46b5d2842ef1bb6f9d150a28fe47df38c7",
+          "instrumentedSha256": "0cddb634e0e0a6aeabde17fcbae8ca8f53fe80a44d34b06f05513f95da94b624"
+        },
+        {
+          "asset": "_astro/demo-bootstrap-2-3-2-checkbox-group.demo.3tLMvlNz.js",
+          "sourceSha256": "f9cad1a8599279e6a5a5217e56168f897cda2c2bd142cd639af70b88af1c4ae3",
+          "instrumentedSha256": "d980a2b61ae0f578c37c86c857d5d242d6c838562e0fa1905c97bb32f69fe567"
+        },
+        {
+          "asset": "_astro/demo-bootstrap-2-3-2-drawer.demo.D5ESS1JM.js",
+          "sourceSha256": "9ec300e5057cf84357007285f76f326f3db10f6e38d0dfd24c9dd67a3580da3e",
+          "instrumentedSha256": "7dd7f124cb03d3376b926dc835497e463d6c0f65badd57c375f90951e530f086"
+        },
+        {
+          "asset": "_astro/demo-bootstrap-2-3-2-drawer-scroll.demo.Bs5tdtaG.js",
+          "sourceSha256": "f82b72b2703d79818aad9a2cb90491bad0618538c403ed0ba7bd6d948f984837",
+          "instrumentedSha256": "4a616cffc9b2b5985d802c41e88e7297c819cce4ce9d270221db7f0fb3c7268f"
+        }
+      ],
+      "logSha256": "2c730f99c4a8a13320a5edeb8e5c005fffecb38fb7ec509b6dc471ebd6987036",
+      "deliveredAtPageMs": 64550,
+      "batches": 25,
+      "queue": 468,
+      "admitted": 800,
+      "clientRequests": 1,
+      "inventory": {
+        "wc/generic": {
+          "total": 239,
+          "inited": 159,
+          "nonempty": 130,
+          "empty": 29,
+          "uninit": 80,
+          "mounting": 0,
+          "pending": 36
+        },
+        "react/generic": {
+          "total": 239,
+          "inited": 159,
+          "nonempty": 130,
+          "empty": 29,
+          "uninit": 80,
+          "mounting": 0,
+          "pending": 38
+        },
+        "vue/generic": {
+          "total": 239,
+          "inited": 159,
+          "nonempty": 130,
+          "empty": 29,
+          "uninit": 80,
+          "mounting": 0,
+          "pending": 36
+        },
+        "vue2/generic": {
+          "total": 239,
+          "inited": 159,
+          "nonempty": 130,
+          "empty": 29,
+          "uninit": 80,
+          "mounting": 0,
+          "pending": 36
+        },
+        "wc/fixed": {
+          "total": 78,
+          "inited": 41,
+          "nonempty": 41,
+          "empty": 0,
+          "uninit": 37,
+          "mounting": 0,
+          "pending": 0
+        },
+        "react/fixed": {
+          "total": 78,
+          "inited": 41,
+          "nonempty": 41,
+          "empty": 0,
+          "uninit": 37,
+          "mounting": 0,
+          "pending": 0
+        },
+        "vue/fixed": {
+          "total": 78,
+          "inited": 41,
+          "nonempty": 41,
+          "empty": 0,
+          "uninit": 37,
+          "mounting": 0,
+          "pending": 0
+        },
+        "vue2/fixed": {
+          "total": 78,
+          "inited": 41,
+          "nonempty": 41,
+          "empty": 0,
+          "uninit": 37,
+          "mounting": 0,
+          "pending": 0
+        }
+      },
+      "owners": [
+        {
+          "runtime": "wc",
+          "demo": "demo-bootstrap-2-3-2-async-region",
+          "boot": {
+            "scan": 5036.100000143051,
+            "drain": 25954.700000047684,
+            "client-request": 25954.700000047684,
+            "client-return": 25957.200000047684,
+            "mount": 25957.200000047684
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 25957.400000095367,
+              "runtime": "wc"
+            },
+            {
+              "phase": "demo-return",
+              "at": 47117.60000014305,
+              "runtime": "wc"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 47119.5,
+              "runtime": "wc",
+              "ids": ["bootstrap-2-3-2-async-region-root", "bootstrap-2-3-2-button"]
+            },
+            {
+              "phase": "prototype-return",
+              "at": 58214.299999952316,
+              "runtime": "wc"
+            },
+            {
+              "phase": "render-start",
+              "at": 58214.299999952316,
+              "runtime": "wc"
+            },
+            {
+              "phase": "render-return",
+              "at": 58229.5,
+              "runtime": "wc"
+            },
+            {
+              "phase": "surface-ready",
+              "at": 58307.299999952316,
+              "runtime": "wc"
+            },
+            {
+              "phase": "appearance-start",
+              "at": 58307.299999952316,
+              "runtime": "wc"
+            }
+          ]
+        },
+        {
+          "runtime": "react",
+          "demo": "demo-bootstrap-2-3-2-async-region",
+          "boot": {
+            "scan": 5036.100000143051,
+            "drain": 25954.700000047684,
+            "client-request": 25954.700000047684,
+            "client-return": 25957.799999952316,
+            "mount": 25957.799999952316
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 25957.799999952316,
+              "runtime": "react"
+            },
+            {
+              "phase": "demo-return",
+              "at": 47119.5,
+              "runtime": "react"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 47119.5,
+              "runtime": "react",
+              "ids": ["bootstrap-2-3-2-async-region-root", "bootstrap-2-3-2-button"]
+            },
+            {
+              "phase": "prototype-return",
+              "at": 58223.60000014305,
+              "runtime": "react"
+            },
+            {
+              "phase": "render-start",
+              "at": 58223.60000014305,
+              "runtime": "react"
+            },
+            {
+              "phase": "render-return",
+              "at": 61059.90000009537,
+              "runtime": "react"
+            },
+            {
+              "phase": "surface-ready",
+              "at": 62325.299999952316,
+              "runtime": "react"
+            },
+            {
+              "phase": "appearance-start",
+              "at": 62325.299999952316,
+              "runtime": "react"
+            }
+          ]
+        },
+        {
+          "runtime": "vue",
+          "demo": "demo-bootstrap-2-3-2-async-region",
+          "boot": {
+            "scan": 5036.100000143051,
+            "drain": 25954.700000047684,
+            "client-request": 25954.700000047684,
+            "client-return": 25957.799999952316,
+            "mount": 25957.799999952316
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 25957.900000095367,
+              "runtime": "vue"
+            },
+            {
+              "phase": "demo-return",
+              "at": 47119.5,
+              "runtime": "vue"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 47119.5,
+              "runtime": "vue",
+              "ids": ["bootstrap-2-3-2-async-region-root", "bootstrap-2-3-2-button"]
+            },
+            {
+              "phase": "prototype-return",
+              "at": 58223.700000047684,
+              "runtime": "vue"
+            },
+            {
+              "phase": "render-start",
+              "at": 58223.700000047684,
+              "runtime": "vue"
+            },
+            {
+              "phase": "render-return",
+              "at": 58559.5,
+              "runtime": "vue"
+            },
+            {
+              "phase": "surface-ready",
+              "at": 61118.200000047684,
+              "runtime": "vue"
+            },
+            {
+              "phase": "appearance-start",
+              "at": 61118.200000047684,
+              "runtime": "vue"
+            }
+          ]
+        },
+        {
+          "runtime": "vue2",
+          "demo": "demo-bootstrap-2-3-2-async-region",
+          "boot": {
+            "scan": 5036.100000143051,
+            "drain": 25954.700000047684,
+            "client-request": 25954.700000047684,
+            "client-return": 25958,
+            "mount": 25958
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 25958.10000014305,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "demo-return",
+              "at": 47119.5,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 47119.5,
+              "runtime": "vue2",
+              "ids": ["bootstrap-2-3-2-async-region-root", "bootstrap-2-3-2-button"]
+            },
+            {
+              "phase": "prototype-return",
+              "at": 58223.799999952316,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "render-start",
+              "at": 58223.799999952316,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "render-return",
+              "at": 58566.299999952316,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "surface-ready",
+              "at": 61170.60000014305,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "appearance-start",
+              "at": 61170.60000014305,
+              "runtime": "vue2"
+            }
+          ]
+        },
+        {
+          "runtime": "wc",
+          "demo": "demo-bootstrap-2-3-2-calendar",
+          "boot": {
+            "scan": 5036.100000143051,
+            "drain": 25954.700000047684,
+            "client-request": 25954.700000047684,
+            "client-return": 25958.700000047684,
+            "mount": 25958.700000047684
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 25958.799999952316,
+              "runtime": "wc"
+            },
+            {
+              "phase": "demo-return",
+              "at": 47121.200000047684,
+              "runtime": "wc"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 47122.700000047684,
+              "runtime": "wc",
+              "ids": [
+                "bootstrap-2-3-2-calendar-root",
+                "bootstrap-2-3-2-calendar-caption",
+                "bootstrap-2-3-2-calendar-previous",
+                "lucide-chevron-left-icon",
+                "bootstrap-2-3-2-select-root",
+                "bootstrap-2-3-2-select-trigger",
+                "bootstrap-2-3-2-select-value",
+                "bootstrap-2-3-2-select-content",
+                "bootstrap-2-3-2-select-item",
+                "bootstrap-2-3-2-calendar-next",
+                "lucide-chevron-right-icon",
+                "bootstrap-2-3-2-calendar-heading",
+                "bootstrap-2-3-2-calendar-grid",
+                "bootstrap-2-3-2-calendar-weekdays",
+                "bootstrap-2-3-2-calendar-weekday",
+                "bootstrap-2-3-2-calendar-row",
+                "bootstrap-2-3-2-calendar-day"
+              ]
+            },
+            {
+              "phase": "prototype-return",
+              "at": 58629.10000014305,
+              "runtime": "wc"
+            },
+            {
+              "phase": "render-start",
+              "at": 58629.10000014305,
+              "runtime": "wc"
+            },
+            {
+              "phase": "render-return",
+              "at": 59169.200000047684,
+              "runtime": "wc"
+            },
+            {
+              "phase": "surface-ready",
+              "at": 60904.799999952316,
+              "runtime": "wc"
+            },
+            {
+              "phase": "appearance-start",
+              "at": 60904.799999952316,
+              "runtime": "wc"
+            }
+          ]
+        },
+        {
+          "runtime": "react",
+          "demo": "demo-bootstrap-2-3-2-calendar",
+          "boot": {
+            "scan": 5036.100000143051,
+            "drain": 25954.700000047684,
+            "client-request": 25954.700000047684,
+            "client-return": 25959.200000047684,
+            "mount": 25959.200000047684
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 25959.299999952316,
+              "runtime": "react"
+            },
+            {
+              "phase": "demo-return",
+              "at": 47122.799999952316,
+              "runtime": "react"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 47122.799999952316,
+              "runtime": "react",
+              "ids": [
+                "bootstrap-2-3-2-calendar-root",
+                "bootstrap-2-3-2-calendar-caption",
+                "bootstrap-2-3-2-calendar-previous",
+                "lucide-chevron-left-icon",
+                "bootstrap-2-3-2-select-root",
+                "bootstrap-2-3-2-select-trigger",
+                "bootstrap-2-3-2-select-value",
+                "bootstrap-2-3-2-select-content",
+                "bootstrap-2-3-2-select-item",
+                "bootstrap-2-3-2-calendar-next",
+                "lucide-chevron-right-icon",
+                "bootstrap-2-3-2-calendar-heading",
+                "bootstrap-2-3-2-calendar-grid",
+                "bootstrap-2-3-2-calendar-weekdays",
+                "bootstrap-2-3-2-calendar-weekday",
+                "bootstrap-2-3-2-calendar-row",
+                "bootstrap-2-3-2-calendar-day"
+              ]
+            },
+            {
+              "phase": "prototype-return",
+              "at": 59077.90000009537,
+              "runtime": "react"
+            },
+            {
+              "phase": "render-start",
+              "at": 59077.90000009537,
+              "runtime": "react"
+            },
+            {
+              "phase": "render-return",
+              "at": 61788.200000047684,
+              "runtime": "react"
+            },
+            {
+              "phase": "surface-ready",
+              "at": 63076.10000014305,
+              "runtime": "react"
+            },
+            {
+              "phase": "appearance-start",
+              "at": 63076.10000014305,
+              "runtime": "react"
+            }
+          ]
+        },
+        {
+          "runtime": "vue",
+          "demo": "demo-bootstrap-2-3-2-calendar",
+          "boot": {
+            "scan": 5036.100000143051,
+            "drain": 25954.700000047684,
+            "client-request": 25954.700000047684,
+            "client-return": 25959.299999952316,
+            "mount": 25959.299999952316
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 25959.400000095367,
+              "runtime": "vue"
+            },
+            {
+              "phase": "demo-return",
+              "at": 47122.799999952316,
+              "runtime": "vue"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 47122.799999952316,
+              "runtime": "vue",
+              "ids": [
+                "bootstrap-2-3-2-calendar-root",
+                "bootstrap-2-3-2-calendar-caption",
+                "bootstrap-2-3-2-calendar-previous",
+                "lucide-chevron-left-icon",
+                "bootstrap-2-3-2-select-root",
+                "bootstrap-2-3-2-select-trigger",
+                "bootstrap-2-3-2-select-value",
+                "bootstrap-2-3-2-select-content",
+                "bootstrap-2-3-2-select-item",
+                "bootstrap-2-3-2-calendar-next",
+                "lucide-chevron-right-icon",
+                "bootstrap-2-3-2-calendar-heading",
+                "bootstrap-2-3-2-calendar-grid",
+                "bootstrap-2-3-2-calendar-weekdays",
+                "bootstrap-2-3-2-calendar-weekday",
+                "bootstrap-2-3-2-calendar-row",
+                "bootstrap-2-3-2-calendar-day"
+              ]
+            },
+            {
+              "phase": "prototype-return",
+              "at": 59078.299999952316,
+              "runtime": "vue"
+            },
+            {
+              "phase": "render-start",
+              "at": 59078.299999952316,
+              "runtime": "vue"
+            },
+            {
+              "phase": "render-return",
+              "at": 61215.10000014305,
+              "runtime": "vue"
+            },
+            {
+              "phase": "surface-ready",
+              "at": 61861.60000014305,
+              "runtime": "vue"
+            },
+            {
+              "phase": "appearance-start",
+              "at": 61861.60000014305,
+              "runtime": "vue"
+            }
+          ]
+        },
+        {
+          "runtime": "vue2",
+          "demo": "demo-bootstrap-2-3-2-calendar",
+          "boot": {
+            "scan": 5036.100000143051,
+            "drain": 25954.700000047684,
+            "client-request": 25954.700000047684,
+            "client-return": 25959.400000095367,
+            "mount": 25959.400000095367
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 25959.5,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "demo-return",
+              "at": 47122.799999952316,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 47122.799999952316,
+              "runtime": "vue2",
+              "ids": [
+                "bootstrap-2-3-2-calendar-root",
+                "bootstrap-2-3-2-calendar-caption",
+                "bootstrap-2-3-2-calendar-previous",
+                "lucide-chevron-left-icon",
+                "bootstrap-2-3-2-select-root",
+                "bootstrap-2-3-2-select-trigger",
+                "bootstrap-2-3-2-select-value",
+                "bootstrap-2-3-2-select-content",
+                "bootstrap-2-3-2-select-item",
+                "bootstrap-2-3-2-calendar-next",
+                "lucide-chevron-right-icon",
+                "bootstrap-2-3-2-calendar-heading",
+                "bootstrap-2-3-2-calendar-grid",
+                "bootstrap-2-3-2-calendar-weekdays",
+                "bootstrap-2-3-2-calendar-weekday",
+                "bootstrap-2-3-2-calendar-row",
+                "bootstrap-2-3-2-calendar-day"
+              ]
+            },
+            {
+              "phase": "prototype-return",
+              "at": 59078.700000047684,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "render-start",
+              "at": 59078.700000047684,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "render-return",
+              "at": 61281.799999952316,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "surface-ready",
+              "at": 61931.40000009537,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "appearance-start",
+              "at": 61931.40000009537,
+              "runtime": "vue2"
+            }
+          ]
+        },
+        {
+          "runtime": "wc",
+          "demo": "demo-bootstrap-2-3-2-checkbox-group",
+          "boot": {
+            "scan": 5036.100000143051,
+            "drain": 36168.700000047684,
+            "client-request": 36168.799999952316,
+            "client-return": 36169.200000047684,
+            "mount": 36169.299999952316
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 36169.5,
+              "runtime": "wc"
+            },
+            {
+              "phase": "demo-return",
+              "at": 49821.200000047684,
+              "runtime": "wc"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 49821.200000047684,
+              "runtime": "wc",
+              "ids": [
+                "bootstrap-2-3-2-checkbox-group-root",
+                "bootstrap-2-3-2-checkbox-group-all",
+                "bootstrap-2-3-2-checkbox-group-item"
+              ]
+            }
+          ]
+        },
+        {
+          "runtime": "react",
+          "demo": "demo-bootstrap-2-3-2-checkbox-group",
+          "boot": {
+            "scan": 5036.100000143051,
+            "drain": 36168.799999952316,
+            "client-request": 36168.799999952316,
+            "client-return": 36170.40000009537,
+            "mount": 36170.40000009537
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 36170.60000014305,
+              "runtime": "react"
+            },
+            {
+              "phase": "demo-return",
+              "at": 49821.200000047684,
+              "runtime": "react"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 49821.299999952316,
+              "runtime": "react",
+              "ids": [
+                "bootstrap-2-3-2-checkbox-group-root",
+                "bootstrap-2-3-2-checkbox-group-all",
+                "bootstrap-2-3-2-checkbox-group-item"
+              ]
+            }
+          ]
+        },
+        {
+          "runtime": "vue",
+          "demo": "demo-bootstrap-2-3-2-checkbox-group",
+          "boot": {
+            "scan": 5036.100000143051,
+            "drain": 36168.799999952316,
+            "client-request": 36168.799999952316,
+            "client-return": 36170.60000014305,
+            "mount": 36170.60000014305
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 36170.799999952316,
+              "runtime": "vue"
+            },
+            {
+              "phase": "demo-return",
+              "at": 49821.299999952316,
+              "runtime": "vue"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 49821.299999952316,
+              "runtime": "vue",
+              "ids": [
+                "bootstrap-2-3-2-checkbox-group-root",
+                "bootstrap-2-3-2-checkbox-group-all",
+                "bootstrap-2-3-2-checkbox-group-item"
+              ]
+            }
+          ]
+        },
+        {
+          "runtime": "vue2",
+          "demo": "demo-bootstrap-2-3-2-checkbox-group",
+          "boot": {
+            "scan": 5036.100000143051,
+            "drain": 36168.799999952316,
+            "client-request": 36168.799999952316,
+            "client-return": 36170.799999952316,
+            "mount": 36170.799999952316
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 36171,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "demo-return",
+              "at": 49821.299999952316,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 49821.299999952316,
+              "runtime": "vue2",
+              "ids": [
+                "bootstrap-2-3-2-checkbox-group-root",
+                "bootstrap-2-3-2-checkbox-group-all",
+                "bootstrap-2-3-2-checkbox-group-item"
+              ]
+            }
+          ]
+        },
+        {
+          "runtime": "wc",
+          "demo": "demo-bootstrap-2-3-2-drawer",
+          "boot": {
+            "scan": 5036.100000143051,
+            "drain": 42971.700000047684,
+            "client-request": 42971.799999952316,
+            "client-return": 42972.200000047684,
+            "mount": 42972.200000047684
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 42972.5,
+              "runtime": "wc"
+            },
+            {
+              "phase": "demo-return",
+              "at": 49909,
+              "runtime": "wc"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 49910.700000047684,
+              "runtime": "wc",
+              "ids": [
+                "bootstrap-2-3-2-drawer-root",
+                "bootstrap-2-3-2-drawer-trigger",
+                "bootstrap-2-3-2-drawer-mask",
+                "bootstrap-2-3-2-drawer-content",
+                "bootstrap-2-3-2-drawer-handle",
+                "bootstrap-2-3-2-drawer-title",
+                "bootstrap-2-3-2-drawer-description",
+                "bootstrap-2-3-2-drawer-close"
+              ]
+            }
+          ]
+        },
+        {
+          "runtime": "react",
+          "demo": "demo-bootstrap-2-3-2-drawer",
+          "boot": {
+            "scan": 5036.100000143051,
+            "drain": 42971.799999952316,
+            "client-request": 42971.799999952316,
+            "client-return": 42972.5,
+            "mount": 42972.5
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 42972.700000047684,
+              "runtime": "react"
+            },
+            {
+              "phase": "demo-return",
+              "at": 49910.700000047684,
+              "runtime": "react"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 49910.700000047684,
+              "runtime": "react",
+              "ids": [
+                "bootstrap-2-3-2-drawer-root",
+                "bootstrap-2-3-2-drawer-trigger",
+                "bootstrap-2-3-2-drawer-mask",
+                "bootstrap-2-3-2-drawer-content",
+                "bootstrap-2-3-2-drawer-handle",
+                "bootstrap-2-3-2-drawer-title",
+                "bootstrap-2-3-2-drawer-description",
+                "bootstrap-2-3-2-drawer-close"
+              ]
+            }
+          ]
+        },
+        {
+          "runtime": "vue",
+          "demo": "demo-bootstrap-2-3-2-drawer",
+          "boot": {
+            "scan": 5036.100000143051,
+            "drain": 42971.799999952316,
+            "client-request": 42971.799999952316,
+            "client-return": 42972.700000047684,
+            "mount": 42972.700000047684
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 42972.90000009537,
+              "runtime": "vue"
+            },
+            {
+              "phase": "demo-return",
+              "at": 49910.700000047684,
+              "runtime": "vue"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 49910.700000047684,
+              "runtime": "vue",
+              "ids": [
+                "bootstrap-2-3-2-drawer-root",
+                "bootstrap-2-3-2-drawer-trigger",
+                "bootstrap-2-3-2-drawer-mask",
+                "bootstrap-2-3-2-drawer-content",
+                "bootstrap-2-3-2-drawer-handle",
+                "bootstrap-2-3-2-drawer-title",
+                "bootstrap-2-3-2-drawer-description",
+                "bootstrap-2-3-2-drawer-close"
+              ]
+            }
+          ]
+        },
+        {
+          "runtime": "vue2",
+          "demo": "demo-bootstrap-2-3-2-drawer",
+          "boot": {
+            "scan": 5036.100000143051,
+            "drain": 42971.799999952316,
+            "client-request": 42971.799999952316,
+            "client-return": 42972.90000009537,
+            "mount": 42972.90000009537
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 42973,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "demo-return",
+              "at": 49910.700000047684,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 49910.700000047684,
+              "runtime": "vue2",
+              "ids": [
+                "bootstrap-2-3-2-drawer-root",
+                "bootstrap-2-3-2-drawer-trigger",
+                "bootstrap-2-3-2-drawer-mask",
+                "bootstrap-2-3-2-drawer-content",
+                "bootstrap-2-3-2-drawer-handle",
+                "bootstrap-2-3-2-drawer-title",
+                "bootstrap-2-3-2-drawer-description",
+                "bootstrap-2-3-2-drawer-close"
+              ]
+            }
+          ]
+        },
+        {
+          "runtime": "wc",
+          "demo": "demo-bootstrap-2-3-2-drawer-scroll",
+          "boot": {
+            "scan": 5036.100000143051,
+            "drain": 42971.799999952316,
+            "client-request": 42971.90000009537,
+            "client-return": 42973,
+            "mount": 42973
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 42973.200000047684,
+              "runtime": "wc"
+            },
+            {
+              "phase": "demo-return",
+              "at": 49910.799999952316,
+              "runtime": "wc"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 49910.799999952316,
+              "runtime": "wc",
+              "ids": [
+                "bootstrap-2-3-2-drawer-root",
+                "bootstrap-2-3-2-drawer-trigger",
+                "bootstrap-2-3-2-drawer-mask",
+                "bootstrap-2-3-2-drawer-content",
+                "bootstrap-2-3-2-drawer-handle",
+                "bootstrap-2-3-2-drawer-title",
+                "bootstrap-2-3-2-drawer-description",
+                "bootstrap-2-3-2-drawer-close"
+              ]
+            }
+          ]
+        },
+        {
+          "runtime": "react",
+          "demo": "demo-bootstrap-2-3-2-drawer-scroll",
+          "boot": {
+            "scan": 5036.100000143051,
+            "drain": 42971.90000009537,
+            "client-request": 42971.90000009537,
+            "client-return": 42973.299999952316,
+            "mount": 42973.299999952316
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 42973.40000009537,
+              "runtime": "react"
+            },
+            {
+              "phase": "demo-return",
+              "at": 49910.799999952316,
+              "runtime": "react"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 49910.90000009537,
+              "runtime": "react",
+              "ids": [
+                "bootstrap-2-3-2-drawer-root",
+                "bootstrap-2-3-2-drawer-trigger",
+                "bootstrap-2-3-2-drawer-mask",
+                "bootstrap-2-3-2-drawer-content",
+                "bootstrap-2-3-2-drawer-handle",
+                "bootstrap-2-3-2-drawer-title",
+                "bootstrap-2-3-2-drawer-description",
+                "bootstrap-2-3-2-drawer-close"
+              ]
+            }
+          ]
+        },
+        {
+          "runtime": "vue",
+          "demo": "demo-bootstrap-2-3-2-drawer-scroll",
+          "boot": {
+            "scan": 5036.100000143051,
+            "drain": 42971.90000009537,
+            "client-request": 42971.90000009537,
+            "client-return": 42973.40000009537,
+            "mount": 42973.40000009537
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 42973.60000014305,
+              "runtime": "vue"
+            },
+            {
+              "phase": "demo-return",
+              "at": 49910.90000009537,
+              "runtime": "vue"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 49911,
+              "runtime": "vue",
+              "ids": [
+                "bootstrap-2-3-2-drawer-root",
+                "bootstrap-2-3-2-drawer-trigger",
+                "bootstrap-2-3-2-drawer-mask",
+                "bootstrap-2-3-2-drawer-content",
+                "bootstrap-2-3-2-drawer-handle",
+                "bootstrap-2-3-2-drawer-title",
+                "bootstrap-2-3-2-drawer-description",
+                "bootstrap-2-3-2-drawer-close"
+              ]
+            }
+          ]
+        },
+        {
+          "runtime": "vue2",
+          "demo": "demo-bootstrap-2-3-2-drawer-scroll",
+          "boot": {
+            "scan": 5036.100000143051,
+            "drain": 42971.90000009537,
+            "client-request": 42971.90000009537,
+            "client-return": 42973.60000014305,
+            "mount": 42973.60000014305
+          },
+          "phases": [
+            {
+              "phase": "demo-start",
+              "at": 42973.700000047684,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "demo-return",
+              "at": 49911,
+              "runtime": "vue2"
+            },
+            {
+              "phase": "prototype-start",
+              "at": 49911,
+              "runtime": "vue2",
+              "ids": [
+                "bootstrap-2-3-2-drawer-root",
+                "bootstrap-2-3-2-drawer-trigger",
+                "bootstrap-2-3-2-drawer-mask",
+                "bootstrap-2-3-2-drawer-content",
+                "bootstrap-2-3-2-drawer-handle",
+                "bootstrap-2-3-2-drawer-title",
+                "bootstrap-2-3-2-drawer-description",
+                "bootstrap-2-3-2-drawer-close"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "exactProduct": {
+    "publicPackages": 47,
+    "sitePages": 685,
+    "typesExit": 0,
+    "manifestExit": 0,
+    "budgetPolicyExit": 0,
+    "nineWholeEntryRows": [
+      "PASS lucide/icons/x: 2879 / 3000 gzip bytes; overBudget=0; minified=8695 sha256=da30ebe409a83a09d2569fe2a47880a133fcbe4d554d93ea305795356c4fccdb",
+      "PASS lucide root: 637306 / 700000 gzip bytes; overBudget=0; minified=4087403 sha256=eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c",
+      "ADVISORY core root: 11378 / 7600 gzip bytes; overBudget=3778; minified=35782 sha256=0e3c868d3ef719af46085b83881b15787a94acbaf893566ceae4047ceff72b44",
+      "ADVISORY runtime root: 101213 / 78500 gzip bytes; overBudget=22713; minified=390460 sha256=0b0e275b387d948bf58ae9596d85f34adc3fd37b07339d19821fc3daafa6d28c",
+      "ADVISORY adapter-react root: 163435 / 106000 gzip bytes; overBudget=57435; minified=576464 sha256=d9fb104467b102f685e625abe18e3f768f2a93123aee28af66f4d8460a98b5fd",
+      "ADVISORY adapter-vue root: 162215 / 106000 gzip bytes; overBudget=56215; minified=571708 sha256=f0d17946712d52eff65fbe78dc65c86296306ec51df5790aecde736da0c2cf28",
+      "ADVISORY adapter-web-component root: 195119 / 132000 gzip bytes; overBudget=63119; minified=670323 sha256=bfafdab334becdb12664a80811daca6946cc88abb1d4457ef2c20af1622ff7bc",
+      "PASS prototypes-base/button: 5274 / 6000 gzip bytes; overBudget=0; minified=18158 sha256=6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67",
+      "ADVISORY prototypes-shadcn/button: 7803 / 7000 gzip bytes; overBudget=803; minified=34485 sha256=60b4ff9277e59fba01c34162ec9418282ce82c6b43e24f223a05c9e1df19db57"
+    ],
+    "native": {
+      "native": {
+        "passed": 0,
+        "failed": 2,
+        "skips": 0,
+        "failedCases": [
+          "zh-cn: native Light/split/mixed acceptance",
+          "en: native Light/split/mixed acceptance"
+        ],
+        "reportSha256": "16d80febae8cbfec45818f4800ba02132d0a60e13a2c3feb7d1fc59a2071d02f"
+      },
+      "accordion-native": {
+        "passed": 4,
+        "failed": 0,
+        "skips": 29,
+        "failedCases": [],
+        "reportSha256": "6de7e8a15837725405155fa7b3db91aa5208c703c6eb95a383f4f460d338809c"
+      },
+      "optics-native": {
+        "passed": 3,
+        "failed": 0,
+        "skips": 1,
+        "failedCases": [],
+        "reportSha256": "1899838802c305c23fed0eb3102fa14a5c7dc1a0f5877c2afada25b3340379ab"
+      },
+      "portal-native": {
+        "passed": 5,
+        "failed": 0,
+        "skips": 50,
+        "failedCases": [],
+        "reportSha256": "6705012439184648d3fd5fb74e2707b68745fa01b4d20dcf4a76c53d160c330f"
+      },
+      "preview-browser": {
+        "passed": 11,
+        "failed": 0,
+        "skips": 13,
+        "failedCases": [],
+        "reportSha256": "ab3ba7e2ed2836847f5aa0b460056ef5b3e354595df6a8a4de463c44eef525f9"
+      }
+    },
+    "preview": {
+      "head": "9d37a9590d22281e1fe0b243afea5e337ce10d07",
+      "tree": "ad0bac971d39b02f5def07ca3edeb6e3223c908e",
+      "distHashes": {
+        "zh-cn/index.html": "f9079b3482072404521115c0118a13ff82b8a6d26d253fa04717eb2666598510",
+        "zh-cn/ui-libraries/shadcn/button/index.html": "29214c5bcd2c9d2fc5e13808c4886ac5532ae85ce543fb61603026cf9bdfe8ba",
+        "zh-cn/ui-libraries/brutalist/components/button/index.html": "fd575bd7e4c0ceea01db035c07eb6db47fe28056e61947812b27a3bbfd5c543c"
+      },
+      "sourceCodeExamples": 9,
+      "renderedCodeExamples": 9,
+      "packedHeaderExit": 0,
+      "previewBrowserExit": 0,
+      "selector": "uses real family Popover Triggers|uses the same mobile shell|live available region|keeps Runtime Tabs outside"
+    },
+    "servedPreviews": {
+      "zh-cn": {
+        "bytes": 1862548,
+        "sha256": "586cdd157995337dd1747865c0ea6fd3034b6e968e9666dcda959048a84974af",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914135,
+        "sha256": "2eab5af763034b007753db22d15dd33584593f96b77702ed0f3f75362eeabe48",
+        "previews": 1268
+      }
+    },
+    "header": {
+      "head": "9d37a9590d22281e1fe0b243afea5e337ce10d07",
+      "browser": "156.0.8078.79",
+      "scope": "First animation frame control on the exact static Astro preview. Geometry reads can force layout.",
+      "results": [
+        {
+          "width": 320,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1569.1999998092651,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1687.0999999046326,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1710.1999998092651,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        },
+        {
+          "width": 390,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1530.7999999523163,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1650.2999999523163,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1678.5,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        }
+      ]
+    },
+    "matrixReadinessMs": 60000,
+    "caseLimitMs": 150000
+  }
+}

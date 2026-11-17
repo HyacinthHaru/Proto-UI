@@ -1,0 +1,895 @@
+{
+  "builtHead": "246e21faef8305abaa66993699b62ba8fa767273",
+  "scope": "Temporary compiled module-acquisition and eager-client overlays, original Chinese readiness and case deadlines.",
+  "arms": {
+    "32": {
+      "bootstrap": {
+        "asset": "PrototypePreviewer.astro_astro_type_script_index_0_lang.Cteyk5_i.js",
+        "source": "682997e14fea0947415d40364cc25551e3818af2fe428ee140e2b882a6d9b31f",
+        "instrumented": "df2dd410759db1cde400d4931c214f885d9f5de84cdff254432e490b20462350"
+      },
+      "initMarks": [
+        {
+          "stage": "start",
+          "pageMs": 5123.700000047684,
+          "owners": 1268
+        },
+        {
+          "stage": "demo-return",
+          "pageMs": 6402.200000047684,
+          "total": 317,
+          "passed": 317
+        },
+        {
+          "stage": "prototype-return",
+          "pageMs": 6926.900000095367,
+          "total": 1149,
+          "passed": 1149
+        },
+        {
+          "stage": "runtime-return",
+          "pageMs": 6927.100000143051,
+          "runtimes": ["fulfilled", "fulfilled", "fulfilled"],
+          "elapsed": 1803.4000000953674
+        }
+      ],
+      "snapshots": [
+        {
+          "pageMs": 45664.800000190735,
+          "batches": 17,
+          "queue": 724,
+          "admitted": 544,
+          "clientLoads": 1,
+          "inventory": {
+            "wc/generic": {
+              "total": 239,
+              "inited": 115,
+              "nonempty": 115,
+              "empty": 0,
+              "uninit": 124,
+              "mounting": 0,
+              "pending": 6
+            },
+            "react/generic": {
+              "total": 239,
+              "inited": 115,
+              "nonempty": 115,
+              "empty": 0,
+              "uninit": 124,
+              "mounting": 0,
+              "pending": 22
+            },
+            "vue/generic": {
+              "total": 239,
+              "inited": 115,
+              "nonempty": 115,
+              "empty": 0,
+              "uninit": 124,
+              "mounting": 0,
+              "pending": 10
+            },
+            "vue2/generic": {
+              "total": 239,
+              "inited": 115,
+              "nonempty": 115,
+              "empty": 0,
+              "uninit": 124,
+              "mounting": 0,
+              "pending": 10
+            },
+            "wc/fixed": {
+              "total": 78,
+              "inited": 21,
+              "nonempty": 21,
+              "empty": 0,
+              "uninit": 57,
+              "mounting": 0,
+              "pending": 0
+            },
+            "react/fixed": {
+              "total": 78,
+              "inited": 21,
+              "nonempty": 21,
+              "empty": 0,
+              "uninit": 57,
+              "mounting": 0,
+              "pending": 0
+            },
+            "vue/fixed": {
+              "total": 78,
+              "inited": 21,
+              "nonempty": 21,
+              "empty": 0,
+              "uninit": 57,
+              "mounting": 0,
+              "pending": 0
+            },
+            "vue2/fixed": {
+              "total": 78,
+              "inited": 21,
+              "nonempty": 21,
+              "empty": 0,
+              "uninit": 57,
+              "mounting": 0,
+              "pending": 0
+            }
+          }
+        },
+        {
+          "pageMs": 48820.60000014305,
+          "batches": 18,
+          "queue": 692,
+          "admitted": 576,
+          "clientLoads": 1,
+          "inventory": {
+            "wc/generic": {
+              "total": 239,
+              "inited": 121,
+              "nonempty": 121,
+              "empty": 0,
+              "uninit": 118,
+              "mounting": 0,
+              "pending": 12
+            },
+            "react/generic": {
+              "total": 239,
+              "inited": 121,
+              "nonempty": 121,
+              "empty": 0,
+              "uninit": 118,
+              "mounting": 0,
+              "pending": 28
+            },
+            "vue/generic": {
+              "total": 239,
+              "inited": 121,
+              "nonempty": 121,
+              "empty": 0,
+              "uninit": 118,
+              "mounting": 0,
+              "pending": 16
+            },
+            "vue2/generic": {
+              "total": 239,
+              "inited": 121,
+              "nonempty": 121,
+              "empty": 0,
+              "uninit": 118,
+              "mounting": 0,
+              "pending": 16
+            },
+            "wc/fixed": {
+              "total": 78,
+              "inited": 23,
+              "nonempty": 23,
+              "empty": 0,
+              "uninit": 55,
+              "mounting": 0,
+              "pending": 0
+            },
+            "react/fixed": {
+              "total": 78,
+              "inited": 23,
+              "nonempty": 23,
+              "empty": 0,
+              "uninit": 55,
+              "mounting": 0,
+              "pending": 0
+            },
+            "vue/fixed": {
+              "total": 78,
+              "inited": 23,
+              "nonempty": 23,
+              "empty": 0,
+              "uninit": 55,
+              "mounting": 0,
+              "pending": 0
+            },
+            "vue2/fixed": {
+              "total": 78,
+              "inited": 23,
+              "nonempty": 23,
+              "empty": 0,
+              "uninit": 55,
+              "mounting": 0,
+              "pending": 0
+            }
+          }
+        },
+        {
+          "pageMs": 57428.700000047684,
+          "batches": 19,
+          "queue": 660,
+          "admitted": 608,
+          "clientLoads": 1,
+          "inventory": {
+            "wc/generic": {
+              "total": 239,
+              "inited": 127,
+              "nonempty": 127,
+              "empty": 0,
+              "uninit": 112,
+              "mounting": 0,
+              "pending": 6
+            },
+            "react/generic": {
+              "total": 239,
+              "inited": 127,
+              "nonempty": 127,
+              "empty": 0,
+              "uninit": 112,
+              "mounting": 0,
+              "pending": 22
+            },
+            "vue/generic": {
+              "total": 239,
+              "inited": 127,
+              "nonempty": 127,
+              "empty": 0,
+              "uninit": 112,
+              "mounting": 0,
+              "pending": 12
+            },
+            "vue2/generic": {
+              "total": 239,
+              "inited": 127,
+              "nonempty": 127,
+              "empty": 0,
+              "uninit": 112,
+              "mounting": 0,
+              "pending": 12
+            },
+            "wc/fixed": {
+              "total": 78,
+              "inited": 25,
+              "nonempty": 25,
+              "empty": 0,
+              "uninit": 53,
+              "mounting": 0,
+              "pending": 0
+            },
+            "react/fixed": {
+              "total": 78,
+              "inited": 25,
+              "nonempty": 25,
+              "empty": 0,
+              "uninit": 53,
+              "mounting": 0,
+              "pending": 0
+            },
+            "vue/fixed": {
+              "total": 78,
+              "inited": 25,
+              "nonempty": 25,
+              "empty": 0,
+              "uninit": 53,
+              "mounting": 0,
+              "pending": 0
+            },
+            "vue2/fixed": {
+              "total": 78,
+              "inited": 25,
+              "nonempty": 25,
+              "empty": 0,
+              "uninit": 53,
+              "mounting": 0,
+              "pending": 0
+            }
+          }
+        },
+        {
+          "pageMs": 64176.5,
+          "batches": 20,
+          "queue": 628,
+          "admitted": 640,
+          "clientLoads": 1,
+          "inventory": {
+            "wc/generic": {
+              "total": 239,
+              "inited": 133,
+              "nonempty": 133,
+              "empty": 0,
+              "uninit": 106,
+              "mounting": 0,
+              "pending": 6
+            },
+            "react/generic": {
+              "total": 239,
+              "inited": 133,
+              "nonempty": 133,
+              "empty": 0,
+              "uninit": 106,
+              "mounting": 0,
+              "pending": 18
+            },
+            "vue/generic": {
+              "total": 239,
+              "inited": 133,
+              "nonempty": 133,
+              "empty": 0,
+              "uninit": 106,
+              "mounting": 0,
+              "pending": 12
+            },
+            "vue2/generic": {
+              "total": 239,
+              "inited": 133,
+              "nonempty": 133,
+              "empty": 0,
+              "uninit": 106,
+              "mounting": 0,
+              "pending": 12
+            },
+            "wc/fixed": {
+              "total": 78,
+              "inited": 27,
+              "nonempty": 27,
+              "empty": 0,
+              "uninit": 51,
+              "mounting": 0,
+              "pending": 0
+            },
+            "react/fixed": {
+              "total": 78,
+              "inited": 27,
+              "nonempty": 27,
+              "empty": 0,
+              "uninit": 51,
+              "mounting": 0,
+              "pending": 0
+            },
+            "vue/fixed": {
+              "total": 78,
+              "inited": 27,
+              "nonempty": 27,
+              "empty": 0,
+              "uninit": 51,
+              "mounting": 0,
+              "pending": 0
+            },
+            "vue2/fixed": {
+              "total": 78,
+              "inited": 27,
+              "nonempty": 27,
+              "empty": 0,
+              "uninit": 51,
+              "mounting": 0,
+              "pending": 0
+            }
+          }
+        },
+        {
+          "pageMs": 73430.5,
+          "batches": 21,
+          "queue": 596,
+          "admitted": 672,
+          "clientLoads": 1,
+          "inventory": {
+            "wc/generic": {
+              "total": 239,
+              "inited": 138,
+              "nonempty": 138,
+              "empty": 0,
+              "uninit": 101,
+              "mounting": 0,
+              "pending": 5
+            },
+            "react/generic": {
+              "total": 239,
+              "inited": 138,
+              "nonempty": 138,
+              "empty": 0,
+              "uninit": 101,
+              "mounting": 0,
+              "pending": 17
+            },
+            "vue/generic": {
+              "total": 239,
+              "inited": 138,
+              "nonempty": 138,
+              "empty": 0,
+              "uninit": 101,
+              "mounting": 0,
+              "pending": 11
+            },
+            "vue2/generic": {
+              "total": 239,
+              "inited": 138,
+              "nonempty": 138,
+              "empty": 0,
+              "uninit": 101,
+              "mounting": 0,
+              "pending": 11
+            },
+            "wc/fixed": {
+              "total": 78,
+              "inited": 30,
+              "nonempty": 30,
+              "empty": 0,
+              "uninit": 48,
+              "mounting": 0,
+              "pending": 0
+            },
+            "react/fixed": {
+              "total": 78,
+              "inited": 30,
+              "nonempty": 30,
+              "empty": 0,
+              "uninit": 48,
+              "mounting": 0,
+              "pending": 0
+            },
+            "vue/fixed": {
+              "total": 78,
+              "inited": 30,
+              "nonempty": 30,
+              "empty": 0,
+              "uninit": 48,
+              "mounting": 0,
+              "pending": 0
+            },
+            "vue2/fixed": {
+              "total": 78,
+              "inited": 30,
+              "nonempty": 30,
+              "empty": 0,
+              "uninit": 48,
+              "mounting": 0,
+              "pending": 0
+            }
+          }
+        }
+      ],
+      "nativeExit": 1,
+      "logSha256": "d2f07c76f54a526ede15bfd7ad491cb226e4f07f48ab46163e42874de93ef658"
+    },
+    "64": {
+      "bootstrap": {
+        "asset": "PrototypePreviewer.astro_astro_type_script_index_0_lang.Cteyk5_i.js",
+        "source": "682997e14fea0947415d40364cc25551e3818af2fe428ee140e2b882a6d9b31f",
+        "instrumented": "f88e789296957140fc3f482f6b968e1c7050cca4ba29543dc9b5d2e24dfe04b0"
+      },
+      "initMarks": [
+        {
+          "stage": "start",
+          "pageMs": 5076.400000095367,
+          "owners": 1268
+        },
+        {
+          "stage": "demo-return",
+          "pageMs": 6361.900000095367,
+          "total": 317,
+          "passed": 317
+        },
+        {
+          "stage": "prototype-return",
+          "pageMs": 6878.099999904633,
+          "total": 1149,
+          "passed": 1149
+        },
+        {
+          "stage": "runtime-return",
+          "pageMs": 6878.099999904633,
+          "runtimes": ["fulfilled", "fulfilled", "fulfilled"],
+          "elapsed": 1801.6999998092651
+        },
+        {
+          "stage": "batch",
+          "batch": 1,
+          "queue": 1204,
+          "at": 6878.200000047684,
+          "gap": null,
+          "dispatchMs": 2.299999952316284
+        },
+        {
+          "stage": "batch",
+          "batch": 2,
+          "queue": 1140,
+          "at": 6880.799999952316,
+          "gap": 0.2999999523162842,
+          "dispatchMs": 0.10000014305114746
+        },
+        {
+          "stage": "batch",
+          "batch": 3,
+          "queue": 1076,
+          "at": 6881.099999904633,
+          "gap": 0.19999980926513672,
+          "dispatchMs": 0.20000004768371582
+        },
+        {
+          "stage": "batch",
+          "batch": 4,
+          "queue": 1012,
+          "at": 6881.400000095367,
+          "gap": 0.10000014305114746,
+          "dispatchMs": 0.19999980926513672
+        },
+        {
+          "stage": "batch",
+          "batch": 5,
+          "queue": 948,
+          "at": 6881.799999952316,
+          "gap": 0.09999990463256836,
+          "dispatchMs": 0.10000014305114746
+        },
+        {
+          "stage": "batch",
+          "batch": 6,
+          "queue": 884,
+          "at": 6882.099999904633,
+          "gap": 0.19999980926513672,
+          "dispatchMs": 0.10000014305114746
+        },
+        {
+          "stage": "batch",
+          "batch": 7,
+          "queue": 820,
+          "at": 6882.299999952316,
+          "gap": 0.09999990463256836,
+          "dispatchMs": 0.20000004768371582
+        },
+        {
+          "stage": "batch",
+          "batch": 8,
+          "queue": 756,
+          "at": 34665.200000047684,
+          "gap": 27782.700000047684,
+          "dispatchMs": 0.7999999523162842
+        },
+        {
+          "stage": "batch",
+          "batch": 9,
+          "queue": 692,
+          "at": 43913,
+          "gap": 9247,
+          "dispatchMs": 0.7999999523162842
+        },
+        {
+          "stage": "batch",
+          "batch": 10,
+          "queue": 628,
+          "at": 59778,
+          "gap": 15864.099999904633,
+          "dispatchMs": 1
+        },
+        {
+          "stage": "batch",
+          "batch": 11,
+          "queue": 564,
+          "at": 72843.20000004768,
+          "gap": 13064.100000143051,
+          "dispatchMs": 1.0999999046325684
+        }
+      ],
+      "snapshots": [
+        {
+          "pageMs": 49815.299999952316,
+          "batches": 9,
+          "queue": 692,
+          "admitted": 576,
+          "clientLoads": 1,
+          "inventory": {
+            "wc/generic": {
+              "total": 239,
+              "inited": 121,
+              "nonempty": 121,
+              "empty": 0,
+              "uninit": 118,
+              "mounting": 0,
+              "pending": 23
+            },
+            "react/generic": {
+              "total": 239,
+              "inited": 121,
+              "nonempty": 121,
+              "empty": 0,
+              "uninit": 118,
+              "mounting": 0,
+              "pending": 121
+            },
+            "vue/generic": {
+              "total": 239,
+              "inited": 121,
+              "nonempty": 121,
+              "empty": 0,
+              "uninit": 118,
+              "mounting": 0,
+              "pending": 23
+            },
+            "vue2/generic": {
+              "total": 239,
+              "inited": 121,
+              "nonempty": 121,
+              "empty": 0,
+              "uninit": 118,
+              "mounting": 0,
+              "pending": 23
+            },
+            "wc/fixed": {
+              "total": 78,
+              "inited": 23,
+              "nonempty": 23,
+              "empty": 0,
+              "uninit": 55,
+              "mounting": 0,
+              "pending": 0
+            },
+            "react/fixed": {
+              "total": 78,
+              "inited": 23,
+              "nonempty": 23,
+              "empty": 0,
+              "uninit": 55,
+              "mounting": 0,
+              "pending": 0
+            },
+            "vue/fixed": {
+              "total": 78,
+              "inited": 23,
+              "nonempty": 23,
+              "empty": 0,
+              "uninit": 55,
+              "mounting": 0,
+              "pending": 0
+            },
+            "vue2/fixed": {
+              "total": 78,
+              "inited": 23,
+              "nonempty": 23,
+              "empty": 0,
+              "uninit": 55,
+              "mounting": 0,
+              "pending": 0
+            }
+          }
+        },
+        {
+          "pageMs": 57384.59999990463,
+          "batches": 9,
+          "queue": 692,
+          "admitted": 576,
+          "clientLoads": 1,
+          "inventory": {
+            "wc/generic": {
+              "total": 239,
+              "inited": 121,
+              "nonempty": 121,
+              "empty": 0,
+              "uninit": 118,
+              "mounting": 0,
+              "pending": 0
+            },
+            "react/generic": {
+              "total": 239,
+              "inited": 121,
+              "nonempty": 121,
+              "empty": 0,
+              "uninit": 118,
+              "mounting": 0,
+              "pending": 23
+            },
+            "vue/generic": {
+              "total": 239,
+              "inited": 121,
+              "nonempty": 121,
+              "empty": 0,
+              "uninit": 118,
+              "mounting": 0,
+              "pending": 12
+            },
+            "vue2/generic": {
+              "total": 239,
+              "inited": 121,
+              "nonempty": 121,
+              "empty": 0,
+              "uninit": 118,
+              "mounting": 0,
+              "pending": 12
+            },
+            "wc/fixed": {
+              "total": 78,
+              "inited": 23,
+              "nonempty": 23,
+              "empty": 0,
+              "uninit": 55,
+              "mounting": 0,
+              "pending": 0
+            },
+            "react/fixed": {
+              "total": 78,
+              "inited": 23,
+              "nonempty": 23,
+              "empty": 0,
+              "uninit": 55,
+              "mounting": 0,
+              "pending": 0
+            },
+            "vue/fixed": {
+              "total": 78,
+              "inited": 23,
+              "nonempty": 23,
+              "empty": 0,
+              "uninit": 55,
+              "mounting": 0,
+              "pending": 0
+            },
+            "vue2/fixed": {
+              "total": 78,
+              "inited": 23,
+              "nonempty": 23,
+              "empty": 0,
+              "uninit": 55,
+              "mounting": 0,
+              "pending": 0
+            }
+          }
+        },
+        {
+          "pageMs": 67889.59999990463,
+          "batches": 10,
+          "queue": 628,
+          "admitted": 640,
+          "clientLoads": 1,
+          "inventory": {
+            "wc/generic": {
+              "total": 239,
+              "inited": 133,
+              "nonempty": 133,
+              "empty": 0,
+              "uninit": 106,
+              "mounting": 0,
+              "pending": 12
+            },
+            "react/generic": {
+              "total": 239,
+              "inited": 133,
+              "nonempty": 133,
+              "empty": 0,
+              "uninit": 106,
+              "mounting": 0,
+              "pending": 35
+            },
+            "vue/generic": {
+              "total": 239,
+              "inited": 133,
+              "nonempty": 133,
+              "empty": 0,
+              "uninit": 106,
+              "mounting": 0,
+              "pending": 24
+            },
+            "vue2/generic": {
+              "total": 239,
+              "inited": 133,
+              "nonempty": 133,
+              "empty": 0,
+              "uninit": 106,
+              "mounting": 0,
+              "pending": 24
+            },
+            "wc/fixed": {
+              "total": 78,
+              "inited": 27,
+              "nonempty": 27,
+              "empty": 0,
+              "uninit": 51,
+              "mounting": 0,
+              "pending": 0
+            },
+            "react/fixed": {
+              "total": 78,
+              "inited": 27,
+              "nonempty": 27,
+              "empty": 0,
+              "uninit": 51,
+              "mounting": 0,
+              "pending": 0
+            },
+            "vue/fixed": {
+              "total": 78,
+              "inited": 27,
+              "nonempty": 27,
+              "empty": 0,
+              "uninit": 51,
+              "mounting": 0,
+              "pending": 0
+            },
+            "vue2/fixed": {
+              "total": 78,
+              "inited": 27,
+              "nonempty": 27,
+              "empty": 0,
+              "uninit": 51,
+              "mounting": 0,
+              "pending": 0
+            }
+          }
+        },
+        {
+          "pageMs": 72827.59999990463,
+          "batches": 10,
+          "queue": 628,
+          "admitted": 640,
+          "clientLoads": 1,
+          "inventory": {
+            "wc/generic": {
+              "total": 239,
+              "inited": 133,
+              "nonempty": 133,
+              "empty": 0,
+              "uninit": 106,
+              "mounting": 0,
+              "pending": 0
+            },
+            "react/generic": {
+              "total": 239,
+              "inited": 133,
+              "nonempty": 133,
+              "empty": 0,
+              "uninit": 106,
+              "mounting": 0,
+              "pending": 12
+            },
+            "vue/generic": {
+              "total": 239,
+              "inited": 133,
+              "nonempty": 133,
+              "empty": 0,
+              "uninit": 106,
+              "mounting": 0,
+              "pending": 12
+            },
+            "vue2/generic": {
+              "total": 239,
+              "inited": 133,
+              "nonempty": 133,
+              "empty": 0,
+              "uninit": 106,
+              "mounting": 0,
+              "pending": 12
+            },
+            "wc/fixed": {
+              "total": 78,
+              "inited": 27,
+              "nonempty": 27,
+              "empty": 0,
+              "uninit": 51,
+              "mounting": 0,
+              "pending": 0
+            },
+            "react/fixed": {
+              "total": 78,
+              "inited": 27,
+              "nonempty": 27,
+              "empty": 0,
+              "uninit": 51,
+              "mounting": 0,
+              "pending": 0
+            },
+            "vue/fixed": {
+              "total": 78,
+              "inited": 27,
+              "nonempty": 27,
+              "empty": 0,
+              "uninit": 51,
+              "mounting": 0,
+              "pending": 0
+            },
+            "vue2/fixed": {
+              "total": 78,
+              "inited": 27,
+              "nonempty": 27,
+              "empty": 0,
+              "uninit": 51,
+              "mounting": 0,
+              "pending": 0
+            }
+          }
+        }
+      ],
+      "nativeExit": 1,
+      "logSha256": "beea6ed9763390d9ec2a3633c6e4736b6ecae27814abf6a54e438dc78ac4164a"
+    }
+  }
+}
