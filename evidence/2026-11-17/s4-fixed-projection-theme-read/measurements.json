@@ -1,0 +1,3005 @@
+{
+  "head": "946793b2d22afa24a97d27d58ad84748ec0557c3",
+  "scope": "Separate output-bound Chromium runs of the original Chinese matrix. Recorded checkpoints describe a delivered prefix; only the batched variant changes the measured startup scheduling.",
+  "cases": {
+    "phase-census": {
+      "nativeExit": 1,
+      "postrestoreExit": 1,
+      "assets": {
+        "asset": "projection-theme.DmjJLKPq.js",
+        "source": "2f89096f31d7b6f6cefe08c9881908c5d6d6e1a8437b347e33e4d463c73a4536",
+        "instrumented": "9a5f09380201abd78d67fc68a02d460c7dc1ad9241b56b66dd8f517a590302eb"
+      },
+      "logSha256": "95f1c19c2d4ac232e8fb5f3153934f807be868b6cf583b3e405b4a580e423545",
+      "last": {
+        "kind": "checkpoint",
+        "count": 1376,
+        "pageMs": 70924.79999995232,
+        "phases": {
+          "other-scope": {
+            "reads": 164,
+            "getComputedStyle": 0.09999990463256836,
+            "firstProperty": 151.39999961853027,
+            "remainder": 5.599999904632568,
+            "slowReads": 6
+          },
+          "watch-initial": {
+            "reads": 101,
+            "getComputedStyle": 0,
+            "firstProperty": 2261.3999989032745,
+            "remainder": 3.1000001430511475,
+            "slowReads": 85
+          },
+          "watch-delivery": {
+            "reads": 1,
+            "getComputedStyle": 0,
+            "firstProperty": 38.40000009536743,
+            "remainder": 0.09999990463256836,
+            "slowReads": 1
+          },
+          "preview-root": {
+            "reads": 1110,
+            "getComputedStyle": 0.3000004291534424,
+            "firstProperty": 547.899998664856,
+            "remainder": 22.499999284744263,
+            "slowReads": 27
+          }
+        }
+      },
+      "samples": [
+        {
+          "kind": "sample",
+          "key": "other-scope",
+          "pageMs": 393.2999999523163,
+          "cssomMs": 0,
+          "firstPropertyMs": 6,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at et (/_astro/site-native-controls.gobqfI5X.js:1:11709)",
+            "    at i (/_astro/SocialIcons.astro_astro_type_script_index_0_lang.miIbSNAJ.js:1:757)",
+            "    at /_astro/SocialIcons.astro_astro_type_script_index_0_lang.miIbSNAJ.js:1:787"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "other-scope",
+          "pageMs": 413.7999999523163,
+          "cssomMs": 0,
+          "firstPropertyMs": 7.5,
+          "remainderMs": 0.19999980926513672,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at kt (/_astro/projection-materializer.Don9mCpU.js:5:83342)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82458)",
+            "    at Object.materialize (/_astro/site-header-surface.BLjRMkTO.js:1:12635)",
+            "    at Object.materialize (/_astro/site-header-surface.BLjRMkTO.js:1:14652)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-delivery",
+          "pageMs": 467.2999999523163,
+          "cssomMs": 0,
+          "firstPropertyMs": 38.40000009536743,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2000)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 531.9000000953674,
+          "cssomMs": 0,
+          "firstPropertyMs": 5.1000001430511475,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2000)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2494)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82482)",
+            "    at Object.materialize (/_astro/SiteCopyBootstrap.astro_astro_type_script_index_0_lang.Ctr0Su6k.js:1:7963)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 538.4000000953674,
+          "cssomMs": 0,
+          "firstPropertyMs": 5.200000047683716,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2000)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2494)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82482)",
+            "    at Object.materialize (/_astro/SiteCopyBootstrap.astro_astro_type_script_index_0_lang.Ctr0Su6k.js:1:7963)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 544.4000000953674,
+          "cssomMs": 0,
+          "firstPropertyMs": 5.200000047683716,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2000)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2494)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82482)",
+            "    at Object.materialize (/_astro/SiteCopyBootstrap.astro_astro_type_script_index_0_lang.Ctr0Su6k.js:1:7963)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 550.2999999523163,
+          "cssomMs": 0,
+          "firstPropertyMs": 5.199999809265137,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2000)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2494)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82482)",
+            "    at Object.materialize (/_astro/SiteCopyBootstrap.astro_astro_type_script_index_0_lang.Ctr0Su6k.js:1:7963)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 556.2000000476837,
+          "cssomMs": 0,
+          "firstPropertyMs": 5.200000047683716,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2000)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2494)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82482)",
+            "    at Object.materialize (/_astro/SiteCopyBootstrap.astro_astro_type_script_index_0_lang.Ctr0Su6k.js:1:7963)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 561.9000000953674,
+          "cssomMs": 0,
+          "firstPropertyMs": 5,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2000)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2494)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82482)",
+            "    at Object.materialize (/_astro/SiteCopyBootstrap.astro_astro_type_script_index_0_lang.Ctr0Su6k.js:1:7963)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 5514.200000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 9.5,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2000)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2494)",
+            "    at Object.materialize (/_astro/site-typography-client.Ba1T_iz1.js:1:1138)",
+            "    at async B (/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "other-scope",
+          "pageMs": 5616.600000143051,
+          "cssomMs": 0,
+          "firstPropertyMs": 34.60000014305115,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at Object.materialize (/_astro/site-typography.BXwJvIUN.js:1:6151)",
+            "    at Object.materialize (/_astro/site-typography-client.Ba1T_iz1.js:1:1111)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)",
+            "    at /_astro/projection-scope.C38VOVYm.js:1:6376",
+            "    at W (/_astro/projection-scope.C38VOVYm.js:1:3588)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6076.200000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 9,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6147.100000143051,
+          "cssomMs": 0,
+          "firstPropertyMs": 8.600000143051147,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6164.299999952316,
+          "cssomMs": 0,
+          "firstPropertyMs": 7.699999809265137,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6187.5,
+          "cssomMs": 0,
+          "firstPropertyMs": 8.5,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6212.700000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 7.299999952316284,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6267.799999952316,
+          "cssomMs": 0,
+          "firstPropertyMs": 8.599999904632568,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6298.5,
+          "cssomMs": 0,
+          "firstPropertyMs": 8.5,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6343.400000095367,
+          "cssomMs": 0,
+          "firstPropertyMs": 7.400000095367432,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6559.5,
+          "cssomMs": 0,
+          "firstPropertyMs": 8.400000095367432,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6667.900000095367,
+          "cssomMs": 0,
+          "firstPropertyMs": 7.5,
+          "remainderMs": 0.20000004768371582,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at /_astro/previewer-client.BAo6pLg8.js:3:1288",
+            "    at d (/_astro/projection-theme.DmjJLKPq.js:32:1388)",
+            "    at i (/_astro/projection-theme.DmjJLKPq.js:32:1508)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6684.700000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 12.599999904632568,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 7199.400000095367,
+          "cssomMs": 0,
+          "firstPropertyMs": 8.900000095367432,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at /_astro/previewer-client.BAo6pLg8.js:3:1288",
+            "    at d (/_astro/projection-theme.DmjJLKPq.js:32:1388)",
+            "    at i (/_astro/projection-theme.DmjJLKPq.js:32:1508)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "other-scope",
+          "pageMs": 14678.100000143051,
+          "cssomMs": 0,
+          "firstPropertyMs": 14.799999952316284,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at Object.materialize (/_astro/previewer-client.BAo6pLg8.js:2:1771)",
+            "    at async B (/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 14924.400000095367,
+          "cssomMs": 0,
+          "firstPropertyMs": 12.400000095367432,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2000)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2494)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 15270.900000095367,
+          "cssomMs": 0,
+          "firstPropertyMs": 12.299999952316284,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2000)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2494)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 15299.600000143051,
+          "cssomMs": 0,
+          "firstPropertyMs": 12.100000143051147,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2000)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2494)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 16032.700000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 14.599999904632568,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2000)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2494)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 17241,
+          "cssomMs": 0,
+          "firstPropertyMs": 19.5,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2000)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2494)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "other-scope",
+          "pageMs": 22490.700000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 18,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at Object.materialize (/_astro/previewer-client.BAo6pLg8.js:2:1771)",
+            "    at async B (/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "other-scope",
+          "pageMs": 22733.200000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 56,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at Object.materialize (/_astro/previewer-client.BAo6pLg8.js:2:1771)",
+            "    at async B (/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          ]
+        }
+      ],
+      "firstPropertyTotalMs": 2999.099997282028,
+      "sharedStartupBatches": {
+        "count": 0,
+        "sizes": {}
+      },
+      "unchangedReadinessTimeout": true
+    },
+    "passive-control": {
+      "nativeExit": 1,
+      "postrestoreExit": 1,
+      "assets": {
+        "mode": "synchronous passive initial theme reads",
+        "theme": {
+          "asset": "projection-theme.DmjJLKPq.js",
+          "source": "2f89096f31d7b6f6cefe08c9881908c5d6d6e1a8437b347e33e4d463c73a4536",
+          "instrumented": "5fc528cb70f963256649b1ca6fe964d7a8f87110ec35f6765c8be69c50e44c54"
+        },
+        "materializer": {
+          "asset": "projection-materializer.Don9mCpU.js",
+          "source": "f8aec5a9c838f01570af356f4ec0ee47ac56b1718d5d312ec9ebff56482dce5c",
+          "instrumented": "3c2dd78db06f90beb9b04b1ab7c0c5c41dd7b2db87cd7fff2302de9ca65724b7"
+        }
+      },
+      "logSha256": "1977da6a36191f9cf599d26bfdb5f1b5132eb6627aa7a511ad119e14d2a21083",
+      "last": {
+        "kind": "checkpoint",
+        "count": 1376,
+        "pageMs": 70364.89999985695,
+        "phases": {
+          "other-scope": {
+            "reads": 164,
+            "getComputedStyle": 0,
+            "firstProperty": 74.59999990463257,
+            "remainder": 3.9999992847442627,
+            "slowReads": 4
+          },
+          "watch-initial": {
+            "reads": 84,
+            "getComputedStyle": 0.10000014305114746,
+            "firstProperty": 2220.899999856949,
+            "remainder": 2.8000001907348633,
+            "slowReads": 81
+          },
+          "watch-delivery": {
+            "reads": 1,
+            "getComputedStyle": 0.09999990463256836,
+            "firstProperty": 37.299999952316284,
+            "remainder": 0.10000014305114746,
+            "slowReads": 1
+          },
+          "passive-watched-initial": {
+            "reads": 17,
+            "getComputedStyle": 0,
+            "firstProperty": 31.30000066757202,
+            "remainder": 0.5,
+            "slowReads": 6
+          },
+          "preview-root": {
+            "reads": 1110,
+            "getComputedStyle": 0.8000004291534424,
+            "firstProperty": 534.8999996185303,
+            "remainder": 21.599998474121094,
+            "slowReads": 25
+          }
+        }
+      },
+      "samples": [
+        {
+          "kind": "sample",
+          "key": "other-scope",
+          "pageMs": 322.39999985694885,
+          "cssomMs": 0,
+          "firstPropertyMs": 5.5,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at et (/_astro/site-native-controls.gobqfI5X.js:1:11709)",
+            "    at i (/_astro/SocialIcons.astro_astro_type_script_index_0_lang.miIbSNAJ.js:1:757)",
+            "    at /_astro/SocialIcons.astro_astro_type_script_index_0_lang.miIbSNAJ.js:1:787"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "other-scope",
+          "pageMs": 339.59999990463257,
+          "cssomMs": 0,
+          "firstPropertyMs": 6.5,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at kt (/_astro/projection-materializer.Don9mCpU.js:5:83528)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82458)",
+            "    at Object.materialize (/_astro/site-header-surface.BLjRMkTO.js:1:12635)",
+            "    at Object.materialize (/_astro/site-header-surface.BLjRMkTO.js:1:14652)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-delivery",
+          "pageMs": 390.2000000476837,
+          "cssomMs": 0.09999990463256836,
+          "firstPropertyMs": 37.299999952316284,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "passive-watched-initial",
+          "pageMs": 453.7000000476837,
+          "cssomMs": 0,
+          "firstPropertyMs": 5.1000001430511475,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at puiStartThemeWatch (/_astro/projection-materializer.Don9mCpU.js:5:82571)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82713)",
+            "    at Object.materialize (/_astro/SiteCopyBootstrap.astro_astro_type_script_index_0_lang.Ctr0Su6k.js:1:7963)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "passive-watched-initial",
+          "pageMs": 460.2999999523163,
+          "cssomMs": 0,
+          "firstPropertyMs": 5.200000047683716,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at puiStartThemeWatch (/_astro/projection-materializer.Don9mCpU.js:5:82571)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82713)",
+            "    at Object.materialize (/_astro/SiteCopyBootstrap.astro_astro_type_script_index_0_lang.Ctr0Su6k.js:1:7963)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "passive-watched-initial",
+          "pageMs": 466.09999990463257,
+          "cssomMs": 0,
+          "firstPropertyMs": 5.200000047683716,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at puiStartThemeWatch (/_astro/projection-materializer.Don9mCpU.js:5:82571)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82713)",
+            "    at Object.materialize (/_astro/SiteCopyBootstrap.astro_astro_type_script_index_0_lang.Ctr0Su6k.js:1:7963)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "passive-watched-initial",
+          "pageMs": 472.2999999523163,
+          "cssomMs": 0,
+          "firstPropertyMs": 5.300000190734863,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at puiStartThemeWatch (/_astro/projection-materializer.Don9mCpU.js:5:82571)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82713)",
+            "    at Object.materialize (/_astro/SiteCopyBootstrap.astro_astro_type_script_index_0_lang.Ctr0Su6k.js:1:7963)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "passive-watched-initial",
+          "pageMs": 478.2000000476837,
+          "cssomMs": 0,
+          "firstPropertyMs": 5.099999904632568,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at puiStartThemeWatch (/_astro/projection-materializer.Don9mCpU.js:5:82571)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82713)",
+            "    at Object.materialize (/_astro/SiteCopyBootstrap.astro_astro_type_script_index_0_lang.Ctr0Su6k.js:1:7963)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "passive-watched-initial",
+          "pageMs": 484.2999999523163,
+          "cssomMs": 0,
+          "firstPropertyMs": 5.200000047683716,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at puiStartThemeWatch (/_astro/projection-materializer.Don9mCpU.js:5:82571)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82713)",
+            "    at Object.materialize (/_astro/SiteCopyBootstrap.astro_astro_type_script_index_0_lang.Ctr0Su6k.js:1:7963)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 5029.299999952316,
+          "cssomMs": 0,
+          "firstPropertyMs": 10,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.materialize (/_astro/site-header-surface.BLjRMkTO.js:1:14982)",
+            "    at async B (/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 5237.299999952316,
+          "cssomMs": 0,
+          "firstPropertyMs": 9.900000095367432,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.materialize (/_astro/site-typography-client.Ba1T_iz1.js:1:1138)",
+            "    at async B (/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "other-scope",
+          "pageMs": 5338.799999952316,
+          "cssomMs": 0,
+          "firstPropertyMs": 34.59999990463257,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at Object.materialize (/_astro/site-typography.BXwJvIUN.js:1:6151)",
+            "    at Object.materialize (/_astro/site-typography-client.Ba1T_iz1.js:1:1111)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)",
+            "    at /_astro/projection-scope.C38VOVYm.js:1:6376",
+            "    at W (/_astro/projection-scope.C38VOVYm.js:1:3588)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 5763.5,
+          "cssomMs": 0.10000014305114746,
+          "firstPropertyMs": 8.399999856948853,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 5781.200000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 7.700000047683716,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 5840.200000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 7.3999998569488525,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 5882,
+          "cssomMs": 0,
+          "firstPropertyMs": 8,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 5921.099999904633,
+          "cssomMs": 0,
+          "firstPropertyMs": 7,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 5935,
+          "cssomMs": 0,
+          "firstPropertyMs": 7.700000047683716,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 5948.200000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 7.700000047683716,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6054.599999904633,
+          "cssomMs": 0,
+          "firstPropertyMs": 7.200000047683716,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6316.700000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 6.8999998569488525,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6536.5,
+          "cssomMs": 0,
+          "firstPropertyMs": 8.299999952316284,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 7012.099999904633,
+          "cssomMs": 0,
+          "firstPropertyMs": 8.200000047683716,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at /_astro/previewer-client.BAo6pLg8.js:3:1288",
+            "    at d (/_astro/projection-theme.DmjJLKPq.js:32:1388)",
+            "    at i (/_astro/projection-theme.DmjJLKPq.js:32:1635)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 10144.200000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 13.299999952316284,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "other-scope",
+          "pageMs": 14473.700000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 14.200000047683716,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at Object.materialize (/_astro/previewer-client.BAo6pLg8.js:2:1771)",
+            "    at async B (/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 14664.299999952316,
+          "cssomMs": 0,
+          "firstPropertyMs": 11.5,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 15128.200000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 11.700000047683716,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 15154.599999904633,
+          "cssomMs": 0,
+          "firstPropertyMs": 11.299999952316284,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 15776.200000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 11.5,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 16002.899999856949,
+          "cssomMs": 0,
+          "firstPropertyMs": 15.199999809265137,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 16635.89999985695,
+          "cssomMs": 0,
+          "firstPropertyMs": 15.399999856948853,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 16671.799999952316,
+          "cssomMs": 0,
+          "firstPropertyMs": 15.700000047683716,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 16689.799999952316,
+          "cssomMs": 0,
+          "firstPropertyMs": 16.40000009536743,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 16952.099999904633,
+          "cssomMs": 0,
+          "firstPropertyMs": 18.200000047683716,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 16997.5,
+          "cssomMs": 0,
+          "firstPropertyMs": 17.90000009536743,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        }
+      ],
+      "firstPropertyTotalMs": 2899.0,
+      "sharedStartupBatches": {
+        "count": 19,
+        "sizes": {
+          "3": 1,
+          "5": 2,
+          "10": 1,
+          "15": 1,
+          "110": 1,
+          "98": 1,
+          "55": 1,
+          "2": 1,
+          "17": 1,
+          "21": 1,
+          "29": 1,
+          "35": 1,
+          "28": 1,
+          "6": 1,
+          "14": 1,
+          "37": 1,
+          "32": 1,
+          "18": 1
+        }
+      },
+      "unchangedReadinessTimeout": true
+    },
+    "passive-batched": {
+      "nativeExit": 1,
+      "postrestoreExit": 1,
+      "assets": {
+        "mode": "batched passive initial theme reads",
+        "theme": {
+          "asset": "projection-theme.DmjJLKPq.js",
+          "source": "2f89096f31d7b6f6cefe08c9881908c5d6d6e1a8437b347e33e4d463c73a4536",
+          "instrumented": "5fc528cb70f963256649b1ca6fe964d7a8f87110ec35f6765c8be69c50e44c54"
+        },
+        "materializer": {
+          "asset": "projection-materializer.Don9mCpU.js",
+          "source": "f8aec5a9c838f01570af356f4ec0ee47ac56b1718d5d312ec9ebff56482dce5c",
+          "instrumented": "641df25eb618b27b9c5fe2a561d042124dd3aa4cc8b2c14a7dc2eb592edd3cd7"
+        }
+      },
+      "logSha256": "c4ee79f25e59725f009b86c9f588c0188d1d4cf191caa478906d4dd716f2d31e",
+      "last": {
+        "kind": "checkpoint",
+        "count": 1376,
+        "pageMs": 71237.59999990463,
+        "phases": {
+          "other-scope": {
+            "reads": 164,
+            "getComputedStyle": 0,
+            "firstProperty": 102.90000009536743,
+            "remainder": 2.5000007152557373,
+            "slowReads": 6
+          },
+          "watch-initial": {
+            "reads": 84,
+            "getComputedStyle": 0.19999980926513672,
+            "firstProperty": 2269.7999999523163,
+            "remainder": 2.8999998569488525,
+            "slowReads": 80
+          },
+          "watch-delivery": {
+            "reads": 1,
+            "getComputedStyle": 0,
+            "firstProperty": 38.5,
+            "remainder": 0,
+            "slowReads": 1
+          },
+          "passive-watched-initial": {
+            "reads": 17,
+            "getComputedStyle": 0,
+            "firstProperty": 0,
+            "remainder": 0.3000001907348633,
+            "slowReads": 0
+          },
+          "preview-root": {
+            "reads": 1110,
+            "getComputedStyle": 0.5999994277954102,
+            "firstProperty": 654.5,
+            "remainder": 22.00000023841858,
+            "slowReads": 33
+          }
+        }
+      },
+      "samples": [
+        {
+          "kind": "sample",
+          "key": "other-scope",
+          "pageMs": 313.59999990463257,
+          "cssomMs": 0,
+          "firstPropertyMs": 5.8999998569488525,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at et (/_astro/site-native-controls.gobqfI5X.js:1:11709)",
+            "    at i (/_astro/SocialIcons.astro_astro_type_script_index_0_lang.miIbSNAJ.js:1:757)",
+            "    at /_astro/SocialIcons.astro_astro_type_script_index_0_lang.miIbSNAJ.js:1:787"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "other-scope",
+          "pageMs": 332.7000000476837,
+          "cssomMs": 0,
+          "firstPropertyMs": 6.8999998569488525,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at kt (/_astro/projection-materializer.Don9mCpU.js:5:83716)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82458)",
+            "    at Object.materialize (/_astro/site-header-surface.BLjRMkTO.js:1:12635)",
+            "    at Object.materialize (/_astro/site-header-surface.BLjRMkTO.js:1:14652)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-delivery",
+          "pageMs": 384.59999990463257,
+          "cssomMs": 0,
+          "firstPropertyMs": 38.5,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 5170.400000095367,
+          "cssomMs": 0,
+          "firstPropertyMs": 10.200000047683716,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.materialize (/_astro/site-header-surface.BLjRMkTO.js:1:14982)",
+            "    at async B (/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "other-scope",
+          "pageMs": 5447.400000095367,
+          "cssomMs": 0,
+          "firstPropertyMs": 34.90000009536743,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at Object.materialize (/_astro/site-typography.BXwJvIUN.js:1:6151)",
+            "    at Object.materialize (/_astro/site-typography-client.Ba1T_iz1.js:1:1111)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)",
+            "    at /_astro/projection-scope.C38VOVYm.js:1:6376",
+            "    at W (/_astro/projection-scope.C38VOVYm.js:1:3588)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 5920.299999952316,
+          "cssomMs": 0,
+          "firstPropertyMs": 11.200000047683716,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 5947.900000095367,
+          "cssomMs": 0,
+          "firstPropertyMs": 8.200000047683716,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6028.700000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 6.900000095367432,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6044.5,
+          "cssomMs": 0,
+          "firstPropertyMs": 7.799999952316284,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6081.700000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 7.299999952316284,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6094.900000095367,
+          "cssomMs": 0,
+          "firstPropertyMs": 8,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6182.5,
+          "cssomMs": 0,
+          "firstPropertyMs": 7.099999904632568,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6213.200000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 7.200000047683716,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at /_astro/previewer-client.BAo6pLg8.js:3:1288",
+            "    at d (/_astro/projection-theme.DmjJLKPq.js:32:1388)",
+            "    at i (/_astro/projection-theme.DmjJLKPq.js:32:1635)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6402.099999904633,
+          "cssomMs": 0,
+          "firstPropertyMs": 8.299999952316284,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6430.099999904633,
+          "cssomMs": 0,
+          "firstPropertyMs": 7.199999809265137,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6701.299999952316,
+          "cssomMs": 0,
+          "firstPropertyMs": 8.200000047683716,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 10287.099999904633,
+          "cssomMs": 0,
+          "firstPropertyMs": 10.299999952316284,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "other-scope",
+          "pageMs": 14891.200000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 15.299999952316284,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at Object.materialize (/_astro/previewer-client.BAo6pLg8.js:2:1771)",
+            "    at async B (/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "other-scope",
+          "pageMs": 15016.400000095367,
+          "cssomMs": 0,
+          "firstPropertyMs": 12.200000047683716,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at Object.materialize (/_astro/previewer-client.BAo6pLg8.js:2:1771)",
+            "    at async B (/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 15271.599999904633,
+          "cssomMs": 0,
+          "firstPropertyMs": 11.599999904632568,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 15621.200000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 11.700000047683716,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 15648,
+          "cssomMs": 0,
+          "firstPropertyMs": 11.5,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "other-scope",
+          "pageMs": 16162,
+          "cssomMs": 0,
+          "firstPropertyMs": 13.300000190734863,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at Object.materialize (/_astro/previewer-client.BAo6pLg8.js:2:1771)",
+            "    at async B (/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 16255,
+          "cssomMs": 0,
+          "firstPropertyMs": 12.099999904632568,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 16877.900000095367,
+          "cssomMs": 0,
+          "firstPropertyMs": 16.700000047683716,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 17171.200000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 18.5,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 17216.200000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 17.799999952316284,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 17237.400000095367,
+          "cssomMs": 0,
+          "firstPropertyMs": 18,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 17422.700000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 16.200000047683716,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 17461.799999952316,
+          "cssomMs": 0,
+          "firstPropertyMs": 17,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 21102.200000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 19.299999952316284,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        }
+      ],
+      "firstPropertyTotalMs": 3065.7000000476837,
+      "sharedStartupBatches": {
+        "count": 20,
+        "sizes": {
+          "17": 1,
+          "3": 1,
+          "5": 1,
+          "13": 1,
+          "45": 1,
+          "81": 1,
+          "99": 1,
+          "40": 1,
+          "12": 1,
+          "4": 1,
+          "16": 1,
+          "22": 1,
+          "30": 1,
+          "34": 1,
+          "28": 1,
+          "6": 1,
+          "10": 1,
+          "41": 1,
+          "32": 1,
+          "18": 1
+        }
+      },
+      "unchangedReadinessTimeout": true
+    },
+    "fixed-control": {
+      "nativeExit": 1,
+      "postrestoreExit": 1,
+      "assets": {
+        "mode": "synchronous fixed first publication",
+        "theme": {
+          "asset": "projection-theme.DmjJLKPq.js",
+          "source": "2f89096f31d7b6f6cefe08c9881908c5d6d6e1a8437b347e33e4d463c73a4536",
+          "instrumented": "5fc528cb70f963256649b1ca6fe964d7a8f87110ec35f6765c8be69c50e44c54"
+        },
+        "client": {
+          "asset": "previewer-client.BAo6pLg8.js",
+          "source": "d4a24a090b668c06a8b1cd69ac7c887bd7ed466ff0e4c9c54bcfad9e7a2a221f",
+          "instrumented": "9d218e968cf6ce3d0802a303e12399c4fbc70da61ea0981ad44f442d34b33d40"
+        }
+      },
+      "logSha256": "d0be938eb0d19cf174a2b47ce50609131096b165415c78d46f287ec371a3902f",
+      "last": {
+        "kind": "checkpoint",
+        "count": 1376,
+        "pageMs": 70276.59999990463,
+        "phases": {
+          "other-scope": {
+            "reads": 164,
+            "getComputedStyle": 0.09999990463256836,
+            "firstProperty": 96.10000038146973,
+            "remainder": 3.2000010013580322,
+            "slowReads": 5
+          },
+          "watch-initial": {
+            "reads": 21,
+            "getComputedStyle": 0,
+            "firstProperty": 51.700000047683716,
+            "remainder": 0.3000004291534424,
+            "slowReads": 8
+          },
+          "watch-delivery": {
+            "reads": 1,
+            "getComputedStyle": 0,
+            "firstProperty": 38,
+            "remainder": 0.09999990463256836,
+            "slowReads": 1
+          },
+          "preview-root": {
+            "reads": 1110,
+            "getComputedStyle": 0.20000028610229492,
+            "firstProperty": 650.8000004291534,
+            "remainder": 20.09999990463257,
+            "slowReads": 30
+          },
+          "fixed-first-commit": {
+            "reads": 80,
+            "getComputedStyle": 0,
+            "firstProperty": 2166.3999989032745,
+            "remainder": 3.200000524520874,
+            "slowReads": 77
+          }
+        }
+      },
+      "samples": [
+        {
+          "kind": "sample",
+          "key": "other-scope",
+          "pageMs": 334.89999985694885,
+          "cssomMs": 0,
+          "firstPropertyMs": 6.699999809265137,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at kt (/_astro/projection-materializer.Don9mCpU.js:5:83342)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82458)",
+            "    at Object.materialize (/_astro/site-header-surface.BLjRMkTO.js:1:12635)",
+            "    at Object.materialize (/_astro/site-header-surface.BLjRMkTO.js:1:14652)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-delivery",
+          "pageMs": 386.59999990463257,
+          "cssomMs": 0,
+          "firstPropertyMs": 38,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 452.5,
+          "cssomMs": 0,
+          "firstPropertyMs": 5.299999952316284,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82482)",
+            "    at Object.materialize (/_astro/SiteCopyBootstrap.astro_astro_type_script_index_0_lang.Ctr0Su6k.js:1:7963)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 459.2999999523163,
+          "cssomMs": 0,
+          "firstPropertyMs": 5.400000095367432,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82482)",
+            "    at Object.materialize (/_astro/SiteCopyBootstrap.astro_astro_type_script_index_0_lang.Ctr0Su6k.js:1:7963)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 465.2999999523163,
+          "cssomMs": 0,
+          "firstPropertyMs": 5.299999952316284,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82482)",
+            "    at Object.materialize (/_astro/SiteCopyBootstrap.astro_astro_type_script_index_0_lang.Ctr0Su6k.js:1:7963)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 471.39999985694885,
+          "cssomMs": 0,
+          "firstPropertyMs": 5.3999998569488525,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82482)",
+            "    at Object.materialize (/_astro/SiteCopyBootstrap.astro_astro_type_script_index_0_lang.Ctr0Su6k.js:1:7963)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 477.5,
+          "cssomMs": 0,
+          "firstPropertyMs": 5.5,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82482)",
+            "    at Object.materialize (/_astro/SiteCopyBootstrap.astro_astro_type_script_index_0_lang.Ctr0Su6k.js:1:7963)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 483.5,
+          "cssomMs": 0,
+          "firstPropertyMs": 5.099999904632568,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82482)",
+            "    at Object.materialize (/_astro/SiteCopyBootstrap.astro_astro_type_script_index_0_lang.Ctr0Su6k.js:1:7963)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 5161.799999952316,
+          "cssomMs": 0,
+          "firstPropertyMs": 9.400000095367432,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.materialize (/_astro/site-header-surface.BLjRMkTO.js:1:14982)",
+            "    at async B (/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 5383.5,
+          "cssomMs": 0,
+          "firstPropertyMs": 9.400000095367432,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.materialize (/_astro/site-typography-client.Ba1T_iz1.js:1:1138)",
+            "    at async B (/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "other-scope",
+          "pageMs": 5486.200000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 35.200000047683716,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at Object.materialize (/_astro/site-typography.BXwJvIUN.js:1:6151)",
+            "    at Object.materialize (/_astro/site-typography-client.Ba1T_iz1.js:1:1111)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)",
+            "    at /_astro/projection-scope.C38VOVYm.js:1:6376",
+            "    at W (/_astro/projection-scope.C38VOVYm.js:1:3588)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 5926.399999856949,
+          "cssomMs": 0,
+          "firstPropertyMs": 9,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 5951.299999952316,
+          "cssomMs": 0,
+          "firstPropertyMs": 8.400000095367432,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 5991,
+          "cssomMs": 0,
+          "firstPropertyMs": 8.600000143051147,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6048.200000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 9,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6079.099999904633,
+          "cssomMs": 0,
+          "firstPropertyMs": 7.599999904632568,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6105.5,
+          "cssomMs": 0,
+          "firstPropertyMs": 8.199999809265137,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6120.200000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 8.200000047683716,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6195.599999904633,
+          "cssomMs": 0,
+          "firstPropertyMs": 7,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6223.5,
+          "cssomMs": 0,
+          "firstPropertyMs": 7.3999998569488525,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6239.700000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 8.099999904632568,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6499.599999904633,
+          "cssomMs": 0,
+          "firstPropertyMs": 8.600000143051147,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at /_astro/previewer-client.BAo6pLg8.js:3:1288",
+            "    at d (/_astro/projection-theme.DmjJLKPq.js:32:1388)",
+            "    at i (/_astro/projection-theme.DmjJLKPq.js:32:1635)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6515.599999904633,
+          "cssomMs": 0,
+          "firstPropertyMs": 12.399999856948853,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:3:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "other-scope",
+          "pageMs": 13537.599999904633,
+          "cssomMs": 0,
+          "firstPropertyMs": 14.099999904632568,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at Object.materialize (/_astro/previewer-client.BAo6pLg8.js:2:1771)",
+            "    at async B (/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "other-scope",
+          "pageMs": 13579.299999952316,
+          "cssomMs": 0,
+          "firstPropertyMs": 13.299999952316284,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at Object.materialize (/_astro/previewer-client.BAo6pLg8.js:2:1771)",
+            "    at async B (/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "fixed-first-commit",
+          "pageMs": 14591.299999952316,
+          "cssomMs": 0,
+          "firstPropertyMs": 11.900000095367432,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "fixed-first-commit",
+          "pageMs": 14902.700000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 11.800000190734863,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "fixed-first-commit",
+          "pageMs": 14929.899999856949,
+          "cssomMs": 0,
+          "firstPropertyMs": 11.899999856948853,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "fixed-first-commit",
+          "pageMs": 15742.099999904633,
+          "cssomMs": 0,
+          "firstPropertyMs": 11.799999952316284,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "other-scope",
+          "pageMs": 15945.399999856949,
+          "cssomMs": 0,
+          "firstPropertyMs": 12.900000095367432,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at Object.materialize (/_astro/previewer-client.BAo6pLg8.js:2:1771)",
+            "    at async B (/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "fixed-first-commit",
+          "pageMs": 16572.200000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 13.800000190734863,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "fixed-first-commit",
+          "pageMs": 16860.39999985695,
+          "cssomMs": 0,
+          "firstPropertyMs": 18.299999952316284,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "fixed-first-commit",
+          "pageMs": 16904.599999904633,
+          "cssomMs": 0,
+          "firstPropertyMs": 17.799999952316284,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "fixed-first-commit",
+          "pageMs": 16926.200000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 18.299999952316284,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "fixed-first-commit",
+          "pageMs": 17117.39999985695,
+          "cssomMs": 0,
+          "firstPropertyMs": 15.900000095367432,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "fixed-first-commit",
+          "pageMs": 17153.39999985695,
+          "cssomMs": 0,
+          "firstPropertyMs": 15.5,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "fixed-first-commit",
+          "pageMs": 20822.5,
+          "cssomMs": 0,
+          "firstPropertyMs": 18.59999990463257,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "fixed-first-commit",
+          "pageMs": 21283.700000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 17.600000143051147,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.prepareCommit (/_astro/previewer-client.BAo6pLg8.js:2:2823)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:4052)"
+          ]
+        }
+      ],
+      "firstPropertyTotalMs": 3002.9999997615814,
+      "sharedStartupBatches": {
+        "count": 18,
+        "sizes": {
+          "3": 2,
+          "9": 1,
+          "16": 1,
+          "73": 1,
+          "93": 1,
+          "104": 1,
+          "2": 1,
+          "15": 1,
+          "26": 2,
+          "33": 2,
+          "30": 1,
+          "6": 1,
+          "10": 1,
+          "41": 1,
+          "17": 1
+        }
+      },
+      "unchangedReadinessTimeout": true
+    },
+    "fixed-batched": {
+      "nativeExit": 1,
+      "postrestoreExit": 1,
+      "assets": {
+        "mode": "scheduled fixed first publication",
+        "theme": {
+          "asset": "projection-theme.DmjJLKPq.js",
+          "source": "2f89096f31d7b6f6cefe08c9881908c5d6d6e1a8437b347e33e4d463c73a4536",
+          "instrumented": "5fc528cb70f963256649b1ca6fe964d7a8f87110ec35f6765c8be69c50e44c54"
+        },
+        "client": {
+          "asset": "previewer-client.BAo6pLg8.js",
+          "source": "d4a24a090b668c06a8b1cd69ac7c887bd7ed466ff0e4c9c54bcfad9e7a2a221f",
+          "instrumented": "5b588ab7224e83990b0a4d2f802f0b5b81d432fcb371f48f3e1555a92318f93a"
+        }
+      },
+      "logSha256": "0d7a3a60f6fa725279f9fea87b4a04762f0d0674c9805975cc3cca3ff1085f15",
+      "last": {
+        "kind": "checkpoint",
+        "count": 1376,
+        "pageMs": 68079.89999985695,
+        "phases": {
+          "other-scope": {
+            "reads": 164,
+            "getComputedStyle": 0.19999980926513672,
+            "firstProperty": 88.29999923706055,
+            "remainder": 3.5,
+            "slowReads": 5
+          },
+          "watch-initial": {
+            "reads": 21,
+            "getComputedStyle": 0.10000014305114746,
+            "firstProperty": 50.59999966621399,
+            "remainder": 0.7000002861022949,
+            "slowReads": 8
+          },
+          "watch-delivery": {
+            "reads": 1,
+            "getComputedStyle": 0,
+            "firstProperty": 38.5,
+            "remainder": 0,
+            "slowReads": 1
+          },
+          "preview-root": {
+            "reads": 1110,
+            "getComputedStyle": 0.2999997138977051,
+            "firstProperty": 617.9000005722046,
+            "remainder": 20.19999885559082,
+            "slowReads": 30
+          },
+          "fixed-first-commit": {
+            "reads": 80,
+            "getComputedStyle": 0,
+            "firstProperty": 0,
+            "remainder": 1.1999998092651367,
+            "slowReads": 0
+          }
+        }
+      },
+      "samples": [
+        {
+          "kind": "sample",
+          "key": "other-scope",
+          "pageMs": 328.89999985694885,
+          "cssomMs": 0,
+          "firstPropertyMs": 5.5,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at et (/_astro/site-native-controls.gobqfI5X.js:1:11709)",
+            "    at i (/_astro/SocialIcons.astro_astro_type_script_index_0_lang.miIbSNAJ.js:1:757)",
+            "    at /_astro/SocialIcons.astro_astro_type_script_index_0_lang.miIbSNAJ.js:1:787"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "other-scope",
+          "pageMs": 346.09999990463257,
+          "cssomMs": 0,
+          "firstPropertyMs": 6.599999904632568,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at kt (/_astro/projection-materializer.Don9mCpU.js:5:83342)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82458)",
+            "    at Object.materialize (/_astro/site-header-surface.BLjRMkTO.js:1:12635)",
+            "    at Object.materialize (/_astro/site-header-surface.BLjRMkTO.js:1:14652)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-delivery",
+          "pageMs": 397.89999985694885,
+          "cssomMs": 0,
+          "firstPropertyMs": 38.5,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 463.89999985694885,
+          "cssomMs": 0,
+          "firstPropertyMs": 5.099999904632568,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82482)",
+            "    at Object.materialize (/_astro/SiteCopyBootstrap.astro_astro_type_script_index_0_lang.Ctr0Su6k.js:1:7963)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 470.7000000476837,
+          "cssomMs": 0,
+          "firstPropertyMs": 5.299999952316284,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82482)",
+            "    at Object.materialize (/_astro/SiteCopyBootstrap.astro_astro_type_script_index_0_lang.Ctr0Su6k.js:1:7963)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 476.7000000476837,
+          "cssomMs": 0,
+          "firstPropertyMs": 5.200000047683716,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82482)",
+            "    at Object.materialize (/_astro/SiteCopyBootstrap.astro_astro_type_script_index_0_lang.Ctr0Su6k.js:1:7963)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 482.7999999523163,
+          "cssomMs": 0,
+          "firstPropertyMs": 5.5,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82482)",
+            "    at Object.materialize (/_astro/SiteCopyBootstrap.astro_astro_type_script_index_0_lang.Ctr0Su6k.js:1:7963)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 488.7999999523163,
+          "cssomMs": 0,
+          "firstPropertyMs": 5.200000047683716,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82482)",
+            "    at Object.materialize (/_astro/SiteCopyBootstrap.astro_astro_type_script_index_0_lang.Ctr0Su6k.js:1:7963)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 494.7000000476837,
+          "cssomMs": 0,
+          "firstPropertyMs": 5.099999904632568,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Wo (/_astro/projection-materializer.Don9mCpU.js:5:82482)",
+            "    at Object.materialize (/_astro/SiteCopyBootstrap.astro_astro_type_script_index_0_lang.Ctr0Su6k.js:1:7963)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 5229.899999856949,
+          "cssomMs": 0.10000014305114746,
+          "firstPropertyMs": 8.899999856948853,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.materialize (/_astro/site-header-surface.BLjRMkTO.js:1:14982)",
+            "    at async B (/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "watch-initial",
+          "pageMs": 5452,
+          "cssomMs": 0,
+          "firstPropertyMs": 9.600000143051147,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at m (/_astro/projection-theme.DmjJLKPq.js:32:2142)",
+            "    at $ (/_astro/projection-theme.DmjJLKPq.js:32:2654)",
+            "    at Object.materialize (/_astro/site-typography-client.Ba1T_iz1.js:1:1138)",
+            "    at async B (/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "other-scope",
+          "pageMs": 5553.299999952316,
+          "cssomMs": 0,
+          "firstPropertyMs": 35,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at Object.materialize (/_astro/site-typography.BXwJvIUN.js:1:6151)",
+            "    at Object.materialize (/_astro/site-typography-client.Ba1T_iz1.js:1:1111)",
+            "    at B (/_astro/projection-scope.C38VOVYm.js:1:3787)",
+            "    at /_astro/projection-scope.C38VOVYm.js:1:6376",
+            "    at W (/_astro/projection-scope.C38VOVYm.js:1:3588)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 5985.899999856949,
+          "cssomMs": 0,
+          "firstPropertyMs": 9.200000047683716,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:13:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6000.799999952316,
+          "cssomMs": 0,
+          "firstPropertyMs": 8.099999904632568,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:13:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6038.399999856949,
+          "cssomMs": 0,
+          "firstPropertyMs": 7.299999952316284,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:13:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6072.700000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 8.200000047683716,
+          "remainderMs": 0.10000014305114746,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:13:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6111.299999952316,
+          "cssomMs": 0,
+          "firstPropertyMs": 7.200000047683716,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:13:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6127.099999904633,
+          "cssomMs": 0,
+          "firstPropertyMs": 8.400000095367432,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:13:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6202.5,
+          "cssomMs": 0,
+          "firstPropertyMs": 6.6000001430511475,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:13:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6392.399999856949,
+          "cssomMs": 0,
+          "firstPropertyMs": 8.199999809265137,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:13:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6441.099999904633,
+          "cssomMs": 0,
+          "firstPropertyMs": 7.700000047683716,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:13:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6470.299999952316,
+          "cssomMs": 0,
+          "firstPropertyMs": 7.300000190734863,
+          "remainderMs": 0.09999990463256836,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:13:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6567.399999856949,
+          "cssomMs": 0,
+          "firstPropertyMs": 7.3999998569488525,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:13:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "preview-root",
+          "pageMs": 6618.399999856949,
+          "cssomMs": 0,
+          "firstPropertyMs": 7.299999952316284,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at I (/_astro/previewer-client.BAo6pLg8.js:13:831)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "other-scope",
+          "pageMs": 14757.799999952316,
+          "cssomMs": 0,
+          "firstPropertyMs": 13.099999904632568,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at Object.materialize (/_astro/previewer-client.BAo6pLg8.js:2:1804)",
+            "    at async B (/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          ]
+        },
+        {
+          "kind": "sample",
+          "key": "other-scope",
+          "pageMs": 16130.200000047684,
+          "cssomMs": 0,
+          "firstPropertyMs": 13,
+          "remainderMs": 0,
+          "stack": [
+            "    at T (/_astro/projection-theme.DmjJLKPq.js:32:648)",
+            "    at k (/_astro/projection-theme.DmjJLKPq.js:32:924)",
+            "    at Object.materialize (/_astro/previewer-client.BAo6pLg8.js:2:1804)",
+            "    at async B (/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          ]
+        }
+      ],
+      "firstPropertyTotalMs": 795.2999994754791,
+      "sharedStartupBatches": {
+        "count": 19,
+        "sizes": {
+          "5": 2,
+          "6": 1,
+          "11": 1,
+          "92": 1,
+          "38": 1,
+          "101": 1,
+          "49": 1,
+          "4": 1,
+          "25": 1,
+          "29": 2,
+          "39": 1,
+          "65": 1,
+          "12": 2,
+          "47": 1,
+          "33": 1,
+          "18": 1
+        }
+      },
+      "unchangedReadinessTimeout": true
+    }
+  },
+  "environment": {
+    "browser": "156.0.8078.79",
+    "localRunner": "Darwin arm64",
+    "readinessMs": 60000,
+    "caseMs": 150000,
+    "previews": 1268
+  },
+  "nativeHandoff": [
+    {
+      "control": "stale",
+      "variant": "direct",
+      "assertionExit": 0,
+      "asset": {
+        "mode": "direct",
+        "asset": "previewer-client.BAo6pLg8.js",
+        "source": "d4a24a090b668c06a8b1cd69ac7c887bd7ed466ff0e4c9c54bcfad9e7a2a221f",
+        "instrumented": "c08ccead8bb94d34033c77b517ec6f094b8fe7f8cbd63459a5bbfc7326319201"
+      },
+      "resultSha256": "0367e11794f5c345628f81757758c3f8014b006fbb64a56de9a75d71694eef37",
+      "instrumentedTestSha256": "8157a376253570b5d6634ee7f9dedae95451c1280bfcaea8e2dcb9c18d243eb3",
+      "servedHTMLSha256": "63ef566bba08f7fb6763c8eba6e4bdf1279a4aed04a0592376b3fb5c2257469c",
+      "facts": {
+        "actualBrowser": "156.0.8078.79",
+        "rows": [
+          {
+            "requestedBackground": "rgb(13, 29, 47)",
+            "requestedRadius": "17px",
+            "scopeBackground": "rgb(13, 29, 47)",
+            "scopeRadius": "17px",
+            "browserNow": 392.5
+          }
+        ],
+        "afterReady": {
+          "rootBackground": "rgb(13, 29, 47)",
+          "scopeBackground": "rgb(13, 29, 47)",
+          "rootRadius": "17px",
+          "scopeRadius": "17px"
+        }
+      }
+    },
+    {
+      "control": "stale",
+      "variant": "batched",
+      "assertionExit": 1,
+      "asset": {
+        "mode": "batched",
+        "asset": "previewer-client.BAo6pLg8.js",
+        "source": "d4a24a090b668c06a8b1cd69ac7c887bd7ed466ff0e4c9c54bcfad9e7a2a221f",
+        "instrumented": "1506a4bf2f9377a661bb6a4fea142311c735859d0a1062414b7ec0856cf3b18a"
+      },
+      "resultSha256": "45276ddbf3fdc7458630634f59fa5ca88f9bd6670c7d0a6a4720c04b09a45628",
+      "instrumentedTestSha256": "8157a376253570b5d6634ee7f9dedae95451c1280bfcaea8e2dcb9c18d243eb3",
+      "servedHTMLSha256": "63ef566bba08f7fb6763c8eba6e4bdf1279a4aed04a0592376b3fb5c2257469c",
+      "facts": {
+        "actualBrowser": "156.0.8078.79",
+        "rows": [
+          {
+            "requestedBackground": "rgb(13, 29, 47)",
+            "requestedRadius": "17px",
+            "scopeBackground": "lab(100% 0 0)",
+            "scopeRadius": ".625rem",
+            "browserNow": 394.5
+          }
+        ],
+        "afterReady": {
+          "rootBackground": "rgb(13, 29, 47)",
+          "scopeBackground": "lab(100% 0 0)",
+          "rootRadius": "17px",
+          "scopeRadius": ".625rem"
+        }
+      }
+    },
+    {
+      "control": "guarded",
+      "variant": "guarded-stable",
+      "assertionExit": 0,
+      "asset": {
+        "mode": "guarded-stable",
+        "asset": "previewer-client.BAo6pLg8.js",
+        "source": "d4a24a090b668c06a8b1cd69ac7c887bd7ed466ff0e4c9c54bcfad9e7a2a221f",
+        "instrumented": "2e978d5aca9d004cae7e185ea1cc8ea52aded888508a3ee1491ba84be733078b"
+      },
+      "resultSha256": "9d8587d0f2abb651238114f06e442cf565a975ca5ec4df659addb6b44f440804",
+      "instrumentedTestSha256": "2e43f52817127b95384ff06d3589438da7413509e76233bdf452d38223dcaded",
+      "servedHTMLSha256": "63ef566bba08f7fb6763c8eba6e4bdf1279a4aed04a0592376b3fb5c2257469c",
+      "facts": {
+        "actualBrowser": "156.0.8078.79",
+        "rows": [
+          {
+            "requestedBackground": "lab(100% 0 0)",
+            "requestedRadius": ".625rem",
+            "resampled": false,
+            "scopeBackground": "lab(100% 0 0)",
+            "scopeRadius": ".625rem",
+            "browserNow": 395.60000014305115
+          }
+        ],
+        "afterReady": {
+          "rootBackground": "lab(100% 0 0)",
+          "scopeBackground": "lab(100% 0 0)",
+          "rootRadius": ".625rem",
+          "scopeRadius": ".625rem"
+        }
+      }
+    },
+    {
+      "control": "guarded",
+      "variant": "guarded-change",
+      "assertionExit": 0,
+      "asset": {
+        "mode": "guarded-change",
+        "asset": "previewer-client.BAo6pLg8.js",
+        "source": "d4a24a090b668c06a8b1cd69ac7c887bd7ed466ff0e4c9c54bcfad9e7a2a221f",
+        "instrumented": "96f6b50e243dae95791aeb4687921423efdaf03628006e1d61c126d52fe33b58"
+      },
+      "resultSha256": "b3a69e2a5bdb0bb178cd8b5a43f0e4f20440f5777088d9ff3231006efc851f72",
+      "instrumentedTestSha256": "2e43f52817127b95384ff06d3589438da7413509e76233bdf452d38223dcaded",
+      "servedHTMLSha256": "63ef566bba08f7fb6763c8eba6e4bdf1279a4aed04a0592376b3fb5c2257469c",
+      "facts": {
+        "actualBrowser": "156.0.8078.79",
+        "rows": [
+          {
+            "requestedBackground": "rgb(13, 29, 47)",
+            "requestedRadius": "17px",
+            "resampled": true,
+            "scopeBackground": "rgb(13, 29, 47)",
+            "scopeRadius": "17px",
+            "browserNow": 394.90000009536743
+          }
+        ],
+        "afterReady": {
+          "rootBackground": "rgb(13, 29, 47)",
+          "scopeBackground": "rgb(13, 29, 47)",
+          "rootRadius": "17px",
+          "scopeRadius": "17px"
+        }
+      }
+    },
+    {
+      "control": "stylesheet",
+      "variant": "direct",
+      "assertionExit": 0,
+      "asset": {
+        "mode": "direct",
+        "asset": "previewer-client.BAo6pLg8.js",
+        "source": "d4a24a090b668c06a8b1cd69ac7c887bd7ed466ff0e4c9c54bcfad9e7a2a221f",
+        "instrumented": "e2e7630f6c3b5585e2cbff90daced9f407237281d0fd92fbe63ed79d7b155b36"
+      },
+      "resultSha256": "d5b6aed78847a33acefac8f20b08bbee0d6b491203a837d3bb525263b7500507",
+      "instrumentedTestSha256": "8157a376253570b5d6634ee7f9dedae95451c1280bfcaea8e2dcb9c18d243eb3",
+      "servedHTMLSha256": "63ef566bba08f7fb6763c8eba6e4bdf1279a4aed04a0592376b3fb5c2257469c",
+      "facts": {
+        "actualBrowser": "156.0.8078.79",
+        "rows": [
+          {
+            "requestedBackground": "rgb(13, 29, 47)",
+            "requestedRadius": "17px",
+            "scopeBackground": "rgb(13, 29, 47)",
+            "scopeRadius": "17px",
+            "browserNow": 395.40000009536743
+          }
+        ],
+        "afterReady": {
+          "rootBackground": "rgb(13, 29, 47)",
+          "scopeBackground": "rgb(13, 29, 47)",
+          "rootRadius": "17px",
+          "scopeRadius": "17px"
+        }
+      }
+    },
+    {
+      "control": "stylesheet",
+      "variant": "guarded",
+      "assertionExit": 1,
+      "asset": {
+        "mode": "guarded",
+        "asset": "previewer-client.BAo6pLg8.js",
+        "source": "d4a24a090b668c06a8b1cd69ac7c887bd7ed466ff0e4c9c54bcfad9e7a2a221f",
+        "instrumented": "b755ba0e11b71192f22eef017f7555b6134d070d0d98f488687b8a9f84ba7b03"
+      },
+      "resultSha256": "001d9c4f8b64c17d062c21a8b93ffa013074c05dc53c709ca7380222c20d5f8e",
+      "instrumentedTestSha256": "8157a376253570b5d6634ee7f9dedae95451c1280bfcaea8e2dcb9c18d243eb3",
+      "servedHTMLSha256": "63ef566bba08f7fb6763c8eba6e4bdf1279a4aed04a0592376b3fb5c2257469c",
+      "facts": {
+        "actualBrowser": "156.0.8078.79",
+        "rows": [
+          {
+            "requestedBackground": "rgb(13, 29, 47)",
+            "requestedRadius": "17px",
+            "resampled": false,
+            "scopeBackground": "lab(100% 0 0)",
+            "scopeRadius": ".625rem",
+            "browserNow": 389.7000000476837
+          }
+        ],
+        "afterReady": {
+          "rootBackground": "rgb(13, 29, 47)",
+          "scopeBackground": "lab(100% 0 0)",
+          "rootRadius": "17px",
+          "scopeRadius": ".625rem"
+        }
+      }
+    }
+  ]
+}
