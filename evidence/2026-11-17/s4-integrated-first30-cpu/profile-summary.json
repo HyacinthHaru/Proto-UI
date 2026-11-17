@@ -1,0 +1,229 @@
+{
+  "source": [
+    "b6bfa4f0b978275dd2a2f0769fee19741c197459",
+    "dc207e9bf518274ced9aca313f6eff5095524a90"
+  ],
+  "profileSha256": "91647c13c42e83b0e2e69cca1e8a2e09a1308decc46d0ece413df100b14eeca2",
+  "samplingRequestedUs": 10000,
+  "stopRequestedAfterMs": 30000,
+  "actualProfileDurationMs": 36293.376,
+  "sumSampleMs": 36288.541,
+  "samples": 3512,
+  "nodes": 9271,
+  "collector": [
+    {
+      "phase": "S4 CPU setup",
+      "data": {
+        "startRequestMs": 1330.689833,
+        "returnMs": 1339.067791
+      }
+    },
+    {
+      "phase": "S4 CPU stop",
+      "data": {
+        "requestMs": 31341.088125
+      }
+    },
+    {
+      "phase": "S4 CPU finished",
+      "data": {
+        "nodes": 9271,
+        "samples": 3512,
+        "start": 1321246651725,
+        "end": 1321282945101,
+        "nodeMs": 37668.857666
+      }
+    },
+    {
+      "phase": "S4 CPU collection",
+      "data": {
+        "complete": true
+      }
+    }
+  ],
+  "aggregatedSelfFrames": [
+    {
+      "asset": "native-content-lease.BX94nT5e.js",
+      "line": 0,
+      "column": 651,
+      "function": "D",
+      "sampledSelfMs": 6066.12
+    },
+    {
+      "asset": "",
+      "line": -1,
+      "column": -1,
+      "function": "(program)",
+      "sampledSelfMs": 2232.2179999999994
+    },
+    {
+      "asset": "projection-theme.DmjJLKPq.js",
+      "line": 0,
+      "column": 2490,
+      "function": "",
+      "sampledSelfMs": 1616.3500000000001
+    },
+    {
+      "asset": "",
+      "line": -1,
+      "column": -1,
+      "function": "addEventListener",
+      "sampledSelfMs": 1179.5710000000001
+    },
+    {
+      "asset": "",
+      "line": -1,
+      "column": -1,
+      "function": "compareDocumentPosition",
+      "sampledSelfMs": 899.3550000000002
+    },
+    {
+      "asset": "site-shadcn-controls.BNYpXhZq.js",
+      "line": 14,
+      "column": 36215,
+      "function": "C.Object.defineProperty.get",
+      "sampledSelfMs": 897.023
+    },
+    {
+      "asset": "",
+      "line": -1,
+      "column": -1,
+      "function": "(garbage collector)",
+      "sampledSelfMs": 896.832
+    },
+    {
+      "asset": "",
+      "line": -1,
+      "column": -1,
+      "function": "querySelectorAll",
+      "sampledSelfMs": 787.8799999999999
+    },
+    {
+      "asset": "site-shadcn-controls.BNYpXhZq.js",
+      "line": 14,
+      "column": 32822,
+      "function": "y",
+      "sampledSelfMs": 691.5559999999999
+    },
+    {
+      "asset": "site-shadcn-controls.BNYpXhZq.js",
+      "line": 4,
+      "column": 35404,
+      "function": "Vm",
+      "sampledSelfMs": 625.4709999999999
+    },
+    {
+      "asset": "sink.CIQmnfJB.js",
+      "line": 10,
+      "column": 22054,
+      "function": "H",
+      "sampledSelfMs": 605.0379999999998
+    },
+    {
+      "asset": "site-shadcn-controls.BNYpXhZq.js",
+      "line": 8,
+      "column": 417817,
+      "function": "",
+      "sampledSelfMs": 587.0629999999999
+    },
+    {
+      "asset": "site-shadcn-controls.BNYpXhZq.js",
+      "line": 8,
+      "column": 386609,
+      "function": "I",
+      "sampledSelfMs": 493.5729999999999
+    },
+    {
+      "asset": "site-shadcn-controls.BNYpXhZq.js",
+      "line": 8,
+      "column": 86208,
+      "function": "getClaim",
+      "sampledSelfMs": 478.3619999999999
+    },
+    {
+      "asset": "site-shadcn-controls.BNYpXhZq.js",
+      "line": 17,
+      "column": 418,
+      "function": "yl",
+      "sampledSelfMs": 470.13399999999984
+    },
+    {
+      "asset": "site-shadcn-controls.BNYpXhZq.js",
+      "line": 17,
+      "column": 5253,
+      "function": "",
+      "sampledSelfMs": 379.301
+    },
+    {
+      "asset": "site-shadcn-controls.BNYpXhZq.js",
+      "line": 8,
+      "column": 104767,
+      "function": "sortClaims",
+      "sampledSelfMs": 361.613
+    },
+    {
+      "asset": "site-shadcn-controls.BNYpXhZq.js",
+      "line": 17,
+      "column": 1968,
+      "function": "$h",
+      "sampledSelfMs": 361.32900000000006
+    },
+    {
+      "asset": "site-shadcn-controls.BNYpXhZq.js",
+      "line": 17,
+      "column": 41,
+      "function": "uO",
+      "sampledSelfMs": 341.862
+    },
+    {
+      "asset": "site-shadcn-controls.BNYpXhZq.js",
+      "line": 8,
+      "column": 389724,
+      "function": "te",
+      "sampledSelfMs": 327.2080000000001
+    },
+    {
+      "asset": "site-shadcn-controls.BNYpXhZq.js",
+      "line": 8,
+      "column": 101239,
+      "function": "notifyStructuralChange",
+      "sampledSelfMs": 314.439
+    },
+    {
+      "asset": "site-shadcn-controls.BNYpXhZq.js",
+      "line": 8,
+      "column": 105177,
+      "function": "compareTargets",
+      "sampledSelfMs": 309.378
+    },
+    {
+      "asset": "site-shadcn-controls.BNYpXhZq.js",
+      "line": 8,
+      "column": 104173,
+      "function": "computeOrderSignature",
+      "sampledSelfMs": 286.78000000000003
+    },
+    {
+      "asset": "site-shadcn-controls.BNYpXhZq.js",
+      "line": 14,
+      "column": 58418,
+      "function": "aO",
+      "sampledSelfMs": 283.786
+    },
+    {
+      "asset": "site-shadcn-controls.BNYpXhZq.js",
+      "line": 17,
+      "column": 2314,
+      "function": "Uh",
+      "sampledSelfMs": 264.08
+    }
+  ],
+  "nativeScope": {
+    "passed": 0,
+    "failed": 1,
+    "filtered": 1,
+    "failure": ["page.waitForFunction: Timeout 60000ms exceeded."]
+  },
+  "scope": "Separate observed original Chinese S4 case, all1268 roots and original60s/150s limits retained; no CSS overlay. Requested30s capture actually runs36.293376s due renderer scheduling. Sampling is attribution, not exclusive native/JS time or a throughput benchmark.",
+  "next": "Map projection-theme required-property reads and their preparation/watch call paths before deciding whether repeated work can safely be removed; no cache across author reentry or input mutation."
+}
