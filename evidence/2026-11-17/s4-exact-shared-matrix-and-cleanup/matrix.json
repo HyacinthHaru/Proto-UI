@@ -1,0 +1,562 @@
+{
+  "beforeSharing": {
+    "head": "8c8ff7dc90320fdf0d4e8ebecf101725bd3814cb",
+    "tree": "ce916605541f853403c466339b9fa8b64ce107e4",
+    "parents": [
+      "940635ad222ff41c4d984a0341736ab48bfbbdce",
+      "c37f9d5fb0017ffce72adef9b8b6d39c60ce179f"
+    ],
+    "environment": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+    "packageCount": 47,
+    "onlyRouteOverlaySHA256": "ae44b882e227090c5a1e09b4838c5cee97d9e01618c51209cc2ed0ac5df39a3f",
+    "exit": 1,
+    "logSHA256": "5ad0f98f677b9d828be23d8c23d18a7db20c34f953cd99df17a7e7a14dc0253c",
+    "pages": {
+      "zh-cn": {
+        "bytes": 1862400,
+        "sha256": "b9be542ddd74e82027a2a860f013cbed6c164db3bb8ac8dabafa3d94d5d862c8",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914055,
+        "sha256": "8c14849f14e07647f9ff823d0ed90fa68c1ef534147934d30653d911bac10dc8",
+        "previews": 1268
+      }
+    },
+    "tests": [
+      {
+        "locale": "zh-cn",
+        "status": "failed",
+        "firstFailure": "Error: Test timed out in 150000ms.",
+        "durationMs": 150525.156083,
+        "startupPassed": false,
+        "postVerdictCollection": "rejected",
+        "predicateSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+        "errors": 0,
+        "consoleErrors": 0,
+        "startupSamples": [
+          {
+            "receivedNodeMs": 12760.623333,
+            "timeOrigin": 1794880362128.2,
+            "pageMs": 11600.5,
+            "dateNow": 1794880373728,
+            "count": 1268,
+            "ready": false,
+            "firstMissing": {
+              "previewerId": "pp-rv8e12comcf",
+              "index": 0,
+              "inited": "1",
+              "hostChildren": 0
+            },
+            "firstMissingOwner": {
+              "demoId": "demo-base-accordion",
+              "prototypeId": "",
+              "declaredRuntime": "wc",
+              "projectionMode": null,
+              "projectionState": null,
+              "mounting": null,
+              "hostTag": "DIV",
+              "hostOwner": "pp-rv8e12comcf",
+              "startupPending": true,
+              "hostOwnInert": true,
+              "hostText": ""
+            }
+          },
+          {
+            "receivedNodeMs": 31495.375041,
+            "timeOrigin": 1794880362128.2,
+            "pageMs": 30335.300000190735,
+            "dateNow": 1794880392463,
+            "count": 1268,
+            "ready": false,
+            "firstMissing": {
+              "previewerId": "pp-cw63yap3z0k",
+              "index": 1,
+              "inited": "1",
+              "hostChildren": 0
+            },
+            "firstMissingOwner": {
+              "demoId": "demo-base-accordion",
+              "prototypeId": "",
+              "declaredRuntime": "react",
+              "projectionMode": null,
+              "projectionState": null,
+              "mounting": null,
+              "hostTag": "DIV",
+              "hostOwner": "pp-cw63yap3z0k",
+              "startupPending": true,
+              "hostOwnInert": true,
+              "hostText": ""
+            }
+          }
+        ]
+      },
+      {
+        "locale": "en",
+        "status": "failed",
+        "firstFailure": "Error: Test timed out in 150000ms.",
+        "durationMs": 150616.422584,
+        "startupPassed": false,
+        "postVerdictCollection": "rejected",
+        "predicateSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+        "errors": 0,
+        "consoleErrors": 0,
+        "startupSamples": [
+          {
+            "receivedNodeMs": 163372.939583,
+            "timeOrigin": 1794880512646,
+            "pageMs": 11695.099999904633,
+            "dateNow": 1794880524341,
+            "count": 1268,
+            "ready": false,
+            "firstMissing": {
+              "previewerId": "pp-3jcl7lg0ib4",
+              "index": 0,
+              "inited": "1",
+              "hostChildren": 0
+            },
+            "firstMissingOwner": {
+              "demoId": "demo-base-accordion",
+              "prototypeId": "",
+              "declaredRuntime": "wc",
+              "projectionMode": null,
+              "projectionState": null,
+              "mounting": null,
+              "hostTag": "DIV",
+              "hostOwner": "pp-3jcl7lg0ib4",
+              "startupPending": true,
+              "hostOwnInert": true,
+              "hostText": ""
+            }
+          },
+          {
+            "receivedNodeMs": 184488.463541,
+            "timeOrigin": 1794880512646,
+            "pageMs": 32810.5,
+            "dateNow": 1794880545456,
+            "count": 1268,
+            "ready": false,
+            "firstMissing": {
+              "previewerId": "pp-p7sdrpt7x0j",
+              "index": 1,
+              "inited": "1",
+              "hostChildren": 0
+            },
+            "firstMissingOwner": {
+              "demoId": "demo-base-accordion",
+              "prototypeId": "",
+              "declaredRuntime": "react",
+              "projectionMode": null,
+              "projectionState": null,
+              "mounting": null,
+              "hostTag": "DIV",
+              "hostOwner": "pp-p7sdrpt7x0j",
+              "startupPending": true,
+              "hostOwnInert": true,
+              "hostText": ""
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "withSharing": {
+    "head": "04c433c426b8a2e01baca474464656a9a3615fcf",
+    "tree": "771f52bf113b6508ea2d01917d1af5fbc75ff117",
+    "parents": [
+      "8c8ff7dc90320fdf0d4e8ebecf101725bd3814cb",
+      "ad827afae56f048f085a6cc6a552e1d2d3352a39"
+    ],
+    "environment": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+    "packageCount": 47,
+    "onlyRouteOverlaySHA256": "ae44b882e227090c5a1e09b4838c5cee97d9e01618c51209cc2ed0ac5df39a3f",
+    "exit": 1,
+    "logSHA256": "64406eafc866b98f65b0a0a7d32eb7e1cd01db7e9cd49c416b94150f3397138e",
+    "pages": {
+      "zh-cn": {
+        "bytes": 1862406,
+        "sha256": "1e1afceec6597291437d2d2df8b8ca5055f4201797f907b27ecfce362e963376",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914011,
+        "sha256": "f11da65104e4744370c97547dbbba688473a4cdd970738ed674af4899b0cfcbd",
+        "previews": 1268
+      }
+    },
+    "tests": [
+      {
+        "locale": "zh-cn",
+        "status": "failed",
+        "firstFailure": "Error: Test timed out in 150000ms.",
+        "durationMs": 150534.935709,
+        "startupPassed": false,
+        "postVerdictCollection": "rejected",
+        "predicateSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+        "errors": 0,
+        "consoleErrors": 0,
+        "startupSamples": [
+          {
+            "receivedNodeMs": 13081.603083,
+            "timeOrigin": 1794881312120.6,
+            "pageMs": 11861.700000047684,
+            "dateNow": 1794881323982,
+            "count": 1268,
+            "ready": false,
+            "firstMissing": {
+              "previewerId": "pp-xdurvsr23t",
+              "index": 0,
+              "inited": "1",
+              "hostChildren": 0
+            },
+            "firstMissingOwner": {
+              "demoId": "demo-base-accordion",
+              "prototypeId": "",
+              "declaredRuntime": "wc",
+              "projectionMode": null,
+              "projectionState": null,
+              "mounting": null,
+              "hostTag": "DIV",
+              "hostOwner": "pp-xdurvsr23t",
+              "startupPending": true,
+              "hostOwnInert": true,
+              "hostText": ""
+            }
+          },
+          {
+            "receivedNodeMs": 30600.588625,
+            "timeOrigin": 1794881312120.6,
+            "pageMs": 29379.599999904633,
+            "dateNow": 1794881341500,
+            "count": 1268,
+            "ready": false,
+            "firstMissing": {
+              "previewerId": "pp-prwwhqhmwzg",
+              "index": 1,
+              "inited": "1",
+              "hostChildren": 0
+            },
+            "firstMissingOwner": {
+              "demoId": "demo-base-accordion",
+              "prototypeId": "",
+              "declaredRuntime": "react",
+              "projectionMode": null,
+              "projectionState": null,
+              "mounting": null,
+              "hostTag": "DIV",
+              "hostOwner": "pp-prwwhqhmwzg",
+              "startupPending": true,
+              "hostOwnInert": true,
+              "hostText": ""
+            }
+          }
+        ]
+      },
+      {
+        "locale": "en",
+        "status": "failed",
+        "firstFailure": "Error: Test timed out in 150000ms.",
+        "durationMs": 150527.23920900002,
+        "startupPassed": false,
+        "postVerdictCollection": "rejected",
+        "predicateSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+        "errors": 0,
+        "consoleErrors": 0,
+        "startupSamples": [
+          {
+            "receivedNodeMs": 163398.392625,
+            "timeOrigin": 1794881462655.9,
+            "pageMs": 11643.099999904633,
+            "dateNow": 1794881474298,
+            "count": 1268,
+            "ready": false,
+            "firstMissing": {
+              "previewerId": "pp-xo140wn9b8k",
+              "index": 0,
+              "inited": "1",
+              "hostChildren": 0
+            },
+            "firstMissingOwner": {
+              "demoId": "demo-base-accordion",
+              "prototypeId": "",
+              "declaredRuntime": "wc",
+              "projectionMode": null,
+              "projectionState": null,
+              "mounting": null,
+              "hostTag": "DIV",
+              "hostOwner": "pp-xo140wn9b8k",
+              "startupPending": true,
+              "hostOwnInert": true,
+              "hostText": ""
+            }
+          },
+          {
+            "receivedNodeMs": 175198.227875,
+            "timeOrigin": 1794881462655.9,
+            "pageMs": 23442.89999985695,
+            "dateNow": 1794881486098,
+            "count": 1268,
+            "ready": false,
+            "firstMissing": {
+              "previewerId": "pp-6rmxtsuiq67",
+              "index": 1,
+              "inited": "1",
+              "hostChildren": 0
+            },
+            "firstMissingOwner": {
+              "demoId": "demo-base-accordion",
+              "prototypeId": "",
+              "declaredRuntime": "react",
+              "projectionMode": null,
+              "projectionState": null,
+              "mounting": null,
+              "hostTag": "DIV",
+              "hostOwner": "pp-6rmxtsuiq67",
+              "startupPending": true,
+              "hostOwnInert": true,
+              "hostText": ""
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "onlyVariantPaths": [
+    "apps/www/src/components/PrototypePreviewer/runtimes/react-loader.test.ts",
+    "apps/www/src/components/PrototypePreviewer/runtimes/react-runtime.ts"
+  ],
+  "phaseOverlay": {
+    "phaseMarkers": [
+      {
+        "nodePhase": "startup-wait",
+        "receivedNodeMs": 7554.846709,
+        "stage": "demo-import-begin",
+        "owner": "pp-prwwhqhmwzg",
+        "pageMs": 6364.599999904633,
+        "timeOrigin": 1794881727321.8,
+        "runtime": "react",
+        "children": 0
+      },
+      {
+        "nodePhase": "startup-wait",
+        "receivedNodeMs": 8640.141834,
+        "stage": "demo-import-begin",
+        "owner": "pp-xdurvsr23t",
+        "pageMs": 7449.799999952316,
+        "timeOrigin": 1794881727321.8,
+        "runtime": "wc",
+        "children": 0
+      },
+      {
+        "nodePhase": "startup-wait",
+        "receivedNodeMs": 13686.434,
+        "stage": "demo-import-return",
+        "owner": "pp-prwwhqhmwzg",
+        "pageMs": 12496.199999809265,
+        "timeOrigin": 1794881727321.8,
+        "runtime": "react",
+        "children": 0
+      },
+      {
+        "nodePhase": "startup-wait",
+        "receivedNodeMs": 13686.524667,
+        "stage": "initial-theme-start",
+        "owner": "pp-prwwhqhmwzg",
+        "pageMs": 12496.299999952316,
+        "timeOrigin": 1794881727321.8,
+        "runtime": "react",
+        "children": 0
+      },
+      {
+        "nodePhase": "startup-wait",
+        "receivedNodeMs": 13686.546959,
+        "stage": "initial-theme-return",
+        "owner": "pp-prwwhqhmwzg",
+        "pageMs": 12496.299999952316,
+        "timeOrigin": 1794881727321.8,
+        "runtime": "react",
+        "children": 0
+      },
+      {
+        "nodePhase": "startup-wait",
+        "receivedNodeMs": 13686.596292,
+        "stage": "prototype-imports-begin",
+        "owner": "pp-prwwhqhmwzg",
+        "pageMs": 12496.299999952316,
+        "timeOrigin": 1794881727321.8,
+        "runtime": "react",
+        "children": 0,
+        "prototypeIds": [
+          "base-accordion-root",
+          "base-accordion-item",
+          "base-accordion-heading",
+          "base-accordion-trigger",
+          "base-accordion-content",
+          "base-button"
+        ]
+      },
+      {
+        "nodePhase": "startup-wait",
+        "receivedNodeMs": 13686.634917,
+        "stage": "demo-import-return",
+        "owner": "pp-xdurvsr23t",
+        "pageMs": 12496.299999952316,
+        "timeOrigin": 1794881727321.8,
+        "runtime": "wc",
+        "children": 0
+      },
+      {
+        "nodePhase": "startup-wait",
+        "receivedNodeMs": 13686.699417,
+        "stage": "initial-theme-start",
+        "owner": "pp-xdurvsr23t",
+        "pageMs": 12496.299999952316,
+        "timeOrigin": 1794881727321.8,
+        "runtime": "wc",
+        "children": 0
+      },
+      {
+        "nodePhase": "startup-wait",
+        "receivedNodeMs": 13686.712167,
+        "stage": "initial-theme-return",
+        "owner": "pp-xdurvsr23t",
+        "pageMs": 12496.299999952316,
+        "timeOrigin": 1794881727321.8,
+        "runtime": "wc",
+        "children": 0
+      },
+      {
+        "nodePhase": "startup-wait",
+        "receivedNodeMs": 13686.723459,
+        "stage": "prototype-imports-begin",
+        "owner": "pp-xdurvsr23t",
+        "pageMs": 12496.399999856949,
+        "timeOrigin": 1794881727321.8,
+        "runtime": "wc",
+        "children": 0,
+        "prototypeIds": [
+          "base-accordion-root",
+          "base-accordion-item",
+          "base-accordion-heading",
+          "base-accordion-trigger",
+          "base-accordion-content",
+          "base-button"
+        ]
+      },
+      {
+        "nodePhase": "startup-wait",
+        "receivedNodeMs": 14854.870875,
+        "stage": "shared-dependency-join-begin",
+        "owner": null,
+        "pageMs": 13664.399999856949,
+        "timeOrigin": 1794881727321.8,
+        "runtime": "react"
+      },
+      {
+        "nodePhase": "startup-wait",
+        "receivedNodeMs": 27107.973125,
+        "stage": "prototype-imports-return",
+        "owner": "pp-prwwhqhmwzg",
+        "pageMs": 25917.299999952316,
+        "timeOrigin": 1794881727321.8,
+        "runtime": "react",
+        "children": 0
+      },
+      {
+        "nodePhase": "startup-wait",
+        "receivedNodeMs": 27108.072042,
+        "stage": "render-begin",
+        "owner": "pp-prwwhqhmwzg",
+        "pageMs": 25917.299999952316,
+        "timeOrigin": 1794881727321.8,
+        "runtime": "react",
+        "children": 0
+      },
+      {
+        "nodePhase": "startup-wait",
+        "receivedNodeMs": 27108.164417,
+        "stage": "react-join-begin",
+        "owner": "pp-prwwhqhmwzg",
+        "pageMs": 25917.5,
+        "timeOrigin": 1794881727321.8,
+        "runtime": "react",
+        "children": 0
+      },
+      {
+        "nodePhase": "startup-wait",
+        "receivedNodeMs": 27108.22675,
+        "stage": "prototype-imports-return",
+        "owner": "pp-xdurvsr23t",
+        "pageMs": 25917.799999952316,
+        "timeOrigin": 1794881727321.8,
+        "runtime": "wc",
+        "children": 0
+      },
+      {
+        "nodePhase": "startup-wait",
+        "receivedNodeMs": 27108.243292,
+        "stage": "render-begin",
+        "owner": "pp-xdurvsr23t",
+        "pageMs": 25917.799999952316,
+        "timeOrigin": 1794881727321.8,
+        "runtime": "wc",
+        "children": 0
+      },
+      {
+        "nodePhase": "startup-wait",
+        "receivedNodeMs": 27160.071792,
+        "stage": "render-return",
+        "owner": "pp-xdurvsr23t",
+        "pageMs": 25969.599999904633,
+        "timeOrigin": 1794881727321.8,
+        "runtime": "wc",
+        "children": 1
+      },
+      {
+        "nodePhase": "startup-wait",
+        "receivedNodeMs": 27209.2035,
+        "stage": "surface-ready",
+        "owner": "pp-xdurvsr23t",
+        "pageMs": 26018.699999809265,
+        "timeOrigin": 1794881727321.8,
+        "runtime": "wc",
+        "children": 1
+      },
+      {
+        "nodePhase": "startup-wait",
+        "receivedNodeMs": 27223.854709,
+        "stage": "published",
+        "owner": "pp-xdurvsr23t",
+        "pageMs": 26033.5,
+        "timeOrigin": 1794881727321.8,
+        "runtime": "wc",
+        "children": 1
+      }
+    ],
+    "artifactBindings": [
+      {
+        "file": "previewer-client.CRzJkf6b.js",
+        "inputSHA256": "215eeb09c4c0ec69e8f463197d3ef66f7de0fe875617c1e26a6adeef34930a5f",
+        "outputSHA256": "939359085ac0a494ce687135c3e2489f35d2a86db8dc2bacaaa397959e3bb6a7"
+      },
+      {
+        "file": "demo-renderer.DqE7uBFG.js",
+        "inputSHA256": "61d98c7fcb3a0b8abe8f8888e1284e94c31fad9eb68970af7936ae116a05ade7",
+        "outputSHA256": "ece85587f44cfbb4043804124030e12ae47f3ef7eeee65f5fe38cad860a5c4b7"
+      },
+      {
+        "file": "react-runtime.BHOu3vdb.js",
+        "inputSHA256": "65e7f7ce7b6219d490f2cd8f88a2207918851da098afba1f2429a5b87aa8afac",
+        "outputSHA256": "9e68f7817416e68077fe9ab9bd3644f15d2a232ed053ac8d100886101e701a90"
+      }
+    ],
+    "runnerOnlyOverlaySHA256": "98427de449d4e94b7ba17c6f6e09cd7b564346a187b3e735bb70388619b1f779",
+    "nativeExit": 1,
+    "logSHA256": "bf03a4a9f3f85becf91cadd295be3be1e61363d8f819353e2f39964337aa0dcb",
+    "startupPassed": false,
+    "errors": 0,
+    "consoleErrors": 0,
+    "readinessMs": 60000,
+    "outerMs": 150000
+  }
+}

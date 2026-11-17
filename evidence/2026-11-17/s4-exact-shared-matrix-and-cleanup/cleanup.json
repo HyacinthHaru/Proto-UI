@@ -1,0 +1,17 @@
+{
+  "head": "7c11fd2301a50d4ac2c6c1402b7ec15c60bcec1e",
+  "tree": "1ddfe3a762addb07c8267d0549425b754eb8ed63",
+  "parent": "ad827afae56f048f085a6cc6a552e1d2d3352a39",
+  "signature": "G",
+  "inputs": [
+    "791ad73a0a4191729f43c346fc5fc20f3ce2fa9a936b0e30da078ee56226be01  packages/adapters/base/src/host/exposes.ts",
+    "11ea507b8e45a610965e69f13cdcd7ed003ddc870b91961c20a5d3b9449486ef  packages/adapters/base/test/contract/expose-record.v0.contract.test.ts"
+  ],
+  "beforeExit": 1,
+  "beforeLogSHA256": "7e64da8721313b83bea7cdb646b044819b8b339543365e3eaee56cc63ae43b61",
+  "afterExit": 0,
+  "files": 10,
+  "passed": 196,
+  "typecheckExit": 0,
+  "afterLogSHA256": "dd1f27e9f59a988ce9d0f1e1f30f1c7851f4f2dd3c9554efb4f40d79ee5af285"
+}
