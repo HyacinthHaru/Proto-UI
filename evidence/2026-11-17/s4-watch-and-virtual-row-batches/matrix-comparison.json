@@ -1,0 +1,343 @@
+[
+  {
+    "run": "read-and-watch",
+    "source": {
+      "head": "5d4f911370ca5e9cb4e4a17f20eca0b1945d6862",
+      "tree": "84b1020b1d8fdd3511e6f9d4215aad6fa94bf83b",
+      "parents": [
+        "621355701553eb1bded8537b0ae5a1881038d61f",
+        "624b878c166658ee99f798eaba2ee6b20f1a6bd5"
+      ],
+      "suiteOverlaySHA256": "e07a168f7414e8266c40b8366cc9e540a1a4eda387be929205e485c61c362d24",
+      "observerSHA256": "b56ec096f72172a42e3f9d05275c82802c641e1fec5574d841a9b17defcc91e6",
+      "htmlSHA256": "9e397ace2d4a9af31b295ea4e4c40d2e1e62ffd6505d4240110dfc2c91fbc7a4"
+    },
+    "environment": {
+      "node": "v24.21.0",
+      "pnpm": "10.32.1",
+      "chrome": "Google Chrome for Testing 156.0.8078.79",
+      "workers": 1
+    },
+    "verdict": {
+      "startupPassed": false,
+      "errors": [],
+      "consoleErrors": [],
+      "collectionOutcome": "rejected",
+      "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+    },
+    "exit": 1,
+    "failures": ["Error: Test timed out in 150000ms."],
+    "latestReadiness": {
+      "timeOrigin": 1794875135175.8,
+      "pageMs": 69217.29999995232,
+      "dateNow": 1794875204393,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-fyj7felv0ed",
+        "index": 3,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "declaredRuntime": "vue2",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-fyj7felv0ed",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      }
+    },
+    "batches": [
+      {
+        "id": 1,
+        "size": 9,
+        "start": 12338.600000143051,
+        "end": 12338.900000095367,
+        "publicationReadCount": 9,
+        "initialWatchReadCount": 0,
+        "revokedPublicationReadCount": 0,
+        "failedPublicationReadCount": 0,
+        "appliedAppearanceCount": 0,
+        "timeOrigin": 1794875135175.8,
+        "wallMs": 0.3
+      },
+      {
+        "id": 2,
+        "size": 19,
+        "start": 12752.200000047684,
+        "end": 12752.900000095367,
+        "publicationReadCount": 19,
+        "initialWatchReadCount": 9,
+        "revokedPublicationReadCount": 0,
+        "failedPublicationReadCount": 0,
+        "appliedAppearanceCount": 9,
+        "timeOrigin": 1794875135175.8,
+        "wallMs": 0.7
+      },
+      {
+        "id": 3,
+        "size": 80,
+        "start": 18299.799999952316,
+        "end": 18312.900000095367,
+        "publicationReadCount": 89,
+        "initialWatchReadCount": 19,
+        "revokedPublicationReadCount": 0,
+        "failedPublicationReadCount": 0,
+        "appliedAppearanceCount": 19,
+        "timeOrigin": 1794875135175.8,
+        "wallMs": 13.1
+      },
+      {
+        "id": 4,
+        "size": 402,
+        "start": 91787.90000009537,
+        "end": 91841.10000014305,
+        "publicationReadCount": 421,
+        "initialWatchReadCount": 89,
+        "revokedPublicationReadCount": 0,
+        "failedPublicationReadCount": 0,
+        "appliedAppearanceCount": 89,
+        "timeOrigin": 1794875135175.8,
+        "wallMs": 53.2
+      }
+    ],
+    "appliedMilestones": [
+      {
+        "count": 1,
+        "pageMs": 12339.100000143051,
+        "timeOrigin": 1794875135175.8
+      },
+      {
+        "count": 2,
+        "pageMs": 12339.100000143051,
+        "timeOrigin": 1794875135175.8
+      },
+      {
+        "count": 4,
+        "pageMs": 12339.100000143051,
+        "timeOrigin": 1794875135175.8
+      },
+      {
+        "count": 8,
+        "pageMs": 12339.100000143051,
+        "timeOrigin": 1794875135175.8
+      },
+      {
+        "count": 16,
+        "pageMs": 12761.400000095367,
+        "timeOrigin": 1794875135175.8
+      },
+      {
+        "count": 32,
+        "pageMs": 18325.900000095367,
+        "timeOrigin": 1794875135175.8
+      },
+      {
+        "count": 64,
+        "pageMs": 18326,
+        "timeOrigin": 1794875135175.8
+      },
+      {
+        "count": 128,
+        "pageMs": 91964.70000004768,
+        "timeOrigin": 1794875135175.8
+      },
+      {
+        "count": 256,
+        "pageMs": 91964.79999995232,
+        "timeOrigin": 1794875135175.8
+      }
+    ],
+    "slowReadSamples": 347,
+    "virtualRowGeometry": {
+      "count": 102,
+      "sumMs": 3538.3
+    },
+    "themeOverlay": {
+      "before": "f656d1d1be721d0c9b395697f8d283623becf87c687c79ab3396c43ca45da0f9",
+      "after": "38318b8165f0c906a3ac6fe6c2f91dfec73124c0d1a020d67c623f01a40b19e3",
+      "asset": "previewer-client.BhKnQCQC.js",
+      "helper": "e1b02503466011f34f789fb8f200336fb9c7e18232106593c970363c430eaaa8",
+      "replacement": "b4497cd3da99460d129ab0b10bc12aa4df29ac79b47bd305c046dc54813faf02"
+    }
+  },
+  {
+    "run": "with-virtual-rows",
+    "source": {
+      "head": "5d4f911370ca5e9cb4e4a17f20eca0b1945d6862",
+      "tree": "84b1020b1d8fdd3511e6f9d4215aad6fa94bf83b",
+      "parents": [
+        "621355701553eb1bded8537b0ae5a1881038d61f",
+        "624b878c166658ee99f798eaba2ee6b20f1a6bd5"
+      ],
+      "suiteOverlaySHA256": "e07a168f7414e8266c40b8366cc9e540a1a4eda387be929205e485c61c362d24",
+      "observerSHA256": "b56ec096f72172a42e3f9d05275c82802c641e1fec5574d841a9b17defcc91e6",
+      "htmlSHA256": "9e397ace2d4a9af31b295ea4e4c40d2e1e62ffd6505d4240110dfc2c91fbc7a4"
+    },
+    "environment": {
+      "node": "v24.21.0",
+      "pnpm": "10.32.1",
+      "chrome": "Google Chrome for Testing 156.0.8078.79",
+      "workers": 1
+    },
+    "verdict": {
+      "startupPassed": false,
+      "errors": [],
+      "consoleErrors": [],
+      "collectionOutcome": "rejected",
+      "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+    },
+    "exit": 1,
+    "failures": ["Error: Test timed out in 150000ms."],
+    "latestReadiness": {
+      "timeOrigin": 1794875589284.6,
+      "pageMs": 100788.90000009537,
+      "dateNow": 1794875690073,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-fyj7felv0ed",
+        "index": 3,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "declaredRuntime": "vue2",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-fyj7felv0ed",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      }
+    },
+    "batches": [
+      {
+        "id": 1,
+        "size": 9,
+        "start": 12332.900000095367,
+        "end": 12333.099999904633,
+        "publicationReadCount": 9,
+        "initialWatchReadCount": 0,
+        "revokedPublicationReadCount": 0,
+        "failedPublicationReadCount": 0,
+        "appliedAppearanceCount": 0,
+        "timeOrigin": 1794875589284.6,
+        "wallMs": 0.2
+      },
+      {
+        "id": 2,
+        "size": 20,
+        "start": 12931.900000095367,
+        "end": 12941.099999904633,
+        "publicationReadCount": 20,
+        "initialWatchReadCount": 9,
+        "revokedPublicationReadCount": 0,
+        "failedPublicationReadCount": 0,
+        "appliedAppearanceCount": 9,
+        "timeOrigin": 1794875589284.6,
+        "wallMs": 9.2
+      },
+      {
+        "id": 3,
+        "size": 96,
+        "start": 19223.900000095367,
+        "end": 19236.5,
+        "publicationReadCount": 105,
+        "initialWatchReadCount": 20,
+        "revokedPublicationReadCount": 0,
+        "failedPublicationReadCount": 0,
+        "appliedAppearanceCount": 20,
+        "timeOrigin": 1794875589284.6,
+        "wallMs": 12.6
+      },
+      {
+        "id": 4,
+        "size": 406,
+        "start": 101047.5,
+        "end": 101057.79999995232,
+        "publicationReadCount": 426,
+        "initialWatchReadCount": 105,
+        "revokedPublicationReadCount": 0,
+        "failedPublicationReadCount": 0,
+        "appliedAppearanceCount": 105,
+        "timeOrigin": 1794875589284.6,
+        "wallMs": 10.3
+      }
+    ],
+    "appliedMilestones": [
+      {
+        "count": 1,
+        "pageMs": 12333.299999952316,
+        "timeOrigin": 1794875589284.6
+      },
+      {
+        "count": 2,
+        "pageMs": 12333.400000095367,
+        "timeOrigin": 1794875589284.6
+      },
+      {
+        "count": 4,
+        "pageMs": 12333.400000095367,
+        "timeOrigin": 1794875589284.6
+      },
+      {
+        "count": 8,
+        "pageMs": 12333.400000095367,
+        "timeOrigin": 1794875589284.6
+      },
+      {
+        "count": 16,
+        "pageMs": 12950.200000047684,
+        "timeOrigin": 1794875589284.6
+      },
+      {
+        "count": 32,
+        "pageMs": 19265.5,
+        "timeOrigin": 1794875589284.6
+      },
+      {
+        "count": 64,
+        "pageMs": 19265.700000047684,
+        "timeOrigin": 1794875589284.6
+      },
+      {
+        "count": 128,
+        "pageMs": 101114.90000009537,
+        "timeOrigin": 1794875589284.6
+      },
+      {
+        "count": 256,
+        "pageMs": 101115.09999990463,
+        "timeOrigin": 1794875589284.6
+      }
+    ],
+    "slowReadSamples": 189,
+    "virtualRowGeometry": {
+      "count": 11,
+      "sumMs": 389.7
+    },
+    "themeOverlay": {
+      "before": "f656d1d1be721d0c9b395697f8d283623becf87c687c79ab3396c43ca45da0f9",
+      "after": "38318b8165f0c906a3ac6fe6c2f91dfec73124c0d1a020d67c623f01a40b19e3",
+      "asset": "previewer-client.BhKnQCQC.js",
+      "helper": "e1b02503466011f34f789fb8f200336fb9c7e18232106593c970363c430eaaa8",
+      "replacement": "b4497cd3da99460d129ab0b10bc12aa4df29ac79b47bd305c046dc54813faf02"
+    },
+    "rowOverlay": {
+      "before": "088d4769ce110637edfb5ca88cf9d0daf42eab311869d87f1cc2c546cd8a57c8",
+      "after": "37b237b42c899fbe4d87abfc7edb8af505536b55b06bb4e21feb7c2bbb3417a9",
+      "asset": "web.DJQwmzpA.js"
+    }
+  }
+]
