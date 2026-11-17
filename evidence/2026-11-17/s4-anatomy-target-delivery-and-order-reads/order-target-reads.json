@@ -1,0 +1,104 @@
+{
+  "source": {
+    "head": "3a5e5133d591b1d32b4ae4e13ca56fbeaeb3e9ce",
+    "tree": "f7a5cd7e68390da4f3afa5dd7bac8161a4dd4f01",
+    "parent": "d288a27dbf9b6d6178d6c0ee5bf2688308cf4369",
+    "signature": "G"
+  },
+  "inputSHA256": {
+    "packages/modules/anatomy/src/impl.ts": "ffc7b478076b480147b92d434cd4400aa001511f3f6f560de493acc65a27261a",
+    "packages/runtime/test/contract/anatomy.order-fanout-cost.contract.test.ts": "5e80bfb8840ff39ca4ccaf5ce5eea60ec548fafd437be7b05ac32f5e3fc52838"
+  },
+  "red": {
+    "exit": 1,
+    "patchSHA256": "5cd8d7b025346f79ccb39705bef3aea530722c2e9274c8c7a7aed76b3b065445",
+    "tests": {
+      "numTotalTests": 11,
+      "numPassedTests": 9,
+      "numFailedTests": 2,
+      "numPendingTests": 0,
+      "numPassedTestSuites": 0,
+      "numFailedTestSuites": 2,
+      "cases": [
+        {
+          "name": "Runtime Anatomy synchronous order fanout cost sync: unchanged subscribers do not multiply host order comparisons",
+          "status": "failed",
+          "duration": 27.710958000000005,
+          "firstMessages": ["AssertionError: expected 24 to be less than or equal to 12"]
+        },
+        {
+          "name": "Runtime Anatomy synchronous order fanout cost notify: unchanged subscribers do not multiply host order comparisons",
+          "status": "failed",
+          "duration": 9.021208999999999,
+          "firstMessages": ["AssertionError: expected 24 to be less than or equal to 12"]
+        },
+        {
+          "name": "Runtime Anatomy synchronous order fanout cost keeps registration and business-only changes silent",
+          "status": "passed",
+          "duration": 0.9298749999999245,
+          "firstMessages": []
+        },
+        {
+          "name": "Runtime Anatomy synchronous order fanout cost sync: a public subscriber can reorder DOM before later recipients and query immediately",
+          "status": "passed",
+          "duration": 1.4212499999999864,
+          "firstMessages": []
+        },
+        {
+          "name": "Runtime Anatomy synchronous order fanout cost sync: nested notification publishes the newest order without an old outer replay",
+          "status": "passed",
+          "duration": 3.722500000000082,
+          "firstMessages": []
+        },
+        {
+          "name": "Runtime Anatomy synchronous order fanout cost notify: a public subscriber can reorder DOM before later recipients and query immediately",
+          "status": "passed",
+          "duration": 1.294667000000004,
+          "firstMessages": []
+        },
+        {
+          "name": "Runtime Anatomy synchronous order fanout cost notify: nested notification publishes the newest order without an old outer replay",
+          "status": "passed",
+          "duration": 1.1579999999999018,
+          "firstMessages": []
+        },
+        {
+          "name": "Runtime Anatomy synchronous order fanout cost a synchronous subscriber can mount a new logical member outside the root DOM subtree",
+          "status": "passed",
+          "duration": 1.3961669999999913,
+          "firstMessages": []
+        },
+        {
+          "name": "Runtime Anatomy synchronous order fanout cost a synchronous subscriber can retire a later recipient without stale membership or callbacks",
+          "status": "passed",
+          "duration": 1.1290410000000293,
+          "firstMessages": []
+        },
+        {
+          "name": "Runtime Anatomy synchronous order fanout cost replaced targets of surviving logical owners are read afresh within the same fanout",
+          "status": "passed",
+          "duration": 1.1914580000000115,
+          "firstMessages": []
+        },
+        {
+          "name": "Runtime Anatomy synchronous order fanout cost nested roots keep independent order and a retired inner root cannot leak children outward",
+          "status": "passed",
+          "duration": 2.0147910000000593,
+          "firstMessages": []
+        }
+      ]
+    }
+  },
+  "focused": {
+    "exit": 0,
+    "tests": {
+      "numTotalTests": 429,
+      "numPassedTests": 429,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "numPassedTestSuites": 64,
+      "numFailedTestSuites": 0
+    }
+  },
+  "matrixStatusAtPublication": "pending"
+}

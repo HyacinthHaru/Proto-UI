@@ -1,0 +1,496 @@
+{
+  "source": {
+    "head": "d288a27dbf9b6d6178d6c0ee5bf2688308cf4369",
+    "tree": "973cc8332dfed1692db84fe04fcb35e79daee57e",
+    "parent": "f995aa53e525f3bf35d83d64dbd99b4d686685d1",
+    "signature": "G"
+  },
+  "originalInputs": {
+    "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "e6590db342bddc56b37fa367ce6b1cc519130cdb201e06e8d14061569d5e0317",
+    "apps/www/dist/zh-cn/internal/demo-matrix/index.html": "688726a8ee456fc0930d991bc8c4f4908e9d474d8f6da02d7e5fb44f11163a50",
+    "apps/www/dist/en/internal/demo-matrix/index.html": "a739b3c1d23cfbf49ca9f1adaef0ce98da41a55e334a555a78c1320cae32e948"
+  },
+  "pages": {
+    "zh-cn": {
+      "bytes": 1862424,
+      "sha256": "688726a8ee456fc0930d991bc8c4f4908e9d474d8f6da02d7e5fb44f11163a50",
+      "previews": 1268
+    },
+    "en": {
+      "bytes": 1914036,
+      "sha256": "a739b3c1d23cfbf49ca9f1adaef0ce98da41a55e334a555a78c1320cae32e948",
+      "previews": 1268
+    }
+  },
+  "guardsMs": {
+    "readiness": 60000,
+    "case": 150000
+  },
+  "versions": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79"],
+  "original": {
+    "exit": 1,
+    "tests": {
+      "numTotalTests": 2,
+      "numPassedTests": 0,
+      "numFailedTests": 2,
+      "numPendingTests": 0,
+      "numPassedTestSuites": 0,
+      "numFailedTestSuites": 2,
+      "cases": [
+        {
+          "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+          "status": "failed",
+          "duration": 150531.611916,
+          "firstMessages": ["Error: Test timed out in 150000ms."]
+        },
+        {
+          "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+          "status": "failed",
+          "duration": 150525.4345,
+          "firstMessages": ["Error: Test timed out in 150000ms."]
+        }
+      ]
+    },
+    "lastDeliveredStartup": {
+      "zh-cn": {
+        "pageMs": 12021.300000190735,
+        "Demo": "demo-base-accordion",
+        "runtime": "react",
+        "hostChildren": 0,
+        "previews": 1268
+      },
+      "en": {
+        "pageMs": 11852.700000047684,
+        "Demo": "demo-base-accordion",
+        "runtime": "react",
+        "hostChildren": 0,
+        "previews": 1268
+      }
+    },
+    "startupByLocale": {
+      "zh-cn": {
+        "startupPassed": false,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      },
+      "en": {
+        "startupPassed": false,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      }
+    },
+    "rawLogSHA256": "ef027d174e0be3acf93715886dc7a093ab7ac069832cef87241c6166f215003c"
+  },
+  "diagnostic": {
+    "binding": {
+      "file": "site-shadcn-controls.LRFxNHv8.js",
+      "inputSHA256": "f299db3fe04ea9fe7a99e8e0b90847ae9ee4f21800e629cf99c7ff462e5276fc",
+      "outputSHA256": "18e3f70ecdc0d27496b700d34f699af6d704302b2fe8f762f7d1cab013a070c8"
+    },
+    "exit": 1,
+    "nativeTests": {
+      "numTotalTests": 2,
+      "numPassedTests": 0,
+      "numFailedTests": 1,
+      "numPendingTests": 1,
+      "numPassedTestSuites": 0,
+      "numFailedTestSuites": 2,
+      "cases": [
+        {
+          "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+          "status": "failed",
+          "duration": 150729.082209,
+          "firstMessages": ["Error: Test timed out in 150000ms."]
+        },
+        {
+          "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        }
+      ]
+    },
+    "startup": {
+      "startupPassed": false,
+      "collectionOutcome": "rejected",
+      "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+      "errors": [],
+      "consoleErrors": []
+    },
+    "sampledCumulative": [
+      {
+        "receivedNodeMs": 1117.017709,
+        "phase": "goto",
+        "kind": "target-delivery",
+        "calls": 1,
+        "requested": 0,
+        "stableSources": 0,
+        "stableInvalidations": 0,
+        "owners": 0,
+        "ownerSkipChecks": 0,
+        "ownerSkips": 0,
+        "dispatches": 0,
+        "listeners": 0,
+        "listenerSkips": 0,
+        "callbacks": 0,
+        "elapsedMs": 0,
+        "pageMs": 263.59999990463257,
+        "timeOrigin": 1794889830794
+      },
+      {
+        "receivedNodeMs": 1117.255375,
+        "phase": "goto",
+        "kind": "target-delivery",
+        "calls": 2,
+        "requested": 0,
+        "stableSources": 0,
+        "stableInvalidations": 0,
+        "owners": 0,
+        "ownerSkipChecks": 0,
+        "ownerSkips": 0,
+        "dispatches": 0,
+        "listeners": 0,
+        "listenerSkips": 0,
+        "callbacks": 0,
+        "elapsedMs": 0,
+        "pageMs": 264.89999985694885,
+        "timeOrigin": 1794889830794
+      },
+      {
+        "receivedNodeMs": 1119.491084,
+        "phase": "goto",
+        "kind": "target-delivery",
+        "calls": 4,
+        "requested": 1,
+        "stableSources": 0,
+        "stableInvalidations": 0,
+        "owners": 0,
+        "ownerSkipChecks": 0,
+        "ownerSkips": 0,
+        "dispatches": 0,
+        "listeners": 0,
+        "listenerSkips": 0,
+        "callbacks": 0,
+        "elapsedMs": 0,
+        "pageMs": 267.09999990463257,
+        "timeOrigin": 1794889830794
+      },
+      {
+        "receivedNodeMs": 1127.341834,
+        "phase": "goto",
+        "kind": "target-delivery",
+        "calls": 8,
+        "requested": 2,
+        "stableSources": 0,
+        "stableInvalidations": 0,
+        "owners": 0,
+        "ownerSkipChecks": 0,
+        "ownerSkips": 0,
+        "dispatches": 0,
+        "listeners": 0,
+        "listenerSkips": 0,
+        "callbacks": 0,
+        "elapsedMs": 0,
+        "pageMs": 275,
+        "timeOrigin": 1794889830794
+      },
+      {
+        "receivedNodeMs": 1131.336667,
+        "phase": "goto",
+        "kind": "target-delivery",
+        "calls": 16,
+        "requested": 4,
+        "stableSources": 0,
+        "stableInvalidations": 0,
+        "owners": 0,
+        "ownerSkipChecks": 0,
+        "ownerSkips": 0,
+        "dispatches": 0,
+        "listeners": 0,
+        "listenerSkips": 0,
+        "callbacks": 0,
+        "elapsedMs": 0,
+        "pageMs": 278.89999985694885,
+        "timeOrigin": 1794889830794
+      },
+      {
+        "receivedNodeMs": 1144.0405,
+        "phase": "goto",
+        "kind": "target-delivery",
+        "calls": 32,
+        "requested": 8,
+        "stableSources": 0,
+        "stableInvalidations": 0,
+        "owners": 0,
+        "ownerSkipChecks": 0,
+        "ownerSkips": 0,
+        "dispatches": 0,
+        "listeners": 0,
+        "listenerSkips": 0,
+        "callbacks": 0,
+        "elapsedMs": 0,
+        "pageMs": 291.59999990463257,
+        "timeOrigin": 1794889830794
+      },
+      {
+        "receivedNodeMs": 1155.403875,
+        "phase": "goto",
+        "kind": "target-delivery",
+        "calls": 64,
+        "requested": 16,
+        "stableSources": 0,
+        "stableInvalidations": 0,
+        "owners": 0,
+        "ownerSkipChecks": 0,
+        "ownerSkips": 0,
+        "dispatches": 0,
+        "listeners": 0,
+        "listenerSkips": 0,
+        "callbacks": 0,
+        "elapsedMs": 0,
+        "pageMs": 302.89999985694885,
+        "timeOrigin": 1794889830794
+      },
+      {
+        "receivedNodeMs": 1180.969959,
+        "phase": "goto",
+        "kind": "target-delivery",
+        "calls": 128,
+        "requested": 28,
+        "stableSources": 0,
+        "stableInvalidations": 0,
+        "owners": 0,
+        "ownerSkipChecks": 0,
+        "ownerSkips": 0,
+        "dispatches": 0,
+        "listeners": 0,
+        "listenerSkips": 0,
+        "callbacks": 0,
+        "elapsedMs": 0.09999990463256836,
+        "pageMs": 328.2999999523163,
+        "timeOrigin": 1794889830794
+      },
+      {
+        "receivedNodeMs": 1957.881,
+        "phase": "goto",
+        "kind": "target-delivery",
+        "calls": 256,
+        "requested": 54,
+        "stableSources": 5,
+        "stableInvalidations": 0,
+        "owners": 69,
+        "ownerSkipChecks": 9,
+        "ownerSkips": 0,
+        "dispatches": 69,
+        "listeners": 69,
+        "listenerSkips": 0,
+        "callbacks": 69,
+        "elapsedMs": 0.5999999046325684,
+        "pageMs": 1105.0999999046326,
+        "timeOrigin": 1794889830794
+      },
+      {
+        "receivedNodeMs": 4292.257542,
+        "phase": "goto",
+        "kind": "target-delivery",
+        "calls": 512,
+        "requested": 178,
+        "stableSources": 66,
+        "stableInvalidations": 0,
+        "owners": 2828,
+        "ownerSkipChecks": 1270,
+        "ownerSkips": 1120,
+        "dispatches": 1708,
+        "listeners": 1708,
+        "listenerSkips": 0,
+        "callbacks": 1708,
+        "elapsedMs": 11.699999809265137,
+        "pageMs": 3439.5,
+        "timeOrigin": 1794889830794
+      },
+      {
+        "receivedNodeMs": 9356.340334,
+        "phase": "startup-wait",
+        "kind": "target-delivery",
+        "calls": 1024,
+        "requested": 341,
+        "stableSources": 120,
+        "stableInvalidations": 0,
+        "owners": 7348,
+        "ownerSkipChecks": 3484,
+        "ownerSkips": 3256,
+        "dispatches": 4092,
+        "listeners": 4092,
+        "listenerSkips": 0,
+        "callbacks": 4092,
+        "elapsedMs": 27.700000286102295,
+        "pageMs": 8503.899999856949,
+        "timeOrigin": 1794889830794
+      },
+      {
+        "receivedNodeMs": 11237.183917,
+        "phase": "startup-wait",
+        "kind": "target-delivery",
+        "calls": 2048,
+        "requested": 572,
+        "stableSources": 152,
+        "stableInvalidations": 0,
+        "owners": 11001,
+        "ownerSkipChecks": 4426,
+        "ownerSkips": 4156,
+        "dispatches": 6845,
+        "listeners": 6845,
+        "listenerSkips": 0,
+        "callbacks": 6845,
+        "elapsedMs": 214.59999895095825,
+        "pageMs": 10384.399999856949,
+        "timeOrigin": 1794889830794
+      },
+      {
+        "receivedNodeMs": 13940.420375,
+        "phase": "startup-wait",
+        "kind": "target-delivery",
+        "calls": 4096,
+        "requested": 1329,
+        "stableSources": 499,
+        "stableInvalidations": 0,
+        "owners": 33356,
+        "ownerSkipChecks": 12310,
+        "ownerSkips": 10638,
+        "dispatches": 22718,
+        "listeners": 25811,
+        "listenerSkips": 912,
+        "callbacks": 24899,
+        "elapsedMs": 392.6000015735626,
+        "pageMs": 13087.699999809265,
+        "timeOrigin": 1794889830794
+      },
+      {
+        "receivedNodeMs": 19948.891834,
+        "phase": "startup-wait",
+        "kind": "target-delivery",
+        "calls": 8192,
+        "requested": 2535,
+        "stableSources": 896,
+        "stableInvalidations": 0,
+        "owners": 89492,
+        "ownerSkipChecks": 31147,
+        "ownerSkips": 18836,
+        "dispatches": 70656,
+        "listeners": 101209,
+        "listenerSkips": 10344,
+        "callbacks": 90865,
+        "elapsedMs": 989.3000040054321,
+        "pageMs": 19096.199999809265,
+        "timeOrigin": 1794889830794
+      },
+      {
+        "receivedNodeMs": 52312.113834,
+        "phase": "startup-wait",
+        "kind": "target-delivery",
+        "calls": 16384,
+        "requested": 5003,
+        "stableSources": 1771,
+        "stableInvalidations": 0,
+        "owners": 272175,
+        "ownerSkipChecks": 99074,
+        "ownerSkips": 55135,
+        "dispatches": 217040,
+        "listeners": 324244,
+        "listenerSkips": 39118,
+        "callbacks": 285126,
+        "elapsedMs": 9880.000008821487,
+        "pageMs": 51456.799999952316,
+        "timeOrigin": 1794889830794
+      },
+      {
+        "receivedNodeMs": 134890.695792,
+        "phase": "startup-wait",
+        "kind": "target-delivery",
+        "calls": 32768,
+        "requested": 10762,
+        "stableSources": 3792,
+        "stableInvalidations": 0,
+        "owners": 1058385,
+        "ownerSkipChecks": 462026,
+        "ownerSkips": 240360,
+        "dispatches": 818025,
+        "listeners": 1270055,
+        "listenerSkips": 201014,
+        "callbacks": 1069041,
+        "elapsedMs": 55602.80001139641,
+        "pageMs": 134027.89999985695,
+        "timeOrigin": 1794889830794
+      }
+    ],
+    "rawLogSHA256": "e9dd9a639c2f4b890044136414e5f368167b2003ed2e05317e1c00fb522691f9",
+    "overlaySHA256": "c9341d3e08c5c21413bc993c6d244b4938dd2f2433894971e38b902a3572c395",
+    "runnerOverlaySHA256": "f4dfdc5a855a801dbdb35f05d6d1f669eba23af4c0bfd169cd41c4b5eaa4b65f",
+    "methodControls": [
+      {
+        "stable": false,
+        "move": false,
+        "trace": ["current", "other-only", "other-mixed", "dispatch context"],
+        "published": "first",
+        "counters": {
+          "calls": 1,
+          "requested": 1,
+          "stableSources": 0,
+          "stableInvalidations": 0,
+          "owners": 3,
+          "ownerSkipChecks": 0,
+          "ownerSkips": 0,
+          "dispatches": 3,
+          "listeners": 4,
+          "listenerSkips": 0,
+          "callbacks": 4,
+          "elapsedMs": 0.02570800000000162
+        }
+      },
+      {
+        "stable": true,
+        "move": false,
+        "trace": ["current", "dispatch context"],
+        "published": "first",
+        "counters": {
+          "calls": 1,
+          "requested": 1,
+          "stableSources": 1,
+          "stableInvalidations": 0,
+          "owners": 3,
+          "ownerSkipChecks": 3,
+          "ownerSkips": 1,
+          "dispatches": 2,
+          "listeners": 3,
+          "listenerSkips": 1,
+          "callbacks": 2,
+          "elapsedMs": 0.022749999999998494
+        }
+      },
+      {
+        "stable": true,
+        "move": true,
+        "trace": ["current", "other-only", "other-mixed", "dispatch context"],
+        "published": "deleted",
+        "counters": {
+          "calls": 1,
+          "requested": 1,
+          "stableSources": 1,
+          "stableInvalidations": 1,
+          "owners": 3,
+          "ownerSkipChecks": 1,
+          "ownerSkips": 0,
+          "dispatches": 3,
+          "listeners": 4,
+          "listenerSkips": 0,
+          "callbacks": 4,
+          "elapsedMs": 0.011375000000001023
+        }
+      }
+    ]
+  }
+}
