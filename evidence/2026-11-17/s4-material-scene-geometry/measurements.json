@@ -1,0 +1,501 @@
+{
+  "source": {
+    "head": "3d0efac2a1a8788e5573e38f77e49706c1ae1818",
+    "tree": "32c3cb796e364dd4cc023a303a85357d933e0ce9",
+    "parent": "ee8a19c931164386d88e671f499c413d71fbe012",
+    "signature": "G"
+  },
+  "inputs": [
+    "f8f4b7c40695a50d213fb1e245da7e51bd3cdf5c01d98aaf511c82d041c62b7a  apps/www/src/components/PrototypePreviewer/preview-material-scene.test.ts",
+    "d72f66a3e1920bcfe02baaabc386ec316708f30d55dba92fd42fd75d011cde29  apps/www/src/components/PrototypePreviewer/preview-material-scene.ts"
+  ],
+  "matrixCensus": {
+    "source": {
+      "head": "ee8a19c931164386d88e671f499c413d71fbe012",
+      "tree": "508a57bc86733a8194e1a1fb6b75ae12a461283b",
+      "parent": "58f38cdca1657b6a17eb4ae48856462b4a3d6628",
+      "signature": "G"
+    },
+    "asset": {
+      "asset": "preview-material-scene.sMUd2it9.js",
+      "source": "6549ef37782f64ad1d38e9c3a43ac8d9a9cc8760447d3e23ca76ac081d8ccbf5",
+      "instrumented": "4ff25c1e9eee48d134dbe19a50f8497b17b3354b75d0a4e1a33641a2359d321e"
+    },
+    "logSha256": "8b4eb021e9c758411cd2fe494bc760f0299aeed13ac026ac36a444d2b73b8a40",
+    "exit": 1,
+    "records": [
+      {
+        "events": 1,
+        "layouts": 1,
+        "draws": 0,
+        "ticks": 0,
+        "idleTicks": 0,
+        "idleRepeatedChecks": 0,
+        "scopeEligibilityReads": 0,
+        "layoutRects": 2,
+        "hiddenOverlayRects": 0,
+        "at": 27853.60000014305
+      },
+      {
+        "events": 2,
+        "layouts": 1,
+        "draws": 2,
+        "ticks": 1,
+        "idleTicks": 0,
+        "idleRepeatedChecks": 0,
+        "scopeEligibilityReads": 3,
+        "layoutRects": 2,
+        "hiddenOverlayRects": 0,
+        "at": 28193.5
+      },
+      {
+        "events": 3,
+        "layouts": 2,
+        "draws": 2,
+        "ticks": 1,
+        "idleTicks": 0,
+        "idleRepeatedChecks": 0,
+        "scopeEligibilityReads": 3,
+        "layoutRects": 4,
+        "hiddenOverlayRects": 0,
+        "at": 28319.299999952316
+      },
+      {
+        "events": 4,
+        "layouts": 2,
+        "draws": 4,
+        "ticks": 2,
+        "idleTicks": 0,
+        "idleRepeatedChecks": 0,
+        "scopeEligibilityReads": 6,
+        "layoutRects": 4,
+        "hiddenOverlayRects": 0,
+        "at": 28564
+      },
+      {
+        "events": 32,
+        "layouts": 8,
+        "draws": 32,
+        "ticks": 24,
+        "idleTicks": 0,
+        "idleRepeatedChecks": 0,
+        "scopeEligibilityReads": 56,
+        "layoutRects": 16,
+        "hiddenOverlayRects": 0,
+        "at": 30643.799999952316
+      }
+    ],
+    "lastDelivered": {
+      "events": 32,
+      "layouts": 8,
+      "draws": 32,
+      "ticks": 24,
+      "idleTicks": 0,
+      "idleRepeatedChecks": 0,
+      "scopeEligibilityReads": 56,
+      "layoutRects": 16,
+      "hiddenOverlayRects": 0,
+      "at": 30643.799999952316
+    }
+  },
+  "unit": {
+    "red": {
+      "passed": 15,
+      "failed": 4,
+      "filtered": 0,
+      "files": 1,
+      "failures": [
+        {
+          "title": "reads scope eligibility once on an animation tick that does not paint",
+          "message": "AssertionError: expected [ <div …(2)>…(3)</div>, …(1) ] to have a length of 1 but got 2"
+        },
+        {
+          "title": "keeps one scheduled animation when a paint subscriber refreshes the scene",
+          "message": "AssertionError: expected 2 to be 1 // Object.is equality"
+        },
+        {
+          "title": "measures an overlay only while it is visible through display",
+          "message": "AssertionError: expected [ <div …(2)>…(3)</div>, …(3) ] to not include <div style=\"display: none;\"></div>"
+        },
+        {
+          "title": "measures an overlay only while it is visible through visibility",
+          "message": "AssertionError: expected [ <div …(2)>…(3)</div>, …(3) ] to not include <div style=\"visibility: hidden;\"></div>"
+        }
+      ],
+      "reportSha256": "a263c996bf77f6766fe5e24b8f7f0f800ba8c0822bd6e9f8b12b103aba4e657d"
+    },
+    "focused": {
+      "passed": 148,
+      "failed": 0,
+      "filtered": 0,
+      "files": 6,
+      "failures": [],
+      "reportSha256": "d705eef65915a013cddeffe0253de720c0bbd837890c3359523ea503ffe9363b"
+    }
+  },
+  "packed": {
+    "packages": 47,
+    "pages": 685,
+    "readiness": {
+      "passed": 0,
+      "failed": 2,
+      "filtered": 0,
+      "files": 1,
+      "failures": [
+        {
+          "title": "zh-cn: native Light/split/mixed acceptance",
+          "message": "page.waitForFunction: Timeout 60000ms exceeded."
+        },
+        {
+          "title": "en: native Light/split/mixed acceptance",
+          "message": "page.waitForFunction: Timeout 60000ms exceeded."
+        }
+      ],
+      "reportSha256": "6a6441db20003b4bf8cf66f82f2cb64200ae013e369b7012eec33fd77d87c533"
+    },
+    "typeCheck": 0,
+    "manifests": 0,
+    "policy": 0,
+    "budgetRows": [
+      {
+        "before": "PASS lucide/icons/x: 2879 / 3000 gzip bytes; overBudget=0; minified=8695 sha256=da30ebe409a83a09d2569fe2a47880a133fcbe4d554d93ea305795356c4fccdb",
+        "after": "PASS lucide/icons/x: 2879 / 3000 gzip bytes; overBudget=0; minified=8695 sha256=da30ebe409a83a09d2569fe2a47880a133fcbe4d554d93ea305795356c4fccdb"
+      },
+      {
+        "before": "PASS lucide root: 637306 / 700000 gzip bytes; overBudget=0; minified=4087403 sha256=eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c",
+        "after": "PASS lucide root: 637306 / 700000 gzip bytes; overBudget=0; minified=4087403 sha256=eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c"
+      },
+      {
+        "before": "ADVISORY core root: 11378 / 7600 gzip bytes; overBudget=3778; minified=35782 sha256=0e3c868d3ef719af46085b83881b15787a94acbaf893566ceae4047ceff72b44",
+        "after": "ADVISORY core root: 11378 / 7600 gzip bytes; overBudget=3778; minified=35782 sha256=0e3c868d3ef719af46085b83881b15787a94acbaf893566ceae4047ceff72b44"
+      },
+      {
+        "before": "ADVISORY runtime root: 101217 / 78500 gzip bytes; overBudget=22717; minified=390470 sha256=84ddbb8b9e893f050fb5c5bdb55a115d1ad522ead59198ec22eedeb94bc57d00",
+        "after": "ADVISORY runtime root: 101217 / 78500 gzip bytes; overBudget=22717; minified=390470 sha256=84ddbb8b9e893f050fb5c5bdb55a115d1ad522ead59198ec22eedeb94bc57d00"
+      },
+      {
+        "before": "ADVISORY adapter-react root: 163762 / 106000 gzip bytes; overBudget=57762; minified=577441 sha256=69654062662feb78422f4c258ca95ba33de96c4d6bae8e629c8b81ce78f7f0f6",
+        "after": "ADVISORY adapter-react root: 163762 / 106000 gzip bytes; overBudget=57762; minified=577441 sha256=69654062662feb78422f4c258ca95ba33de96c4d6bae8e629c8b81ce78f7f0f6"
+      },
+      {
+        "before": "ADVISORY adapter-vue root: 162544 / 106000 gzip bytes; overBudget=56544; minified=572695 sha256=19927292cac56a4da5e770e4590e4bb49abe29822f0d4879c7da9c62be8c5548",
+        "after": "ADVISORY adapter-vue root: 162544 / 106000 gzip bytes; overBudget=56544; minified=572695 sha256=19927292cac56a4da5e770e4590e4bb49abe29822f0d4879c7da9c62be8c5548"
+      },
+      {
+        "before": "ADVISORY adapter-web-component root: 195497 / 132000 gzip bytes; overBudget=63497; minified=671343 sha256=e97da598db9bac8aaa750efff2d718cea2f095fa0173b50183bb625a93d28a29",
+        "after": "ADVISORY adapter-web-component root: 195497 / 132000 gzip bytes; overBudget=63497; minified=671343 sha256=e97da598db9bac8aaa750efff2d718cea2f095fa0173b50183bb625a93d28a29"
+      },
+      {
+        "before": "PASS prototypes-base/button: 5274 / 6000 gzip bytes; overBudget=0; minified=18158 sha256=6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67",
+        "after": "PASS prototypes-base/button: 5274 / 6000 gzip bytes; overBudget=0; minified=18158 sha256=6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67"
+      },
+      {
+        "before": "ADVISORY prototypes-shadcn/button: 7803 / 7000 gzip bytes; overBudget=803; minified=34485 sha256=60b4ff9277e59fba01c34162ec9418282ce82c6b43e24f223a05c9e1df19db57",
+        "after": "ADVISORY prototypes-shadcn/button: 7803 / 7000 gzip bytes; overBudget=803; minified=34485 sha256=60b4ff9277e59fba01c34162ec9418282ce82c6b43e24f223a05c9e1df19db57"
+      }
+    ],
+    "caseDeadlineMs": 150000,
+    "readinessMs": 60000,
+    "expectedCount": 1268,
+    "preview": {
+      "head": "3d0efac2a1a8788e5573e38f77e49706c1ae1818",
+      "tree": "32c3cb796e364dd4cc023a303a85357d933e0ce9",
+      "distHashes": {
+        "zh-cn/index.html": "083704e61143ac10f1c0a7faa937eda5a6adfd09697ba771335cc83fc5b43436",
+        "zh-cn/ui-libraries/shadcn/button/index.html": "b997c957a336fa01bd7a9b38a3104ea1d093c2889f8d8473e1e87f5d49d36e36",
+        "zh-cn/ui-libraries/brutalist/components/button/index.html": "b606bfedfd80d4e44ab9c66d67dab3993c06f40787366f0144202e3c9dfb8f51"
+      },
+      "sourceCodeExamples": 9,
+      "renderedCodeExamples": 9,
+      "packedHeaderExit": 0,
+      "previewBrowserExit": 0,
+      "selector": "uses real family Popover Triggers|uses the same mobile shell|live available region|keeps Runtime Tabs outside"
+    },
+    "scope": {
+      "passed": 11,
+      "failed": 0,
+      "filtered": 13,
+      "files": 3,
+      "failures": [],
+      "reportSha256": "900d82ce742c4e7e06a6a052fb6cee49ffccb9d3ebd8d89836d087dded0003ed"
+    },
+    "optics": {
+      "passed": 3,
+      "failed": 0,
+      "filtered": 1,
+      "files": 1,
+      "failures": [],
+      "reportSha256": "05bbc3be20461cf2a624e7e7acc5bd58ffeed856991f321a8e84c7fdb49cd150"
+    },
+    "opticsInputs": [
+      {
+        "sha256": "c537c69681581c1b4524cf908931acb0f51c070d0b54b3c6ebed538ccee309c5",
+        "name": "demo-liquid-glass-material.browser.test.ts"
+      },
+      {
+        "sha256": "80d23807dc745e53d9aecab46af68a7ce05e32f0c89fe5378da0ca522f09adea",
+        "name": "index.html"
+      },
+      {
+        "sha256": "11b6acef1c59cdcafa6b5c479ff6fcd3acd3c8757a6ff908fb45f7ec69fb402e",
+        "name": "index.html"
+      }
+    ],
+    "header": {
+      "head": "3d0efac2a1a8788e5573e38f77e49706c1ae1818",
+      "browser": "156.0.8078.79",
+      "scope": "First animation frame control on the exact static Astro preview. Geometry reads can force layout.",
+      "results": [
+        {
+          "width": 320,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1637.3999998569489,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1759.3999998569489,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1785.7999999523163,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        },
+        {
+          "width": 390,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1585.4000000953674,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1710.2000000476837,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1730.2000000476837,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        }
+      ]
+    }
+  },
+  "geometry": {
+    "probeSha256": "f9c5c4511115fac04d8fec6c1074752d886a220247224bfe2529b352f90d87e8",
+    "variants": [
+      {
+        "source": {
+          "head": "ee8a19c931164386d88e671f499c413d71fbe012",
+          "tree": "508a57bc86733a8194e1a1fb6b75ae12a461283b",
+          "parent": "58f38cdca1657b6a17eb4ae48856462b4a3d6628",
+          "signature": "G"
+        },
+        "assets": [
+          {
+            "filename": "material-parent-served.html",
+            "sha256": "86d4c9a6c9ad7660da970d863c30a95d7e4ebbb0a95741fad4cb2c54315debea"
+          },
+          {
+            "filename": "preview-material-scene.sMUd2it9.js",
+            "sha256": "6549ef37782f64ad1d38e9c3a43ac8d9a9cc8760447d3e23ca76ac081d8ccbf5"
+          }
+        ],
+        "result": {
+          "browser": "156.0.8078.79",
+          "variant": "parent",
+          "initial": {
+            "width": 512,
+            "height": 248
+          },
+          "hidden": {
+            "beforeLayout": 0,
+            "minHeight": 248
+          },
+          "hiddenState": {
+            "minHeight": 248,
+            "rectReads": 1
+          },
+          "result": {
+            "idle": [
+              {
+                "time": 843.8,
+                "scope": 2,
+                "mount": 0,
+                "canvas": 0
+              },
+              {
+                "time": 860.5,
+                "scope": 2,
+                "mount": 0,
+                "canvas": 0
+              },
+              {
+                "time": 877.1,
+                "scope": 2,
+                "mount": 0,
+                "canvas": 0
+              },
+              {
+                "time": 893.8,
+                "scope": 2,
+                "mount": 0,
+                "canvas": 0
+              },
+              {
+                "time": 910.5,
+                "scope": 2,
+                "mount": 0,
+                "canvas": 0
+              }
+            ],
+            "visibleReads": 14,
+            "minHeight": 539,
+            "canvas": {
+              "width": 512,
+              "height": 539
+            }
+          }
+        }
+      },
+      {
+        "source": {
+          "head": "3d0efac2a1a8788e5573e38f77e49706c1ae1818",
+          "tree": "32c3cb796e364dd4cc023a303a85357d933e0ce9",
+          "parent": "ee8a19c931164386d88e671f499c413d71fbe012",
+          "signature": "G"
+        },
+        "assets": [
+          {
+            "filename": "material-candidate-served.html",
+            "sha256": "11b6acef1c59cdcafa6b5c479ff6fcd3acd3c8757a6ff908fb45f7ec69fb402e"
+          },
+          {
+            "filename": "preview-material-scene.CUuIXAXj.js",
+            "sha256": "0e5d724013226ce70683ad242af449f5d5bdc3dbec29c9bbc59744fc5b73bed0"
+          }
+        ],
+        "result": {
+          "browser": "156.0.8078.79",
+          "variant": "candidate",
+          "initial": {
+            "width": 512,
+            "height": 248
+          },
+          "hidden": {
+            "beforeLayout": 0,
+            "minHeight": 248
+          },
+          "hiddenState": {
+            "minHeight": 248,
+            "rectReads": 0
+          },
+          "result": {
+            "idle": [
+              {
+                "time": 763.7,
+                "scope": 1,
+                "mount": 0,
+                "canvas": 0
+              },
+              {
+                "time": 780.5,
+                "scope": 1,
+                "mount": 0,
+                "canvas": 0
+              },
+              {
+                "time": 797.1,
+                "scope": 1,
+                "mount": 0,
+                "canvas": 0
+              },
+              {
+                "time": 813.8,
+                "scope": 1,
+                "mount": 0,
+                "canvas": 0
+              },
+              {
+                "time": 830.5,
+                "scope": 1,
+                "mount": 0,
+                "canvas": 0
+              }
+            ],
+            "visibleReads": 14,
+            "minHeight": 539,
+            "canvas": {
+              "width": 512,
+              "height": 539
+            }
+          }
+        }
+      }
+    ]
+  }
+}
