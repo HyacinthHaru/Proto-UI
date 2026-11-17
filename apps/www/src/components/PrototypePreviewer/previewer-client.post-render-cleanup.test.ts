@@ -7,6 +7,7 @@ const control = vi.hoisted(() => ({
   committed: vi.fn(),
   destroy: vi.fn(),
   failTheme: false,
+  failWatch: false,
   failLoad: false,
   demo: null as DemoSpec | null,
 }));
@@ -56,6 +57,13 @@ vi.mock('./projection-theme', async (original) => {
       if (control.failTheme && args[0] === 'brutalist') throw new Error('post-render theme failed');
       return current.resolveProjectionThemeSurfaceStyle(...args);
     },
+    watchProjectionThemeSurfaceStyle: (
+      ...args: Parameters<typeof current.watchProjectionThemeSurfaceStyle>
+    ) => {
+      if (control.failWatch && args[0] === 'brutalist')
+        throw new Error('post-render watcher failed');
+      return current.watchProjectionThemeSurfaceStyle(...args);
+    },
   };
 });
 vi.mock('./demo-renderer', async (original) => {
@@ -93,6 +101,7 @@ beforeEach(() => {
   control.committed.mockClear();
   control.destroy.mockClear();
   control.failTheme = false;
+  control.failWatch = false;
   control.failLoad = false;
   localStorage.clear();
   for (const token of WEBSITE_SHADCN_THEME_TOKENS)
@@ -113,7 +122,7 @@ afterEach(async () => {
 
 describe('generic preview post-render preparation cleanup', () => {
   for (const runtime of ['wc', 'react', 'vue', 'vue2'] as RuntimeId[]) {
-    for (const fault of ['theme', 'surface-load'] as const) {
+    for (const fault of ['theme', 'surface-load', 'theme-watch'] as const) {
       it(`${runtime}: releases the real mounted demo when latest-family ${fault} fails`, async () => {
         const cleanup = vi.fn();
         const listener = vi.fn();
@@ -165,6 +174,7 @@ describe('generic preview post-render preparation cleanup', () => {
         expect(listener).toHaveBeenCalledTimes(1);
         root.dataset.siteLibraryFamily = 'brutalist';
         control.failTheme = fault === 'theme';
+        control.failWatch = fault === 'theme-watch';
         control.failLoad = fault === 'surface-load';
         release();
         await vi.waitFor(() =>

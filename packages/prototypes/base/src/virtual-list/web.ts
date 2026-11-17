@@ -152,6 +152,12 @@ export function attachWebVirtualList(options: {
             abort();
             return;
           }
+        }
+        // Measure the projected window after its structural and attribute writes.
+        // Reading between insertions forces layout once per dirty row.
+        for (let index = 0; index < request.keys.length; index++) {
+          const key = request.keys[index]!,
+            node = staged[index]!;
           const height = node.getBoundingClientRect().height;
           if (!isCurrent(request)) {
             abort();

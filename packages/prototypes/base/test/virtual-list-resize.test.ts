@@ -30,7 +30,7 @@ function fixture(
     initialHeight?: number;
     limit?: number;
     count?: number;
-    heightFor?: (key: string) => number;
+    heightFor?: (key: string, row: HTMLElement) => number;
   } = {}
 ) {
   vi.stubGlobal('ResizeObserver', ProbeObserver);
@@ -57,7 +57,7 @@ function fixture(
       const row = document.createElement('div');
       row.textContent = key;
       row.getBoundingClientRect = () =>
-        ({ height: options.heightFor?.(key) ?? heights.get(key) ?? 20 }) as DOMRect;
+        ({ height: options.heightFor?.(key, row) ?? heights.get(key) ?? 20 }) as DOMRect;
       return row;
     },
   });
@@ -76,6 +76,21 @@ function fixture(
     observer: ProbeObserver.latest,
   };
 }
+it('measures each row against the complete requested materialization', async () => {
+  const projectedAtRead: Array<Array<string | null>> = [];
+  const expected = ['row-0', 'row-1', 'row-2'];
+  const f = fixture({
+    heightFor: (_key, row) => {
+      const siblings = row.parentElement!.querySelectorAll('[role=listitem]');
+      projectedAtRead.push(Array.from(siblings, (item) => item.textContent));
+      return 20;
+    },
+  });
+  await flush();
+  expect(f.collection.snapshot().materializedKeys).toEqual(expected);
+  expect(projectedAtRead).toEqual([expected, expected, expected]);
+});
+
 it('corrects an observer-driven shrink without an unrelated refresh', async () => {
   const f = fixture(),
     original = f.rows();
