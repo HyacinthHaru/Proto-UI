@@ -1,0 +1,3445 @@
+{
+  "source": "9ec4042454a3c9cc34666660db09b96ea53dc5a3",
+  "delivered": 32,
+  "selectedRows": [
+    {
+      "timeOrigin": 1794911717518.4,
+      "pageMs": 54737.39999985695,
+      "dateNow": 1794911772255,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-xag2lcct2n",
+        "index": 476,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-progress",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-xag2lcct2n",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 20296.89999985695,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 31346.5,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 31346.5,
+          "runtime": "wc",
+          "ids": [
+            "shadcn-style-scope",
+            "shadcn-progress-root",
+            "shadcn-progress-label",
+            "shadcn-progress-track",
+            "shadcn-progress-indicator",
+            "shadcn-progress-value",
+            "shadcn-button"
+          ]
+        }
+      ],
+      "firstMissingPrototypes": [
+        {
+          "id": "shadcn-style-scope",
+          "queuedAt": 14173.199999809265,
+          "plan": null,
+          "dispatchedAt": 14173.199999809265,
+          "innerImportAt": null,
+          "returnedAt": 16020.899999856949,
+          "failedAt": null,
+          "status": "returned",
+          "assets": null
+        },
+        {
+          "id": "shadcn-progress-root",
+          "queuedAt": 31346.5,
+          "plan": {
+            "entry": "_astro/index.7yBEfSYf.js",
+            "dependencies": [
+              "_astro/index.7yBEfSYf.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.DbvNL44F.js",
+              "_astro/range.CA_aaQNc.js"
+            ]
+          },
+          "dispatchedAt": 31346.5,
+          "innerImportAt": 31347.89999985695,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.7yBEfSYf.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 31347,
+                "responseEnd": 31349.299999952316,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.DbvNL44F.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 6330.299999952316,
+                "responseEnd": 6336.699999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/range.CA_aaQNc.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 6120.799999952316,
+                "responseEnd": 6166.199999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-progress-label",
+          "queuedAt": 31346.5,
+          "plan": {
+            "entry": "_astro/index.7yBEfSYf.js",
+            "dependencies": [
+              "_astro/index.7yBEfSYf.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.DbvNL44F.js",
+              "_astro/range.CA_aaQNc.js"
+            ]
+          },
+          "dispatchedAt": 31347,
+          "innerImportAt": 31347.89999985695,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.7yBEfSYf.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 31347,
+                "responseEnd": 31349.299999952316,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.DbvNL44F.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 6330.299999952316,
+                "responseEnd": 6336.699999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/range.CA_aaQNc.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 6120.799999952316,
+                "responseEnd": 6166.199999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-progress-track",
+          "queuedAt": 31346.5,
+          "plan": {
+            "entry": "_astro/index.7yBEfSYf.js",
+            "dependencies": [
+              "_astro/index.7yBEfSYf.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.DbvNL44F.js",
+              "_astro/range.CA_aaQNc.js"
+            ]
+          },
+          "dispatchedAt": 31347.099999904633,
+          "innerImportAt": 31347.89999985695,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.7yBEfSYf.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 31347,
+                "responseEnd": 31349.299999952316,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.DbvNL44F.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 6330.299999952316,
+                "responseEnd": 6336.699999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/range.CA_aaQNc.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 6120.799999952316,
+                "responseEnd": 6166.199999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-progress-indicator",
+          "queuedAt": 31346.5,
+          "plan": {
+            "entry": "_astro/index.7yBEfSYf.js",
+            "dependencies": [
+              "_astro/index.7yBEfSYf.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.DbvNL44F.js",
+              "_astro/range.CA_aaQNc.js"
+            ]
+          },
+          "dispatchedAt": 31347.299999952316,
+          "innerImportAt": 31347.89999985695,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.7yBEfSYf.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 31347,
+                "responseEnd": 31349.299999952316,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.DbvNL44F.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 6330.299999952316,
+                "responseEnd": 6336.699999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/range.CA_aaQNc.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 6120.799999952316,
+                "responseEnd": 6166.199999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-progress-value",
+          "queuedAt": 31346.5,
+          "plan": {
+            "entry": "_astro/index.7yBEfSYf.js",
+            "dependencies": [
+              "_astro/index.7yBEfSYf.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.DbvNL44F.js",
+              "_astro/range.CA_aaQNc.js"
+            ]
+          },
+          "dispatchedAt": 31347.39999985695,
+          "innerImportAt": 31347.89999985695,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.7yBEfSYf.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 31347,
+                "responseEnd": 31349.299999952316,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.DbvNL44F.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 6330.299999952316,
+                "responseEnd": 6336.699999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/range.CA_aaQNc.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 6120.799999952316,
+                "responseEnd": 6166.199999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-button",
+          "queuedAt": 422.59999990463257,
+          "plan": null,
+          "dispatchedAt": 422.59999990463257,
+          "innerImportAt": null,
+          "returnedAt": 5218.399999856949,
+          "failedAt": null,
+          "status": "returned",
+          "assets": null
+        }
+      ]
+    },
+    {
+      "timeOrigin": 1794911717518.4,
+      "pageMs": 55328.699999809265,
+      "dateNow": 1794911772847,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-jcjnn6lw53j",
+        "index": 484,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-resizable",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-jcjnn6lw53j",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 20298.299999952316,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 31347.89999985695,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 31349.5,
+          "runtime": "wc",
+          "ids": [
+            "shadcn-style-scope",
+            "shadcn-resizable-root",
+            "shadcn-resizable-panel",
+            "shadcn-resizable-handle"
+          ]
+        }
+      ],
+      "firstMissingPrototypes": [
+        {
+          "id": "shadcn-style-scope",
+          "queuedAt": 14173.199999809265,
+          "plan": null,
+          "dispatchedAt": 14173.199999809265,
+          "innerImportAt": null,
+          "returnedAt": 16020.899999856949,
+          "failedAt": null,
+          "status": "returned",
+          "assets": null
+        },
+        {
+          "id": "shadcn-resizable-root",
+          "queuedAt": 31349.5,
+          "plan": {
+            "entry": "_astro/index.CJMCyRx6.js",
+            "dependencies": [
+              "_astro/index.CJMCyRx6.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.8VOATO8Y.js",
+              "_astro/shared.CneTlUGf.js"
+            ]
+          },
+          "dispatchedAt": 31349.599999904633,
+          "innerImportAt": 31350.5,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.CJMCyRx6.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 31349.89999985695,
+                "responseEnd": 31352.299999952316,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.8VOATO8Y.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 6328.399999856949,
+                "responseEnd": 6336.599999904633,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/shared.CneTlUGf.js",
+              "evaluation": {
+                "start": 6408.799999952316,
+                "end": 6408.799999952316
+              },
+              "timing": {
+                "startTime": 6107.899999856949,
+                "responseEnd": 6144.699999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-resizable-panel",
+          "queuedAt": 31349.5,
+          "plan": {
+            "entry": "_astro/index.CJMCyRx6.js",
+            "dependencies": [
+              "_astro/index.CJMCyRx6.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.8VOATO8Y.js",
+              "_astro/shared.CneTlUGf.js"
+            ]
+          },
+          "dispatchedAt": 31350,
+          "innerImportAt": 31350.5,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.CJMCyRx6.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 31349.89999985695,
+                "responseEnd": 31352.299999952316,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.8VOATO8Y.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 6328.399999856949,
+                "responseEnd": 6336.599999904633,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/shared.CneTlUGf.js",
+              "evaluation": {
+                "start": 6408.799999952316,
+                "end": 6408.799999952316
+              },
+              "timing": {
+                "startTime": 6107.899999856949,
+                "responseEnd": 6144.699999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-resizable-handle",
+          "queuedAt": 31349.5,
+          "plan": {
+            "entry": "_astro/index.CJMCyRx6.js",
+            "dependencies": [
+              "_astro/index.CJMCyRx6.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.8VOATO8Y.js",
+              "_astro/shared.CneTlUGf.js"
+            ]
+          },
+          "dispatchedAt": 31350.099999904633,
+          "innerImportAt": 31350.5,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.CJMCyRx6.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 31349.89999985695,
+                "responseEnd": 31352.299999952316,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.8VOATO8Y.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 6328.399999856949,
+                "responseEnd": 6336.599999904633,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/shared.CneTlUGf.js",
+              "evaluation": {
+                "start": 6408.799999952316,
+                "end": 6408.799999952316
+              },
+              "timing": {
+                "startTime": 6107.899999856949,
+                "responseEnd": 6144.699999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "timeOrigin": 1794911717518.4,
+      "pageMs": 55849.59999990463,
+      "dateNow": 1794911773368,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-17xoef2804v",
+        "index": 488,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-scroll-area",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-17xoef2804v",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 20299.099999904633,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 31363.199999809265,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 31364.299999952316,
+          "runtime": "wc",
+          "ids": [
+            "shadcn-style-scope",
+            "shadcn-scroll-area-root",
+            "shadcn-scroll-area-viewport",
+            "shadcn-scroll-area-scrollbar",
+            "shadcn-scroll-area-thumb"
+          ]
+        }
+      ],
+      "firstMissingPrototypes": [
+        {
+          "id": "shadcn-style-scope",
+          "queuedAt": 14173.199999809265,
+          "plan": null,
+          "dispatchedAt": 14173.199999809265,
+          "innerImportAt": null,
+          "returnedAt": 16020.899999856949,
+          "failedAt": null,
+          "status": "returned",
+          "assets": null
+        },
+        {
+          "id": "shadcn-scroll-area-root",
+          "queuedAt": 31364.299999952316,
+          "plan": {
+            "entry": "_astro/index.jQYghgaW.js",
+            "dependencies": [
+              "_astro/index.jQYghgaW.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/viewport.proto.BZ0-il2e.js",
+              "_astro/thumb.proto.B01btqF0.js"
+            ]
+          },
+          "dispatchedAt": 31364.5,
+          "innerImportAt": 31365.5,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.jQYghgaW.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 31364.799999952316,
+                "responseEnd": 31367.099999904633,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/viewport.proto.BZ0-il2e.js",
+              "evaluation": {
+                "start": 7903.299999952316,
+                "end": 7903.399999856949
+              },
+              "timing": {
+                "startTime": 6212.599999904633,
+                "responseEnd": 6260.299999952316,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/thumb.proto.B01btqF0.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 6333,
+                "responseEnd": 6336.799999952316,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-scroll-area-viewport",
+          "queuedAt": 31364.299999952316,
+          "plan": {
+            "entry": "_astro/index.jQYghgaW.js",
+            "dependencies": [
+              "_astro/index.jQYghgaW.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/viewport.proto.BZ0-il2e.js",
+              "_astro/thumb.proto.B01btqF0.js"
+            ]
+          },
+          "dispatchedAt": 31364.799999952316,
+          "innerImportAt": 31365.5,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.jQYghgaW.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 31364.799999952316,
+                "responseEnd": 31367.099999904633,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/viewport.proto.BZ0-il2e.js",
+              "evaluation": {
+                "start": 7903.299999952316,
+                "end": 7903.399999856949
+              },
+              "timing": {
+                "startTime": 6212.599999904633,
+                "responseEnd": 6260.299999952316,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/thumb.proto.B01btqF0.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 6333,
+                "responseEnd": 6336.799999952316,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-scroll-area-scrollbar",
+          "queuedAt": 31364.299999952316,
+          "plan": {
+            "entry": "_astro/index.jQYghgaW.js",
+            "dependencies": [
+              "_astro/index.jQYghgaW.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/viewport.proto.BZ0-il2e.js",
+              "_astro/thumb.proto.B01btqF0.js"
+            ]
+          },
+          "dispatchedAt": 31365,
+          "innerImportAt": 31365.5,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.jQYghgaW.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 31364.799999952316,
+                "responseEnd": 31367.099999904633,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/viewport.proto.BZ0-il2e.js",
+              "evaluation": {
+                "start": 7903.299999952316,
+                "end": 7903.399999856949
+              },
+              "timing": {
+                "startTime": 6212.599999904633,
+                "responseEnd": 6260.299999952316,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/thumb.proto.B01btqF0.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 6333,
+                "responseEnd": 6336.799999952316,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-scroll-area-thumb",
+          "queuedAt": 31364.299999952316,
+          "plan": {
+            "entry": "_astro/index.jQYghgaW.js",
+            "dependencies": [
+              "_astro/index.jQYghgaW.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/viewport.proto.BZ0-il2e.js",
+              "_astro/thumb.proto.B01btqF0.js"
+            ]
+          },
+          "dispatchedAt": 31365.099999904633,
+          "innerImportAt": 31365.5,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.jQYghgaW.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 31364.799999952316,
+                "responseEnd": 31367.099999904633,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/viewport.proto.BZ0-il2e.js",
+              "evaluation": {
+                "start": 7903.299999952316,
+                "end": 7903.399999856949
+              },
+              "timing": {
+                "startTime": 6212.599999904633,
+                "responseEnd": 6260.299999952316,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/thumb.proto.B01btqF0.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 6333,
+                "responseEnd": 6336.799999952316,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "timeOrigin": 1794911717518.4,
+      "pageMs": 57027.199999809265,
+      "dateNow": 1794911774545,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-3zi67n7lbam",
+        "index": 520,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-table",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-3zi67n7lbam",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 30854.799999952316,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 45207.199999809265,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 45207.299999952316,
+          "runtime": "wc",
+          "ids": [
+            "shadcn-style-scope",
+            "shadcn-table-root",
+            "shadcn-table-caption",
+            "shadcn-table-row",
+            "shadcn-table-header-cell",
+            "shadcn-table-cell"
+          ]
+        }
+      ],
+      "firstMissingPrototypes": [
+        {
+          "id": "shadcn-style-scope",
+          "queuedAt": 14173.199999809265,
+          "plan": null,
+          "dispatchedAt": 14173.199999809265,
+          "innerImportAt": null,
+          "returnedAt": 16020.899999856949,
+          "failedAt": null,
+          "status": "returned",
+          "assets": null
+        },
+        {
+          "id": "shadcn-table-root",
+          "queuedAt": 45207.299999952316,
+          "plan": {
+            "entry": "_astro/index.DitFunag.js",
+            "dependencies": [
+              "_astro/index.DitFunag.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.DQ0xqlk8.js"
+            ]
+          },
+          "dispatchedAt": 45207.299999952316,
+          "innerImportAt": 45209.39999985695,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.DitFunag.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": null,
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.DQ0xqlk8.js",
+              "evaluation": {
+                "start": 7298.299999952316,
+                "end": 7298.399999856949
+              },
+              "timing": {
+                "startTime": 6171.299999952316,
+                "responseEnd": 6211.399999856949,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-table-caption",
+          "queuedAt": 45207.299999952316,
+          "plan": {
+            "entry": "_astro/index.DitFunag.js",
+            "dependencies": [
+              "_astro/index.DitFunag.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.DQ0xqlk8.js"
+            ]
+          },
+          "dispatchedAt": 45208.199999809265,
+          "innerImportAt": 45209.5,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.DitFunag.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": null,
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.DQ0xqlk8.js",
+              "evaluation": {
+                "start": 7298.299999952316,
+                "end": 7298.399999856949
+              },
+              "timing": {
+                "startTime": 6171.299999952316,
+                "responseEnd": 6211.399999856949,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-table-row",
+          "queuedAt": 45207.299999952316,
+          "plan": {
+            "entry": "_astro/index.DitFunag.js",
+            "dependencies": [
+              "_astro/index.DitFunag.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.DQ0xqlk8.js"
+            ]
+          },
+          "dispatchedAt": 45208.39999985695,
+          "innerImportAt": 45209.5,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.DitFunag.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": null,
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.DQ0xqlk8.js",
+              "evaluation": {
+                "start": 7298.299999952316,
+                "end": 7298.399999856949
+              },
+              "timing": {
+                "startTime": 6171.299999952316,
+                "responseEnd": 6211.399999856949,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-table-header-cell",
+          "queuedAt": 45207.299999952316,
+          "plan": {
+            "entry": "_astro/index.DitFunag.js",
+            "dependencies": [
+              "_astro/index.DitFunag.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.DQ0xqlk8.js"
+            ]
+          },
+          "dispatchedAt": 45208.59999990463,
+          "innerImportAt": 45209.5,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.DitFunag.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": null,
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.DQ0xqlk8.js",
+              "evaluation": {
+                "start": 7298.299999952316,
+                "end": 7298.399999856949
+              },
+              "timing": {
+                "startTime": 6171.299999952316,
+                "responseEnd": 6211.399999856949,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-table-cell",
+          "queuedAt": 45207.299999952316,
+          "plan": {
+            "entry": "_astro/index.DitFunag.js",
+            "dependencies": [
+              "_astro/index.DitFunag.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.DQ0xqlk8.js"
+            ]
+          },
+          "dispatchedAt": 45208.699999809265,
+          "innerImportAt": 45209.5,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.DitFunag.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": null,
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.DQ0xqlk8.js",
+              "evaluation": {
+                "start": 7298.299999952316,
+                "end": 7298.399999856949
+              },
+              "timing": {
+                "startTime": 6171.299999952316,
+                "responseEnd": 6211.399999856949,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "timeOrigin": 1794911717518.4,
+      "pageMs": 60253.59999990463,
+      "dateNow": 1794911777772,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-jjiy5y3sgv",
+        "index": 528,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-tabs-preset-new-york-v4",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-jjiy5y3sgv",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 30856.699999809265,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 49023.5,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 49023.59999990463,
+          "runtime": "wc",
+          "ids": [
+            "shadcn-style-scope",
+            "shadcn-tabs-root",
+            "shadcn-tabs-list",
+            "shadcn-tabs-trigger",
+            "shadcn-tabs-indicator",
+            "shadcn-tabs-content"
+          ]
+        }
+      ],
+      "firstMissingPrototypes": [
+        {
+          "id": "shadcn-style-scope",
+          "queuedAt": 14173.199999809265,
+          "plan": null,
+          "dispatchedAt": 14173.199999809265,
+          "innerImportAt": null,
+          "returnedAt": 16020.899999856949,
+          "failedAt": null,
+          "status": "returned",
+          "assets": null
+        },
+        {
+          "id": "shadcn-tabs-root",
+          "queuedAt": 49018,
+          "plan": {
+            "entry": "_astro/root.proto.BrbqQnOF.js",
+            "dependencies": [
+              "_astro/root.proto.BrbqQnOF.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/root.proto.COO1k_ZU.js",
+              "_astro/shared.C9VQBFgr.js",
+              "_astro/visual.CjOM6cWc.js"
+            ]
+          },
+          "dispatchedAt": 49022,
+          "innerImportAt": 49023.299999952316,
+          "returnedAt": 59462.299999952316,
+          "failedAt": null,
+          "status": "returned",
+          "assets": null
+        },
+        {
+          "id": "shadcn-tabs-list",
+          "queuedAt": 49018,
+          "plan": {
+            "entry": "_astro/list.proto.Cl15x8uK.js",
+            "dependencies": [
+              "_astro/list.proto.Cl15x8uK.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/list.proto.CrrQXucI.js",
+              "_astro/shared.C9VQBFgr.js",
+              "_astro/visual.CjOM6cWc.js"
+            ]
+          },
+          "dispatchedAt": 49022.5,
+          "innerImportAt": 49023.39999985695,
+          "returnedAt": 59462.299999952316,
+          "failedAt": null,
+          "status": "returned",
+          "assets": null
+        },
+        {
+          "id": "shadcn-tabs-trigger",
+          "queuedAt": 49018,
+          "plan": {
+            "entry": "_astro/trigger.proto.BaSBgTNx.js",
+            "dependencies": [
+              "_astro/trigger.proto.BaSBgTNx.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/trigger.proto.CowhIBds.js",
+              "_astro/shared.C9VQBFgr.js",
+              "_astro/visual.CjOM6cWc.js"
+            ]
+          },
+          "dispatchedAt": 49022.699999809265,
+          "innerImportAt": 49023.39999985695,
+          "returnedAt": 59462.299999952316,
+          "failedAt": null,
+          "status": "returned",
+          "assets": null
+        },
+        {
+          "id": "shadcn-tabs-indicator",
+          "queuedAt": 49018,
+          "plan": {
+            "entry": "_astro/index.B-XgULQK.js",
+            "dependencies": [
+              "_astro/index.B-XgULQK.js",
+              "_astro/content.proto.BFNhO78L.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/content.proto.GEv7kk_x.js",
+              "_astro/shared.C9VQBFgr.js",
+              "_astro/visual.CjOM6cWc.js",
+              "_astro/index.C_P31GkH.js",
+              "_astro/root.proto.COO1k_ZU.js",
+              "_astro/list.proto.CrrQXucI.js",
+              "_astro/trigger.proto.CowhIBds.js",
+              "_astro/list.proto.Cl15x8uK.js",
+              "_astro/root.proto.BrbqQnOF.js",
+              "_astro/trigger.proto.BaSBgTNx.js"
+            ]
+          },
+          "dispatchedAt": 49022.89999985695,
+          "innerImportAt": 49023.39999985695,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.B-XgULQK.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 5241.899999856949,
+                "responseEnd": 5252,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/content.proto.BFNhO78L.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 222.29999995231628,
+                "responseEnd": 271.5,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/content.proto.GEv7kk_x.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 222.39999985694885,
+                "responseEnd": 281.09999990463257,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/shared.C9VQBFgr.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 222.39999985694885,
+                "responseEnd": 281.19999980926514,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/visual.CjOM6cWc.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 222.39999985694885,
+                "responseEnd": 285.39999985694885,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.C_P31GkH.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 5242.5,
+                "responseEnd": 5252.099999904633,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/root.proto.COO1k_ZU.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 222.39999985694885,
+                "responseEnd": 294.89999985694885,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/list.proto.CrrQXucI.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 222.39999985694885,
+                "responseEnd": 286.2999999523163,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/trigger.proto.CowhIBds.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 222.39999985694885,
+                "responseEnd": 297.09999990463257,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/list.proto.Cl15x8uK.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 222.39999985694885,
+                "responseEnd": 285.7999999523163,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/root.proto.BrbqQnOF.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 222.39999985694885,
+                "responseEnd": 286.39999985694885,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/trigger.proto.BaSBgTNx.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 222.39999985694885,
+                "responseEnd": 297.19999980926514,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-tabs-content",
+          "queuedAt": 49018,
+          "plan": {
+            "entry": "_astro/content.proto.BFNhO78L.js",
+            "dependencies": [
+              "_astro/content.proto.BFNhO78L.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/content.proto.GEv7kk_x.js",
+              "_astro/shared.C9VQBFgr.js",
+              "_astro/visual.CjOM6cWc.js"
+            ]
+          },
+          "dispatchedAt": 49023.09999990463,
+          "innerImportAt": 49023.39999985695,
+          "returnedAt": 59462.299999952316,
+          "failedAt": null,
+          "status": "returned",
+          "assets": null
+        }
+      ]
+    },
+    {
+      "timeOrigin": 1794911717518.4,
+      "pageMs": 61444.59999990463,
+      "dateNow": 1794911778963,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-i4ca750db3",
+        "index": 548,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-toast",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-i4ca750db3",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 30861.5,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 51133.199999809265,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 51133.299999952316,
+          "runtime": "wc",
+          "ids": [
+            "shadcn-style-scope",
+            "shadcn-toast-viewport",
+            "shadcn-toast-root",
+            "shadcn-toast-title",
+            "shadcn-toast-description",
+            "shadcn-toast-action",
+            "shadcn-toast-close",
+            "shadcn-button"
+          ]
+        }
+      ],
+      "firstMissingPrototypes": [
+        {
+          "id": "shadcn-style-scope",
+          "queuedAt": 14173.199999809265,
+          "plan": null,
+          "dispatchedAt": 14173.199999809265,
+          "innerImportAt": null,
+          "returnedAt": 16020.899999856949,
+          "failedAt": null,
+          "status": "returned",
+          "assets": null
+        },
+        {
+          "id": "shadcn-toast-viewport",
+          "queuedAt": 51133.299999952316,
+          "plan": {
+            "entry": "_astro/index.T1eWsvRm.js",
+            "dependencies": [
+              "_astro/index.T1eWsvRm.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.94cy3Lxs.js",
+              "_astro/style.DB4xCdqs.js"
+            ]
+          },
+          "dispatchedAt": 51133.39999985695,
+          "innerImportAt": 51135.699999809265,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.T1eWsvRm.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 51134.09999990463,
+                "responseEnd": 51137.39999985695,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.94cy3Lxs.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 6737.399999856949,
+                "responseEnd": 6741,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/style.DB4xCdqs.js",
+              "evaluation": {
+                "start": 227,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 115,
+                "responseEnd": 188,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-toast-root",
+          "queuedAt": 51133.299999952316,
+          "plan": {
+            "entry": "_astro/index.T1eWsvRm.js",
+            "dependencies": [
+              "_astro/index.T1eWsvRm.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.94cy3Lxs.js",
+              "_astro/style.DB4xCdqs.js"
+            ]
+          },
+          "dispatchedAt": 51134.199999809265,
+          "innerImportAt": 51135.799999952316,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.T1eWsvRm.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 51134.09999990463,
+                "responseEnd": 51137.39999985695,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.94cy3Lxs.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 6737.399999856949,
+                "responseEnd": 6741,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/style.DB4xCdqs.js",
+              "evaluation": {
+                "start": 227,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 115,
+                "responseEnd": 188,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-toast-title",
+          "queuedAt": 51133.299999952316,
+          "plan": {
+            "entry": "_astro/index.T1eWsvRm.js",
+            "dependencies": [
+              "_astro/index.T1eWsvRm.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.94cy3Lxs.js",
+              "_astro/style.DB4xCdqs.js"
+            ]
+          },
+          "dispatchedAt": 51134.39999985695,
+          "innerImportAt": 51135.799999952316,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.T1eWsvRm.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 51134.09999990463,
+                "responseEnd": 51137.39999985695,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.94cy3Lxs.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 6737.399999856949,
+                "responseEnd": 6741,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/style.DB4xCdqs.js",
+              "evaluation": {
+                "start": 227,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 115,
+                "responseEnd": 188,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-toast-description",
+          "queuedAt": 51133.39999985695,
+          "plan": {
+            "entry": "_astro/index.T1eWsvRm.js",
+            "dependencies": [
+              "_astro/index.T1eWsvRm.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.94cy3Lxs.js",
+              "_astro/style.DB4xCdqs.js"
+            ]
+          },
+          "dispatchedAt": 51134.699999809265,
+          "innerImportAt": 51135.799999952316,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.T1eWsvRm.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 51134.09999990463,
+                "responseEnd": 51137.39999985695,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.94cy3Lxs.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 6737.399999856949,
+                "responseEnd": 6741,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/style.DB4xCdqs.js",
+              "evaluation": {
+                "start": 227,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 115,
+                "responseEnd": 188,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-toast-action",
+          "queuedAt": 51133.39999985695,
+          "plan": {
+            "entry": "_astro/index.T1eWsvRm.js",
+            "dependencies": [
+              "_astro/index.T1eWsvRm.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.94cy3Lxs.js",
+              "_astro/style.DB4xCdqs.js"
+            ]
+          },
+          "dispatchedAt": 51134.89999985695,
+          "innerImportAt": 51135.799999952316,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.T1eWsvRm.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 51134.09999990463,
+                "responseEnd": 51137.39999985695,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.94cy3Lxs.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 6737.399999856949,
+                "responseEnd": 6741,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/style.DB4xCdqs.js",
+              "evaluation": {
+                "start": 227,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 115,
+                "responseEnd": 188,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-toast-close",
+          "queuedAt": 51133.39999985695,
+          "plan": {
+            "entry": "_astro/index.T1eWsvRm.js",
+            "dependencies": [
+              "_astro/index.T1eWsvRm.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.94cy3Lxs.js",
+              "_astro/style.DB4xCdqs.js"
+            ]
+          },
+          "dispatchedAt": 51135,
+          "innerImportAt": 51135.799999952316,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.T1eWsvRm.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 51134.09999990463,
+                "responseEnd": 51137.39999985695,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.94cy3Lxs.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 6737.399999856949,
+                "responseEnd": 6741,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/style.DB4xCdqs.js",
+              "evaluation": {
+                "start": 227,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 115,
+                "responseEnd": 188,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-button",
+          "queuedAt": 422.59999990463257,
+          "plan": null,
+          "dispatchedAt": 422.59999990463257,
+          "innerImportAt": null,
+          "returnedAt": 5218.399999856949,
+          "failedAt": null,
+          "status": "returned",
+          "assets": null
+        }
+      ]
+    },
+    {
+      "timeOrigin": 1794911717518.4,
+      "pageMs": 63841.39999985695,
+      "dateNow": 1794911781359,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-1g8g1hch9ln",
+        "index": 564,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-tooltip",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-1g8g1hch9ln",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 30865,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 51150.5,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 51151.89999985695,
+          "runtime": "wc",
+          "ids": [
+            "shadcn-style-scope",
+            "shadcn-tooltip-group",
+            "shadcn-tooltip-root",
+            "shadcn-tooltip-trigger",
+            "shadcn-tooltip-content"
+          ]
+        }
+      ],
+      "firstMissingPrototypes": [
+        {
+          "id": "shadcn-style-scope",
+          "queuedAt": 14173.199999809265,
+          "plan": null,
+          "dispatchedAt": 14173.199999809265,
+          "innerImportAt": null,
+          "returnedAt": 16020.899999856949,
+          "failedAt": null,
+          "status": "returned",
+          "assets": null
+        },
+        {
+          "id": "shadcn-tooltip-group",
+          "queuedAt": 51151.89999985695,
+          "plan": {
+            "entry": "_astro/index.S_ed8ZzR.js",
+            "dependencies": [
+              "_astro/index.S_ed8ZzR.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/group.proto.B4Wu3yU8.js",
+              "_astro/shared.BtnYesbf.js",
+              "_astro/root.proto.BlwRw26c.js",
+              "_astro/trigger.proto.Cp0oQayt.js",
+              "_astro/style.DB4xCdqs.js",
+              "_astro/content.proto.AEAcFJxy.js",
+              "_astro/motion.XXtEQ_zv.js"
+            ]
+          },
+          "dispatchedAt": 51151.89999985695,
+          "innerImportAt": 51153.299999952316,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.S_ed8ZzR.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 51152.39999985695,
+                "responseEnd": 51158.39999985695,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/group.proto.B4Wu3yU8.js",
+              "evaluation": {
+                "start": 13513.299999952316,
+                "end": 13513.399999856949
+              },
+              "timing": {
+                "startTime": 6777.199999809265,
+                "responseEnd": 6788.199999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/shared.BtnYesbf.js",
+              "evaluation": {
+                "start": 13513.299999952316,
+                "end": 13513.299999952316
+              },
+              "timing": {
+                "startTime": 6777.299999952316,
+                "responseEnd": 6785,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/root.proto.BlwRw26c.js",
+              "evaluation": {
+                "start": 13513.399999856949,
+                "end": 13513.399999856949
+              },
+              "timing": {
+                "startTime": 6777.5,
+                "responseEnd": 6785.199999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/trigger.proto.Cp0oQayt.js",
+              "evaluation": {
+                "start": 13513.5,
+                "end": 13513.5
+              },
+              "timing": {
+                "startTime": 6777.699999809265,
+                "responseEnd": 6785.199999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/style.DB4xCdqs.js",
+              "evaluation": {
+                "start": 227,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 115,
+                "responseEnd": 188,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/content.proto.AEAcFJxy.js",
+              "evaluation": {
+                "start": 13555.099999904633,
+                "end": 13555.199999809265
+              },
+              "timing": {
+                "startTime": 6778,
+                "responseEnd": 6791.199999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/motion.XXtEQ_zv.js",
+              "evaluation": {
+                "start": 29314.199999809265,
+                "end": 29314.299999952316
+              },
+              "timing": {
+                "startTime": 19025.799999952316,
+                "responseEnd": 19036.799999952316,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-tooltip-root",
+          "queuedAt": 51151.89999985695,
+          "plan": {
+            "entry": "_astro/index.S_ed8ZzR.js",
+            "dependencies": [
+              "_astro/index.S_ed8ZzR.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/group.proto.B4Wu3yU8.js",
+              "_astro/shared.BtnYesbf.js",
+              "_astro/root.proto.BlwRw26c.js",
+              "_astro/trigger.proto.Cp0oQayt.js",
+              "_astro/style.DB4xCdqs.js",
+              "_astro/content.proto.AEAcFJxy.js",
+              "_astro/motion.XXtEQ_zv.js"
+            ]
+          },
+          "dispatchedAt": 51152.39999985695,
+          "innerImportAt": 51153.39999985695,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.S_ed8ZzR.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 51152.39999985695,
+                "responseEnd": 51158.39999985695,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/group.proto.B4Wu3yU8.js",
+              "evaluation": {
+                "start": 13513.299999952316,
+                "end": 13513.399999856949
+              },
+              "timing": {
+                "startTime": 6777.199999809265,
+                "responseEnd": 6788.199999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/shared.BtnYesbf.js",
+              "evaluation": {
+                "start": 13513.299999952316,
+                "end": 13513.299999952316
+              },
+              "timing": {
+                "startTime": 6777.299999952316,
+                "responseEnd": 6785,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/root.proto.BlwRw26c.js",
+              "evaluation": {
+                "start": 13513.399999856949,
+                "end": 13513.399999856949
+              },
+              "timing": {
+                "startTime": 6777.5,
+                "responseEnd": 6785.199999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/trigger.proto.Cp0oQayt.js",
+              "evaluation": {
+                "start": 13513.5,
+                "end": 13513.5
+              },
+              "timing": {
+                "startTime": 6777.699999809265,
+                "responseEnd": 6785.199999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/style.DB4xCdqs.js",
+              "evaluation": {
+                "start": 227,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 115,
+                "responseEnd": 188,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/content.proto.AEAcFJxy.js",
+              "evaluation": {
+                "start": 13555.099999904633,
+                "end": 13555.199999809265
+              },
+              "timing": {
+                "startTime": 6778,
+                "responseEnd": 6791.199999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/motion.XXtEQ_zv.js",
+              "evaluation": {
+                "start": 29314.199999809265,
+                "end": 29314.299999952316
+              },
+              "timing": {
+                "startTime": 19025.799999952316,
+                "responseEnd": 19036.799999952316,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-tooltip-trigger",
+          "queuedAt": 51151.89999985695,
+          "plan": {
+            "entry": "_astro/index.S_ed8ZzR.js",
+            "dependencies": [
+              "_astro/index.S_ed8ZzR.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/group.proto.B4Wu3yU8.js",
+              "_astro/shared.BtnYesbf.js",
+              "_astro/root.proto.BlwRw26c.js",
+              "_astro/trigger.proto.Cp0oQayt.js",
+              "_astro/style.DB4xCdqs.js",
+              "_astro/content.proto.AEAcFJxy.js",
+              "_astro/motion.XXtEQ_zv.js"
+            ]
+          },
+          "dispatchedAt": 51152.59999990463,
+          "innerImportAt": 51153.39999985695,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.S_ed8ZzR.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 51152.39999985695,
+                "responseEnd": 51158.39999985695,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/group.proto.B4Wu3yU8.js",
+              "evaluation": {
+                "start": 13513.299999952316,
+                "end": 13513.399999856949
+              },
+              "timing": {
+                "startTime": 6777.199999809265,
+                "responseEnd": 6788.199999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/shared.BtnYesbf.js",
+              "evaluation": {
+                "start": 13513.299999952316,
+                "end": 13513.299999952316
+              },
+              "timing": {
+                "startTime": 6777.299999952316,
+                "responseEnd": 6785,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/root.proto.BlwRw26c.js",
+              "evaluation": {
+                "start": 13513.399999856949,
+                "end": 13513.399999856949
+              },
+              "timing": {
+                "startTime": 6777.5,
+                "responseEnd": 6785.199999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/trigger.proto.Cp0oQayt.js",
+              "evaluation": {
+                "start": 13513.5,
+                "end": 13513.5
+              },
+              "timing": {
+                "startTime": 6777.699999809265,
+                "responseEnd": 6785.199999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/style.DB4xCdqs.js",
+              "evaluation": {
+                "start": 227,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 115,
+                "responseEnd": 188,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/content.proto.AEAcFJxy.js",
+              "evaluation": {
+                "start": 13555.099999904633,
+                "end": 13555.199999809265
+              },
+              "timing": {
+                "startTime": 6778,
+                "responseEnd": 6791.199999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/motion.XXtEQ_zv.js",
+              "evaluation": {
+                "start": 29314.199999809265,
+                "end": 29314.299999952316
+              },
+              "timing": {
+                "startTime": 19025.799999952316,
+                "responseEnd": 19036.799999952316,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-tooltip-content",
+          "queuedAt": 51151.89999985695,
+          "plan": {
+            "entry": "_astro/index.S_ed8ZzR.js",
+            "dependencies": [
+              "_astro/index.S_ed8ZzR.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/group.proto.B4Wu3yU8.js",
+              "_astro/shared.BtnYesbf.js",
+              "_astro/root.proto.BlwRw26c.js",
+              "_astro/trigger.proto.Cp0oQayt.js",
+              "_astro/style.DB4xCdqs.js",
+              "_astro/content.proto.AEAcFJxy.js",
+              "_astro/motion.XXtEQ_zv.js"
+            ]
+          },
+          "dispatchedAt": 51152.799999952316,
+          "innerImportAt": 51153.39999985695,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.S_ed8ZzR.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 51152.39999985695,
+                "responseEnd": 51158.39999985695,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/group.proto.B4Wu3yU8.js",
+              "evaluation": {
+                "start": 13513.299999952316,
+                "end": 13513.399999856949
+              },
+              "timing": {
+                "startTime": 6777.199999809265,
+                "responseEnd": 6788.199999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/shared.BtnYesbf.js",
+              "evaluation": {
+                "start": 13513.299999952316,
+                "end": 13513.299999952316
+              },
+              "timing": {
+                "startTime": 6777.299999952316,
+                "responseEnd": 6785,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/root.proto.BlwRw26c.js",
+              "evaluation": {
+                "start": 13513.399999856949,
+                "end": 13513.399999856949
+              },
+              "timing": {
+                "startTime": 6777.5,
+                "responseEnd": 6785.199999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/trigger.proto.Cp0oQayt.js",
+              "evaluation": {
+                "start": 13513.5,
+                "end": 13513.5
+              },
+              "timing": {
+                "startTime": 6777.699999809265,
+                "responseEnd": 6785.199999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/style.DB4xCdqs.js",
+              "evaluation": {
+                "start": 227,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 115,
+                "responseEnd": 188,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/content.proto.AEAcFJxy.js",
+              "evaluation": {
+                "start": 13555.099999904633,
+                "end": 13555.199999809265
+              },
+              "timing": {
+                "startTime": 6778,
+                "responseEnd": 6791.199999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/motion.XXtEQ_zv.js",
+              "evaluation": {
+                "start": 29314.199999809265,
+                "end": 29314.299999952316
+              },
+              "timing": {
+                "startTime": 19025.799999952316,
+                "responseEnd": 19036.799999952316,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "timeOrigin": 1794911717518.4,
+      "pageMs": 65393.09999990463,
+      "dateNow": 1794911782911,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-0yxc54g2e46j",
+        "index": 572,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-tree",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-0yxc54g2e46j",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 30867.099999904633,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 51147.699999809265,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 51149.09999990463,
+          "runtime": "wc",
+          "ids": [
+            "shadcn-style-scope",
+            "shadcn-tree-root",
+            "shadcn-tree-item",
+            "shadcn-tree-toggle"
+          ]
+        }
+      ],
+      "firstMissingPrototypes": [
+        {
+          "id": "shadcn-style-scope",
+          "queuedAt": 14173.199999809265,
+          "plan": null,
+          "dispatchedAt": 14173.199999809265,
+          "innerImportAt": null,
+          "returnedAt": 16020.899999856949,
+          "failedAt": null,
+          "status": "returned",
+          "assets": null
+        },
+        {
+          "id": "shadcn-tree-root",
+          "queuedAt": 51149.09999990463,
+          "plan": {
+            "entry": "_astro/index.rY8D1-EC.js",
+            "dependencies": [
+              "_astro/index.rY8D1-EC.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.P_xjbyJx.js",
+              "_astro/shared.CneTlUGf.js",
+              "_astro/action-visual.wmMgaPXh.js"
+            ]
+          },
+          "dispatchedAt": 51149.199999809265,
+          "innerImportAt": 51150.39999985695,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.rY8D1-EC.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 51149.59999990463,
+                "responseEnd": 51158.299999952316,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.P_xjbyJx.js",
+              "evaluation": {
+                "start": 13852.5,
+                "end": 13852.5
+              },
+              "timing": {
+                "startTime": 6778.899999856949,
+                "responseEnd": 6791.699999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/shared.CneTlUGf.js",
+              "evaluation": {
+                "start": 6408.799999952316,
+                "end": 6408.799999952316
+              },
+              "timing": {
+                "startTime": 6107.899999856949,
+                "responseEnd": 6144.699999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/action-visual.wmMgaPXh.js",
+              "evaluation": {
+                "start": 22169.5,
+                "end": 22169.5
+              },
+              "timing": {
+                "startTime": 18984.5,
+                "responseEnd": 18990.89999985695,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-tree-item",
+          "queuedAt": 51149.09999990463,
+          "plan": {
+            "entry": "_astro/index.rY8D1-EC.js",
+            "dependencies": [
+              "_astro/index.rY8D1-EC.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.P_xjbyJx.js",
+              "_astro/shared.CneTlUGf.js",
+              "_astro/action-visual.wmMgaPXh.js"
+            ]
+          },
+          "dispatchedAt": 51149.59999990463,
+          "innerImportAt": 51150.39999985695,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.rY8D1-EC.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 51149.59999990463,
+                "responseEnd": 51158.299999952316,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.P_xjbyJx.js",
+              "evaluation": {
+                "start": 13852.5,
+                "end": 13852.5
+              },
+              "timing": {
+                "startTime": 6778.899999856949,
+                "responseEnd": 6791.699999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/shared.CneTlUGf.js",
+              "evaluation": {
+                "start": 6408.799999952316,
+                "end": 6408.799999952316
+              },
+              "timing": {
+                "startTime": 6107.899999856949,
+                "responseEnd": 6144.699999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/action-visual.wmMgaPXh.js",
+              "evaluation": {
+                "start": 22169.5,
+                "end": 22169.5
+              },
+              "timing": {
+                "startTime": 18984.5,
+                "responseEnd": 18990.89999985695,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-tree-toggle",
+          "queuedAt": 51149.09999990463,
+          "plan": {
+            "entry": "_astro/index.rY8D1-EC.js",
+            "dependencies": [
+              "_astro/index.rY8D1-EC.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.P_xjbyJx.js",
+              "_astro/shared.CneTlUGf.js",
+              "_astro/action-visual.wmMgaPXh.js"
+            ]
+          },
+          "dispatchedAt": 51149.799999952316,
+          "innerImportAt": 51150.39999985695,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.rY8D1-EC.js",
+              "evaluation": {
+                "start": null,
+                "end": null
+              },
+              "timing": {
+                "startTime": 51149.59999990463,
+                "responseEnd": 51158.299999952316,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "evaluation": {
+                "start": 225.69999980926514,
+                "end": 227
+              },
+              "timing": {
+                "startTime": 114.59999990463257,
+                "responseEnd": 191.29999995231628,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.P_xjbyJx.js",
+              "evaluation": {
+                "start": 13852.5,
+                "end": 13852.5
+              },
+              "timing": {
+                "startTime": 6778.899999856949,
+                "responseEnd": 6791.699999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/shared.CneTlUGf.js",
+              "evaluation": {
+                "start": 6408.799999952316,
+                "end": 6408.799999952316
+              },
+              "timing": {
+                "startTime": 6107.899999856949,
+                "responseEnd": 6144.699999809265,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/action-visual.wmMgaPXh.js",
+              "evaluation": {
+                "start": 22169.5,
+                "end": 22169.5
+              },
+              "timing": {
+                "startTime": 18984.5,
+                "responseEnd": 18990.89999985695,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "bindings": [
+    {
+      "asset": "previewer-client.DfMHC3t6.js",
+      "sourceSha256": "2d5e84004ef72fe99bce1525c33a74b8d7d06dac752101faeac9e00b8b1f03de",
+      "instrumentedSha256": "ef69894e45f63a81866d5f80ee778a4d73c7cc0c0ae6899fac6c83c57cb53963"
+    },
+    {
+      "asset": "prototype-modules.CuKp3_GC.js",
+      "sourceSha256": "c755e6ae2fbc71c0c4c787fab1443bccf358bb7458d3e825fa897a6788b0418e",
+      "instrumentedSha256": "6667cc376cdd9bd64bcf06f7c54669886d7974701cb877f0b17ec0c80f90e16f",
+      "mappedImportCount": 1193
+    },
+    [
+      {
+        "asset": "_astro/action-visual.wmMgaPXh.js",
+        "sourceSha256": "9a4011662f5f94bc14500452f1492e8801f8a9084d74456c891cdcca9d5b3254",
+        "instrumentedSha256": "402ebdaa88153f69d1b9fbc9933c5f83832abf6de4eac2a773529e98e7b24dcc"
+      },
+      {
+        "asset": "_astro/content.proto.AEAcFJxy.js",
+        "sourceSha256": "6ec7ab94ab8623af244f8b85cf4ead3e2bfb4e62af844129f82431d6999949f9",
+        "instrumentedSha256": "c795427ba457d2a8080b4218df00d970667f8df2a573b4e198bedd5237be98de"
+      },
+      {
+        "asset": "_astro/group.proto.B4Wu3yU8.js",
+        "sourceSha256": "205cd5b1d151f22084406f7bb46d60c892f8643168e0d72b5ef15aa698458342",
+        "instrumentedSha256": "142abb4793480b58c14b722638c584be130751482c92c0b74383eb071f20a4fb"
+      },
+      {
+        "asset": "_astro/index.DQ0xqlk8.js",
+        "sourceSha256": "42db2a0d309470e9c8bd874ec8f55168baf7422f8f80790bc27099377b7321a8",
+        "instrumentedSha256": "818e690bc9555a9b59236515081902df7317b5e0c4af4a377027cf7dcf361a35"
+      },
+      {
+        "asset": "_astro/index.DitFunag.js",
+        "sourceSha256": "9db297757a79d66b8f12bc497a27f364c91d190d25bcfa85a956f25883086af6",
+        "instrumentedSha256": "6b48b6c74b3d2785746a8127dd1a2119425a0a7f25e8680cbb9c091699c13d53"
+      },
+      {
+        "asset": "_astro/index.K2Dr66BP.js",
+        "sourceSha256": "98fe055bd56395294da1c2d6401934bb854ef1e5461fa18015339f4a5e31656e",
+        "instrumentedSha256": "35a097e8cb6a5075bb1cbf702de40d5dd5fd8df53de7157b3f86fd51791c1665"
+      },
+      {
+        "asset": "_astro/index.P_xjbyJx.js",
+        "sourceSha256": "7576345485169fa53e8e9fa753262acf0bfb1d8c72a846ce660bc879acb71266",
+        "instrumentedSha256": "51136750533a22164cd5ab5c2c8ac172f709f81505d16d1056ca2a57411baea3"
+      },
+      {
+        "asset": "_astro/index.S_ed8ZzR.js",
+        "sourceSha256": "bf09ebe95f4f704bd9d7474ad052aa68d8a88552baed614996716b3c43d52fb5",
+        "instrumentedSha256": "2a7e771150190b1577cb172eee4ddb6a7f7643f244356e6e1b8a93c476667331"
+      },
+      {
+        "asset": "_astro/index.rY8D1-EC.js",
+        "sourceSha256": "6f0ebf14c72828a24d53c013b3b7a3a3778fefd51fe78ef3cf1ce4fd2f296321",
+        "instrumentedSha256": "3daec8adcdd37b2198f5ead16d53d59031071c8347d41f575e59ce6dd4342870"
+      },
+      {
+        "asset": "_astro/index.xgx8OLu0.js",
+        "sourceSha256": "929285cb8dcba58280b8b5ce902611a39411fd284ae362ea4403da04164c6323",
+        "instrumentedSha256": "e7e3fcb760cd29aa4ed2e3ddf0d2afdffd4a57b21dd80b8b1f5510671734eb8b"
+      },
+      {
+        "asset": "_astro/motion.XXtEQ_zv.js",
+        "sourceSha256": "b31ead18860398d36291e57a7aa32d2f7643433c919632a7e64c8a4742c7a472",
+        "instrumentedSha256": "c6264ed5f809a25f1450cf398ac762645dfd8727831b5d1599711699d5839334"
+      },
+      {
+        "asset": "_astro/root.proto.BlwRw26c.js",
+        "sourceSha256": "fe808a7630c7f86cb837d8114f230a9abbc6fca66fc5ed9895230a8bdcca7322",
+        "instrumentedSha256": "f90202f6cc242d4211081453034ba5075209b102ec8e6586e7cba242188bd79d"
+      },
+      {
+        "asset": "_astro/shared.BtnYesbf.js",
+        "sourceSha256": "1be508825b426a975aea23e29a4715439b54e7dbf1967b2890574047684c1a01",
+        "instrumentedSha256": "68272bc723106fbf9bd1a0040d3325ead6f379d183ea46c40b9cbecbf98df4f7"
+      },
+      {
+        "asset": "_astro/shared.CneTlUGf.js",
+        "sourceSha256": "10cf75cace7e6c81f40f538c6d68a08c6415979d6eba48f89c702647889113e8",
+        "instrumentedSha256": "ac16ec3a4d3917d086dda176f77558615a60f8ccc9aad624b634c6416c3b5578"
+      },
+      {
+        "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+        "sourceSha256": "d200cfc71ba3d128193664f8d1348e73ae1125b41d39b928e7b6c4b87c46da62",
+        "instrumentedSha256": "ab63b84055cb5cffea46bd985bb402256c31fea845a45a43df79e6681d2e30c0"
+      },
+      {
+        "asset": "_astro/style.DB4xCdqs.js",
+        "sourceSha256": "fc3fe4631385968a87bcd75ec22bb04174a4521006956e51ee02fe0185203582",
+        "instrumentedSha256": "eefa08cf6f5248e30a1ea257e04b58233f156a81f2fb88a4b2c7bec7bf17587d"
+      },
+      {
+        "asset": "_astro/trigger.proto.Cp0oQayt.js",
+        "sourceSha256": "7c15a7de8a374d5af4aa2895b690f14c9a975a64ed2cc94379fb1b0a73371d98",
+        "instrumentedSha256": "e0d3032605b7c01d829b9ff436ca4d5bbdbeca21c78115ba7cfc0a8082bbb35e"
+      },
+      {
+        "asset": "_astro/viewport.proto.BZ0-il2e.js",
+        "sourceSha256": "996ac6185e93b74c3d4d2d2d6690c3592ca5c7d432479cca63a705c7bd771f44",
+        "instrumentedSha256": "1a51b255df3de679c2cf7461115bb9729144425e66dcbd7900d12beb4ca0be7f"
+      }
+    ]
+  ],
+  "staticScope": [
+    {
+      "asset": "_astro/action-visual.wmMgaPXh.js",
+      "bytes": 4408,
+      "topLevelAwait": 0,
+      "imports": ["./site-shadcn-controls.utF2VcOc.js"]
+    },
+    {
+      "asset": "_astro/content.proto.AEAcFJxy.js",
+      "bytes": 3381,
+      "topLevelAwait": 0,
+      "imports": ["./site-shadcn-controls.utF2VcOc.js", "./shared.BtnYesbf.js"]
+    },
+    {
+      "asset": "_astro/group.proto.B4Wu3yU8.js",
+      "bytes": 1939,
+      "topLevelAwait": 0,
+      "imports": ["./site-shadcn-controls.utF2VcOc.js", "./shared.BtnYesbf.js"]
+    },
+    {
+      "asset": "_astro/index.DQ0xqlk8.js",
+      "bytes": 2539,
+      "topLevelAwait": 0,
+      "imports": ["./site-shadcn-controls.utF2VcOc.js"]
+    },
+    {
+      "asset": "_astro/index.DitFunag.js",
+      "bytes": 3725,
+      "topLevelAwait": 0,
+      "imports": ["./site-shadcn-controls.utF2VcOc.js", "./index.DQ0xqlk8.js"]
+    },
+    {
+      "asset": "_astro/index.K2Dr66BP.js",
+      "bytes": 3560,
+      "topLevelAwait": 0,
+      "imports": ["./site-shadcn-controls.utF2VcOc.js", "./viewport.proto.BZ0-il2e.js"]
+    },
+    {
+      "asset": "_astro/index.P_xjbyJx.js",
+      "bytes": 8930,
+      "topLevelAwait": 0,
+      "imports": ["./site-shadcn-controls.utF2VcOc.js", "./shared.CneTlUGf.js"]
+    },
+    {
+      "asset": "_astro/index.S_ed8ZzR.js",
+      "bytes": 2292,
+      "topLevelAwait": 0,
+      "imports": [
+        "./site-shadcn-controls.utF2VcOc.js",
+        "./group.proto.B4Wu3yU8.js",
+        "./root.proto.BlwRw26c.js",
+        "./trigger.proto.Cp0oQayt.js",
+        "./style.DB4xCdqs.js",
+        "./content.proto.AEAcFJxy.js",
+        "./motion.XXtEQ_zv.js",
+        "./shared.BtnYesbf.js"
+      ]
+    },
+    {
+      "asset": "_astro/index.rY8D1-EC.js",
+      "bytes": 4875,
+      "topLevelAwait": 0,
+      "imports": [
+        "./site-shadcn-controls.utF2VcOc.js",
+        "./index.P_xjbyJx.js",
+        "./action-visual.wmMgaPXh.js"
+      ]
+    },
+    {
+      "asset": "_astro/index.xgx8OLu0.js",
+      "bytes": 1320,
+      "topLevelAwait": 0,
+      "imports": [
+        "./site-shadcn-controls.utF2VcOc.js",
+        "./index.K2Dr66BP.js",
+        "./viewport.proto.BZ0-il2e.js"
+      ]
+    },
+    {
+      "asset": "_astro/motion.XXtEQ_zv.js",
+      "bytes": 575,
+      "topLevelAwait": 0,
+      "imports": ["./site-shadcn-controls.utF2VcOc.js"]
+    },
+    {
+      "asset": "_astro/root.proto.BlwRw26c.js",
+      "bytes": 3808,
+      "topLevelAwait": 0,
+      "imports": [
+        "./site-shadcn-controls.utF2VcOc.js",
+        "./group.proto.B4Wu3yU8.js",
+        "./shared.BtnYesbf.js"
+      ]
+    },
+    {
+      "asset": "_astro/shared.BtnYesbf.js",
+      "bytes": 1514,
+      "topLevelAwait": 0,
+      "imports": ["./site-shadcn-controls.utF2VcOc.js"]
+    },
+    {
+      "asset": "_astro/shared.CneTlUGf.js",
+      "bytes": 222,
+      "topLevelAwait": 0,
+      "imports": []
+    },
+    {
+      "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+      "bytes": 819247,
+      "topLevelAwait": 0,
+      "imports": []
+    },
+    {
+      "asset": "_astro/style.DB4xCdqs.js",
+      "bytes": 1598,
+      "topLevelAwait": 0,
+      "imports": ["./site-shadcn-controls.utF2VcOc.js"]
+    },
+    {
+      "asset": "_astro/trigger.proto.Cp0oQayt.js",
+      "bytes": 2132,
+      "topLevelAwait": 0,
+      "imports": ["./site-shadcn-controls.utF2VcOc.js", "./shared.BtnYesbf.js"]
+    },
+    {
+      "asset": "_astro/viewport.proto.BZ0-il2e.js",
+      "bytes": 2067,
+      "topLevelAwait": 0,
+      "imports": ["./site-shadcn-controls.utF2VcOc.js"]
+    }
+  ],
+  "rawLogSHA256": "a5cf7e78964e57baa0cc21389d4764d4c2c22bbf615d21498cb3fd241b7a625e",
+  "runnerOverlaySHA256": "d01100f29ba443459416692c74d45c0dfce50bbe8ea0adc44d35db3877d535d4"
+}

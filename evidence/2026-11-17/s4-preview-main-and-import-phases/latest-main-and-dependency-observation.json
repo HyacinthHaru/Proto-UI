@@ -1,0 +1,613 @@
+{
+  "source": {
+    "head": "9ec4042454a3c9cc34666660db09b96ea53dc5a3",
+    "tree": "f52d22e24b9c76dc731b353e5cc204740448a1e4",
+    "parents": [
+      "d9abbf27f5d9852b811eef47883d543cb29397b7",
+      "8a5f6ad961ee9c325f7411350a80086f88ce66a8"
+    ],
+    "signature": "G"
+  },
+  "versions": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+  "paths": [
+    "M\tapps/www/src/components/site-header-layout.test.ts",
+    "M\tapps/www/src/content/docs/zh-cn/site-docs-columns.browser.test.ts",
+    "M\tapps/www/src/styles/site-header.css"
+  ],
+  "changedInputs": {
+    "apps/www/src/components/site-header-layout.test.ts": "d9ec35edad7887ee7ae9ca83cadf7ed2dbb0b0a438fede1dc08218919de645c9",
+    "apps/www/src/content/docs/zh-cn/site-docs-columns.browser.test.ts": "c790d68b268b8a4c1dc24f39ce9be56b1aa3cb75e118bac7d939680cf3bb2329",
+    "apps/www/src/styles/site-header.css": "fe81118561d4d78a1279f831fbdad725d06bcb118dc621b1002a4df55701f427"
+  },
+  "focused": {
+    "tests": {
+      "numTotalTests": 164,
+      "numPassedTests": 164,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "failures": []
+    },
+    "inputs": {
+      "apps/www/src/components/PrototypePreviewer/demo-renderer.import-laziness.test.ts": "8377c957b0617cebbba1ef3b3c9107de7cfbde5322c8c55c27f6f92041e17ea9",
+      "apps/www/src/components/PrototypePreviewer/previewer-client.test.ts": "255f73026e1746137b3ba0a83e4cd55aeb07ec10c2fca0c26ad8bdc858f116cf",
+      "apps/www/src/components/PrototypePreviewer/projected-previewer-client.test.ts": "4938daf8827ed29f2a03b5a55c74d39afa714c821cb57010b25165c359a07c79",
+      "apps/www/src/components/PrototypePreviewer/previewer-bootstrap.test.ts": "82fd40bb0e6073135f69d211a069cf01ccb38cd9bfdc9f4e9b81f301552110d0",
+      "apps/www/src/components/PrototypePreviewer/projection-materializer.test.ts": "4fcaf6a200e005372d381fcf209f96d7fd0e7538e5c420e79f2f78d9af23a6b0",
+      "apps/www/src/components/PrototypePreviewer/projection-composition.test.ts": "2948aa231ff718d9b69535a87dbcc3cb04a35188ecb29e690c8b56011fe9082a",
+      "apps/www/src/components/PrototypePreviewer/code-panel-client.test.ts": "34655346b863f2becd85701c20233b5a3e2039b8029e65361d286a980383dc7c",
+      "apps/www/src/components/site-header-layout.test.ts": "d9ec35edad7887ee7ae9ca83cadf7ed2dbb0b0a438fede1dc08218919de645c9"
+    },
+    "rawLogSHA256": "610ad8cae658b086a6f4d0ae2575d7840aca99d268e93464ff034c187a9b6a3c"
+  },
+  "builds": {
+    "packages": 47,
+    "types": 0,
+    "manifests": 0,
+    "finfBudgetGate": 0
+  },
+  "nativeMatrix": {
+    "tests": {
+      "numTotalTests": 2,
+      "numPassedTests": 0,
+      "numFailedTests": 2,
+      "numPendingTests": 0,
+      "failures": [
+        {
+          "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+          "first": "page.waitForFunction: Timeout 60000ms exceeded."
+        },
+        {
+          "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+          "first": "page.waitForFunction: Timeout 60000ms exceeded."
+        }
+      ]
+    },
+    "pages": {
+      "zh-cn": {
+        "bytes": 1862555,
+        "sha256": "8f4bad909765dc96421756a64d804002c4c8d90d791babe71cf5cab63cf612ac",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914117,
+        "sha256": "ad43bc3cfaa8f57d30cbeda058c88a5c70c85c030f6bc6796e976f0327878432",
+        "previews": 1268
+      }
+    },
+    "inputs": {
+      "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "e6590db342bddc56b37fa367ce6b1cc519130cdb201e06e8d14061569d5e0317",
+      "apps/www/dist/zh-cn/internal/demo-matrix/index.html": "8f4bad909765dc96421756a64d804002c4c8d90d791babe71cf5cab63cf612ac",
+      "apps/www/dist/en/internal/demo-matrix/index.html": "ad43bc3cfaa8f57d30cbeda058c88a5c70c85c030f6bc6796e976f0327878432"
+    },
+    "readinessMs": 60000,
+    "caseMs": 150000,
+    "rawLogSHA256": "67e7fead194cb51c29a778c1916c5da5d0755aa255d11dc552cc66dc01450444"
+  },
+  "scoped": {
+    "docs-columns": {
+      "numTotalTests": 10,
+      "numPassedTests": 10,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "failures": []
+    },
+    "accordion": {
+      "numTotalTests": 33,
+      "numPassedTests": 4,
+      "numFailedTests": 0,
+      "numPendingTests": 29,
+      "failures": []
+    },
+    "optics": {
+      "numTotalTests": 4,
+      "numPassedTests": 3,
+      "numFailedTests": 0,
+      "numPendingTests": 1,
+      "failures": []
+    },
+    "portal": {
+      "numTotalTests": 55,
+      "numPassedTests": 5,
+      "numFailedTests": 0,
+      "numPendingTests": 50,
+      "failures": []
+    }
+  },
+  "trace": {
+    "tests": {
+      "numTotalTests": 2,
+      "numPassedTests": 0,
+      "numFailedTests": 1,
+      "numPendingTests": 1,
+      "failures": [
+        {
+          "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+          "first": "page.waitForFunction: Timeout 60000ms exceeded."
+        }
+      ]
+    },
+    "firstMissRows": 30,
+    "withMappedPending": 27,
+    "latestDelivered": {
+      "timeOrigin": 1794911532281.5,
+      "pageMs": 65973.40000009537,
+      "dateNow": 1794911598254,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-3bn3ioqlwnl",
+        "index": 576,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-virtual-list",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-3bn3ioqlwnl",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 43879.90000009537,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 58581.799999952316,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 58581.90000009537,
+          "runtime": "wc",
+          "ids": [
+            "shadcn-style-scope",
+            "shadcn-virtual-list-root",
+            "shadcn-virtual-list-viewport",
+            "shadcn-virtual-list-content"
+          ]
+        }
+      ],
+      "firstMissingPrototypes": [
+        {
+          "id": "shadcn-style-scope",
+          "queuedAt": 11537.299999952316,
+          "plan": null,
+          "dispatchedAt": 11537.400000095367,
+          "innerImportAt": null,
+          "returnedAt": 14954.200000047684,
+          "failedAt": null,
+          "status": "returned",
+          "assets": null
+        },
+        {
+          "id": "shadcn-virtual-list-root",
+          "queuedAt": 58581.90000009537,
+          "plan": {
+            "entry": "_astro/index.xgx8OLu0.js",
+            "dependencies": [
+              "_astro/index.xgx8OLu0.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.K2Dr66BP.js",
+              "_astro/viewport.proto.BZ0-il2e.js"
+            ]
+          },
+          "dispatchedAt": 58582,
+          "innerImportAt": 58583.799999952316,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.xgx8OLu0.js",
+              "timing": {
+                "startTime": 58582.799999952316,
+                "responseEnd": 58585.09999990463,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "timing": {
+                "startTime": 90.5,
+                "responseEnd": 170.5,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.K2Dr66BP.js",
+              "timing": {
+                "startTime": 7507.599999904633,
+                "responseEnd": 7510.700000047684,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/viewport.proto.BZ0-il2e.js",
+              "timing": {
+                "startTime": 6130.099999904633,
+                "responseEnd": 6200,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-virtual-list-viewport",
+          "queuedAt": 58581.90000009537,
+          "plan": {
+            "entry": "_astro/index.xgx8OLu0.js",
+            "dependencies": [
+              "_astro/index.xgx8OLu0.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.K2Dr66BP.js",
+              "_astro/viewport.proto.BZ0-il2e.js"
+            ]
+          },
+          "dispatchedAt": 58582.799999952316,
+          "innerImportAt": 58583.799999952316,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.xgx8OLu0.js",
+              "timing": {
+                "startTime": 58582.799999952316,
+                "responseEnd": 58585.09999990463,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "timing": {
+                "startTime": 90.5,
+                "responseEnd": 170.5,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.K2Dr66BP.js",
+              "timing": {
+                "startTime": 7507.599999904633,
+                "responseEnd": 7510.700000047684,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/viewport.proto.BZ0-il2e.js",
+              "timing": {
+                "startTime": 6130.099999904633,
+                "responseEnd": 6200,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-virtual-list-content",
+          "queuedAt": 58581.90000009537,
+          "plan": {
+            "entry": "_astro/index.xgx8OLu0.js",
+            "dependencies": [
+              "_astro/index.xgx8OLu0.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.K2Dr66BP.js",
+              "_astro/viewport.proto.BZ0-il2e.js"
+            ]
+          },
+          "dispatchedAt": 58583,
+          "innerImportAt": 58583.799999952316,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.xgx8OLu0.js",
+              "timing": {
+                "startTime": 58582.799999952316,
+                "responseEnd": 58585.09999990463,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "timing": {
+                "startTime": 90.5,
+                "responseEnd": 170.5,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.K2Dr66BP.js",
+              "timing": {
+                "startTime": 7507.599999904633,
+                "responseEnd": 7510.700000047684,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/viewport.proto.BZ0-il2e.js",
+              "timing": {
+                "startTime": 6130.099999904633,
+                "responseEnd": 6200,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        }
+      ],
+      "receivedNodeMs": 66734.417792
+    },
+    "lastMappedPending": {
+      "timeOrigin": 1794911532281.5,
+      "pageMs": 65973.40000009537,
+      "dateNow": 1794911598254,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-3bn3ioqlwnl",
+        "index": 576,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-virtual-list",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-3bn3ioqlwnl",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 43879.90000009537,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 58581.799999952316,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 58581.90000009537,
+          "runtime": "wc",
+          "ids": [
+            "shadcn-style-scope",
+            "shadcn-virtual-list-root",
+            "shadcn-virtual-list-viewport",
+            "shadcn-virtual-list-content"
+          ]
+        }
+      ],
+      "firstMissingPrototypes": [
+        {
+          "id": "shadcn-style-scope",
+          "queuedAt": 11537.299999952316,
+          "plan": null,
+          "dispatchedAt": 11537.400000095367,
+          "innerImportAt": null,
+          "returnedAt": 14954.200000047684,
+          "failedAt": null,
+          "status": "returned",
+          "assets": null
+        },
+        {
+          "id": "shadcn-virtual-list-root",
+          "queuedAt": 58581.90000009537,
+          "plan": {
+            "entry": "_astro/index.xgx8OLu0.js",
+            "dependencies": [
+              "_astro/index.xgx8OLu0.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.K2Dr66BP.js",
+              "_astro/viewport.proto.BZ0-il2e.js"
+            ]
+          },
+          "dispatchedAt": 58582,
+          "innerImportAt": 58583.799999952316,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.xgx8OLu0.js",
+              "timing": {
+                "startTime": 58582.799999952316,
+                "responseEnd": 58585.09999990463,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "timing": {
+                "startTime": 90.5,
+                "responseEnd": 170.5,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.K2Dr66BP.js",
+              "timing": {
+                "startTime": 7507.599999904633,
+                "responseEnd": 7510.700000047684,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/viewport.proto.BZ0-il2e.js",
+              "timing": {
+                "startTime": 6130.099999904633,
+                "responseEnd": 6200,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-virtual-list-viewport",
+          "queuedAt": 58581.90000009537,
+          "plan": {
+            "entry": "_astro/index.xgx8OLu0.js",
+            "dependencies": [
+              "_astro/index.xgx8OLu0.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.K2Dr66BP.js",
+              "_astro/viewport.proto.BZ0-il2e.js"
+            ]
+          },
+          "dispatchedAt": 58582.799999952316,
+          "innerImportAt": 58583.799999952316,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.xgx8OLu0.js",
+              "timing": {
+                "startTime": 58582.799999952316,
+                "responseEnd": 58585.09999990463,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "timing": {
+                "startTime": 90.5,
+                "responseEnd": 170.5,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.K2Dr66BP.js",
+              "timing": {
+                "startTime": 7507.599999904633,
+                "responseEnd": 7510.700000047684,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/viewport.proto.BZ0-il2e.js",
+              "timing": {
+                "startTime": 6130.099999904633,
+                "responseEnd": 6200,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        },
+        {
+          "id": "shadcn-virtual-list-content",
+          "queuedAt": 58581.90000009537,
+          "plan": {
+            "entry": "_astro/index.xgx8OLu0.js",
+            "dependencies": [
+              "_astro/index.xgx8OLu0.js",
+              "_astro/site-shadcn-controls.utF2VcOc.js",
+              "_astro/index.K2Dr66BP.js",
+              "_astro/viewport.proto.BZ0-il2e.js"
+            ]
+          },
+          "dispatchedAt": 58583,
+          "innerImportAt": 58583.799999952316,
+          "returnedAt": null,
+          "failedAt": null,
+          "status": "dispatched",
+          "assets": [
+            {
+              "asset": "_astro/index.xgx8OLu0.js",
+              "timing": {
+                "startTime": 58582.799999952316,
+                "responseEnd": 58585.09999990463,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+              "timing": {
+                "startTime": 90.5,
+                "responseEnd": 170.5,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/index.K2Dr66BP.js",
+              "timing": {
+                "startTime": 7507.599999904633,
+                "responseEnd": 7510.700000047684,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            },
+            {
+              "asset": "_astro/viewport.proto.BZ0-il2e.js",
+              "timing": {
+                "startTime": 6130.099999904633,
+                "responseEnd": 6200,
+                "initiatorType": "script"
+              },
+              "stylesheet": null
+            }
+          ]
+        }
+      ],
+      "receivedNodeMs": 66734.417792
+    },
+    "pendingStateCounts": {
+      "inner import and all mapped resource responses observed": 3
+    },
+    "assetBindings": [
+      {
+        "asset": "previewer-client.DfMHC3t6.js",
+        "sourceSha256": "2d5e84004ef72fe99bce1525c33a74b8d7d06dac752101faeac9e00b8b1f03de",
+        "instrumentedSha256": "ef69894e45f63a81866d5f80ee778a4d73c7cc0c0ae6899fac6c83c57cb53963"
+      },
+      {
+        "asset": "prototype-modules.CuKp3_GC.js",
+        "sourceSha256": "c755e6ae2fbc71c0c4c787fab1443bccf358bb7458d3e825fa897a6788b0418e",
+        "instrumentedSha256": "6667cc376cdd9bd64bcf06f7c54669886d7974701cb877f0b17ec0c80f90e16f",
+        "mappedImportCount": 1193
+      }
+    ],
+    "rawLogSHA256": "a80e104f3aa676274eb30751810f3a341f346707a75873558b6c34339341b5f8",
+    "runnerOverlaySHA256": "99a6c4ecbaa90110de5e09531fefba1825f648662e22c4a5d76784e9955ccb51",
+    "collectionOutcome": "budget-expired"
+  }
+}
