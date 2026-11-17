@@ -266,6 +266,7 @@ describe('module-scroll: end-follow host contract', () => {
     'request',
     'active contact',
     'active key',
+    'rejected reveal',
   ] as const)('shares a following Anatomy sample while preserving %s ordering', async (action) => {
     const frames = installFrameHarness();
     const target = document.createElement('div');
@@ -323,6 +324,8 @@ describe('module-scroll: end-follow host contract', () => {
       }
       if (action === 'request')
         lease.request({ kind: 'page', axis: 'vertical', direction: 'before' });
+      if (action === 'rejected reveal')
+        expect(lease.reveal?.(document.createElement('div'), 'vertical', () => false)).toBe(false);
 
       await Promise.resolve();
       if (action === 'key' || action === 'wheel' || action === 'request') {

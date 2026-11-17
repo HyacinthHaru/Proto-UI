@@ -767,7 +767,6 @@ export function createWebScrollSurfaceHost(
       // Publishing its facts can synchronously replace the input's owner.
       const flushFollowingLayoutForInput = (isCurrent = policyCurrent) => {
         if (endFollowState !== 'following' || !pendingLayoutSample) return !disposed;
-        pendingLayoutSample = null;
         const previous = connection;
         const current = () =>
           isCurrent() &&
