@@ -194,20 +194,27 @@ function coordinate(sample: MoveGestureSample, axis: ScrollAxis): number {
   return axis === 'vertical' ? sample.position.y : sample.position.x;
 }
 
-function measureControl(control: WebScrollControl, axis: ScrollAxis): ControlGeometry {
-  const track = control.trackTarget;
-  const thumb = control.thumbTarget;
-  const ownerWindow = track.ownerDocument.defaultView;
-  const style = ownerWindow?.getComputedStyle(track);
-  const trackRect = track.getBoundingClientRect();
-  const thumbRect = thumb.getBoundingClientRect();
+function readTrackSpace(
+  track: HTMLElement,
+  axis: ScrollAxis,
+  style: CSSStyleDeclaration | undefined
+) {
   const trackExtent = axis === 'vertical' ? track.clientHeight : track.clientWidth;
   const startInset = style ? px(axis === 'vertical' ? style.paddingTop : style.paddingLeft) : 0;
   const endInset = style ? px(axis === 'vertical' ? style.paddingBottom : style.paddingRight) : 0;
+  return { startInset, available: Math.max(0, trackExtent - startInset - endInset) };
+}
+
+function measureControl(control: WebScrollControl, axis: ScrollAxis): ControlGeometry {
+  const track = control.trackTarget;
+  const thumb = control.thumbTarget;
+  const style = track.ownerDocument.defaultView?.getComputedStyle(track);
+  const trackRect = track.getBoundingClientRect();
+  const thumbRect = thumb.getBoundingClientRect();
+  const { startInset, available } = readTrackSpace(track, axis, style);
   const borderStart = style
     ? px(axis === 'vertical' ? style.borderTopWidth : style.borderLeftWidth)
     : 0;
-  const available = Math.max(0, trackExtent - startInset - endInset);
   const measuredThumbExtent = axis === 'vertical' ? thumbRect.height : thumbRect.width;
   const projectedThumbExtent = px(thumb.style.getPropertyValue('--proto-ui-scroll-thumb-size'));
   const thumbExtent = Math.min(available, Math.max(0, measuredThumbExtent || projectedThumbExtent));
@@ -471,10 +478,16 @@ export function createWebScrollSurfaceHost(
           rememberThumb(thumb);
 
           const axisFacts = facts[axis];
-          const geometry = measureControl(control, axis);
-          const available = geometry.available;
-
-          if (available <= 0 || axisFacts.visibleRatio >= 1) {
+          if (axisFacts.visibleRatio >= 1) {
+            writeDisplay(thumb, hiddenDisplay);
+            continue;
+          }
+          const { available } = readTrackSpace(
+            track,
+            axis,
+            track.ownerDocument.defaultView?.getComputedStyle(track)
+          );
+          if (available <= 0) {
             writeDisplay(thumb, hiddenDisplay);
             continue;
           }

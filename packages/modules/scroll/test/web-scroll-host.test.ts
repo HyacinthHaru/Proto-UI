@@ -308,6 +308,8 @@ describe('module-scroll: Web scroll surface host', () => {
     track.append(thumb);
     document.body.append(target, track);
     const move = createMoveHarness();
+    const trackBounds = vi.spyOn(track, 'getBoundingClientRect');
+    const thumbBounds = vi.spyOn(thumb, 'getBoundingClientRect');
 
     const lease = createWebScrollSurfaceHost(target, {
       moveGestureHost: move.host,
@@ -337,6 +339,8 @@ describe('module-scroll: Web scroll surface host', () => {
     lease.request({ kind: 'to', axis: 'vertical', position: 0.5 });
     expect(thumb.style.getPropertyValue('--proto-ui-scroll-thumb-offset')).toBe('36px');
     expect(thumb.style.transform).toContain('var(--proto-ui-scroll-thumb-offset)');
+    expect(trackBounds).not.toHaveBeenCalled();
+    expect(thumbBounds).not.toHaveBeenCalled();
 
     setMetrics(target, {
       clientWidth: 100,
