@@ -1,0 +1,557 @@
+{
+  "source": {
+    "head": "5d4f911370ca5e9cb4e4a17f20eca0b1945d6862",
+    "tree": "84b1020b1d8fdd3511e6f9d4215aad6fa94bf83b",
+    "parents": [
+      "621355701553eb1bded8537b0ae5a1881038d61f",
+      "624b878c166658ee99f798eaba2ee6b20f1a6bd5"
+    ],
+    "suiteOverlaySHA256": "000f72d9bd4413104980fe69f60595dc64ea7cff812294739dcd279ff619af47",
+    "observerSHA256": "b56ec096f72172a42e3f9d05275c82802c641e1fec5574d841a9b17defcc91e6",
+    "htmlSHA256": "9e397ace2d4a9af31b295ea4e4c40d2e1e62ffd6505d4240110dfc2c91fbc7a4"
+  },
+  "environment": {
+    "node": "v24.21.0",
+    "pnpm": "10.32.1",
+    "chrome": "Google Chrome for Testing 156.0.8078.79",
+    "workers": 1
+  },
+  "owner": "pp-715ggtjnivc",
+  "overlay": [
+    {
+      "asset": "demo-renderer.B7Ear75z.js",
+      "inputSHA256": "f6d73f785f823be5a8a59f05939a07856663ec4feba572330b847cb9bc8f068d",
+      "outputSHA256": "9e17f35d45364cf0ebaa0cf3555305f33ad042ac016cd4f15916614380ac849a",
+      "originalSHA256": "1b82864878c378f606afaa3ea6b6f3a0e23afaf1a4c83212039f3cfac4e694de"
+    },
+    {
+      "asset": "react-runtime.vwl59Oq4.js",
+      "inputSHA256": "866bd51cabaf57453fa30215585cd9db347a5e378663b8ee8bf0bf5d9d24629a",
+      "outputSHA256": "4dcb33fd6c76fed6a18a6049e094a2b56ee788cb468e859d83a07519d1dae4d2",
+      "originalSHA256": "f3f06db74ca0d3627d6d719c007d3f3e83ce22eb99e935bf84c421b0e6aa5b39"
+    }
+  ],
+  "protocol": {
+    "locale": "zh-cn",
+    "otherLocale": "unselected",
+    "previews": 1268,
+    "readinessMs": 60000,
+    "outerMs": 150000,
+    "exit": 1,
+    "latestOriginalReadiness": null,
+    "verdict": {
+      "startupPassed": false,
+      "errors": [],
+      "consoleErrors": [],
+      "collectionOutcome": "budget-expired",
+      "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+    }
+  },
+  "failure": "TimeoutError: page.waitForFunction: Timeout 60000ms exceeded.",
+  "nativeLogSHA256": "020269b1f825355e349909c345f663a9097963799e7267784796b16ad4d5499a",
+  "ownerStages": [
+    {
+      "stage": "demo-import-begin",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 11206.099999904633,
+      "timeOrigin": 1794879660821.5,
+      "children": 0,
+      "receivedNodeMs": 12067.250459,
+      "nodePhase": "goto"
+    },
+    {
+      "stage": "demo-import-return",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 13030.900000095367,
+      "timeOrigin": 1794879660821.5,
+      "children": 0,
+      "receivedNodeMs": 13891.976542,
+      "nodePhase": "startup-wait"
+    },
+    {
+      "stage": "prototype-imports-begin",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 13031,
+      "timeOrigin": 1794879660821.5,
+      "children": 0,
+      "details": [
+        "base-accordion-root",
+        "base-accordion-item",
+        "base-accordion-heading",
+        "base-accordion-trigger",
+        "base-accordion-content",
+        "base-button"
+      ],
+      "receivedNodeMs": 13892.097584,
+      "nodePhase": "startup-wait"
+    },
+    {
+      "stage": "prototype-imports-return",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 58700.40000009537,
+      "timeOrigin": 1794879660821.5,
+      "children": 0,
+      "receivedNodeMs": 59561.94275,
+      "nodePhase": "startup-wait"
+    },
+    {
+      "stage": "render-call",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 58700.40000009537,
+      "timeOrigin": 1794879660821.5,
+      "children": 0,
+      "receivedNodeMs": 59561.955042,
+      "nodePhase": "startup-wait"
+    },
+    {
+      "stage": "runtime-join-begin",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 58700.90000009537,
+      "timeOrigin": 1794879660821.5,
+      "children": 0,
+      "details": {
+        "hostId": 1,
+        "liveHost": true
+      },
+      "receivedNodeMs": 59562.222917,
+      "nodePhase": "startup-wait"
+    },
+    {
+      "stage": "owner-wrapper-return",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 58759.700000047684,
+      "timeOrigin": 1794879660821.5,
+      "children": 0,
+      "details": {
+        "ownsLease": true,
+        "hostId": 1,
+        "liveHost": true
+      },
+      "receivedNodeMs": 59620.793209,
+      "nodePhase": "startup-wait"
+    },
+    {
+      "stage": "owner-load-react-begin",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 58759.90000009537,
+      "timeOrigin": 1794879660821.5,
+      "children": 0,
+      "details": {
+        "hostId": 1,
+        "liveHost": true
+      },
+      "receivedNodeMs": 59620.811625,
+      "nodePhase": "startup-wait"
+    },
+    {
+      "stage": "owner-load-react-deps-return",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 61800,
+      "timeOrigin": 1794879660821.5,
+      "children": 0,
+      "details": {
+        "hostId": 1,
+        "liveHost": true
+      },
+      "receivedNodeMs": 62661.507667,
+      "nodePhase": "startup-wait"
+    },
+    {
+      "stage": "owner-load-react-return",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 61800.09999990463,
+      "timeOrigin": 1794879660821.5,
+      "children": 0,
+      "details": {
+        "hostId": 1,
+        "liveHost": true
+      },
+      "receivedNodeMs": 62661.629542,
+      "nodePhase": "startup-wait"
+    },
+    {
+      "stage": "runtime-join-return",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 75011.79999995232,
+      "timeOrigin": 1794879660821.5,
+      "children": 0,
+      "details": {
+        "hasRuntime": true,
+        "ownsLease": true,
+        "hostId": 1,
+        "liveHost": true
+      },
+      "receivedNodeMs": 75872.962042,
+      "nodePhase": "context-close"
+    },
+    {
+      "stage": "create-root-begin",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 75011.90000009537,
+      "timeOrigin": 1794879660821.5,
+      "children": 0,
+      "details": {
+        "hostId": 1,
+        "liveHost": true
+      },
+      "receivedNodeMs": 75873.083375,
+      "nodePhase": "context-close"
+    },
+    {
+      "stage": "create-root-return",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 75011.90000009537,
+      "timeOrigin": 1794879660821.5,
+      "children": 0,
+      "details": {
+        "hostId": 1,
+        "liveHost": true
+      },
+      "receivedNodeMs": 75873.100792,
+      "nodePhase": "context-close"
+    },
+    {
+      "stage": "initial-render-begin",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 75012,
+      "timeOrigin": 1794879660821.5,
+      "children": 0,
+      "details": {
+        "hostId": 1,
+        "liveHost": true
+      },
+      "receivedNodeMs": 75873.111709,
+      "nodePhase": "context-close"
+    }
+  ],
+  "sharedStages": [
+    {
+      "stage": "react-runtime-wrapper-import-return",
+      "pageMs": 13278.099999904633,
+      "timeOrigin": 1794879660821.5,
+      "receivedNodeMs": 14140.022334,
+      "nodePhase": "startup-wait"
+    },
+    {
+      "stage": "adapter-react-import-return",
+      "pageMs": 16843.400000095367,
+      "timeOrigin": 1794879660821.5,
+      "receivedNodeMs": 17704.541292,
+      "nodePhase": "startup-wait"
+    },
+    {
+      "stage": "early-runtime-return",
+      "pageMs": 61800.200000047684,
+      "timeOrigin": 1794879660821.5,
+      "receivedNodeMs": 62661.669417,
+      "nodePhase": "startup-wait"
+    }
+  ],
+  "publicationSamples": [
+    {
+      "receivedNodeMs": 12839.342625,
+      "publishedCount": 1,
+      "observedCount": 1268,
+      "firstMissing": {
+        "index": 0,
+        "owner": "pp-o26223tgir",
+        "inited": "1",
+        "children": 0,
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "initialRuntime": "wc",
+        "startupPending": true
+      },
+      "pageMs": 11978.299999952316,
+      "timeOrigin": 1794879660821.5
+    },
+    {
+      "receivedNodeMs": 12911.807417,
+      "publishedCount": 2,
+      "observedCount": 1268,
+      "firstMissing": {
+        "index": 0,
+        "owner": "pp-o26223tgir",
+        "inited": "1",
+        "children": 0,
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "initialRuntime": "wc",
+        "startupPending": true
+      },
+      "pageMs": 12050.900000095367,
+      "timeOrigin": 1794879660821.5
+    },
+    {
+      "receivedNodeMs": 13332.61475,
+      "publishedCount": 4,
+      "observedCount": 1268,
+      "firstMissing": {
+        "index": 0,
+        "owner": "pp-o26223tgir",
+        "inited": "1",
+        "children": 0,
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "initialRuntime": "wc",
+        "startupPending": true
+      },
+      "pageMs": 12471.799999952316,
+      "timeOrigin": 1794879660821.5
+    },
+    {
+      "receivedNodeMs": 13523.523584,
+      "publishedCount": 8,
+      "observedCount": 1268,
+      "firstMissing": {
+        "index": 0,
+        "owner": "pp-o26223tgir",
+        "inited": "1",
+        "children": 0,
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "initialRuntime": "wc",
+        "startupPending": true
+      },
+      "pageMs": 12662.599999904633,
+      "timeOrigin": 1794879660821.5
+    },
+    {
+      "receivedNodeMs": 14102.878334,
+      "publishedCount": 16,
+      "observedCount": 1268,
+      "firstMissing": {
+        "index": 0,
+        "owner": "pp-o26223tgir",
+        "inited": "1",
+        "children": 0,
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "initialRuntime": "wc",
+        "startupPending": true
+      },
+      "pageMs": 13241.900000095367,
+      "timeOrigin": 1794879660821.5
+    },
+    {
+      "receivedNodeMs": 16287.4135,
+      "publishedCount": 32,
+      "observedCount": 1268,
+      "firstMissing": {
+        "index": 0,
+        "owner": "pp-o26223tgir",
+        "inited": "1",
+        "children": 0,
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "initialRuntime": "wc",
+        "startupPending": true
+      },
+      "pageMs": 15426.400000095367,
+      "timeOrigin": 1794879660821.5
+    },
+    {
+      "receivedNodeMs": 18162.1165,
+      "publishedCount": 64,
+      "observedCount": 1268,
+      "firstMissing": {
+        "index": 0,
+        "owner": "pp-o26223tgir",
+        "inited": "1",
+        "children": 0,
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "initialRuntime": "wc",
+        "startupPending": true
+      },
+      "pageMs": 17301,
+      "timeOrigin": 1794879660821.5
+    },
+    {
+      "receivedNodeMs": 24612.300709,
+      "publishedCount": 128,
+      "observedCount": 1268,
+      "firstMissing": {
+        "index": 0,
+        "owner": "pp-o26223tgir",
+        "inited": "1",
+        "children": 0,
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "initialRuntime": "wc",
+        "startupPending": true
+      },
+      "pageMs": 23751.299999952316,
+      "timeOrigin": 1794879660821.5
+    },
+    {
+      "receivedNodeMs": 43078.380042,
+      "publishedCount": 256,
+      "observedCount": 1268,
+      "firstMissing": {
+        "index": 0,
+        "owner": "pp-o26223tgir",
+        "inited": "1",
+        "children": 0,
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "initialRuntime": "wc",
+        "startupPending": true
+      },
+      "pageMs": 42217.40000009537,
+      "timeOrigin": 1794879660821.5
+    }
+  ],
+  "loadReactReturnToOuterJoinMs": 13211.7,
+  "slowGetterSamples": {
+    "totalCaptured": 397,
+    "withinInterval": [
+      {
+        "sequence": 378,
+        "label": "Element.scrollTop",
+        "startPageMs": 61954.299999952316,
+        "endPageMs": 61989.200000047684,
+        "elapsedMs": 34.90000009536743
+      },
+      {
+        "sequence": 379,
+        "label": "Element.scrollLeft",
+        "startPageMs": 62044.299999952316,
+        "endPageMs": 62071.5,
+        "elapsedMs": 27.200000047683716
+      },
+      {
+        "sequence": 380,
+        "label": "Element.scrollLeft",
+        "startPageMs": 62086.200000047684,
+        "endPageMs": 62112.59999990463,
+        "elapsedMs": 26.399999856948853
+      },
+      {
+        "sequence": 381,
+        "label": "Element.scrollLeft",
+        "startPageMs": 70669.20000004768,
+        "endPageMs": 70704.59999990463,
+        "elapsedMs": 35.39999985694885
+      },
+      {
+        "sequence": 382,
+        "label": "Element.scrollLeft",
+        "startPageMs": 70715.20000004768,
+        "endPageMs": 70742,
+        "elapsedMs": 26.799999952316284
+      },
+      {
+        "sequence": 383,
+        "label": "Element.scrollLeft",
+        "startPageMs": 70749.40000009537,
+        "endPageMs": 70775.20000004768,
+        "elapsedMs": 25.799999952316284
+      },
+      {
+        "sequence": 384,
+        "label": "Element.scrollLeft",
+        "startPageMs": 70782.90000009537,
+        "endPageMs": 70808.5,
+        "elapsedMs": 25.59999990463257
+      },
+      {
+        "sequence": 385,
+        "label": "Element.scrollLeft",
+        "startPageMs": 70824.5,
+        "endPageMs": 70852,
+        "elapsedMs": 27.5
+      },
+      {
+        "sequence": 386,
+        "label": "Element.scrollLeft",
+        "startPageMs": 70857.5,
+        "endPageMs": 70882.70000004768,
+        "elapsedMs": 25.200000047683716
+      },
+      {
+        "sequence": 387,
+        "label": "Element.scrollLeft",
+        "startPageMs": 70886.20000004768,
+        "endPageMs": 70911.40000009537,
+        "elapsedMs": 25.200000047683716
+      },
+      {
+        "sequence": 388,
+        "label": "Element.clientHeight",
+        "startPageMs": 70914.20000004768,
+        "endPageMs": 70940.5,
+        "elapsedMs": 26.299999952316284
+      },
+      {
+        "sequence": 389,
+        "label": "Element.scrollLeft",
+        "startPageMs": 70982.79999995232,
+        "endPageMs": 71010.90000009537,
+        "elapsedMs": 28.100000143051147
+      },
+      {
+        "sequence": 390,
+        "label": "Element.scrollLeft",
+        "startPageMs": 71017.29999995232,
+        "endPageMs": 71043.09999990463,
+        "elapsedMs": 25.799999952316284
+      },
+      {
+        "sequence": 391,
+        "label": "Element.scrollLeft",
+        "startPageMs": 71047,
+        "endPageMs": 71073.5,
+        "elapsedMs": 26.5
+      },
+      {
+        "sequence": 392,
+        "label": "Element.clientHeight",
+        "startPageMs": 71076.40000009537,
+        "endPageMs": 71101.59999990463,
+        "elapsedMs": 25.199999809265137
+      },
+      {
+        "sequence": 393,
+        "label": "Element.scrollLeft",
+        "startPageMs": 71150.29999995232,
+        "endPageMs": 71180.29999995232,
+        "elapsedMs": 30
+      },
+      {
+        "sequence": 394,
+        "label": "Element.scrollLeft",
+        "startPageMs": 71187,
+        "endPageMs": 71213.59999990463,
+        "elapsedMs": 26.59999990463257
+      },
+      {
+        "sequence": 395,
+        "label": "Element.scrollLeft",
+        "startPageMs": 71217.59999990463,
+        "endPageMs": 71244.29999995232,
+        "elapsedMs": 26.700000047683716
+      },
+      {
+        "sequence": 396,
+        "label": "Element.clientHeight",
+        "startPageMs": 71247.20000004768,
+        "endPageMs": 71272.09999990463,
+        "elapsedMs": 24.899999856948853
+      },
+      {
+        "sequence": 397,
+        "label": "Element.scrollLeft",
+        "startPageMs": 71279.40000009537,
+        "endPageMs": 71306.70000004768,
+        "elapsedMs": 27.299999952316284
+      }
+    ],
+    "sampleMsSum": 547.4,
+    "byLabel": {
+      "Element.scrollTop": 1,
+      "Element.scrollLeft": 16,
+      "Element.clientHeight": 3
+    }
+  }
+}
