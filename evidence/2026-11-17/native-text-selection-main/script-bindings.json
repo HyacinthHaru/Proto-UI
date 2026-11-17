@@ -1,0 +1,16 @@
+[
+  {
+    "executed": "native-control.mjs.txt",
+    "executedSha256": "1a09cf012b529dba91878e104f20741eead58523730f1d7e66d83595409cd8c4",
+    "formatted": "native-control.mjs",
+    "formattedSha256": "ea7ef420705f766f329888d8955555f3dc021888003596ddb609cf01944acb74",
+    "derivation": "Prettier formatting only, independently reproduced against executed bytes; formatted copy was not the execution input."
+  },
+  {
+    "executed": "packed-control.mjs.txt",
+    "executedSha256": "3bae6f650ad639c6189f64b66a5e87d41a6352e40192a4319532187c8c152eab",
+    "formatted": "packed-control.mjs",
+    "formattedSha256": "22395dbcc6bbd83fc35cf0ba2b4fe7edf36d52f70d2a37937ddbabbeec9d121f",
+    "derivation": "Prettier formatting only, independently reproduced against executed bytes; formatted copy was not the execution input."
+  }
+]
