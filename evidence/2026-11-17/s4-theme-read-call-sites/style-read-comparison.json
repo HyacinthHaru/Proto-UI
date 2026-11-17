@@ -1,0 +1,330 @@
+[
+  {
+    "run": "reference",
+    "source": {
+      "head": "5d4f911370ca5e9cb4e4a17f20eca0b1945d6862",
+      "tree": "84b1020b1d8fdd3511e6f9d4215aad6fa94bf83b",
+      "parents": [
+        "621355701553eb1bded8537b0ae5a1881038d61f",
+        "624b878c166658ee99f798eaba2ee6b20f1a6bd5"
+      ],
+      "suiteOverlaySHA256": "b324d8308086984ef4775e8181f853f94c2a17218eebf140975e24ebe3aeab13",
+      "observerSHA256": "b56ec096f72172a42e3f9d05275c82802c641e1fec5574d841a9b17defcc91e6",
+      "htmlSHA256": "9e397ace2d4a9af31b295ea4e4c40d2e1e62ffd6505d4240110dfc2c91fbc7a4"
+    },
+    "environment": {
+      "node": "v24.21.0",
+      "pnpm": "10.32.1",
+      "chrome": "Google Chrome for Testing 156.0.8078.79",
+      "workers": 1
+    },
+    "probe": {
+      "installed": [
+        "window.getComputedStyle",
+        "CSSStyleDeclaration.getPropertyValue",
+        "Element.getBoundingClientRect",
+        "Element.getClientRects",
+        "Element.clientWidth",
+        "Element.clientHeight",
+        "Element.scrollWidth",
+        "Element.scrollHeight",
+        "Element.scrollTop",
+        "Element.scrollLeft",
+        "HTMLElement.offsetWidth",
+        "HTMLElement.offsetHeight",
+        "HTMLElement.offsetTop",
+        "HTMLElement.offsetLeft",
+        "HTMLElement.offsetParent"
+      ],
+      "thresholdMs": 2.5,
+      "startPageMs": 20000,
+      "stopPageMs": 100000,
+      "limit": 512
+    },
+    "inputSHA256": "fa248408bc54c6fae3b192bb0822995ddb09b9cc7878245477dd5b14e53a785a",
+    "samples": {
+      "count": 512,
+      "lastCapturedPageMs": 57898.299999952316,
+      "radius": {
+        "directPreviewPublication": {
+          "count": 205,
+          "sumMs": 3992.3,
+          "examples": [
+            {
+              "pageMs": 20076.39999985695,
+              "durationMs": 13.700000047683716,
+              "modules": [
+                "at projection-theme.DzFgjIGA.js:1:2520",
+                "at E (projection-theme.DzFgjIGA.js:1:2487)",
+                "at S (projection-theme.DzFgjIGA.js:1:2986)",
+                "at T (previewer-client.BhKnQCQC.js:3:1533)"
+              ]
+            },
+            {
+              "pageMs": 20122.700000047684,
+              "durationMs": 11.5,
+              "modules": [
+                "at projection-theme.DzFgjIGA.js:1:2520",
+                "at E (projection-theme.DzFgjIGA.js:1:2487)",
+                "at S (projection-theme.DzFgjIGA.js:1:2986)",
+                "at T (previewer-client.BhKnQCQC.js:3:1533)"
+              ]
+            }
+          ]
+        },
+        "previewWatcherInitialRead": {
+          "count": 213,
+          "sumMs": 4069.0,
+          "examples": [
+            {
+              "pageMs": 20091.099999904633,
+              "durationMs": 13.600000143051147,
+              "modules": [
+                "at projection-theme.DzFgjIGA.js:1:2520",
+                "at E (projection-theme.DzFgjIGA.js:1:2487)",
+                "at S (projection-theme.DzFgjIGA.js:1:2986)",
+                "at b (projection-theme.DzFgjIGA.js:1:3753)",
+                "at M (projection-theme.DzFgjIGA.js:1:4200)",
+                "at pe (previewer-client.BhKnQCQC.js:3:1683)",
+                "at T (previewer-client.BhKnQCQC.js:3:1811)"
+              ]
+            },
+            {
+              "pageMs": 20135.099999904633,
+              "durationMs": 11.700000047683716,
+              "modules": [
+                "at projection-theme.DzFgjIGA.js:1:2520",
+                "at E (projection-theme.DzFgjIGA.js:1:2487)",
+                "at S (projection-theme.DzFgjIGA.js:1:2986)",
+                "at b (projection-theme.DzFgjIGA.js:1:3753)",
+                "at M (projection-theme.DzFgjIGA.js:1:4200)",
+                "at pe (previewer-client.BhKnQCQC.js:3:1683)",
+                "at T (previewer-client.BhKnQCQC.js:3:1811)"
+              ]
+            }
+          ]
+        },
+        "materializedScopeWatcher": {
+          "count": 8,
+          "sumMs": 115.2,
+          "examples": [
+            {
+              "pageMs": 24926.299999952316,
+              "durationMs": 14.400000095367432,
+              "modules": [
+                "at projection-theme.DzFgjIGA.js:1:2520",
+                "at E (projection-theme.DzFgjIGA.js:1:2487)",
+                "at S (projection-theme.DzFgjIGA.js:1:2986)",
+                "at b (projection-theme.DzFgjIGA.js:1:3753)",
+                "at M (projection-theme.DzFgjIGA.js:1:4200)",
+                "at Object.prepareCommit (previewer-client.BhKnQCQC.js:2:2819)",
+                "at B (projection-scope.C38VOVYm.js:1:4052)"
+              ]
+            },
+            {
+              "pageMs": 25585.799999952316,
+              "durationMs": 12.400000095367432,
+              "modules": [
+                "at projection-theme.DzFgjIGA.js:1:2520",
+                "at E (projection-theme.DzFgjIGA.js:1:2487)",
+                "at S (projection-theme.DzFgjIGA.js:1:2986)",
+                "at b (projection-theme.DzFgjIGA.js:1:3753)",
+                "at M (projection-theme.DzFgjIGA.js:1:4200)",
+                "at Object.prepareCommit (previewer-client.BhKnQCQC.js:2:2819)",
+                "at B (projection-scope.C38VOVYm.js:1:4052)"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "result": {
+      "failure": "Error: Test timed out in 150000ms.",
+      "exit": 1,
+      "verdict": {
+        "startupPassed": false,
+        "errors": [],
+        "consoleErrors": [],
+        "collectionOutcome": "rejected",
+        "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+      },
+      "latestReadiness": {
+        "timeOrigin": 1794873027297.1,
+        "pageMs": 67189,
+        "dateNow": 1794873094486,
+        "count": 1268,
+        "ready": false,
+        "firstMissing": {
+          "previewerId": "pp-o26223tgir",
+          "index": 0,
+          "inited": "1",
+          "hostChildren": 0
+        },
+        "firstMissingOwner": {
+          "demoId": "demo-base-accordion",
+          "prototypeId": "",
+          "declaredRuntime": "wc",
+          "projectionMode": null,
+          "projectionState": null,
+          "mounting": null,
+          "hostTag": "DIV",
+          "hostOwner": "pp-o26223tgir",
+          "startupPending": true,
+          "hostOwnInert": true,
+          "hostText": ""
+        }
+      }
+    }
+  },
+  {
+    "run": "batched",
+    "source": {
+      "head": "5d4f911370ca5e9cb4e4a17f20eca0b1945d6862",
+      "tree": "84b1020b1d8fdd3511e6f9d4215aad6fa94bf83b",
+      "parents": [
+        "621355701553eb1bded8537b0ae5a1881038d61f",
+        "624b878c166658ee99f798eaba2ee6b20f1a6bd5"
+      ],
+      "suiteOverlaySHA256": "b324d8308086984ef4775e8181f853f94c2a17218eebf140975e24ebe3aeab13",
+      "observerSHA256": "b56ec096f72172a42e3f9d05275c82802c641e1fec5574d841a9b17defcc91e6",
+      "htmlSHA256": "9e397ace2d4a9af31b295ea4e4c40d2e1e62ffd6505d4240110dfc2c91fbc7a4"
+    },
+    "environment": {
+      "node": "v24.21.0",
+      "pnpm": "10.32.1",
+      "chrome": "Google Chrome for Testing 156.0.8078.79",
+      "workers": 1
+    },
+    "probe": {
+      "installed": [
+        "window.getComputedStyle",
+        "CSSStyleDeclaration.getPropertyValue",
+        "Element.getBoundingClientRect",
+        "Element.getClientRects",
+        "Element.clientWidth",
+        "Element.clientHeight",
+        "Element.scrollWidth",
+        "Element.scrollHeight",
+        "Element.scrollTop",
+        "Element.scrollLeft",
+        "HTMLElement.offsetWidth",
+        "HTMLElement.offsetHeight",
+        "HTMLElement.offsetTop",
+        "HTMLElement.offsetLeft",
+        "HTMLElement.offsetParent"
+      ],
+      "thresholdMs": 2.5,
+      "startPageMs": 20000,
+      "stopPageMs": 100000,
+      "limit": 512
+    },
+    "inputSHA256": "fa248408bc54c6fae3b192bb0822995ddb09b9cc7878245477dd5b14e53a785a",
+    "samples": {
+      "count": 512,
+      "lastCapturedPageMs": 84185,
+      "radius": {
+        "materializedScopeWatcher": {
+          "count": 25,
+          "sumMs": 572.4,
+          "examples": [
+            {
+              "pageMs": 21645.599999904633,
+              "durationMs": 11.400000095367432,
+              "modules": [
+                "at projection-theme.DzFgjIGA.js:1:2520",
+                "at E (projection-theme.DzFgjIGA.js:1:2487)",
+                "at S (projection-theme.DzFgjIGA.js:1:2986)",
+                "at b (projection-theme.DzFgjIGA.js:1:3753)",
+                "at M (projection-theme.DzFgjIGA.js:1:4200)",
+                "at Object.prepareCommit (previewer-client.BhKnQCQC.js:34:2819)",
+                "at B (projection-scope.C38VOVYm.js:1:4052)"
+              ]
+            },
+            {
+              "pageMs": 21826.39999985695,
+              "durationMs": 11.300000190734863,
+              "modules": [
+                "at projection-theme.DzFgjIGA.js:1:2520",
+                "at E (projection-theme.DzFgjIGA.js:1:2487)",
+                "at S (projection-theme.DzFgjIGA.js:1:2986)",
+                "at b (projection-theme.DzFgjIGA.js:1:3753)",
+                "at M (projection-theme.DzFgjIGA.js:1:4200)",
+                "at Object.prepareCommit (previewer-client.BhKnQCQC.js:34:2819)",
+                "at B (projection-scope.C38VOVYm.js:1:4052)"
+              ]
+            }
+          ]
+        },
+        "previewWatcherInitialRead": {
+          "count": 140,
+          "sumMs": 1849.8,
+          "examples": [
+            {
+              "pageMs": 25928.200000047684,
+              "durationMs": 15.099999904632568,
+              "modules": [
+                "at projection-theme.DzFgjIGA.js:1:2520",
+                "at E (projection-theme.DzFgjIGA.js:1:2487)",
+                "at S (projection-theme.DzFgjIGA.js:1:2986)",
+                "at b (projection-theme.DzFgjIGA.js:1:3753)",
+                "at M (projection-theme.DzFgjIGA.js:1:4200)",
+                "at pe (previewer-client.BhKnQCQC.js:35:1870)",
+                "at T (previewer-client.BhKnQCQC.js:35:1998)"
+              ]
+            },
+            {
+              "pageMs": 25943.799999952316,
+              "durationMs": 13.900000095367432,
+              "modules": [
+                "at projection-theme.DzFgjIGA.js:1:2520",
+                "at E (projection-theme.DzFgjIGA.js:1:2487)",
+                "at S (projection-theme.DzFgjIGA.js:1:2986)",
+                "at b (projection-theme.DzFgjIGA.js:1:3753)",
+                "at M (projection-theme.DzFgjIGA.js:1:4200)",
+                "at pe (previewer-client.BhKnQCQC.js:35:1870)",
+                "at T (previewer-client.BhKnQCQC.js:35:1998)"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "result": {
+      "failure": "Error: Test timed out in 150000ms.",
+      "exit": 1,
+      "verdict": {
+        "startupPassed": false,
+        "errors": [],
+        "consoleErrors": [],
+        "collectionOutcome": "rejected",
+        "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+      },
+      "latestReadiness": {
+        "timeOrigin": 1794873475840.3,
+        "pageMs": 110531,
+        "dateNow": 1794873586371,
+        "count": 1268,
+        "ready": false,
+        "firstMissing": {
+          "previewerId": "pp-fyj7felv0ed",
+          "index": 3,
+          "inited": "1",
+          "hostChildren": 0
+        },
+        "firstMissingOwner": {
+          "demoId": "demo-base-accordion",
+          "prototypeId": "",
+          "declaredRuntime": "vue2",
+          "projectionMode": null,
+          "projectionState": null,
+          "mounting": null,
+          "hostTag": "DIV",
+          "hostOwner": "pp-fyj7felv0ed",
+          "startupPending": true,
+          "hostOwnInert": true,
+          "hostText": ""
+        }
+      }
+    }
+  }
+]

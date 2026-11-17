@@ -1,0 +1,28 @@
+{
+  "head": "5022afba7d91c4db064e6e273081891e57f814a0",
+  "tree": "519421949e7f9a67f7e3269c7f6e1f8d0e4bc235",
+  "parent": "396576a8c91d249efef706eb30e18f00b52e9b47",
+  "paths": [
+    [
+      "c6fb3cb088b8cc55059bf4db305f3e8428dc19683c1cfc289370203be78a5dec",
+      "apps/www/src/components/PrototypePreviewer/previewer-client.ts"
+    ],
+    [
+      "e63361b445535f02a46e6983770820ad7befdd15ecacb5d64d6528c7265dfb64",
+      "apps/www/src/components/PrototypePreviewer/projection-theme.test.ts"
+    ],
+    [
+      "6a324642a1cfbff787a76f8ce3c4234d131fbb2ae75617ba181e888cdd7a5bf7",
+      "apps/www/src/components/PrototypePreviewer/projection-theme.ts"
+    ]
+  ],
+  "focusedTests": 52,
+  "workspaceTypesExit": 0,
+  "diagnosticOverlay": {
+    "before": "f656d1d1be721d0c9b395697f8d283623becf87c687c79ab3396c43ca45da0f9",
+    "after": "da383e4ae0d670be81a8d1a23527413940691d22f145e33c8f0438e84d9d7676",
+    "asset": "previewer-client.BhKnQCQC.js",
+    "helper": "0dc520ec914bb194b225bdc7a14c12f9dd0ea95c23fb8b7338346ddd9ce5a7da",
+    "replacement": "aac809a10ad4de2f5700a3f01dbba9df6d3afd978c9c3c7fa670f22e07f799a0"
+  }
+}
