@@ -1,0 +1,1470 @@
+{
+  "candidate": {
+    "head": "b4e2f87bba9c5d83ae4554e30118e540691feb76",
+    "tree": "811de61d57a3ce2207e4c24f7b7fe81d42894027",
+    "parent": "5d554e0038133db21a98b6726085e469c01121be",
+    "signature": "G",
+    "sourceDigests": [
+      "6a5ec8539546d19ec16998da0b6f3b2499d56c29a0adc5ff62b0140ce2899eaf  packages/adapters/web-component/src/runtime/modules.ts",
+      "0e9ead37d271d2e2a636b9b98bce45e0607866ec4ed841fa7eaabf23989e8a0e  packages/adapters/web-component/test/shadow-closeout.browser.test.ts"
+    ]
+  },
+  "environment": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+  "measurementScope": "Same-attempt renderer spans are nested. Separate outcome and diagnostic runs are matched by built source and browser; counts near 450,000 deliveries are different prefixes, not paired events.",
+  "nativeTrace": {
+    "head": "5d554e0038133db21a98b6726085e469c01121be",
+    "traceRange": {
+      "startMs": 27672.762,
+      "endMs": 76408.013
+    },
+    "traceChecksum": "f147295c6d80f04570a8f8c3161a59b7d7a09e54940e94ece6ae79e940181d5f",
+    "traceReceipt": {
+      "categories": "toplevel,devtools.timeline,v8,blink.user_timing,disabled-by-default-v8.compile",
+      "requestedAt": 988.568,
+      "beginNodeMs": 24990.403708,
+      "activeNodeMs": 28670.174708,
+      "endNodeMs": 77411.776708,
+      "traceBytes": 193049519,
+      "eof": true,
+      "dataLoss": false
+    },
+    "clockAnchors": 16,
+    "windows": [
+      {
+        "label": "demo-shadcn-toolbar",
+        "firstMs": 44065.5,
+        "lastMs": 56218.299999952316,
+        "windowMs": 12152.8,
+        "taskUnionMs": 6847.549,
+        "microtaskUnionMs": 5301.707,
+        "capturedTaskAndMicrotaskUnionMs": 12149.256,
+        "targetNamedEvents": [
+          {
+            "name": "v8.compileModule",
+            "startMs": 52670.261,
+            "endMs": 52670.265,
+            "durationMs": 0.004
+          }
+        ],
+        "categories": [
+          {
+            "name": "v8.callFunction",
+            "sumMs": 9506.123,
+            "unionMs": 7810.849
+          },
+          {
+            "name": "ThreadControllerImpl::RunTask",
+            "sumMs": 6847.549,
+            "unionMs": 6847.549
+          },
+          {
+            "name": "UpdateLayoutTree",
+            "sumMs": 6294.046,
+            "unionMs": 6294.046
+          },
+          {
+            "name": "BlinkScheduler_PerformMicrotaskCheckpoint",
+            "sumMs": 5301.707,
+            "unionMs": 5301.707
+          },
+          {
+            "name": "FunctionCall",
+            "sumMs": 5023.412,
+            "unionMs": 5023.412
+          },
+          {
+            "name": "FireAnimationFrame",
+            "sumMs": 4156.248,
+            "unionMs": 4156.248
+          },
+          {
+            "name": "EventDispatch",
+            "sumMs": 1836.963,
+            "unionMs": 1836.963
+          },
+          {
+            "name": "Layout",
+            "sumMs": 148.485,
+            "unionMs": 148.485
+          },
+          {
+            "name": "MinorGC",
+            "sumMs": 122.459,
+            "unionMs": 122.459
+          },
+          {
+            "name": "V8.GCScavenger",
+            "sumMs": 120.94,
+            "unionMs": 120.94
+          },
+          {
+            "name": "V8.GC_SCAVENGER",
+            "sumMs": 120.529,
+            "unionMs": 120.529
+          },
+          {
+            "name": "V8.GC_SCAVENGER_SCAVENGE",
+            "sumMs": 119.994,
+            "unionMs": 119.994
+          },
+          {
+            "name": "TimerFire",
+            "sumMs": 88.397,
+            "unionMs": 88.397
+          },
+          {
+            "name": "PrePaint",
+            "sumMs": 66.978,
+            "unionMs": 66.978
+          },
+          {
+            "name": "V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE",
+            "sumMs": 47.588,
+            "unionMs": 47.588
+          },
+          {
+            "name": "V8.GC_SCAVENGER_SCAVENGE_COLLECT_OLD_TO_NEW_PAGES",
+            "sumMs": 36.653,
+            "unionMs": 36.653
+          },
+          {
+            "name": "Paint",
+            "sumMs": 24.699,
+            "unionMs": 16.672
+          },
+          {
+            "name": "V8.GC_SCAVENGER_SCAVENGE_PARALLEL",
+            "sumMs": 12.878,
+            "unionMs": 12.878
+          },
+          {
+            "name": "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_PROCESS",
+            "sumMs": 10.873,
+            "unionMs": 10.873
+          },
+          {
+            "name": "V8.GC_SCAVENGER_SCAVENGE_ROOTS",
+            "sumMs": 10.328,
+            "unionMs": 10.328
+          }
+        ],
+        "longTasks": [
+          {
+            "startMs": 55346.056,
+            "endMs": 55991.904,
+            "overlapMs": 645.848,
+            "originalMs": 645.848
+          },
+          {
+            "startMs": 46451.136,
+            "endMs": 46964.557,
+            "overlapMs": 513.421,
+            "originalMs": 513.421
+          },
+          {
+            "startMs": 44382.795,
+            "endMs": 44871.851,
+            "overlapMs": 489.056,
+            "originalMs": 489.056
+          },
+          {
+            "startMs": 54766.998,
+            "endMs": 55231.957,
+            "overlapMs": 464.959,
+            "originalMs": 464.959
+          },
+          {
+            "startMs": 50635.299,
+            "endMs": 51069.922,
+            "overlapMs": 434.623,
+            "originalMs": 434.623
+          },
+          {
+            "startMs": 45860.691,
+            "endMs": 46264.675,
+            "overlapMs": 403.984,
+            "originalMs": 403.984
+          },
+          {
+            "startMs": 48212.045,
+            "endMs": 48593.205,
+            "overlapMs": 381.16,
+            "originalMs": 381.16
+          },
+          {
+            "startMs": 47086.824,
+            "endMs": 47425.901,
+            "overlapMs": 339.077,
+            "originalMs": 339.077
+          },
+          {
+            "startMs": 49591.364,
+            "endMs": 49903.54,
+            "overlapMs": 312.176,
+            "originalMs": 312.176
+          },
+          {
+            "startMs": 49105.586,
+            "endMs": 49396.666,
+            "overlapMs": 291.08,
+            "originalMs": 291.08
+          },
+          {
+            "startMs": 45373.146,
+            "endMs": 45651.972,
+            "overlapMs": 278.826,
+            "originalMs": 278.826
+          },
+          {
+            "startMs": 48726.482,
+            "endMs": 48982.058,
+            "overlapMs": 255.576,
+            "originalMs": 255.576
+          },
+          {
+            "startMs": 51179.349,
+            "endMs": 51377.035,
+            "overlapMs": 197.686,
+            "originalMs": 197.686
+          },
+          {
+            "startMs": 51479.965,
+            "endMs": 51623.684,
+            "overlapMs": 143.719,
+            "originalMs": 143.719
+          }
+        ],
+        "callSites": [
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 16,
+            "column": 43328,
+            "function": "",
+            "wallUnionMs": 1223.747,
+            "calls": 405
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 19,
+            "column": 32973,
+            "function": "connectedCallback",
+            "wallUnionMs": 1012.729,
+            "calls": 371
+          },
+          {
+            "asset": "_astro/sink.BKlDN-bl.js",
+            "line": 11,
+            "column": 5404,
+            "function": "",
+            "wallUnionMs": 782.197,
+            "calls": 18
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 16,
+            "column": 48225,
+            "function": "xl",
+            "wallUnionMs": 505.264,
+            "calls": 83364
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 10,
+            "column": 417037,
+            "function": "",
+            "wallUnionMs": 288.209,
+            "calls": 321
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 10,
+            "column": 396484,
+            "function": "ot",
+            "wallUnionMs": 245.957,
+            "calls": 33
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 10,
+            "column": 169783,
+            "function": "",
+            "wallUnionMs": 194.683,
+            "calls": 313
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 10,
+            "column": 390242,
+            "function": "re",
+            "wallUnionMs": 162.354,
+            "calls": 7
+          },
+          {
+            "asset": "_astro/demo-renderer.CHJ-efp2.js",
+            "line": 4,
+            "column": 960,
+            "function": "O",
+            "wallUnionMs": 154.063,
+            "calls": 307
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 10,
+            "column": 394939,
+            "function": "Ye",
+            "wallUnionMs": 81.357,
+            "calls": 7
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 10,
+            "column": 432764,
+            "function": "",
+            "wallUnionMs": 72.465,
+            "calls": 758
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 10,
+            "column": 395138,
+            "function": "",
+            "wallUnionMs": 64.462,
+            "calls": 4
+          },
+          {
+            "asset": "_astro/DocumentationImagePreview.astro_astro_type_script_index_0_lang.D1LC1G7u.js",
+            "line": 1,
+            "column": 15440,
+            "function": "",
+            "wallUnionMs": 29.435,
+            "calls": 917
+          },
+          {
+            "asset": "_astro/projection-materializer.CsWjmr-D.js",
+            "line": 5,
+            "column": 80709,
+            "function": "",
+            "wallUnionMs": 24.007,
+            "calls": 351
+          },
+          {
+            "asset": "_astro/site-typography-client.CRb7DrU8.js",
+            "line": 1,
+            "column": 1922,
+            "function": "",
+            "wallUnionMs": 20.687,
+            "calls": 307
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 19,
+            "column": 37174,
+            "function": "",
+            "wallUnionMs": 18.349,
+            "calls": 190
+          },
+          {
+            "asset": "_astro/previewer-client.5aoyOs5s.js",
+            "line": 1,
+            "column": 1778,
+            "function": "",
+            "wallUnionMs": 15.224,
+            "calls": 287
+          },
+          {
+            "asset": "_astro/projection-materializer.CsWjmr-D.js",
+            "line": 5,
+            "column": 59727,
+            "function": "",
+            "wallUnionMs": 14.866,
+            "calls": 289
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 19,
+            "column": 46148,
+            "function": "disconnectedCallback",
+            "wallUnionMs": 10.126,
+            "calls": 185
+          },
+          {
+            "asset": "_astro/PrototypePreviewer.astro_astro_type_script_index_0_lang.jBSfpobP.js",
+            "line": 2,
+            "column": 2797,
+            "function": "",
+            "wallUnionMs": 7.355,
+            "calls": 307
+          }
+        ]
+      },
+      {
+        "label": "demo-shadcn-toast",
+        "firstMs": 44062.09999990463,
+        "lastMs": 54921.39999985695,
+        "windowMs": 10859.3,
+        "taskUnionMs": 5791.454,
+        "microtaskUnionMs": 5064.417,
+        "capturedTaskAndMicrotaskUnionMs": 10855.871,
+        "targetNamedEvents": [
+          {
+            "name": "v8.compileModule",
+            "startMs": 52670.189,
+            "endMs": 52670.196,
+            "durationMs": 0.007
+          }
+        ],
+        "categories": [
+          {
+            "name": "v8.callFunction",
+            "sumMs": 8371.89,
+            "unionMs": 6796.029
+          },
+          {
+            "name": "ThreadControllerImpl::RunTask",
+            "sumMs": 5791.454,
+            "unionMs": 5791.454
+          },
+          {
+            "name": "UpdateLayoutTree",
+            "sumMs": 5391.914,
+            "unionMs": 5391.914
+          },
+          {
+            "name": "BlinkScheduler_PerformMicrotaskCheckpoint",
+            "sumMs": 5064.417,
+            "unionMs": 5064.417
+          },
+          {
+            "name": "FunctionCall",
+            "sumMs": 4642.854,
+            "unionMs": 4642.854
+          },
+          {
+            "name": "FireAnimationFrame",
+            "sumMs": 3304.384,
+            "unionMs": 3304.384
+          },
+          {
+            "name": "EventDispatch",
+            "sumMs": 1735.977,
+            "unionMs": 1735.977
+          },
+          {
+            "name": "Layout",
+            "sumMs": 135.607,
+            "unionMs": 135.607
+          },
+          {
+            "name": "MinorGC",
+            "sumMs": 118.359,
+            "unionMs": 118.359
+          },
+          {
+            "name": "V8.GCScavenger",
+            "sumMs": 116.886,
+            "unionMs": 116.886
+          },
+          {
+            "name": "V8.GC_SCAVENGER",
+            "sumMs": 116.487,
+            "unionMs": 116.487
+          },
+          {
+            "name": "V8.GC_SCAVENGER_SCAVENGE",
+            "sumMs": 115.97,
+            "unionMs": 115.97
+          },
+          {
+            "name": "TimerFire",
+            "sumMs": 88.397,
+            "unionMs": 88.397
+          },
+          {
+            "name": "PrePaint",
+            "sumMs": 62.04,
+            "unionMs": 62.04
+          },
+          {
+            "name": "V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE",
+            "sumMs": 46.092,
+            "unionMs": 46.092
+          },
+          {
+            "name": "V8.GC_SCAVENGER_SCAVENGE_COLLECT_OLD_TO_NEW_PAGES",
+            "sumMs": 35.607,
+            "unionMs": 35.607
+          },
+          {
+            "name": "Paint",
+            "sumMs": 20.963,
+            "unionMs": 14.783
+          },
+          {
+            "name": "V8.GC_SCAVENGER_SCAVENGE_PARALLEL",
+            "sumMs": 12.878,
+            "unionMs": 12.878
+          },
+          {
+            "name": "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_PROCESS",
+            "sumMs": 10.317,
+            "unionMs": 10.317
+          },
+          {
+            "name": "V8.GC_SCAVENGER_SCAVENGE_ROOTS",
+            "sumMs": 9.956,
+            "unionMs": 9.956
+          }
+        ],
+        "longTasks": [
+          {
+            "startMs": 46451.136,
+            "endMs": 46964.557,
+            "overlapMs": 513.421,
+            "originalMs": 513.421
+          },
+          {
+            "startMs": 44382.795,
+            "endMs": 44871.851,
+            "overlapMs": 489.056,
+            "originalMs": 489.056
+          },
+          {
+            "startMs": 50635.299,
+            "endMs": 51069.922,
+            "overlapMs": 434.623,
+            "originalMs": 434.623
+          },
+          {
+            "startMs": 45860.691,
+            "endMs": 46264.675,
+            "overlapMs": 403.984,
+            "originalMs": 403.984
+          },
+          {
+            "startMs": 48212.045,
+            "endMs": 48593.205,
+            "overlapMs": 381.16,
+            "originalMs": 381.16
+          },
+          {
+            "startMs": 47086.824,
+            "endMs": 47425.901,
+            "overlapMs": 339.077,
+            "originalMs": 339.077
+          },
+          {
+            "startMs": 49591.364,
+            "endMs": 49903.54,
+            "overlapMs": 312.176,
+            "originalMs": 312.176
+          },
+          {
+            "startMs": 49105.586,
+            "endMs": 49396.666,
+            "overlapMs": 291.08,
+            "originalMs": 291.08
+          },
+          {
+            "startMs": 45373.146,
+            "endMs": 45651.972,
+            "overlapMs": 278.826,
+            "originalMs": 278.826
+          },
+          {
+            "startMs": 48726.482,
+            "endMs": 48982.058,
+            "overlapMs": 255.576,
+            "originalMs": 255.576
+          },
+          {
+            "startMs": 51179.349,
+            "endMs": 51377.035,
+            "overlapMs": 197.686,
+            "originalMs": 197.686
+          },
+          {
+            "startMs": 54766.998,
+            "endMs": 55231.957,
+            "overlapMs": 154.402,
+            "originalMs": 464.959
+          },
+          {
+            "startMs": 51479.965,
+            "endMs": 51623.684,
+            "overlapMs": 143.719,
+            "originalMs": 143.719
+          },
+          {
+            "startMs": 53688.187,
+            "endMs": 53803.404,
+            "overlapMs": 115.217,
+            "originalMs": 115.217
+          }
+        ],
+        "callSites": [
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 16,
+            "column": 43328,
+            "function": "",
+            "wallUnionMs": 1177.299,
+            "calls": 404
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 19,
+            "column": 32973,
+            "function": "connectedCallback",
+            "wallUnionMs": 981.162,
+            "calls": 343
+          },
+          {
+            "asset": "_astro/sink.BKlDN-bl.js",
+            "line": 11,
+            "column": 5404,
+            "function": "",
+            "wallUnionMs": 676.731,
+            "calls": 16
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 16,
+            "column": 48225,
+            "function": "xl",
+            "wallUnionMs": 427.108,
+            "calls": 57524
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 10,
+            "column": 417037,
+            "function": "",
+            "wallUnionMs": 262.693,
+            "calls": 258
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 10,
+            "column": 396484,
+            "function": "ot",
+            "wallUnionMs": 245.957,
+            "calls": 33
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 10,
+            "column": 390242,
+            "function": "re",
+            "wallUnionMs": 162.354,
+            "calls": 7
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 10,
+            "column": 169783,
+            "function": "",
+            "wallUnionMs": 158.819,
+            "calls": 251
+          },
+          {
+            "asset": "_astro/demo-renderer.CHJ-efp2.js",
+            "line": 4,
+            "column": 960,
+            "function": "O",
+            "wallUnionMs": 127.114,
+            "calls": 247
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 10,
+            "column": 394939,
+            "function": "Ye",
+            "wallUnionMs": 81.357,
+            "calls": 7
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 10,
+            "column": 432764,
+            "function": "",
+            "wallUnionMs": 65.538,
+            "calls": 689
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 10,
+            "column": 395138,
+            "function": "",
+            "wallUnionMs": 64.462,
+            "calls": 4
+          },
+          {
+            "asset": "_astro/DocumentationImagePreview.astro_astro_type_script_index_0_lang.D1LC1G7u.js",
+            "line": 1,
+            "column": 15440,
+            "function": "",
+            "wallUnionMs": 27.054,
+            "calls": 707
+          },
+          {
+            "asset": "_astro/projection-materializer.CsWjmr-D.js",
+            "line": 5,
+            "column": 80709,
+            "function": "",
+            "wallUnionMs": 20.635,
+            "calls": 277
+          },
+          {
+            "asset": "_astro/site-typography-client.CRb7DrU8.js",
+            "line": 1,
+            "column": 1922,
+            "function": "",
+            "wallUnionMs": 18.692,
+            "calls": 247
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 19,
+            "column": 37174,
+            "function": "",
+            "wallUnionMs": 18.099,
+            "calls": 175
+          },
+          {
+            "asset": "_astro/projection-materializer.CsWjmr-D.js",
+            "line": 5,
+            "column": 59727,
+            "function": "",
+            "wallUnionMs": 13.249,
+            "calls": 227
+          },
+          {
+            "asset": "_astro/previewer-client.5aoyOs5s.js",
+            "line": 1,
+            "column": 1778,
+            "function": "",
+            "wallUnionMs": 12.058,
+            "calls": 226
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 19,
+            "column": 46148,
+            "function": "disconnectedCallback",
+            "wallUnionMs": 9.324,
+            "calls": 172
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 19,
+            "column": 34265,
+            "function": "",
+            "wallUnionMs": 6.856,
+            "calls": 171
+          }
+        ]
+      },
+      {
+        "label": "46s-to-60s",
+        "firstMs": 46000,
+        "lastMs": 60000,
+        "windowMs": 14000,
+        "taskUnionMs": 8852.14,
+        "microtaskUnionMs": 5143.907,
+        "capturedTaskAndMicrotaskUnionMs": 13996.047,
+        "targetNamedEvents": [],
+        "categories": [
+          {
+            "name": "v8.callFunction",
+            "sumMs": 11303.09,
+            "unionMs": 9448.699
+          },
+          {
+            "name": "ThreadControllerImpl::RunTask",
+            "sumMs": 8852.14,
+            "unionMs": 8852.14
+          },
+          {
+            "name": "UpdateLayoutTree",
+            "sumMs": 7738.251,
+            "unionMs": 7738.251
+          },
+          {
+            "name": "FunctionCall",
+            "sumMs": 5923.584,
+            "unionMs": 5923.584
+          },
+          {
+            "name": "FireAnimationFrame",
+            "sumMs": 5346.575,
+            "unionMs": 5346.575
+          },
+          {
+            "name": "BlinkScheduler_PerformMicrotaskCheckpoint",
+            "sumMs": 5143.907,
+            "unionMs": 5143.907
+          },
+          {
+            "name": "EventDispatch",
+            "sumMs": 2200.13,
+            "unionMs": 2200.13
+          },
+          {
+            "name": "TimerFire",
+            "sumMs": 236.678,
+            "unionMs": 236.678
+          },
+          {
+            "name": "Layout",
+            "sumMs": 174.144,
+            "unionMs": 174.144
+          },
+          {
+            "name": "MinorGC",
+            "sumMs": 120.928,
+            "unionMs": 120.928
+          },
+          {
+            "name": "V8.GCScavenger",
+            "sumMs": 119.512,
+            "unionMs": 119.512
+          },
+          {
+            "name": "V8.GC_SCAVENGER",
+            "sumMs": 119.126,
+            "unionMs": 119.126
+          },
+          {
+            "name": "V8.GC_SCAVENGER_SCAVENGE",
+            "sumMs": 118.607,
+            "unionMs": 118.607
+          },
+          {
+            "name": "PrePaint",
+            "sumMs": 80.004,
+            "unionMs": 80.004
+          },
+          {
+            "name": "V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE",
+            "sumMs": 44.179,
+            "unionMs": 44.179
+          },
+          {
+            "name": "V8.GC_SCAVENGER_SCAVENGE_COLLECT_OLD_TO_NEW_PAGES",
+            "sumMs": 35.836,
+            "unionMs": 35.836
+          },
+          {
+            "name": "Paint",
+            "sumMs": 33.865,
+            "unionMs": 21.86
+          },
+          {
+            "name": "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_PROCESS",
+            "sumMs": 13.162,
+            "unionMs": 13.162
+          },
+          {
+            "name": "V8.GC_SCAVENGER_TRACED_HANDLES_RESET_PARALLEL",
+            "sumMs": 12.218,
+            "unionMs": 12.218
+          },
+          {
+            "name": "V8.GC_SCAVENGER_SCAVENGE_ROOTS",
+            "sumMs": 11.242,
+            "unionMs": 11.242
+          }
+        ],
+        "longTasks": [
+          {
+            "startMs": 55346.056,
+            "endMs": 55991.904,
+            "overlapMs": 645.848,
+            "originalMs": 645.848
+          },
+          {
+            "startMs": 46451.136,
+            "endMs": 46964.557,
+            "overlapMs": 513.421,
+            "originalMs": 513.421
+          },
+          {
+            "startMs": 56577.557,
+            "endMs": 57073.653,
+            "overlapMs": 496.096,
+            "originalMs": 496.096
+          },
+          {
+            "startMs": 58628.415,
+            "endMs": 59112.994,
+            "overlapMs": 484.579,
+            "originalMs": 484.579
+          },
+          {
+            "startMs": 54766.998,
+            "endMs": 55231.957,
+            "overlapMs": 464.959,
+            "originalMs": 464.959
+          },
+          {
+            "startMs": 50635.299,
+            "endMs": 51069.922,
+            "overlapMs": 434.623,
+            "originalMs": 434.623
+          },
+          {
+            "startMs": 48212.045,
+            "endMs": 48593.205,
+            "overlapMs": 381.16,
+            "originalMs": 381.16
+          },
+          {
+            "startMs": 58054.089,
+            "endMs": 58419.333,
+            "overlapMs": 365.244,
+            "originalMs": 365.244
+          },
+          {
+            "startMs": 56118.794,
+            "endMs": 56459.875,
+            "overlapMs": 341.081,
+            "originalMs": 341.081
+          },
+          {
+            "startMs": 47086.824,
+            "endMs": 47425.901,
+            "overlapMs": 339.077,
+            "originalMs": 339.077
+          },
+          {
+            "startMs": 59265.844,
+            "endMs": 59587.903,
+            "overlapMs": 322.059,
+            "originalMs": 322.059
+          },
+          {
+            "startMs": 49591.364,
+            "endMs": 49903.54,
+            "overlapMs": 312.176,
+            "originalMs": 312.176
+          },
+          {
+            "startMs": 57184.981,
+            "endMs": 57477.438,
+            "overlapMs": 292.457,
+            "originalMs": 292.457
+          },
+          {
+            "startMs": 49105.586,
+            "endMs": 49396.666,
+            "overlapMs": 291.08,
+            "originalMs": 291.08
+          }
+        ],
+        "callSites": [
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 16,
+            "column": 43328,
+            "function": "",
+            "wallUnionMs": 1299.453,
+            "calls": 408
+          },
+          {
+            "asset": "_astro/sink.BKlDN-bl.js",
+            "line": 11,
+            "column": 5404,
+            "function": "",
+            "wallUnionMs": 1107.792,
+            "calls": 24
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 19,
+            "column": 32973,
+            "function": "connectedCallback",
+            "wallUnionMs": 918.744,
+            "calls": 365
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 16,
+            "column": 48225,
+            "function": "xl",
+            "wallUnionMs": 842.997,
+            "calls": 111619
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 10,
+            "column": 417037,
+            "function": "",
+            "wallUnionMs": 304.864,
+            "calls": 397
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 10,
+            "column": 169783,
+            "function": "",
+            "wallUnionMs": 252.097,
+            "calls": 387
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 10,
+            "column": 396484,
+            "function": "ot",
+            "wallUnionMs": 245.957,
+            "calls": 33
+          },
+          {
+            "asset": "_astro/demo-renderer.CHJ-efp2.js",
+            "line": 4,
+            "column": 960,
+            "function": "O",
+            "wallUnionMs": 201.578,
+            "calls": 376
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 10,
+            "column": 390242,
+            "function": "re",
+            "wallUnionMs": 162.354,
+            "calls": 7
+          },
+          {
+            "asset": "_astro/DocumentationImagePreview.astro_astro_type_script_index_0_lang.D1LC1G7u.js",
+            "line": 1,
+            "column": 15440,
+            "function": "",
+            "wallUnionMs": 84.105,
+            "calls": 1103
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 10,
+            "column": 394939,
+            "function": "Ye",
+            "wallUnionMs": 81.357,
+            "calls": 7
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 10,
+            "column": 432764,
+            "function": "",
+            "wallUnionMs": 74.561,
+            "calls": 722
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 10,
+            "column": 395138,
+            "function": "",
+            "wallUnionMs": 64.462,
+            "calls": 4
+          },
+          {
+            "asset": "_astro/projection-theme.DmjJLKPq.js",
+            "line": 1,
+            "column": 3527,
+            "function": "i",
+            "wallUnionMs": 52.797,
+            "calls": 3
+          },
+          {
+            "asset": "_astro/projection-materializer.CsWjmr-D.js",
+            "line": 5,
+            "column": 80709,
+            "function": "",
+            "wallUnionMs": 27.037,
+            "calls": 436
+          },
+          {
+            "asset": "_astro/site-typography-client.CRb7DrU8.js",
+            "line": 1,
+            "column": 1922,
+            "function": "",
+            "wallUnionMs": 21.854,
+            "calls": 376
+          },
+          {
+            "asset": "_astro/previewer-client.5aoyOs5s.js",
+            "line": 1,
+            "column": 1778,
+            "function": "",
+            "wallUnionMs": 19.986,
+            "calls": 355
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 19,
+            "column": 37174,
+            "function": "",
+            "wallUnionMs": 18.325,
+            "calls": 179
+          },
+          {
+            "asset": "_astro/projection-materializer.CsWjmr-D.js",
+            "line": 5,
+            "column": 59727,
+            "function": "",
+            "wallUnionMs": 15.967,
+            "calls": 358
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+            "line": 19,
+            "column": 46148,
+            "function": "disconnectedCallback",
+            "wallUnionMs": 9.656,
+            "calls": 172
+          }
+        ]
+      }
+    ],
+    "sourceMapping": {
+      "scheduledEntrySample": {
+        "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+        "traceLine": 16,
+        "originalEmittedLine": 15,
+        "column": 43328
+      },
+      "onProjectionEvent": {
+        "asset": "_astro/site-shadcn-controls.DqhUggAv.js",
+        "traceLine": 16,
+        "originalEmittedLine": 15,
+        "column": 48225
+      },
+      "sourcePath": "packages/adapters/web-component/src/runtime/modules.ts"
+    }
+  },
+  "dispatchDiagnostic": {
+    "s4-eager-focus-entry-cost": {
+      "input": {
+        "asset": "site-shadcn-controls.DqhUggAv.js",
+        "source": "9ee97e7d43143e5865aa3467aeb0c30fe91632116b6d762d987412baae646b52",
+        "instrumented": "e8800703a38dfa661c2eead0b2c526eb320306fbc8473e90b3fead316a8c0cf5"
+      },
+      "nativeExit": 1,
+      "nearest450000Dispatches": {
+        "projects": 83968,
+        "projectMs": 3069.6999974250793,
+        "treeCalls": 797,
+        "treeMs": 2391.7000007629395,
+        "microRebuilds": 658,
+        "microSamples": 0,
+        "endpointEvents": 82603,
+        "events": 450125,
+        "repeatedTrusted": 402989,
+        "eventTypes": {
+          "transitionstart": 223260,
+          "transitionend": 130653,
+          "toggle": 18,
+          "transitioncancel": 96194
+        },
+        "eligible": {
+          "toggle": 18,
+          "transitionstart": 41875,
+          "transitionend": 39600,
+          "transitioncancel": 1110
+        },
+        "eligibleRepeatedTrusted": 73773,
+        "pageMs": 66245.90000009537
+      },
+      "last": {
+        "projects": 86016,
+        "projectMs": 3163.5999977588654,
+        "treeCalls": 797,
+        "treeMs": 2391.7000007629395,
+        "microRebuilds": 658,
+        "microSamples": 0,
+        "endpointEvents": 84596,
+        "events": 455702,
+        "repeatedTrusted": 408016,
+        "eventTypes": {
+          "transitionstart": 225500,
+          "transitionend": 133990,
+          "toggle": 18,
+          "transitioncancel": 96194
+        },
+        "eligible": {
+          "toggle": 18,
+          "transitionstart": 42323,
+          "transitionend": 41145,
+          "transitioncancel": 1110
+        },
+        "eligibleRepeatedTrusted": 75568,
+        "pageMs": 73696.60000014305
+      },
+      "logSHA256": "06249200fb6abaf48abee6139890e98a4cec8620b583571c0d9ac0b793bdb729"
+    },
+    "s4-eager-focus-transition-dedup": {
+      "input": {
+        "asset": "site-shadcn-controls.DqhUggAv.js",
+        "source": "9ee97e7d43143e5865aa3467aeb0c30fe91632116b6d762d987412baae646b52",
+        "instrumented": "1edd39553a80befe8bf452751441df14792694953715ebc94df77ebc2101bdc5"
+      },
+      "nativeExit": 1,
+      "nearest450000Dispatches": {
+        "projects": 8704,
+        "projectMs": 1474.700002193451,
+        "treeCalls": 796,
+        "treeMs": 2380.400000810623,
+        "microRebuilds": 657,
+        "microSamples": 0,
+        "endpointEvents": 67974,
+        "events": 453448,
+        "repeatedTrusted": 405771,
+        "eventTypes": {
+          "transitionstart": 225431,
+          "transitionend": 103457,
+          "toggle": 18,
+          "transitioncancel": 124542
+        },
+        "eligible": {
+          "toggle": 18,
+          "transitionstart": 34958,
+          "transitionend": 31888,
+          "transitioncancel": 1110
+        },
+        "eligibleRepeatedTrusted": 60569,
+        "skippedTransitionReplay": 60557,
+        "pageMs": 55279.40000009537
+      },
+      "last": {
+        "projects": 9984,
+        "projectMs": 1600.2999997138977,
+        "treeCalls": 796,
+        "treeMs": 2380.400000810623,
+        "microRebuilds": 657,
+        "microSamples": 0,
+        "endpointEvents": 80511,
+        "events": 469793,
+        "repeatedTrusted": 420542,
+        "eventTypes": {
+          "transitionstart": 232739,
+          "transitionend": 112270,
+          "toggle": 18,
+          "transitioncancel": 124766
+        },
+        "eligible": {
+          "toggle": 18,
+          "transitionstart": 40474,
+          "transitionend": 38909,
+          "transitioncancel": 1110
+        },
+        "eligibleRepeatedTrusted": 71906,
+        "skippedTransitionReplay": 71894,
+        "pageMs": 63129.60000014305
+      },
+      "logSHA256": "b6748ecd1865cc640d36e2b0a315162814f6adaf13661f312a7941796efccf47"
+    }
+  },
+  "nativeCounter": {
+    "testChecksum": "0e9ead37d271d2e2a636b9b98bce45e0607866ec4ed841fa7eaabf23989e8a0e",
+    "baselineExit": 1,
+    "baselineTrustedReads": 5,
+    "candidateExit": 0,
+    "candidateTrustedReads": 1
+  },
+  "focused": {
+    "testFiles": 8,
+    "passed": 136
+  },
+  "exactProduct": {
+    "previews": {
+      "zh-cn": {
+        "bytes": 1862481,
+        "sha256": "cd7614bba89373bbc52d60f07cd7f954dd48d7d2243b1afc8b234e302243c538",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914138,
+        "sha256": "7be8c05e0280979943cd883342d2171bd2fd2ff57a5dd750ecee69427a0da457",
+        "previews": 1268
+      }
+    },
+    "sitePages": 685,
+    "packages": 47,
+    "fieldValidation": {
+      "typeExit": 0,
+      "manifestExit": 0,
+      "governanceExit": 0
+    },
+    "changedBudgetRows": [
+      {
+        "parent": "ADVISORY adapter-web-component root: 195022 / 132000 gzip bytes; overBudget=63022; minified=670118 sha256=41091625d098ef4c9afbd44cec597a8e2e0c355b7444b1b4da724a2581f1773f",
+        "exact": "ADVISORY adapter-web-component root: 195069 / 132000 gzip bytes; overBudget=63069; minified=670183 sha256=cf9ac14ffd9d6d477b1d1f02e3fedd64f417c54690142c32a3555c305e25d26f"
+      }
+    ],
+    "matrixDeadlineMs": 60000,
+    "caseDeadlineMs": 150000,
+    "cases": {
+      "native": {
+        "passed": 0,
+        "failed": 2,
+        "skipped": 0,
+        "failedCases": {
+          "zh-cn: native Light/split/mixed acceptance": "Failure retained in local raw report",
+          "en: native Light/split/mixed acceptance": "Failure retained in local raw report"
+        },
+        "reportChecksum": "ad2943d4bfdf0555710df3adb213139f35e5aaf6f380e0194e8a99603736b731"
+      },
+      "accordion-native": {
+        "passed": 4,
+        "failed": 0,
+        "skipped": 29,
+        "failedCases": {},
+        "reportChecksum": "398419508ef6d07fce00185cc2f19abc3f073259eac5f8f1e194300771d0ee7b"
+      },
+      "optics-native": {
+        "passed": 3,
+        "failed": 0,
+        "skipped": 1,
+        "failedCases": {},
+        "reportChecksum": "39363ca4c0a34f060ebbbdb37ca75f75539f459174b28cd50cff36b2e993669c"
+      },
+      "portal-native": {
+        "passed": 5,
+        "failed": 0,
+        "skipped": 50,
+        "failedCases": {},
+        "reportChecksum": "1bb955713f094ed73d4996309856e3d3a10af526b78d352dafbda0c6159375c0"
+      },
+      "preview-browser": {
+        "passed": 11,
+        "failed": 0,
+        "skipped": 13,
+        "failedCases": {},
+        "reportChecksum": "46a68d2fb96893ae212a971ca0bac50a5e79d0f950eeb8b0fb74e7e61484ec80"
+      },
+      "shadow": {
+        "passed": 163,
+        "failed": 0,
+        "skipped": 0,
+        "failedCases": {},
+        "reportChecksum": "8d98e0c193d747afa31b2182603addd0eb20830572b6209f18bbb1f6bd233222"
+      }
+    },
+    "preview": {
+      "head": "b4e2f87bba9c5d83ae4554e30118e540691feb76",
+      "tree": "811de61d57a3ce2207e4c24f7b7fe81d42894027",
+      "distHashes": {
+        "zh-cn/index.html": "02d334b707c25c25dba3276ad628d29b59305664e82c2869dffe552d63475938",
+        "zh-cn/ui-libraries/shadcn/button/index.html": "bba1f9b57f39c855fb9e68057dc82a2edb4456ca04867c618bdd69f94159d87e",
+        "zh-cn/ui-libraries/brutalist/components/button/index.html": "6c25af9d6f704dc52bfec5ea977e0c8b1737ed4f7c4c6d363e6ceb8e955d2a34"
+      },
+      "sourceCodeExamples": 9,
+      "renderedCodeExamples": 9,
+      "packedHeaderExit": 0,
+      "previewBrowserExit": 0,
+      "selector": "uses real family Popover Triggers|uses the same mobile shell|live available region|keeps Runtime Tabs outside"
+    },
+    "header": {
+      "head": "b4e2f87bba9c5d83ae4554e30118e540691feb76",
+      "browser": "156.0.8078.79",
+      "scope": "First animation frame control on the exact static Astro preview. Geometry reads can force layout.",
+      "results": [
+        {
+          "width": 320,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1557.2999999523163,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1681.7999999523163,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1700,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        },
+        {
+          "width": 390,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1523.2000000476837,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1643.9000000953674,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1663.6000001430511,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        }
+      ]
+    }
+  }
+}
