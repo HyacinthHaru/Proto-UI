@@ -14,7 +14,7 @@ The first setup wrapper tried to copy a fixture builder from a directory that re
 
 ## Fresh composition validation
 
-Node24.21.0, pnpm10.32.1, Chrome156.0.8078.79, macOS arm64. New 47/47 public-package builds, manifests, workspace types and 685-page Website build completed. Both temporary internal draft-route build overlays were restored. All 1,268 roots per locale and the public article's 9/9 CodeExample entries remain.
+Node24.21.0, pnpm10.32.1, Chrome156.0.8078.79, macOS arm64. New 47/47 public-package builds, manifests, workspace types and 685-page Website build completed. Both temporary internal draft-route build overlays were restored. All 1,268 roots per locale and the public Shadcn Button article's 9/9 CodeExample entries remain.
 
 All nine fresh local whole-entry gzip/minified/hash rows equal the earlier ca3 measurement. Policy result is **3 PASS / 6 ADVISORY**, with actual excesses retained; this is not a strict nine-entry pass or canonical hosted measurement. Recorded build environment includes zlib1.3.2.1-motley-8002e91 and esbuild0.25.12.
 
@@ -38,7 +38,7 @@ All six unedited 1280×900 light-preference captures were individually inspected
 
 ## Full S4 still fails
 
-The fresh original bilingual S4 suite has **0 pass / 2 fail** at `page.waitForFunction: Timeout60000ms exceeded`, before Dialog assertions. The original 150,000ms case limits and all 1,268 roots remain. Contexts close normally in this attempt. The late diagnostic journal query exhausts its original 2s observation budget in both cases; missing journal data is unknown, not an empty journal or a ready state. Streamed last-owner samples are earlier delivered observations, not proof of the precise missing owner at expiry.
+The fresh original bilingual S4 suite has **0 pass / 2 fail** at `page.waitForFunction: Timeout 60000ms exceeded.`, before Dialog assertions. The original 150,000ms case limits and all 1,268 roots remain. Contexts close normally in this attempt. The late diagnostic journal query exhausts its original 2s observation budget in both cases; missing journal data is unknown, not an empty journal or a ready state. Streamed last-owner samples are earlier delivered observations, not proof of the precise missing owner at expiry.
 
 The overall sequence remains failed because of those original cases. Narrowed public-page passes do not replace them.
 
