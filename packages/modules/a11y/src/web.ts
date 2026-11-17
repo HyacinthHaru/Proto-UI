@@ -803,7 +803,6 @@ export function createWebA11yProjectionRegistry(
       !forceStructured &&
       !reactivating &&
       !identityChanged &&
-      snapshot.viewEpoch !== undefined &&
       snapshot.viewEpoch === previousSnapshot?.viewEpoch &&
       nextTarget &&
       nextScalars &&

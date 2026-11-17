@@ -559,37 +559,40 @@ describe('Web A11y opaque semantic-object references', () => {
     }
   });
 
-  it('keeps settled scalar attributes in place during a same-view replay', () => {
-    const target = document.createElement('div');
-    target.setAttribute('role', 'group');
-    document.body.append(target);
-    const project = createWebA11yProjector(target);
-    const snapshot = {
-      ...semanticSnapshot(createA11ySemanticObjectRef()),
-      viewEpoch: 1,
-      role: 'button',
-    } satisfies A11ySemanticObjectSnapshot;
-    project(snapshot);
-    const set = vi.spyOn(target, 'setAttribute');
-    const remove = vi.spyOn(target, 'removeAttribute');
-    try {
-      project({ ...snapshot });
-      expect(target.getAttribute('role')).toBe('button');
-      expect(set).not.toHaveBeenCalled();
-      expect(remove).not.toHaveBeenCalled();
+  it.each([undefined, 1])(
+    'keeps settled scalar attributes in place during a same-view replay (epoch %s)',
+    (viewEpoch) => {
+      const target = document.createElement('div');
+      target.setAttribute('role', 'group');
+      document.body.append(target);
+      const project = createWebA11yProjector(target);
+      const snapshot = {
+        ...semanticSnapshot(createA11ySemanticObjectRef()),
+        viewEpoch,
+        role: 'button',
+      } satisfies A11ySemanticObjectSnapshot;
+      project(snapshot);
+      const set = vi.spyOn(target, 'setAttribute');
+      const remove = vi.spyOn(target, 'removeAttribute');
+      try {
+        project({ ...snapshot });
+        expect(target.getAttribute('role')).toBe('button');
+        expect(set).not.toHaveBeenCalled();
+        expect(remove).not.toHaveBeenCalled();
 
-      target.setAttribute('role', 'region');
-      project({ ...snapshot });
-      expect(target.getAttribute('role')).toBe('button');
-      project.dispose?.();
-      expect(target.getAttribute('role')).toBe('region');
-    } finally {
-      set.mockRestore();
-      remove.mockRestore();
-      project.dispose?.();
-      target.remove();
+        target.setAttribute('role', 'region');
+        project({ ...snapshot });
+        expect(target.getAttribute('role')).toBe('button');
+        project.dispose?.();
+        expect(target.getAttribute('role')).toBe('region');
+      } finally {
+        set.mockRestore();
+        remove.mockRestore();
+        project.dispose?.();
+        target.remove();
+      }
     }
-  });
+  );
 
   it('keeps shared scalar attributes until every projector releases them', () => {
     const registry = createWebA11yProjectionRegistry();
