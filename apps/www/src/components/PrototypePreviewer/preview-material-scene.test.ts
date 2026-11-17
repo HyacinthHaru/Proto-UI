@@ -92,12 +92,35 @@ function scene(parent = document.body) {
   cleanups.push(() => scene.dispose());
   return scene;
 }
-function resize() {
-  for (const fn of resizeCallbacks) fn([], {} as ResizeObserver);
+function animatedScene() {
+  const original = Object.getOwnPropertyDescriptor(document, 'visibilityState');
+  Object.defineProperty(document, 'visibilityState', { configurable: true, value: 'visible' });
+  cleanups.push(() => {
+    if (original) Object.defineProperty(document, 'visibilityState', original);
+    else Reflect.deleteProperty(document, 'visibilityState');
+  });
+  const matchMedia = window.matchMedia.bind(window);
+  vi.spyOn(window, 'matchMedia').mockImplementation((query) => {
+    const result = matchMedia(query);
+    if (query.startsWith('(prefers-reduced-motion:'))
+      Object.defineProperty(result, 'matches', {
+        value: query === '(prefers-reduced-motion: no-preference)',
+      });
+    return result;
+  });
+  const s = createPreviewMaterialScene(document.body);
+  cleanups.push(() => s.dispose());
+  return s;
+}
+function frame(time: number) {
   for (const [id, fn] of [...frames]) {
     frames.delete(id);
-    fn(0);
+    fn(time);
   }
+}
+function resize() {
+  for (const fn of resizeCallbacks) fn([], {} as ResizeObserver);
+  frame(0);
 }
 describe('bounded visible Previewer source layout', () => {
   it('initializes the visible backdrop without a second refresh', () => {
@@ -107,6 +130,66 @@ describe('bounded visible Previewer source layout', () => {
     expect(source).toMatchObject({ width: 420, height: 104 });
     const reads = vi.mocked(Element.prototype.getBoundingClientRect).mock.contexts;
     expect(reads.filter((target) => target === source!.canvas)).toHaveLength(2);
+  });
+
+  it('reads scope eligibility once on an animation tick that does not paint', () => {
+    const s = animatedScene();
+    frame(0);
+    const current = s.lease.current();
+    const measure = vi.mocked(Element.prototype.getBoundingClientRect);
+
+    measure.mockClear();
+    expect(frames.size).toBe(1);
+    frame(10);
+
+    expect(frames.size).toBe(1);
+    expect(s.lease.current()).toBe(current);
+    expect(measure.mock.contexts.filter((target) => target === s.scope)).toHaveLength(1);
+    expect(measure.mock.contexts).not.toContain(current?.canvas);
+  });
+
+  it('keeps one scheduled animation when a paint subscriber refreshes the scene', () => {
+    const s = animatedScene();
+    cleanups.push(s.lease.subscribe(() => s.pause(false)));
+    expect(frames.size).toBe(1);
+
+    frame(0);
+
+    expect(frames.size).toBe(1);
+  });
+
+  it('rechecks animation eligibility after a paint subscriber pauses the scene', () => {
+    const s = animatedScene();
+    cleanups.push(s.lease.subscribe(() => s.pause(true)));
+    expect(frames.size).toBe(1);
+
+    frame(0);
+
+    expect(frames.size).toBe(0);
+  });
+
+  it.each([
+    ['display', 'none'],
+    ['visibility', 'hidden'],
+  ])('measures an overlay only while it is visible through %s', (property, value) => {
+    const s = scene();
+    const popup = document.createElement('div');
+    popup.style.setProperty(property, value);
+    s.overlayMount.append(popup);
+    rects.set(popup, rect(32, 80, 200, 300));
+    const measure = vi.mocked(Element.prototype.getBoundingClientRect);
+    measure.mockClear();
+
+    resize();
+
+    expect(measure.mock.contexts).not.toContain(popup);
+    expect(s.scope.style.minHeight).toBe('104px');
+
+    popup.style.removeProperty(property);
+    resize();
+
+    expect(measure.mock.contexts).toContain(popup);
+    expect(s.scope.style.minHeight).toBe('437px');
   });
 
   it('owns scene spacing without a second centered preview reserve or outside overrides', () => {

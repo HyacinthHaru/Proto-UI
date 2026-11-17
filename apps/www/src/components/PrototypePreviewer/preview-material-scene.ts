@@ -222,14 +222,9 @@ function createScene(
       for (const element of overlayMount.querySelectorAll<HTMLElement>('*')) {
         if (element.closest('[data-material-scene]') !== scope) continue;
         const css = win.getComputedStyle(element);
+        if (css.display === 'none' || css.visibility === 'hidden') continue;
         const rect = element.getBoundingClientRect();
-        if (
-          css.display === 'none' ||
-          css.visibility === 'hidden' ||
-          rect.width <= 0 ||
-          rect.height <= 0
-        )
-          continue;
+        if (rect.width <= 0 || rect.height <= 0) continue;
         bottom = Math.max(
           bottom,
           (rect.bottom - scene.top + contactPaintOutset(rect.width, rect.height)) / scale + padding
@@ -322,8 +317,10 @@ function createScene(
         previousTime = time;
         phase = (phase + 1.5 * win.devicePixelRatio) % 80;
         draw();
+        // Subscribers can refresh, pause or retire the scene during a draw.
+        if (raf !== null || !animate()) return;
       }
-      if (animate()) raf = win.requestAnimationFrame(tick);
+      raf = win.requestAnimationFrame(tick);
     }
     const unregister = registerPreviewMaterialProvider(scope, (host, effects) =>
       createWebMaterialSink(host, effects, {
