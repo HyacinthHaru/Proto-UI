@@ -15,7 +15,16 @@ const reactDomClientModule = retryableModule(
 // the application's lazy assets. ReactDOM's peer resolves the same React
 // instance; no external CDN is required for a reader's mount.
 
-export async function loadReact(): Promise<{
+let reactRuntime: ReturnType<typeof assembleReact> | undefined;
+
+export function loadReact() {
+  return (reactRuntime ??= assembleReact().catch((error: unknown) => {
+    reactRuntime = undefined;
+    throw error;
+  }));
+}
+
+async function assembleReact(): Promise<{
   React: typeof ReactTypes;
   ReactDOM: any;
 }> {
