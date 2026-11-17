@@ -479,7 +479,11 @@ describe.sequential('V2 optical paint through four real Web Adapter runtimes', (
     const headerRuntime = page.locator('.site-header-runtime').first();
     for (const runtime of RUNTIMES) {
       await choosePreviewRuntime(page, headerRuntime, runtime);
-      const panel = page.locator(`[data-adapter-panel="${runtime}"]`);
+      const panel = page.locator(`[data-adapter-panel="${runtime}"]`).filter({
+        has: page.locator(
+          '[data-demo-id="demo-liquid-glass-button"][data-projection-toolbar="true"]'
+        ),
+      });
       await panel.waitFor({ state: 'visible' });
       const button = panel.getByRole('button', { name: 'Back', exact: true });
       await expect
