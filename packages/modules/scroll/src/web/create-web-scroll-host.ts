@@ -872,9 +872,6 @@ export function createWebScrollSurfaceHost(
           readerContacts.moveTouch(touch.identifier, { x: touch.clientX, y: touch.clientY });
         }
       };
-      const completeReaderIntent = () => {
-        readerIntentUntil = 0;
-      };
       const sampleContactDeparture = () => {
         const axis = configuredFollowAxis();
         const moved = axis !== null && readerContacts.hasDeparture(axis);
@@ -949,9 +946,10 @@ export function createWebScrollSurfaceHost(
         requestedDepartureAxis = null;
         if (scrollDirection === 'before') {
           if (findDepartureConsumer(event, axis)) return;
+          // Native keyboard scrolling can arrive after key release.
           armReaderIntent();
           cancelUnscrollableDeparture(axis);
-        }
+        } else readerIntentUntil = 0;
       };
       const onScroll = () => {
         scrolling = true;
@@ -1015,7 +1013,6 @@ export function createWebScrollSurfaceHost(
           ownerWindow?.addEventListener('touchend', onTouchEnd, { passive: true });
           ownerWindow?.addEventListener('touchcancel', onTouchEnd, { passive: true });
           target.addEventListener('keydown', onKeyDown);
-          ownerWindow?.addEventListener('keyup', completeReaderIntent);
           observingGestures = true;
           return;
         }
@@ -1030,7 +1027,6 @@ export function createWebScrollSurfaceHost(
         ownerWindow?.removeEventListener('touchend', onTouchEnd);
         ownerWindow?.removeEventListener('touchcancel', onTouchEnd);
         target.removeEventListener('keydown', onKeyDown);
-        ownerWindow?.removeEventListener('keyup', completeReaderIntent);
         observingGestures = false;
       };
       let resizeObserver: ResizeObserver | undefined;
@@ -1145,7 +1141,6 @@ export function createWebScrollSurfaceHost(
           ['touchmove', onTouchMove],
           ['touchend', onTouchEnd],
           ['touchcancel', onTouchEnd],
-          ['keyup', completeReaderIntent],
           ['blur', resetReaderInput],
           ['resize', onLayoutChange],
         ] as const)

@@ -217,6 +217,47 @@ describe('module-scroll: end-follow host contract', () => {
     }
   );
 
+  it.each(['Home', 'PageUp'])(
+    'keeps %s departure until the viewport scrolls after keyup',
+    (key) => {
+      const f = installTouchFollowFixture();
+      try {
+        f.target.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, key }));
+        f.target.dispatchEvent(new KeyboardEvent('keyup', { bubbles: true, key }));
+
+        f.scrollTo(200);
+
+        expect(f.snapshots.at(-1)?.endFollow.state).toBe('paused');
+        f.updateMetrics({ scrollHeight: 500 });
+        window.dispatchEvent(new Event('resize'));
+        expect(f.frames.pending()).toBe(0);
+        expect(f.target.scrollTop).toBe(200);
+      } finally {
+        f.lease.dispose();
+      }
+    }
+  );
+
+  it.each(['elapsed', 'opposite input'] as const)(
+    'does not use a previous key departure after %s',
+    (caseName) => {
+      const now = vi.spyOn(window.performance, 'now').mockReturnValue(0);
+      const f = installTouchFollowFixture();
+      try {
+        f.target.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, key: 'Home' }));
+        f.target.dispatchEvent(new KeyboardEvent('keyup', { bubbles: true, key: 'Home' }));
+        if (caseName === 'elapsed') now.mockReturnValue(251);
+        else f.target.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, key: 'End' }));
+
+        f.scrollTo(200);
+
+        expect(f.snapshots.at(-1)?.endFollow.state).toBe('following');
+      } finally {
+        f.lease.dispose();
+      }
+    }
+  );
+
   it('cancels a pending follow frame when departure input cannot scroll (key)', () => {
     const frames = installFrameHarness();
     const target = document.createElement('div');

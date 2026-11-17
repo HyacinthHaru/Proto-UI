@@ -377,6 +377,72 @@ describe('Scroll end-follow / real Chromium', () => {
     await context.close();
   }, 120_000);
 
+  it.each(['Home', 'PageUp'])(
+    'pauses after trusted %s scroll delivered after key release',
+    async (key) => {
+      const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+      try {
+        const page = await context.newPage();
+        await page.goto(baseUrl, { waitUntil: 'networkidle' });
+        const initial = await page.evaluate(() => (globalThis as any).setupScrollEndFollowProbe());
+        expect(initial.top).toBe(initial.maximum);
+        const viewport = page.locator('scroll-end-follow-browser-probe');
+        await viewport.evaluate((element) => {
+          element.setAttribute('tabindex', '0');
+          const keys: { type: string; key: string; isTrusted: boolean }[] = [];
+          (globalThis as any).scrollEndFollowProbeKeys = keys;
+          (globalThis as any).scrollEndFollowFirstMovement = null;
+          element.addEventListener(
+            'scroll',
+            (event) => {
+              (globalThis as any).scrollEndFollowFirstMovement = {
+                afterRelease: keys.some((sample) => sample.type === 'keyup'),
+                isTrusted: event.isTrusted,
+              };
+            },
+            { once: true }
+          );
+          for (const type of ['keydown', 'keyup']) {
+            element.addEventListener(type, (input) => {
+              const event = input as KeyboardEvent;
+              keys.push({ type, key: event.key, isTrusted: event.isTrusted });
+            });
+          }
+        });
+        await viewport.focus();
+        await viewport.press(key);
+        await page.waitForFunction(
+          () => {
+            const probe = (globalThis as any).readScrollEndFollowProbe();
+            return probe.followState === 'paused' && probe.top < probe.maximum;
+          },
+          undefined,
+          { timeout: 5000 }
+        );
+
+        const keys = await page.evaluate(() => (globalThis as any).scrollEndFollowProbeKeys);
+        expect(keys).toEqual([
+          { type: 'keydown', key, isTrusted: true },
+          { type: 'keyup', key, isTrusted: true },
+        ]);
+        expect(await page.evaluate(() => (globalThis as any).scrollEndFollowFirstMovement)).toEqual(
+          {
+            afterRelease: true,
+            isTrusted: true,
+          }
+        );
+        if (key === 'Home')
+          await page.waitForFunction(() => (globalThis as any).readScrollEndFollowProbe().top <= 1);
+        const result = await page.evaluate(() => (globalThis as any).readScrollEndFollowProbe());
+        expect(result.followState).toBe('paused');
+        expect(await viewport.evaluate((el) => document.activeElement === el)).toBe(true);
+      } finally {
+        await context.close();
+      }
+    },
+    120_000
+  );
+
   it('preserves native touch departure after pointercancel while the owned touch remains active', async () => {
     const { context, page, cdp, initial, point, readEvents } = await openTouchProbe();
     try {
