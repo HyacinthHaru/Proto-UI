@@ -1,0 +1,9 @@
+# Native screen changes in the optical browser suite
+
+A separate diagnostic on the packaged product toggled DPR at the same 1100×1000 viewport after pausing the four actual scenes. `Emulation.setDeviceMetricsOverride` changed the reported DPR. The resolution media listeners delivered zero change events in this control, and all three returns to DPR 1 retained DPR 2 raster dimensions. The recorded material quality attribute could still be self-optical on that old raster.
+
+A second control changes the actual headless screen with `Emulation.updateScreen`. With no per-page viewport emulation it preserves the 1100×1000 content bounds, delivers trusted resolution media events, and all four scene rasters reach the current bounds on all six steps. Chromium implements native headless screen updates through the display manager. [Chromium implementation](https://chromium.googlesource.com/chromium/src/+/HEAD/chrome/browser/devtools/protocol/emulation_handler.cc)
+
+The signed local `28b5b6c7` changes only the optical browser suite. Chromium with headless screen updates runs the native driver and requires the current viewport, DPR, canvas dimensions and a new committed Material source revision under the existing 20s geometry wait. The prior emulation driver remains available where the protocol commands are absent. No source or image admission code changes. The compiled tested product is byte-bound to parent `29468465`.
+
+All three selected pinned native optical cases pass on the signed test revision, with the original actions, thresholds and deadlines. Light and Dark both pass the original 20-surface stress and each add one source upload. Both preserve one WebGL context and pass the original context recovery checks. The separate old Dark failure is retained in the [previous execution record](https://github.com/HyacinthHaru/Proto-UI/tree/0dad48a34ad27229973f1f913c1914630ccd75d3/evidence/2026-11-17/s4-renderer-work-and-scroll-observation).

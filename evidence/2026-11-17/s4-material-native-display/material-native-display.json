@@ -1,0 +1,2167 @@
+{
+  "source": {
+    "head": "28b5b6c725173588d8fb4f5f0536d673c64c4ab2",
+    "tree": "1afc72e98c1c7d050f15ee94b2c039feae458cc0",
+    "parent": "29468465a80e5d1b170a0f2880c3fb1123299f8f",
+    "signature": "G"
+  },
+  "testedBuiltProduct": "29468465a80e5d1b170a0f2880c3fb1123299f8f",
+  "inputSHA256": {
+    "apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts": "c537c69681581c1b4524cf908931acb0f51c070d0b54b3c6ebed538ccee309c5",
+    "dist/en/test/liquid-glass-material/index.html": "8c685d592ae069817191400eb112c99003d85f6a23cd5da5f0bfb344b6590aa5",
+    "dist/en/ui-libraries/liquid-glass/button/index.html": "a5a6855bd609ab40000d9b78fb1a36bd469e0be12e996df2f2df3a8d11616199"
+  },
+  "oldDeviceMetrics": {
+    "snapshots": [
+      {
+        "stage": "before-override",
+        "expected": null,
+        "at": 514.2999999523163,
+        "dpr": 1,
+        "metrics": {
+          "contexts": 1,
+          "consumers": 12,
+          "lost": false,
+          "renders": 14,
+          "programBuilds": 2,
+          "sourceUploads": 7,
+          "sourcePreparations": 7,
+          "renderMilliseconds": 126.39999961853027,
+          "encodeMilliseconds": 13.999999523162842,
+          "pendingImages": 0,
+          "decodedImages": 8,
+          "imagePreparations": 14,
+          "peakPendingImages": 6
+        },
+        "groups": [
+          {
+            "runtime": "wc",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [512, 102]
+          },
+          {
+            "runtime": "react",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [512, 102]
+          },
+          {
+            "runtime": "vue",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [512, 102]
+          },
+          {
+            "runtime": "vue2",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [512, 102]
+          }
+        ]
+      },
+      {
+        "stage": "ready",
+        "expected": 2,
+        "at": 677.6999998092651,
+        "dpr": 2,
+        "metrics": {
+          "contexts": 1,
+          "consumers": 12,
+          "lost": false,
+          "renders": 22,
+          "programBuilds": 2,
+          "sourceUploads": 11,
+          "sourcePreparations": 11,
+          "renderMilliseconds": 256.2999994754791,
+          "encodeMilliseconds": 23.799999952316284,
+          "pendingImages": 0,
+          "decodedImages": 8,
+          "imagePreparations": 22,
+          "peakPendingImages": 8
+        },
+        "groups": [
+          {
+            "runtime": "wc",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          },
+          {
+            "runtime": "react",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          },
+          {
+            "runtime": "vue",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          },
+          {
+            "runtime": "vue2",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          }
+        ]
+      },
+      {
+        "stage": "diagnostic-timeout",
+        "expected": 1,
+        "at": 2184.2999999523163,
+        "dpr": 1,
+        "metrics": {
+          "contexts": 1,
+          "consumers": 12,
+          "lost": false,
+          "renders": 22,
+          "programBuilds": 2,
+          "sourceUploads": 11,
+          "sourcePreparations": 11,
+          "renderMilliseconds": 256.2999994754791,
+          "encodeMilliseconds": 23.799999952316284,
+          "pendingImages": 0,
+          "decodedImages": 8,
+          "imagePreparations": 22,
+          "peakPendingImages": 8
+        },
+        "groups": [
+          {
+            "runtime": "wc",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          },
+          {
+            "runtime": "react",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          },
+          {
+            "runtime": "vue",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          },
+          {
+            "runtime": "vue2",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          }
+        ]
+      },
+      {
+        "stage": "ready",
+        "expected": 2,
+        "at": 2188.2999999523163,
+        "dpr": 2,
+        "metrics": {
+          "contexts": 1,
+          "consumers": 12,
+          "lost": false,
+          "renders": 22,
+          "programBuilds": 2,
+          "sourceUploads": 11,
+          "sourcePreparations": 11,
+          "renderMilliseconds": 256.2999994754791,
+          "encodeMilliseconds": 23.799999952316284,
+          "pendingImages": 0,
+          "decodedImages": 8,
+          "imagePreparations": 22,
+          "peakPendingImages": 8
+        },
+        "groups": [
+          {
+            "runtime": "wc",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          },
+          {
+            "runtime": "react",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          },
+          {
+            "runtime": "vue",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          },
+          {
+            "runtime": "vue2",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          }
+        ]
+      },
+      {
+        "stage": "diagnostic-timeout",
+        "expected": 1,
+        "at": 3693.399999856949,
+        "dpr": 1,
+        "metrics": {
+          "contexts": 1,
+          "consumers": 12,
+          "lost": false,
+          "renders": 22,
+          "programBuilds": 2,
+          "sourceUploads": 11,
+          "sourcePreparations": 11,
+          "renderMilliseconds": 256.2999994754791,
+          "encodeMilliseconds": 23.799999952316284,
+          "pendingImages": 0,
+          "decodedImages": 8,
+          "imagePreparations": 22,
+          "peakPendingImages": 8
+        },
+        "groups": [
+          {
+            "runtime": "wc",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          },
+          {
+            "runtime": "react",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          },
+          {
+            "runtime": "vue",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          },
+          {
+            "runtime": "vue2",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          }
+        ]
+      },
+      {
+        "stage": "ready",
+        "expected": 2,
+        "at": 3697.199999809265,
+        "dpr": 2,
+        "metrics": {
+          "contexts": 1,
+          "consumers": 12,
+          "lost": false,
+          "renders": 22,
+          "programBuilds": 2,
+          "sourceUploads": 11,
+          "sourcePreparations": 11,
+          "renderMilliseconds": 256.2999994754791,
+          "encodeMilliseconds": 23.799999952316284,
+          "pendingImages": 0,
+          "decodedImages": 8,
+          "imagePreparations": 22,
+          "peakPendingImages": 8
+        },
+        "groups": [
+          {
+            "runtime": "wc",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          },
+          {
+            "runtime": "react",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          },
+          {
+            "runtime": "vue",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          },
+          {
+            "runtime": "vue2",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          }
+        ]
+      },
+      {
+        "stage": "diagnostic-timeout",
+        "expected": 1,
+        "at": 5202.299999952316,
+        "dpr": 1,
+        "metrics": {
+          "contexts": 1,
+          "consumers": 12,
+          "lost": false,
+          "renders": 22,
+          "programBuilds": 2,
+          "sourceUploads": 11,
+          "sourcePreparations": 11,
+          "renderMilliseconds": 256.2999994754791,
+          "encodeMilliseconds": 23.799999952316284,
+          "pendingImages": 0,
+          "decodedImages": 8,
+          "imagePreparations": 22,
+          "peakPendingImages": 8
+        },
+        "groups": [
+          {
+            "runtime": "wc",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          },
+          {
+            "runtime": "react",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          },
+          {
+            "runtime": "vue",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          },
+          {
+            "runtime": "vue2",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          }
+        ]
+      }
+    ],
+    "rows": [
+      {
+        "kind": "media-query",
+        "ms": 150.29999995231628,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 221.5,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 376,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 414.09999990463257,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true
+      },
+      {
+        "kind": "resize",
+        "ms": 524.3999998569489,
+        "dpr": 2,
+        "width": 1100,
+        "height": 1000
+      },
+      {
+        "kind": "visual-resize",
+        "ms": 666.8999998569489,
+        "dpr": 2,
+        "width": 1100,
+        "height": 1000
+      },
+      {
+        "kind": "RO css",
+        "ms": 668.5,
+        "dpr": 2,
+        "entries": [
+          {
+            "host": "wc",
+            "css": [466, 161],
+            "dp": [466, 161]
+          },
+          {
+            "host": "react",
+            "css": [466, 161],
+            "dp": [466, 161]
+          },
+          {
+            "host": "vue",
+            "css": [466, 161],
+            "dp": [466, 161]
+          },
+          {
+            "host": "vue2",
+            "css": [466, 161],
+            "dp": [466, 161]
+          }
+        ]
+      },
+      {
+        "kind": "RO device",
+        "ms": 668.5999999046326,
+        "dpr": 2,
+        "entries": [
+          {
+            "host": "wc",
+            "css": [466, 161],
+            "dp": [466, 161]
+          },
+          {
+            "host": "react",
+            "css": [466, 161],
+            "dp": [466, 161]
+          },
+          {
+            "host": "vue",
+            "css": [466, 161],
+            "dp": [466, 161]
+          },
+          {
+            "host": "vue2",
+            "css": [466, 161],
+            "dp": [466, 161]
+          }
+        ]
+      }
+    ]
+  },
+  "nativeScreen": {
+    "snapshots": [
+      {
+        "stage": "before-override",
+        "expected": null,
+        "at": 403.90000009536743,
+        "viewport": [1100, 1000],
+        "dpr": 1,
+        "metrics": {
+          "contexts": 1,
+          "consumers": 12,
+          "lost": false,
+          "renders": 14,
+          "programBuilds": 2,
+          "sourceUploads": 7,
+          "sourcePreparations": 7,
+          "renderMilliseconds": 123.89999961853027,
+          "encodeMilliseconds": 14.900000095367432,
+          "pendingImages": 0,
+          "decodedImages": 8,
+          "imagePreparations": 14,
+          "peakPendingImages": 6
+        },
+        "groups": [
+          {
+            "runtime": "wc",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [512, 102]
+          },
+          {
+            "runtime": "react",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [512, 102]
+          },
+          {
+            "runtime": "vue",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [512, 102]
+          },
+          {
+            "runtime": "vue2",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [512, 102]
+          }
+        ]
+      },
+      {
+        "stage": "ready",
+        "expected": 2,
+        "at": 568.5,
+        "viewport": [1100, 1000],
+        "dpr": 2,
+        "metrics": {
+          "contexts": 1,
+          "consumers": 12,
+          "lost": false,
+          "renders": 22,
+          "programBuilds": 2,
+          "sourceUploads": 11,
+          "sourcePreparations": 11,
+          "renderMilliseconds": 259.19999957084656,
+          "encodeMilliseconds": 27.200000047683716,
+          "pendingImages": 0,
+          "decodedImages": 8,
+          "imagePreparations": 22,
+          "peakPendingImages": 8
+        },
+        "groups": [
+          {
+            "runtime": "wc",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          },
+          {
+            "runtime": "react",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          },
+          {
+            "runtime": "vue",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          },
+          {
+            "runtime": "vue2",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          }
+        ]
+      },
+      {
+        "stage": "ready",
+        "expected": 1,
+        "at": 643.5,
+        "viewport": [1100, 1000],
+        "dpr": 1,
+        "metrics": {
+          "contexts": 1,
+          "consumers": 12,
+          "lost": false,
+          "renders": 30,
+          "programBuilds": 2,
+          "sourceUploads": 15,
+          "sourcePreparations": 15,
+          "renderMilliseconds": 312.99999952316284,
+          "encodeMilliseconds": 37.700000047683716,
+          "pendingImages": 0,
+          "decodedImages": 8,
+          "imagePreparations": 30,
+          "peakPendingImages": 8
+        },
+        "groups": [
+          {
+            "runtime": "wc",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [466, 161]
+          },
+          {
+            "runtime": "react",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [466, 161]
+          },
+          {
+            "runtime": "vue",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [466, 161]
+          },
+          {
+            "runtime": "vue2",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [466, 161]
+          }
+        ]
+      },
+      {
+        "stage": "ready",
+        "expected": 2,
+        "at": 825.8000001907349,
+        "viewport": [1100, 1000],
+        "dpr": 2,
+        "metrics": {
+          "contexts": 1,
+          "consumers": 12,
+          "lost": false,
+          "renders": 38,
+          "programBuilds": 2,
+          "sourceUploads": 19,
+          "sourcePreparations": 19,
+          "renderMilliseconds": 461.39999985694885,
+          "encodeMilliseconds": 63.90000033378601,
+          "pendingImages": 0,
+          "decodedImages": 8,
+          "imagePreparations": 38,
+          "peakPendingImages": 8
+        },
+        "groups": [
+          {
+            "runtime": "wc",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          },
+          {
+            "runtime": "react",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          },
+          {
+            "runtime": "vue",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          },
+          {
+            "runtime": "vue2",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          }
+        ]
+      },
+      {
+        "stage": "ready",
+        "expected": 1,
+        "at": 918.5,
+        "viewport": [1100, 1000],
+        "dpr": 1,
+        "metrics": {
+          "contexts": 1,
+          "consumers": 12,
+          "lost": false,
+          "renders": 46,
+          "programBuilds": 2,
+          "sourceUploads": 23,
+          "sourcePreparations": 23,
+          "renderMilliseconds": 525,
+          "encodeMilliseconds": 72.10000038146973,
+          "pendingImages": 0,
+          "decodedImages": 8,
+          "imagePreparations": 46,
+          "peakPendingImages": 8
+        },
+        "groups": [
+          {
+            "runtime": "wc",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [466, 161]
+          },
+          {
+            "runtime": "react",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [466, 161]
+          },
+          {
+            "runtime": "vue",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [466, 161]
+          },
+          {
+            "runtime": "vue2",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [466, 161]
+          }
+        ]
+      },
+      {
+        "stage": "ready",
+        "expected": 2,
+        "at": 1091.9000000953674,
+        "viewport": [1100, 1000],
+        "dpr": 2,
+        "metrics": {
+          "contexts": 1,
+          "consumers": 12,
+          "lost": false,
+          "renders": 54,
+          "programBuilds": 2,
+          "sourceUploads": 27,
+          "sourcePreparations": 27,
+          "renderMilliseconds": 673.5000004768372,
+          "encodeMilliseconds": 81.90000033378601,
+          "pendingImages": 0,
+          "decodedImages": 8,
+          "imagePreparations": 54,
+          "peakPendingImages": 8
+        },
+        "groups": [
+          {
+            "runtime": "wc",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          },
+          {
+            "runtime": "react",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          },
+          {
+            "runtime": "vue",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          },
+          {
+            "runtime": "vue2",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [932, 322]
+          }
+        ]
+      },
+      {
+        "stage": "ready",
+        "expected": 1,
+        "at": 1184.9000000953674,
+        "viewport": [1100, 1000],
+        "dpr": 1,
+        "metrics": {
+          "contexts": 1,
+          "consumers": 12,
+          "lost": false,
+          "renders": 62,
+          "programBuilds": 2,
+          "sourceUploads": 31,
+          "sourcePreparations": 31,
+          "renderMilliseconds": 737.1000001430511,
+          "encodeMilliseconds": 92.90000033378601,
+          "pendingImages": 0,
+          "decodedImages": 8,
+          "imagePreparations": 62,
+          "peakPendingImages": 8
+        },
+        "groups": [
+          {
+            "runtime": "wc",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [466, 161]
+          },
+          {
+            "runtime": "react",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [466, 161]
+          },
+          {
+            "runtime": "vue",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [466, 161]
+          },
+          {
+            "runtime": "vue2",
+            "quality": "self-optical",
+            "reason": "rendered",
+            "css": [466, 161],
+            "buffer": [466, 161]
+          }
+        ]
+      }
+    ],
+    "rows": [
+      {
+        "kind": "media-query",
+        "ms": 77.30000019073486,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 111.40000009536743,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 276.60000014305115,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 314.90000009536743,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true
+      },
+      {
+        "kind": "resize",
+        "ms": 409.2000000476837,
+        "dpr": 2,
+        "width": 1100,
+        "height": 1000
+      },
+      {
+        "kind": "visual-resize",
+        "ms": 557.2000000476837,
+        "dpr": 2,
+        "width": 1100,
+        "height": 1000
+      },
+      {
+        "kind": "media-change",
+        "ms": 557.3000001907349,
+        "dpr": 2,
+        "query": "(resolution: 1dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 557.3000001907349,
+        "dpr": 2,
+        "query": "(resolution: 2dppx)",
+        "matches": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 557.4000000953674,
+        "dpr": 2,
+        "query": "(resolution: 1dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 557.4000000953674,
+        "dpr": 2,
+        "query": "(resolution: 2dppx)",
+        "matches": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 557.4000000953674,
+        "dpr": 2,
+        "query": "(resolution: 1dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 557.4000000953674,
+        "dpr": 2,
+        "query": "(resolution: 2dppx)",
+        "matches": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 557.4000000953674,
+        "dpr": 2,
+        "query": "(resolution: 1dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 557.4000000953674,
+        "dpr": 2,
+        "query": "(resolution: 2dppx)",
+        "matches": true
+      },
+      {
+        "kind": "RO css",
+        "ms": 559.2000000476837,
+        "dpr": 2,
+        "entries": [
+          {
+            "host": "wc",
+            "css": [466, 161],
+            "dp": [932, 322]
+          },
+          {
+            "host": "react",
+            "css": [466, 161],
+            "dp": [932, 322]
+          },
+          {
+            "host": "vue",
+            "css": [466, 161],
+            "dp": [932, 322]
+          },
+          {
+            "host": "vue2",
+            "css": [466, 161],
+            "dp": [932, 322]
+          }
+        ]
+      },
+      {
+        "kind": "RO device",
+        "ms": 559.3000001907349,
+        "dpr": 2,
+        "entries": [
+          {
+            "host": "wc",
+            "css": [466, 161],
+            "dp": [932, 322]
+          },
+          {
+            "host": "react",
+            "css": [466, 161],
+            "dp": [932, 322]
+          },
+          {
+            "host": "vue",
+            "css": [466, 161],
+            "dp": [932, 322]
+          },
+          {
+            "host": "vue2",
+            "css": [466, 161],
+            "dp": [932, 322]
+          }
+        ]
+      },
+      {
+        "kind": "resize",
+        "ms": 574.3000001907349,
+        "dpr": 1,
+        "width": 1100,
+        "height": 1000
+      },
+      {
+        "kind": "visual-resize",
+        "ms": 635.4000000953674,
+        "dpr": 1,
+        "width": 1100,
+        "height": 1000
+      },
+      {
+        "kind": "media-change",
+        "ms": 635.4000000953674,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 635.4000000953674,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 635.4000000953674,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 635.4000000953674,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 635.4000000953674,
+        "dpr": 1,
+        "query": "(resolution: 2dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 635.4000000953674,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 635.4000000953674,
+        "dpr": 1,
+        "query": "(resolution: 2dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 635.4000000953674,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 635.5,
+        "dpr": 1,
+        "query": "(resolution: 2dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 635.5,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 635.5,
+        "dpr": 1,
+        "query": "(resolution: 2dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 635.5,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true
+      },
+      {
+        "kind": "RO device",
+        "ms": 636.8000001907349,
+        "dpr": 1,
+        "entries": [
+          {
+            "host": "wc",
+            "css": [466, 161],
+            "dp": [466, 161]
+          },
+          {
+            "host": "react",
+            "css": [466, 161],
+            "dp": [466, 161]
+          },
+          {
+            "host": "vue",
+            "css": [466, 161],
+            "dp": [466, 161]
+          },
+          {
+            "host": "vue2",
+            "css": [466, 161],
+            "dp": [466, 161]
+          }
+        ]
+      },
+      {
+        "kind": "resize",
+        "ms": 657.7000000476837,
+        "dpr": 2,
+        "width": 1100,
+        "height": 1000
+      },
+      {
+        "kind": "visual-resize",
+        "ms": 816.2000000476837,
+        "dpr": 2,
+        "width": 1100,
+        "height": 1000
+      },
+      {
+        "kind": "media-change",
+        "ms": 816.2000000476837,
+        "dpr": 2,
+        "query": "(resolution: 1dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 816.2000000476837,
+        "dpr": 2,
+        "query": "(resolution: 1dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 816.2000000476837,
+        "dpr": 2,
+        "query": "(resolution: 1dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 816.2000000476837,
+        "dpr": 2,
+        "query": "(resolution: 1dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 816.2000000476837,
+        "dpr": 2,
+        "query": "(resolution: 2dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 816.2000000476837,
+        "dpr": 2,
+        "query": "(resolution: 2dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 816.2000000476837,
+        "dpr": 2,
+        "query": "(resolution: 2dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 816.2000000476837,
+        "dpr": 2,
+        "query": "(resolution: 2dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 816.2000000476837,
+        "dpr": 2,
+        "query": "(resolution: 1dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 816.2000000476837,
+        "dpr": 2,
+        "query": "(resolution: 2dppx)",
+        "matches": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 816.2000000476837,
+        "dpr": 2,
+        "query": "(resolution: 1dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 816.2000000476837,
+        "dpr": 2,
+        "query": "(resolution: 2dppx)",
+        "matches": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 816.2000000476837,
+        "dpr": 2,
+        "query": "(resolution: 1dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 816.2000000476837,
+        "dpr": 2,
+        "query": "(resolution: 2dppx)",
+        "matches": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 816.2000000476837,
+        "dpr": 2,
+        "query": "(resolution: 1dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 816.2000000476837,
+        "dpr": 2,
+        "query": "(resolution: 2dppx)",
+        "matches": true
+      },
+      {
+        "kind": "RO device",
+        "ms": 817.7000000476837,
+        "dpr": 2,
+        "entries": [
+          {
+            "host": "wc",
+            "css": [466, 161],
+            "dp": [932, 322]
+          },
+          {
+            "host": "react",
+            "css": [466, 161],
+            "dp": [932, 322]
+          },
+          {
+            "host": "vue",
+            "css": [466, 161],
+            "dp": [932, 322]
+          },
+          {
+            "host": "vue2",
+            "css": [466, 161],
+            "dp": [932, 322]
+          }
+        ]
+      },
+      {
+        "kind": "resize",
+        "ms": 841,
+        "dpr": 1,
+        "width": 1100,
+        "height": 1000
+      },
+      {
+        "kind": "visual-resize",
+        "ms": 910.8000001907349,
+        "dpr": 1,
+        "width": 1100,
+        "height": 1000
+      },
+      {
+        "kind": "media-change",
+        "ms": 910.8000001907349,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 910.8000001907349,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 910.8000001907349,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 910.8000001907349,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 910.8000001907349,
+        "dpr": 1,
+        "query": "(resolution: 2dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 910.8000001907349,
+        "dpr": 1,
+        "query": "(resolution: 2dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 910.8000001907349,
+        "dpr": 1,
+        "query": "(resolution: 2dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 910.8000001907349,
+        "dpr": 1,
+        "query": "(resolution: 2dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 910.8000001907349,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 910.8000001907349,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 910.8000001907349,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 910.8000001907349,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 910.8000001907349,
+        "dpr": 1,
+        "query": "(resolution: 2dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 910.9000000953674,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 910.9000000953674,
+        "dpr": 1,
+        "query": "(resolution: 2dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 910.9000000953674,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 910.9000000953674,
+        "dpr": 1,
+        "query": "(resolution: 2dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 910.9000000953674,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 910.9000000953674,
+        "dpr": 1,
+        "query": "(resolution: 2dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 910.9000000953674,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true
+      },
+      {
+        "kind": "RO device",
+        "ms": 912.2000000476837,
+        "dpr": 1,
+        "entries": [
+          {
+            "host": "wc",
+            "css": [466, 161],
+            "dp": [466, 161]
+          },
+          {
+            "host": "react",
+            "css": [466, 161],
+            "dp": [466, 161]
+          },
+          {
+            "host": "vue",
+            "css": [466, 161],
+            "dp": [466, 161]
+          },
+          {
+            "host": "vue2",
+            "css": [466, 161],
+            "dp": [466, 161]
+          }
+        ]
+      },
+      {
+        "kind": "resize",
+        "ms": 924.4000000953674,
+        "dpr": 2,
+        "width": 1100,
+        "height": 1000
+      },
+      {
+        "kind": "visual-resize",
+        "ms": 1082.2000000476837,
+        "dpr": 2,
+        "width": 1100,
+        "height": 1000
+      },
+      {
+        "kind": "media-change",
+        "ms": 1082.2000000476837,
+        "dpr": 2,
+        "query": "(resolution: 1dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1082.2000000476837,
+        "dpr": 2,
+        "query": "(resolution: 1dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1082.3000001907349,
+        "dpr": 2,
+        "query": "(resolution: 1dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1082.3000001907349,
+        "dpr": 2,
+        "query": "(resolution: 1dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1082.3000001907349,
+        "dpr": 2,
+        "query": "(resolution: 2dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1082.3000001907349,
+        "dpr": 2,
+        "query": "(resolution: 2dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1082.3000001907349,
+        "dpr": 2,
+        "query": "(resolution: 2dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1082.3000001907349,
+        "dpr": 2,
+        "query": "(resolution: 2dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1082.3000001907349,
+        "dpr": 2,
+        "query": "(resolution: 1dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1082.3000001907349,
+        "dpr": 2,
+        "query": "(resolution: 1dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1082.3000001907349,
+        "dpr": 2,
+        "query": "(resolution: 1dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1082.3000001907349,
+        "dpr": 2,
+        "query": "(resolution: 1dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1082.3000001907349,
+        "dpr": 2,
+        "query": "(resolution: 2dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1082.3000001907349,
+        "dpr": 2,
+        "query": "(resolution: 2dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1082.3000001907349,
+        "dpr": 2,
+        "query": "(resolution: 2dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1082.3000001907349,
+        "dpr": 2,
+        "query": "(resolution: 2dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1082.3000001907349,
+        "dpr": 2,
+        "query": "(resolution: 1dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 1082.3000001907349,
+        "dpr": 2,
+        "query": "(resolution: 2dppx)",
+        "matches": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1082.3000001907349,
+        "dpr": 2,
+        "query": "(resolution: 1dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 1082.3000001907349,
+        "dpr": 2,
+        "query": "(resolution: 2dppx)",
+        "matches": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1082.3000001907349,
+        "dpr": 2,
+        "query": "(resolution: 1dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 1082.3000001907349,
+        "dpr": 2,
+        "query": "(resolution: 2dppx)",
+        "matches": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1082.3000001907349,
+        "dpr": 2,
+        "query": "(resolution: 1dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 1082.3000001907349,
+        "dpr": 2,
+        "query": "(resolution: 2dppx)",
+        "matches": true
+      },
+      {
+        "kind": "RO device",
+        "ms": 1083.6000001430511,
+        "dpr": 2,
+        "entries": [
+          {
+            "host": "wc",
+            "css": [466, 161],
+            "dp": [932, 322]
+          },
+          {
+            "host": "react",
+            "css": [466, 161],
+            "dp": [932, 322]
+          },
+          {
+            "host": "vue",
+            "css": [466, 161],
+            "dp": [932, 322]
+          },
+          {
+            "host": "vue2",
+            "css": [466, 161],
+            "dp": [932, 322]
+          }
+        ]
+      },
+      {
+        "kind": "resize",
+        "ms": 1107.3000001907349,
+        "dpr": 1,
+        "width": 1100,
+        "height": 1000
+      },
+      {
+        "kind": "visual-resize",
+        "ms": 1177.5,
+        "dpr": 1,
+        "width": 1100,
+        "height": 1000
+      },
+      {
+        "kind": "media-change",
+        "ms": 1177.5,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1177.5,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1177.5,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1177.5,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1177.5,
+        "dpr": 1,
+        "query": "(resolution: 2dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1177.5,
+        "dpr": 1,
+        "query": "(resolution: 2dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1177.5,
+        "dpr": 1,
+        "query": "(resolution: 2dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1177.5,
+        "dpr": 1,
+        "query": "(resolution: 2dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1177.5,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1177.5,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1177.5,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1177.5,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1177.5,
+        "dpr": 1,
+        "query": "(resolution: 2dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1177.5,
+        "dpr": 1,
+        "query": "(resolution: 2dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1177.5,
+        "dpr": 1,
+        "query": "(resolution: 2dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1177.5,
+        "dpr": 1,
+        "query": "(resolution: 2dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1177.5,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1177.5,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1177.5,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1177.5,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true,
+        "trusted": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1177.5,
+        "dpr": 1,
+        "query": "(resolution: 2dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 1177.6000001430511,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1177.6000001430511,
+        "dpr": 1,
+        "query": "(resolution: 2dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 1177.6000001430511,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1177.6000001430511,
+        "dpr": 1,
+        "query": "(resolution: 2dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 1177.6000001430511,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true
+      },
+      {
+        "kind": "media-change",
+        "ms": 1177.6000001430511,
+        "dpr": 1,
+        "query": "(resolution: 2dppx)",
+        "matches": false,
+        "trusted": true
+      },
+      {
+        "kind": "media-query",
+        "ms": 1177.6000001430511,
+        "dpr": 1,
+        "query": "(resolution: 1dppx)",
+        "matches": true
+      },
+      {
+        "kind": "RO device",
+        "ms": 1178.8000001907349,
+        "dpr": 1,
+        "entries": [
+          {
+            "host": "wc",
+            "css": [466, 161],
+            "dp": [466, 161]
+          },
+          {
+            "host": "react",
+            "css": [466, 161],
+            "dp": [466, 161]
+          },
+          {
+            "host": "vue",
+            "css": [466, 161],
+            "dp": [466, 161]
+          },
+          {
+            "host": "vue2",
+            "css": [466, 161],
+            "dp": [466, 161]
+          }
+        ]
+      }
+    ]
+  },
+  "protocolControl": [
+    {
+      "viewport": {
+        "width": 1100,
+        "height": 1000
+      },
+      "info": {
+        "left": 0,
+        "top": 0,
+        "width": 800,
+        "height": 600,
+        "availLeft": 0,
+        "availTop": 0,
+        "availWidth": 800,
+        "availHeight": 600,
+        "devicePixelRatio": 1,
+        "orientation": {
+          "type": "landscapePrimary",
+          "angle": 0
+        },
+        "colorDepth": 24,
+        "isExtended": false,
+        "isInternal": false,
+        "isPrimary": true,
+        "label": "",
+        "id": "2300000000"
+      },
+      "captures": [
+        {
+          "expected": 2,
+          "observation": {
+            "dpr": 1,
+            "width": 1100,
+            "height": 1000,
+            "events": [
+              {
+                "dpr": 1,
+                "matches": true,
+                "media": "(resolution: 1dppx)"
+              }
+            ]
+          }
+        },
+        {
+          "expected": 1,
+          "observation": {
+            "dpr": 1,
+            "width": 1100,
+            "height": 1000,
+            "events": [
+              {
+                "dpr": 1,
+                "matches": true,
+                "media": "(resolution: 1dppx)"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "viewport": null,
+      "info": {
+        "left": 0,
+        "top": 0,
+        "width": 800,
+        "height": 600,
+        "availLeft": 0,
+        "availTop": 0,
+        "availWidth": 800,
+        "availHeight": 600,
+        "devicePixelRatio": 1,
+        "orientation": {
+          "type": "landscapePrimary",
+          "angle": 0
+        },
+        "colorDepth": 24,
+        "isExtended": false,
+        "isInternal": false,
+        "isPrimary": true,
+        "label": "",
+        "id": "2300000000"
+      },
+      "captures": [
+        {
+          "expected": 2,
+          "observation": {
+            "dpr": 2,
+            "width": 756,
+            "height": 469,
+            "events": [
+              {
+                "dpr": 2,
+                "matches": false,
+                "media": "(resolution: 1dppx)"
+              }
+            ]
+          }
+        },
+        {
+          "expected": 1,
+          "observation": {
+            "dpr": 1,
+            "width": 756,
+            "height": 469,
+            "events": [
+              {
+                "dpr": 2,
+                "matches": false,
+                "media": "(resolution: 1dppx)"
+              },
+              {
+                "dpr": 1,
+                "matches": false,
+                "media": "(resolution: 2dppx)"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "beforeWithNativeOverlay": {
+    "passed": 3,
+    "failed": 0,
+    "unselected": 1,
+    "cases": [
+      {
+        "title": "V2 optical paint through four real Web Adapter runtimes light: visible dynamic source, optical pixels, motion, input and revocation",
+        "status": "passed"
+      },
+      {
+        "title": "V2 optical paint through four real Web Adapter runtimes dark: visible dynamic source, optical pixels, motion, input and revocation",
+        "status": "passed"
+      },
+      {
+        "title": "V2 optical paint through four real Web Adapter runtimes the actual public Button documentation uses the same optical path on all four runtime panels",
+        "status": "passed"
+      },
+      {
+        "title": "bounded public Liquid live-canvas diagnostics records actual four-runtime idle/hover work without accepting an optimization",
+        "status": "skipped"
+      }
+    ]
+  },
+  "native": {
+    "passed": 3,
+    "failed": 0,
+    "unselected": 1,
+    "cases": [
+      {
+        "title": "V2 optical paint through four real Web Adapter runtimes light: visible dynamic source, optical pixels, motion, input and revocation",
+        "status": "passed"
+      },
+      {
+        "title": "V2 optical paint through four real Web Adapter runtimes dark: visible dynamic source, optical pixels, motion, input and revocation",
+        "status": "passed"
+      },
+      {
+        "title": "V2 optical paint through four real Web Adapter runtimes the actual public Button documentation uses the same optical path on all four runtime panels",
+        "status": "passed"
+      },
+      {
+        "title": "bounded public Liquid live-canvas diagnostics records actual four-runtime idle/hover work without accepting an optimization",
+        "status": "skipped"
+      }
+    ]
+  },
+  "stress": [
+    {
+      "theme": "light",
+      "uploads": 1,
+      "contexts": 1,
+      "sharedContextLossRecovered": true
+    },
+    {
+      "theme": "dark",
+      "uploads": 1,
+      "contexts": 1,
+      "sharedContextLossRecovered": true
+    }
+  ],
+  "nativeLogSHA256": "01f3a73285770ab26c9b544738df4216e6fffe4e831a3d7914751fd099ad59d9"
+}
