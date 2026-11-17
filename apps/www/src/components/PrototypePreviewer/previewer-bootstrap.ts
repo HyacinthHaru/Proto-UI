@@ -52,7 +52,7 @@ export function initPreviewerBootstrap(
     }
     return true;
   };
-  const mount = async (root: PreviewerRoot) => {
+  const mount = async (root: PreviewerRoot, batchInitialThemeReads = false) => {
     const entry = pending.get(root);
     if (
       !entry?.active ||
@@ -95,6 +95,7 @@ export function initPreviewerBootstrap(
           | ProjectionComponentId
           | undefined,
         projectionToolbar: root.dataset.projectionToolbar !== 'false',
+        batchInitialThemeReads,
       });
     } catch (error) {
       if (disposed || !entry.active || !root.isConnected) return;
@@ -107,15 +108,17 @@ export function initPreviewerBootstrap(
       if (pending.get(root) === entry) delete root.dataset.mounting;
     }
   };
-  const drainEager = () => {
+  const drainEager = (batchInitialThemeReads = false) => {
     if (disposed) return;
     let remaining = EAGER_BATCH_SIZE;
     for (const root of eager) {
       eager.delete(root);
-      void mount(root);
+      void mount(root, batchInitialThemeReads);
       if (--remaining === 0) break;
     }
-    eagerTask = eager.size ? view.setTimeout(drainEager, 0) : undefined;
+    eagerTask = eager.size
+      ? view.setTimeout(() => drainEager(batchInitialThemeReads), 0)
+      : undefined;
   };
   const scan = () => {
     if (disposed) return;
@@ -150,7 +153,7 @@ export function initPreviewerBootstrap(
     }
     // Large eager inventories yield to the browser's module and render tasks.
     if (eagerTask !== undefined || !eager.size) return;
-    if (eager.size > EAGER_BATCH_SIZE) eagerTask = view.setTimeout(drainEager, 0);
+    if (eager.size > EAGER_BATCH_SIZE) eagerTask = view.setTimeout(() => drainEager(true), 0);
     else drainEager();
   };
   // Observe only panel attributes, not every runtime's internal style updates.

@@ -45,6 +45,7 @@ interface PreviewerOptions {
   projectionFamilyId?: ProjectionFamilyId;
   projectionComponentId?: ProjectionComponentId;
   projectionToolbar?: boolean;
+  batchInitialThemeReads?: boolean;
 }
 
 export function initPreviewer(options: PreviewerOptions) {
@@ -308,7 +309,11 @@ export function initPreviewer(options: PreviewerOptions) {
 
   async function switchTo(
     id: string,
-    options: { force?: boolean; focusLease?: RuntimeTabsFocusLease | null } = {}
+    options: {
+      force?: boolean;
+      focusLease?: RuntimeTabsFocusLease | null;
+      batchThemeReads?: boolean;
+    } = {}
   ) {
     if (destroyed) {
       options.focusLease?.cancel();
@@ -400,26 +405,32 @@ export function initPreviewer(options: PreviewerOptions) {
         if (!destroyed && myVersion === version) {
           // The renderer already owns a framework root and setup resources.
           // Keep all unpublished shell preparation inside its cleanup boundary.
-          const appearance = await scheduleProjectionThemeRead(root, () => {
-            if (destroyed || myVersion !== version) return null;
-            const nextFamily = runtimePreviewFamily(root);
-            const theme = resolveProjectionThemeSurfaceStyle(nextFamily, root);
-            if (nextFamily === family) {
-              // Observe before applying the sampled values. Only later
-              // deliveries need a separate post-publication application.
-              stopPreparedTheme = watchTheme(theme);
-              pendingTheme = undefined;
-            }
-            return { family: nextFamily, theme };
-          });
+          const appearance = await scheduleProjectionThemeRead(
+            root,
+            () => {
+              if (destroyed || myVersion !== version) return null;
+              const nextFamily = runtimePreviewFamily(root);
+              const theme = resolveProjectionThemeSurfaceStyle(nextFamily, root);
+              if (nextFamily === family) {
+                // Observe before applying the sampled values. Only later
+                // deliveries need a separate post-publication application.
+                stopPreparedTheme = watchTheme(theme);
+                pendingTheme = undefined;
+              }
+              return { family: nextFamily, theme };
+            },
+            options.batchThemeReads
+          );
           if (appearance && !destroyed && myVersion === version) {
             family = appearance.family;
             await surface.setAppearance(family, appearance.theme);
           }
           // A family replacement prepares its watch after the new shell.
           if (!stopPreparedTheme) {
-            stopPreparedTheme = await scheduleProjectionThemeRead(root, () =>
-              destroyed || myVersion !== version ? null : watchTheme()
+            stopPreparedTheme = await scheduleProjectionThemeRead(
+              root,
+              () => (destroyed || myVersion !== version ? null : watchTheme()),
+              options.batchThemeReads
             );
           }
         }
@@ -491,7 +502,7 @@ export function initPreviewer(options: PreviewerOptions) {
   }
 
   // 首次挂载（统一走 runtime 生命周期，避免 WC 单走一套）
-  void switchTo(selectedInitialRuntime);
+  void switchTo(selectedInitialRuntime, { batchThemeReads: options.batchInitialThemeReads });
 
   // AdapterSelect synchronizes all selector instances and broadcasts the selected
   // runtime. Listen on document so the page-level selector also remounts every

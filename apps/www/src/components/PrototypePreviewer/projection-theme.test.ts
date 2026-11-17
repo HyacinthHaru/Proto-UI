@@ -64,6 +64,35 @@ describe('Website projection theme inputs', () => {
     expect(sampledBeforeTask).toBe(true);
   });
 
+  it('batches background reads from separate microtasks without delaying foreground reads', async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
+    try {
+      const scope = document.documentElement;
+      const order: string[] = [];
+      const first = scheduleProjectionThemeRead(scope, () => order.push('read first'), true).then(
+        () => order.push('write first')
+      );
+      await Promise.resolve();
+      const second = scheduleProjectionThemeRead(scope, () => order.push('read second'), true).then(
+        () => order.push('write second')
+      );
+      await scheduleProjectionThemeRead(scope, () => order.push('read foreground'));
+      expect(order).toEqual(['read foreground']);
+
+      await vi.runOnlyPendingTimersAsync();
+      await Promise.all([first, second]);
+      expect(order).toEqual([
+        'read foreground',
+        'read first',
+        'read second',
+        'write first',
+        'write second',
+      ]);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it('leaves other queued publications readable when a theme read fails', async () => {
     const scope = document.documentElement;
     const invalid = scheduleProjectionThemeRead(scope, () => {

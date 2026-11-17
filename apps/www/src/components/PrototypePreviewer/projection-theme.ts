@@ -131,10 +131,16 @@ export function resolveProjectionThemeSurfaceStyle(
 }
 
 const publicationThemeReads = new WeakMap<Document, Array<() => void>>();
+const startupThemeReads = new WeakMap<Document, Array<() => void>>();
 
 /** Sample each pending scope before its caller resumes and writes theme styles. */
-export function scheduleProjectionThemeRead<T>(scope: Element, read: () => T): Promise<T> {
+export function scheduleProjectionThemeRead<T>(
+  scope: Element,
+  read: () => T,
+  batchStartup = false
+): Promise<T> {
   const document = scope.ownerDocument;
+  const reads = batchStartup ? startupThemeReads : publicationThemeReads;
   return new Promise<T>((resolve, reject) => {
     const sample = () => {
       try {
@@ -143,21 +149,21 @@ export function scheduleProjectionThemeRead<T>(scope: Element, read: () => T): P
         reject(error);
       }
     };
-    const pending = publicationThemeReads.get(document);
+    const pending = reads.get(document);
     if (pending) {
       pending.push(sample);
       return;
     }
     const batch = [sample];
-    publicationThemeReads.set(document, batch);
+    reads.set(document, batch);
     const flush = () => {
-      publicationThemeReads.delete(document);
+      reads.delete(document);
       for (const item of batch) item();
     };
-    // Publication can be waiting inside a frame callback. Flush the pending
-    // reads before yielding to a browser task so a busy renderer cannot
-    // hold a current preview's appearance or watcher behind that task.
-    queueMicrotask(flush);
+    // Collect first publications from separate eager renderer callbacks.
+    // Interactive publications still sample before yielding a browser task.
+    if (batchStartup) setTimeout(flush, 0);
+    else queueMicrotask(flush);
   });
 }
 

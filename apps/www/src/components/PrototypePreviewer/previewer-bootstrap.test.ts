@@ -194,8 +194,9 @@ describe('eager preview admission', () => {
       const owners = eagerRoots(35);
       const mounted: HTMLElement[] = [];
       dispose = initPreviewerBootstrap(document, async () => ({
-        initPreviewer: ({ root }) => {
+        initPreviewer: ({ root, batchInitialThemeReads }) => {
           root.dataset.inited = '1';
+          expect(batchInitialThemeReads).toBe(true);
           mounted.push(root);
         },
       }));
@@ -219,8 +220,9 @@ describe('eager preview admission', () => {
       const owners = eagerRoots(35);
       const mounted: HTMLElement[] = [];
       dispose = initPreviewerBootstrap(document, async () => ({
-        initPreviewer: ({ root }) => {
+        initPreviewer: ({ root, batchInitialThemeReads }) => {
           root.dataset.inited = '1';
+          expect(batchInitialThemeReads).toBe(false);
           mounted.push(root);
         },
       }));
