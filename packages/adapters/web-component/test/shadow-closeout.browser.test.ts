@@ -6320,6 +6320,146 @@ describe('Shadow closeout native boundaries', () => {
     }
   );
 
+  it('observes inline entry rules before their native load notification', async () => {
+    const page = await browser.newPage();
+    try {
+      await page.addScriptTag({ content: script });
+      const result = await page.evaluate(async () => {
+        const p = (window as any).Closeout;
+        const style = document.createElement('style');
+        style.textContent = '#inline-sheet-entry button { visibility: hidden }';
+        let rebuilds = 0;
+        const beforeLoad = new Promise<{
+          rebuilds: number;
+          trusted: boolean;
+          fallback: string | null;
+        }>((resolve) => {
+          document.addEventListener(
+            'load',
+            (event) => {
+              if (event.target === style) {
+                resolve({
+                  rebuilds,
+                  trusted: event.isTrusted,
+                  fallback: host.getAttribute('tabindex'),
+                });
+              }
+            },
+            true
+          );
+        });
+        const C = p.adapt(
+          p.define({
+            name: 'closeout-inline-sheet-entry',
+            setup() {
+              p.asFocusEntry().configure({ strategy: 'descendant-first', fallback: 'self' });
+              return (r: any) => r.slot();
+            },
+          }),
+          { shadow: false }
+        );
+        const host = new C();
+        host.id = 'inline-sheet-entry';
+        const button = document.createElement('button');
+        host.append(button);
+        const observe = MutationObserver.prototype.observe;
+        MutationObserver.prototype.observe = function (target, options) {
+          if (target === host && options?.attributeFilter?.includes('tabindex')) rebuilds++;
+          return observe.call(this, target, options);
+        };
+        try {
+          document.body.append(host);
+          await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+          const initial = host.getAttribute('tabindex');
+          rebuilds = 0;
+          document.head.append(style);
+          const immediate = {
+            rules: style.sheet?.cssRules.length,
+            visibility: getComputedStyle(button).visibility,
+          };
+          const load = await beforeLoad;
+          await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+          return {
+            initial,
+            immediate,
+            load,
+            rebuildsAfterLoad: rebuilds - load.rebuilds,
+            fallback: host.getAttribute('tabindex'),
+          };
+        } finally {
+          MutationObserver.prototype.observe = observe;
+        }
+      });
+      expect(result).toEqual({
+        initial: null,
+        immediate: { rules: 1, visibility: 'hidden' },
+        load: { rebuilds: expect.any(Number), trusted: true, fallback: '0' },
+        rebuildsAfterLoad: 0,
+        fallback: '0',
+      });
+      expect(result.load.rebuilds).toBeGreaterThan(0);
+    } finally {
+      await page.close();
+    }
+  });
+
+  it('reprojects entry when an inline stylesheet import finishes loading', async () => {
+    const page = await browser.newPage();
+    let requestStarted!: () => void;
+    let releaseResponse!: () => void;
+    const started = new Promise<void>((resolve) => (requestStarted = resolve));
+    const released = new Promise<void>((resolve) => (releaseResponse = resolve));
+    await page.route('**/inline-entry-import.css', async (route) => {
+      requestStarted();
+      await released;
+      await route.fulfill({
+        contentType: 'text/css',
+        body: '#imported-sheet-entry button { visibility: hidden }',
+      });
+    });
+    try {
+      await page.addScriptTag({ content: script });
+      await page.evaluate(() => {
+        const p = (window as any).Closeout;
+        const C = p.adapt(
+          p.define({
+            name: 'closeout-imported-sheet-entry',
+            setup() {
+              p.asFocusEntry().configure({ strategy: 'descendant-first', fallback: 'self' });
+              return (r: any) => r.slot();
+            },
+          }),
+          { shadow: false }
+        );
+        const host = new C();
+        host.id = 'imported-sheet-entry';
+        host.append(document.createElement('button'));
+        document.body.append(host);
+        const style = document.createElement('style');
+        style.textContent = '@import url("https://proto-ui.test/inline-entry-import.css");';
+        (window as any).__inlineEntryImportLoaded = new Promise<boolean>((resolve, reject) => {
+          style.addEventListener('load', (event) => resolve(event.isTrusted), { once: true });
+          style.addEventListener('error', () => reject(new Error('stylesheet import failed')), {
+            once: true,
+          });
+        });
+        document.head.append(style);
+      });
+      await started;
+      expect(await page.locator('#imported-sheet-entry').getAttribute('tabindex')).toBe(null);
+      releaseResponse();
+      expect(await page.evaluate(() => (window as any).__inlineEntryImportLoaded)).toBe(true);
+      await page.waitForFunction(
+        () => document.querySelector('#imported-sheet-entry')?.getAttribute('tabindex') === '0',
+        undefined,
+        { timeout: 1_000 }
+      );
+    } finally {
+      releaseResponse();
+      await page.close();
+    }
+  });
+
   it('reprojects a slotted entry when an external ShadowRoot stylesheet finishes loading', async () => {
     const page = await browser.newPage();
     const errors: string[] = [];

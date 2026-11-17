@@ -1153,7 +1153,18 @@ function watchEntryStyleInvalidation(
       attributeFilter: ['href', 'rel', 'media', 'disabled', 'type'],
     });
     const onLoad = (event: Event) => {
-      if (isEntryStylesheetElement(event.target as Node | null)) notify();
+      const target = event.target as Node | null;
+      if (!isEntryStylesheetElement(target)) return;
+      if (event.isTrusted && target instanceof view.HTMLStyleElement && target.sheet) {
+        try {
+          // Inline rules without imports are already available to the DOM
+          // observer. Their later load event repeats the same invalidation.
+          if (Array.from(target.sheet.cssRules).every((rule) => rule.type !== 3)) return;
+        } catch {
+          // Keep load delivery for sheets whose rules cannot be inspected.
+        }
+      }
+      notify();
     };
     const stopLoadEvents = listenToEntryEvents([doc], ['load'], onLoad);
     const stopHashEvents = listenToEntryEvents([view], ['hashchange'], notify);
