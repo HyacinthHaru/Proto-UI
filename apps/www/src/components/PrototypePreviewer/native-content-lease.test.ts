@@ -88,6 +88,49 @@ describe('passive shell ancestor boundary ownership', () => {
   });
 });
 
+describe('native Selection across unrelated scopes', () => {
+  it('preserves a wholly unrelated range without reading its container children', () => {
+    const current = fixture(true);
+    const other = document.createElement('div');
+    other.append(document.createElement('span'), document.createElement('span'));
+    document.body.append(other);
+    const selection = document.getSelection()!;
+    selection.setBaseAndExtent(other, 0, other, 1);
+    const children = other.childNodes;
+    let reads = 0;
+    Object.defineProperty(other, 'childNodes', {
+      configurable: true,
+      get() {
+        reads++;
+        return children;
+      },
+    });
+    const restore = vi.spyOn(selection, 'setBaseAndExtent');
+    withNativeContentLease(current.link, current.move);
+    expect(current.oldSurface.isConnected).toBe(false);
+    expect(selection.anchorNode).toBe(other);
+    expect(selection.focusNode).toBe(other);
+    expect(restore).not.toHaveBeenCalled();
+    expect(reads).toBe(0);
+  });
+
+  it('captures the outside endpoint when a range crosses into the retained source', () => {
+    const current = fixture(true);
+    const other = document.createElement('div');
+    other.append(document.createElement('span'), document.createElement('span'));
+    document.body.append(other);
+    const selection = document.getSelection()!;
+    selection.setBaseAndExtent(current.oldSurface, 0, other, 1);
+    // The DOM emulator aliases extent to anchor. The wired Chrome probe
+    // exercises both directions with an actual cross-container Selection.
+    vi.spyOn(selection, 'focusNode', 'get').mockReturnValue(other);
+    vi.spyOn(selection, 'focusOffset', 'get').mockReturnValue(1);
+    const restore = vi.spyOn(selection, 'setBaseAndExtent');
+    withNativeContentLease(current.source, current.move);
+    expect(restore).toHaveBeenLastCalledWith(current.nextText, 0, other, 1);
+  });
+});
+
 describe('synchronous owner-to-owner Selection freshness', () => {
   it('reads a Selection created by the preceding owner move before leasing the next owner', () => {
     const first = fixture(true);

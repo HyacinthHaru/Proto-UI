@@ -13,7 +13,7 @@ function edge(node: Node | undefined, after: boolean): Node | null {
 }
 function capture(node: Node | null | undefined, offset: number): Boundary | null {
   if (!node) return null;
-  const children = sourceContainers.get(node) ?? Array.from(node.childNodes);
+  const children = sourceContainers.get(node) ?? node.childNodes;
   return {
     node,
     offset,
@@ -43,8 +43,14 @@ export function withNativeContentLease(scope: HTMLElement, move: () => void): vo
   const focused = document.activeElement as HTMLElement | null;
   const ownedFocus = focused && (focused === scope || scope.contains(focused));
   const selection = document.getSelection();
-  const anchor = capture(selection?.anchorNode, selection?.anchorOffset ?? 0);
-  const extent = capture(selection?.focusNode, selection?.focusOffset ?? 0);
+  const anchorNode = selection?.anchorNode;
+  const focusNode = selection?.focusNode;
+  const mayOwnBoundary = (node: Node | null | undefined) =>
+    !!node && (scope.contains(node) || sourceContainers.has(node));
+  // A crossing range needs both endpoints. An unrelated range needs neither.
+  const captureSelection = mayOwnBoundary(anchorNode) || mayOwnBoundary(focusNode);
+  const anchor = captureSelection ? capture(anchorNode, selection!.anchorOffset) : null;
+  const extent = captureSelection ? capture(focusNode, selection!.focusOffset) : null;
   // A generated shell can be an ancestor of the retained scope. Only accept
   // such endpoints when its explicit source lease resolves into this scope;
   // an arbitrary ancestor or adjacent preview must not acquire ownership.
@@ -57,9 +63,10 @@ export function withNativeContentLease(scope: HTMLElement, move: () => void): vo
   move();
   if (ownedFocus && focused.isConnected && document.activeElement !== focused)
     focused.focus({ preventScroll: true });
+  if (!ownedSelection) return;
   const nextAnchor = resolve(anchor),
     nextExtent = resolve(extent);
-  if (ownedSelection && nextAnchor && nextExtent) {
+  if (nextAnchor && nextExtent) {
     try {
       selection!.setBaseAndExtent(
         nextAnchor.node,
