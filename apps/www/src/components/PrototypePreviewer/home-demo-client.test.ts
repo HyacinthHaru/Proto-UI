@@ -641,7 +641,7 @@ describe('Homepage Prototype projection scope', () => {
   });
 
   it.each(['bootstrap-2-3-2', 'liquid-glass'] as const)(
-    'rejects an initial partial %s family before mutating the SSR mount, allowing corrected re-init',
+    'rejects an unavailable standalone %s family and keeps the mounted generation',
     async (family) => {
       const root = createHomeRoot();
       const originalOptions = root.dataset.homeDemoOptions!;
@@ -653,7 +653,7 @@ describe('Homepage Prototype projection scope', () => {
       const source = document.createTextNode('Original SSR content');
       mount.append(source);
       const before = root.innerHTML;
-      expect(() => initHomeDemoPreviewer(root)).toThrow(/unsupported whole-site family/);
+      expect(() => initHomeDemoPreviewer(root)).toThrow(`unsupported standalone family: ${family}`);
       expect(root.innerHTML).toBe(before);
       expect(mount.firstChild).toBe(source);
       expect(root.dataset.inited).toBeUndefined();
@@ -665,8 +665,14 @@ describe('Homepage Prototype projection scope', () => {
       initHomeDemoPreviewer(root);
       await vi.waitFor(() => expect(root.dataset.runnerState).toBe('ready'));
       const controls = latestControls();
-      await homeApi(root).destroy();
       const calls = projection.materialize.mock.calls.length;
+      expect(() => controls.family.onValueChange(family)).toThrow(
+        `unsupported standalone family: ${family}`
+      );
+      expect(root.dataset.projectionFamily).toBe('shadcn');
+      expect(root.dataset.runnerState).toBe('ready');
+      expect(projection.materialize.mock.calls).toHaveLength(calls);
+      await homeApi(root).destroy();
       expect(() => controls.family.onValueChange(family)).not.toThrow();
       expect(projection.materialize.mock.calls).toHaveLength(calls);
     }

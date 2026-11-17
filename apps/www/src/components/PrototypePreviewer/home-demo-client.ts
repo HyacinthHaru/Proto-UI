@@ -1,4 +1,4 @@
-import { requireSiteLibraryFamily, type SiteLibraryFamily } from '../site-library-family';
+import type { SiteLibraryFamily } from '../site-library-family';
 import { getDemoSourcePath } from './demo-modules';
 import { PREFERRED_ADAPTER_EVENT, PREFERRED_ADAPTER_KEY } from '../adapter-preference';
 import {
@@ -62,6 +62,14 @@ const FAMILY_OPTIONS: ReadonlyArray<Readonly<{ id: SiteLibraryFamily; label: str
   { id: 'shadcn', label: 'Shadcn' },
   { id: 'brutalist', label: 'Brutalist' },
 ];
+
+function requireStandaloneFamily(value: ProjectionFamilyId): SiteLibraryFamily {
+  const option = FAMILY_OPTIONS.find((family) => family.id === value);
+  if (!option) {
+    throw new Error(`[HomeDemoPreviewer] unsupported standalone family: ${value}`);
+  }
+  return option.id;
+}
 
 function asSharedBaseFamilyId(familyId: string, recipeId: string): SharedBaseFamilyId {
   if (!SHARED_BASE_FAMILY_IDS.includes(familyId as SharedBaseFamilyId)) {
@@ -156,7 +164,7 @@ export function initHomeDemoPreviewer(root: HTMLElement): void {
   const initialDemo =
     demoOptions.find((option) => option.id === configuredDemoId) ?? demoOptions[0]!;
   const initialResolution = resolveProjectionRecipe(initialDemo.id);
-  const initialProjectionFamilyId = requireSiteLibraryFamily(initialResolution.projectionFamilyId);
+  const initialProjectionFamilyId = requireStandaloneFamily(initialResolution.projectionFamilyId);
   const configuredRuntimeValue = root.dataset.initialRuntime || runtimeOptions[0]!.id;
   const configuredRuntime = isRuntimeId(configuredRuntimeValue)
     ? configuredRuntimeValue
@@ -235,7 +243,7 @@ export function initHomeDemoPreviewer(root: HTMLElement): void {
   const resetDesiredToCommitted = (): ProjectionScopeSnapshot => {
     const snapshot = controller.getSnapshot();
     desiredRuntimeId = snapshot.selection.runtimeId as RuntimeId;
-    desiredProjectionFamilyId = requireSiteLibraryFamily(snapshot.selection.projectionFamilyId);
+    desiredProjectionFamilyId = requireStandaloneFamily(snapshot.selection.projectionFamilyId);
     desiredComponentId = committedComponentId;
     desiredIntentRevision += 1;
     return snapshot;
@@ -330,7 +338,7 @@ export function initHomeDemoPreviewer(root: HTMLElement): void {
 
   function requestFamily(value: ProjectionFamilyId): void {
     if (destroyed) return;
-    const projectionFamilyId = requireSiteLibraryFamily(value);
+    const projectionFamilyId = requireStandaloneFamily(value);
     if (projectionFamilyId === desiredProjectionFamilyId) return;
     desiredProjectionFamilyId = projectionFamilyId;
     desiredIntentRevision += 1;
@@ -393,7 +401,7 @@ export function initHomeDemoPreviewer(root: HTMLElement): void {
     },
     prepareCommit(commit) {
       const runtimeId = commit.selection.runtimeId as RuntimeId;
-      const projectionFamilyId = requireSiteLibraryFamily(commit.selection.projectionFamilyId);
+      const projectionFamilyId = requireStandaloneFamily(commit.selection.projectionFamilyId);
       const componentId = componentByGeneration.get(commit.generation);
       if (!componentId) {
         deleteGeneration(commit.generation);
