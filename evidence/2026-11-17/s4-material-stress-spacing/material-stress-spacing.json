@@ -1,0 +1,351 @@
+{
+  "source": {
+    "head": "0efc04bfb4112c6652fd52a5cae0a7fb7ddcc69b",
+    "tree": "ed6e78b8427c6594cdf3c9bedc2684491c68bcd1",
+    "parent": "40a7555778acab875735c22d512189e1ceed2c34",
+    "signature": "G"
+  },
+  "changedInputs": {
+    "apps/www/src/pages/en/test/liquid-glass-material.astro": "38eda9a1fd180efb8a33b91ba2859b64c2a502abdcd0b11ffead61d56b0c0f7c"
+  },
+  "versions": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+  "builds": {
+    "packages": 47,
+    "types": 0,
+    "manifests": 0,
+    "finfBudgetGate": 0
+  },
+  "focused": {
+    "total": 412,
+    "logSHA256": "c57dbde6ca9bd8b6666103ecb383eb6a2e283c6e0fe2b9fc3300c89c2aee533a"
+  },
+  "priorStress": {
+    "source": {
+      "head": "40a7555778acab875735c22d512189e1ceed2c34",
+      "tree": "9420065b61e43c4d21805a6eec2296b16312d732",
+      "parent": "0830be1629ea4bb882de7fcd6a13b65cb12a831d",
+      "signature": "G"
+    },
+    "observerBinding": {
+      "asset": "sink.IzL6EKnG.js",
+      "inputSHA256": "d88d33a020de162a3eb5bc08a9f110617d5ce3d07cecbc30510d4328dce17ebe",
+      "outputSHA256": "fd5cf047dd94f4835273f377e90a0e59e93a6585ac352efa1dbbee763b9043ba"
+    },
+    "failures": [
+      {
+        "phase": "stress-optical-rejection",
+        "host": {
+          "tag": "WC-LIQUID-GLASS-BUTTON",
+          "ref": null,
+          "class": "",
+          "text": "Stress 13"
+        },
+        "overlap": {
+          "tag": "WC-LIQUID-GLASS-BUTTON",
+          "ref": null,
+          "class": "",
+          "text": "Stress 12"
+        },
+        "target": [395.46875, 1188.84375, 498.5, 1226.84375],
+        "paint": [385.46875, 1178.84375, 508.5, 1236.84375],
+        "overlapBounds": [262.78125, 1178.84375, 385.46925, 1236.84375],
+        "outset": 10,
+        "pageMs": 3339.0999999046326,
+        "position": "",
+        "overlapCssPx": 0.0005
+      },
+      {
+        "phase": "stress-optical-rejection",
+        "host": {
+          "tag": "WC-LIQUID-GLASS-BUTTON",
+          "ref": null,
+          "class": "",
+          "text": "Stress 16"
+        },
+        "overlap": {
+          "tag": "WC-LIQUID-GLASS-BUTTON",
+          "ref": null,
+          "class": "",
+          "text": "Stress 15"
+        },
+        "target": [398.203125, 1246.84375, 501.390625, 1284.84375],
+        "paint": [388.203125, 1236.84375, 511.390625, 1294.84375],
+        "overlapBounds": [265.28125, 1236.84375, 388.20325, 1294.84375],
+        "outset": 10,
+        "pageMs": 3342,
+        "position": "",
+        "overlapCssPx": 0.000125
+      },
+      {
+        "phase": "stress-optical-rejection",
+        "host": {
+          "tag": "WC-LIQUID-GLASS-BUTTON",
+          "ref": null,
+          "class": "",
+          "text": "Stress 19"
+        },
+        "overlap": {
+          "tag": "WC-LIQUID-GLASS-BUTTON",
+          "ref": null,
+          "class": "",
+          "text": "Stress 18"
+        },
+        "target": [397.46875, 1304.84375, 500.65625, 1342.84375],
+        "paint": [387.46875, 1294.84375, 510.65625, 1352.84375],
+        "overlapBounds": [264.203125, 1294.84375, 387.469125, 1352.84375],
+        "outset": 10,
+        "pageMs": 3344.9000000953674,
+        "position": "",
+        "overlapCssPx": 0.000375
+      }
+    ],
+    "rawLogSHA256": "7e453113f0b6f963b56afd1839a447facafb7b8fa41992f1ac3ea518229de1d2"
+  },
+  "matrix": {
+    "tests": {
+      "numTotalTests": 2,
+      "numPassedTests": 0,
+      "numFailedTests": 2,
+      "numPendingTests": 0,
+      "assertions": [
+        {
+          "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+          "status": "failed",
+          "failure": "page.waitForFunction: Timeout 60000ms exceeded."
+        },
+        {
+          "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+          "status": "failed",
+          "failure": "page.waitForFunction: Timeout 60000ms exceeded."
+        }
+      ]
+    },
+    "readinessMs": 60000,
+    "caseMs": 150000,
+    "pages": {
+      "zh-cn": {
+        "bytes": 1862433,
+        "sha256": "72469157d575d68d0dedc58d8809c6dc4fa9be1a40708ec5b39e6b9c785137a7",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914121,
+        "sha256": "2d5bfd4b17f8f49c8dc7157c4626c91598222f2a3888a5d91e23ff227f52ef1f",
+        "previews": 1268
+      }
+    },
+    "inputs": {
+      "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "e6590db342bddc56b37fa367ce6b1cc519130cdb201e06e8d14061569d5e0317",
+      "apps/www/dist/zh-cn/internal/demo-matrix/index.html": "72469157d575d68d0dedc58d8809c6dc4fa9be1a40708ec5b39e6b9c785137a7",
+      "apps/www/dist/en/internal/demo-matrix/index.html": "2d5bfd4b17f8f49c8dc7157c4626c91598222f2a3888a5d91e23ff227f52ef1f"
+    },
+    "nativeLogSHA256": "f1bb9d2a156212f391cbb6b4822217dc68d7b748581a148db08f5eab2f316da1"
+  },
+  "optics": {
+    "tests": {
+      "numTotalTests": 4,
+      "numPassedTests": 3,
+      "numFailedTests": 0,
+      "numPendingTests": 1,
+      "assertions": [
+        {
+          "name": "V2 optical paint through four real Web Adapter runtimes light: visible dynamic source, optical pixels, motion, input and revocation",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "name": "V2 optical paint through four real Web Adapter runtimes dark: visible dynamic source, optical pixels, motion, input and revocation",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "name": "V2 optical paint through four real Web Adapter runtimes the actual public Button documentation uses the same optical path on all four runtime panels",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "name": "bounded public Liquid live-canvas diagnostics records actual four-runtime idle/hover work without accepting an optimization",
+          "status": "skipped",
+          "failure": null
+        }
+      ]
+    },
+    "stress": [
+      {
+        "theme": "light",
+        "beforeStress": {
+          "contexts": 1,
+          "consumers": 12,
+          "lost": false,
+          "renders": 136,
+          "programBuilds": 12,
+          "sourceUploads": 55,
+          "sourcePreparations": 55,
+          "renderMilliseconds": 832.2999982833862,
+          "encodeMilliseconds": 133.09999918937683,
+          "pendingImages": 0,
+          "decodedImages": 8,
+          "imagePreparations": 136,
+          "peakPendingImages": 8
+        },
+        "afterStress": {
+          "contexts": 1,
+          "consumers": 32,
+          "lost": false,
+          "renders": 156,
+          "programBuilds": 12,
+          "sourceUploads": 56,
+          "sourcePreparations": 56,
+          "renderMilliseconds": 899.4999988079071,
+          "encodeMilliseconds": 147.79999947547913,
+          "pendingImages": 0,
+          "decodedImages": 28,
+          "imagePreparations": 156,
+          "peakPendingImages": 20
+        },
+        "staticStart": {
+          "contexts": 1,
+          "consumers": 32,
+          "lost": false,
+          "renders": 156,
+          "programBuilds": 12,
+          "sourceUploads": 56,
+          "sourcePreparations": 56,
+          "renderMilliseconds": 899.4999988079071,
+          "encodeMilliseconds": 147.79999947547913,
+          "pendingImages": 0,
+          "decodedImages": 28,
+          "imagePreparations": 156,
+          "peakPendingImages": 20
+        },
+        "staticEnd": {
+          "contexts": 1,
+          "consumers": 32,
+          "lost": false,
+          "renders": 156,
+          "programBuilds": 12,
+          "sourceUploads": 56,
+          "sourcePreparations": 56,
+          "renderMilliseconds": 899.4999988079071,
+          "encodeMilliseconds": 147.79999947547913,
+          "pendingImages": 0,
+          "decodedImages": 28,
+          "imagePreparations": 156,
+          "peakPendingImages": 20
+        },
+        "sharedContextLossRecovered": true
+      },
+      {
+        "theme": "dark",
+        "beforeStress": {
+          "contexts": 1,
+          "consumers": 12,
+          "lost": false,
+          "renders": 142,
+          "programBuilds": 12,
+          "sourceUploads": 57,
+          "sourcePreparations": 57,
+          "renderMilliseconds": 839.3999998569489,
+          "encodeMilliseconds": 137.00000023841858,
+          "pendingImages": 0,
+          "decodedImages": 8,
+          "imagePreparations": 142,
+          "peakPendingImages": 8
+        },
+        "afterStress": {
+          "contexts": 1,
+          "consumers": 32,
+          "lost": false,
+          "renders": 162,
+          "programBuilds": 12,
+          "sourceUploads": 58,
+          "sourcePreparations": 58,
+          "renderMilliseconds": 908.3999991416931,
+          "encodeMilliseconds": 152.099999666214,
+          "pendingImages": 0,
+          "decodedImages": 28,
+          "imagePreparations": 162,
+          "peakPendingImages": 20
+        },
+        "staticStart": {
+          "contexts": 1,
+          "consumers": 32,
+          "lost": false,
+          "renders": 162,
+          "programBuilds": 12,
+          "sourceUploads": 58,
+          "sourcePreparations": 58,
+          "renderMilliseconds": 908.3999991416931,
+          "encodeMilliseconds": 152.099999666214,
+          "pendingImages": 0,
+          "decodedImages": 28,
+          "imagePreparations": 162,
+          "peakPendingImages": 20
+        },
+        "staticEnd": {
+          "contexts": 1,
+          "consumers": 32,
+          "lost": false,
+          "renders": 162,
+          "programBuilds": 12,
+          "sourceUploads": 58,
+          "sourcePreparations": 58,
+          "renderMilliseconds": 908.3999991416931,
+          "encodeMilliseconds": 152.099999666214,
+          "pendingImages": 0,
+          "decodedImages": 28,
+          "imagePreparations": 162,
+          "peakPendingImages": 20
+        },
+        "sharedContextLossRecovered": true
+      }
+    ],
+    "publicButton": [
+      {
+        "publicRoute": "/en/ui-libraries/liquid-glass/button/",
+        "runtime": "wc",
+        "quality": "self-optical",
+        "actualPreviewer": true,
+        "baseActivation": true
+      },
+      {
+        "publicRoute": "/en/ui-libraries/liquid-glass/button/",
+        "runtime": "react",
+        "quality": "self-optical",
+        "actualPreviewer": true,
+        "baseActivation": true
+      },
+      {
+        "publicRoute": "/en/ui-libraries/liquid-glass/button/",
+        "runtime": "vue",
+        "quality": "self-optical",
+        "actualPreviewer": true,
+        "baseActivation": true
+      },
+      {
+        "publicRoute": "/en/ui-libraries/liquid-glass/button/",
+        "runtime": "vue2",
+        "quality": "self-optical",
+        "actualPreviewer": true,
+        "baseActivation": true
+      }
+    ],
+    "inputs": {
+      "apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts": "0a821afca35de54fe083ea8de515eee24f47dd37e68c15449493be4529666e37",
+      "apps/www/dist/en/test/liquid-glass-material/index.html": "7999233c43df63f8fb67f720a60c13b5adc705136b0ab9fa90bb7b24a2fc755d",
+      "apps/www/dist/en/ui-libraries/liquid-glass/button/index.html": "6c6be6f29b19f2eadb4b86f54a33fc5b2f10a8c112569309175032b72328ad57"
+    },
+    "nativeLogSHA256": "790507103d9f103479acb6b89c76d359af7cd8622598af97fdfcb5949a8c7da3"
+  },
+  "portal": {
+    "tests": {
+      "passed": 5,
+      "unselected": 50
+    },
+    "inputs": {
+      "apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts": "3913100f3c56c41a7011b116e742c57fe0ad05efd02be19ac16587277102767e",
+      "apps/www/dist/en/test/liquid-glass-portal/index.html": "20d80d1282a788f893adc09beb20264c3065ff63f700f542044c3f17c1f06d22"
+    },
+    "nativeLogSHA256": "4d8ec568a748698b0536346008b1449c16fcc2c09c11de8c8b3c7055a85b5910"
+  }
+}
