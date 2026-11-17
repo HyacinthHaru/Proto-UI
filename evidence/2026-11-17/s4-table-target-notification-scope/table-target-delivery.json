@@ -1,0 +1,823 @@
+{
+  "source": {
+    "head": "2a006890731166a44b6a1b206caa3242133bde4e",
+    "tree": "7adddbf48e88831832ac6fb7dc247a554cbe271d",
+    "parent": "d5f9ede572fdb3d03dde581f06c02e6034caae9d",
+    "signature": "G"
+  },
+  "baseline": {
+    "head": "d5f9ede572fdb3d03dde581f06c02e6034caae9d",
+    "tree": "30878dfaea208a6e3de92d4f59e544ba5401b12f",
+    "parent": "3a5e5133d591b1d32b4ae4e13ca56fbeaeb3e9ce",
+    "signature": "G"
+  },
+  "changedInputs": {
+    "packages/modules/table-structure/src/create.ts": "ae720f3d4a148d256856ce3b7c20e7011c0a7263f3c88545f204d7092eb771c6",
+    "packages/runtime/test/contract/table-target-domain.contract.test.ts": "3074f8ae81dad81f0b71d393136346f4c1f51e8db4b9c6e2347fd3279f69e011"
+  },
+  "buildInputs": {
+    "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "e6590db342bddc56b37fa367ce6b1cc519130cdb201e06e8d14061569d5e0317",
+    "apps/www/dist/zh-cn/internal/demo-matrix/index.html": "6142704ed6d0ab374f5c29be90e19a080ae8a652f8ba136c375e0d9550acf2cc",
+    "apps/www/dist/en/internal/demo-matrix/index.html": "ddb423f0659c2ed52ca46fb501c179c3b1a5ffe7bf9bb5614988ef6f3835978d"
+  },
+  "pages": {
+    "zh-cn": {
+      "bytes": 1862447,
+      "sha256": "6142704ed6d0ab374f5c29be90e19a080ae8a652f8ba136c375e0d9550acf2cc",
+      "previews": 1268
+    },
+    "en": {
+      "bytes": 1914031,
+      "sha256": "ddb423f0659c2ed52ca46fb501c179c3b1a5ffe7bf9bb5614988ef6f3835978d",
+      "previews": 1268
+    }
+  },
+  "versions": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79"],
+  "red": {
+    "tests": {
+      "numTotalTests": 1,
+      "numPassedTests": 0,
+      "numFailedTests": 1,
+      "numPendingTests": 0,
+      "cases": [
+        {
+          "name": "Runtime Table target notifications keeps unrelated established tables quiet during a target replacement",
+          "status": "failed",
+          "duration": 22.469167000000084,
+          "firstMessages": [
+            "AssertionError: expected { root: {}, caption: undefined, …(5) } to be { root: {}, caption: undefined, …(5) } // Object.is equality"
+          ]
+        }
+      ]
+    },
+    "logSHA256": "91cd632935f6da33bf894d0ccea002b83ac7e52b2d2ef2ea5bd7cbd80af7a4c7"
+  },
+  "focused": {
+    "cases": 215,
+    "logSHA256": "d576a4a13cc5853b4da88c79d3f3740481c793ebfa547ebb187ae6a0e7a3eff2"
+  },
+  "originalMatrix": {
+    "testResults": {
+      "numTotalTests": 2,
+      "numPassedTests": 0,
+      "numFailedTests": 2,
+      "numPendingTests": 0,
+      "cases": [
+        {
+          "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+          "status": "failed",
+          "duration": 150534.258083,
+          "firstMessages": ["Error: Test timed out in 150000ms."]
+        },
+        {
+          "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+          "status": "failed",
+          "duration": 150525.59741599998,
+          "firstMessages": ["Error: Test timed out in 150000ms."]
+        }
+      ]
+    },
+    "guardMs": {
+      "readiness": 60000,
+      "case": 150000
+    },
+    "rawLogSHA256": "44f359de950a15627860745d96baf827e5cea6940b4e34369de19226e93e294f",
+    "startupByLocale": {
+      "zh-cn": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      },
+      "en": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      }
+    }
+  },
+  "builtinNativeTable": {
+    "tests": {
+      "numTotalTests": 5,
+      "numPassedTests": 5,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "cases": [
+        {
+          "name": "Base Table public four-adapter browser evidence wc renders the same passive Table semantics and ordered header graph",
+          "status": "passed",
+          "duration": 1232.899833,
+          "firstMessages": []
+        },
+        {
+          "name": "Base Table public four-adapter browser evidence react renders the same passive Table semantics and ordered header graph",
+          "status": "passed",
+          "duration": 1407.8679159999997,
+          "firstMessages": []
+        },
+        {
+          "name": "Base Table public four-adapter browser evidence vue renders the same passive Table semantics and ordered header graph",
+          "status": "passed",
+          "duration": 1354.286459,
+          "firstMessages": []
+        },
+        {
+          "name": "Base Table public four-adapter browser evidence vue2 renders the same passive Table semantics and ordered header graph",
+          "status": "passed",
+          "duration": 1419.3369590000002,
+          "firstMessages": []
+        },
+        {
+          "name": "Base Table public four-adapter browser evidence keeps the Chinese page on the same four-adapter public demo",
+          "status": "passed",
+          "duration": 1369.7012920000006,
+          "firstMessages": []
+        }
+      ]
+    },
+    "suite": {
+      "apps/www/src/content/docs/zh-cn/demo-base-table.browser.test.ts": "433cd424cb4f29c287080ad311397398166beaa4e525d77c396ae03191439101"
+    },
+    "logSHA256": "273b0069835869e6570b51a6598f83e47b3dd95a29a7dd1bda4e66830e99abba",
+    "physicalPagesSHA256": {
+      "en": "c378911703d1163891cc87e9984961046d14899529d8c663899c8ab2952757ad",
+      "zh-cn": "6324b9e1ae149911386cf1ca6b473e67ff6692e068cf4917941469792d9bfec4"
+    }
+  },
+  "timing": {
+    "before": {
+      "binding": {
+        "file": "site-shadcn-controls.DD75xMYt.js",
+        "inputSHA256": "c937c33821a326090e4c1f6e0a486c1c1e2284af4a189546ab9e5b25d501ac86",
+        "outputSHA256": "e8eadb55edbbcaf5da779b7785922f38dd4ee8f2f1a526a75648e9f2020230c2",
+        "markedKinds": [
+          "a11y-parts",
+          "scroll-chrome",
+          "table-root",
+          "control-label",
+          "context-menu-input",
+          "axis-input"
+        ]
+      },
+      "overlaySHA256": "c3976e6215d992a426f7a8e564c6723465fed8309da0546ee98a9154b6b7fb16",
+      "rawLogSHA256": "88c8da68e8ed5c7ffb535b19fafe7e2ad024973e58eabb74abf893bf705137bc",
+      "runnerOverlaySHA256": "f4dfdc5a855a801dbdb35f05d6d1f669eba23af4c0bfd169cd41c4b5eaa4b65f",
+      "native": {
+        "numTotalTests": 2,
+        "numPassedTests": 0,
+        "numFailedTests": 1,
+        "numPendingTests": 1,
+        "cases": [
+          {
+            "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+            "status": "failed",
+            "duration": 150532.618125,
+            "firstMessages": ["Error: Test timed out in 150000ms."]
+          },
+          {
+            "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+            "status": "skipped",
+            "duration": null,
+            "firstMessages": []
+          }
+        ]
+      },
+      "startup": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      },
+      "exit": 1,
+      "controls": {
+        "a11y-parts": {
+          "calls": 65,
+          "samples": 2,
+          "sampledMs": 0.007041000000000963,
+          "maxSampleMs": 0.0064579999999985205
+        },
+        "scroll-chrome": {
+          "calls": 1,
+          "samples": 1,
+          "sampledMs": 0.004999999999999005,
+          "maxSampleMs": 0.004999999999999005
+        },
+        "other": {
+          "calls": 1,
+          "samples": 1,
+          "sampledMs": 0.00274999999999892,
+          "maxSampleMs": 0.00274999999999892
+        }
+      }
+    },
+    "after": {
+      "binding": {
+        "file": "site-shadcn-controls.YGeqp8xC.js",
+        "inputSHA256": "0be6d08daf4d57f076f73a0192dd4fa1f0b45e1649874e1b2e68fddd585ce3f3",
+        "outputSHA256": "44b8b339954c9b1e496d9431f322df8f64a4ea117428d9700bd50d72f7135a7c",
+        "markedKinds": [
+          "a11y-parts",
+          "scroll-chrome",
+          "table-root",
+          "control-label",
+          "context-menu-input",
+          "axis-input"
+        ]
+      },
+      "overlaySHA256": "75b99de2c3b54f2982d8f8010c8255ad9eb76b7b9aa9fff4a2df76d532604329",
+      "rawLogSHA256": "11703e09c65a422140bb832f32987d334458811edbf5ec74f79e6b4a0c81443a",
+      "runnerOverlaySHA256": "f4dfdc5a855a801dbdb35f05d6d1f669eba23af4c0bfd169cd41c4b5eaa4b65f",
+      "native": {
+        "numTotalTests": 2,
+        "numPassedTests": 0,
+        "numFailedTests": 1,
+        "numPendingTests": 1,
+        "cases": [
+          {
+            "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+            "status": "failed",
+            "duration": 150532.05429200002,
+            "firstMessages": ["Error: Test timed out in 150000ms."]
+          },
+          {
+            "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+            "status": "skipped",
+            "duration": null,
+            "firstMessages": []
+          }
+        ]
+      },
+      "startup": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      },
+      "exit": 1,
+      "controls": {
+        "a11y-parts": {
+          "calls": 65,
+          "samples": 2,
+          "sampledMs": 0.007416000000000977,
+          "maxSampleMs": 0.006791000000001546
+        },
+        "scroll-chrome": {
+          "calls": 1,
+          "samples": 1,
+          "sampledMs": 0.0050829999999990605,
+          "maxSampleMs": 0.0050829999999990605
+        },
+        "other": {
+          "calls": 1,
+          "samples": 1,
+          "sampledMs": 0.0027909999999984336,
+          "maxSampleMs": 0.0027909999999984336
+        }
+      }
+    },
+    "checkpoints": {
+      "lastBefore": {
+        "kind": "target-consumers",
+        "calls": 32768,
+        "sampleEvery": 64,
+        "consumers": {
+          "axis-input": {
+            "calls": 59095,
+            "samples": 924,
+            "sampledMs": 10.200000762939453,
+            "maxSampleMs": 0.10000014305114746
+          },
+          "a11y-parts": {
+            "calls": 527391,
+            "samples": 8241,
+            "sampledMs": 37.799997329711914,
+            "maxSampleMs": 1.7999999523162842
+          },
+          "context-menu-input": {
+            "calls": 1620,
+            "samples": 26,
+            "sampledMs": 0.10000014305114746,
+            "maxSampleMs": 0.10000014305114746
+          },
+          "table-root": {
+            "calls": 18346,
+            "samples": 287,
+            "sampledMs": 600.4000022411346,
+            "maxSampleMs": 5.800000190734863
+          },
+          "scroll-chrome": {
+            "calls": 4862,
+            "samples": 76,
+            "sampledMs": 115.30000066757202,
+            "maxSampleMs": 60.80000019073486
+          },
+          "control-label": {
+            "calls": 448678,
+            "samples": 7011,
+            "sampledMs": 20.19999861717224,
+            "maxSampleMs": 0.10000014305114746
+          }
+        },
+        "pageMs": 109601.69999980927,
+        "timeOrigin": 1794891789100
+      },
+      "lastAfter": {
+        "kind": "target-consumers",
+        "calls": 32768,
+        "sampleEvery": 64,
+        "consumers": {
+          "axis-input": {
+            "calls": 59074,
+            "samples": 924,
+            "sampledMs": 10.200000286102295,
+            "maxSampleMs": 0.20000004768371582
+          },
+          "a11y-parts": {
+            "calls": 533006,
+            "samples": 8329,
+            "sampledMs": 35,
+            "maxSampleMs": 1.5999999046325684
+          },
+          "context-menu-input": {
+            "calls": 1620,
+            "samples": 26,
+            "sampledMs": 0,
+            "maxSampleMs": 0
+          },
+          "table-root": {
+            "calls": 10108,
+            "samples": 158,
+            "sampledMs": 283.400000333786,
+            "maxSampleMs": 3.799999952316284
+          },
+          "scroll-chrome": {
+            "calls": 4862,
+            "samples": 76,
+            "sampledMs": 63.799999952316284,
+            "maxSampleMs": 61.89999985694885
+          },
+          "control-label": {
+            "calls": 451982,
+            "samples": 7063,
+            "sampledMs": 19.699999570846558,
+            "maxSampleMs": 0.10000014305114746
+          }
+        },
+        "pageMs": 91360.5,
+        "timeOrigin": 1794892602577.4
+      },
+      "points": [
+        {
+          "publications": 2048,
+          "before": {
+            "kind": "target-consumers",
+            "calls": 2048,
+            "sampleEvery": 64,
+            "consumers": {
+              "axis-input": {
+                "calls": 1203,
+                "samples": 19,
+                "sampledMs": 0.19999980926513672,
+                "maxSampleMs": 0.09999990463256836
+              },
+              "a11y-parts": {
+                "calls": 7406,
+                "samples": 116,
+                "sampledMs": 0.799999475479126,
+                "maxSampleMs": 0.10000014305114746
+              },
+              "context-menu-input": {
+                "calls": 22,
+                "samples": 1,
+                "sampledMs": 0,
+                "maxSampleMs": 0
+              },
+              "table-root": {
+                "calls": 70,
+                "samples": 2,
+                "sampledMs": 1.8000001907348633,
+                "maxSampleMs": 1.8000001907348633
+              }
+            },
+            "pageMs": 10192.099999904633,
+            "timeOrigin": 1794891789100
+          },
+          "after": {
+            "kind": "target-consumers",
+            "calls": 2048,
+            "sampleEvery": 64,
+            "consumers": {
+              "axis-input": {
+                "calls": 1203,
+                "samples": 19,
+                "sampledMs": 0,
+                "maxSampleMs": 0
+              },
+              "a11y-parts": {
+                "calls": 5410,
+                "samples": 85,
+                "sampledMs": 0.3000001907348633,
+                "maxSampleMs": 0.10000014305114746
+              },
+              "context-menu-input": {
+                "calls": 22,
+                "samples": 1,
+                "sampledMs": 0,
+                "maxSampleMs": 0
+              },
+              "table-root": {
+                "calls": 182,
+                "samples": 3,
+                "sampledMs": 2.5999999046325684,
+                "maxSampleMs": 1.7999999523162842
+              }
+            },
+            "pageMs": 10351.299999952316,
+            "timeOrigin": 1794892602577.4
+          }
+        },
+        {
+          "publications": 4096,
+          "before": {
+            "kind": "target-consumers",
+            "calls": 4096,
+            "sampleEvery": 64,
+            "consumers": {
+              "axis-input": {
+                "calls": 1702,
+                "samples": 27,
+                "sampledMs": 0.19999980926513672,
+                "maxSampleMs": 0.09999990463256836
+              },
+              "a11y-parts": {
+                "calls": 18882,
+                "samples": 296,
+                "sampledMs": 2.5999996662139893,
+                "maxSampleMs": 0.20000004768371582
+              },
+              "context-menu-input": {
+                "calls": 22,
+                "samples": 1,
+                "sampledMs": 0,
+                "maxSampleMs": 0
+              },
+              "table-root": {
+                "calls": 70,
+                "samples": 2,
+                "sampledMs": 1.8000001907348633,
+                "maxSampleMs": 1.8000001907348633
+              },
+              "scroll-chrome": {
+                "calls": 80,
+                "samples": 2,
+                "sampledMs": 0,
+                "maxSampleMs": 0
+              },
+              "control-label": {
+                "calls": 3093,
+                "samples": 49,
+                "sampledMs": 0,
+                "maxSampleMs": 0
+              }
+            },
+            "pageMs": 12616.199999809265,
+            "timeOrigin": 1794891789100
+          },
+          "after": {
+            "kind": "target-consumers",
+            "calls": 4096,
+            "sampleEvery": 64,
+            "consumers": {
+              "axis-input": {
+                "calls": 1690,
+                "samples": 27,
+                "sampledMs": 0.09999990463256836,
+                "maxSampleMs": 0.09999990463256836
+              },
+              "a11y-parts": {
+                "calls": 19830,
+                "samples": 310,
+                "sampledMs": 0.8000004291534424,
+                "maxSampleMs": 0.10000014305114746
+              },
+              "context-menu-input": {
+                "calls": 22,
+                "samples": 1,
+                "sampledMs": 0,
+                "maxSampleMs": 0
+              },
+              "table-root": {
+                "calls": 182,
+                "samples": 3,
+                "sampledMs": 2.5999999046325684,
+                "maxSampleMs": 1.7999999523162842
+              },
+              "scroll-chrome": {
+                "calls": 80,
+                "samples": 2,
+                "sampledMs": 0,
+                "maxSampleMs": 0
+              },
+              "control-label": {
+                "calls": 3189,
+                "samples": 50,
+                "sampledMs": 0,
+                "maxSampleMs": 0
+              }
+            },
+            "pageMs": 12939.5,
+            "timeOrigin": 1794892602577.4
+          }
+        },
+        {
+          "publications": 8192,
+          "before": {
+            "kind": "target-consumers",
+            "calls": 8192,
+            "sampleEvery": 64,
+            "consumers": {
+              "axis-input": {
+                "calls": 5923,
+                "samples": 93,
+                "sampledMs": 0.5999996662139893,
+                "maxSampleMs": 0.10000014305114746
+              },
+              "a11y-parts": {
+                "calls": 50501,
+                "samples": 790,
+                "sampledMs": 4.9999988079071045,
+                "maxSampleMs": 0.20000004768371582
+              },
+              "context-menu-input": {
+                "calls": 70,
+                "samples": 2,
+                "sampledMs": 0,
+                "maxSampleMs": 0
+              },
+              "table-root": {
+                "calls": 420,
+                "samples": 7,
+                "sampledMs": 8.799999952316284,
+                "maxSampleMs": 1.8000001907348633
+              },
+              "scroll-chrome": {
+                "calls": 110,
+                "samples": 2,
+                "sampledMs": 0,
+                "maxSampleMs": 0
+              },
+              "control-label": {
+                "calls": 29905,
+                "samples": 468,
+                "sampledMs": 1.500000238418579,
+                "maxSampleMs": 0.10000014305114746
+              }
+            },
+            "pageMs": 19186.299999952316,
+            "timeOrigin": 1794891789100
+          },
+          "after": {
+            "kind": "target-consumers",
+            "calls": 8192,
+            "sampleEvery": 64,
+            "consumers": {
+              "axis-input": {
+                "calls": 5929,
+                "samples": 93,
+                "sampledMs": 0.20000004768371582,
+                "maxSampleMs": 0.10000014305114746
+              },
+              "a11y-parts": {
+                "calls": 53835,
+                "samples": 842,
+                "sampledMs": 2.9000000953674316,
+                "maxSampleMs": 0.19999980926513672
+              },
+              "context-menu-input": {
+                "calls": 70,
+                "samples": 2,
+                "sampledMs": 0,
+                "maxSampleMs": 0
+              },
+              "table-root": {
+                "calls": 336,
+                "samples": 6,
+                "sampledMs": 5.400000095367432,
+                "maxSampleMs": 2.1000001430511475
+              },
+              "scroll-chrome": {
+                "calls": 84,
+                "samples": 2,
+                "sampledMs": 0,
+                "maxSampleMs": 0
+              },
+              "control-label": {
+                "calls": 30649,
+                "samples": 479,
+                "sampledMs": 1.7999999523162842,
+                "maxSampleMs": 0.10000014305114746
+              }
+            },
+            "pageMs": 18888.799999952316,
+            "timeOrigin": 1794892602577.4
+          }
+        },
+        {
+          "publications": 16384,
+          "before": {
+            "kind": "target-consumers",
+            "calls": 16384,
+            "sampleEvery": 64,
+            "consumers": {
+              "axis-input": {
+                "calls": 13991,
+                "samples": 219,
+                "sampledMs": 1.3999991416931152,
+                "maxSampleMs": 0.10000014305114746
+              },
+              "a11y-parts": {
+                "calls": 156965,
+                "samples": 2453,
+                "sampledMs": 11.899998188018799,
+                "maxSampleMs": 0.20000004768371582
+              },
+              "context-menu-input": {
+                "calls": 318,
+                "samples": 5,
+                "sampledMs": 0,
+                "maxSampleMs": 0
+              },
+              "table-root": {
+                "calls": 3280,
+                "samples": 52,
+                "sampledMs": 111.2999997138977,
+                "maxSampleMs": 4.700000047683716
+              },
+              "scroll-chrome": {
+                "calls": 1164,
+                "samples": 19,
+                "sampledMs": 0.6000001430511475,
+                "maxSampleMs": 0.20000004768371582
+              },
+              "control-label": {
+                "calls": 106256,
+                "samples": 1661,
+                "sampledMs": 5.199999570846558,
+                "maxSampleMs": 0.10000014305114746
+              }
+            },
+            "pageMs": 48337.09999990463,
+            "timeOrigin": 1794891789100
+          },
+          "after": {
+            "kind": "target-consumers",
+            "calls": 16384,
+            "sampleEvery": 64,
+            "consumers": {
+              "axis-input": {
+                "calls": 14310,
+                "samples": 224,
+                "sampledMs": 1.9000003337860107,
+                "maxSampleMs": 0.20000004768371582
+              },
+              "a11y-parts": {
+                "calls": 158630,
+                "samples": 2479,
+                "sampledMs": 7.600000619888306,
+                "maxSampleMs": 0.20000004768371582
+              },
+              "context-menu-input": {
+                "calls": 338,
+                "samples": 6,
+                "sampledMs": 0,
+                "maxSampleMs": 0
+              },
+              "table-root": {
+                "calls": 2202,
+                "samples": 35,
+                "sampledMs": 55.70000076293945,
+                "maxSampleMs": 3.200000047683716
+              },
+              "scroll-chrome": {
+                "calls": 1212,
+                "samples": 19,
+                "sampledMs": 0.2999999523162842,
+                "maxSampleMs": 0.20000004768371582
+              },
+              "control-label": {
+                "calls": 107144,
+                "samples": 1675,
+                "sampledMs": 5.3000006675720215,
+                "maxSampleMs": 0.10000014305114746
+              }
+            },
+            "pageMs": 45224.10000014305,
+            "timeOrigin": 1794892602577.4
+          }
+        },
+        {
+          "publications": 32768,
+          "before": {
+            "kind": "target-consumers",
+            "calls": 32768,
+            "sampleEvery": 64,
+            "consumers": {
+              "axis-input": {
+                "calls": 59095,
+                "samples": 924,
+                "sampledMs": 10.200000762939453,
+                "maxSampleMs": 0.10000014305114746
+              },
+              "a11y-parts": {
+                "calls": 527391,
+                "samples": 8241,
+                "sampledMs": 37.799997329711914,
+                "maxSampleMs": 1.7999999523162842
+              },
+              "context-menu-input": {
+                "calls": 1620,
+                "samples": 26,
+                "sampledMs": 0.10000014305114746,
+                "maxSampleMs": 0.10000014305114746
+              },
+              "table-root": {
+                "calls": 18346,
+                "samples": 287,
+                "sampledMs": 600.4000022411346,
+                "maxSampleMs": 5.800000190734863
+              },
+              "scroll-chrome": {
+                "calls": 4862,
+                "samples": 76,
+                "sampledMs": 115.30000066757202,
+                "maxSampleMs": 60.80000019073486
+              },
+              "control-label": {
+                "calls": 448678,
+                "samples": 7011,
+                "sampledMs": 20.19999861717224,
+                "maxSampleMs": 0.10000014305114746
+              }
+            },
+            "pageMs": 109601.69999980927,
+            "timeOrigin": 1794891789100
+          },
+          "after": {
+            "kind": "target-consumers",
+            "calls": 32768,
+            "sampleEvery": 64,
+            "consumers": {
+              "axis-input": {
+                "calls": 59074,
+                "samples": 924,
+                "sampledMs": 10.200000286102295,
+                "maxSampleMs": 0.20000004768371582
+              },
+              "a11y-parts": {
+                "calls": 533006,
+                "samples": 8329,
+                "sampledMs": 35,
+                "maxSampleMs": 1.5999999046325684
+              },
+              "context-menu-input": {
+                "calls": 1620,
+                "samples": 26,
+                "sampledMs": 0,
+                "maxSampleMs": 0
+              },
+              "table-root": {
+                "calls": 10108,
+                "samples": 158,
+                "sampledMs": 283.400000333786,
+                "maxSampleMs": 3.799999952316284
+              },
+              "scroll-chrome": {
+                "calls": 4862,
+                "samples": 76,
+                "sampledMs": 63.799999952316284,
+                "maxSampleMs": 61.89999985694885
+              },
+              "control-label": {
+                "calls": 451982,
+                "samples": 7063,
+                "sampledMs": 19.699999570846558,
+                "maxSampleMs": 0.10000014305114746
+              }
+            },
+            "pageMs": 91360.5,
+            "timeOrigin": 1794892602577.4
+          }
+        }
+      ]
+    }
+  }
+}
