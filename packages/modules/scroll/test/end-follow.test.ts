@@ -258,6 +258,90 @@ describe('module-scroll: end-follow host contract', () => {
     }
   );
 
+  it.each([
+    'layout',
+    'key',
+    'wheel',
+    'contact',
+    'request',
+    'active contact',
+    'active key',
+  ] as const)('shares a following Anatomy sample while preserving %s ordering', async (action) => {
+    const frames = installFrameHarness();
+    const target = document.createElement('div');
+    const metrics = installMetrics(target, {
+      clientWidth: 100,
+      scrollWidth: 100,
+      clientHeight: 100,
+      scrollHeight: 100,
+    });
+    const facts: ScrollSurfaceSnapshot[] = [];
+    const connection: ScrollSurfaceHostAttachment = {
+      config: {
+        axes: 'vertical',
+        projection: 'system',
+        endFollow: { mode: 'while-at-end', axis: 'vertical' },
+      },
+      projection: 'system',
+      composedChrome: { scope: {}, controls: [] },
+      onFacts: (snapshot) => facts.push(snapshot),
+    };
+    const startContact = () =>
+      target.dispatchEvent(
+        new PointerEvent('pointerdown', { bubbles: true, pointerId: 1, pointerType: 'touch' })
+      );
+    document.body.append(target);
+    const lease = createWebScrollSurfaceHost(target, { moveGestureHost }).attach(connection);
+    try {
+      frames.runAll();
+      expect(facts.at(-1)?.endFollow.state).toBe('following');
+      const initial = facts.length;
+      if (action === 'active contact') startContact();
+      if (action === 'active key')
+        target.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, key: 'Home' }));
+
+      metrics({ scrollHeight: 250 });
+      lease.update(connection, 'anatomy');
+      if (action === 'active contact' || action === 'active key') {
+        expect(facts.at(-1)?.endFollow.state).toBe('pending');
+        expect(frames.pending()).toBe(1);
+        return;
+      }
+
+      metrics({ scrollHeight: 400 });
+      lease.update(connection, 'anatomy');
+      expect(facts).toHaveLength(initial);
+      expect(frames.pending()).toBe(0);
+
+      if (action === 'key')
+        target.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, key: 'Home' }));
+      if (action === 'wheel')
+        target.dispatchEvent(new WheelEvent('wheel', { bubbles: true, deltaY: -40 }));
+      if (action === 'contact') {
+        startContact();
+        expect(facts.at(-1)?.endFollow.state).toBe('pending');
+      }
+      if (action === 'request')
+        lease.request({ kind: 'page', axis: 'vertical', direction: 'before' });
+
+      await Promise.resolve();
+      if (action === 'key' || action === 'wheel' || action === 'request') {
+        expect(facts.at(-1)?.endFollow).toEqual({ state: 'paused', requestStatus: 'rejected' });
+        expect(frames.pending()).toBe(0);
+        expect(target.scrollTop).toBe(0);
+      } else {
+        expect(facts).toHaveLength(initial + 1);
+        expect(facts.at(-1)?.vertical.visibleRatio).toBe(0.25);
+        expect(frames.pending()).toBe(1);
+        frames.runAll();
+        expect(target.scrollTop).toBe(300);
+        expect(facts.at(-1)?.endFollow.state).toBe('following');
+      }
+    } finally {
+      lease.dispose();
+    }
+  });
+
   it('cancels a pending follow frame when departure input cannot scroll (key)', () => {
     const frames = installFrameHarness();
     const target = document.createElement('div');

@@ -615,7 +615,7 @@ export function createWebScrollSurfaceHost(
         return false;
       };
       const executeRequest = (request: ScrollSurfacePositionRequest) => {
-        if (!policyCurrent()) return;
+        if (!policyCurrent() || !flushFollowingLayoutForInput()) return;
         const followAxis = configuredFollowAxis();
         if (request.kind === 'to-end') {
           if (followAxis && request.axis !== followAxis) {
@@ -763,10 +763,27 @@ export function createWebScrollSurfaceHost(
           if (policyCurrent()) onLayoutChange();
         });
       };
+      // Consume a deferred follow sample before classifying real reader input.
+      // Publishing its facts can synchronously replace the input's owner.
+      const flushFollowingLayoutForInput = (isCurrent = policyCurrent) => {
+        if (endFollowState !== 'following' || !pendingLayoutSample) return !disposed;
+        pendingLayoutSample = null;
+        const previous = connection;
+        const current = () =>
+          isCurrent() &&
+          connection.config === previous.config &&
+          connection.projection === previous.projection &&
+          Object.is(connection.composedChrome?.scope, previous.composedChrome?.scope);
+        if (!current()) return false;
+        onLayoutChange();
+        return current();
+      };
       const armReaderIntent = () => {
+        if (!flushFollowingLayoutForInput()) return false;
         requestedDepartureAxis = null;
         const now = ownerWindow?.performance.now() ?? Date.now();
         readerIntentUntil = now + DISCRETE_READER_INTENT_WINDOW_MS;
+        return true;
       };
       // A boundary-clamped departure gesture emits no scroll event, so a
       // pending follow frame must not wait for one to be canceled. Input
@@ -830,10 +847,10 @@ export function createWebScrollSurfaceHost(
             : event.deltaX < 0 || (event.shiftKey && event.deltaY < 0);
         if (!leavingEnd) return;
         if (findDepartureConsumer(event, axis)) return;
-        armReaderIntent();
-        cancelUnscrollableDeparture(axis);
+        if (armReaderIntent()) cancelUnscrollableDeparture(axis);
       };
       const beginContact = () => {
+        if (!flushFollowingLayoutForInput()) return false;
         const axis = configuredFollowAxis();
         if (!readerContacts.active && axis) {
           contactOrigin = {
@@ -843,9 +860,10 @@ export function createWebScrollSurfaceHost(
         }
         readerIntentUntil = 0;
         requestedDepartureAxis = null;
+        return true;
       };
       const onPointerDown = (event: PointerEvent) => {
-        beginContact();
+        if (!beginContact()) return;
         readerContacts.startPointer(event.pointerId, event.pointerType, {
           x: event.clientX,
           y: event.clientY,
@@ -859,8 +877,7 @@ export function createWebScrollSurfaceHost(
         const owned = Array.from(event.changedTouches).filter((touch) =>
           target.contains(touch.target as Node)
         );
-        if (owned.length === 0) return;
-        beginContact();
+        if (owned.length === 0 || !beginContact()) return;
         readerContacts.startTouches(
           owned.map((touch) => touch.identifier),
           owned.map((touch) => ({ x: touch.clientX, y: touch.clientY }))
@@ -947,8 +964,7 @@ export function createWebScrollSurfaceHost(
         if (scrollDirection === 'before') {
           if (findDepartureConsumer(event, axis)) return;
           // Native keyboard scrolling can arrive after key release.
-          armReaderIntent();
-          cancelUnscrollableDeparture(axis);
+          if (armReaderIntent()) cancelUnscrollableDeparture(axis);
         } else readerIntentUntil = 0;
       };
       const onScroll = () => {
@@ -1210,18 +1226,19 @@ export function createWebScrollSurfaceHost(
           if (disposed || !policyCurrent()) return;
           const previousAxis = configuredFollowAxis();
           const previousAxes = connection.config.axes;
-          // A pending follow movement already samples its own layout before
-          // applying. Empty chrome notifications can share one fact refresh
-          // in this checkpoint without changing that movement.
+          // Compatible anatomy changes can share a layout sample while
+          // there is no reader input to resolve or a movement is pending.
           const followPending = endFollowState === 'pending' && scheduledEnd?.axis === previousAxis;
           const coalesceLayout =
             source === 'anatomy' &&
-            (previousAxis === null || followPending) &&
             connection.config === nextConnection.config &&
             connection.projection === nextConnection.projection &&
             Object.is(connection.composedChrome?.scope, nextConnection.composedChrome?.scope) &&
             !connection.composedChrome?.controls.length &&
-            !nextConnection.composedChrome?.controls.length;
+            !nextConnection.composedChrome?.controls.length &&
+            (previousAxis === null ||
+              followPending ||
+              (endFollowState === 'following' && !readerContacts.active && !hasReaderIntent()));
           connection = nextConnection;
           projectPolicy();
           reconcileMoveGestures();
@@ -1243,6 +1260,7 @@ export function createWebScrollSurfaceHost(
         reveal(subject, axis, isCurrentTarget) {
           if (axis !== 'vertical' || !isAxisEnabled(axis)) return false;
           const current = () => policyCurrent() && isCurrentTarget() && policyCurrent();
+          if (!flushFollowingLayoutForInput(current)) return false;
           const accepted = revealWebScrollTarget(target, subject, current, () => {
             if (scheduledEnd?.axis === axis) cancelScheduledEnd(true);
           });
