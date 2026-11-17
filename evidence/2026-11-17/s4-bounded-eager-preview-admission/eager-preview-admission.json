@@ -1,0 +1,1006 @@
+{
+  "source": {
+    "head": "310a4193060016746bb72ba6f91cce3e7f989ed9",
+    "tree": "2331a227164317fa153d81a140303018f0f60d4a",
+    "parent": "df3e516aa67e303e8634f4513a8d4f62e393d2f6",
+    "signature": "G"
+  },
+  "baseline": {
+    "head": "df3e516aa67e303e8634f4513a8d4f62e393d2f6",
+    "tree": "bb8cc682e842dea4cec5e366947c0e6399894a27",
+    "parent": "a90f994bd8c842f6d112bd3b9ff9d6520f516254",
+    "signature": "G"
+  },
+  "changedInputs": {
+    "apps/www/src/components/PrototypePreviewer/previewer-bootstrap.ts": "da5a9ad2bfa033775775167aa5f6c9c78982f835de3f77f86108f96e99f4b5f4",
+    "apps/www/src/components/PrototypePreviewer/previewer-bootstrap.test.ts": "82fd40bb0e6073135f69d211a069cf01ccb38cd9bfdc9f4e9b81f301552110d0"
+  },
+  "buildInputs": {
+    "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "e6590db342bddc56b37fa367ce6b1cc519130cdb201e06e8d14061569d5e0317",
+    "apps/www/dist/zh-cn/internal/demo-matrix/index.html": "e8c823a5d578b3fd4f6b13744d9217fa1751e776970a3791e63c810eb3f9cdf2",
+    "apps/www/dist/en/internal/demo-matrix/index.html": "ec230447ffcf948b5a7fc0601649c15a97fb5cd000f45841f61da18429427f9e"
+  },
+  "pages": {
+    "zh-cn": {
+      "bytes": 1862434,
+      "sha256": "e8c823a5d578b3fd4f6b13744d9217fa1751e776970a3791e63c810eb3f9cdf2",
+      "previews": 1268
+    },
+    "en": {
+      "bytes": 1914091,
+      "sha256": "ec230447ffcf948b5a7fc0601649c15a97fb5cd000f45841f61da18429427f9e",
+      "previews": 1268
+    }
+  },
+  "versions": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79"],
+  "red": {
+    "tests": {
+      "numTotalTests": 17,
+      "numPassedTests": 16,
+      "numFailedTests": 1,
+      "numPendingTests": 0,
+      "cases": [
+        {
+          "name": "RuntimeBox lazy bootstrap lifetime defers the client and sees the latest preference when the lazy card really mounts",
+          "status": "passed",
+          "duration": 2.6820000000000164,
+          "firstMessages": []
+        },
+        {
+          "name": "RuntimeBox lazy bootstrap lifetime does not duplicate observers or mounts on repeated bootstrap/page-load",
+          "status": "passed",
+          "duration": 0.8525840000000073,
+          "firstMessages": []
+        },
+        {
+          "name": "RuntimeBox lazy bootstrap lifetime revokes an import completion on Astro swap even while the old root is still connected",
+          "status": "passed",
+          "duration": 0.37050000000002115,
+          "firstMessages": []
+        },
+        {
+          "name": "RuntimeBox lazy bootstrap lifetime shares a pending eager client load only within one page generation",
+          "status": "passed",
+          "duration": 0.5691249999999854,
+          "firstMessages": []
+        },
+        {
+          "name": "RuntimeBox lazy bootstrap lifetime shares a rejecting client load and retries for a later eager owner",
+          "status": "passed",
+          "duration": 0.5905419999999992,
+          "firstMessages": []
+        },
+        {
+          "name": "RuntimeBox lazy bootstrap lifetime disconnects a never-visible removed card and calls a mounted owner cleanup only once",
+          "status": "passed",
+          "duration": 51.614958,
+          "firstMessages": []
+        },
+        {
+          "name": "eager preview admission starts every eager owner in document order across bounded native tasks",
+          "status": "failed",
+          "duration": 7.018375000000049,
+          "firstMessages": [
+            "AssertionError: expected [ <section …(5)></section>, …(34) ] to deeply equal []"
+          ]
+        },
+        {
+          "name": "eager preview admission drops an old queued generation and admits the next small page immediately",
+          "status": "passed",
+          "duration": 1.522291999999993,
+          "firstMessages": []
+        },
+        {
+          "name": "adapter panel first activation loads only visible eager panels, later activates a shown panel, and preserves mounted state",
+          "status": "passed",
+          "duration": 55.27966599999996,
+          "firstMessages": []
+        },
+        {
+          "name": "adapter panel first activation rechecks visibility after import and reads the current preference on subsequent activation",
+          "status": "passed",
+          "duration": 53.10395799999998,
+          "firstMessages": []
+        },
+        {
+          "name": "adapter panel first activation keeps lazy intersection gating when a hidden panel becomes visible",
+          "status": "passed",
+          "duration": 2.644125000000031,
+          "firstMessages": []
+        },
+        {
+          "name": "adapter panel first activation cancels a deferred panel on remove",
+          "status": "passed",
+          "duration": 1.8139590000000112,
+          "firstMessages": []
+        },
+        {
+          "name": "adapter panel first activation cancels a deferred panel on swap",
+          "status": "passed",
+          "duration": 1.5749169999999708,
+          "firstMessages": []
+        },
+        {
+          "name": "adapter panel first activation cancels a deferred panel on dispose",
+          "status": "passed",
+          "duration": 1.7392080000000192,
+          "firstMessages": []
+        },
+        {
+          "name": "adapter panel first activation cancels an in-flight visible-panel import on remove",
+          "status": "passed",
+          "duration": 0.6569999999999823,
+          "firstMessages": []
+        },
+        {
+          "name": "adapter panel first activation cancels an in-flight visible-panel import on dispose",
+          "status": "passed",
+          "duration": 0.25883299999998144,
+          "firstMessages": []
+        },
+        {
+          "name": "adapter panel first activation still mounts ordinary eager previews without panels",
+          "status": "passed",
+          "duration": 0.18874999999997044,
+          "firstMessages": []
+        }
+      ]
+    },
+    "logSHA256": "8216573515ee0bccfe02c3554c4a31bb73b7c086878ae4b5e036730ecea07935"
+  },
+  "focused": {
+    "cases": 127,
+    "logSHA256": "0b8aaa01306e76cac4038a7ef28de849a86798fef4c3020bead540e830026d81"
+  },
+  "nativeSmallPage": {
+    "tests": {
+      "numTotalTests": 33,
+      "numPassedTests": 4,
+      "numFailedTests": 0,
+      "numPendingTests": 29,
+      "cases": [
+        {
+          "name": "Accordion five families / four native Web consumers base wc preserves activation, natural Tab, ownership, relationships and repeatable lifetime",
+          "status": "passed",
+          "duration": 1997.449459,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers base react preserves activation, natural Tab, ownership, relationships and repeatable lifetime",
+          "status": "passed",
+          "duration": 2135.514375,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers base vue preserves activation, natural Tab, ownership, relationships and repeatable lifetime",
+          "status": "passed",
+          "duration": 2032.622958,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers base vue2 preserves activation, natural Tab, ownership, relationships and repeatable lifetime",
+          "status": "passed",
+          "duration": 2063.0360839999994,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers shadcn wc preserves activation, natural Tab, ownership, relationships and repeatable lifetime",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers shadcn react preserves activation, natural Tab, ownership, relationships and repeatable lifetime",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers shadcn vue preserves activation, natural Tab, ownership, relationships and repeatable lifetime",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers shadcn vue2 preserves activation, natural Tab, ownership, relationships and repeatable lifetime",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers brutalist wc preserves activation, natural Tab, ownership, relationships and repeatable lifetime",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers brutalist react preserves activation, natural Tab, ownership, relationships and repeatable lifetime",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers brutalist vue preserves activation, natural Tab, ownership, relationships and repeatable lifetime",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers brutalist vue2 preserves activation, natural Tab, ownership, relationships and repeatable lifetime",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers bootstrap-2-3-2 wc preserves activation, natural Tab, ownership, relationships and repeatable lifetime",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers bootstrap-2-3-2 react preserves activation, natural Tab, ownership, relationships and repeatable lifetime",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers bootstrap-2-3-2 vue preserves activation, natural Tab, ownership, relationships and repeatable lifetime",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers bootstrap-2-3-2 vue2 preserves activation, natural Tab, ownership, relationships and repeatable lifetime",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers liquid-glass wc preserves activation, natural Tab, ownership, relationships and repeatable lifetime",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers liquid-glass react preserves activation, natural Tab, ownership, relationships and repeatable lifetime",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers liquid-glass vue preserves activation, natural Tab, ownership, relationships and repeatable lifetime",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers liquid-glass vue2 preserves activation, natural Tab, ownership, relationships and repeatable lifetime",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers base Chinese 320px / 200% text keeps long labels and overflow inside the page",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers shadcn Chinese 320px / 200% text keeps long labels and overflow inside the page",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers brutalist Chinese 320px / 200% text keeps long labels and overflow inside the page",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers bootstrap-2-3-2 Chinese 320px / 200% text keeps long labels and overflow inside the page",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers liquid-glass Chinese 320px / 200% text keeps long labels and overflow inside the page",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers shadcn wc Rhea homepage block child respects profile padding at 1180px / 100% text",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers shadcn wc Rhea homepage block child respects profile padding at 390px / 200% text",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers shadcn react Rhea homepage block child respects profile padding at 1180px / 100% text",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers shadcn react Rhea homepage block child respects profile padding at 390px / 200% text",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers shadcn vue Rhea homepage block child respects profile padding at 1180px / 100% text",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers shadcn vue Rhea homepage block child respects profile padding at 390px / 200% text",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers shadcn vue2 Rhea homepage block child respects profile padding at 1180px / 100% text",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "Accordion five families / four native Web consumers shadcn vue2 Rhea homepage block child respects profile padding at 390px / 200% text",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        }
+      ]
+    },
+    "suite": {
+      "apps/www/src/content/docs/zh-cn/demo-accordion-family.browser.test.ts": "efcef75bf104c655e4e99f4c5ba8ace7ecf3f9785a6b424e0b2846ddede18232"
+    },
+    "servedHTMLSHA256": "6577a0e3d1844c8b76edad96f889f4de7b1a0566eae9459bb2434d6fd17cd523"
+  },
+  "diagnostic": {
+    "overlaySHA256": "b942d8ca921c90713eaa7b76f4931f96caf05d4b3c78990fe57ceface74b6190",
+    "inventorySHA256": "84acdc45cd63a5e624815ec0d476f6982c8a1a223d7c4bb69af15495f1acc3ec",
+    "runs": {
+      "stock": {
+        "mode": "stock",
+        "bindings": {
+          "mode": "stock",
+          "assets": [
+            {
+              "file": "react-runtime.kwzD2jqU.js",
+              "inputSHA256": "f88968e3737170cedcc9e76a965643c0c375ad1997fe81724af4471ff5d6280d",
+              "outputSHA256": "d80c5963fedbaa4bf59a3af6922f59593911b3dd3664aac882b2fca78d0ee8a1"
+            },
+            {
+              "file": "demo-renderer.Bs-jWwaf.js",
+              "inputSHA256": "5683f2d53298987ee70e65fe5ae8c0c129a3ee8d3d018203c32bb155fe8b4427",
+              "outputSHA256": "3831a61a1022ed850582b0e181c7229a7245744d714d32a2d5d6581322985f41"
+            }
+          ]
+        },
+        "react": [
+          {
+            "kind": "react-runtime-phase",
+            "stage": "assemble-start",
+            "name": null,
+            "pageMs": 9432.200000047684,
+            "timeOrigin": 1794901007739.2
+          },
+          {
+            "kind": "react-runtime-phase",
+            "stage": "import-start",
+            "name": "react",
+            "pageMs": 9432.399999856949,
+            "timeOrigin": 1794901007739.2
+          },
+          {
+            "kind": "react-runtime-phase",
+            "stage": "import-start",
+            "name": "react-dom",
+            "pageMs": 9432.399999856949,
+            "timeOrigin": 1794901007739.2
+          },
+          {
+            "kind": "react-runtime-phase",
+            "stage": "import-start",
+            "name": "react-dom/client",
+            "pageMs": 9432.399999856949,
+            "timeOrigin": 1794901007739.2
+          }
+        ],
+        "owner": [
+          {
+            "kind": "base-accordion-react",
+            "stage": "join-enter",
+            "previewerId": "pp-qmrw3svu9ha",
+            "pageMs": 10136,
+            "timeOrigin": 1794901007739.2
+          }
+        ],
+        "admission": [],
+        "inventory": [
+          {
+            "kind": "runtime-inventory",
+            "declaredRuntimes": {
+              "wc": {
+                "total": 317,
+                "inited": 317,
+                "hasHostChildren": 228,
+                "firstEmpty": {
+                  "previewerId": "pp-lvlgtad61sp",
+                  "demoId": "demo-base-transition"
+                }
+              },
+              "react": {
+                "total": 317,
+                "inited": 317,
+                "hasHostChildren": 78,
+                "firstEmpty": {
+                  "previewerId": "pp-qmrw3svu9ha",
+                  "demoId": "demo-base-accordion"
+                }
+              },
+              "vue": {
+                "total": 317,
+                "inited": 317,
+                "hasHostChildren": 78,
+                "firstEmpty": {
+                  "previewerId": "pp-r16jf0ay39c",
+                  "demoId": "demo-base-accordion"
+                }
+              },
+              "vue2": {
+                "total": 317,
+                "inited": 317,
+                "hasHostChildren": 78,
+                "firstEmpty": {
+                  "previewerId": "pp-4dmo370ixld",
+                  "demoId": "demo-base-accordion"
+                }
+              }
+            },
+            "publicationEvents": {
+              "wc": 199
+            },
+            "pageMs": 25538,
+            "timeOrigin": 1794901007739.2
+          },
+          {
+            "kind": "runtime-inventory",
+            "declaredRuntimes": {
+              "wc": {
+                "total": 317,
+                "inited": 317,
+                "hasHostChildren": 270,
+                "firstEmpty": {
+                  "previewerId": "pp-ad8s3tzk52w",
+                  "demoId": "demo-brutalist-tree"
+                }
+              },
+              "react": {
+                "total": 317,
+                "inited": 317,
+                "hasHostChildren": 78,
+                "firstEmpty": {
+                  "previewerId": "pp-qmrw3svu9ha",
+                  "demoId": "demo-base-accordion"
+                }
+              },
+              "vue": {
+                "total": 317,
+                "inited": 317,
+                "hasHostChildren": 270,
+                "firstEmpty": {
+                  "previewerId": "pp-r5bt0hae35",
+                  "demoId": "demo-brutalist-tree"
+                }
+              },
+              "vue2": {
+                "total": 317,
+                "inited": 317,
+                "hasHostChildren": 270,
+                "firstEmpty": {
+                  "previewerId": "pp-snusf2nidyq",
+                  "demoId": "demo-brutalist-tree"
+                }
+              }
+            },
+            "publicationEvents": {
+              "wc": 259,
+              "vue2": 259
+            },
+            "pageMs": 117752.20000004768,
+            "timeOrigin": 1794901007739.2
+          }
+        ],
+        "verdict": "Error: Test timed out in 150000ms.",
+        "errors": [],
+        "consoleErrors": [],
+        "rawLogSHA256": "634fe91a60b08f9f676ff9163734c5f5338a85446480927aa29c084369ce1f99",
+        "htmlSHA256": "a1f3f055c25f0e20e249bc3dfeca51e8c893cc0e06e7ec3a614d7307bfc12a9b",
+        "testOverlaySHA256": "b1f5574b5d85c470cf214f5bd2f5597c2221b3757f0ee2c31b8647bfdf9c45ad",
+        "exit": 1
+      },
+      "batched": {
+        "mode": "batched",
+        "bindings": {
+          "mode": "batched",
+          "assets": [
+            {
+              "file": "react-runtime.kwzD2jqU.js",
+              "inputSHA256": "f88968e3737170cedcc9e76a965643c0c375ad1997fe81724af4471ff5d6280d",
+              "outputSHA256": "d80c5963fedbaa4bf59a3af6922f59593911b3dd3664aac882b2fca78d0ee8a1"
+            },
+            {
+              "file": "demo-renderer.Bs-jWwaf.js",
+              "inputSHA256": "5683f2d53298987ee70e65fe5ae8c0c129a3ee8d3d018203c32bb155fe8b4427",
+              "outputSHA256": "3831a61a1022ed850582b0e181c7229a7245744d714d32a2d5d6581322985f41"
+            },
+            {
+              "file": "PrototypePreviewer.astro_astro_type_script_index_0_lang.kaJufnpX.js",
+              "inputSHA256": "728948a605e880a9cac5b43f78ad36c257a81ac26e4d5cecde0f72dfbd52ffb6",
+              "outputSHA256": "d3cef3d27d01c898160f7b16a2b283c817f89896bea7833dde1818940cd2fcaa"
+            }
+          ]
+        },
+        "react": [
+          {
+            "kind": "react-runtime-phase",
+            "stage": "assemble-start",
+            "name": null,
+            "pageMs": 7188.700000047684,
+            "timeOrigin": 1794901173114.3
+          },
+          {
+            "kind": "react-runtime-phase",
+            "stage": "import-start",
+            "name": "react",
+            "pageMs": 7188.799999952316,
+            "timeOrigin": 1794901173114.3
+          },
+          {
+            "kind": "react-runtime-phase",
+            "stage": "import-start",
+            "name": "react-dom",
+            "pageMs": 7188.900000095367,
+            "timeOrigin": 1794901173114.3
+          },
+          {
+            "kind": "react-runtime-phase",
+            "stage": "import-start",
+            "name": "react-dom/client",
+            "pageMs": 7188.900000095367,
+            "timeOrigin": 1794901173114.3
+          },
+          {
+            "kind": "react-runtime-phase",
+            "stage": "import-return",
+            "name": "react",
+            "pageMs": 14305.299999952316,
+            "timeOrigin": 1794901173114.3
+          },
+          {
+            "kind": "react-runtime-phase",
+            "stage": "import-return",
+            "name": "react-dom",
+            "pageMs": 14306.700000047684,
+            "timeOrigin": 1794901173114.3
+          },
+          {
+            "kind": "react-runtime-phase",
+            "stage": "import-return",
+            "name": "react-dom/client",
+            "pageMs": 14306.799999952316,
+            "timeOrigin": 1794901173114.3
+          },
+          {
+            "kind": "react-runtime-phase",
+            "stage": "assemble-return",
+            "name": null,
+            "pageMs": 14306.799999952316,
+            "timeOrigin": 1794901173114.3
+          }
+        ],
+        "owner": [
+          {
+            "kind": "base-accordion-react",
+            "stage": "join-enter",
+            "previewerId": "pp-qmrw3svu9ha",
+            "pageMs": 6650.600000143051,
+            "timeOrigin": 1794901173114.3
+          },
+          {
+            "kind": "base-accordion-react",
+            "stage": "join-return",
+            "previewerId": "pp-qmrw3svu9ha",
+            "pageMs": 14536.100000143051,
+            "timeOrigin": 1794901173114.3
+          },
+          {
+            "kind": "base-accordion-react",
+            "stage": "join-enter",
+            "previewerId": "pp-qmrw3svu9ha",
+            "pageMs": 15926,
+            "timeOrigin": 1794901173114.3
+          },
+          {
+            "kind": "base-accordion-react",
+            "stage": "join-return",
+            "previewerId": "pp-qmrw3svu9ha",
+            "pageMs": 15926.700000047684,
+            "timeOrigin": 1794901173114.3
+          }
+        ],
+        "admission": [
+          {
+            "kind": "eager-admission",
+            "batches": 1,
+            "admitted": 32,
+            "remaining": 1236,
+            "pageMs": 5231.400000095367,
+            "timeOrigin": 1794901173114.3
+          },
+          {
+            "kind": "eager-admission",
+            "batches": 2,
+            "admitted": 64,
+            "remaining": 1204,
+            "pageMs": 5286.600000143051,
+            "timeOrigin": 1794901173114.3
+          },
+          {
+            "kind": "eager-admission",
+            "batches": 4,
+            "admitted": 128,
+            "remaining": 1140,
+            "pageMs": 5991.600000143051,
+            "timeOrigin": 1794901173114.3
+          },
+          {
+            "kind": "eager-admission",
+            "batches": 8,
+            "admitted": 256,
+            "remaining": 1012,
+            "pageMs": 6118.200000047684,
+            "timeOrigin": 1794901173114.3
+          },
+          {
+            "kind": "eager-admission",
+            "batches": 16,
+            "admitted": 512,
+            "remaining": 756,
+            "pageMs": 19665.799999952316,
+            "timeOrigin": 1794901173114.3
+          }
+        ],
+        "inventory": [
+          {
+            "kind": "runtime-inventory",
+            "declaredRuntimes": {
+              "wc": {
+                "total": 317,
+                "inited": 96,
+                "hasHostChildren": 296,
+                "firstEmpty": {
+                  "previewerId": "pp-lwfsf5oozj",
+                  "demoId": "demo-base-virtual-list"
+                }
+              },
+              "react": {
+                "total": 317,
+                "inited": 96,
+                "hasHostChildren": 296,
+                "firstEmpty": {
+                  "previewerId": "pp-qxnl8t0r6j",
+                  "demoId": "demo-base-virtual-list"
+                }
+              },
+              "vue": {
+                "total": 317,
+                "inited": 96,
+                "hasHostChildren": 296,
+                "firstEmpty": {
+                  "previewerId": "pp-aj03vwdo2nw",
+                  "demoId": "demo-base-virtual-list"
+                }
+              },
+              "vue2": {
+                "total": 317,
+                "inited": 96,
+                "hasHostChildren": 296,
+                "firstEmpty": {
+                  "previewerId": "pp-6wml6g6oa2v",
+                  "demoId": "demo-base-virtual-list"
+                }
+              }
+            },
+            "publicationEvents": {
+              "wc": 67,
+              "vue2": 67,
+              "vue": 67
+            },
+            "pageMs": 15613.5,
+            "timeOrigin": 1794901173114.3
+          },
+          {
+            "kind": "runtime-inventory",
+            "declaredRuntimes": {
+              "wc": {
+                "total": 317,
+                "inited": 128,
+                "hasHostChildren": 284,
+                "firstEmpty": {
+                  "previewerId": "pp-8lz8ctw8hz7",
+                  "demoId": "demo-shadcn-alert-dialog"
+                }
+              },
+              "react": {
+                "total": 317,
+                "inited": 128,
+                "hasHostChildren": 284,
+                "firstEmpty": {
+                  "previewerId": "pp-fbgvuk1fimo",
+                  "demoId": "demo-shadcn-alert-dialog"
+                }
+              },
+              "vue": {
+                "total": 317,
+                "inited": 128,
+                "hasHostChildren": 284,
+                "firstEmpty": {
+                  "previewerId": "pp-vbjcnyr7ek",
+                  "demoId": "demo-shadcn-alert-dialog"
+                }
+              },
+              "vue2": {
+                "total": 317,
+                "inited": 128,
+                "hasHostChildren": 284,
+                "firstEmpty": {
+                  "previewerId": "pp-woy6un9px5",
+                  "demoId": "demo-shadcn-alert-dialog"
+                }
+              }
+            },
+            "publicationEvents": {
+              "wc": 80,
+              "vue2": 79,
+              "vue": 79,
+              "react": 77
+            },
+            "pageMs": 20753.400000095367,
+            "timeOrigin": 1794901173114.3
+          },
+          {
+            "kind": "runtime-inventory",
+            "declaredRuntimes": {
+              "wc": {
+                "total": 317,
+                "inited": 128,
+                "hasHostChildren": 295,
+                "firstEmpty": {
+                  "previewerId": "pp-d7kjc0larmn",
+                  "demoId": "demo-shadcn-drawer"
+                }
+              },
+              "react": {
+                "total": 317,
+                "inited": 128,
+                "hasHostChildren": 295,
+                "firstEmpty": {
+                  "previewerId": "pp-dbwg0xgscm8",
+                  "demoId": "demo-shadcn-drawer"
+                }
+              },
+              "vue": {
+                "total": 317,
+                "inited": 128,
+                "hasHostChildren": 295,
+                "firstEmpty": {
+                  "previewerId": "pp-t0u9u0ybtr",
+                  "demoId": "demo-shadcn-drawer"
+                }
+              },
+              "vue2": {
+                "total": 317,
+                "inited": 128,
+                "hasHostChildren": 295,
+                "firstEmpty": {
+                  "previewerId": "pp-hirrlmoq0i",
+                  "demoId": "demo-shadcn-drawer"
+                }
+              }
+            },
+            "publicationEvents": {
+              "wc": 95,
+              "vue2": 94,
+              "vue": 94,
+              "react": 91
+            },
+            "pageMs": 34897.5,
+            "timeOrigin": 1794901173114.3
+          },
+          {
+            "kind": "runtime-inventory",
+            "declaredRuntimes": {
+              "wc": {
+                "total": 317,
+                "inited": 160,
+                "hasHostChildren": 282,
+                "firstEmpty": {
+                  "previewerId": "pp-60v9tngkqb5",
+                  "demoId": "demo-shadcn-menubar"
+                }
+              },
+              "react": {
+                "total": 317,
+                "inited": 160,
+                "hasHostChildren": 282,
+                "firstEmpty": {
+                  "previewerId": "pp-5ozrk3wbtv9",
+                  "demoId": "demo-shadcn-menubar"
+                }
+              },
+              "vue": {
+                "total": 317,
+                "inited": 160,
+                "hasHostChildren": 282,
+                "firstEmpty": {
+                  "previewerId": "pp-fgsx6k8yvhi",
+                  "demoId": "demo-shadcn-menubar"
+                }
+              },
+              "vue2": {
+                "total": 317,
+                "inited": 160,
+                "hasHostChildren": 282,
+                "firstEmpty": {
+                  "previewerId": "pp-7bihh24bthm",
+                  "demoId": "demo-shadcn-menubar"
+                }
+              }
+            },
+            "publicationEvents": {
+              "wc": 115,
+              "vue2": 115,
+              "vue": 115,
+              "react": 115
+            },
+            "pageMs": 49433.10000014305,
+            "timeOrigin": 1794901173114.3
+          },
+          {
+            "kind": "runtime-inventory",
+            "declaredRuntimes": {
+              "wc": {
+                "total": 317,
+                "inited": 160,
+                "hasHostChildren": 290,
+                "firstEmpty": {
+                  "previewerId": "pp-qmpwkds7oyk",
+                  "demoId": "demo-shadcn-message-scroller"
+                }
+              },
+              "react": {
+                "total": 317,
+                "inited": 160,
+                "hasHostChildren": 290,
+                "firstEmpty": {
+                  "previewerId": "pp-pl71l2frrk",
+                  "demoId": "demo-shadcn-message-scroller"
+                }
+              },
+              "vue": {
+                "total": 317,
+                "inited": 160,
+                "hasHostChildren": 290,
+                "firstEmpty": {
+                  "previewerId": "pp-n5w0urhsp2",
+                  "demoId": "demo-shadcn-message-scroller"
+                }
+              },
+              "vue2": {
+                "total": 317,
+                "inited": 160,
+                "hasHostChildren": 290,
+                "firstEmpty": {
+                  "previewerId": "pp-7rrcrgdmw0m",
+                  "demoId": "demo-shadcn-message-scroller"
+                }
+              }
+            },
+            "publicationEvents": {
+              "wc": 126,
+              "vue2": 125,
+              "vue": 125,
+              "react": 122
+            },
+            "pageMs": 59953.299999952316,
+            "timeOrigin": 1794901173114.3
+          }
+        ],
+        "verdict": "page.waitForFunction: Timeout 60000ms exceeded.",
+        "errors": [],
+        "consoleErrors": [],
+        "rawLogSHA256": "9763b042807f1711f56937ec5eeb92ef2804e7d25afd792dd82241bfb131fcee",
+        "htmlSHA256": "a1f3f055c25f0e20e249bc3dfeca51e8c893cc0e06e7ec3a614d7307bfc12a9b",
+        "testOverlaySHA256": "b1f5574b5d85c470cf214f5bd2f5597c2221b3757f0ee2c31b8647bfdf9c45ad",
+        "exit": 1
+      }
+    }
+  },
+  "originalMatrix": {
+    "tests": {
+      "numTotalTests": 2,
+      "numPassedTests": 0,
+      "numFailedTests": 2,
+      "numPendingTests": 0,
+      "cases": [
+        {
+          "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+          "status": "failed",
+          "duration": 70296.174791,
+          "firstMessages": ["page.waitForFunction: Timeout 60000ms exceeded."]
+        },
+        {
+          "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+          "status": "failed",
+          "duration": 71768.941416,
+          "firstMessages": ["page.waitForFunction: Timeout 60000ms exceeded."]
+        }
+      ]
+    },
+    "guardMs": {
+      "readiness": 60000,
+      "case": 150000
+    },
+    "rawLogSHA256": "278cd1d3d13ab56ff644ff9f4cc8ad384a8019bc5df8eeda63294637701468db",
+    "lastDeliveredStartup": {
+      "zh-cn": {
+        "pageMs": 67082.20000004768,
+        "count": 1268,
+        "ready": false,
+        "index": 520,
+        "inited": "1",
+        "children": 0,
+        "runtime": "wc",
+        "demo": "demo-shadcn-table"
+      },
+      "en": {
+        "pageMs": 66680.5,
+        "count": 1268,
+        "ready": false,
+        "index": 520,
+        "inited": "1",
+        "children": 0,
+        "runtime": "wc",
+        "demo": "demo-shadcn-table"
+      }
+    },
+    "startupByLocale": {
+      "zh-cn": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "fulfilled",
+        "collectionReason": null,
+        "errors": [],
+        "consoleErrors": []
+      },
+      "en": {
+        "startupPassed": false,
+        "collectionComplete": false,
+        "collectionOutcome": "budget-expired",
+        "collectionReason": null,
+        "errors": [],
+        "consoleErrors": []
+      }
+    }
+  }
+}
