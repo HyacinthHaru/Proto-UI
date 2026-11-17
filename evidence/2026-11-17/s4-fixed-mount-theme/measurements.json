@@ -1,0 +1,622 @@
+{
+  "mountTheme": {
+    "source": {
+      "head": "62278681e86047f4eacf225dbf6811fef10d1089",
+      "tree": "b004ea21e1a7fa62c2df57a62fe76f8fb662b65e",
+      "parent": "946793b2d22afa24a97d27d58ad84748ec0557c3",
+      "signature": "G",
+      "files": [
+        "1aedb2a7b57540edb57d7f03ad8d1d6b69d02b3d29dcca37db2ccd6d62df9cef  apps/www/src/components/PrototypePreviewer/projected-previewer-client.test.ts",
+        "abb5659f95849900a8ba6ac0953bd34f15957b5bfeb6c58a3c9fb6da98d9c015  apps/www/src/components/PrototypePreviewer/projected-previewer-client.ts",
+        "996bae82af0348ba6e78d0feefd7c7fbc4d9ce5e06185fec769b2c0ec355078c  apps/www/src/components/PrototypePreviewer/projection-materializer.test.ts",
+        "c9d7e0f0e4a2a625ac92e5ea60ab76c8d510ffe227510c3e6c0e87023fbbd503  apps/www/src/components/PrototypePreviewer/projection-materializer.ts"
+      ]
+    },
+    "sourceCheck": {
+      "red": {
+        "passed": 34,
+        "failed": 2,
+        "skipped": 0,
+        "testFiles": 2,
+        "failures": [
+          {
+            "case": "uses the first watcher sample and still reads live theme on replacement",
+            "firstLine": "AssertionError: expected undefined to be { '--pui-background': '#111' } // Object.is equality"
+          },
+          {
+            "case": "seeds the composed content and scope from the same mount theme",
+            "firstLine": "AssertionError: expected \"spy\" to not be called at all, but actually been called 1 times"
+          }
+        ],
+        "reportSha256": "c49525d69fbadcdab3cafadec646adf52541e4607af91cc35d0f888a2fa6ee3e"
+      },
+      "focused": {
+        "passed": 263,
+        "failed": 1,
+        "skipped": 0,
+        "testFiles": 9,
+        "failures": [
+          {
+            "case": "rejects an initial partial bootstrap-2-3-2 family before mutating the SSR mount, allowing corrected re-init",
+            "firstLine": "AssertionError: expected [Function] to throw an error"
+          }
+        ],
+        "reportSha256": "b309dab17a89e151892610d52c7a9425d90be152a9ca1e6c311fb78d1b212d88"
+      },
+      "parentHomepage": {
+        "passed": 18,
+        "failed": 1,
+        "skipped": 0,
+        "testFiles": 1,
+        "failures": [
+          {
+            "case": "rejects an initial partial bootstrap-2-3-2 family before mutating the SSR mount, allowing corrected re-init",
+            "firstLine": "AssertionError: expected [Function] to throw an error"
+          }
+        ],
+        "reportSha256": "accf408bb4c50da1fbc3aa5150eec319e4916cf113dc6fda1b25dc0dca36eb08"
+      }
+    },
+    "nativeTheme": {
+      "observerSha256": "2c632dcd9b66046c607133bd83cb3639f915b7aebd8bf2f08f190a1dead26e0c",
+      "controls": [
+        {
+          "head": "946793b2d22afa24a97d27d58ad84748ec0557c3",
+          "servedArtifacts": [
+            {
+              "filename": "theme-parent-served.html",
+              "sha256": "63ef566bba08f7fb6763c8eba6e4bdf1279a4aed04a0592376b3fb5c2257469c"
+            },
+            {
+              "filename": "previewer-client.BAo6pLg8.js",
+              "sha256": "d4a24a090b668c06a8b1cd69ac7c887bd7ed466ff0e4c9c54bcfad9e7a2a221f"
+            },
+            {
+              "filename": "projection-materializer.Don9mCpU.js",
+              "sha256": "f8aec5a9c838f01570af356f4ec0ee47ac56b1718d5d312ec9ebff56482dce5c"
+            },
+            {
+              "filename": "projection-theme.DmjJLKPq.js",
+              "sha256": "2f89096f31d7b6f6cefe08c9881908c5d6d6e1a8437b347e33e4d463c73a4536"
+            }
+          ],
+          "result": {
+            "browser": "156.0.8078.79",
+            "variant": "parent",
+            "rows": [
+              {
+                "runtime": "wc",
+                "generation": "1",
+                "scopeRadius": "17px",
+                "shellPresent": true,
+                "activeScopes": 1,
+                "mount": [
+                  {
+                    "value": "23px",
+                    "time": 336
+                  },
+                  {
+                    "value": "23px",
+                    "time": 336.2000000476837
+                  }
+                ],
+                "root": [
+                  {
+                    "value": "17px",
+                    "time": 387.2999999523163
+                  }
+                ]
+              },
+              {
+                "runtime": "react",
+                "generation": "2",
+                "scopeRadius": "29px",
+                "shellPresent": true,
+                "activeScopes": 1,
+                "mount": [
+                  {
+                    "value": "23px",
+                    "time": 336
+                  },
+                  {
+                    "value": "23px",
+                    "time": 336.2000000476837
+                  },
+                  {
+                    "value": "23px",
+                    "time": 471.09999990463257
+                  },
+                  {
+                    "value": "23px",
+                    "time": 471.2000000476837
+                  }
+                ],
+                "root": [
+                  {
+                    "value": "17px",
+                    "time": 387.2999999523163
+                  },
+                  {
+                    "value": "29px",
+                    "time": 610.3999998569489
+                  }
+                ]
+              },
+              {
+                "runtime": "vue",
+                "generation": "3",
+                "scopeRadius": "29px",
+                "shellPresent": true,
+                "activeScopes": 1,
+                "mount": [
+                  {
+                    "value": "23px",
+                    "time": 336
+                  },
+                  {
+                    "value": "23px",
+                    "time": 336.2000000476837
+                  },
+                  {
+                    "value": "23px",
+                    "time": 471.09999990463257
+                  },
+                  {
+                    "value": "23px",
+                    "time": 471.2000000476837
+                  },
+                  {
+                    "value": "23px",
+                    "time": 688.2000000476837
+                  },
+                  {
+                    "value": "23px",
+                    "time": 688.2999999523163
+                  }
+                ],
+                "root": [
+                  {
+                    "value": "17px",
+                    "time": 387.2999999523163
+                  },
+                  {
+                    "value": "29px",
+                    "time": 610.3999998569489
+                  },
+                  {
+                    "value": "29px",
+                    "time": 777
+                  }
+                ]
+              },
+              {
+                "runtime": "vue2",
+                "generation": "4",
+                "scopeRadius": "29px",
+                "shellPresent": true,
+                "activeScopes": 1,
+                "mount": [
+                  {
+                    "value": "23px",
+                    "time": 336
+                  },
+                  {
+                    "value": "23px",
+                    "time": 336.2000000476837
+                  },
+                  {
+                    "value": "23px",
+                    "time": 471.09999990463257
+                  },
+                  {
+                    "value": "23px",
+                    "time": 471.2000000476837
+                  },
+                  {
+                    "value": "23px",
+                    "time": 688.2000000476837
+                  },
+                  {
+                    "value": "23px",
+                    "time": 688.2999999523163
+                  },
+                  {
+                    "value": "23px",
+                    "time": 856.8999998569489
+                  },
+                  {
+                    "value": "23px",
+                    "time": 856.8999998569489
+                  }
+                ],
+                "root": [
+                  {
+                    "value": "17px",
+                    "time": 387.2999999523163
+                  },
+                  {
+                    "value": "29px",
+                    "time": 610.3999998569489
+                  },
+                  {
+                    "value": "29px",
+                    "time": 777
+                  },
+                  {
+                    "value": "29px",
+                    "time": 942.5
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "head": "62278681e86047f4eacf225dbf6811fef10d1089",
+          "servedArtifacts": [
+            {
+              "filename": "theme-candidate-served.html",
+              "sha256": "0607bef328bb7f6491a6fd210cda6781031cb2cbcf80423af0a1919b761b6f79"
+            },
+            {
+              "filename": "previewer-client.unyI-dVB.js",
+              "sha256": "ca66e373ed126d58e0065aca5a711dca7d7784f80a2b80895dfcdcd33dcabeec"
+            },
+            {
+              "filename": "projection-materializer.DYOGL4uL.js",
+              "sha256": "26cfe972a621fed61f121ca185bbb056ed32f9b7ef50d165e5a630600d73814e"
+            },
+            {
+              "filename": "projection-theme.DmjJLKPq.js",
+              "sha256": "2f89096f31d7b6f6cefe08c9881908c5d6d6e1a8437b347e33e4d463c73a4536"
+            }
+          ],
+          "result": {
+            "browser": "156.0.8078.79",
+            "variant": "candidate",
+            "rows": [
+              {
+                "runtime": "wc",
+                "generation": "1",
+                "scopeRadius": "17px",
+                "shellPresent": true,
+                "activeScopes": 1,
+                "mount": [
+                  {
+                    "value": "23px",
+                    "time": 349.39999985694885
+                  }
+                ],
+                "root": [
+                  {
+                    "value": "17px",
+                    "time": 400.89999985694885
+                  }
+                ]
+              },
+              {
+                "runtime": "react",
+                "generation": "2",
+                "scopeRadius": "29px",
+                "shellPresent": true,
+                "activeScopes": 1,
+                "mount": [
+                  {
+                    "value": "23px",
+                    "time": 349.39999985694885
+                  },
+                  {
+                    "value": "23px",
+                    "time": 485.2999999523163
+                  }
+                ],
+                "root": [
+                  {
+                    "value": "17px",
+                    "time": 400.89999985694885
+                  },
+                  {
+                    "value": "29px",
+                    "time": 625.3999998569489
+                  }
+                ]
+              },
+              {
+                "runtime": "vue",
+                "generation": "3",
+                "scopeRadius": "29px",
+                "shellPresent": true,
+                "activeScopes": 1,
+                "mount": [
+                  {
+                    "value": "23px",
+                    "time": 349.39999985694885
+                  },
+                  {
+                    "value": "23px",
+                    "time": 485.2999999523163
+                  },
+                  {
+                    "value": "23px",
+                    "time": 691.0999999046326
+                  }
+                ],
+                "root": [
+                  {
+                    "value": "17px",
+                    "time": 400.89999985694885
+                  },
+                  {
+                    "value": "29px",
+                    "time": 625.3999998569489
+                  },
+                  {
+                    "value": "29px",
+                    "time": 777.1999998092651
+                  }
+                ]
+              },
+              {
+                "runtime": "vue2",
+                "generation": "4",
+                "scopeRadius": "29px",
+                "shellPresent": true,
+                "activeScopes": 1,
+                "mount": [
+                  {
+                    "value": "23px",
+                    "time": 349.39999985694885
+                  },
+                  {
+                    "value": "23px",
+                    "time": 485.2999999523163
+                  },
+                  {
+                    "value": "23px",
+                    "time": 691.0999999046326
+                  },
+                  {
+                    "value": "23px",
+                    "time": 854.8999998569489
+                  }
+                ],
+                "root": [
+                  {
+                    "value": "17px",
+                    "time": 400.89999985694885
+                  },
+                  {
+                    "value": "29px",
+                    "time": 625.3999998569489
+                  },
+                  {
+                    "value": "29px",
+                    "time": 777.1999998092651
+                  },
+                  {
+                    "value": "29px",
+                    "time": 942.7999999523163
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "exactSite": {
+      "packages": 47,
+      "pages": 685,
+      "typesExit": 0,
+      "manifestsExit": 0,
+      "budgetExit": 0,
+      "unchangedBudgetRows": [
+        "PASS lucide/icons/x: 2879 / 3000 gzip bytes; overBudget=0; minified=8695 sha256=da30ebe409a83a09d2569fe2a47880a133fcbe4d554d93ea305795356c4fccdb",
+        "PASS lucide root: 637306 / 700000 gzip bytes; overBudget=0; minified=4087403 sha256=eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c",
+        "ADVISORY core root: 11378 / 7600 gzip bytes; overBudget=3778; minified=35782 sha256=0e3c868d3ef719af46085b83881b15787a94acbaf893566ceae4047ceff72b44",
+        "ADVISORY runtime root: 101217 / 78500 gzip bytes; overBudget=22717; minified=390470 sha256=84ddbb8b9e893f050fb5c5bdb55a115d1ad522ead59198ec22eedeb94bc57d00",
+        "ADVISORY adapter-react root: 163762 / 106000 gzip bytes; overBudget=57762; minified=577441 sha256=69654062662feb78422f4c258ca95ba33de96c4d6bae8e629c8b81ce78f7f0f6",
+        "ADVISORY adapter-vue root: 162544 / 106000 gzip bytes; overBudget=56544; minified=572695 sha256=19927292cac56a4da5e770e4590e4bb49abe29822f0d4879c7da9c62be8c5548",
+        "ADVISORY adapter-web-component root: 195497 / 132000 gzip bytes; overBudget=63497; minified=671343 sha256=e97da598db9bac8aaa750efff2d718cea2f095fa0173b50183bb625a93d28a29",
+        "PASS prototypes-base/button: 5274 / 6000 gzip bytes; overBudget=0; minified=18158 sha256=6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67",
+        "ADVISORY prototypes-shadcn/button: 7803 / 7000 gzip bytes; overBudget=803; minified=34485 sha256=60b4ff9277e59fba01c34162ec9418282ce82c6b43e24f223a05c9e1df19db57"
+      ],
+      "originalReadyMs": 60000,
+      "originalCaseMs": 150000,
+      "matrix": {
+        "zh-cn": {
+          "bytes": 1862456,
+          "sha256": "90a06a257a352232e0ac6bf20e1af42b72388231ab05d7e6683474dc611c6c65",
+          "previews": 1268
+        },
+        "en": {
+          "bytes": 1914103,
+          "sha256": "17aa49dbc13f9ce5b01f769af5c5b28e67ec56cb9da3500a6824387bdad29804",
+          "previews": 1268
+        }
+      },
+      "readiness": {
+        "passed": 0,
+        "failed": 2,
+        "skipped": 0,
+        "testFiles": 1,
+        "failures": [
+          {
+            "case": "zh-cn: native Light/split/mixed acceptance",
+            "firstLine": "page.waitForFunction: Timeout 60000ms exceeded."
+          },
+          {
+            "case": "en: native Light/split/mixed acceptance",
+            "firstLine": "page.waitForFunction: Timeout 60000ms exceeded."
+          }
+        ],
+        "reportSha256": "c01f906b7ebb74ebe61c82e1b49e10abf85c872a15600a79c7cae7da562b6229"
+      },
+      "scoped": {
+        "passed": 11,
+        "failed": 0,
+        "skipped": 13,
+        "testFiles": 3,
+        "failures": [],
+        "reportSha256": "0bdc2d33928b9f44236bf4f948c676f7058c897897f7014fc16f316ea4c38ec7"
+      },
+      "preview": {
+        "head": "62278681e86047f4eacf225dbf6811fef10d1089",
+        "tree": "b004ea21e1a7fa62c2df57a62fe76f8fb662b65e",
+        "distHashes": {
+          "zh-cn/index.html": "56b6f7e5285d6553251b9c3ce9f243bb24499a60ad08a571ef192a823b6f8111",
+          "zh-cn/ui-libraries/shadcn/button/index.html": "18f62e6225924feeb6d53d6b69cd6a13b3912f159d4daac4601e550066339a28",
+          "zh-cn/ui-libraries/brutalist/components/button/index.html": "a514c23eef878bb8667948d16533db54c62ffa4ab3017e5d34afdc35d66842b3"
+        },
+        "sourceCodeExamples": 9,
+        "renderedCodeExamples": 9,
+        "packedHeaderExit": 0,
+        "previewBrowserExit": 0,
+        "selector": "uses real family Popover Triggers|uses the same mobile shell|live available region|keeps Runtime Tabs outside"
+      },
+      "header": {
+        "head": "62278681e86047f4eacf225dbf6811fef10d1089",
+        "browser": "156.0.8078.79",
+        "scope": "First animation frame control on the exact static Astro preview. Geometry reads can force layout.",
+        "results": [
+          {
+            "width": 320,
+            "samples": [
+              {
+                "phase": "family mutation delivery",
+                "at": 1853.2999999523163,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 312,
+                "width": 304,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              },
+              {
+                "phase": "first animation frame",
+                "at": 1995,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 312,
+                "width": 304,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              },
+              {
+                "phase": "second animation frame",
+                "at": 2014.7000000476837,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 312,
+                "width": 304,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              }
+            ],
+            "trusted": true
+          },
+          {
+            "width": 390,
+            "samples": [
+              {
+                "phase": "family mutation delivery",
+                "at": 1518.6999998092651,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 382,
+                "width": 374,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              },
+              {
+                "phase": "first animation frame",
+                "at": 1632.7999999523163,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 382,
+                "width": 374,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              },
+              {
+                "phase": "second animation frame",
+                "at": 1662.8999998569489,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 382,
+                "width": 374,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              }
+            ],
+            "trusted": true
+          }
+        ]
+      }
+    }
+  },
+  "standaloneFamily": {
+    "source": {
+      "head": "68756b8fb2861c1b76dc2bbcd6fbc058544bcd19",
+      "tree": "38d47b3048a32b5740408ca863bede95574d1105",
+      "parent": "62278681e86047f4eacf225dbf6811fef10d1089",
+      "signature": "G",
+      "files": [
+        "9c174ba13203e19743757c098f3b8921d13c011f120e07e88252fa989d0f2ec0  apps/www/src/components/PrototypePreviewer/home-demo-client.test.ts",
+        "221fe17939d9c50290e13c2591b16730fc96f9653e81796cff79fc5ff1769cb7  apps/www/src/components/PrototypePreviewer/home-demo-client.ts"
+      ]
+    },
+    "red": {
+      "passed": 17,
+      "failed": 2,
+      "skipped": 0,
+      "testFiles": 1,
+      "failures": [
+        {
+          "case": "rejects an unavailable standalone bootstrap-2-3-2 family and keeps the mounted generation",
+          "firstLine": "AssertionError: expected [Function] to throw an error"
+        },
+        {
+          "case": "rejects an unavailable standalone liquid-glass family and keeps the mounted generation",
+          "firstLine": "AssertionError: expected [Function] to throw error including 'unsupported standalone family: liquid…' but got '[SiteLibraryFamily] unsupported whole…'"
+        }
+      ],
+      "reportSha256": "b73da21339daf41c6614e35e9d5ca7872d002788ef5f8252a646cc6539a51ce8"
+    },
+    "exactFocused": {
+      "passed": 179,
+      "failed": 0,
+      "skipped": 0,
+      "testFiles": 8,
+      "failures": [],
+      "reportSha256": "ea14e8f58aa89e91bbd05b5205bc5626262a955cf23989dd55c6c0bdbffa90bb"
+    },
+    "typesExit": 0,
+    "cliPackageCount": 1,
+    "generatedStyles": "0df4acc7d6d60a079f81bde214110bf7cdbca782eb7e82f6bd8f35966a283f93"
+  }
+}
