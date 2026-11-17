@@ -2294,11 +2294,30 @@ describe('Shadow closeout native boundaries', () => {
         host.id = 'transition-entry';
         const button = document.createElement('button');
         button.textContent = 'Transition target';
+        const outer = document.createElement('div');
+        const inner = document.createElement('div');
+        outer.append(inner);
+        inner.append(host);
         host.append(button);
-        document.body.append(host);
+        document.body.append(outer);
         await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
-        const completed = new Promise<string>((resolve, reject) => {
+        const nativeGetComputedStyle = window.getComputedStyle;
+        let endpointReads = 0;
+        window.getComputedStyle = (element, pseudo) => {
+          const event = window.event;
+          if (
+            element === button &&
+            event instanceof TransitionEvent &&
+            event.isTrusted &&
+            event.type === 'transitionend' &&
+            event.propertyName === 'visibility'
+          ) {
+            endpointReads++;
+          }
+          return nativeGetComputedStyle.call(window, element, pseudo);
+        };
+        const completed = new Promise<{ property: string; trusted: boolean }>((resolve, reject) => {
           const timeout = setTimeout(
             () => reject(new Error('visibility transition timeout')),
             1000
@@ -2308,7 +2327,7 @@ describe('Shadow closeout native boundaries', () => {
             (event) => {
               if (event.propertyName !== 'visibility') return;
               clearTimeout(timeout);
-              resolve(event.propertyName);
+              resolve({ property: event.propertyName, trusted: event.isTrusted });
             },
             { once: true }
           );
@@ -2318,17 +2337,20 @@ describe('Shadow closeout native boundaries', () => {
           visibility: getComputedStyle(button).visibility,
           hostTabIndex: host.getAttribute('tabindex'),
         };
-        const property = await completed;
+        const { property, trusted } = await completed;
         await new Promise<void>((resolve) => queueMicrotask(resolve));
+        window.getComputedStyle = nativeGetComputedStyle;
         const end = {
           visibility: getComputedStyle(button).visibility,
           hostTabIndex: host.getAttribute('tabindex'),
         };
-        return { start, property, end };
+        return { start, property, end, trusted, endpointReads };
       });
       expect(result).toEqual({
         start: { visibility: 'visible', hostTabIndex: null },
         property: 'visibility',
+        trusted: true,
+        endpointReads: 1,
         end: { visibility: 'hidden', hostTabIndex: '0' },
       });
       expect(errors).toEqual([]);

@@ -2291,6 +2291,7 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
                     sampleEligibilityAnimations
                   );
               };
+              const sampledTransitions = new WeakSet<Event>();
               const onProjectionEvent = (event: Event) => {
                 // Keep the substituted fallback stable while the browser is
                 // consuming the same Tab default action. The subsequent task
@@ -2303,6 +2304,12 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
                 if (event.type.startsWith('transition')) {
                   const propertyName = (event as TransitionEvent).propertyName;
                   if (!propertyAffectsEntryEligibility(propertyName)) return;
+                  // One native transition traverses several observed ancestors.
+                  // Every entry observer needs its own sample of that delivery.
+                  if (event.isTrusted) {
+                    if (sampledTransitions.has(event)) return;
+                    sampledTransitions.add(event);
+                  }
                 }
                 if (event.type === 'animationstart')
                   trackEligibilityAnimation(event as AnimationEvent);
