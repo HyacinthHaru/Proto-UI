@@ -1,0 +1,9 @@
+# Acquire-before-mount controls for the built Matrix
+
+All three Chinese controls use the same built `04c433c4` HTML, 1,268 previewers, original 60s readiness wait and 150s outer limit, with the same React and module observation patches. Only the diagnostic eager-bootstrap intervention differs. All three fail readiness before Dialog and report zero page or console errors.
+
+With no more than 32 active eager mounts, the matching WC and React Accordion publish at 6.315s and 8.516s. The run hits the original 60s readiness guard. Its post-verdict collection succeeds. The last predicate evaluation at 66.475s names owner index 384, WC Shadcn Drawer, which is initialized and still has an empty startup-pending host. This is the last observed predicate row, rather than a new assertion or an inferred full-page completion count.
+
+Starting framework acquisition before releasing the eager mounts resolves React, Vue and Vue 2 by 5.812s. All 1,268 mounts are then released together. The recorded Accordion prototypes begin loading but deliver no return or publication, and the 150s outer limit fires.
+
+A separate arm acquires 317 demo modules and requests the distinct referenced prototype IDs plus surface IDs before eager mount. All 317 demo and 1,149 prototype acquisition promises return without rejection, along with three framework acquisition promises, by 6.947s. All 1,268 mounts are then released together. The WC Accordion later re-enters the ordinary demo loader at 8.129s and returns at 127.026s. Its prototype join then returns in the same recorded instant and it publishes at 127.443s. The React Accordion does not deliver a publication and the test reaches the 150s outer limit. The repeated ordinary demo loader and the subsequent eager mount workload are the next separate measurement boundaries.

@@ -1,0 +1,937 @@
+{
+  "head": "04c433c426b8a2e01baca474464656a9a3615fcf",
+  "tree": "771f52bf113b6508ea2d01917d1af5fbc75ff117",
+  "parents": [
+    "8c8ff7dc90320fdf0d4e8ebecf101725bd3814cb",
+    "ad827afae56f048f085a6cc6a552e1d2d3352a39"
+  ],
+  "originalCount": 1268,
+  "environment": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+  "observations": {
+    "inflight32": {
+      "pageSHA256": "1e1afceec6597291437d2d2df8b8ca5055f4201797f907b27ecfce362e963376",
+      "test": {
+        "exit": 1,
+        "status": "failed",
+        "durationMs": 67698.766291,
+        "failure": "page.waitForFunction: Timeout 60000ms exceeded."
+      },
+      "buildSettings": {
+        "selectedLocale": "zh-cn",
+        "readinessMs": 60000,
+        "outerMs": 150000
+      },
+      "logSHA256": "b1cd51d2252a9f71a8a6c3babe09d4848c71bfeb63b5ee881f1884f5fad2caa7",
+      "assetBindings": [
+        {
+          "file": "previewer-client.CRzJkf6b.js",
+          "inputSHA256": "215eeb09c4c0ec69e8f463197d3ef66f7de0fe875617c1e26a6adeef34930a5f",
+          "outputSHA256": "939359085ac0a494ce687135c3e2489f35d2a86db8dc2bacaaa397959e3bb6a7"
+        },
+        {
+          "file": "demo-renderer.DqE7uBFG.js",
+          "inputSHA256": "61d98c7fcb3a0b8abe8f8888e1284e94c31fad9eb68970af7936ae116a05ade7",
+          "outputSHA256": "ece85587f44cfbb4043804124030e12ae47f3ef7eeee65f5fe38cad860a5c4b7"
+        },
+        {
+          "file": "react-runtime.BHOu3vdb.js",
+          "inputSHA256": "65e7f7ce7b6219d490f2cd8f88a2207918851da098afba1f2429a5b87aa8afac",
+          "outputSHA256": "9e68f7817416e68077fe9ab9bd3644f15d2a232ed053ac8d100886101e701a90"
+        }
+      ],
+      "originalTestSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+      "checkout": {
+        "sha": "04c433c426b8a2e01baca474464656a9a3615fcf",
+        "dirty": true
+      },
+      "onlyIntervention": {
+        "asset": "PrototypePreviewer.astro_astro_type_script_index_0_lang.CAcWJfEA.js",
+        "inputSHA256": "18da403e8efbe5b36df3b2ec5c768611783a0ccf3946886eff5be0db2b3d90a5",
+        "outputSHA256": "a6d9c268fda7379649a77337385aa593a9b9f14bab3e4f26fd69f7e3dd90cbf3",
+        "limit": 32
+      },
+      "startupPassed": false,
+      "postVerdictCollection": "fulfilled",
+      "lastObservedPredicate": {
+        "timeOrigin": 1794883569300.7,
+        "pageMs": 66474.90000009537,
+        "dateNow": 1794883635775,
+        "count": 1268,
+        "ready": false,
+        "firstMissing": {
+          "previewerId": "pp-xbsz8o6508",
+          "index": 384,
+          "inited": "1",
+          "hostChildren": 0
+        },
+        "firstMissingOwner": {
+          "demoId": "demo-shadcn-drawer",
+          "prototypeId": "",
+          "declaredRuntime": "wc",
+          "projectionMode": null,
+          "projectionState": null,
+          "mounting": null,
+          "hostTag": "DIV",
+          "hostOwner": "pp-xbsz8o6508",
+          "startupPending": true,
+          "hostOwnInert": true,
+          "hostText": ""
+        }
+      },
+      "stages": {
+        "eager-admission": [
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 6057.915208,
+            "stage": "eager-admission",
+            "owner": null,
+            "runtime": null,
+            "active": 1,
+            "dispatched": 1,
+            "completed": 0,
+            "remaining": 1267,
+            "pageMs": 5135.400000095367,
+            "timeOrigin": 1794883569300.7
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 6057.965833,
+            "stage": "eager-admission",
+            "owner": null,
+            "runtime": null,
+            "active": 2,
+            "dispatched": 2,
+            "completed": 0,
+            "remaining": 1266,
+            "pageMs": 5135.5,
+            "timeOrigin": 1794883569300.7
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 6058.031541,
+            "stage": "eager-admission",
+            "owner": null,
+            "runtime": null,
+            "active": 4,
+            "dispatched": 4,
+            "completed": 0,
+            "remaining": 1264,
+            "pageMs": 5135.700000047684,
+            "timeOrigin": 1794883569300.7
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 6058.277958,
+            "stage": "eager-admission",
+            "owner": null,
+            "runtime": null,
+            "active": 8,
+            "dispatched": 8,
+            "completed": 0,
+            "remaining": 1260,
+            "pageMs": 5136.100000143051,
+            "timeOrigin": 1794883569300.7
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 6059.005083,
+            "stage": "eager-admission",
+            "owner": null,
+            "runtime": null,
+            "active": 16,
+            "dispatched": 16,
+            "completed": 0,
+            "remaining": 1252,
+            "pageMs": 5136.900000095367,
+            "timeOrigin": 1794883569300.7
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 6060.437041,
+            "stage": "eager-admission",
+            "owner": null,
+            "runtime": null,
+            "active": 32,
+            "dispatched": 32,
+            "completed": 0,
+            "remaining": 1236,
+            "pageMs": 5138.200000047684,
+            "timeOrigin": 1794883569300.7
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 9514.077083,
+            "stage": "eager-admission",
+            "owner": null,
+            "runtime": null,
+            "active": 28,
+            "dispatched": 64,
+            "completed": 36,
+            "remaining": 1204,
+            "pageMs": 8591.799999952316,
+            "timeOrigin": 1794883569300.7
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 15241.777791,
+            "stage": "eager-admission",
+            "owner": null,
+            "runtime": null,
+            "active": 32,
+            "dispatched": 128,
+            "completed": 96,
+            "remaining": 1140,
+            "pageMs": 14319.5,
+            "timeOrigin": 1794883569300.7
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 28868.651333,
+            "stage": "eager-admission",
+            "owner": null,
+            "runtime": null,
+            "active": 31,
+            "dispatched": 256,
+            "completed": 225,
+            "remaining": 1012,
+            "pageMs": 27945.799999952316,
+            "timeOrigin": 1794883569300.7
+          }
+        ],
+        "eager-completion": [
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 6956.672208,
+            "stage": "eager-completion",
+            "owner": null,
+            "runtime": null,
+            "active": 31,
+            "dispatched": 32,
+            "completed": 1,
+            "remaining": 1236,
+            "pageMs": 6034.299999952316,
+            "timeOrigin": 1794883569300.7
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 7008.959125,
+            "stage": "eager-completion",
+            "owner": null,
+            "runtime": null,
+            "active": 31,
+            "dispatched": 33,
+            "completed": 2,
+            "remaining": 1235,
+            "pageMs": 6086.700000047684,
+            "timeOrigin": 1794883569300.7
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 7093.399791,
+            "stage": "eager-completion",
+            "owner": null,
+            "runtime": null,
+            "active": 30,
+            "dispatched": 34,
+            "completed": 4,
+            "remaining": 1234,
+            "pageMs": 6171.100000143051,
+            "timeOrigin": 1794883569300.7
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 7426.791416,
+            "stage": "eager-completion",
+            "owner": null,
+            "runtime": null,
+            "active": 31,
+            "dispatched": 39,
+            "completed": 8,
+            "remaining": 1229,
+            "pageMs": 6504.400000095367,
+            "timeOrigin": 1794883569300.7
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 8151.651583,
+            "stage": "eager-completion",
+            "owner": null,
+            "runtime": null,
+            "active": 23,
+            "dispatched": 39,
+            "completed": 16,
+            "remaining": 1229,
+            "pageMs": 7229.200000047684,
+            "timeOrigin": 1794883569300.7
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 9387.722166,
+            "stage": "eager-completion",
+            "owner": null,
+            "runtime": null,
+            "active": 27,
+            "dispatched": 59,
+            "completed": 32,
+            "remaining": 1209,
+            "pageMs": 8465.400000095367,
+            "timeOrigin": 1794883569300.7
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 12382.761666,
+            "stage": "eager-completion",
+            "owner": null,
+            "runtime": null,
+            "active": 27,
+            "dispatched": 91,
+            "completed": 64,
+            "remaining": 1177,
+            "pageMs": 11460.400000095367,
+            "timeOrigin": 1794883569300.7
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 18076.942708,
+            "stage": "eager-completion",
+            "owner": null,
+            "runtime": null,
+            "active": 30,
+            "dispatched": 158,
+            "completed": 128,
+            "remaining": 1110,
+            "pageMs": 17154.5,
+            "timeOrigin": 1794883569300.7
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 32088.389708,
+            "stage": "eager-completion",
+            "owner": null,
+            "runtime": null,
+            "active": 28,
+            "dispatched": 284,
+            "completed": 256,
+            "remaining": 984,
+            "pageMs": 31166,
+            "timeOrigin": 1794883569300.7
+          }
+        ],
+        "runtime-barrier-begin": [],
+        "runtime-prepared": [],
+        "runtime-barrier-open": [],
+        "module-barrier-begin": [],
+        "module-barrier-demo-start": [],
+        "module-barrier-demo-return": [],
+        "module-barrier-prototypes-start": [],
+        "module-barrier-prototypes-return": [],
+        "module-barrier-open": [],
+        "module-barrier-error": [],
+        "demo-import-begin": [
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 6808.538208,
+            "stage": "demo-import-begin",
+            "owner": "pp-xdurvsr23t",
+            "pageMs": 5886.400000095367,
+            "timeOrigin": 1794883569300.7,
+            "runtime": "wc",
+            "children": 0
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 6835.736458,
+            "stage": "demo-import-begin",
+            "owner": "pp-prwwhqhmwzg",
+            "pageMs": 5913.600000143051,
+            "timeOrigin": 1794883569300.7,
+            "runtime": "react",
+            "children": 0
+          }
+        ],
+        "demo-import-return": [
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 6922.082958,
+            "stage": "demo-import-return",
+            "owner": "pp-xdurvsr23t",
+            "pageMs": 5999.900000095367,
+            "timeOrigin": 1794883569300.7,
+            "runtime": "wc",
+            "children": 0
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 6922.286625,
+            "stage": "demo-import-return",
+            "owner": "pp-prwwhqhmwzg",
+            "pageMs": 6000,
+            "timeOrigin": 1794883569300.7,
+            "runtime": "react",
+            "children": 0
+          }
+        ],
+        "prototype-imports-begin": [
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 6922.219,
+            "stage": "prototype-imports-begin",
+            "owner": "pp-xdurvsr23t",
+            "pageMs": 6000,
+            "timeOrigin": 1794883569300.7,
+            "runtime": "wc",
+            "children": 0,
+            "prototypeIds": [
+              "base-accordion-root",
+              "base-accordion-item",
+              "base-accordion-heading",
+              "base-accordion-trigger",
+              "base-accordion-content",
+              "base-button"
+            ]
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 6922.32175,
+            "stage": "prototype-imports-begin",
+            "owner": "pp-prwwhqhmwzg",
+            "pageMs": 6000.100000143051,
+            "timeOrigin": 1794883569300.7,
+            "runtime": "react",
+            "children": 0,
+            "prototypeIds": [
+              "base-accordion-root",
+              "base-accordion-item",
+              "base-accordion-heading",
+              "base-accordion-trigger",
+              "base-accordion-content",
+              "base-button"
+            ]
+          }
+        ],
+        "prototype-imports-return": [
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 7175.013,
+            "stage": "prototype-imports-return",
+            "owner": "pp-xdurvsr23t",
+            "pageMs": 6252.700000047684,
+            "timeOrigin": 1794883569300.7,
+            "runtime": "wc",
+            "children": 0
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 7197.586208,
+            "stage": "prototype-imports-return",
+            "owner": "pp-prwwhqhmwzg",
+            "pageMs": 6275.299999952316,
+            "timeOrigin": 1794883569300.7,
+            "runtime": "react",
+            "children": 0
+          }
+        ],
+        "react-join-begin": [
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 7197.803458,
+            "stage": "react-join-begin",
+            "owner": "pp-prwwhqhmwzg",
+            "pageMs": 6275.5,
+            "timeOrigin": 1794883569300.7,
+            "runtime": "react",
+            "children": 0
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 8990.435625,
+            "stage": "react-join-begin",
+            "owner": "pp-prwwhqhmwzg",
+            "pageMs": 8068.200000047684,
+            "timeOrigin": 1794883569300.7,
+            "runtime": "react",
+            "children": 0
+          }
+        ],
+        "react-join-return": [
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 8398.277875,
+            "stage": "react-join-return",
+            "owner": "pp-prwwhqhmwzg",
+            "pageMs": 7476,
+            "timeOrigin": 1794883569300.7,
+            "runtime": "react",
+            "children": 0
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 8995.25725,
+            "stage": "react-join-return",
+            "owner": "pp-prwwhqhmwzg",
+            "pageMs": 8073.100000143051,
+            "timeOrigin": 1794883569300.7,
+            "runtime": "react",
+            "children": 0
+          }
+        ],
+        "published": [
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 7236.721583,
+            "stage": "published",
+            "owner": "pp-xdurvsr23t",
+            "pageMs": 6314.5,
+            "timeOrigin": 1794883569300.7,
+            "runtime": "wc",
+            "children": 1
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 9437.621958,
+            "stage": "published",
+            "owner": "pp-prwwhqhmwzg",
+            "pageMs": 8515.5,
+            "timeOrigin": 1794883569300.7,
+            "runtime": "react",
+            "children": 1
+          }
+        ]
+      }
+    },
+    "frameworksBeforeMount": {
+      "pageSHA256": "1e1afceec6597291437d2d2df8b8ca5055f4201797f907b27ecfce362e963376",
+      "test": {
+        "exit": 1,
+        "status": "failed",
+        "durationMs": 150523.256167,
+        "failure": "Error: Test timed out in 150000ms."
+      },
+      "buildSettings": {
+        "selectedLocale": "zh-cn",
+        "readinessMs": 60000,
+        "outerMs": 150000
+      },
+      "logSHA256": "67c74c77c505928b3928d6d649771e4c48095685d86867e7b46389bb09cb3081",
+      "assetBindings": [
+        {
+          "file": "previewer-client.CRzJkf6b.js",
+          "inputSHA256": "215eeb09c4c0ec69e8f463197d3ef66f7de0fe875617c1e26a6adeef34930a5f",
+          "outputSHA256": "939359085ac0a494ce687135c3e2489f35d2a86db8dc2bacaaa397959e3bb6a7"
+        },
+        {
+          "file": "demo-renderer.DqE7uBFG.js",
+          "inputSHA256": "61d98c7fcb3a0b8abe8f8888e1284e94c31fad9eb68970af7936ae116a05ade7",
+          "outputSHA256": "ece85587f44cfbb4043804124030e12ae47f3ef7eeee65f5fe38cad860a5c4b7"
+        },
+        {
+          "file": "react-runtime.BHOu3vdb.js",
+          "inputSHA256": "65e7f7ce7b6219d490f2cd8f88a2207918851da098afba1f2429a5b87aa8afac",
+          "outputSHA256": "9e68f7817416e68077fe9ab9bd3644f15d2a232ed053ac8d100886101e701a90"
+        }
+      ],
+      "originalTestSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+      "checkout": {
+        "sha": "04c433c426b8a2e01baca474464656a9a3615fcf",
+        "dirty": true
+      },
+      "onlyIntervention": {
+        "asset": "PrototypePreviewer.astro_astro_type_script_index_0_lang.CAcWJfEA.js",
+        "inputSHA256": "18da403e8efbe5b36df3b2ec5c768611783a0ccf3946886eff5be0db2b3d90a5",
+        "outputSHA256": "8f301a9204711bdbb503396825f44c77c8faeed8511da2e82a25c6a67d10cb04",
+        "prepModule": "demo-renderer.DqE7uBFG.js",
+        "prepExport": "p",
+        "runtimes": ["react", "vue", "vue2"]
+      },
+      "startupPassed": false,
+      "postVerdictCollection": "rejected",
+      "lastObservedPredicate": null,
+      "stages": {
+        "eager-admission": [],
+        "eager-completion": [],
+        "runtime-barrier-begin": [
+          {
+            "nodePhase": "goto",
+            "receivedNodeMs": 5866.669083,
+            "stage": "runtime-barrier-begin",
+            "owner": null,
+            "runtime": null,
+            "details": {},
+            "pageMs": 5016.200000047684,
+            "timeOrigin": 1794883729270.2
+          }
+        ],
+        "runtime-prepared": [
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 6659.467333,
+            "stage": "runtime-prepared",
+            "owner": null,
+            "runtime": null,
+            "details": {
+              "runtime": "vue"
+            },
+            "pageMs": 5808.700000047684,
+            "timeOrigin": 1794883729270.2
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 6662.633792,
+            "stage": "runtime-prepared",
+            "owner": null,
+            "runtime": null,
+            "details": {
+              "runtime": "react"
+            },
+            "pageMs": 5811.599999904633,
+            "timeOrigin": 1794883729270.2
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 6662.885042,
+            "stage": "runtime-prepared",
+            "owner": null,
+            "runtime": null,
+            "details": {
+              "runtime": "vue2"
+            },
+            "pageMs": 5812.099999904633,
+            "timeOrigin": 1794883729270.2
+          }
+        ],
+        "runtime-barrier-open": [
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 6662.944333,
+            "stage": "runtime-barrier-open",
+            "owner": null,
+            "runtime": null,
+            "details": {
+              "count": 1268,
+              "results": ["fulfilled", "fulfilled", "fulfilled"]
+            },
+            "pageMs": 5812.099999904633,
+            "timeOrigin": 1794883729270.2
+          }
+        ],
+        "module-barrier-begin": [],
+        "module-barrier-demo-start": [],
+        "module-barrier-demo-return": [],
+        "module-barrier-prototypes-start": [],
+        "module-barrier-prototypes-return": [],
+        "module-barrier-open": [],
+        "module-barrier-error": [],
+        "demo-import-begin": [
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 9354.952375,
+            "stage": "demo-import-begin",
+            "owner": "pp-prwwhqhmwzg",
+            "pageMs": 8504.700000047684,
+            "timeOrigin": 1794883729270.2,
+            "runtime": "react",
+            "children": 0
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 10990.739083,
+            "stage": "demo-import-begin",
+            "owner": "pp-xdurvsr23t",
+            "pageMs": 10140.5,
+            "timeOrigin": 1794883729270.2,
+            "runtime": "wc",
+            "children": 0
+          }
+        ],
+        "demo-import-return": [
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 15221.42175,
+            "stage": "demo-import-return",
+            "owner": "pp-xdurvsr23t",
+            "pageMs": 14371.200000047684,
+            "timeOrigin": 1794883729270.2,
+            "runtime": "wc",
+            "children": 0
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 15221.940333,
+            "stage": "demo-import-return",
+            "owner": "pp-prwwhqhmwzg",
+            "pageMs": 14372,
+            "timeOrigin": 1794883729270.2,
+            "runtime": "react",
+            "children": 0
+          }
+        ],
+        "prototype-imports-begin": [
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 15221.565917,
+            "stage": "prototype-imports-begin",
+            "owner": "pp-xdurvsr23t",
+            "pageMs": 14371.399999856949,
+            "timeOrigin": 1794883729270.2,
+            "runtime": "wc",
+            "children": 0,
+            "prototypeIds": [
+              "base-accordion-root",
+              "base-accordion-item",
+              "base-accordion-heading",
+              "base-accordion-trigger",
+              "base-accordion-content",
+              "base-button"
+            ]
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 15222.090208,
+            "stage": "prototype-imports-begin",
+            "owner": "pp-prwwhqhmwzg",
+            "pageMs": 14372,
+            "timeOrigin": 1794883729270.2,
+            "runtime": "react",
+            "children": 0,
+            "prototypeIds": [
+              "base-accordion-root",
+              "base-accordion-item",
+              "base-accordion-heading",
+              "base-accordion-trigger",
+              "base-accordion-content",
+              "base-button"
+            ]
+          }
+        ],
+        "prototype-imports-return": [],
+        "react-join-begin": [],
+        "react-join-return": [],
+        "published": []
+      }
+    },
+    "moduleAcquisitionBeforeMount": {
+      "pageSHA256": "1e1afceec6597291437d2d2df8b8ca5055f4201797f907b27ecfce362e963376",
+      "test": {
+        "exit": 1,
+        "status": "failed",
+        "durationMs": 150523.391,
+        "failure": "Error: Test timed out in 150000ms."
+      },
+      "buildSettings": {
+        "selectedLocale": "zh-cn",
+        "readinessMs": 60000,
+        "outerMs": 150000
+      },
+      "logSHA256": "0a533a9871670ba5c7b9c740dafa8ac76fa687d068a126e4500082d0015dd3dd",
+      "assetBindings": [
+        {
+          "file": "previewer-client.CRzJkf6b.js",
+          "inputSHA256": "215eeb09c4c0ec69e8f463197d3ef66f7de0fe875617c1e26a6adeef34930a5f",
+          "outputSHA256": "939359085ac0a494ce687135c3e2489f35d2a86db8dc2bacaaa397959e3bb6a7"
+        },
+        {
+          "file": "demo-renderer.DqE7uBFG.js",
+          "inputSHA256": "61d98c7fcb3a0b8abe8f8888e1284e94c31fad9eb68970af7936ae116a05ade7",
+          "outputSHA256": "ece85587f44cfbb4043804124030e12ae47f3ef7eeee65f5fe38cad860a5c4b7"
+        },
+        {
+          "file": "react-runtime.BHOu3vdb.js",
+          "inputSHA256": "65e7f7ce7b6219d490f2cd8f88a2207918851da098afba1f2429a5b87aa8afac",
+          "outputSHA256": "9e68f7817416e68077fe9ab9bd3644f15d2a232ed053ac8d100886101e701a90"
+        }
+      ],
+      "originalTestSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+      "checkout": {
+        "sha": "04c433c426b8a2e01baca474464656a9a3615fcf",
+        "dirty": true
+      },
+      "onlyIntervention": {
+        "asset": "PrototypePreviewer.astro_astro_type_script_index_0_lang.CAcWJfEA.js",
+        "inputSHA256": "18da403e8efbe5b36df3b2ec5c768611783a0ccf3946886eff5be0db2b3d90a5",
+        "outputSHA256": "26a05ad9c9e152b0a4ad05a76337513d858589c60fbf92770ae703a25e729012",
+        "consultedAssets": {
+          "demo-renderer.DqE7uBFG.js": "ece85587f44cfbb4043804124030e12ae47f3ef7eeee65f5fe38cad860a5c4b7",
+          "projection-materializer.CXhDDqJY.js": "b4cde497142b085753232d0f47b6f685572799e09f986500fa19b09f48972894",
+          "prototype-modules.wID6EUeU.js": "c9bf195f9d40508e78069904714573f161c0479f8d163735067a85dd8137fbe2",
+          "runtime-preview-surface.BD4AwvdZ.js": "7f7d73e38f079a875c9587a2d1ea2f865285d5bbf3c1f255163eacb98efe3e75"
+        }
+      },
+      "startupPassed": false,
+      "postVerdictCollection": "rejected",
+      "lastObservedPredicate": null,
+      "stages": {
+        "eager-admission": [],
+        "eager-completion": [],
+        "runtime-barrier-begin": [],
+        "runtime-prepared": [],
+        "runtime-barrier-open": [],
+        "module-barrier-begin": [
+          {
+            "nodePhase": "goto",
+            "receivedNodeMs": 6039.006834,
+            "stage": "module-barrier-begin",
+            "owner": null,
+            "runtime": null,
+            "details": {},
+            "pageMs": 5140.700000047684,
+            "timeOrigin": 1794883932849.5
+          }
+        ],
+        "module-barrier-demo-start": [
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 6801.139917,
+            "stage": "module-barrier-demo-start",
+            "owner": null,
+            "runtime": null,
+            "details": {
+              "count": 317
+            },
+            "pageMs": 5903.200000047684,
+            "timeOrigin": 1794883932849.5
+          }
+        ],
+        "module-barrier-demo-return": [
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 7332.070709,
+            "stage": "module-barrier-demo-return",
+            "owner": null,
+            "runtime": null,
+            "details": {
+              "fulfilled": 317,
+              "rejected": 0
+            },
+            "pageMs": 6433.799999952316,
+            "timeOrigin": 1794883932849.5
+          }
+        ],
+        "module-barrier-prototypes-start": [
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 7334.996209,
+            "stage": "module-barrier-prototypes-start",
+            "owner": null,
+            "runtime": null,
+            "details": {
+              "count": 1149
+            },
+            "pageMs": 6437,
+            "timeOrigin": 1794883932849.5
+          }
+        ],
+        "module-barrier-prototypes-return": [
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 7845.132667,
+            "stage": "module-barrier-prototypes-return",
+            "owner": null,
+            "runtime": null,
+            "details": {
+              "fulfilled": 1149,
+              "rejected": 0,
+              "runtimes": ["fulfilled", "fulfilled", "fulfilled"]
+            },
+            "pageMs": 6947.299999952316,
+            "timeOrigin": 1794883932849.5
+          }
+        ],
+        "module-barrier-open": [
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 7845.2195,
+            "stage": "module-barrier-open",
+            "owner": null,
+            "runtime": null,
+            "details": {
+              "count": 1268
+            },
+            "pageMs": 6947.299999952316,
+            "timeOrigin": 1794883932849.5
+          }
+        ],
+        "module-barrier-error": [],
+        "demo-import-begin": [
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 9027.355459,
+            "stage": "demo-import-begin",
+            "owner": "pp-xdurvsr23t",
+            "pageMs": 8129,
+            "timeOrigin": 1794883932849.5,
+            "runtime": "wc",
+            "children": 0
+          },
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 13356.737792,
+            "stage": "demo-import-begin",
+            "owner": "pp-prwwhqhmwzg",
+            "pageMs": 12458.700000047684,
+            "timeOrigin": 1794883932849.5,
+            "runtime": "react",
+            "children": 0
+          }
+        ],
+        "demo-import-return": [
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 127927.008292,
+            "stage": "demo-import-return",
+            "owner": "pp-xdurvsr23t",
+            "pageMs": 127026.40000009537,
+            "timeOrigin": 1794883932849.5,
+            "runtime": "wc",
+            "children": 0
+          }
+        ],
+        "prototype-imports-begin": [
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 127963.533209,
+            "stage": "prototype-imports-begin",
+            "owner": "pp-xdurvsr23t",
+            "pageMs": 127065.40000009537,
+            "timeOrigin": 1794883932849.5,
+            "runtime": "wc",
+            "children": 0,
+            "prototypeIds": [
+              "base-accordion-root",
+              "base-accordion-item",
+              "base-accordion-heading",
+              "base-accordion-trigger",
+              "base-accordion-content",
+              "base-button"
+            ]
+          }
+        ],
+        "prototype-imports-return": [
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 127963.55225,
+            "stage": "prototype-imports-return",
+            "owner": "pp-xdurvsr23t",
+            "pageMs": 127065.40000009537,
+            "timeOrigin": 1794883932849.5,
+            "runtime": "wc",
+            "children": 0
+          }
+        ],
+        "react-join-begin": [],
+        "react-join-return": [],
+        "published": [
+          {
+            "nodePhase": "startup-wait",
+            "receivedNodeMs": 128341.309709,
+            "stage": "published",
+            "owner": "pp-xdurvsr23t",
+            "pageMs": 127443.29999995232,
+            "timeOrigin": 1794883932849.5,
+            "runtime": "wc",
+            "children": 1
+          }
+        ]
+      }
+    }
+  }
+}
