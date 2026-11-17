@@ -179,6 +179,68 @@ function panel(adapter: string, visible: boolean, lazy = false) {
   return { container, element };
 }
 
+describe('eager preview admission', () => {
+  const eagerRoots = (count: number) =>
+    Array.from({ length: count }, (_, index) => {
+      const element = root();
+      element.dataset.lazy = 'false';
+      element.dataset.previewerId = `eager-${index}`;
+      return element;
+    });
+
+  it('starts every eager owner in document order across bounded native tasks', async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
+    try {
+      const owners = eagerRoots(35);
+      const mounted: HTMLElement[] = [];
+      dispose = initPreviewerBootstrap(document, async () => ({
+        initPreviewer: ({ root }) => {
+          root.dataset.inited = '1';
+          mounted.push(root);
+        },
+      }));
+      document.dispatchEvent(new Event('astro:page-load'));
+      await flush();
+      expect(mounted).toEqual([]);
+      await vi.runOnlyPendingTimersAsync();
+      expect(mounted).toEqual(owners.slice(0, 32));
+      await vi.runOnlyPendingTimersAsync();
+      expect(mounted).toEqual(owners);
+    } finally {
+      dispose?.();
+      dispose = undefined;
+      vi.useRealTimers();
+    }
+  });
+
+  it('drops an old queued generation and admits the next small page immediately', async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
+    try {
+      const owners = eagerRoots(35);
+      const mounted: HTMLElement[] = [];
+      dispose = initPreviewerBootstrap(document, async () => ({
+        initPreviewer: ({ root }) => {
+          root.dataset.inited = '1';
+          mounted.push(root);
+        },
+      }));
+      document.dispatchEvent(new Event('astro:page-load'));
+      document.dispatchEvent(new Event('astro:before-swap'));
+      for (const element of owners) element.remove();
+      const [next] = eagerRoots(1);
+      document.dispatchEvent(new Event('astro:page-load'));
+      await flush();
+      expect(mounted).toEqual([next]);
+      await vi.runOnlyPendingTimersAsync();
+      expect(mounted).toEqual([next]);
+    } finally {
+      dispose?.();
+      dispose = undefined;
+      vi.useRealTimers();
+    }
+  });
+});
+
 describe('adapter panel first activation', () => {
   it('loads only visible eager panels, later activates a shown panel, and preserves mounted state', async () => {
     const wc = panel('wc', true);

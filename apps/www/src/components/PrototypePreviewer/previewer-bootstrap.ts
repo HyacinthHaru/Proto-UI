@@ -6,6 +6,7 @@ type PreviewerRoot = HTMLElement & { __previewer__?: { destroy(): unknown } };
 type Client = typeof import('./previewer-client');
 type PendingPreview = { active: boolean; ready: boolean; observer?: IntersectionObserver };
 const documents = new WeakMap<Document, () => void>();
+const EAGER_BATCH_SIZE = 32;
 
 /** One page bootstrap owns pending lazy/import work. The previewer continues
  * to own its runtime generations; removal and Astro swaps revoke both scopes. */
@@ -18,6 +19,8 @@ export function initPreviewerBootstrap(
   const view = document.defaultView;
   if (!view) return () => {};
   const pending = new Map<PreviewerRoot, PendingPreview>();
+  const eager = new Set<PreviewerRoot>();
+  let eagerTask: number | undefined;
   let disposed = false;
   let clientLoad: ReturnType<typeof loadClient> | undefined;
   const acquireClient = () => {
@@ -34,6 +37,7 @@ export function initPreviewerBootstrap(
     entry.active = false;
     entry.observer?.disconnect();
     pending.delete(root);
+    eager.delete(root);
     delete root.dataset.mounting;
     delete root.dataset.lazyObserved;
     void root.__previewer__?.destroy();
@@ -53,6 +57,7 @@ export function initPreviewerBootstrap(
     if (
       !entry?.active ||
       !entry.ready ||
+      eager.has(root) ||
       !root.isConnected ||
       root.dataset.inited === '1' ||
       root.dataset.mounting === '1' ||
@@ -102,6 +107,16 @@ export function initPreviewerBootstrap(
       if (pending.get(root) === entry) delete root.dataset.mounting;
     }
   };
+  const drainEager = () => {
+    if (disposed) return;
+    let remaining = EAGER_BATCH_SIZE;
+    for (const root of eager) {
+      eager.delete(root);
+      void mount(root);
+      if (--remaining === 0) break;
+    }
+    eagerTask = eager.size ? view.setTimeout(drainEager, 0) : undefined;
+  };
   const scan = () => {
     if (disposed) return;
     for (const panel of document.querySelectorAll('[data-adapter-panel]')) {
@@ -120,7 +135,7 @@ export function initPreviewerBootstrap(
       };
       pending.set(root, entry);
       if (entry.ready) {
-        void mount(root);
+        eager.add(root);
       } else {
         root.dataset.lazyObserved = '1';
         entry.observer = new view.IntersectionObserver(
@@ -133,12 +148,18 @@ export function initPreviewerBootstrap(
         entry.observer.observe(root);
       }
     }
+    // Large eager inventories yield to the browser's module and render tasks.
+    if (eagerTask !== undefined || !eager.size) return;
+    if (eager.size > EAGER_BATCH_SIZE) eagerTask = view.setTimeout(drainEager, 0);
+    else drainEager();
   };
   // Observe only panel attributes, not every runtime's internal style updates.
   const visibility = new view.MutationObserver(() => {
     for (const root of pending.keys()) void mount(root);
   });
   const clear = () => {
+    if (eagerTask !== undefined) view.clearTimeout(eagerTask);
+    eagerTask = undefined;
     clientLoad = undefined;
     visibility.disconnect();
     for (const root of pending.keys()) release(root);
