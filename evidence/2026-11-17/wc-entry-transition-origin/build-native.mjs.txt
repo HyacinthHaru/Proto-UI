@@ -1,0 +1,16 @@
+import {createRequire} from 'node:module';
+import {writeFile,readFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import path from 'node:path';
+const {build}=createRequire(process.cwd()+'/package.json')('esbuild');
+const [out,label,mode,consumerDir]=process.argv.slice(2);
+const adapter=mode==='source'?path.join(process.cwd(),'packages/adapters/web-component/src/index.ts'):'@proto.ui/adapter-web-component';
+const entry=`import {AdaptToWebComponent} from ${JSON.stringify(adapter)};
+import {definePrototype} from '@proto.ui/core';
+import {asFocusEntry} from '@proto.ui/hooks';
+const constructors={};for(const profile of ['light','shadow'])constructors[profile]=AdaptToWebComponent(definePrototype({name:'motion-entry-fixture-'+profile,setup(){asFocusEntry().configure({strategy:'descendant-first',fallback:'self'});return r=>r.slot();}}),{shadow:profile==='shadow'});
+globalThis.makeMotionEntry=profile=>new constructors[profile]();`;
+const result=await build({stdin:{contents:entry,loader:'ts',resolveDir:consumerDir??path.join(process.cwd(),'packages/adapters/web-component'),sourcefile:'entry-motion-fixture.ts'},bundle:true,format:'iife',target:'es2022',tsconfigRaw:{compilerOptions:{}},metafile:true,outfile:path.join(out,label+'.js')});
+const hash=b=>createHash('sha256').update(b).digest('hex');const inputs=[];
+for(const name of Object.keys(result.metafile.inputs))inputs.push(name.endsWith('entry-motion-fixture.ts')?{path:name,origin:'literal fixture',sha256:hash(entry)}:{path:name,sha256:hash(await readFile(name))});
+await writeFile(path.join(out,label+'-binding.json'),JSON.stringify({label,mode,source:entry,bundleSha256:hash(await readFile(path.join(out,label+'.js'))),inputs},null,2)+'\n');

@@ -1,0 +1,61 @@
+import { createRequire } from 'node:module';
+import { writeFile } from 'node:fs/promises';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+const { chromium } = createRequire(process.env.PUI_WWW_PACKAGE)('playwright-core');
+const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH });
+const rows = [], failures = [];
+try {
+  for (const variant of ['legacy', 'candidate']) {
+    const context = await browser.newContext({ viewport: { width: 1280, height: 900 }, colorScheme: 'light' });
+    try {
+      const page = await context.newPage();
+      await page.route(process.env.PROTO_UI_BROWSER_BASE_URL + '/__public-shadow-input__', route => route.fulfill({contentType:'text/html',body:'<!doctype html><main>Explicit direct Shadow consumer of public Shadcn Input</main>'}));
+      await page.goto(process.env.PROTO_UI_BROWSER_BASE_URL + '/__public-shadow-input__');
+      await page.addScriptTag({path:path.join(path.dirname(process.argv[3]),'public-shadow-consumer.js')});
+      await page.evaluate(()=>{const source=document.createElement('div'),destination=document.createElement('div');source.className='host';source.setAttribute('data-initial-runtime','wc');source.setAttribute('data-previewer-id','fixture');source.append(window.mountLeaseShadowInput());document.body.append(source,destination);});
+      const input = page.locator('lease-shadow-input input');
+      await input.waitFor({ state: 'visible', timeout: 20000 });
+      await input.fill('Retained authored text');
+      await input.click();
+      await page.addScriptTag({ path: process.argv[2] });
+      await page.evaluate(async url => {
+        const entry = await import(url);
+        if (typeof entry.w !== 'function') throw new Error('Unexpected lease module');
+        window.nativeLease.candidate = { withNativeContentLease: entry.w };
+      }, process.env.PROTO_UI_BROWSER_BASE_URL + '/_astro/' + process.env.PUI_PACKED_LEASE_ASSET);
+      const immediate = await input.evaluate((control, variant) => {
+        const host = control.getRootNode().host;
+        if (!host?.shadowRoot || host.shadowRoot.activeElement !== control) throw new Error('Expected public WC shadow text control');
+        const scope = host.closest('.host');
+        if (!scope) throw new Error('Missing public preview host');
+        control.setSelectionRange(3, 8, 'backward');
+        const active = () => { let target = document.activeElement; while (target?.shadowRoot?.activeElement) target = target.shadowRoot.activeElement; return target; };
+        const state = () => ({ sameInput: host.shadowRoot.querySelector('input') === control, connected: control.isConnected, active: active() === control, value: control.value, selection: [control.selectionStart, control.selectionEnd, control.selectionDirection] });
+        const before = state();
+        const destination = document.createElement('div');
+        scope.parentElement.append(destination);
+        window.nativeLease[variant === 'legacy' ? 'control' : 'candidate'].withNativeContentLease(scope, () => destination.append(scope));
+        window.__publicInput = { state, control, host, scope };
+        return { before, after: state(), tag: host.localName, shadowMode: host.shadowRoot.mode, runtime: scope.closest('[data-previewer-id]')?.getAttribute('data-initial-runtime') };
+      }, variant);
+      await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+      const settled = await page.evaluate(() => window.__publicInput.state());
+      const screenshot = 'public-shadow-' + variant + '.png';
+      await page.screenshot({path: path.join(path.dirname(process.argv[3]), screenshot)});
+      const row = { variant, ...immediate, settled, screenshot, viewport: {width:1280,height:900}, colorScheme: 'light' };
+      rows.push(row);
+      try {
+        assert.equal(row.runtime, 'wc');
+        for (const state of [row.before, row.after, row.settled]) {
+          assert(state.sameInput && state.connected && state.active);
+          assert.equal(state.value, 'Retained authored text');
+          assert.deepEqual(state.selection, [3, 8, 'backward']);
+        }
+      } catch (error) { failures.push({ variant, message: error.message }); }
+      console.info(JSON.stringify(row));
+    } finally { await context.close(); }
+  }
+  await writeFile(process.argv[3], JSON.stringify({ browser: browser.version(), scope: 'Isolated installed-tarball Shadcn Input with explicit shadow:true, synthetic native host move fixture; direct physical public preview-host move, measured immediately and after two animation frames. Programmatic range; Playwright fill and click.', rows, failures }, null, 2) + '\n');
+  if (failures.some(row => row.variant === 'candidate')) process.exitCode = 1;
+} finally { await browser.close(); }

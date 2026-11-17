@@ -1,0 +1,35 @@
+#!/bin/bash
+set -euo pipefail
+d=$TASK_STATE_ROOT
+p="$d/s4-entry-motion-origin-fix"
+w="$d/s4-text-selection-lease-worktree"
+export PATH="$d/../proto-ui-pr822/toolchain/node-v24.21.0-darwin-arm64/bin:/opt/homebrew/bin:$PATH"
+export CHROME_PATH='$USER_HOME/.codex/task-state/proto-ui-20261111-window/chrome-156.0.8078.79/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing'
+export PUI_WWW_PACKAGE="$w/apps/www/package.json"
+cd "$w"
+test "$(git rev-parse HEAD)" = "$(head -1 "$p/source.txt")"
+test -z "$(git status --porcelain)"
+test "$(cat "$p/production-build.exit")" = 0
+shasum -a 256 -c "$p/changed-inputs.sha256"
+asset=(apps/www/dist/_astro/native-content-lease.*.js)
+test "${#asset[@]}" -eq 1
+shasum -a 256 "$asset" "$p/native-green.js" "$p/public-shadow-control.mjs" > "$p/public-shadow-inputs.sha256"
+port=$(python3 -c 'import socket;s=socket.socket();s.bind(("127.0.0.1",0));print(s.getsockname()[1])')
+(cd apps/www && exec node node_modules/astro/astro.js preview --host 127.0.0.1 --port "$port") > "$p/public-shadow-preview.log" 2>&1 &
+pid=$!
+trap 'kill "$pid" 2>/dev/null || :; wait "$pid" 2>/dev/null || :' EXIT
+export PROTO_UI_BROWSER_BASE_URL="http://127.0.0.1:$port"
+export PUI_PACKED_LEASE_ASSET="${asset##*/}"
+for trial in {1..100}; do
+ if curl -q --fail --silent "$PROTO_UI_BROWSER_BASE_URL/_astro/$PUI_PACKED_LEASE_ASSET" -o "$p/public-shadow-served.js"; then break; fi
+ sleep .1
+done
+cmp "$asset" "$p/public-shadow-served.js"
+set +e
+node "$p/public-shadow-control.mjs" "$p/native-green.js" "$p/public-shadow.json" > "$p/public-shadow.log" 2>&1
+code=$?
+set -e
+printf '%s\n' "$code" > "$p/public-shadow.exit"
+tail -3 "$p/public-shadow.log"
+test -z "$(git status --porcelain)"
+exit "$code"
