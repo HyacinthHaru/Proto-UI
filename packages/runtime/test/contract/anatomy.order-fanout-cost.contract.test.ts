@@ -220,6 +220,42 @@ describe('Runtime Anatomy synchronous order fanout cost', () => {
     });
   }
 
+  for (const source of ['sync', 'notify'] as const) {
+    it(`${source}: keeps a stable order version without rebuilding the signature`, () => {
+      const domain = createDomain(12, 12, true);
+      const versions = domain.items.map(domain.version);
+      const beforeChange = domain.query();
+      const join = vi.spyOn(Array.prototype, 'join');
+      let signatures: number;
+      try {
+        domain[source]();
+        signatures = join.mock.contexts.filter(
+          (receiver) =>
+            Array.isArray(receiver) &&
+            receiver.length === domain.items.length + 1 &&
+            receiver.every(
+              (value: unknown) => typeof value === 'string' && /^(?:root|item):[0-9]+$/.test(value)
+            )
+        ).length;
+      } finally {
+        join.mockRestore();
+      }
+      expect(signatures).toBe(0);
+      expect(domain.items.map(domain.version)).toEqual(versions);
+      expect([...domain.notifications.values()].flat()).toEqual([]);
+      expect(Math.min(...domain.targetReads.values())).toBe(domain.items.length);
+      const last = domain.items.at(-1)!;
+      domain.element.prepend(domain.targets.get(last)!);
+      domain[source]();
+      const afterChange = [last.id, ...beforeChange.slice(0, -1)];
+      expect(domain.items.map(domain.version)).toEqual(versions.map((version) => version + 1));
+      for (const item of domain.items)
+        expect(domain.notifications.get(item)).toEqual([afterChange]);
+      domain[source]();
+      expect(domain.items.map(domain.version)).toEqual(versions.map((version) => version + 1));
+    });
+  }
+
   it('keeps registration and business-only changes silent', () => {
     const domain = createDomain(1, 1);
     const item = domain.items[0]!;

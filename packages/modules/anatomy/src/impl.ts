@@ -56,9 +56,10 @@ type NormalizedFamily = {
 };
 
 type ClaimRecord = {
-  instance: AnatomyInstanceToken;
+  readonly ownerOrder: number;
+  readonly instance: AnatomyInstanceToken;
   family: AnatomyFamily;
-  role: string;
+  readonly role: string;
   profile?: string;
   prototype: Prototype<any> | null;
   exposePort: ExposePort;
@@ -66,6 +67,9 @@ type ClaimRecord = {
   getParent: AnatomyParentGetter | null;
   invoke: AnatomyOrderCallbackDispatcher;
 };
+
+type OrderSignature = { value: string; owners: readonly number[] | null };
+const MISSING_ORDER_SIGNATURE: OrderSignature = { value: 'missing-domain', owners: null };
 
 // Share reads only within one synchronous notification. A parent-getter identity
 // identifies one logical host tree; independent bridges must not share domains.
@@ -306,7 +310,7 @@ export class AnatomyModuleImpl extends ModuleBase {
   private publishedTargetDomains = new Map<AnatomyFamily, AnatomyInstanceToken>();
   private observedOrderRoots = new Map<AnatomyFamily, AnatomyInstanceToken>();
   private orderVersionByFamily = new Map<AnatomyFamily, number>();
-  private orderSignatureByFamily = new Map<AnatomyFamily, string>();
+  private orderSignatureByFamily = new Map<AnatomyFamily, OrderSignature>();
   private objectIds = new WeakMap<object, number>();
   private primitiveIds = new Map<unknown, number>();
   private nextIdentityId = 1;
@@ -357,6 +361,7 @@ export class AnatomyModuleImpl extends ModuleBase {
     }
 
     CENTER.setClaim({
+      ownerOrder: this.instanceOrder,
       instance,
       family,
       role: decl.role,
@@ -1083,10 +1088,11 @@ export class AnatomyModuleImpl extends ModuleBase {
 
   private emitOrderChangeIfNeeded(family: AnatomyFamily, reads?: OrderNotificationReads): void {
     const prev = this.orderSignatureByFamily.get(family);
-    const next = this.computeOrderSignature(family, reads);
-    if (typeof prev !== 'undefined' && prev === next) return;
+    const next = this.computeOrderSignature(family, prev, reads);
+    if (prev === next) return;
 
     this.orderSignatureByFamily.set(family, next);
+    if (prev?.value === next.value) return;
     const nextVersion = (this.orderVersionByFamily.get(family) ?? 0) + 1;
     this.orderVersionByFamily.set(family, nextVersion);
 
@@ -1109,11 +1115,29 @@ export class AnatomyModuleImpl extends ModuleBase {
     }
   }
 
-  private computeOrderSignature(family: AnatomyFamily, reads?: OrderNotificationReads): string {
+  private computeOrderSignature(
+    family: AnatomyFamily,
+    previous?: OrderSignature,
+    reads?: OrderNotificationReads
+  ): OrderSignature {
     const domain = this.resolveCurrentDomain(family, false, reads?.domains);
-    if (!domain.rootInstance) return 'missing-domain';
+    if (!domain.rootInstance) return MISSING_ORDER_SIGNATURE;
     const ordered = this.sortClaims(domain.claims, reads);
-    return ordered.map((claim) => `${claim.role}:${this.getIdentityId(claim.instance)}`).join('|');
+    const owners = previous?.owners;
+    // A module has one immutable claim identity and role per family. Keep
+    // only its numeric owner order here so a signature cannot retain a claim.
+    if (
+      previous &&
+      owners?.length === ordered.length &&
+      ordered.every((claim, index) => claim.ownerOrder === owners[index])
+    )
+      return previous;
+    return {
+      value: ordered
+        .map((claim) => `${claim.role}:${this.getIdentityId(claim.instance)}`)
+        .join('|'),
+      owners: ordered.map((claim) => claim.ownerOrder),
+    };
   }
 
   private getIdentityId(value: unknown): number {
