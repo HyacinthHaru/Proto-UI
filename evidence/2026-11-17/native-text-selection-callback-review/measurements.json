@@ -1,0 +1,2463 @@
+{
+  "source": {
+    "head": "0eca13c4a6fb61fa559ee195d3063228c9cfa3d8",
+    "tree": "406818faef7fbf7e537ea3bb0283b5bed6913cc0",
+    "parent": "e97761a5a5ace8bafe5efaee5314b77f161a9d75",
+    "baseMain": "0f0955a9d624e0ef5e250f56a0eaa0fc52bbfb53",
+    "signature": "G",
+    "files": [
+      "dc8fdf49e77233b45cdac2a5f2ea9d5314cbef153a8dde1563dfd8220af56cb8  apps/www/src/components/PrototypePreviewer/native-content-lease.ts",
+      "12991a1eed74365c77fe1f413a8106fbd06ce873d3f2575d38a2dc3bc5b26803  apps/www/src/components/PrototypePreviewer/native-content-lease.test.ts"
+    ]
+  },
+  "feedback": {
+    "url": "https://github.com/Proto-UI/Proto-UI/pull/1494#discussion_r4604270688",
+    "thread": "PRRT_kwDOMhQZjc64mYY5",
+    "status": "implemented; independent recheck and thread resolution pending"
+  },
+  "focused": {
+    "red": {
+      "passed": 12,
+      "failed": 4,
+      "filtered": 0,
+      "files": 1,
+      "sha256": "123df9bdf756c46e63cf87854ccd4812b92218c6ed93d8464382b145d2fa4386"
+    },
+    "unappliedEditAttempt": {
+      "result": {
+        "passed": 252,
+        "failed": 4,
+        "filtered": 0,
+        "files": 6,
+        "sha256": "7688f67e2761c7881fa694cd7f61754378007f232b2319652497698530d44ab2"
+      },
+      "note": "First source edit failed its exact-pattern assertion before writing. The following test invocation therefore ran unchanged e977 source and retained the same four new callback-selection failures (252 other tests passed). This is not a green repaired candidate.\n"
+    },
+    "green": {
+      "passed": 256,
+      "failed": 0,
+      "filtered": 0,
+      "files": 6,
+      "sha256": "b6ec08b179c9641625b909133b54c65807e8ebd673c9f349fb7100689485527a"
+    }
+  },
+  "sourceBrowser": {
+    "observerSha256": "af2db24859252cde45b54b92ce3ead10bbe4a3f799ce003fedd76347f7dc4ba3",
+    "redBinding": {
+      "control": "bfc19295f4a2ed1b630021ca32098814c2ba96d7ecb95f20dc76749faf5e43aa",
+      "candidate": "bfc19295f4a2ed1b630021ca32098814c2ba96d7ecb95f20dc76749faf5e43aa",
+      "bundle": "a1f6c9047fff9b92acdc8d67f8bdb14d297fe232e7a83013823727afb0b7f3bf"
+    },
+    "greenBinding": {
+      "control": "bfc19295f4a2ed1b630021ca32098814c2ba96d7ecb95f20dc76749faf5e43aa",
+      "candidate": "dc8fdf49e77233b45cdac2a5f2ea9d5314cbef153a8dde1563dfd8220af56cb8",
+      "bundle": "76896ca05c4fadddc86b7cbcc8a0782a721ee4c1446f9de38041f5f10419942c"
+    },
+    "red": {
+      "browser": "156.0.8078.79",
+      "rows": [
+        {
+          "mode": "empty",
+          "variant": "legacy",
+          "before": {
+            "mode": "empty",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": null,
+            "anchorOffset": 0,
+            "focus": null,
+            "focusOffset": 0
+          }
+        },
+        {
+          "mode": "empty",
+          "variant": "candidate",
+          "before": {
+            "mode": "empty",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": null,
+            "anchorOffset": 0,
+            "focus": null,
+            "focusOffset": 0
+          }
+        },
+        {
+          "mode": "forward",
+          "variant": "legacy",
+          "before": {
+            "mode": "forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "text",
+            "anchorOffset": 2,
+            "focus": "text",
+            "focusOffset": 10
+          }
+        },
+        {
+          "mode": "forward",
+          "variant": "candidate",
+          "before": {
+            "mode": "forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "text",
+            "anchorOffset": 2,
+            "focus": "text",
+            "focusOffset": 10
+          }
+        },
+        {
+          "mode": "backward",
+          "variant": "legacy",
+          "before": {
+            "mode": "backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "text",
+            "anchorOffset": 10,
+            "focus": "text",
+            "focusOffset": 2
+          }
+        },
+        {
+          "mode": "backward",
+          "variant": "candidate",
+          "before": {
+            "mode": "backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "text",
+            "anchorOffset": 10,
+            "focus": "text",
+            "focusOffset": 2
+          }
+        },
+        {
+          "mode": "crossing",
+          "variant": "legacy",
+          "before": {
+            "mode": "crossing",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "text",
+            "anchorOffset": 2,
+            "focus": "outside",
+            "focusOffset": 5
+          }
+        },
+        {
+          "mode": "crossing",
+          "variant": "candidate",
+          "before": {
+            "mode": "crossing",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "text",
+            "anchorOffset": 2,
+            "focus": "outside",
+            "focusOffset": 5
+          }
+        },
+        {
+          "mode": "registered-forward",
+          "variant": "legacy",
+          "before": {
+            "mode": "registered-forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "destination",
+            "anchorOffset": 0,
+            "focus": "destination",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "registered-forward",
+          "variant": "candidate",
+          "before": {
+            "mode": "registered-forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "destination",
+            "anchorOffset": 0,
+            "focus": "destination",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "registered-backward",
+          "variant": "legacy",
+          "before": {
+            "mode": "registered-backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "destination",
+            "anchorOffset": 1,
+            "focus": "destination",
+            "focusOffset": 0
+          }
+        },
+        {
+          "mode": "registered-backward",
+          "variant": "candidate",
+          "before": {
+            "mode": "registered-backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "destination",
+            "anchorOffset": 1,
+            "focus": "destination",
+            "focusOffset": 0
+          }
+        },
+        {
+          "mode": "input-forward",
+          "variant": "legacy",
+          "before": {
+            "mode": "input-forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "input-forward",
+          "variant": "candidate",
+          "before": {
+            "mode": "input-forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "input-backward",
+          "variant": "legacy",
+          "before": {
+            "mode": "input-backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "backward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "input-backward",
+          "variant": "candidate",
+          "before": {
+            "mode": "input-backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "backward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-forward",
+          "variant": "legacy",
+          "before": {
+            "mode": "textarea-forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-forward",
+          "variant": "candidate",
+          "before": {
+            "mode": "textarea-forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-backward",
+          "variant": "legacy",
+          "before": {
+            "mode": "textarea-backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "backward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-backward",
+          "variant": "candidate",
+          "before": {
+            "mode": "textarea-backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "backward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "input-move-update",
+          "variant": "legacy",
+          "before": {
+            "mode": "input-move-update",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "New text",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "input-move-update",
+          "variant": "candidate",
+          "before": {
+            "mode": "input-move-update",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "New text",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "input-focus-update",
+          "variant": "legacy",
+          "before": {
+            "mode": "input-focus-update",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 3,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "New text",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "input-focus-update",
+          "variant": "candidate",
+          "before": {
+            "mode": "input-focus-update",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 3,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "New text",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-move-update",
+          "variant": "legacy",
+          "before": {
+            "mode": "textarea-move-update",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "New text",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-move-update",
+          "variant": "candidate",
+          "before": {
+            "mode": "textarea-move-update",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "New text",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-focus-update",
+          "variant": "legacy",
+          "before": {
+            "mode": "textarea-focus-update",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "New text",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-focus-update",
+          "variant": "candidate",
+          "before": {
+            "mode": "textarea-focus-update",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "New text",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        }
+      ],
+      "failures": [
+        {
+          "mode": "input-move-update",
+          "variant": "legacy",
+          "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   3,\n+   8,\n+   'forward'\n-   1,\n-   4,\n-   'backward'\n  ]\n"
+        },
+        {
+          "mode": "input-move-update",
+          "variant": "candidate",
+          "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   3,\n+   8,\n+   'forward'\n-   1,\n-   4,\n-   'backward'\n  ]\n"
+        },
+        {
+          "mode": "input-focus-update",
+          "variant": "legacy",
+          "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   3,\n+   8,\n+   'forward'\n-   1,\n-   4,\n-   'backward'\n  ]\n"
+        },
+        {
+          "mode": "input-focus-update",
+          "variant": "candidate",
+          "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   3,\n+   8,\n+   'forward'\n-   1,\n-   4,\n-   'backward'\n  ]\n"
+        },
+        {
+          "mode": "textarea-move-update",
+          "variant": "legacy",
+          "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   3,\n+   8,\n+   'forward'\n-   1,\n-   4,\n-   'backward'\n  ]\n"
+        },
+        {
+          "mode": "textarea-move-update",
+          "variant": "candidate",
+          "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   3,\n+   8,\n+   'forward'\n-   1,\n-   4,\n-   'backward'\n  ]\n"
+        },
+        {
+          "mode": "textarea-focus-update",
+          "variant": "legacy",
+          "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   3,\n+   8,\n+   'forward'\n-   1,\n-   4,\n-   'backward'\n  ]\n"
+        },
+        {
+          "mode": "textarea-focus-update",
+          "variant": "candidate",
+          "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   3,\n+   8,\n+   'forward'\n-   1,\n-   4,\n-   'backward'\n  ]\n"
+        }
+      ]
+    },
+    "green": {
+      "browser": "156.0.8078.79",
+      "rows": [
+        {
+          "mode": "empty",
+          "variant": "legacy",
+          "before": {
+            "mode": "empty",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": null,
+            "anchorOffset": 0,
+            "focus": null,
+            "focusOffset": 0
+          }
+        },
+        {
+          "mode": "empty",
+          "variant": "candidate",
+          "before": {
+            "mode": "empty",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": null,
+            "anchorOffset": 0,
+            "focus": null,
+            "focusOffset": 0
+          }
+        },
+        {
+          "mode": "forward",
+          "variant": "legacy",
+          "before": {
+            "mode": "forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "text",
+            "anchorOffset": 2,
+            "focus": "text",
+            "focusOffset": 10
+          }
+        },
+        {
+          "mode": "forward",
+          "variant": "candidate",
+          "before": {
+            "mode": "forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "text",
+            "anchorOffset": 2,
+            "focus": "text",
+            "focusOffset": 10
+          }
+        },
+        {
+          "mode": "backward",
+          "variant": "legacy",
+          "before": {
+            "mode": "backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "text",
+            "anchorOffset": 10,
+            "focus": "text",
+            "focusOffset": 2
+          }
+        },
+        {
+          "mode": "backward",
+          "variant": "candidate",
+          "before": {
+            "mode": "backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "text",
+            "anchorOffset": 10,
+            "focus": "text",
+            "focusOffset": 2
+          }
+        },
+        {
+          "mode": "crossing",
+          "variant": "legacy",
+          "before": {
+            "mode": "crossing",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "text",
+            "anchorOffset": 2,
+            "focus": "outside",
+            "focusOffset": 5
+          }
+        },
+        {
+          "mode": "crossing",
+          "variant": "candidate",
+          "before": {
+            "mode": "crossing",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "text",
+            "anchorOffset": 2,
+            "focus": "outside",
+            "focusOffset": 5
+          }
+        },
+        {
+          "mode": "registered-forward",
+          "variant": "legacy",
+          "before": {
+            "mode": "registered-forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "destination",
+            "anchorOffset": 0,
+            "focus": "destination",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "registered-forward",
+          "variant": "candidate",
+          "before": {
+            "mode": "registered-forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "destination",
+            "anchorOffset": 0,
+            "focus": "destination",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "registered-backward",
+          "variant": "legacy",
+          "before": {
+            "mode": "registered-backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "destination",
+            "anchorOffset": 1,
+            "focus": "destination",
+            "focusOffset": 0
+          }
+        },
+        {
+          "mode": "registered-backward",
+          "variant": "candidate",
+          "before": {
+            "mode": "registered-backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "destination",
+            "anchorOffset": 1,
+            "focus": "destination",
+            "focusOffset": 0
+          }
+        },
+        {
+          "mode": "input-forward",
+          "variant": "legacy",
+          "before": {
+            "mode": "input-forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "input-forward",
+          "variant": "candidate",
+          "before": {
+            "mode": "input-forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "input-backward",
+          "variant": "legacy",
+          "before": {
+            "mode": "input-backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "backward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "input-backward",
+          "variant": "candidate",
+          "before": {
+            "mode": "input-backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "backward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-forward",
+          "variant": "legacy",
+          "before": {
+            "mode": "textarea-forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-forward",
+          "variant": "candidate",
+          "before": {
+            "mode": "textarea-forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-backward",
+          "variant": "legacy",
+          "before": {
+            "mode": "textarea-backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "backward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-backward",
+          "variant": "candidate",
+          "before": {
+            "mode": "textarea-backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "backward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "input-move-update",
+          "variant": "legacy",
+          "before": {
+            "mode": "input-move-update",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "New text",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "input-move-update",
+          "variant": "candidate",
+          "before": {
+            "mode": "input-move-update",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "New text",
+            "selectionStart": 1,
+            "selectionEnd": 4,
+            "selectionDirection": "backward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "input-focus-update",
+          "variant": "legacy",
+          "before": {
+            "mode": "input-focus-update",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 3,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "New text",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "input-focus-update",
+          "variant": "candidate",
+          "before": {
+            "mode": "input-focus-update",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 3,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "New text",
+            "selectionStart": 1,
+            "selectionEnd": 4,
+            "selectionDirection": "backward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-move-update",
+          "variant": "legacy",
+          "before": {
+            "mode": "textarea-move-update",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "New text",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-move-update",
+          "variant": "candidate",
+          "before": {
+            "mode": "textarea-move-update",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "New text",
+            "selectionStart": 1,
+            "selectionEnd": 4,
+            "selectionDirection": "backward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-focus-update",
+          "variant": "legacy",
+          "before": {
+            "mode": "textarea-focus-update",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "New text",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-focus-update",
+          "variant": "candidate",
+          "before": {
+            "mode": "textarea-focus-update",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "New text",
+            "selectionStart": 1,
+            "selectionEnd": 4,
+            "selectionDirection": "backward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        }
+      ],
+      "failures": [
+        {
+          "mode": "input-move-update",
+          "variant": "legacy",
+          "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   3,\n+   8,\n+   'forward'\n-   1,\n-   4,\n-   'backward'\n  ]\n"
+        },
+        {
+          "mode": "input-focus-update",
+          "variant": "legacy",
+          "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   3,\n+   8,\n+   'forward'\n-   1,\n-   4,\n-   'backward'\n  ]\n"
+        },
+        {
+          "mode": "textarea-move-update",
+          "variant": "legacy",
+          "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   3,\n+   8,\n+   'forward'\n-   1,\n-   4,\n-   'backward'\n  ]\n"
+        },
+        {
+          "mode": "textarea-focus-update",
+          "variant": "legacy",
+          "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   3,\n+   8,\n+   'forward'\n-   1,\n-   4,\n-   'backward'\n  ]\n"
+        }
+      ]
+    }
+  },
+  "packedBrowser": {
+    "observerSha256": "63807aafbc2f435c8ab7cafbcac70989b75610989247785b337dafef8e83ee12",
+    "assets": [
+      {
+        "asset": "native-content-lease.F2uZraj8.js",
+        "sha256": "18e34759337420f8e34cc2fe2ebd02c658fe9f5ccd5e05e847deb66575f84e9f"
+      },
+      {
+        "asset": "native-green.js",
+        "sha256": "76896ca05c4fadddc86b7cbcc8a0782a721ee4c1446f9de38041f5f10419942c"
+      },
+      {
+        "asset": "packed-control.mjs",
+        "sha256": "63807aafbc2f435c8ab7cafbcac70989b75610989247785b337dafef8e83ee12"
+      }
+    ],
+    "result": {
+      "browser": "156.0.8078.79",
+      "rows": [
+        {
+          "mode": "empty",
+          "variant": "legacy",
+          "before": {
+            "mode": "empty",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": null,
+            "anchorOffset": 0,
+            "focus": null,
+            "focusOffset": 0
+          }
+        },
+        {
+          "mode": "empty",
+          "variant": "candidate",
+          "before": {
+            "mode": "empty",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": null,
+            "anchorOffset": 0,
+            "focus": null,
+            "focusOffset": 0
+          }
+        },
+        {
+          "mode": "forward",
+          "variant": "legacy",
+          "before": {
+            "mode": "forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "text",
+            "anchorOffset": 2,
+            "focus": "text",
+            "focusOffset": 10
+          }
+        },
+        {
+          "mode": "forward",
+          "variant": "candidate",
+          "before": {
+            "mode": "forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "text",
+            "anchorOffset": 2,
+            "focus": "text",
+            "focusOffset": 10
+          }
+        },
+        {
+          "mode": "backward",
+          "variant": "legacy",
+          "before": {
+            "mode": "backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "text",
+            "anchorOffset": 10,
+            "focus": "text",
+            "focusOffset": 2
+          }
+        },
+        {
+          "mode": "backward",
+          "variant": "candidate",
+          "before": {
+            "mode": "backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "text",
+            "anchorOffset": 10,
+            "focus": "text",
+            "focusOffset": 2
+          }
+        },
+        {
+          "mode": "crossing",
+          "variant": "legacy",
+          "before": {
+            "mode": "crossing",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "text",
+            "anchorOffset": 2,
+            "focus": "outside",
+            "focusOffset": 5
+          }
+        },
+        {
+          "mode": "crossing",
+          "variant": "candidate",
+          "before": {
+            "mode": "crossing",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "text",
+            "anchorOffset": 2,
+            "focus": "outside",
+            "focusOffset": 5
+          }
+        },
+        {
+          "mode": "registered-forward",
+          "variant": "legacy",
+          "before": {
+            "mode": "registered-forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "destination",
+            "anchorOffset": 0,
+            "focus": "destination",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "registered-forward",
+          "variant": "candidate",
+          "before": {
+            "mode": "registered-forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "destination",
+            "anchorOffset": 0,
+            "focus": "destination",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "registered-backward",
+          "variant": "legacy",
+          "before": {
+            "mode": "registered-backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "destination",
+            "anchorOffset": 1,
+            "focus": "destination",
+            "focusOffset": 0
+          }
+        },
+        {
+          "mode": "registered-backward",
+          "variant": "candidate",
+          "before": {
+            "mode": "registered-backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "destination",
+            "anchorOffset": 1,
+            "focus": "destination",
+            "focusOffset": 0
+          }
+        },
+        {
+          "mode": "input-forward",
+          "variant": "legacy",
+          "before": {
+            "mode": "input-forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "input-forward",
+          "variant": "candidate",
+          "before": {
+            "mode": "input-forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "input-backward",
+          "variant": "legacy",
+          "before": {
+            "mode": "input-backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "backward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "input-backward",
+          "variant": "candidate",
+          "before": {
+            "mode": "input-backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "backward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-forward",
+          "variant": "legacy",
+          "before": {
+            "mode": "textarea-forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-forward",
+          "variant": "candidate",
+          "before": {
+            "mode": "textarea-forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-backward",
+          "variant": "legacy",
+          "before": {
+            "mode": "textarea-backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "backward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-backward",
+          "variant": "candidate",
+          "before": {
+            "mode": "textarea-backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "backward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "input-move-update",
+          "variant": "legacy",
+          "before": {
+            "mode": "input-move-update",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "New text",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "input-move-update",
+          "variant": "candidate",
+          "before": {
+            "mode": "input-move-update",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "New text",
+            "selectionStart": 1,
+            "selectionEnd": 4,
+            "selectionDirection": "backward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "input-focus-update",
+          "variant": "legacy",
+          "before": {
+            "mode": "input-focus-update",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 3,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "New text",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "input-focus-update",
+          "variant": "candidate",
+          "before": {
+            "mode": "input-focus-update",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 3,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "New text",
+            "selectionStart": 1,
+            "selectionEnd": 4,
+            "selectionDirection": "backward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-move-update",
+          "variant": "legacy",
+          "before": {
+            "mode": "textarea-move-update",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "New text",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-move-update",
+          "variant": "candidate",
+          "before": {
+            "mode": "textarea-move-update",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "New text",
+            "selectionStart": 1,
+            "selectionEnd": 4,
+            "selectionDirection": "backward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-focus-update",
+          "variant": "legacy",
+          "before": {
+            "mode": "textarea-focus-update",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "New text",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-focus-update",
+          "variant": "candidate",
+          "before": {
+            "mode": "textarea-focus-update",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "New text",
+            "selectionStart": 1,
+            "selectionEnd": 4,
+            "selectionDirection": "backward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        }
+      ],
+      "failures": [
+        {
+          "mode": "input-move-update",
+          "variant": "legacy",
+          "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   3,\n+   8,\n+   'forward'\n-   1,\n-   4,\n-   'backward'\n  ]\n"
+        },
+        {
+          "mode": "input-focus-update",
+          "variant": "legacy",
+          "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   3,\n+   8,\n+   'forward'\n-   1,\n-   4,\n-   'backward'\n  ]\n"
+        },
+        {
+          "mode": "textarea-move-update",
+          "variant": "legacy",
+          "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   3,\n+   8,\n+   'forward'\n-   1,\n-   4,\n-   'backward'\n  ]\n"
+        },
+        {
+          "mode": "textarea-focus-update",
+          "variant": "legacy",
+          "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   3,\n+   8,\n+   'forward'\n-   1,\n-   4,\n-   'backward'\n  ]\n"
+        }
+      ]
+    }
+  },
+  "validation": {
+    "environment": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+    "typesExit": 0,
+    "websiteBuildExit": 0,
+    "pages": 685,
+    "previewTests": {
+      "passed": 11,
+      "failed": 0,
+      "filtered": 13,
+      "files": 3,
+      "sha256": "930d5a5cea055c8fec7c24d6952292c31845793325807534d809912065407a93"
+    },
+    "preview": {
+      "head": "0eca13c4a6fb61fa559ee195d3063228c9cfa3d8",
+      "tree": "406818faef7fbf7e537ea3bb0283b5bed6913cc0",
+      "distHashes": {
+        "zh-cn/index.html": "c48c32a2f870255a10054e55e79abdbcc7eaf3042ce722c02c668d9c1aadf902",
+        "zh-cn/ui-libraries/shadcn/button/index.html": "ce1c9005937dec8ed1197c00af8b41d672f831ac1f2de9fdfcecd9a221a05e58",
+        "zh-cn/ui-libraries/brutalist/components/button/index.html": "b7c7fe9f349a979f354704e99ff0143dfd361955c50ed1976913b9d722348d37"
+      },
+      "sourceCodeExamples": 9,
+      "renderedCodeExamples": 9,
+      "packedHeaderExit": 0,
+      "previewBrowserExit": 0,
+      "selector": "uses real family Popover Triggers|uses the same mobile shell|live available region|keeps Runtime Tabs outside"
+    },
+    "header": {
+      "head": "0eca13c4a6fb61fa559ee195d3063228c9cfa3d8",
+      "browser": "156.0.8078.79",
+      "scope": "First animation frame control on the exact static Astro preview. Geometry reads can force layout.",
+      "results": [
+        {
+          "width": 320,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1601,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1731.2000000476837,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1755.6000001430511,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        },
+        {
+          "width": 390,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1524.5,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1654.9000000953674,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1683.6000001430511,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        }
+      ]
+    },
+    "matrixInventory": {
+      "zh-cn": {
+        "roots": 1268,
+        "bytes": 1862429,
+        "sha256": "62532e2444e0422feeeceb8c23c1906180159ae289e83ab242a01563ad7094b3"
+      },
+      "en": {
+        "roots": 1268,
+        "bytes": 1914059,
+        "sha256": "8051fae32e267031ce9d71d3eaad1e55abc58b07560bb6af8e512620a46027db"
+      }
+    },
+    "packages": {
+      "source": {
+        "head": "e97761a5a5ace8bafe5efaee5314b77f161a9d75",
+        "tree": "ff8cc11d1383a36af7afca4d1e7a868768336fb3",
+        "parent": "0f0955a9d624e0ef5e250f56a0eaa0fc52bbfb53",
+        "signature": "G",
+        "files": [
+          "d6d135059bbc1a9eb2f4bb51b3b455c8220f78fee9e3765ddb07c0aa19c25996  apps/www/src/components/PrototypePreviewer/native-content-lease.test.ts",
+          "bfc19295f4a2ed1b630021ca32098814c2ba96d7ecb95f20dc76749faf5e43aa  apps/www/src/components/PrototypePreviewer/native-content-lease.ts"
+        ],
+        "contribution": "Focused follow-up to native content lease selection preservation, on current upstream main."
+      },
+      "reused": {
+        "packages": 47,
+        "manifestsExit": 0,
+        "measuredBudgetRows": [
+          "PASS lucide/icons/x: 2879 / 3000 gzip bytes; overBudget=0; minified=8695 sha256=02838c5b1d4db7b0d62eab9b1d502848e268dfea098798ee87665caa966772fb",
+          "PASS lucide root: 637306 / 700000 gzip bytes; overBudget=0; minified=4087403 sha256=eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c",
+          "ADVISORY core root: 11373 / 7600 gzip bytes; overBudget=3773; minified=35723 sha256=bb0468537baccea449d0260ae56ac758902eb989dae84f699b6c27626212d913",
+          "ADVISORY runtime root: 100015 / 78500 gzip bytes; overBudget=21515; minified=386804 sha256=11347a17a9c7eda3575d4bf30a0a2954e770f801b4264c977ae838d6755f40e8",
+          "ADVISORY adapter-react root: 162083 / 106000 gzip bytes; overBudget=56083; minified=572391 sha256=9bcf583f0ac13f7143cc3d8668d1e882cdce5d227a37372b25db03ae372084f7",
+          "ADVISORY adapter-vue root: 160763 / 106000 gzip bytes; overBudget=54763; minified=567663 sha256=ab86703c9c1fe57210b94967c163a39b9d323192c27613b4e19d4789be160298",
+          "ADVISORY adapter-web-component root: 190375 / 132000 gzip bytes; overBudget=58375; minified=656550 sha256=d67b26dbeb71821f54b65dca1f0ade95eca22be1be793e79ec6790b47507732e",
+          "PASS prototypes-base/button: 5274 / 6000 gzip bytes; overBudget=0; minified=18158 sha256=6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67",
+          "ADVISORY prototypes-shadcn/button: 7803 / 7000 gzip bytes; overBudget=803; minified=34485 sha256=60b4ff9277e59fba01c34162ec9418282ce82c6b43e24f223a05c9e1df19db57"
+        ]
+      },
+      "newHead": "0eca13c4a6fb61fa559ee195d3063228c9cfa3d8",
+      "deltaPaths": [
+        "apps/www/src/components/PrototypePreviewer/native-content-lease.test.ts",
+        "apps/www/src/components/PrototypePreviewer/native-content-lease.ts"
+      ],
+      "scope": "Package source, build/config/lockfile and manifests are unchanged by this Website-only follow-up. These are explicit prior e977 local measurements, not a new package build or canonical hosted result."
+    },
+    "originalFullS4": {
+      "head": "e97761a5a5ace8bafe5efaee5314b77f161a9d75",
+      "outcome": "Both original cases failed at the existing 150s test deadline during the original 60s readiness wait, before Dialog. Not rerun for this callback-only follow-up; historical failures remain open, no new-head full pass claimed.",
+      "readinessMs": 60000,
+      "caseMs": 150000
+    }
+  },
+  "remaining": [
+    "Independent exact-head recheck",
+    "Resolve remaining PR thread after actual acceptance",
+    "Maintainer approval and integration",
+    "Separate S4 startup regression"
+  ]
+}
