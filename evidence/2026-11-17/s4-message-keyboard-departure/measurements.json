@@ -1,0 +1,6100 @@
+{
+  "source": {
+    "head": "43fdd0e8172c2ce31b3f5be5c5ae98beadb62f55",
+    "tree": "8b6c4f09eab00436aada8770b7d30b7c75171800",
+    "parent": "ee0de87a5a2d4c2f3deb11dedcf44f61574361a1",
+    "signature": "G"
+  },
+  "inputs": [
+    "bfa50d4191ed4597a0d76ace0a1030375ba659a275e28735b428e3a7a7b5b537  apps/www/src/content/docs/zh-cn/scroll-end-follow.browser.test.ts",
+    "41b27f77ff47cd6b283c797e03ca47b7832023fa13074d31a106de38fc75fa8a  packages/modules/scroll/src/web/create-web-scroll-host.ts",
+    "ea34c78a349271a41da752e1eaf40f2b3ad461619b3f7e4806539937caf6d8cb  packages/modules/scroll/test/end-follow.test.ts"
+  ],
+  "reproduction": {
+    "parentAndPreviousCandidate": [
+      {
+        "variant": "parent",
+        "browser": "156.0.8078.79",
+        "results": [
+          {
+            "runtime": "wc",
+            "mounted": {
+              "at": 499.69999980926514,
+              "top": 1054,
+              "maximum": 1054,
+              "pageTop": 0,
+              "active": "body",
+              "following": "following",
+              "request": "applied",
+              "overflow": "auto",
+              "tabindex": "0"
+            },
+            "home": {
+              "key": "Home",
+              "start": {
+                "at": 541.1999998092651,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              },
+              "end": {
+                "at": 1003.0999999046326,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            "pageUp": {
+              "key": "PageUp",
+              "start": {
+                "at": 1042.8999998569489,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              },
+              "end": {
+                "at": 1503.0999999046326,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            "events": [
+              {
+                "event": "keydown",
+                "key": "Home",
+                "target": "viewport",
+                "path": [
+                  "viewport",
+                  "wc-base-message-scroller-root",
+                  "div",
+                  "div",
+                  "wc-shadcn-surface-root"
+                ],
+                "trusted": true,
+                "prevented": false,
+                "sample": {
+                  "at": 549.5,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 573.3999998569489,
+                  "top": 1010,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 590.6999998092651,
+                  "top": 955,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 607.2999999523163,
+                  "top": 901,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 623.3999998569489,
+                  "top": 863,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 640.5999999046326,
+                  "top": 855,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 656.5,
+                  "top": 883,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 674.0999999046326,
+                  "top": 933,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 690.5999999046326,
+                  "top": 990,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 707.2999999523163,
+                  "top": 1042,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 723.8999998569489,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "keydown",
+                "key": "PageUp",
+                "target": "viewport",
+                "path": [
+                  "viewport",
+                  "wc-base-message-scroller-root",
+                  "div",
+                  "div",
+                  "wc-shadcn-surface-root"
+                ],
+                "trusted": true,
+                "prevented": false,
+                "sample": {
+                  "at": 1049.0999999046326,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1073.8999998569489,
+                  "top": 1045,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1090.5999999046326,
+                  "top": 1036,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1107.1999998092651,
+                  "top": 1026,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1123.8999998569489,
+                  "top": 1018,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1140.6999998092651,
+                  "top": 1018,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1157.1999998092651,
+                  "top": 1022,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1174,
+                  "top": 1033,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1190.2999999523163,
+                  "top": 1042,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1207.2999999523163,
+                  "top": 1052,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1222.8999998569489,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              }
+            ]
+          },
+          {
+            "runtime": "react",
+            "mounted": {
+              "at": 539.0999999046326,
+              "top": 1054,
+              "maximum": 1054,
+              "pageTop": 0,
+              "active": "body",
+              "following": "following",
+              "request": "applied",
+              "overflow": "auto",
+              "tabindex": "0"
+            },
+            "home": {
+              "key": "Home",
+              "start": {
+                "at": 569.5999999046326,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              },
+              "end": {
+                "at": 1025.5999999046326,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            "pageUp": {
+              "key": "PageUp",
+              "start": {
+                "at": 1053.8999998569489,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              },
+              "end": {
+                "at": 1512.7999999523163,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            "events": [
+              {
+                "event": "keydown",
+                "key": "Home",
+                "target": "viewport",
+                "path": ["viewport", "div", "div", "div", "div"],
+                "trusted": true,
+                "prevented": false,
+                "sample": {
+                  "at": 573.5,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 601.7000000476837,
+                  "top": 992,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 617.7000000476837,
+                  "top": 942,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 635,
+                  "top": 890,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 651.0999999046326,
+                  "top": 857,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 667.5,
+                  "top": 859,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 685,
+                  "top": 894,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 701.3999998569489,
+                  "top": 946,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 718.2999999523163,
+                  "top": 1003,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 735.0999999046326,
+                  "top": 1049,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 750.7999999523163,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "keydown",
+                "key": "PageUp",
+                "target": "viewport",
+                "path": ["viewport", "div", "div", "div", "div"],
+                "trusted": true,
+                "prevented": false,
+                "sample": {
+                  "at": 1059.7999999523163,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1084.8999998569489,
+                  "top": 1045,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1100.8999998569489,
+                  "top": 1035,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1117.2999999523163,
+                  "top": 1025,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1134.8999998569489,
+                  "top": 1018,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1151,
+                  "top": 1018,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1167.8999998569489,
+                  "top": 1023,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1184.5,
+                  "top": 1033,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1201.7000000476837,
+                  "top": 1043,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1218.2999999523163,
+                  "top": 1052,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1234.3999998569489,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              }
+            ]
+          },
+          {
+            "runtime": "vue",
+            "mounted": {
+              "at": 542.7999999523163,
+              "top": 1054,
+              "maximum": 1054,
+              "pageTop": 0,
+              "active": "body",
+              "following": "following",
+              "request": "applied",
+              "overflow": "auto",
+              "tabindex": "0"
+            },
+            "home": {
+              "key": "Home",
+              "start": {
+                "at": 573,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              },
+              "end": {
+                "at": 1031.2999999523163,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            "pageUp": {
+              "key": "PageUp",
+              "start": {
+                "at": 1057.6999998092651,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              },
+              "end": {
+                "at": 1519.7999999523163,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            "events": [
+              {
+                "event": "keydown",
+                "key": "Home",
+                "target": "viewport",
+                "path": ["viewport", "div", "div", "div", "div"],
+                "trusted": true,
+                "prevented": false,
+                "sample": {
+                  "at": 578.6999998092651,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 605,
+                  "top": 999,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 621.5999999046326,
+                  "top": 948,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 638.2999999523163,
+                  "top": 894,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 654.7999999523163,
+                  "top": 859,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 671.6999998092651,
+                  "top": 858,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 688.2999999523163,
+                  "top": 889,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 704.0999999046326,
+                  "top": 941,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 721.5999999046326,
+                  "top": 998,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 737.5,
+                  "top": 1046,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 755,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "keydown",
+                "key": "PageUp",
+                "target": "viewport",
+                "path": ["viewport", "div", "div", "div", "div"],
+                "trusted": true,
+                "prevented": false,
+                "sample": {
+                  "at": 1065.5999999046326,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1088.2999999523163,
+                  "top": 1047,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1105,
+                  "top": 1036,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1121.5999999046326,
+                  "top": 1026,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1138.2999999523163,
+                  "top": 1020,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1155.0999999046326,
+                  "top": 1017,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1171.7999999523163,
+                  "top": 1022,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1188.3999998569489,
+                  "top": 1031,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1205,
+                  "top": 1042,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1221.1999998092651,
+                  "top": 1051,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1237.8999998569489,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              }
+            ]
+          },
+          {
+            "runtime": "vue2",
+            "mounted": {
+              "at": 511.80000019073486,
+              "top": 1054,
+              "maximum": 1054,
+              "pageTop": 0,
+              "active": "body",
+              "following": "following",
+              "request": "applied",
+              "overflow": "auto",
+              "tabindex": "0"
+            },
+            "home": {
+              "key": "Home",
+              "start": {
+                "at": 540.8000001907349,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              },
+              "end": {
+                "at": 996.7000000476837,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            "pageUp": {
+              "key": "PageUp",
+              "start": {
+                "at": 1041,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              },
+              "end": {
+                "at": 1498.5,
+                "top": 1053,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            "events": [
+              {
+                "event": "keydown",
+                "key": "Home",
+                "target": "viewport",
+                "path": ["viewport", "div", "div", "div", "div"],
+                "trusted": true,
+                "prevented": false,
+                "sample": {
+                  "at": 544.3000001907349,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 572.6000001430511,
+                  "top": 988,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 589.4000000953674,
+                  "top": 940,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 606.2000000476837,
+                  "top": 888,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 622,
+                  "top": 857,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 638.8000001907349,
+                  "top": 860,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 655.4000000953674,
+                  "top": 895,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 672.9000000953674,
+                  "top": 949,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 689.6000001430511,
+                  "top": 1005,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 706.2000000476837,
+                  "top": 1050,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 722.8000001907349,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "keydown",
+                "key": "PageUp",
+                "target": "viewport",
+                "path": ["viewport", "div", "div", "div", "div"],
+                "trusted": true,
+                "prevented": false,
+                "sample": {
+                  "at": 1046.5,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1072.9000000953674,
+                  "top": 1044,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1089.6000001430511,
+                  "top": 1034,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1106.2000000476837,
+                  "top": 1024,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1122.8000001907349,
+                  "top": 1018,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1139,
+                  "top": 1018,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1156.3000001907349,
+                  "top": 1024,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1172.5,
+                  "top": 1033,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1188.9000000953674,
+                  "top": 1044,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1206.2000000476837,
+                  "top": 1053,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              }
+            ]
+          }
+        ],
+        "vanilla": {
+          "mounted": {
+            "at": 122.89999985694885,
+            "top": 1408,
+            "maximum": 1408,
+            "pageTop": 1012,
+            "active": "document-scroller",
+            "following": null,
+            "request": null,
+            "overflow": "auto",
+            "tabindex": "0"
+          },
+          "home": {
+            "key": "Home",
+            "start": {
+              "at": 148.39999985694885,
+              "top": 1408,
+              "maximum": 1408,
+              "pageTop": 1012,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            },
+            "end": {
+              "at": 602.0999999046326,
+              "top": 0,
+              "maximum": 1408,
+              "pageTop": 1012,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          "pageUp": {
+            "key": "PageUp",
+            "start": {
+              "at": 615.2000000476837,
+              "top": 0,
+              "maximum": 1408,
+              "pageTop": 1012,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            },
+            "end": {
+              "at": 1072.2999999523163,
+              "top": 0,
+              "maximum": 1408,
+              "pageTop": 52,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          "events": [
+            {
+              "event": "scroll",
+              "target": "document",
+              "sample": {
+                "at": 131.09999990463257,
+                "top": 1408,
+                "maximum": 1408,
+                "pageTop": 1012,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 131.09999990463257,
+                "top": 1408,
+                "maximum": 1408,
+                "pageTop": 1012,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "keydown",
+              "key": "Home",
+              "target": "viewport",
+              "path": ["viewport", "main", "document-scroller", "html", "document"],
+              "trusted": true,
+              "prevented": false,
+              "sample": {
+                "at": 150.09999990463257,
+                "top": 1408,
+                "maximum": 1408,
+                "pageTop": 1012,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 181.20000004768372,
+                "top": 1295,
+                "maximum": 1408,
+                "pageTop": 1012,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 197.79999995231628,
+                "top": 1127,
+                "maximum": 1408,
+                "pageTop": 1012,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 214.5,
+                "top": 894,
+                "maximum": 1408,
+                "pageTop": 1012,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 231.09999990463257,
+                "top": 628,
+                "maximum": 1408,
+                "pageTop": 1012,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 247.79999995231628,
+                "top": 375,
+                "maximum": 1408,
+                "pageTop": 1012,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 263.5,
+                "top": 176,
+                "maximum": 1408,
+                "pageTop": 1012,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 280.09999990463257,
+                "top": 51,
+                "maximum": 1408,
+                "pageTop": 1012,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 298,
+                "top": 2,
+                "maximum": 1408,
+                "pageTop": 1012,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 314.7000000476837,
+                "top": 0,
+                "maximum": 1408,
+                "pageTop": 1012,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "keydown",
+              "key": "PageUp",
+              "target": "viewport",
+              "path": ["viewport", "main", "document-scroller", "html", "document"],
+              "trusted": true,
+              "prevented": false,
+              "sample": {
+                "at": 619.2999999523163,
+                "top": 0,
+                "maximum": 1408,
+                "pageTop": 1012,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "document",
+              "sample": {
+                "at": 648,
+                "top": 0,
+                "maximum": 1408,
+                "pageTop": 948,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "document",
+              "sample": {
+                "at": 663.8999998569489,
+                "top": 0,
+                "maximum": 1408,
+                "pageTop": 842,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "document",
+              "sample": {
+                "at": 681.2000000476837,
+                "top": 0,
+                "maximum": 1408,
+                "pageTop": 689,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "document",
+              "sample": {
+                "at": 697.0999999046326,
+                "top": 0,
+                "maximum": 1408,
+                "pageTop": 509,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "document",
+              "sample": {
+                "at": 714.7000000476837,
+                "top": 0,
+                "maximum": 1408,
+                "pageTop": 333,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "document",
+              "sample": {
+                "at": 731.0999999046326,
+                "top": 0,
+                "maximum": 1408,
+                "pageTop": 190,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "document",
+              "sample": {
+                "at": 748.0999999046326,
+                "top": 0,
+                "maximum": 1408,
+                "pageTop": 97,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "document",
+              "sample": {
+                "at": 764.7999999523163,
+                "top": 0,
+                "maximum": 1408,
+                "pageTop": 55,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "document",
+              "sample": {
+                "at": 781.2999999523163,
+                "top": 0,
+                "maximum": 1408,
+                "pageTop": 52,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "variant": "candidate",
+        "browser": "156.0.8078.79",
+        "results": [
+          {
+            "runtime": "wc",
+            "mounted": {
+              "at": 439,
+              "top": 1054,
+              "maximum": 1054,
+              "pageTop": 0,
+              "active": "body",
+              "following": "following",
+              "request": "applied",
+              "overflow": "auto",
+              "tabindex": "0"
+            },
+            "home": {
+              "key": "Home",
+              "start": {
+                "at": 467.5,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              },
+              "end": {
+                "at": 925.8999998569489,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            "pageUp": {
+              "key": "PageUp",
+              "start": {
+                "at": 967.7999999523163,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              },
+              "end": {
+                "at": 1431.8999998569489,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            "events": [
+              {
+                "event": "keydown",
+                "key": "Home",
+                "target": "viewport",
+                "path": [
+                  "viewport",
+                  "wc-base-message-scroller-root",
+                  "div",
+                  "div",
+                  "wc-shadcn-surface-root"
+                ],
+                "trusted": true,
+                "prevented": false,
+                "sample": {
+                  "at": 472.2999999523163,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 499.09999990463257,
+                  "top": 995,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 516.1999998092651,
+                  "top": 945,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 531.7999999523163,
+                  "top": 892,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 549.5,
+                  "top": 858,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 566.0999999046326,
+                  "top": 858,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 582.7999999523163,
+                  "top": 892,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 599.0999999046326,
+                  "top": 944,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 615.7999999523163,
+                  "top": 1000,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 632.8999998569489,
+                  "top": 1048,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 649.1999998092651,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "keydown",
+                "key": "PageUp",
+                "target": "viewport",
+                "path": [
+                  "viewport",
+                  "wc-base-message-scroller-root",
+                  "div",
+                  "div",
+                  "wc-shadcn-surface-root"
+                ],
+                "trusted": true,
+                "prevented": false,
+                "sample": {
+                  "at": 978.3999998569489,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 998.5,
+                  "top": 1048,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1015.8999998569489,
+                  "top": 1037,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1032.5999999046326,
+                  "top": 1028,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1048.3999998569489,
+                  "top": 1019,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1065.8999998569489,
+                  "top": 1017,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1082.3999998569489,
+                  "top": 1022,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1099.0999999046326,
+                  "top": 1030,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1115.8999998569489,
+                  "top": 1040,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1132,
+                  "top": 1051,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1149.5,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              }
+            ]
+          },
+          {
+            "runtime": "react",
+            "mounted": {
+              "at": 564.7999999523163,
+              "top": 1054,
+              "maximum": 1054,
+              "pageTop": 0,
+              "active": "body",
+              "following": "following",
+              "request": "applied",
+              "overflow": "auto",
+              "tabindex": "0"
+            },
+            "home": {
+              "key": "Home",
+              "start": {
+                "at": 594.5,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              },
+              "end": {
+                "at": 1051.2999999523163,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            "pageUp": {
+              "key": "PageUp",
+              "start": {
+                "at": 1079.0999999046326,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              },
+              "end": {
+                "at": 1537.6999998092651,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            "events": [
+              {
+                "event": "keydown",
+                "key": "Home",
+                "target": "viewport",
+                "path": ["viewport", "div", "div", "div", "div"],
+                "trusted": true,
+                "prevented": false,
+                "sample": {
+                  "at": 598.5,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 626.5,
+                  "top": 992,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 642.1999998092651,
+                  "top": 943,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 659.7999999523163,
+                  "top": 890,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 675.6999998092651,
+                  "top": 858,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 693,
+                  "top": 859,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 709.6999998092651,
+                  "top": 893,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 726.5999999046326,
+                  "top": 946,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 742.8999998569489,
+                  "top": 1003,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 759.2999999523163,
+                  "top": 1048,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 776.5,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "keydown",
+                "key": "PageUp",
+                "target": "viewport",
+                "path": ["viewport", "div", "div", "div", "div"],
+                "trusted": true,
+                "prevented": false,
+                "sample": {
+                  "at": 1084.8999998569489,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1109.7999999523163,
+                  "top": 1045,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1126.5,
+                  "top": 1035,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1143.1999998092651,
+                  "top": 1025,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1159.8999998569489,
+                  "top": 1019,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1175.7999999523163,
+                  "top": 1017,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1193.2999999523163,
+                  "top": 1023,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1210.0999999046326,
+                  "top": 1033,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1225.7999999523163,
+                  "top": 1043,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1242.2999999523163,
+                  "top": 1052,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1259.2999999523163,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              }
+            ]
+          },
+          {
+            "runtime": "vue",
+            "mounted": {
+              "at": 511.2999999523163,
+              "top": 1054,
+              "maximum": 1054,
+              "pageTop": 0,
+              "active": "body",
+              "following": "following",
+              "request": "applied",
+              "overflow": "auto",
+              "tabindex": "0"
+            },
+            "home": {
+              "key": "Home",
+              "start": {
+                "at": 540,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              },
+              "end": {
+                "at": 996.5999999046326,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            "pageUp": {
+              "key": "PageUp",
+              "start": {
+                "at": 1023.7000000476837,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              },
+              "end": {
+                "at": 1481.7999999523163,
+                "top": 1053,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            "events": [
+              {
+                "event": "keydown",
+                "key": "Home",
+                "target": "viewport",
+                "path": ["viewport", "div", "div", "div", "div"],
+                "trusted": true,
+                "prevented": false,
+                "sample": {
+                  "at": 544.5999999046326,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 571.7999999523163,
+                  "top": 996,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 587.7999999523163,
+                  "top": 944,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 605,
+                  "top": 893,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 621.7999999523163,
+                  "top": 858,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 638.2999999523163,
+                  "top": 858,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 654.7999999523163,
+                  "top": 891,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 671.0999999046326,
+                  "top": 944,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 687.9000000953674,
+                  "top": 1001,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 704.9000000953674,
+                  "top": 1047,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 721.7000000476837,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "keydown",
+                "key": "PageUp",
+                "target": "viewport",
+                "path": ["viewport", "div", "div", "div", "div"],
+                "trusted": true,
+                "prevented": false,
+                "sample": {
+                  "at": 1029.0999999046326,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1054.5999999046326,
+                  "top": 1044,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1071.5,
+                  "top": 1034,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1088.0999999046326,
+                  "top": 1025,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1105,
+                  "top": 1018,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1121.4000000953674,
+                  "top": 1018,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1138.4000000953674,
+                  "top": 1024,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1155.0999999046326,
+                  "top": 1033,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1171.5,
+                  "top": 1043,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1188.4000000953674,
+                  "top": 1053,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              }
+            ]
+          },
+          {
+            "runtime": "vue2",
+            "mounted": {
+              "at": 524.3999998569489,
+              "top": 1054,
+              "maximum": 1054,
+              "pageTop": 0,
+              "active": "body",
+              "following": "following",
+              "request": "applied",
+              "overflow": "auto",
+              "tabindex": "0"
+            },
+            "home": {
+              "key": "Home",
+              "start": {
+                "at": 555.8999998569489,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              },
+              "end": {
+                "at": 1014.3999998569489,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            "pageUp": {
+              "key": "PageUp",
+              "start": {
+                "at": 1056.7999999523163,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              },
+              "end": {
+                "at": 1518.8999998569489,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            "events": [
+              {
+                "event": "keydown",
+                "key": "Home",
+                "target": "viewport",
+                "path": ["viewport", "div", "div", "div", "div"],
+                "trusted": true,
+                "prevented": false,
+                "sample": {
+                  "at": 561.5,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 586.7999999523163,
+                  "top": 1003,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 603.7000000476837,
+                  "top": 950,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 620.3999998569489,
+                  "top": 896,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 637.2000000476837,
+                  "top": 861,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 653.7000000476837,
+                  "top": 856,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 670.2999999523163,
+                  "top": 887,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 687,
+                  "top": 939,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 702.8999998569489,
+                  "top": 995,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 720.3999998569489,
+                  "top": 1045,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 737.0999999046326,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "keydown",
+                "key": "PageUp",
+                "target": "viewport",
+                "path": ["viewport", "div", "div", "div", "div"],
+                "trusted": true,
+                "prevented": false,
+                "sample": {
+                  "at": 1064.3999998569489,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1087.0999999046326,
+                  "top": 1047,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1103.7000000476837,
+                  "top": 1037,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1119.2999999523163,
+                  "top": 1027,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1137.0999999046326,
+                  "top": 1019,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1153.2999999523163,
+                  "top": 1017,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1170.3999998569489,
+                  "top": 1022,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1187,
+                  "top": 1031,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1203.7000000476837,
+                  "top": 1041,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1220.3999998569489,
+                  "top": 1051,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              },
+              {
+                "event": "scroll",
+                "target": "viewport",
+                "sample": {
+                  "at": 1237,
+                  "top": 1054,
+                  "maximum": 1054,
+                  "pageTop": 0,
+                  "active": "viewport",
+                  "following": "following",
+                  "request": "applied",
+                  "overflow": "auto",
+                  "tabindex": "0"
+                }
+              }
+            ]
+          }
+        ],
+        "vanilla": {
+          "mounted": {
+            "at": 121.40000009536743,
+            "top": 1408,
+            "maximum": 1408,
+            "pageTop": 1012,
+            "active": "document-scroller",
+            "following": null,
+            "request": null,
+            "overflow": "auto",
+            "tabindex": "0"
+          },
+          "home": {
+            "key": "Home",
+            "start": {
+              "at": 151.59999990463257,
+              "top": 1408,
+              "maximum": 1408,
+              "pageTop": 1012,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            },
+            "end": {
+              "at": 611.5,
+              "top": 0,
+              "maximum": 1408,
+              "pageTop": 1012,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          "pageUp": {
+            "key": "PageUp",
+            "start": {
+              "at": 636.0999999046326,
+              "top": 0,
+              "maximum": 1408,
+              "pageTop": 1012,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            },
+            "end": {
+              "at": 1093.4000000953674,
+              "top": 0,
+              "maximum": 1408,
+              "pageTop": 52,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          "events": [
+            {
+              "event": "scroll",
+              "target": "document",
+              "sample": {
+                "at": 133.29999995231628,
+                "top": 1408,
+                "maximum": 1408,
+                "pageTop": 1012,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 133.29999995231628,
+                "top": 1408,
+                "maximum": 1408,
+                "pageTop": 1012,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "keydown",
+              "key": "Home",
+              "target": "viewport",
+              "path": ["viewport", "main", "document-scroller", "html", "document"],
+              "trusted": true,
+              "prevented": false,
+              "sample": {
+                "at": 159.59999990463257,
+                "top": 1408,
+                "maximum": 1408,
+                "pageTop": 1012,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 183.70000004768372,
+                "top": 1342,
+                "maximum": 1408,
+                "pageTop": 1012,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 200.40000009536743,
+                "top": 1205,
+                "maximum": 1408,
+                "pageTop": 1012,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 217.09999990463257,
+                "top": 995,
+                "maximum": 1408,
+                "pageTop": 1012,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 233.70000004768372,
+                "top": 737,
+                "maximum": 1408,
+                "pageTop": 1012,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 249.59999990463257,
+                "top": 473,
+                "maximum": 1408,
+                "pageTop": 1012,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 267,
+                "top": 249,
+                "maximum": 1408,
+                "pageTop": 1012,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 283.7000000476837,
+                "top": 93,
+                "maximum": 1408,
+                "pageTop": 1012,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 300.2999999523163,
+                "top": 13,
+                "maximum": 1408,
+                "pageTop": 1012,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 316.2999999523163,
+                "top": 0,
+                "maximum": 1408,
+                "pageTop": 1012,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "keydown",
+              "key": "PageUp",
+              "target": "viewport",
+              "path": ["viewport", "main", "document-scroller", "html", "document"],
+              "trusted": true,
+              "prevented": false,
+              "sample": {
+                "at": 640,
+                "top": 0,
+                "maximum": 1408,
+                "pageTop": 1012,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "document",
+              "sample": {
+                "at": 667.2000000476837,
+                "top": 0,
+                "maximum": 1408,
+                "pageTop": 955,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "document",
+              "sample": {
+                "at": 683.2000000476837,
+                "top": 0,
+                "maximum": 1408,
+                "pageTop": 854,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "document",
+              "sample": {
+                "at": 699.9000000953674,
+                "top": 0,
+                "maximum": 1408,
+                "pageTop": 704,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "document",
+              "sample": {
+                "at": 716.5,
+                "top": 0,
+                "maximum": 1408,
+                "pageTop": 525,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "document",
+              "sample": {
+                "at": 733.0999999046326,
+                "top": 0,
+                "maximum": 1408,
+                "pageTop": 348,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "document",
+              "sample": {
+                "at": 749.9000000953674,
+                "top": 0,
+                "maximum": 1408,
+                "pageTop": 201,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "document",
+              "sample": {
+                "at": 767.2000000476837,
+                "top": 0,
+                "maximum": 1408,
+                "pageTop": 103,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "document",
+              "sample": {
+                "at": 783.5999999046326,
+                "top": 0,
+                "maximum": 1408,
+                "pageTop": 57,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "document",
+              "sample": {
+                "at": 799.7000000476837,
+                "top": 0,
+                "maximum": 1408,
+                "pageTop": 52,
+                "active": "viewport",
+                "following": null,
+                "request": null,
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "controlWithoutKeyUpClear": {
+      "variant": "candidate",
+      "browser": "156.0.8078.79",
+      "results": [
+        {
+          "runtime": "wc",
+          "mounted": {
+            "at": 505.59999990463257,
+            "top": 1054,
+            "maximum": 1054,
+            "pageTop": 0,
+            "active": "body",
+            "following": "following",
+            "request": "applied",
+            "overflow": "auto",
+            "tabindex": "0"
+          },
+          "home": {
+            "key": "Home",
+            "start": {
+              "at": 533.2999999523163,
+              "top": 1054,
+              "maximum": 1054,
+              "pageTop": 0,
+              "active": "viewport",
+              "following": "following",
+              "request": "applied",
+              "overflow": "auto",
+              "tabindex": "0"
+            },
+            "end": {
+              "at": 995.7000000476837,
+              "top": 0,
+              "maximum": 1054,
+              "pageTop": 0,
+              "active": "viewport",
+              "following": "paused",
+              "request": "applied",
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          "pageUp": {
+            "key": "PageUp",
+            "start": {
+              "at": 1033.2999999523163,
+              "top": 0,
+              "maximum": 1054,
+              "pageTop": 0,
+              "active": "viewport",
+              "following": "paused",
+              "request": "applied",
+              "overflow": "auto",
+              "tabindex": "0"
+            },
+            "end": {
+              "at": 1493.5999999046326,
+              "top": 0,
+              "maximum": 1054,
+              "pageTop": 0,
+              "active": "viewport",
+              "following": "paused",
+              "request": "applied",
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          "events": [
+            {
+              "event": "keydown",
+              "key": "Home",
+              "target": "viewport",
+              "path": [
+                "viewport",
+                "wc-base-message-scroller-root",
+                "div",
+                "div",
+                "wc-shadcn-surface-root"
+              ],
+              "trusted": true,
+              "prevented": false,
+              "sample": {
+                "at": 542.2000000476837,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "keyup",
+              "key": "Home",
+              "target": "viewport",
+              "path": [
+                "viewport",
+                "wc-base-message-scroller-root",
+                "div",
+                "div",
+                "wc-shadcn-surface-root"
+              ],
+              "trusted": true,
+              "prevented": false,
+              "sample": {
+                "at": 544.5999999046326,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 565,
+                "top": 1019,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 581.5999999046326,
+                "top": 929,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 597.7000000476837,
+                "top": 783,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 614.2999999523163,
+                "top": 595,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 631,
+                "top": 395,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 647.7000000476837,
+                "top": 219,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 664.5,
+                "top": 90,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 681,
+                "top": 18,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 697.5999999046326,
+                "top": 0,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "keydown",
+              "key": "PageUp",
+              "target": "viewport",
+              "path": [
+                "viewport",
+                "wc-base-message-scroller-root",
+                "div",
+                "div",
+                "wc-shadcn-surface-root"
+              ],
+              "trusted": true,
+              "prevented": false,
+              "sample": {
+                "at": 1040,
+                "top": 0,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "keyup",
+              "key": "PageUp",
+              "target": "viewport",
+              "path": [
+                "viewport",
+                "wc-base-message-scroller-root",
+                "div",
+                "div",
+                "wc-shadcn-surface-root"
+              ],
+              "trusted": true,
+              "prevented": false,
+              "sample": {
+                "at": 1041.3999998569489,
+                "top": 0,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            }
+          ]
+        },
+        {
+          "runtime": "react",
+          "mounted": {
+            "at": 531.6000001430511,
+            "top": 1054,
+            "maximum": 1054,
+            "pageTop": 0,
+            "active": "body",
+            "following": "following",
+            "request": "applied",
+            "overflow": "auto",
+            "tabindex": "0"
+          },
+          "home": {
+            "key": "Home",
+            "start": {
+              "at": 560.7000000476837,
+              "top": 1054,
+              "maximum": 1054,
+              "pageTop": 0,
+              "active": "viewport",
+              "following": "following",
+              "request": "applied",
+              "overflow": "auto",
+              "tabindex": "0"
+            },
+            "end": {
+              "at": 1018.9000000953674,
+              "top": 0,
+              "maximum": 1054,
+              "pageTop": 0,
+              "active": "viewport",
+              "following": "paused",
+              "request": "applied",
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          "pageUp": {
+            "key": "PageUp",
+            "start": {
+              "at": 1045,
+              "top": 0,
+              "maximum": 1054,
+              "pageTop": 0,
+              "active": "viewport",
+              "following": "paused",
+              "request": "applied",
+              "overflow": "auto",
+              "tabindex": "0"
+            },
+            "end": {
+              "at": 1504.4000000953674,
+              "top": 0,
+              "maximum": 1054,
+              "pageTop": 0,
+              "active": "viewport",
+              "following": "paused",
+              "request": "applied",
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          "events": [
+            {
+              "event": "keydown",
+              "key": "Home",
+              "target": "viewport",
+              "path": ["viewport", "div", "div", "div", "div"],
+              "trusted": true,
+              "prevented": false,
+              "sample": {
+                "at": 565.6000001430511,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "keyup",
+              "key": "Home",
+              "target": "viewport",
+              "path": ["viewport", "div", "div", "div", "div"],
+              "trusted": true,
+              "prevented": false,
+              "sample": {
+                "at": 567.1000001430511,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 591.5,
+                "top": 1000,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 608.8000001907349,
+                "top": 894,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 625.4000000953674,
+                "top": 735,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 642.1000001430511,
+                "top": 541,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 658.7000000476837,
+                "top": 344,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 674.8000001907349,
+                "top": 178,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 692.1000001430511,
+                "top": 65,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 708.6000001430511,
+                "top": 8,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 725.3000001907349,
+                "top": 0,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "keydown",
+              "key": "PageUp",
+              "target": "viewport",
+              "path": ["viewport", "div", "div", "div", "div"],
+              "trusted": true,
+              "prevented": false,
+              "sample": {
+                "at": 1051.4000000953674,
+                "top": 0,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "keyup",
+              "key": "PageUp",
+              "target": "viewport",
+              "path": ["viewport", "div", "div", "div", "div"],
+              "trusted": true,
+              "prevented": false,
+              "sample": {
+                "at": 1052.6000001430511,
+                "top": 0,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            }
+          ]
+        },
+        {
+          "runtime": "vue",
+          "mounted": {
+            "at": 488.39999985694885,
+            "top": 1054,
+            "maximum": 1054,
+            "pageTop": 0,
+            "active": "body",
+            "following": "following",
+            "request": "applied",
+            "overflow": "auto",
+            "tabindex": "0"
+          },
+          "home": {
+            "key": "Home",
+            "start": {
+              "at": 518,
+              "top": 1054,
+              "maximum": 1054,
+              "pageTop": 0,
+              "active": "viewport",
+              "following": "following",
+              "request": "applied",
+              "overflow": "auto",
+              "tabindex": "0"
+            },
+            "end": {
+              "at": 974.3999998569489,
+              "top": 0,
+              "maximum": 1054,
+              "pageTop": 0,
+              "active": "viewport",
+              "following": "paused",
+              "request": "applied",
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          "pageUp": {
+            "key": "PageUp",
+            "start": {
+              "at": 1003,
+              "top": 0,
+              "maximum": 1054,
+              "pageTop": 0,
+              "active": "viewport",
+              "following": "paused",
+              "request": "applied",
+              "overflow": "auto",
+              "tabindex": "0"
+            },
+            "end": {
+              "at": 1463.2999999523163,
+              "top": 0,
+              "maximum": 1054,
+              "pageTop": 0,
+              "active": "viewport",
+              "following": "paused",
+              "request": "applied",
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          "events": [
+            {
+              "event": "keydown",
+              "key": "Home",
+              "target": "viewport",
+              "path": ["viewport", "div", "div", "div", "div"],
+              "trusted": true,
+              "prevented": false,
+              "sample": {
+                "at": 521.8999998569489,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "keyup",
+              "key": "Home",
+              "target": "viewport",
+              "path": ["viewport", "div", "div", "div", "div"],
+              "trusted": true,
+              "prevented": false,
+              "sample": {
+                "at": 523.2000000476837,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 550.0999999046326,
+                "top": 986,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 566.7000000476837,
+                "top": 871,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 583.3999998569489,
+                "top": 704,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 600,
+                "top": 507,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 616.7000000476837,
+                "top": 313,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 633.3999998569489,
+                "top": 155,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 650,
+                "top": 51,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 666.7000000476837,
+                "top": 4,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 683.3999998569489,
+                "top": 0,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "keydown",
+              "key": "PageUp",
+              "target": "viewport",
+              "path": ["viewport", "div", "div", "div", "div"],
+              "trusted": true,
+              "prevented": false,
+              "sample": {
+                "at": 1010.3999998569489,
+                "top": 0,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "keyup",
+              "key": "PageUp",
+              "target": "viewport",
+              "path": ["viewport", "div", "div", "div", "div"],
+              "trusted": true,
+              "prevented": false,
+              "sample": {
+                "at": 1011.5999999046326,
+                "top": 0,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            }
+          ]
+        },
+        {
+          "runtime": "vue2",
+          "mounted": {
+            "at": 515.2999999523163,
+            "top": 1054,
+            "maximum": 1054,
+            "pageTop": 0,
+            "active": "body",
+            "following": "following",
+            "request": "applied",
+            "overflow": "auto",
+            "tabindex": "0"
+          },
+          "home": {
+            "key": "Home",
+            "start": {
+              "at": 548.5,
+              "top": 1054,
+              "maximum": 1054,
+              "pageTop": 0,
+              "active": "viewport",
+              "following": "following",
+              "request": "applied",
+              "overflow": "auto",
+              "tabindex": "0"
+            },
+            "end": {
+              "at": 1004.8999998569489,
+              "top": 0,
+              "maximum": 1054,
+              "pageTop": 0,
+              "active": "viewport",
+              "following": "paused",
+              "request": "applied",
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          "pageUp": {
+            "key": "PageUp",
+            "start": {
+              "at": 1030.8999998569489,
+              "top": 0,
+              "maximum": 1054,
+              "pageTop": 0,
+              "active": "viewport",
+              "following": "paused",
+              "request": "applied",
+              "overflow": "auto",
+              "tabindex": "0"
+            },
+            "end": {
+              "at": 1489.6999998092651,
+              "top": 0,
+              "maximum": 1054,
+              "pageTop": 0,
+              "active": "viewport",
+              "following": "paused",
+              "request": "applied",
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          "events": [
+            {
+              "event": "keydown",
+              "key": "Home",
+              "target": "viewport",
+              "path": ["viewport", "div", "div", "div", "div"],
+              "trusted": true,
+              "prevented": false,
+              "sample": {
+                "at": 552.0999999046326,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "keyup",
+              "key": "Home",
+              "target": "viewport",
+              "path": ["viewport", "div", "div", "div", "div"],
+              "trusted": true,
+              "prevented": false,
+              "sample": {
+                "at": 553.2999999523163,
+                "top": 1054,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 578.0999999046326,
+                "top": 997,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "following",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 594.8999998569489,
+                "top": 889,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 611.5,
+                "top": 727,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 628.2999999523163,
+                "top": 532,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 644.8999998569489,
+                "top": 336,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 661.5999999046326,
+                "top": 172,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 678.1999998092651,
+                "top": 61,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 694.7999999523163,
+                "top": 7,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "scroll",
+              "target": "viewport",
+              "sample": {
+                "at": 711.5,
+                "top": 0,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "keydown",
+              "key": "PageUp",
+              "target": "viewport",
+              "path": ["viewport", "div", "div", "div", "div"],
+              "trusted": true,
+              "prevented": false,
+              "sample": {
+                "at": 1036.7999999523163,
+                "top": 0,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            },
+            {
+              "event": "keyup",
+              "key": "PageUp",
+              "target": "viewport",
+              "path": ["viewport", "div", "div", "div", "div"],
+              "trusted": true,
+              "prevented": false,
+              "sample": {
+                "at": 1038,
+                "top": 0,
+                "maximum": 1054,
+                "pageTop": 0,
+                "active": "viewport",
+                "following": "paused",
+                "request": "applied",
+                "overflow": "auto",
+                "tabindex": "0"
+              }
+            }
+          ]
+        }
+      ],
+      "vanilla": {
+        "mounted": {
+          "at": 132.69999980926514,
+          "top": 1408,
+          "maximum": 1408,
+          "pageTop": 1012,
+          "active": "document-scroller",
+          "following": null,
+          "request": null,
+          "overflow": "auto",
+          "tabindex": "0"
+        },
+        "home": {
+          "key": "Home",
+          "start": {
+            "at": 162.19999980926514,
+            "top": 1408,
+            "maximum": 1408,
+            "pageTop": 1012,
+            "active": "viewport",
+            "following": null,
+            "request": null,
+            "overflow": "auto",
+            "tabindex": "0"
+          },
+          "end": {
+            "at": 616,
+            "top": 0,
+            "maximum": 1408,
+            "pageTop": 1012,
+            "active": "viewport",
+            "following": null,
+            "request": null,
+            "overflow": "auto",
+            "tabindex": "0"
+          }
+        },
+        "pageUp": {
+          "key": "PageUp",
+          "start": {
+            "at": 628.6999998092651,
+            "top": 0,
+            "maximum": 1408,
+            "pageTop": 1012,
+            "active": "viewport",
+            "following": null,
+            "request": null,
+            "overflow": "auto",
+            "tabindex": "0"
+          },
+          "end": {
+            "at": 1086.2999999523163,
+            "top": 0,
+            "maximum": 1408,
+            "pageTop": 52,
+            "active": "viewport",
+            "following": null,
+            "request": null,
+            "overflow": "auto",
+            "tabindex": "0"
+          }
+        },
+        "events": [
+          {
+            "event": "scroll",
+            "target": "document",
+            "sample": {
+              "at": 144.39999985694885,
+              "top": 1408,
+              "maximum": 1408,
+              "pageTop": 1012,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          {
+            "event": "scroll",
+            "target": "viewport",
+            "sample": {
+              "at": 144.5,
+              "top": 1408,
+              "maximum": 1408,
+              "pageTop": 1012,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          {
+            "event": "keydown",
+            "key": "Home",
+            "target": "viewport",
+            "path": ["viewport", "main", "document-scroller", "html", "document"],
+            "trusted": true,
+            "prevented": false,
+            "sample": {
+              "at": 164,
+              "top": 1408,
+              "maximum": 1408,
+              "pageTop": 1012,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          {
+            "event": "keyup",
+            "key": "Home",
+            "target": "viewport",
+            "path": ["viewport", "main", "document-scroller", "html", "document"],
+            "trusted": true,
+            "prevented": false,
+            "sample": {
+              "at": 164.19999980926514,
+              "top": 1408,
+              "maximum": 1408,
+              "pageTop": 1012,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          {
+            "event": "scroll",
+            "target": "viewport",
+            "sample": {
+              "at": 194.79999995231628,
+              "top": 1296,
+              "maximum": 1408,
+              "pageTop": 1012,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          {
+            "event": "scroll",
+            "target": "viewport",
+            "sample": {
+              "at": 211.5,
+              "top": 1128,
+              "maximum": 1408,
+              "pageTop": 1012,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          {
+            "event": "scroll",
+            "target": "viewport",
+            "sample": {
+              "at": 227.29999995231628,
+              "top": 895,
+              "maximum": 1408,
+              "pageTop": 1012,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          {
+            "event": "scroll",
+            "target": "viewport",
+            "sample": {
+              "at": 244.29999995231628,
+              "top": 629,
+              "maximum": 1408,
+              "pageTop": 1012,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          {
+            "event": "scroll",
+            "target": "viewport",
+            "sample": {
+              "at": 260.59999990463257,
+              "top": 376,
+              "maximum": 1408,
+              "pageTop": 1012,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          {
+            "event": "scroll",
+            "target": "viewport",
+            "sample": {
+              "at": 278.2999999523163,
+              "top": 177,
+              "maximum": 1408,
+              "pageTop": 1012,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          {
+            "event": "scroll",
+            "target": "viewport",
+            "sample": {
+              "at": 295,
+              "top": 52,
+              "maximum": 1408,
+              "pageTop": 1012,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          {
+            "event": "scroll",
+            "target": "viewport",
+            "sample": {
+              "at": 311.7999999523163,
+              "top": 2,
+              "maximum": 1408,
+              "pageTop": 1012,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          {
+            "event": "scroll",
+            "target": "viewport",
+            "sample": {
+              "at": 328.39999985694885,
+              "top": 0,
+              "maximum": 1408,
+              "pageTop": 1012,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          {
+            "event": "keydown",
+            "key": "PageUp",
+            "target": "viewport",
+            "path": ["viewport", "main", "document-scroller", "html", "document"],
+            "trusted": true,
+            "prevented": false,
+            "sample": {
+              "at": 633.0999999046326,
+              "top": 0,
+              "maximum": 1408,
+              "pageTop": 1012,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          {
+            "event": "keyup",
+            "key": "PageUp",
+            "target": "viewport",
+            "path": ["viewport", "main", "document-scroller", "html", "document"],
+            "trusted": true,
+            "prevented": false,
+            "sample": {
+              "at": 633.5999999046326,
+              "top": 0,
+              "maximum": 1408,
+              "pageTop": 1012,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          {
+            "event": "scroll",
+            "target": "document",
+            "sample": {
+              "at": 661.7999999523163,
+              "top": 0,
+              "maximum": 1408,
+              "pageTop": 948,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          {
+            "event": "scroll",
+            "target": "document",
+            "sample": {
+              "at": 678.3999998569489,
+              "top": 0,
+              "maximum": 1408,
+              "pageTop": 842,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          {
+            "event": "scroll",
+            "target": "document",
+            "sample": {
+              "at": 695.0999999046326,
+              "top": 0,
+              "maximum": 1408,
+              "pageTop": 689,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          {
+            "event": "scroll",
+            "target": "document",
+            "sample": {
+              "at": 711.6999998092651,
+              "top": 0,
+              "maximum": 1408,
+              "pageTop": 509,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          {
+            "event": "scroll",
+            "target": "document",
+            "sample": {
+              "at": 728.3999998569489,
+              "top": 0,
+              "maximum": 1408,
+              "pageTop": 333,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          {
+            "event": "scroll",
+            "target": "document",
+            "sample": {
+              "at": 745.0999999046326,
+              "top": 0,
+              "maximum": 1408,
+              "pageTop": 190,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          {
+            "event": "scroll",
+            "target": "document",
+            "sample": {
+              "at": 761.2999999523163,
+              "top": 0,
+              "maximum": 1408,
+              "pageTop": 97,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          {
+            "event": "scroll",
+            "target": "document",
+            "sample": {
+              "at": 778.0999999046326,
+              "top": 0,
+              "maximum": 1408,
+              "pageTop": 55,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          },
+          {
+            "event": "scroll",
+            "target": "document",
+            "sample": {
+              "at": 795.1999998092651,
+              "top": 0,
+              "maximum": 1408,
+              "pageTop": 52,
+              "active": "viewport",
+              "following": null,
+              "request": null,
+              "overflow": "auto",
+              "tabindex": "0"
+            }
+          }
+        ]
+      }
+    },
+    "controlAsset": {
+      "asset": "site-shadcn-controls.DsLsGYvi.js",
+      "source": "86a92909b7db2a030c2e8fc041ec199b387e974005701ebb94b009693d9bb8fc",
+      "instrumented": "2248cd85775d94656cde4418a8e64b4075941682caddd849f33ca9d6f7612839"
+    },
+    "measuredDeparture": [
+      {
+        "runtime": "wc",
+        "firstMovementAfterReleaseMs": 20.40000009536743
+      },
+      {
+        "runtime": "react",
+        "firstMovementAfterReleaseMs": 24.399999856948853
+      },
+      {
+        "runtime": "vue",
+        "firstMovementAfterReleaseMs": 26.899999856948853
+      },
+      {
+        "runtime": "vue2",
+        "firstMovementAfterReleaseMs": 24.799999952316284
+      }
+    ]
+  },
+  "focused": {
+    "unitTry": {
+      "passed": 83,
+      "failed": 2,
+      "filtered": 0,
+      "files": 1,
+      "failures": [
+        {
+          "title": "keeps Home departure until the viewport scrolls after keyup",
+          "message": "AssertionError: expected 'following' to be 'paused' // Object.is equality"
+        },
+        {
+          "title": "keeps PageUp departure until the viewport scrolls after keyup",
+          "message": "AssertionError: expected 'following' to be 'paused' // Object.is equality"
+        }
+      ],
+      "reportSha256": "2b9947d4f2e01380bf830e8815c221f4a95102d099778aee9bdc590c04c908be"
+    },
+    "unitPass": {
+      "passed": 228,
+      "failed": 0,
+      "filtered": 0,
+      "files": 13,
+      "failures": [],
+      "reportSha256": "ee1fa77f49bc9926df064c2407ecef1a58b9fc657420c88fb5ec80abbbce6f9f"
+    },
+    "realKeyTry": {
+      "passed": 0,
+      "failed": 2,
+      "filtered": 6,
+      "files": 1,
+      "failures": [
+        {
+          "title": "pauses after trusted Home scroll delivered after key release",
+          "message": "page.waitForFunction: Timeout 5000ms exceeded."
+        },
+        {
+          "title": "pauses after trusted PageUp scroll delivered after key release",
+          "message": "page.waitForFunction: Timeout 5000ms exceeded."
+        }
+      ],
+      "reportSha256": "063ec5843f4c34d89ab0f74e29edfc19e93e1af1765c29b24308c11c70be7242"
+    },
+    "realKeyPass": {
+      "passed": 10,
+      "failed": 0,
+      "filtered": 0,
+      "files": 2,
+      "failures": [],
+      "reportSha256": "53ae6a0d95a702197f93764e5fd4215f9869c4fe9386f3d037d56297788de28a"
+    }
+  },
+  "exactSite": {
+    "packages": 47,
+    "pages": 685,
+    "types": 0,
+    "manifests": 0,
+    "budgetExit": 0,
+    "budgetRows": [
+      {
+        "before": "PASS lucide/icons/x: 2879 / 3000 gzip bytes; overBudget=0; minified=8695 sha256=da30ebe409a83a09d2569fe2a47880a133fcbe4d554d93ea305795356c4fccdb",
+        "after": "PASS lucide/icons/x: 2879 / 3000 gzip bytes; overBudget=0; minified=8695 sha256=da30ebe409a83a09d2569fe2a47880a133fcbe4d554d93ea305795356c4fccdb"
+      },
+      {
+        "before": "PASS lucide root: 637306 / 700000 gzip bytes; overBudget=0; minified=4087403 sha256=eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c",
+        "after": "PASS lucide root: 637306 / 700000 gzip bytes; overBudget=0; minified=4087403 sha256=eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c"
+      },
+      {
+        "before": "ADVISORY core root: 11378 / 7600 gzip bytes; overBudget=3778; minified=35782 sha256=0e3c868d3ef719af46085b83881b15787a94acbaf893566ceae4047ceff72b44",
+        "after": "ADVISORY core root: 11378 / 7600 gzip bytes; overBudget=3778; minified=35782 sha256=0e3c868d3ef719af46085b83881b15787a94acbaf893566ceae4047ceff72b44"
+      },
+      {
+        "before": "ADVISORY runtime root: 101217 / 78500 gzip bytes; overBudget=22717; minified=390470 sha256=84ddbb8b9e893f050fb5c5bdb55a115d1ad522ead59198ec22eedeb94bc57d00",
+        "after": "ADVISORY runtime root: 101217 / 78500 gzip bytes; overBudget=22717; minified=390470 sha256=84ddbb8b9e893f050fb5c5bdb55a115d1ad522ead59198ec22eedeb94bc57d00"
+      },
+      {
+        "before": "ADVISORY adapter-react root: 163785 / 106000 gzip bytes; overBudget=57785; minified=577477 sha256=cad9ed64814ecbbc6968c93a2c004f3cc5763a4113c41dae9985ebf777738a7f",
+        "after": "ADVISORY adapter-react root: 163748 / 106000 gzip bytes; overBudget=57748; minified=577401 sha256=914327c38e067e98ffe01f79ce2f13a38af3036a33eb61a6608f808eeba2cf2d"
+      },
+      {
+        "before": "ADVISORY adapter-vue root: 162552 / 106000 gzip bytes; overBudget=56552; minified=572731 sha256=6b90e39e1b09309cf5354b1ffb6a9fb99b368657d58510df358bb207d5637392",
+        "after": "ADVISORY adapter-vue root: 162539 / 106000 gzip bytes; overBudget=56539; minified=572634 sha256=df940517f66d44edabea4d81adeb7ef992f75308848fca06f23127774750665f"
+      },
+      {
+        "before": "ADVISORY adapter-web-component root: 195516 / 132000 gzip bytes; overBudget=63516; minified=671380 sha256=0f3220b5c44a20805a792961fa99eceb6f86c3a04e9a4b31cd2f8f90d8c91c24",
+        "after": "ADVISORY adapter-web-component root: 195507 / 132000 gzip bytes; overBudget=63507; minified=671296 sha256=5be3235acff9fd0a141a4f1084bf4cb22053925ca49168bd6d6ef25f09f4d738"
+      },
+      {
+        "before": "PASS prototypes-base/button: 5274 / 6000 gzip bytes; overBudget=0; minified=18158 sha256=6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67",
+        "after": "PASS prototypes-base/button: 5274 / 6000 gzip bytes; overBudget=0; minified=18158 sha256=6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67"
+      },
+      {
+        "before": "ADVISORY prototypes-shadcn/button: 7803 / 7000 gzip bytes; overBudget=803; minified=34485 sha256=60b4ff9277e59fba01c34162ec9418282ce82c6b43e24f223a05c9e1df19db57",
+        "after": "ADVISORY prototypes-shadcn/button: 7803 / 7000 gzip bytes; overBudget=803; minified=34485 sha256=60b4ff9277e59fba01c34162ec9418282ce82c6b43e24f223a05c9e1df19db57"
+      }
+    ],
+    "caseMs": 150000,
+    "readyMs": 60000,
+    "expectedCount": 1268,
+    "html": {
+      "zh-cn": {
+        "bytes": 1862477,
+        "sha256": "4ab23751dd8f40767ef30f01672235021bebad4eca4562c978e7e8f8ef6e3421",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914113,
+        "sha256": "201b221b2ab8babb51ea8f256aa9971356d181e729a6dc5f7271e62b276c7631",
+        "previews": 1268
+      }
+    },
+    "matrix": {
+      "passed": 0,
+      "failed": 2,
+      "filtered": 0,
+      "files": 1,
+      "failures": [
+        {
+          "title": "zh-cn: native Light/split/mixed acceptance",
+          "message": "page.waitForFunction: Timeout 60000ms exceeded."
+        },
+        {
+          "title": "en: native Light/split/mixed acceptance",
+          "message": "page.waitForFunction: Timeout 60000ms exceeded."
+        }
+      ],
+      "reportSha256": "4d400537bda2a043175ea9b0c033b0be3c1474046feebd59cbb7cbc8ecdf1851"
+    },
+    "scope": {
+      "passed": 11,
+      "failed": 0,
+      "filtered": 13,
+      "files": 3,
+      "failures": [],
+      "reportSha256": "380d3abe7daf9485dc6362faac79f7bd62a146f81247800252316d0fa45ffbba"
+    },
+    "preview": {
+      "head": "43fdd0e8172c2ce31b3f5be5c5ae98beadb62f55",
+      "tree": "8b6c4f09eab00436aada8770b7d30b7c75171800",
+      "distHashes": {
+        "zh-cn/index.html": "32efd22312907a02ddd2781121a96126ee165bff299c510cca6a04e01767fa1a",
+        "zh-cn/ui-libraries/shadcn/button/index.html": "b3616152dd4e932ac6554d5c0b660c47fed2030c950ad1f4b9c67db78aec2f9b",
+        "zh-cn/ui-libraries/brutalist/components/button/index.html": "aa47d8ba8d83e6f2b66043808e1994f5d3ef51f3a6ad74dd03d80d85f6d175d1"
+      },
+      "sourceCodeExamples": 9,
+      "renderedCodeExamples": 9,
+      "packedHeaderExit": 0,
+      "previewBrowserExit": 0,
+      "selector": "uses real family Popover Triggers|uses the same mobile shell|live available region|keeps Runtime Tabs outside"
+    },
+    "header": {
+      "head": "43fdd0e8172c2ce31b3f5be5c5ae98beadb62f55",
+      "browser": "156.0.8078.79",
+      "scope": "First animation frame control on the exact static Astro preview. Geometry reads can force layout.",
+      "results": [
+        {
+          "width": 320,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1589.6999998092651,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1737.2999999523163,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1757.2999999523163,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        },
+        {
+          "width": 390,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1591.5999999046326,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1712.6999998092651,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1744.5999999046326,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        }
+      ]
+    }
+  },
+  "packedHome": {
+    "originalFixtureSha256": "68b1a3c2439ffff089b823c6075ee7d091e7bde6027a2c9f8dc5a4552fbe4a71",
+    "assets": [
+      {
+        "asset": "message-candidate-served.html",
+        "sha256": "0e2f911c3d3113ecfc5b1b461562adffba312e5db0526cb778ddcce4abacf891"
+      },
+      {
+        "asset": "site-shadcn-controls.BujDy4oW.js",
+        "sha256": "db466cfce4105f2fc20b7d55e862e90655d39bf1bb019d7505ee3b65592870b9"
+      }
+    ],
+    "result": {
+      "browser": "156.0.8078.79",
+      "variant": "candidate",
+      "result": [
+        {
+          "runtime": "wc",
+          "initial": {
+            "top": 1054,
+            "maximum": 1054,
+            "following": "following",
+            "request": "applied",
+            "ownsFocus": false
+          },
+          "paused": {
+            "top": 0,
+            "maximum": 1054,
+            "following": "paused",
+            "request": "applied",
+            "ownsFocus": true
+          },
+          "afterPaused": {
+            "top": 0,
+            "maximum": 1114,
+            "following": "paused",
+            "request": "applied",
+            "ownsFocus": true
+          },
+          "resumed": {
+            "top": 1114,
+            "maximum": 1114,
+            "following": "following",
+            "request": "applied",
+            "ownsFocus": false
+          },
+          "afterFollowing": {
+            "top": 1174,
+            "maximum": 1174,
+            "following": "following",
+            "request": "applied",
+            "ownsFocus": false
+          },
+          "focusAfterJump": true,
+          "focusAfterGrowth": true,
+          "focusPreserved": true
+        },
+        {
+          "runtime": "react",
+          "initial": {
+            "top": 1054,
+            "maximum": 1054,
+            "following": "following",
+            "request": "applied",
+            "ownsFocus": false
+          },
+          "paused": {
+            "top": 0,
+            "maximum": 1054,
+            "following": "paused",
+            "request": "applied",
+            "ownsFocus": true
+          },
+          "afterPaused": {
+            "top": 0,
+            "maximum": 1114,
+            "following": "paused",
+            "request": "applied",
+            "ownsFocus": true
+          },
+          "resumed": {
+            "top": 1114,
+            "maximum": 1114,
+            "following": "following",
+            "request": "applied",
+            "ownsFocus": false
+          },
+          "afterFollowing": {
+            "top": 1174,
+            "maximum": 1174,
+            "following": "following",
+            "request": "applied",
+            "ownsFocus": false
+          },
+          "focusAfterJump": true,
+          "focusAfterGrowth": true,
+          "focusPreserved": true
+        },
+        {
+          "runtime": "vue",
+          "initial": {
+            "top": 1054,
+            "maximum": 1054,
+            "following": "following",
+            "request": "applied",
+            "ownsFocus": false
+          },
+          "paused": {
+            "top": 0,
+            "maximum": 1054,
+            "following": "paused",
+            "request": "applied",
+            "ownsFocus": true
+          },
+          "afterPaused": {
+            "top": 0,
+            "maximum": 1114,
+            "following": "paused",
+            "request": "applied",
+            "ownsFocus": true
+          },
+          "resumed": {
+            "top": 1114,
+            "maximum": 1114,
+            "following": "following",
+            "request": "applied",
+            "ownsFocus": false
+          },
+          "afterFollowing": {
+            "top": 1174,
+            "maximum": 1174,
+            "following": "following",
+            "request": "applied",
+            "ownsFocus": false
+          },
+          "focusAfterJump": true,
+          "focusAfterGrowth": true,
+          "focusPreserved": true
+        },
+        {
+          "runtime": "vue2",
+          "initial": {
+            "top": 1054,
+            "maximum": 1054,
+            "following": "following",
+            "request": "applied",
+            "ownsFocus": false
+          },
+          "paused": {
+            "top": 0,
+            "maximum": 1054,
+            "following": "paused",
+            "request": "applied",
+            "ownsFocus": true
+          },
+          "afterPaused": {
+            "top": 0,
+            "maximum": 1114,
+            "following": "paused",
+            "request": "applied",
+            "ownsFocus": true
+          },
+          "resumed": {
+            "top": 1114,
+            "maximum": 1114,
+            "following": "following",
+            "request": "applied",
+            "ownsFocus": false
+          },
+          "afterFollowing": {
+            "top": 1174,
+            "maximum": 1174,
+            "following": "following",
+            "request": "applied",
+            "ownsFocus": false
+          },
+          "focusAfterJump": true,
+          "focusAfterGrowth": true,
+          "focusPreserved": true
+        }
+      ]
+    }
+  }
+}
