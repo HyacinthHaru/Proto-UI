@@ -1,0 +1,883 @@
+{
+  "source": {
+    "head": "d5f9ede572fdb3d03dde581f06c02e6034caae9d",
+    "tree": "30878dfaea208a6e3de92d4f59e544ba5401b12f",
+    "parent": "3a5e5133d591b1d32b4ae4e13ca56fbeaeb3e9ce",
+    "signature": "G"
+  },
+  "baseline": {
+    "head": "3a5e5133d591b1d32b4ae4e13ca56fbeaeb3e9ce",
+    "tree": "f7a5cd7e68390da4f3afa5dd7bac8161a4dd4f01",
+    "parent": "d288a27dbf9b6d6178d6c0ee5bf2688308cf4369",
+    "signature": "G"
+  },
+  "changedInputSHA256": {
+    "packages/modules/a11y/src/part-relationships.ts": "6706449bb0094a8ee35e865d64fe93d010bf57663d0cf24aef8b357a9847a75a",
+    "packages/modules/a11y/test/part-relationships.test.ts": "499a1dd0afe39d790e38f72e07b14eab091a821de54d2544cd250d098cc5f9b3"
+  },
+  "buildInputs": {
+    "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "e6590db342bddc56b37fa367ce6b1cc519130cdb201e06e8d14061569d5e0317",
+    "apps/www/dist/zh-cn/internal/demo-matrix/index.html": "c90b3de7fc52777186161f7d945f8ae62c193b2cfe87002f674f9f6343befc1a",
+    "apps/www/dist/en/internal/demo-matrix/index.html": "99f9fe9d515574020acb57740ec57c8403ae531d6b8379185d8e1c2f92225592"
+  },
+  "pages": {
+    "zh-cn": {
+      "bytes": 1862424,
+      "sha256": "c90b3de7fc52777186161f7d945f8ae62c193b2cfe87002f674f9f6343befc1a",
+      "previews": 1268
+    },
+    "en": {
+      "bytes": 1914067,
+      "sha256": "99f9fe9d515574020acb57740ec57c8403ae531d6b8379185d8e1c2f92225592",
+      "previews": 1268
+    }
+  },
+  "build": {
+    "initial": {
+      "head": "aba63b58e697557abc3b2d806ee1e1c933338d0b",
+      "tree": "052fe44856924c9260fae483ba8c7526321ef21f",
+      "parent": "3a5e5133d591b1d32b4ae4e13ca56fbeaeb3e9ce",
+      "signature": "G"
+    },
+    "publicPackages": 47,
+    "initialTypesExit": 2,
+    "initialTypesLogSHA256": "9cd62e63b74b86799a0c7c6a3efe21a1c47a880f1cd12e07016fa3c9bc4d7331",
+    "finalTypesExit": 0,
+    "manifestExit": 0,
+    "finfCommandExit": 0,
+    "limitChanges": 0,
+    "advisories": 6,
+    "rationale": "The initial and final signed trees differ only in a test spy type narrowing. Production inputs and emitted browser asset bytes were verified before reuse."
+  },
+  "red": {
+    "exit": 1,
+    "tests": {
+      "numTotalTests": 15,
+      "numPassedTests": 14,
+      "numFailedTests": 1,
+      "numPendingTests": 0,
+      "cases": [
+        {
+          "name": "same-domain A11y part relationships carries the exact structural tuple and both view epochs",
+          "status": "passed",
+          "duration": 1.099125000000015,
+          "firstMessages": []
+        },
+        {
+          "name": "same-domain A11y part relationships does not match a different family",
+          "status": "passed",
+          "duration": 0.20433399999996027,
+          "firstMessages": []
+        },
+        {
+          "name": "same-domain A11y part relationships does not match a different scope",
+          "status": "passed",
+          "duration": 0.14908299999996188,
+          "firstMessages": []
+        },
+        {
+          "name": "same-domain A11y part relationships does not match a different role",
+          "status": "passed",
+          "duration": 0.10695800000002009,
+          "firstMessages": []
+        },
+        {
+          "name": "same-domain A11y part relationships does not match a different key",
+          "status": "passed",
+          "duration": 0.09766700000000128,
+          "firstMessages": []
+        },
+        {
+          "name": "same-domain A11y part relationships does not rescan all logical owners for each relationship in one publication",
+          "status": "failed",
+          "duration": 1.9359160000000202,
+          "firstMessages": ["AssertionError: expected 10 to be less than or equal to 2"]
+        },
+        {
+          "name": "same-domain A11y part relationships fails closed for duplicate logical members, even while one is detached",
+          "status": "passed",
+          "duration": 0.17025000000001,
+          "firstMessages": []
+        },
+        {
+          "name": "same-domain A11y part relationships withdraws each detached endpoint, resumes new epochs and ignores late old-epoch input",
+          "status": "passed",
+          "duration": 0.33795800000001464,
+          "firstMessages": []
+        },
+        {
+          "name": "same-domain A11y part relationships atomically moves a logical membership and suppresses equality notifications",
+          "status": "passed",
+          "duration": 0.19991600000003018,
+          "firstMessages": []
+        },
+        {
+          "name": "same-domain A11y part relationships reconciles reentrant changes without recursively publishing an unchanged tuple",
+          "status": "passed",
+          "duration": 0.11599999999998545,
+          "firstMessages": []
+        },
+        {
+          "name": "same-domain A11y part relationships removes terminal memberships and never revives disposed sources or targets",
+          "status": "passed",
+          "duration": 0.1048340000000394,
+          "firstMessages": []
+        },
+        {
+          "name": "same-domain A11y part relationships does not lose a pending peer notification when another callback reenters the registry",
+          "status": "passed",
+          "duration": 0.08650000000000091,
+          "firstMessages": []
+        },
+        {
+          "name": "same-domain A11y part relationships delivers peer withdrawal and retries a failed projector without a new tuple change",
+          "status": "passed",
+          "duration": 0.33395799999999554,
+          "firstMessages": []
+        },
+        {
+          "name": "same-domain A11y part relationships reports every projector failure while leaving each failed owner retryable",
+          "status": "passed",
+          "duration": 0.15887499999996635,
+          "firstMessages": []
+        },
+        {
+          "name": "same-domain A11y part relationships keeps diagnostics bounded and accepts exact keys without CSS or object-key interpretation",
+          "status": "passed",
+          "duration": 0.20062500000000227,
+          "firstMessages": []
+        }
+      ]
+    }
+  },
+  "focused": {
+    "exit": 0,
+    "passed": 264,
+    "logSHA256": "1e42c14806dbbd83a2b477e904cab314850bd9c63322b86530f8365aa2a768a3"
+  },
+  "originalMatrix": {
+    "tests": {
+      "numTotalTests": 2,
+      "numPassedTests": 0,
+      "numFailedTests": 2,
+      "numPendingTests": 0,
+      "cases": [
+        {
+          "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+          "status": "failed",
+          "duration": 150522.352167,
+          "firstMessages": ["Error: Test timed out in 150000ms."]
+        },
+        {
+          "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+          "status": "failed",
+          "duration": 150710.71029200003,
+          "firstMessages": ["Error: Test timed out in 150000ms."]
+        }
+      ]
+    },
+    "rawLogSHA256": "7f1bf8f0742a4d5e902448c0285bda8cb2b233ea817ed2beeff35da4c78a35c0",
+    "guardMs": {
+      "readiness": 60000,
+      "case": 150000
+    },
+    "startupByLocale": {
+      "zh-cn": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      },
+      "en": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      }
+    }
+  },
+  "counterComparison": {
+    "before": {
+      "binding": {
+        "file": "site-shadcn-controls.CdndRx1X.js",
+        "inputSHA256": "9a3408ffd5a783d7ee8bd3d471cbc025b762dbeed9234eed5445ee7942b376fb",
+        "outputSHA256": "5f8d5431172f98c4295657ec40eeab1f8e84beb64cea85fa7a487527777b6463"
+      },
+      "overlaySHA256": "ac464b474a464f385628484a6b48599c34efb93509d61f4bd5bb2fc3e64b59bc",
+      "rawLogSHA256": "41e43411cd609fe6fe31e78743a37600718bbc310e8c5a701fd2eaeda544e1df",
+      "runnerOverlaySHA256": "f4dfdc5a855a801dbdb35f05d6d1f669eba23af4c0bfd169cd41c4b5eaa4b65f",
+      "native": {
+        "numTotalTests": 2,
+        "numPassedTests": 0,
+        "numFailedTests": 1,
+        "numPendingTests": 1,
+        "cases": [
+          {
+            "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+            "status": "failed",
+            "duration": 150534.053,
+            "firstMessages": ["Error: Test timed out in 150000ms."]
+          },
+          {
+            "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+            "status": "skipped",
+            "duration": null,
+            "firstMessages": []
+          }
+        ]
+      },
+      "startup": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      },
+      "exit": 1,
+      "compiledControl": {
+        "notes": [
+          [null, null, ["missing-target"]],
+          ["first", 1, []],
+          [null, null, ["ambiguous-target"]],
+          ["first", 1, []],
+          [null, 2, []],
+          ["first", 3, []],
+          [null, null, ["missing-target"]]
+        ],
+        "metrics": {
+          "requests": 8,
+          "reentries": 0,
+          "sweeps": 8,
+          "passes": 8,
+          "resolutions": 27,
+          "declarations": 8,
+          "targetOwners": 27,
+          "partRows": 13,
+          "sameFamilyScope": 6,
+          "matches": 6,
+          "notifications": 7,
+          "resolveMs": 0.16129399999999805
+        },
+        "marks": [
+          {
+            "kind": "a11y-part-work",
+            "requests": 1,
+            "reentries": 0,
+            "sweeps": 1,
+            "passes": 1,
+            "resolutions": 4,
+            "declarations": 1,
+            "targetOwners": 4,
+            "partRows": 0,
+            "sameFamilyScope": 0,
+            "matches": 0,
+            "notifications": 1,
+            "resolveMs": 0.07820900000000108,
+            "pageMs": 24.729,
+            "timeOrigin": 1794890324158.314
+          },
+          {
+            "kind": "a11y-part-work",
+            "requests": 2,
+            "reentries": 0,
+            "sweeps": 2,
+            "passes": 2,
+            "resolutions": 8,
+            "declarations": 2,
+            "targetOwners": 8,
+            "partRows": 1,
+            "sameFamilyScope": 0,
+            "matches": 0,
+            "notifications": 1,
+            "resolveMs": 0.10541800000000023,
+            "pageMs": 24.79925,
+            "timeOrigin": 1794890324158.314
+          },
+          {
+            "kind": "a11y-part-work",
+            "requests": 4,
+            "reentries": 0,
+            "sweeps": 4,
+            "passes": 4,
+            "resolutions": 16,
+            "declarations": 4,
+            "targetOwners": 16,
+            "partRows": 6,
+            "sameFamilyScope": 3,
+            "matches": 3,
+            "notifications": 3,
+            "resolveMs": 0.14225100000000168,
+            "pageMs": 24.859583,
+            "timeOrigin": 1794890324158.314
+          },
+          {
+            "kind": "a11y-part-work",
+            "requests": 8,
+            "reentries": 0,
+            "sweeps": 8,
+            "passes": 8,
+            "resolutions": 27,
+            "declarations": 8,
+            "targetOwners": 27,
+            "partRows": 13,
+            "sameFamilyScope": 6,
+            "matches": 6,
+            "notifications": 7,
+            "resolveMs": 0.16129399999999805,
+            "pageMs": 24.911458,
+            "timeOrigin": 1794890324158.314
+          }
+        ]
+      }
+    },
+    "after": {
+      "binding": {
+        "file": "site-shadcn-controls.DD75xMYt.js",
+        "inputSHA256": "c937c33821a326090e4c1f6e0a486c1c1e2284af4a189546ab9e5b25d501ac86",
+        "outputSHA256": "6547cf687c96b61faebaa9a30872b89e9c0d0e8e5dec6a997f0e83bf6cab1b31"
+      },
+      "overlaySHA256": "965e3a1a771cffc4c3d741c31ff1959721f390db2471707ab9c7006261ade12d",
+      "rawLogSHA256": "2ad09ca9f2dbc886d363f315f4973814f08dfabeab6815790a3f75af5530e873",
+      "runnerOverlaySHA256": "f4dfdc5a855a801dbdb35f05d6d1f669eba23af4c0bfd169cd41c4b5eaa4b65f",
+      "native": {
+        "numTotalTests": 2,
+        "numPassedTests": 0,
+        "numFailedTests": 1,
+        "numPendingTests": 1,
+        "cases": [
+          {
+            "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+            "status": "failed",
+            "duration": 150531.394458,
+            "firstMessages": ["Error: Test timed out in 150000ms."]
+          },
+          {
+            "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+            "status": "skipped",
+            "duration": null,
+            "firstMessages": []
+          }
+        ]
+      },
+      "startup": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      },
+      "exit": 1,
+      "compiledControl": {
+        "notes": [
+          [null, null, ["missing-target"]],
+          ["first", 1, []],
+          [null, null, ["ambiguous-target"]],
+          ["first", 1, []],
+          [null, 2, []],
+          ["first", 3, []],
+          [null, null, ["missing-target"]]
+        ],
+        "metrics": {
+          "requests": 8,
+          "reentries": 0,
+          "sweeps": 8,
+          "passes": 8,
+          "resolutions": 27,
+          "declarations": 8,
+          "targetOwners": 0,
+          "indexOwners": 27,
+          "indexRows": 13,
+          "partRows": 6,
+          "sameFamilyScope": 6,
+          "matches": 6,
+          "notifications": 7,
+          "resolveMs": 0.14729100000000095
+        },
+        "marks": [
+          {
+            "kind": "a11y-part-work",
+            "variant": "scope-index",
+            "requests": 1,
+            "reentries": 0,
+            "sweeps": 1,
+            "passes": 1,
+            "resolutions": 4,
+            "declarations": 1,
+            "targetOwners": 0,
+            "indexOwners": 4,
+            "indexRows": 0,
+            "partRows": 0,
+            "sameFamilyScope": 0,
+            "matches": 0,
+            "notifications": 1,
+            "resolveMs": 0.0664169999999995,
+            "pageMs": 13.877791,
+            "timeOrigin": 1794891068523.371
+          },
+          {
+            "kind": "a11y-part-work",
+            "variant": "scope-index",
+            "requests": 2,
+            "reentries": 0,
+            "sweeps": 2,
+            "passes": 2,
+            "resolutions": 8,
+            "declarations": 2,
+            "targetOwners": 0,
+            "indexOwners": 8,
+            "indexRows": 1,
+            "partRows": 0,
+            "sameFamilyScope": 0,
+            "matches": 0,
+            "notifications": 1,
+            "resolveMs": 0.09279199999999932,
+            "pageMs": 13.939041,
+            "timeOrigin": 1794891068523.371
+          },
+          {
+            "kind": "a11y-part-work",
+            "variant": "scope-index",
+            "requests": 4,
+            "reentries": 0,
+            "sweeps": 4,
+            "passes": 4,
+            "resolutions": 16,
+            "declarations": 4,
+            "targetOwners": 0,
+            "indexOwners": 16,
+            "indexRows": 6,
+            "partRows": 3,
+            "sameFamilyScope": 3,
+            "matches": 3,
+            "notifications": 3,
+            "resolveMs": 0.12349999999999994,
+            "pageMs": 14.003375,
+            "timeOrigin": 1794891068523.371
+          },
+          {
+            "kind": "a11y-part-work",
+            "variant": "scope-index",
+            "requests": 8,
+            "reentries": 0,
+            "sweeps": 8,
+            "passes": 8,
+            "resolutions": 27,
+            "declarations": 8,
+            "targetOwners": 0,
+            "indexOwners": 27,
+            "indexRows": 13,
+            "partRows": 6,
+            "sameFamilyScope": 6,
+            "matches": 6,
+            "notifications": 7,
+            "resolveMs": 0.14729100000000095,
+            "pageMs": 14.049416,
+            "timeOrigin": 1794891068523.371
+          }
+        ]
+      }
+    },
+    "matchedSweeps": {
+      "lastBefore": 4096,
+      "lastAfter": 4096,
+      "points": [
+        {
+          "sweeps": 1,
+          "before": {
+            "passes": 1,
+            "resolutions": 1,
+            "declarations": 1,
+            "partRows": 0,
+            "sameFamilyScope": 0,
+            "matches": 0,
+            "notifications": 1,
+            "resolveMs": 0,
+            "pageMs": 1137.2000000476837,
+            "indexRows": 0,
+            "visitedPartRows": 0
+          },
+          "after": {
+            "passes": 1,
+            "resolutions": 1,
+            "declarations": 1,
+            "partRows": 0,
+            "sameFamilyScope": 0,
+            "matches": 0,
+            "notifications": 1,
+            "resolveMs": 0.09999990463256836,
+            "pageMs": 1129.5999999046326,
+            "indexRows": 1,
+            "visitedPartRows": 1
+          },
+          "sameWorkload": true
+        },
+        {
+          "sweeps": 2,
+          "before": {
+            "passes": 2,
+            "resolutions": 2,
+            "declarations": 2,
+            "partRows": 1,
+            "sameFamilyScope": 1,
+            "matches": 0,
+            "notifications": 2,
+            "resolveMs": 0,
+            "pageMs": 1138.7000000476837,
+            "indexRows": 0,
+            "visitedPartRows": 1
+          },
+          "after": {
+            "passes": 2,
+            "resolutions": 2,
+            "declarations": 2,
+            "partRows": 1,
+            "sameFamilyScope": 1,
+            "matches": 0,
+            "notifications": 2,
+            "resolveMs": 0.20000004768371582,
+            "pageMs": 1131.2000000476837,
+            "indexRows": 2,
+            "visitedPartRows": 3
+          },
+          "sameWorkload": true
+        },
+        {
+          "sweeps": 4,
+          "before": {
+            "passes": 4,
+            "resolutions": 4,
+            "declarations": 4,
+            "partRows": 2,
+            "sameFamilyScope": 2,
+            "matches": 0,
+            "notifications": 4,
+            "resolveMs": 0,
+            "pageMs": 1139.1000001430511,
+            "indexRows": 0,
+            "visitedPartRows": 2
+          },
+          "after": {
+            "passes": 4,
+            "resolutions": 4,
+            "declarations": 4,
+            "partRows": 2,
+            "sameFamilyScope": 2,
+            "matches": 0,
+            "notifications": 4,
+            "resolveMs": 0.3000001907348633,
+            "pageMs": 1131.5,
+            "indexRows": 4,
+            "visitedPartRows": 6
+          },
+          "sameWorkload": true
+        },
+        {
+          "sweeps": 8,
+          "before": {
+            "passes": 8,
+            "resolutions": 11,
+            "declarations": 11,
+            "partRows": 11,
+            "sameFamilyScope": 10,
+            "matches": 0,
+            "notifications": 8,
+            "resolveMs": 0,
+            "pageMs": 1140.8000001907349,
+            "indexRows": 0,
+            "visitedPartRows": 11
+          },
+          "after": {
+            "passes": 8,
+            "resolutions": 11,
+            "declarations": 11,
+            "partRows": 10,
+            "sameFamilyScope": 10,
+            "matches": 0,
+            "notifications": 8,
+            "resolveMs": 0.3000001907348633,
+            "pageMs": 1133.0999999046326,
+            "indexRows": 11,
+            "visitedPartRows": 21
+          },
+          "sameWorkload": true
+        },
+        {
+          "sweeps": 16,
+          "before": {
+            "passes": 16,
+            "resolutions": 34,
+            "declarations": 34,
+            "partRows": 70,
+            "sameFamilyScope": 67,
+            "matches": 0,
+            "notifications": 16,
+            "resolveMs": 0.09999990463256836,
+            "pageMs": 1142.8000001907349,
+            "indexRows": 0,
+            "visitedPartRows": 70
+          },
+          "after": {
+            "passes": 16,
+            "resolutions": 34,
+            "declarations": 34,
+            "partRows": 67,
+            "sameFamilyScope": 67,
+            "matches": 0,
+            "notifications": 16,
+            "resolveMs": 0.40000009536743164,
+            "pageMs": 1134.8999998569489,
+            "indexRows": 34,
+            "visitedPartRows": 101
+          },
+          "sameWorkload": true
+        },
+        {
+          "sweeps": 32,
+          "before": {
+            "passes": 32,
+            "resolutions": 126,
+            "declarations": 126,
+            "partRows": 594,
+            "sameFamilyScope": 576,
+            "matches": 44,
+            "notifications": 39,
+            "resolveMs": 0.09999990463256836,
+            "pageMs": 1381.9000000953674,
+            "indexRows": 0,
+            "visitedPartRows": 594
+          },
+          "after": {
+            "passes": 32,
+            "resolutions": 126,
+            "declarations": 126,
+            "partRows": 576,
+            "sameFamilyScope": 576,
+            "matches": 44,
+            "notifications": 39,
+            "resolveMs": 0.5000002384185791,
+            "pageMs": 1363.8999998569489,
+            "indexRows": 126,
+            "visitedPartRows": 702
+          },
+          "sameWorkload": true
+        },
+        {
+          "sweeps": 64,
+          "before": {
+            "passes": 64,
+            "resolutions": 516,
+            "declarations": 516,
+            "partRows": 5357,
+            "sameFamilyScope": 3265,
+            "matches": 352,
+            "notifications": 78,
+            "resolveMs": 0.2999999523162842,
+            "pageMs": 1956.4000000953674,
+            "indexRows": 0,
+            "visitedPartRows": 5357
+          },
+          "after": {
+            "passes": 64,
+            "resolutions": 516,
+            "declarations": 516,
+            "partRows": 3265,
+            "sameFamilyScope": 3265,
+            "matches": 352,
+            "notifications": 78,
+            "resolveMs": 0.9000003337860107,
+            "pageMs": 1948.8999998569489,
+            "indexRows": 516,
+            "visitedPartRows": 3781
+          },
+          "sameWorkload": true
+        },
+        {
+          "sweeps": 128,
+          "before": {
+            "passes": 128,
+            "resolutions": 2088,
+            "declarations": 2088,
+            "partRows": 44762,
+            "sameFamilyScope": 14978,
+            "matches": 1760,
+            "notifications": 156,
+            "resolveMs": 2.8000001907348633,
+            "pageMs": 3072.100000143051,
+            "indexRows": 0,
+            "visitedPartRows": 44762
+          },
+          "after": {
+            "passes": 128,
+            "resolutions": 2088,
+            "declarations": 2088,
+            "partRows": 14978,
+            "sameFamilyScope": 14978,
+            "matches": 1760,
+            "notifications": 156,
+            "resolveMs": 1.7000007629394531,
+            "pageMs": 3077.0999999046326,
+            "indexRows": 2088,
+            "visitedPartRows": 17066
+          },
+          "sameWorkload": true
+        },
+        {
+          "sweeps": 256,
+          "before": {
+            "passes": 256,
+            "resolutions": 8383,
+            "declarations": 8361,
+            "partRows": 359993,
+            "sameFamilyScope": 61711,
+            "matches": 7784,
+            "notifications": 313,
+            "resolveMs": 8.499999523162842,
+            "pageMs": 9405.600000143051,
+            "indexRows": 0,
+            "visitedPartRows": 359993
+          },
+          "after": {
+            "passes": 256,
+            "resolutions": 8383,
+            "declarations": 8361,
+            "partRows": 61711,
+            "sameFamilyScope": 61711,
+            "matches": 7784,
+            "notifications": 313,
+            "resolveMs": 5.200001001358032,
+            "pageMs": 9246.200000047684,
+            "indexRows": 8353,
+            "visitedPartRows": 70064
+          },
+          "sameWorkload": true
+        },
+        {
+          "sweeps": 512,
+          "before": {
+            "passes": 512,
+            "resolutions": 34332,
+            "declarations": 32642,
+            "partRows": 2853404,
+            "sameFamilyScope": 206791,
+            "matches": 31546,
+            "notifications": 584,
+            "resolveMs": 30.299997568130493,
+            "pageMs": 12021.5,
+            "indexRows": 0,
+            "visitedPartRows": 2853404
+          },
+          "after": {
+            "passes": 512,
+            "resolutions": 34332,
+            "declarations": 32642,
+            "partRows": 206791,
+            "sameFamilyScope": 206791,
+            "matches": 31546,
+            "notifications": 584,
+            "resolveMs": 15.10000205039978,
+            "pageMs": 11567.299999952316,
+            "indexRows": 33790,
+            "visitedPartRows": 240581
+          },
+          "sameWorkload": true
+        },
+        {
+          "sweeps": 1024,
+          "before": {
+            "passes": 1024,
+            "resolutions": 143512,
+            "declarations": 133509,
+            "partRows": 21566187,
+            "sameFamilyScope": 612279,
+            "matches": 117788,
+            "notifications": 930,
+            "resolveMs": 149.89999771118164,
+            "pageMs": 18062.800000190735,
+            "indexRows": 0,
+            "visitedPartRows": 21566187
+          },
+          "after": {
+            "passes": 1024,
+            "resolutions": 143473,
+            "declarations": 133299,
+            "partRows": 611725,
+            "sameFamilyScope": 611725,
+            "matches": 117835,
+            "notifications": 935,
+            "resolveMs": 52.50000548362732,
+            "pageMs": 17580.799999952316,
+            "indexRows": 137636,
+            "visitedPartRows": 749361
+          },
+          "sameWorkload": false
+        },
+        {
+          "sweeps": 2048,
+          "before": {
+            "passes": 2048,
+            "resolutions": 591070,
+            "declarations": 535508,
+            "partRows": 159429580,
+            "sameFamilyScope": 1819389,
+            "matches": 425995,
+            "notifications": 1815,
+            "resolveMs": 1116.6000003814697,
+            "pageMs": 50094.300000190735,
+            "indexRows": 0,
+            "visitedPartRows": 159429580
+          },
+          "after": {
+            "passes": 2048,
+            "resolutions": 586105,
+            "declarations": 532534,
+            "partRows": 1810417,
+            "sameFamilyScope": 1810417,
+            "matches": 423887,
+            "notifications": 1815,
+            "resolveMs": 220.20000195503235,
+            "pageMs": 48421.09999990463,
+            "indexRows": 538688,
+            "visitedPartRows": 2349105
+          },
+          "sameWorkload": false
+        },
+        {
+          "sweeps": 4096,
+          "before": {
+            "passes": 4096,
+            "resolutions": 2399488,
+            "declarations": 2129833,
+            "partRows": 1220249360,
+            "sameFamilyScope": 5951555,
+            "matches": 1582026,
+            "notifications": 3856,
+            "resolveMs": 9941.399998426437,
+            "pageMs": 109451.40000009537,
+            "indexRows": 0,
+            "visitedPartRows": 1220249360
+          },
+          "after": {
+            "passes": 4096,
+            "resolutions": 2382819,
+            "declarations": 2114876,
+            "partRows": 5916100,
+            "sameFamilyScope": 5916100,
+            "matches": 1572703,
+            "notifications": 3852,
+            "resolveMs": 925.7000029087067,
+            "pageMs": 99156.39999985695,
+            "indexRows": 2147008,
+            "visitedPartRows": 8063108
+          },
+          "sameWorkload": false
+        }
+      ]
+    }
+  }
+}
