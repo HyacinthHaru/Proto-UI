@@ -24,7 +24,14 @@ registerPrototype(
       def.expose.method('send', (key: string, payload: unknown) =>
         current.expose.emit(key, payload)
       );
-      def.expose.method('raw', () => current.props.getRaw());
+      def.expose.method('checkRaw', (expected: Record<string, unknown>) => {
+        const raw = current.props.getRaw();
+        // Compare the callback identities inside the owner. Returning the raw
+        // functions would project them through the public callable boundary.
+        return Object.fromEntries(
+          Object.entries(expected).map(([key, value]) => [key, Object.is(raw[key], value)])
+        );
+      });
     },
   })
 );
@@ -82,11 +89,18 @@ describe('WC DemoRuntimeApi callback projection', () => {
     send(api, payload);
     expect(callback.mock.calls).toEqual([[payload]]);
     expect(callback.mock.calls[0]![0]).toBe(payload);
-    expect(api.call('subject', 'raw')).toMatchObject({
-      onValueChange: callback,
-      onwork: ordinary,
-      compute: ordinary,
-      label: 'retained',
+    expect(
+      api.call('subject', 'checkRaw', {
+        onValueChange: callback,
+        onwork: ordinary,
+        compute: ordinary,
+        label: 'retained',
+      })
+    ).toEqual({
+      onValueChange: true,
+      onwork: true,
+      compute: true,
+      label: true,
     });
     dispatch(element, payload, 'work');
     dispatch(element, payload, 'compute');
