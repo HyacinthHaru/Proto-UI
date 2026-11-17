@@ -1,0 +1,583 @@
+{
+  "source": {
+    "head": "067b44e1bc1d69ae28cd3e47cd6afcc3c580ab74",
+    "tree": "c59c6204a656d769e2861f1f628e1b707da84595",
+    "parent": "310a4193060016746bb72ba6f91cce3e7f989ed9",
+    "signature": "G"
+  },
+  "baseline": {
+    "head": "310a4193060016746bb72ba6f91cce3e7f989ed9",
+    "tree": "2331a227164317fa153d81a140303018f0f60d4a",
+    "parent": "df3e516aa67e303e8634f4513a8d4f62e393d2f6",
+    "signature": "G"
+  },
+  "changedInputs": {
+    "packages/modules/anatomy/src/impl.ts": "2aeb19a57a2f5e5e1b93e8294a45a2aeb0508682514c7a91589f918c5611d0b2",
+    "packages/runtime/test/contract/anatomy.order-fanout-cost.contract.test.ts": "3f3efe1a489f61c2f11551ee9e32b184b21e6de91b5376bc35aa5cf00bf0a04d"
+  },
+  "buildInputs": {
+    "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "e6590db342bddc56b37fa367ce6b1cc519130cdb201e06e8d14061569d5e0317",
+    "apps/www/dist/zh-cn/internal/demo-matrix/index.html": "2b78d3ecbdc0094d872ce5180215cd6b02f3b81ea63ede9dd2118866472662ff",
+    "apps/www/dist/en/internal/demo-matrix/index.html": "acf38b235c8dcb4e96b58c5cccc39b2ab5a82c0bac0fbfb07d7476af8fc64ff0"
+  },
+  "pages": {
+    "zh-cn": {
+      "bytes": 1862464,
+      "sha256": "2b78d3ecbdc0094d872ce5180215cd6b02f3b81ea63ede9dd2118866472662ff",
+      "previews": 1268
+    },
+    "en": {
+      "bytes": 1914071,
+      "sha256": "acf38b235c8dcb4e96b58c5cccc39b2ab5a82c0bac0fbfb07d7476af8fc64ff0",
+      "previews": 1268
+    }
+  },
+  "versions": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+  "red": {
+    "tests": {
+      "numTotalTests": 13,
+      "numPassedTests": 11,
+      "numFailedTests": 2,
+      "numPendingTests": 0,
+      "failedCases": [
+        {
+          "name": "Runtime Anatomy synchronous order fanout cost sync: sorts a stable shared domain once per notification",
+          "first": "AssertionError: expected 12 to be 1 // Object.is equality"
+        },
+        {
+          "name": "Runtime Anatomy synchronous order fanout cost notify: sorts a stable shared domain once per notification",
+          "first": "AssertionError: expected 12 to be 1 // Object.is equality"
+        }
+      ]
+    },
+    "logSHA256": "88edd02f412aa9f395e2a330a5b07ba72022fb6520e27b5a9fa2dae12342a68b"
+  },
+  "focused": {
+    "tests": {
+      "numTotalTests": 500,
+      "numPassedTests": 500,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "failedCases": []
+    },
+    "logSHA256": "9c5e1b07bbe438fc7b6da464329b6c7faa4445602796e3db0eb72d878cd4564a"
+  },
+  "nativeAccordion": {
+    "tests": {
+      "numTotalTests": 33,
+      "numPassedTests": 4,
+      "numFailedTests": 0,
+      "numPendingTests": 29,
+      "failedCases": []
+    },
+    "suite": {
+      "apps/www/src/content/docs/zh-cn/demo-accordion-family.browser.test.ts": "efcef75bf104c655e4e99f4c5ba8ace7ecf3f9785a6b424e0b2846ddede18232"
+    },
+    "htmlSHA256": "5a7ddd4091e54d49a9df06313122b60844ee299ea6a989903689cd6e03d7e5f8"
+  },
+  "originalMatrix": {
+    "guardMs": {
+      "readiness": 60000,
+      "case": 150000
+    },
+    "tests": {
+      "numTotalTests": 2,
+      "numPassedTests": 0,
+      "numFailedTests": 2,
+      "numPendingTests": 0,
+      "failedCases": [
+        {
+          "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+          "first": "page.waitForFunction: Timeout 60000ms exceeded."
+        },
+        {
+          "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+          "first": "page.waitForFunction: Timeout 60000ms exceeded."
+        }
+      ]
+    },
+    "exit": 1,
+    "startupByLocale": {
+      "zh-cn": {
+        "startupPassed": false,
+        "collectionOutcome": "budget-expired",
+        "pageErrorCount": 0,
+        "consoleErrorCount": 0
+      },
+      "en": {
+        "startupPassed": false,
+        "collectionOutcome": "budget-expired",
+        "pageErrorCount": 0,
+        "consoleErrorCount": 0
+      }
+    },
+    "rawLogSHA256": "edc52ebcb9bb85b538b55f6c0e888d195cbc25c21cbcfc4b314c126bd3764552"
+  },
+  "stackAttribution": {
+    "source": {
+      "head": "310a4193060016746bb72ba6f91cce3e7f989ed9",
+      "tree": "2331a227164317fa153d81a140303018f0f60d4a",
+      "parent": "df3e516aa67e303e8634f4513a8d4f62e393d2f6",
+      "signature": "G"
+    },
+    "orderSamples": [
+      {
+        "stage": "paused",
+        "phase": "startup-wait",
+        "elapsedMs": 31265.153,
+        "nodeTimeOrigin": 1794903221370.619,
+        "requested": 31000,
+        "reason": "other",
+        "frames": [
+          {
+            "name": "",
+            "path": "/_astro/site-shadcn-controls.BF_aKGUH.js",
+            "line": 8,
+            "column": 104616
+          },
+          {
+            "name": "sortClaims",
+            "path": "/_astro/site-shadcn-controls.BF_aKGUH.js",
+            "line": 8,
+            "column": 104595
+          },
+          {
+            "name": "computeOrderSignature",
+            "path": "/_astro/site-shadcn-controls.BF_aKGUH.js",
+            "line": 8,
+            "column": 104085
+          },
+          {
+            "name": "emitOrderChangeIfNeeded",
+            "path": "/_astro/site-shadcn-controls.BF_aKGUH.js",
+            "line": 8,
+            "column": 103601
+          },
+          {
+            "name": "notifyStructuralChange",
+            "path": "/_astro/site-shadcn-controls.BF_aKGUH.js",
+            "line": 8,
+            "column": 101252
+          },
+          {
+            "name": "syncStructure",
+            "path": "/_astro/site-shadcn-controls.BF_aKGUH.js",
+            "line": 8,
+            "column": 93292
+          },
+          {
+            "name": "onProtoPhase",
+            "path": "/_astro/site-shadcn-controls.BF_aKGUH.js",
+            "line": 8,
+            "column": 96866
+          },
+          {
+            "name": "onProtoPhase",
+            "path": "/_astro/site-shadcn-controls.BF_aKGUH.js",
+            "line": 8,
+            "column": 110516
+          },
+          {
+            "name": "setProtoPhase",
+            "path": "/_astro/site-shadcn-controls.BF_aKGUH.js",
+            "line": 8,
+            "column": 424693
+          },
+          {
+            "name": "j",
+            "path": "/_astro/site-shadcn-controls.BF_aKGUH.js",
+            "line": 8,
+            "column": 431999
+          },
+          {
+            "name": "",
+            "path": "/_astro/site-shadcn-controls.BF_aKGUH.js",
+            "line": 8,
+            "column": 432135
+          },
+          {
+            "name": "done",
+            "path": "/_astro/site-shadcn-controls.BF_aKGUH.js",
+            "line": 8,
+            "column": 430285
+          },
+          {
+            "name": "e.watch.flush",
+            "path": "/_astro/index.D8krFuVn.js",
+            "line": 0,
+            "column": 17740
+          }
+        ]
+      },
+      {
+        "stage": "paused",
+        "phase": "startup-wait",
+        "elapsedMs": 43040.701,
+        "nodeTimeOrigin": 1794903221370.619,
+        "requested": 43000,
+        "reason": "other",
+        "frames": [
+          {
+            "name": "",
+            "path": "/_astro/site-shadcn-controls.BF_aKGUH.js",
+            "line": 8,
+            "column": 104616
+          },
+          {
+            "name": "sortClaims",
+            "path": "/_astro/site-shadcn-controls.BF_aKGUH.js",
+            "line": 8,
+            "column": 104595
+          },
+          {
+            "name": "computeOrderSignature",
+            "path": "/_astro/site-shadcn-controls.BF_aKGUH.js",
+            "line": 8,
+            "column": 104085
+          },
+          {
+            "name": "emitOrderChangeIfNeeded",
+            "path": "/_astro/site-shadcn-controls.BF_aKGUH.js",
+            "line": 8,
+            "column": 103601
+          },
+          {
+            "name": "notifyStructuralChange",
+            "path": "/_astro/site-shadcn-controls.BF_aKGUH.js",
+            "line": 8,
+            "column": 101252
+          },
+          {
+            "name": "syncStructure",
+            "path": "/_astro/site-shadcn-controls.BF_aKGUH.js",
+            "line": 8,
+            "column": 93292
+          },
+          {
+            "name": "onProtoPhase",
+            "path": "/_astro/site-shadcn-controls.BF_aKGUH.js",
+            "line": 8,
+            "column": 96866
+          },
+          {
+            "name": "onProtoPhase",
+            "path": "/_astro/site-shadcn-controls.BF_aKGUH.js",
+            "line": 8,
+            "column": 110516
+          },
+          {
+            "name": "setProtoPhase",
+            "path": "/_astro/site-shadcn-controls.BF_aKGUH.js",
+            "line": 8,
+            "column": 424693
+          },
+          {
+            "name": "j",
+            "path": "/_astro/site-shadcn-controls.BF_aKGUH.js",
+            "line": 8,
+            "column": 431999
+          },
+          {
+            "name": "",
+            "path": "/_astro/site-shadcn-controls.BF_aKGUH.js",
+            "line": 8,
+            "column": 432135
+          },
+          {
+            "name": "done",
+            "path": "/_astro/site-shadcn-controls.BF_aKGUH.js",
+            "line": 8,
+            "column": 430285
+          },
+          {
+            "name": "ct",
+            "path": "/_astro/index.CQcp8gra.js",
+            "line": 0,
+            "column": 27933
+          },
+          {
+            "name": "",
+            "path": "/_astro/index.CQcp8gra.js",
+            "line": 0,
+            "column": 16590
+          },
+          {
+            "name": "",
+            "path": "/_astro/vue.runtime.esm.BiV49BqY.js",
+            "line": 4,
+            "column": 12585
+          },
+          {
+            "name": "Jt",
+            "path": "/_astro/vue.runtime.esm.BiV49BqY.js",
+            "line": 4,
+            "column": 11998
+          }
+        ]
+      }
+    ],
+    "rawLogSHA256": "4a3131ee7707758651b64335e3c08c189790876dfb5bdfade90f2742f0ff00ae"
+  },
+  "sampledReuse": {
+    "events": [
+      {
+        "kind": "order-notification-reuse",
+        "sampleEvery": 64,
+        "eligible": 1,
+        "reused": 0,
+        "claimsRead": 4,
+        "samples": 1,
+        "sampledMs": 0.10000014305114746,
+        "pageMs": 344.60000014305115,
+        "timeOrigin": 1794904108317.2
+      },
+      {
+        "kind": "order-notification-reuse",
+        "sampleEvery": 64,
+        "eligible": 2,
+        "reused": 0,
+        "claimsRead": 9,
+        "samples": 1,
+        "sampledMs": 0.10000014305114746,
+        "pageMs": 346.80000019073486,
+        "timeOrigin": 1794904108317.2
+      },
+      {
+        "kind": "order-notification-reuse",
+        "sampleEvery": 64,
+        "eligible": 4,
+        "reused": 0,
+        "claimsRead": 17,
+        "samples": 1,
+        "sampledMs": 0.10000014305114746,
+        "pageMs": 368,
+        "timeOrigin": 1794904108317.2
+      },
+      {
+        "kind": "order-notification-reuse",
+        "sampleEvery": 64,
+        "eligible": 8,
+        "reused": 0,
+        "claimsRead": 26,
+        "samples": 1,
+        "sampledMs": 0.10000014305114746,
+        "pageMs": 370.2000000476837,
+        "timeOrigin": 1794904108317.2
+      },
+      {
+        "kind": "order-notification-reuse",
+        "sampleEvery": 64,
+        "eligible": 16,
+        "reused": 0,
+        "claimsRead": 60,
+        "samples": 1,
+        "sampledMs": 0.10000014305114746,
+        "pageMs": 375.40000009536743,
+        "timeOrigin": 1794904108317.2
+      },
+      {
+        "kind": "order-notification-reuse",
+        "sampleEvery": 64,
+        "eligible": 32,
+        "reused": 0,
+        "claimsRead": 156,
+        "samples": 1,
+        "sampledMs": 0.10000014305114746,
+        "pageMs": 378.30000019073486,
+        "timeOrigin": 1794904108317.2
+      },
+      {
+        "kind": "order-notification-reuse",
+        "sampleEvery": 64,
+        "eligible": 64,
+        "reused": 10,
+        "claimsRead": 400,
+        "samples": 1,
+        "sampledMs": 0.10000014305114746,
+        "pageMs": 382.10000014305115,
+        "timeOrigin": 1794904108317.2
+      },
+      {
+        "kind": "order-notification-reuse",
+        "sampleEvery": 64,
+        "eligible": 128,
+        "reused": 34,
+        "claimsRead": 1120,
+        "samples": 2,
+        "sampledMs": 0.10000014305114746,
+        "pageMs": 392.40000009536743,
+        "timeOrigin": 1794904108317.2
+      },
+      {
+        "kind": "order-notification-reuse",
+        "sampleEvery": 64,
+        "eligible": 256,
+        "reused": 136,
+        "claimsRead": 2708,
+        "samples": 4,
+        "sampledMs": 0.10000014305114746,
+        "pageMs": 411.90000009536743,
+        "timeOrigin": 1794904108317.2
+      },
+      {
+        "kind": "order-notification-reuse",
+        "sampleEvery": 64,
+        "eligible": 512,
+        "reused": 338,
+        "claimsRead": 5896,
+        "samples": 8,
+        "sampledMs": 0.10000014305114746,
+        "pageMs": 454.2000000476837,
+        "timeOrigin": 1794904108317.2
+      },
+      {
+        "kind": "order-notification-reuse",
+        "sampleEvery": 64,
+        "eligible": 1024,
+        "reused": 678,
+        "claimsRead": 10701,
+        "samples": 16,
+        "sampledMs": 0.20000028610229492,
+        "pageMs": 2694.4000000953674,
+        "timeOrigin": 1794904108317.2
+      },
+      {
+        "kind": "order-notification-reuse",
+        "sampleEvery": 64,
+        "eligible": 2048,
+        "reused": 1428,
+        "claimsRead": 19917,
+        "samples": 32,
+        "sampledMs": 0.20000028610229492,
+        "pageMs": 4351.5,
+        "timeOrigin": 1794904108317.2
+      },
+      {
+        "kind": "order-notification-reuse",
+        "sampleEvery": 64,
+        "eligible": 4096,
+        "reused": 2814,
+        "claimsRead": 33929,
+        "samples": 64,
+        "sampledMs": 0.3000001907348633,
+        "pageMs": 6614.300000190735,
+        "timeOrigin": 1794904108317.2
+      },
+      {
+        "kind": "order-notification-reuse",
+        "sampleEvery": 64,
+        "eligible": 8192,
+        "reused": 6023,
+        "claimsRead": 90387,
+        "samples": 128,
+        "sampledMs": 0.8000001907348633,
+        "pageMs": 6773.5,
+        "timeOrigin": 1794904108317.2
+      },
+      {
+        "kind": "order-notification-reuse",
+        "sampleEvery": 64,
+        "eligible": 16384,
+        "reused": 12872,
+        "claimsRead": 341553,
+        "samples": 256,
+        "sampledMs": 0.9000003337860107,
+        "pageMs": 7531.300000190735,
+        "timeOrigin": 1794904108317.2
+      },
+      {
+        "kind": "order-notification-reuse",
+        "sampleEvery": 64,
+        "eligible": 32768,
+        "reused": 26109,
+        "claimsRead": 780031,
+        "samples": 512,
+        "sampledMs": 1.3000004291534424,
+        "pageMs": 9313.100000143051,
+        "timeOrigin": 1794904108317.2
+      },
+      {
+        "kind": "order-notification-reuse",
+        "sampleEvery": 64,
+        "eligible": 65536,
+        "reused": 53087,
+        "claimsRead": 1659859,
+        "samples": 1024,
+        "sampledMs": 1.9000003337860107,
+        "pageMs": 10466.900000095367,
+        "timeOrigin": 1794904108317.2
+      },
+      {
+        "kind": "order-notification-reuse",
+        "sampleEvery": 64,
+        "eligible": 131072,
+        "reused": 110708,
+        "claimsRead": 4007551,
+        "samples": 2048,
+        "sampledMs": 3.3000009059906006,
+        "pageMs": 12832.200000047684,
+        "timeOrigin": 1794904108317.2
+      },
+      {
+        "kind": "order-notification-reuse",
+        "sampleEvery": 64,
+        "eligible": 262144,
+        "reused": 215632,
+        "claimsRead": 6627277,
+        "samples": 4096,
+        "sampledMs": 5.900001525878906,
+        "pageMs": 24106.10000014305,
+        "timeOrigin": 1794904108317.2
+      },
+      {
+        "kind": "order-notification-reuse",
+        "sampleEvery": 64,
+        "eligible": 524288,
+        "reused": 465629,
+        "claimsRead": 29982837,
+        "samples": 8192,
+        "sampledMs": 15.500001668930054,
+        "pageMs": 26719.900000095367,
+        "timeOrigin": 1794904108317.2
+      },
+      {
+        "kind": "order-notification-reuse",
+        "sampleEvery": 64,
+        "eligible": 1048576,
+        "reused": 944946,
+        "claimsRead": 67969191,
+        "samples": 16384,
+        "sampledMs": 30.600002765655518,
+        "pageMs": 40314.800000190735,
+        "timeOrigin": 1794904108317.2
+      }
+    ],
+    "binding": {
+      "file": "site-shadcn-controls.BdvjFV0W.js",
+      "inputSHA256": "61f35c9f809c14cbd3a4b98266bb880260d4c0506f9ce137c8ef9d238a6f10e8",
+      "outputSHA256": "58ac8e073629f5edb60d81954e39a742687ff95d5abc73c7bc61c5adb25c2a62"
+    },
+    "startup": {
+      "startupPassed": false,
+      "collectionOutcome": "budget-expired",
+      "pageErrorCount": 0,
+      "consoleErrorCount": 0
+    },
+    "exit": 1,
+    "tests": {
+      "numTotalTests": 2,
+      "numPassedTests": 0,
+      "numFailedTests": 1,
+      "numPendingTests": 1,
+      "failedCases": [
+        {
+          "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+          "first": "page.waitForFunction: Timeout 60000ms exceeded."
+        }
+      ]
+    },
+    "overlaySHA256": "35d1468856fa01ec23708611c38910043de683a3d770f0d078e03ad9297286a3",
+    "rawLogSHA256": "eed3d586c419868aa985cc6bd48334cc776d29184aae8bdeedfad9796606e34b",
+    "runnerSHA256": "f4dfdc5a855a801dbdb35f05d6d1f669eba23af4c0bfd169cd41c4b5eaa4b65f"
+  }
+}
