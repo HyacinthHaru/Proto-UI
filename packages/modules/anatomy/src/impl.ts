@@ -56,7 +56,7 @@ type NormalizedFamily = {
 };
 
 type ClaimRecord = {
-  readonly ownerOrder: number;
+  readonly orderId: number;
   readonly instance: AnatomyInstanceToken;
   family: AnatomyFamily;
   readonly role: string;
@@ -68,8 +68,8 @@ type ClaimRecord = {
   invoke: AnatomyOrderCallbackDispatcher;
 };
 
-type OrderSignature = { value: string; owners: readonly number[] | null };
-const MISSING_ORDER_SIGNATURE: OrderSignature = { value: 'missing-domain', owners: null };
+type OrderSignature = { value: string; claims: readonly number[] | null };
+const MISSING_ORDER_SIGNATURE: OrderSignature = { value: 'missing-domain', claims: null };
 
 // Share reads only within one synchronous notification. A parent-getter identity
 // identifies one logical host tree; independent bridges must not share domains.
@@ -287,6 +287,7 @@ type TargetListenerScope = { lastDomain: AnatomyInstanceToken | null };
 
 export class AnatomyModuleImpl extends ModuleBase {
   private static nextInstanceOrder = 0;
+  private static nextClaimOrderId = 0;
   private static readonly orderSubscribers = new Map<AnatomyFamily, AnatomyModuleImpl[]>();
   private static readonly targetSubscribers = new Map<AnatomyFamily, AnatomyModuleImpl[]>();
   private static readonly scopedTargetSubscriberCounts = new Map<AnatomyFamily, number>();
@@ -361,7 +362,7 @@ export class AnatomyModuleImpl extends ModuleBase {
     }
 
     CENTER.setClaim({
-      ownerOrder: this.instanceOrder,
+      orderId: AnatomyModuleImpl.nextClaimOrderId++,
       instance,
       family,
       role: decl.role,
@@ -1123,20 +1124,20 @@ export class AnatomyModuleImpl extends ModuleBase {
     const domain = this.resolveCurrentDomain(family, false, reads?.domains);
     if (!domain.rootInstance) return MISSING_ORDER_SIGNATURE;
     const ordered = this.sortClaims(domain.claims, reads);
-    const owners = previous?.owners;
-    // A module has one immutable claim identity and role per family. Keep
-    // only its numeric owner order here so a signature cannot retain a claim.
+    const claims = previous?.claims;
+    // A claim's role and instance stay fixed. Store its numeric ID so reading a
+    // signature cannot keep retired claims or their host targets alive.
     if (
       previous &&
-      owners?.length === ordered.length &&
-      ordered.every((claim, index) => claim.ownerOrder === owners[index])
+      claims?.length === ordered.length &&
+      ordered.every((claim, index) => claim.orderId === claims[index])
     )
       return previous;
     return {
       value: ordered
         .map((claim) => `${claim.role}:${this.getIdentityId(claim.instance)}`)
         .join('|'),
-      owners: ordered.map((claim) => claim.ownerOrder),
+      claims: ordered.map((claim) => claim.orderId),
     };
   }
 
