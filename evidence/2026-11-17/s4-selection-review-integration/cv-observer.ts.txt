@@ -1,0 +1,20 @@
+export function observeCurrentContentVisibility(options: { asset: string }) {
+  const state = { delivered: 0, skipped: 0, rendered: 0, oldName: 0, last: null as unknown };
+  (window as any).__puiCurrentCv = state;
+  const emit = (phase: string, data: unknown) => console.info('[S4 cv current]', JSON.stringify({ phase, pageMs: performance.now(), timeOrigin: performance.timeOrigin, data }));
+  emit('api', { eventProperty: 'oncontentvisibilityautostatechange' in HTMLElement.prototype, constructor: typeof ContentVisibilityAutoStateChangeEvent, css: CSS.supports('content-visibility', 'auto') });
+  document.addEventListener('contentvisibilityautostatechange', (event) => {
+    if (!(event.target instanceof Element) || !event.target.classList.contains('demo-matrix__item')) return;
+    state.delivered++;
+    if ((event as Event & { skipped: boolean }).skipped) state.skipped++;
+    else state.rendered++;
+    state.last = { delivered: state.delivered, skipped: state.skipped, rendered: state.rendered, oldName: state.oldName, trusted: event.isTrusted };
+    if ((state.delivered & (state.delivered - 1)) === 0) emit('state-change', state.last);
+  }, true);
+  document.addEventListener('contentvisibilityautostatechanged', () => { state.oldName++; }, true);
+  document.addEventListener('DOMContentLoaded', () => {
+    const items = [...document.querySelectorAll<HTMLElement>('.demo-matrix__item')];
+    const style = (node: HTMLElement | undefined) => node ? { visibility: getComputedStyle(node).contentVisibility, intrinsicBlock: getComputedStyle(node).containIntrinsicBlockSize } : null;
+    emit('stylesheet', { items: items.length, previews: document.querySelectorAll('[data-previewer-id]').length, linked: [...document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]')].some(link => new URL(link.href).pathname.endsWith('/' + options.asset)), asset: options.asset, first: style(items[0]), last: style(items.at(-1)) });
+  }, { once: true });
+}

@@ -1,0 +1,66 @@
+import { createRequire } from 'node:module';
+import { writeFile } from 'node:fs/promises';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+const { chromium } = createRequire(process.env.PUI_WWW_PACKAGE)('playwright-core');
+const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH });
+const rows = [], failures = [];
+const labels = { wc: 'Web Components', react: 'React', vue: 'Vue', vue2: 'Vue 2' };
+try {
+  for (const runtime of ['wc', 'react', 'vue', 'vue2'])
+    for (const variant of ['legacy', 'candidate']) {
+      const context = await browser.newContext({ viewport: { width: 1280, height: 900 }, colorScheme: 'light' });
+      try {
+        const page = await context.newPage();
+        await page.goto(process.env.PROTO_UI_BROWSER_BASE_URL + '/zh-cn/ui-libraries/shadcn/input/', { waitUntil: 'domcontentloaded' });
+        const previewer = page.locator('[data-demo-id="demo-shadcn-input"]');
+        assert.equal(await previewer.count(), 1);
+        if (runtime !== 'wc') await previewer.getByRole('tab', { name: labels[runtime], exact: true }).click();
+        // Same committed-runtime getter used by the repository browser harness.
+        await page.waitForFunction(({ runtime }) => document.querySelector('[data-demo-id="demo-shadcn-input"]')?.__previewer__?.getCurrentRuntime?.() === runtime, { runtime }, { timeout: 20000 });
+        const input = previewer.locator('.host input').first();
+        await input.waitFor({ state: 'visible', timeout: 20000 });
+        await input.fill('Retained authored text');
+        await input.click();
+        await page.addScriptTag({ path: process.argv[2] });
+        await page.evaluate(async url => {
+          const entry = await import(url);
+          if (typeof entry.w !== 'function') throw new Error('Unexpected lease module');
+          window.nativeLease.candidate = { withNativeContentLease: entry.w };
+        }, process.env.PROTO_UI_BROWSER_BASE_URL + '/_astro/' + process.env.PUI_PACKED_LEASE_ASSET);
+        const immediate = await input.evaluate((control, { runtime, variant }) => {
+          const scope = control.closest('.host');
+          if (!scope || control.getRootNode() !== document) throw new Error('Expected public Light native editor');
+          const wc = control.closest('wc-shadcn-input-root');
+          if (runtime === 'wc' && (!wc || wc.shadowRoot)) throw new Error('Expected default WC Light profile');
+          control.setSelectionRange(3, 8, 'backward');
+          const active = () => { let target = document.activeElement; while (target?.shadowRoot?.activeElement) target = target.shadowRoot.activeElement; return target; };
+          const state = () => ({ sameInput: scope.querySelector('input') === control, connected: control.isConnected, active: active() === control, value: control.value, selection: [control.selectionStart, control.selectionEnd, control.selectionDirection] });
+          const committed = scope.closest('[data-previewer-id]')?.__previewer__?.getCurrentRuntime?.();
+          const before = state();
+          const destination = document.createElement('div');
+          scope.parentElement.append(destination);
+          window.nativeLease[variant === 'legacy' ? 'control' : 'candidate'].withNativeContentLease(scope, () => destination.append(scope));
+          window.__publicInput = { state };
+          return { before, after: state(), committed, wcTag: wc?.localName ?? null };
+        }, { runtime, variant });
+        await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+        const settled = await page.evaluate(() => window.__publicInput.state());
+        const screenshot = 'public-' + runtime + '-' + variant + '.png';
+        await page.screenshot({ path: path.join(path.dirname(process.argv[3]), screenshot) });
+        const row = { runtime, variant, ...immediate, settled, screenshot, viewport: { width: 1280, height: 900 }, colorScheme: 'light' };
+        rows.push(row);
+        try {
+          assert.equal(row.committed, runtime);
+          for (const state of [row.before, row.after, row.settled]) {
+            assert(state.sameInput && state.connected && state.active);
+            assert.equal(state.value, 'Retained authored text');
+            assert.deepEqual(state.selection, [3, 8, 'backward']);
+          }
+        } catch (error) { failures.push({ runtime, variant, message: error.message }); }
+        console.info(JSON.stringify(row));
+      } finally { await context.close(); }
+    }
+  await writeFile(process.argv[3], JSON.stringify({ browser: browser.version(), scope: 'Actual public Shadcn Input; real Runtime Tabs select each of four hosts and committed getter is read; direct physical preview-host move. Programmatic range with Playwright fill/click. Not a family-switch or hosted shard run.', rows, failures }, null, 2) + '\n');
+  if (failures.some(row => row.variant === 'candidate')) process.exitCode = 1;
+} finally { await browser.close(); }

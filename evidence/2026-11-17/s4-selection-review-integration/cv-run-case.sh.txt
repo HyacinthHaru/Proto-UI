@@ -1,0 +1,71 @@
+#!/bin/bash
+set -euo pipefail
+d=${TASK_STATE}
+q="$d/s4-content-visibility-current"
+mode="$1"
+case "$mode" in baseline|auto) ;; *) exit 2;; esac
+out="$q/$mode"
+mkdir "$out"
+export PATH="$d/../proto-ui-pr822/toolchain/node-v24.21.0-darwin-arm64/bin:/opt/homebrew/bin:$PATH"
+export CHROME_PATH="${CHROME_PATH}"
+export PROTO_UI_RUNTIME_EVIDENCE_DIR="$out"
+export RUNNER_TEMP="$out/runner-temp"
+test "$(git rev-parse HEAD)" = b6bfa4f0b978275dd2a2f0769fee19741c197459
+test -z "$(git status --porcelain)"
+suite=apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts
+observer=apps/www/src/content/docs/zh-cn/s4-content-visibility-current-local.ts
+asset=(apps/www/dist/_astro/DemoMatrix_astro_astro_type_style_index_0_lang.*.css)
+test "${#asset[@]}" = 1
+test ! -e "$observer"
+cp "${asset[0]}" "$out/style.original.css"
+cp "$q/observer.ts" "$observer"
+preview_pid=''
+restore() {
+ if test -n "$preview_pid"; then kill "$preview_pid" 2>/dev/null || :; wait "$preview_pid" 2>/dev/null || :; fi
+ git restore --worktree -- "$suite"
+ if test -f "$observer"; then mv "$observer" "$out/observer.executed.ts"; fi
+ cp "$out/style.original.css" "${asset[0]}"
+ cmp "$out/style.original.css" "${asset[0]}"
+ test -z "$(git status --porcelain)"
+ printf '0\n' > "$out/restored.exit"
+}
+trap restore EXIT
+mkdir "$RUNNER_TEMP"
+export PUI_CV_ASSET="${asset[0]##*/}"
+python3 - "$suite" "${asset[0]}" "$mode" "$out" <<'PY'
+from pathlib import Path
+import hashlib,json,sys
+suite,css,mode,out=sys.argv[1:];out=Path(out);p=Path(suite);s=p.read_text()
+a="import { settleFamilyQueryBatch } from './family-query-observer';"
+b=a+"\nimport { observeCurrentContentVisibility } from './s4-content-visibility-current-local';"
+assert s.count(a)==1;s=s.replace(a,b)
+a='      const page = await context.newPage();'
+b=a+"\n      await page.addInitScript(observeCurrentContentVisibility, { asset: process.env.PUI_CV_ASSET! });"
+assert s.count(a)==1;s=s.replace(a,b)
+a="if (!text.startsWith('[S4 startup change]') && !text.startsWith('[S4 init observation]'))"
+b="if (!text.startsWith('[S4 startup change]') && !text.startsWith('[S4 init observation]') && !text.startsWith('[S4 cv current]'))"
+assert s.count(a)==1;p.write_text(s.replace(a,b))
+f=Path(css);original=f.read_bytes();addition=b'\n.demo-matrix__item{content-visibility:auto;contain-intrinsic-block-size:auto 512px}\n' if mode=='auto' else b'';f.write_bytes(original+addition)
+(out/'binding.json').write_text(json.dumps(dict(mode=mode,asset=f.name,originalSha256=hashlib.sha256(original).hexdigest(),executedSha256=hashlib.sha256(original+addition).hexdigest(),addition=addition.decode(),runnerSha256=hashlib.sha256(p.read_bytes()).hexdigest()),indent=2)+'\n')
+PY
+git diff -- "$suite" > "$out/runner-overlay.patch"
+port=$(python3 -c 'import socket;s=socket.socket();s.bind(("127.0.0.1",0));print(s.getsockname()[1])')
+(cd apps/www && exec node node_modules/astro/astro.js preview --host 127.0.0.1 --port "$port") > "$out/preview.log" 2>&1 &
+preview_pid=$!
+export PROTO_UI_BROWSER_BASE_URL="http://127.0.0.1:$port"
+for try in {1..100}; do
+ if curl -q --silent --fail "$PROTO_UI_BROWSER_BASE_URL/zh-cn/internal/demo-matrix/" -o "$out/served.html"; then break; fi
+ sleep .1
+done
+cmp apps/www/dist/zh-cn/internal/demo-matrix/index.html "$out/served.html"
+curl -q --silent --show-error --fail "$PROTO_UI_BROWSER_BASE_URL/_astro/$PUI_CV_ASSET" -o "$out/served.css"
+cmp "${asset[0]}" "$out/served.css"
+date -u +%FT%TZ > "$out/started.txt"
+set +e
+corepack pnpm@10.32.1 exec vitest run --config vitest.config.ts --maxWorkers 1 --minWorkers 1 "$suite" -t 'zh-cn: native Light/split/mixed acceptance' --reporter=default --reporter=json --outputFile.json="$out/native.json" > "$out/native.log" 2>&1
+code=$?
+set -e
+printf '%s\n' "$code" > "$out/native.exit"
+date -u +%FT%TZ > "$out/finished.txt"
+rg 'Test Files|Tests |TimeoutError:|^Error: Test timed out' "$out/native.log" | tail -6
+exit "$code"
