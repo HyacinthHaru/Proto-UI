@@ -1,8 +1,15 @@
 // @vitest-environment happy-dom
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { loadReact } from './react-runtime';
 
 describe('real reader React loader', () => {
+  it('shares in-flight and completed runtime acquisition', async () => {
+    const first = loadReact();
+    expect(loadReact()).toBe(first);
+    const runtime = await first;
+    expect(await loadReact()).toBe(runtime);
+  });
+
   it('retains matched React 18 client roots, commit and portal APIs', async () => {
     const { React, ReactDOM } = await loadReact();
     expect(React.version).toBe('18.3.1');
@@ -40,5 +47,35 @@ describe('real reader React loader', () => {
     }
     expect(host.innerHTML).toBe('');
     expect(portal.innerHTML).toBe('');
+  });
+
+  it('drops the shared acquisition after a dependency fails', async () => {
+    const failure = new Error('transient client-root import');
+    let rejectOnce = true;
+    vi.resetModules();
+    vi.doMock('./retryable-module', () => ({
+      retryableModule: (load: () => Promise<unknown>, url: string) => () => {
+        if (url === 'react-client' && rejectOnce) {
+          rejectOnce = false;
+          return Promise.reject(failure);
+        }
+        return load();
+      },
+    }));
+    vi.doMock('virtual:proto-ui/runtime-retry-urls', () => ({
+      default: { react: 'react', reactDom: 'react-dom', reactDomClient: 'react-client' },
+    }));
+    try {
+      const { loadReact: reload } = await import('./react-runtime');
+      await expect(reload()).rejects.toBe(failure);
+      const runtime = await reload();
+      expect(runtime.React.version).toBe('18.3.1');
+      expect(typeof runtime.ReactDOM.createRoot).toBe('function');
+      expect(await reload()).toBe(runtime);
+    } finally {
+      vi.doUnmock('./retryable-module');
+      vi.doUnmock('virtual:proto-ui/runtime-retry-urls');
+      vi.resetModules();
+    }
   });
 });
