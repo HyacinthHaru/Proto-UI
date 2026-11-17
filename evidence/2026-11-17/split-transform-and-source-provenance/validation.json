@@ -1,0 +1,66 @@
+{
+  "author": {
+    "head": "f79f9786694aa2a23a4bbb83bb7dadafa5c3e351",
+    "tree": "9fee31e563b26005cab780d1940cf2ef5b439bb3",
+    "parent": "317cd94dfa4b8b2ad70de137688956c9138a6f2c",
+    "wcFix": "317cd94dfa4b8b2ad70de137688956c9138a6f2c",
+    "files": {
+      "packages/cli/src/services/hook-source-summary.ts": "4ea78dbd17d768d9b5993544ecf34308acbcb1aa7a63a4a5b5d3bf134239a822",
+      "packages/cli/src/services/prototype-style-tokens.ts": "cdf7c9e6e30b34dea462c6ac3c3797c44042aa69f5831c053e67fae3e7106cb2",
+      "packages/cli/test/shadow-template-style.test.ts": "73137ba8fcadf7e83a83b2e47a9bb1a3d1c4707054aae8849459f79d50c79b4c",
+      "packages/adapters/web-component/src/runtime/session.ts": "b8bbd8dd89b0c27c12a02c91a1afa7e1e8bc0669f06a8ea3dd6d4ecbd365a9ac",
+      "packages/adapters/web-component/test/shadow-closeout.browser.test.ts": "893f44e4280a17dfeb872ab37f7351868c1fca943a6c29a725f9cfbe017b9ef3"
+    }
+  },
+  "combined": {
+    "head": "940635ad222ff41c4d984a0341736ab48bfbbdce",
+    "tree": "9517abaa405bfda5f242be2598b2beda77d3c5b8",
+    "parents": [
+      "034764033d31c2e14085214b321db5ae4bb81f90",
+      "f79f9786694aa2a23a4bbb83bb7dadafa5c3e351"
+    ],
+    "packages": 47,
+    "matchingChangedFileCount": 5,
+    "retainedScrollportPatchID": "a4261222b21deafecd9730fbab07c3cf4a074fc5"
+  },
+  "baseline": {
+    "head": "abedb8888964ecb41cb7ac54a230ec7099f3ff4a",
+    "reviewFailures": 4,
+    "redSHA256": "24112da0a815576c203812f285c5c2fbeeea019f6d80337829bfa0c0222f0e95",
+    "testOverlaySHA256": "dc5a9a049c0b8c4ce41f8d1be209226239209b8f575f86002057ae634dc2936c"
+  },
+  "tests": {
+    "cli": {
+      "passed": 123,
+      "logSHA256": "9f5d8decccf4bc6893a054372b9dc808b199e79c01fd49aa5d9c4fccb78d53dc"
+    },
+    "wcNative": {
+      "passed": 162,
+      "logSHA256": "495b39d128f25e8e9541bf516d5a9505c254264f564d9d3a8663a97dfdf76625"
+    },
+    "types": {
+      "exit": 0,
+      "logSHA256": "1e14fa87e413ec8ef9585ae214d5f036450d3cc636c31a34c01c2346df2a4d42"
+    },
+    "combinedNative": {
+      "passed": 1,
+      "logSHA256": "01f0b31c71c15ae4950510fa7e0062a5a13f3e7f969dc916b09c76489fa3ed8c"
+    },
+    "isolatedDialog": {
+      "source": {
+        "light": 15,
+        "split": 15,
+        "mixed": 15
+      },
+      "publicDist": {
+        "light": 15,
+        "split": 15,
+        "mixed": 15
+      },
+      "sourceErrors": [],
+      "chrome": "156.0.8078.79",
+      "sourceLogSHA256": "9217b5df045a55511c7535a77ffca64310d5c5305a3661a0fae07ea41085d87b",
+      "publicDistLogSHA256": "05bbf2e5a0e32d720dc2e79049267ceda9e847a1e30c357aa33f9479ce115907"
+    }
+  }
+}
