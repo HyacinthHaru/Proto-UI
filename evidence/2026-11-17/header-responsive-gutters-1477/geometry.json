@@ -1,0 +1,138 @@
+{
+  "source": {
+    "head": "75718ceaffad08b3640b34e987979fea1512ffd1",
+    "tree": "2749122e9637f3ae0e5c08a5453bd4b0197b6722",
+    "parent": "9615f397c13e9e75eb6aed5f5f4004dd6f067156",
+    "inputs": [
+      [
+        "c790d68b268b8a4c1dc24f39ce9be56b1aa3cb75e118bac7d939680cf3bb2329",
+        "apps/www/src/content/docs/zh-cn/site-docs-columns.browser.test.ts"
+      ]
+    ]
+  },
+  "tests": {
+    "nativePassed": 10,
+    "unitPassed": 46,
+    "nativeLogSHA256": "99b5317c69882f1ab114fbc5542bb149e8c599e4356fdbc9be755320a8770a6a"
+  },
+  "anchors": {
+    "en": {
+      "fragment": "#_top",
+      "headerScrollReserve": 72,
+      "titleTop": 88,
+      "headerBottom": 48,
+      "fragmentScrollClearance": 88,
+      "rootFontSize": 16,
+      "layout": "splash",
+      "tocCount": 0,
+      "maxWidth": "1408px",
+      "width": 1408,
+      "overflow": 0
+    },
+    "zh-cn": {
+      "fragment": "#_top",
+      "headerScrollReserve": 72,
+      "titleTop": 88,
+      "headerBottom": 48,
+      "fragmentScrollClearance": 88,
+      "rootFontSize": 16,
+      "layout": "splash",
+      "tocCount": 0,
+      "maxWidth": "1408px",
+      "width": 1408,
+      "overflow": 0
+    }
+  },
+  "insets": [
+    {
+      "route": "/en/",
+      "width": 390,
+      "geometry": {
+        "viewportWidth": 390,
+        "layout": "splash",
+        "rootFontSize": 16,
+        "outerPadding": [16, 16],
+        "mainPadding": [4, 4],
+        "canvasContentLeft": 16,
+        "canvasContentRight": 374,
+        "mainLeft": 16,
+        "mainRight": 374
+      }
+    },
+    {
+      "route": "/en/",
+      "width": 900,
+      "geometry": {
+        "viewportWidth": 900,
+        "layout": "splash",
+        "rootFontSize": 16,
+        "outerPadding": [16, 16],
+        "mainPadding": [24, 24],
+        "canvasContentLeft": 16,
+        "canvasContentRight": 884,
+        "mainLeft": 16,
+        "mainRight": 884
+      }
+    },
+    {
+      "route": "/en/start-here/why-proto-ui/",
+      "width": 390,
+      "geometry": {
+        "viewportWidth": 390,
+        "layout": "docs",
+        "rootFontSize": 16,
+        "outerPadding": [16, 16],
+        "mainPadding": [0, 0],
+        "canvasContentLeft": 16,
+        "canvasContentRight": 374,
+        "mainLeft": 16,
+        "mainRight": 374
+      }
+    },
+    {
+      "route": "/en/start-here/why-proto-ui/",
+      "width": 900,
+      "geometry": {
+        "viewportWidth": 900,
+        "layout": "docs",
+        "rootFontSize": 16,
+        "outerPadding": [18, 18],
+        "mainPadding": [0, 0],
+        "canvasContentLeft": 18,
+        "canvasContentRight": 882,
+        "mainLeft": 114,
+        "mainRight": 786
+      }
+    },
+    {
+      "route": "/en/internal/demo-matrix/",
+      "width": 390,
+      "geometry": {
+        "viewportWidth": 390,
+        "layout": "splash",
+        "rootFontSize": 16,
+        "outerPadding": [16, 16],
+        "mainPadding": [4, 4],
+        "canvasContentLeft": 16,
+        "canvasContentRight": 374,
+        "mainLeft": 16,
+        "mainRight": 374
+      }
+    },
+    {
+      "route": "/en/internal/demo-matrix/",
+      "width": 900,
+      "geometry": {
+        "viewportWidth": 900,
+        "layout": "splash",
+        "rootFontSize": 16,
+        "outerPadding": [16, 16],
+        "mainPadding": [24, 24],
+        "canvasContentLeft": 16,
+        "canvasContentRight": 884,
+        "mainLeft": 16,
+        "mainRight": 884
+      }
+    }
+  ]
+}
