@@ -4,7 +4,11 @@ import type {
   ScrollSurfacePositionRequest,
   ScrollSurfaceSnapshot,
 } from '@proto.ui/core';
-import { createWebScrollSurfaceHost, type ScrollSurfaceHostLease } from '../src';
+import {
+  createWebScrollSurfaceHost,
+  type ScrollSurfaceHostAttachment,
+  type ScrollSurfaceHostLease,
+} from '../src';
 
 const moveGestureHost: MoveGestureHost = {
   attach() {
@@ -146,6 +150,73 @@ afterEach(() => {
 });
 
 describe('module-scroll: end-follow host contract', () => {
+  it.each(['apply', 'interrupt', 'replace', 'dispose'] as const)(
+    'coalesces pending Anatomy layout refreshes before %s',
+    async (action) => {
+      const frames = installFrameHarness();
+      const target = document.createElement('div');
+      const metrics = installMetrics(target, {
+        clientWidth: 100,
+        scrollWidth: 100,
+        clientHeight: 100,
+        scrollHeight: 400,
+      });
+      const facts: ScrollSurfaceSnapshot[] = [];
+      const connection: ScrollSurfaceHostAttachment = {
+        config: {
+          axes: 'vertical',
+          projection: 'system',
+          endFollow: { mode: 'while-at-end', axis: 'vertical' },
+        },
+        projection: 'system',
+        composedChrome: { scope: {}, controls: [] },
+        onFacts: (snapshot) => facts.push(snapshot),
+      };
+      document.body.append(target);
+      const lease = createWebScrollSurfaceHost(target, { moveGestureHost }).attach(connection);
+      try {
+        expect(frames.pending()).toBe(1);
+        expect(facts.at(-1)?.endFollow.state).toBe('pending');
+
+        metrics({ scrollHeight: 450 });
+        lease.update(connection, 'anatomy');
+        metrics({ scrollHeight: 500 });
+        lease.update(connection, 'anatomy');
+        expect(facts.map((snapshot) => snapshot.vertical.visibleRatio)).toEqual([0.25]);
+        expect(frames.pending()).toBe(1);
+
+        if (action === 'dispose') {
+          lease.dispose();
+          await Promise.resolve();
+          expect(facts).toHaveLength(1);
+          expect(frames.pending()).toBe(0);
+          return;
+        }
+        if (action === 'interrupt') {
+          target.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, key: 'ArrowUp' }));
+          expect(facts.at(-1)?.endFollow).toEqual({ state: 'paused', requestStatus: 'rejected' });
+          expect(frames.pending()).toBe(0);
+          await Promise.resolve();
+          expect(facts.at(-1)?.endFollow.state).toBe('paused');
+          expect(target.scrollTop).toBe(0);
+          return;
+        }
+        if (action === 'replace') {
+          lease.update({ ...connection, composedChrome: { scope: {}, controls: [] } }, 'anatomy');
+          expect(facts.map((snapshot) => snapshot.vertical.visibleRatio)).toEqual([0.25, 0.2]);
+        }
+        await Promise.resolve();
+        expect(facts.map((snapshot) => snapshot.vertical.visibleRatio)).toEqual([0.25, 0.2]);
+        expect(frames.pending()).toBe(1);
+        frames.runAll();
+        expect(target.scrollTop).toBe(400);
+        expect(facts.at(-1)?.endFollow).toEqual({ state: 'following', requestStatus: 'applied' });
+      } finally {
+        lease.dispose();
+      }
+    }
+  );
+
   it('cancels a pending follow frame when departure input cannot scroll (key)', () => {
     const frames = installFrameHarness();
     const target = document.createElement('div');

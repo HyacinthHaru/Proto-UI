@@ -1215,11 +1215,13 @@ export function createWebScrollSurfaceHost(
           if (disposed || !policyCurrent()) return;
           const previousAxis = configuredFollowAxis();
           const previousAxes = connection.config.axes;
-          // Empty chrome notifications can share fresh geometry in this
-          // checkpoint while the scroll policy and scope stay the same.
+          // A pending follow movement already samples its own layout before
+          // applying. Empty chrome notifications can share one fact refresh
+          // in this checkpoint without changing that movement.
+          const followPending = endFollowState === 'pending' && scheduledEnd?.axis === previousAxis;
           const coalesceLayout =
             source === 'anatomy' &&
-            previousAxis === null &&
+            (previousAxis === null || followPending) &&
             connection.config === nextConnection.config &&
             connection.projection === nextConnection.projection &&
             Object.is(connection.composedChrome?.scope, nextConnection.composedChrome?.scope) &&
