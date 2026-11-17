@@ -1,0 +1,1282 @@
+{
+  "source": {
+    "head": "6e5226bf10094176141a822f81500019c13d9408",
+    "tree": "022bafc9b434eb745f37845ff7dfab8c88204e73",
+    "parent": "2a006890731166a44b6a1b206caa3242133bde4e",
+    "signature": "G"
+  },
+  "baseline": {
+    "head": "2a006890731166a44b6a1b206caa3242133bde4e",
+    "tree": "7adddbf48e88831832ac6fb7dc247a554cbe271d",
+    "parent": "d5f9ede572fdb3d03dde581f06c02e6034caae9d",
+    "signature": "G"
+  },
+  "changedInputs": {
+    "packages/modules/a11y/src/web.ts": "ffd66c880637c05107b2526010773746aa3987fc9c236d12142605b732ffa6af",
+    "packages/modules/a11y/test/web-reference.test.ts": "94a98f47d97b8bca065afb385a5fd5cea319a65151e51b0c989f23dd8b257f83"
+  },
+  "buildInputs": {
+    "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "e6590db342bddc56b37fa367ce6b1cc519130cdb201e06e8d14061569d5e0317",
+    "apps/www/dist/zh-cn/internal/demo-matrix/index.html": "575a1dbab1dda392e998efaf02b8307dfeb9180aca73fc4d5d5513874a9778a5",
+    "apps/www/dist/en/internal/demo-matrix/index.html": "0875e50bf16016787c0c6cea8c8b7a6137cbe41186916b61af8bdd26a7a43f56"
+  },
+  "pages": {
+    "zh-cn": {
+      "bytes": 1862478,
+      "sha256": "575a1dbab1dda392e998efaf02b8307dfeb9180aca73fc4d5d5513874a9778a5",
+      "previews": 1268
+    },
+    "en": {
+      "bytes": 1914034,
+      "sha256": "0875e50bf16016787c0c6cea8c8b7a6137cbe41186916b61af8bdd26a7a43f56",
+      "previews": 1268
+    }
+  },
+  "versions": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79"],
+  "red": {
+    "tests": {
+      "numTotalTests": 67,
+      "numPassedTests": 66,
+      "numFailedTests": 1,
+      "numPendingTests": 0,
+      "cases": [
+        {
+          "name": "Web A11y opaque semantic-object references distinguishes authored names from owned derived Label IDREFs",
+          "status": "passed",
+          "duration": 2.1139579999999683,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references keeps the consumer aria-label baseline visible to Label conflict checks",
+          "status": "passed",
+          "duration": 0.22229199999998173,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references acquires matching scalar attributes without writing and still restores changed values",
+          "status": "passed",
+          "duration": 0.6988749999999868,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references projects ordered targets atomically across missing, removal, rematerialization, and disposal",
+          "status": "passed",
+          "duration": 0.9549999999999841,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references preserves unrelated additive tokens while a referenced target is unavailable",
+          "status": "passed",
+          "duration": 0.2053749999999468,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references preserves a host rewrite that retains the projected token when the projection is released",
+          "status": "passed",
+          "duration": 0.18941699999999173,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references clears prior string ownership when a relation changes to structured refs or is removed",
+          "status": "passed",
+          "duration": 0.18829100000004928,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references keeps one reserved target identity across projector-cap replacement",
+          "status": "passed",
+          "duration": 0.21479099999999107,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references fails closed on duplicate bindings and preserves an adopted host-authored target id",
+          "status": "passed",
+          "duration": 0.18354199999998855,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references preserves the native relation when another element already owns author-target",
+          "status": "passed",
+          "duration": 0.5268750000000182,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references preserves the native relation when another element already owns author:target[0]",
+          "status": "passed",
+          "duration": 0.39783299999999144,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references 3967157821: preserves the survivor reservation after releasing the reserved duplicate",
+          "status": "passed",
+          "duration": 0.5580829999999537,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references scopes adopted target-id reservations to each owner document",
+          "status": "passed",
+          "duration": 0.23508299999997462,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references rebinds reservations and dependents when a target moves between documents",
+          "status": "passed",
+          "duration": 0.343249999999955,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references does not reconcile the structured graph for an unrelated legacy update",
+          "status": "passed",
+          "duration": 0.14400000000000546,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references keeps settled scalar attributes in place during a same-view replay (epoch undefined)",
+          "status": "failed",
+          "duration": 3.1945840000000203,
+          "firstMessages": [
+            "AssertionError: expected \"setAttribute\" to not be called at all, but actually been called 2 times"
+          ]
+        },
+        {
+          "name": "Web A11y opaque semantic-object references keeps settled scalar attributes in place during a same-view replay (epoch 1)",
+          "status": "passed",
+          "duration": 0.4043750000000159,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references keeps shared scalar attributes until every projector releases them",
+          "status": "passed",
+          "duration": 0.1290000000000191,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references 3980446677: restores an overwritten host scalar baseline on release",
+          "status": "passed",
+          "duration": 0.08195799999998599,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references keeps the surviving scalar contribution when the top owner is released",
+          "status": "passed",
+          "duration": 0.08025000000003502,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references preserves a matching host scalar baseline with reverse shared-owner release",
+          "status": "passed",
+          "duration": 0.06912499999998545,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references 3980446683: preserves host heading levels through detach and rematerialization",
+          "status": "passed",
+          "duration": 0.20758299999999963,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references 3980446683: retains a live shared heading owner after another view detaches",
+          "status": "passed",
+          "duration": 0.11220800000000963,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references rebinds a reserved target when the host changes its id",
+          "status": "passed",
+          "duration": 0.1337909999999738,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-SCALAR-GENERATED-ID-BASELINE: releases an explicit id after generated identity",
+          "status": "passed",
+          "duration": 0.24554200000000037,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-SCALAR-GENERATED-ID-BASELINE: releases an explicit id after host-authored identity",
+          "status": "passed",
+          "duration": 0.2347499999999627,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-SCALAR-GENERATED-ID-BASELINE: shared-target provenance, generator-first disposal",
+          "status": "passed",
+          "duration": 0.1937080000000151,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-SCALAR-GENERATED-ID-BASELINE: shared-target provenance, writer-first disposal",
+          "status": "passed",
+          "duration": 0.1921249999999759,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-GENERATED-ID-SURVIVOR-RELEASE: same id, writer-first",
+          "status": "passed",
+          "duration": 0.31383299999998826,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-GENERATED-ID-SURVIVOR-RELEASE: same id, generator-first",
+          "status": "passed",
+          "duration": 0.1639589999999771,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-GENERATED-ID-SURVIVOR-RELEASE: different id, writer-first",
+          "status": "passed",
+          "duration": 0.15695799999997462,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-GENERATED-ID-SURVIVOR-RELEASE: different id, generator-first",
+          "status": "passed",
+          "duration": 0.169667000000004,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references retains generated identity through shared writer updates and detached final release",
+          "status": "passed",
+          "duration": 0.3105419999999981,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-LOCAL-LEASED-HOST-ID-REBIND: follows a live ID change with an older cap lease",
+          "status": "passed",
+          "duration": 0.5089169999999967,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references keeps an appended token until every projector releases it",
+          "status": "passed",
+          "duration": 0.13912499999997863,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references does not clear a host id written after projector disposal begins",
+          "status": "passed",
+          "duration": 0.05204199999997172,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references preserves a host id written after detach before terminal disposal",
+          "status": "passed",
+          "duration": 0.054042000000038115,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references retains a token when one projector changes append mode to replace",
+          "status": "passed",
+          "duration": 0.12908299999998007,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references does not restore historical IDREFs over a host rewrite",
+          "status": "passed",
+          "duration": 0.09004199999998264,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references restores only the host baseline after overlapping replacements are disposed older-first",
+          "status": "passed",
+          "duration": 0.1593340000000012,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references restores only the host baseline after overlapping replacements are disposed newer-first",
+          "status": "passed",
+          "duration": 0.12066599999997152,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references projects valid ARIA table coordinates and removes invalid numeric facts",
+          "status": "passed",
+          "duration": 0.209083000000021,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references releases one scalar binding before reentering the same physical target",
+          "status": "passed",
+          "duration": 0.11408299999999372,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references preserves shared scalar ownership and host rewrites during physical replacement",
+          "status": "passed",
+          "duration": 0.12020899999998846,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-LOCAL-LIVE-APPEND-RESTORE: restores a live append after replacement release",
+          "status": "passed",
+          "duration": 0.17908399999998892,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-LOCAL-MIXED-IDREF-OWNERS: 'legacy-first', host baseline=false",
+          "status": "passed",
+          "duration": 0.11933399999998073,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-LOCAL-MIXED-IDREF-OWNERS: 'structured-first', host baseline=false",
+          "status": "passed",
+          "duration": 0.09237500000000409,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-LOCAL-MIXED-IDREF-OWNERS: 'legacy-first', host baseline=true",
+          "status": "passed",
+          "duration": 0.09333399999997027,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-LOCAL-MIXED-IDREF-OWNERS: 'structured-first', host baseline=true",
+          "status": "passed",
+          "duration": 0.07595800000001418,
+          "firstMessages": []
+        },
+        {
+          "name": "part-relationship host observation releases document observation on view detach and terminal disposal",
+          "status": "passed",
+          "duration": 0.2619590000000471,
+          "firstMessages": []
+        },
+        {
+          "name": "part-relationship identity observation ownership PUI-549-REVIEW-LIVE-EXPLICIT-ID: preserves an author rewrite, replay before delivery=false",
+          "status": "passed",
+          "duration": 2.7239580000000387,
+          "firstMessages": []
+        },
+        {
+          "name": "part-relationship identity observation ownership PUI-549-REVIEW-LIVE-EXPLICIT-ID: preserves an author rewrite, replay before delivery=true",
+          "status": "passed",
+          "duration": 3.1689589999999725,
+          "firstMessages": []
+        },
+        {
+          "name": "part-relationship identity observation ownership PUI-549-REVIEW-INDEPENDENT-ID-WRITER: dependent present=true, replay before delivery=false",
+          "status": "passed",
+          "duration": 7.158749999999998,
+          "firstMessages": []
+        },
+        {
+          "name": "part-relationship identity observation ownership PUI-549-REVIEW-INDEPENDENT-ID-WRITER: dependent present=false, replay before delivery=false",
+          "status": "passed",
+          "duration": 6.965208000000018,
+          "firstMessages": []
+        },
+        {
+          "name": "part-relationship identity observation ownership PUI-549-REVIEW-INDEPENDENT-ID-WRITER: dependent present=true, replay before delivery=true",
+          "status": "passed",
+          "duration": 6.912417000000005,
+          "firstMessages": []
+        },
+        {
+          "name": "part-relationship identity observation ownership PUI-549-REVIEW-INDEPENDENT-ID-WRITER: dependent present=false, replay before delivery=true",
+          "status": "passed",
+          "duration": 6.87175000000002,
+          "firstMessages": []
+        },
+        {
+          "name": "pending live identity at view revocation PUI-549-REVIEW-PENDING-ID-DETACH: explicit=false delivery=false boundary='detach'",
+          "status": "passed",
+          "duration": 3.0020000000000095,
+          "firstMessages": []
+        },
+        {
+          "name": "pending live identity at view revocation PUI-549-REVIEW-PENDING-ID-DETACH: explicit=false delivery=false boundary='replace'",
+          "status": "passed",
+          "duration": 3.0317079999999805,
+          "firstMessages": []
+        },
+        {
+          "name": "pending live identity at view revocation PUI-549-REVIEW-PENDING-ID-DETACH: explicit=false delivery=true boundary='detach'",
+          "status": "passed",
+          "duration": 4.21629200000001,
+          "firstMessages": []
+        },
+        {
+          "name": "pending live identity at view revocation PUI-549-REVIEW-PENDING-ID-DETACH: explicit=false delivery=true boundary='replace'",
+          "status": "passed",
+          "duration": 4.237957999999992,
+          "firstMessages": []
+        },
+        {
+          "name": "pending live identity at view revocation PUI-549-REVIEW-PENDING-ID-DETACH: explicit=true delivery=false boundary='detach'",
+          "status": "passed",
+          "duration": 2.8125,
+          "firstMessages": []
+        },
+        {
+          "name": "pending live identity at view revocation PUI-549-REVIEW-PENDING-ID-DETACH: explicit=true delivery=false boundary='replace'",
+          "status": "passed",
+          "duration": 2.9036669999999845,
+          "firstMessages": []
+        },
+        {
+          "name": "pending live identity at view revocation PUI-549-REVIEW-PENDING-ID-DETACH: explicit=true delivery=true boundary='detach'",
+          "status": "passed",
+          "duration": 4.12504100000001,
+          "firstMessages": []
+        },
+        {
+          "name": "pending live identity at view revocation PUI-549-REVIEW-PENDING-ID-DETACH: explicit=true delivery=true boundary='replace'",
+          "status": "passed",
+          "duration": 4.195334000000003,
+          "firstMessages": []
+        },
+        {
+          "name": "pending live identity at view revocation preserves and fails closed on an ID written after detach, explicit=false",
+          "status": "passed",
+          "duration": 2.8722910000000184,
+          "firstMessages": []
+        },
+        {
+          "name": "pending live identity at view revocation preserves and fails closed on an ID written after detach, explicit=true",
+          "status": "passed",
+          "duration": 2.799082999999996,
+          "firstMessages": []
+        },
+        {
+          "name": "active descendant semantic relationship tracks option identity, withdrawal and host-owned baseline without a component DOM patch",
+          "status": "passed",
+          "duration": 0.2202909999999747,
+          "firstMessages": []
+        }
+      ]
+    },
+    "logSHA256": "20b89a76a5756d9235a4d19448f5e8d1c8c208719fa77e6688982b62449dd085"
+  },
+  "focused": {
+    "cases": 245,
+    "logSHA256": "6d2407cbbf31f7503c9129e04aef00f5827f89a606a53d8a87003a11ae6a32be"
+  },
+  "nativeScalar": {
+    "chrome": "156.0.8078.79",
+    "beforeSHA256": "50187af557beb84c7ca4737be77fe4e02a08f3abebf089fa3b23faebbade0041",
+    "afterSHA256": "ffd66c880637c05107b2526010773746aa3987fc9c236d12142605b732ffa6af",
+    "rows": [
+      {
+        "arm": "before",
+        "matchingWrites": [
+          "role",
+          "aria-rowcount",
+          "aria-colcount",
+          "role",
+          "aria-rowcount",
+          "aria-colcount"
+        ],
+        "initial": ["table", "2", "5", "caption-one"],
+        "replay": ["table", "2", "5", "caption-two"],
+        "replaced": {
+          "previous": ["region", "7", null, null],
+          "current": ["table", "2", "5", "caption-two"]
+        },
+        "recovered": ["table", "2", "5", "caption-two"],
+        "released": ["article", null, "9", null]
+      },
+      {
+        "arm": "after",
+        "matchingWrites": [],
+        "initial": ["table", "2", "5", "caption-one"],
+        "replay": ["table", "2", "5", "caption-two"],
+        "replaced": {
+          "previous": ["region", "7", null, null],
+          "current": ["table", "2", "5", "caption-two"]
+        },
+        "recovered": ["table", "2", "5", "caption-two"],
+        "released": ["article", null, "9", null]
+      },
+      {
+        "arm": "after",
+        "matchingWrites": [],
+        "initial": ["table", "2", "5", "caption-one"],
+        "replay": ["table", "2", "5", "caption-two"],
+        "replaced": {
+          "previous": ["region", "7", null, null],
+          "current": ["table", "2", "5", "caption-two"]
+        },
+        "recovered": ["table", "2", "5", "caption-two"],
+        "released": ["article", null, "9", null]
+      },
+      {
+        "arm": "before",
+        "matchingWrites": [
+          "role",
+          "aria-rowcount",
+          "aria-colcount",
+          "role",
+          "aria-rowcount",
+          "aria-colcount"
+        ],
+        "initial": ["table", "2", "5", "caption-one"],
+        "replay": ["table", "2", "5", "caption-two"],
+        "replaced": {
+          "previous": ["region", "7", null, null],
+          "current": ["table", "2", "5", "caption-two"]
+        },
+        "recovered": ["table", "2", "5", "caption-two"],
+        "released": ["article", null, "9", null]
+      }
+    ]
+  },
+  "probeSHA256": "f630b0ccf09826c73d8da58a5f4f340f80451bcd5d66b5d89cef972ab7d920a2",
+  "originalMatrix": {
+    "testResults": {
+      "numTotalTests": 2,
+      "numPassedTests": 0,
+      "numFailedTests": 2,
+      "numPendingTests": 0,
+      "cases": [
+        {
+          "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+          "status": "failed",
+          "duration": 150528.332792,
+          "firstMessages": ["Error: Test timed out in 150000ms."]
+        },
+        {
+          "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+          "status": "failed",
+          "duration": 150525.95308299997,
+          "firstMessages": ["Error: Test timed out in 150000ms."]
+        }
+      ]
+    },
+    "guardMs": {
+      "readiness": 60000,
+      "case": 150000
+    },
+    "rawLogSHA256": "615339066e99c9dbddff8783bcfabed743e96066925dd93cacb54a3766edde2e",
+    "startupByLocale": {
+      "zh-cn": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      },
+      "en": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      }
+    }
+  },
+  "builtinNativeTable": {
+    "tests": {
+      "numTotalTests": 5,
+      "numPassedTests": 5,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "cases": [
+        {
+          "name": "Base Table public four-adapter browser evidence wc renders the same passive Table semantics and ordered header graph",
+          "status": "passed",
+          "duration": 1208.4424999999999,
+          "firstMessages": []
+        },
+        {
+          "name": "Base Table public four-adapter browser evidence react renders the same passive Table semantics and ordered header graph",
+          "status": "passed",
+          "duration": 1368.1301670000003,
+          "firstMessages": []
+        },
+        {
+          "name": "Base Table public four-adapter browser evidence vue renders the same passive Table semantics and ordered header graph",
+          "status": "passed",
+          "duration": 1381.2336249999998,
+          "firstMessages": []
+        },
+        {
+          "name": "Base Table public four-adapter browser evidence vue2 renders the same passive Table semantics and ordered header graph",
+          "status": "passed",
+          "duration": 1364.1015420000003,
+          "firstMessages": []
+        },
+        {
+          "name": "Base Table public four-adapter browser evidence keeps the Chinese page on the same four-adapter public demo",
+          "status": "passed",
+          "duration": 1327.2323749999996,
+          "firstMessages": []
+        }
+      ]
+    },
+    "suite": {
+      "apps/www/src/content/docs/zh-cn/demo-base-table.browser.test.ts": "433cd424cb4f29c287080ad311397398166beaa4e525d77c396ae03191439101"
+    },
+    "logSHA256": "0af3cccaedeb0ee611ec5540785948b17e17fd4b09268775c15e5a78f5d4a116",
+    "physicalPagesSHA256": {
+      "en": "0220f32b90a228130212e430f17ad254259b2e3a3001560f100ac89abb2b625c",
+      "zh-cn": "be774784d79ddc9b21fb66d80acf694b8ee2c05be820ac183f177e22355a1770"
+    }
+  },
+  "timing": {
+    "before": {
+      "binding": {
+        "file": "site-shadcn-controls.YGeqp8xC.js",
+        "inputSHA256": "0be6d08daf4d57f076f73a0192dd4fa1f0b45e1649874e1b2e68fddd585ce3f3",
+        "outputSHA256": "d196ad61dd1818d498953379925bef6762c64da8ebca48ee52ee37f367acf315"
+      },
+      "overlaySHA256": "3c0e54d5b3e5c0d0b15a65d38dedee3f0cffaf435414da2b4e50e04344ccc868",
+      "rawLogSHA256": "03de1c7fd98455932cebfa966986c155aced335742f0f1266512f50a7f30fe40",
+      "runnerOverlaySHA256": "f4dfdc5a855a801dbdb35f05d6d1f669eba23af4c0bfd169cd41c4b5eaa4b65f",
+      "native": {
+        "numTotalTests": 2,
+        "numPassedTests": 0,
+        "numFailedTests": 1,
+        "numPendingTests": 1,
+        "cases": [
+          {
+            "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+            "status": "failed",
+            "duration": 150530.53758399998,
+            "firstMessages": ["Error: Test timed out in 150000ms."]
+          },
+          {
+            "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+            "status": "skipped",
+            "duration": null,
+            "firstMessages": []
+          }
+        ]
+      },
+      "startup": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      },
+      "exit": 1,
+      "controls": [
+        {
+          "valid": true,
+          "log": [
+            ["table", true],
+            ["row", 0],
+            ["cell", "cell"]
+          ],
+          "mark": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 1,
+            "calls": 1,
+            "completed": 1,
+            "samples": 1,
+            "samplesWithMarks": 1,
+            "inventoryMs": 0.01387499999999875,
+            "topologyMs": 0.030374999999999375,
+            "applicationMs": 0.037000000000002586,
+            "incompleteSamples": 0,
+            "pageMs": 18.48875,
+            "timeOrigin": 1794892864560.266
+          }
+        },
+        {
+          "valid": false,
+          "log": ["clear row", "clear cell", ["table", false]],
+          "mark": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 1,
+            "calls": 1,
+            "completed": 1,
+            "samples": 1,
+            "samplesWithMarks": 1,
+            "inventoryMs": 0.010957999999998691,
+            "topologyMs": 0.0259170000000033,
+            "applicationMs": 0.02066599999999852,
+            "incompleteSamples": 0,
+            "pageMs": 20.313666,
+            "timeOrigin": 1794892864560.266
+          }
+        }
+      ]
+    },
+    "after": {
+      "binding": {
+        "file": "site-shadcn-controls.slQLFosl.js",
+        "inputSHA256": "27b97e8577202a5aec9bcc628d59f06431efa24f8584ca2b5a95a797fff3c340",
+        "outputSHA256": "cdfe0998f922035c7f3b7416c1acb20dba77c6851a550163275855a8332ea9d5"
+      },
+      "overlaySHA256": "3c0e54d5b3e5c0d0b15a65d38dedee3f0cffaf435414da2b4e50e04344ccc868",
+      "rawLogSHA256": "38702f8481d738acf23837a49f45fe6d119b819cce83866c262b81ffbb6ec263",
+      "runnerOverlaySHA256": "f4dfdc5a855a801dbdb35f05d6d1f669eba23af4c0bfd169cd41c4b5eaa4b65f",
+      "native": {
+        "numTotalTests": 2,
+        "numPassedTests": 0,
+        "numFailedTests": 1,
+        "numPendingTests": 1,
+        "cases": [
+          {
+            "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+            "status": "failed",
+            "duration": 150531.274166,
+            "firstMessages": ["Error: Test timed out in 150000ms."]
+          },
+          {
+            "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+            "status": "skipped",
+            "duration": null,
+            "firstMessages": []
+          }
+        ]
+      },
+      "startup": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      },
+      "exit": 1,
+      "controls": [
+        {
+          "valid": true,
+          "log": [
+            ["table", true],
+            ["row", 0],
+            ["cell", "cell"]
+          ],
+          "mark": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 1,
+            "calls": 1,
+            "completed": 1,
+            "samples": 1,
+            "samplesWithMarks": 1,
+            "inventoryMs": 0.015375000000000583,
+            "topologyMs": 0.030624999999998792,
+            "applicationMs": 0.037207999999999686,
+            "incompleteSamples": 0,
+            "pageMs": 15.6885,
+            "timeOrigin": 1794893294739.063
+          }
+        },
+        {
+          "valid": false,
+          "log": ["clear row", "clear cell", ["table", false]],
+          "mark": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 1,
+            "calls": 1,
+            "completed": 1,
+            "samples": 1,
+            "samplesWithMarks": 1,
+            "inventoryMs": 0.011666999999999206,
+            "topologyMs": 0.02766599999999997,
+            "applicationMs": 0.019375000000000142,
+            "incompleteSamples": 0,
+            "pageMs": 17.381666,
+            "timeOrigin": 1794893294739.063
+          }
+        }
+      ]
+    },
+    "checkpoints": {
+      "lastBefore": {
+        "kind": "table-recompute-stages",
+        "sampleEvery": 64,
+        "checkpoint": 8192,
+        "calls": 8192,
+        "completed": 8192,
+        "samples": 128,
+        "samplesWithMarks": 128,
+        "inventoryMs": 2.5999996662139893,
+        "topologyMs": 10.399998903274536,
+        "applicationMs": 265.09999990463257,
+        "incompleteSamples": 0,
+        "pageMs": 92276.20000004768,
+        "timeOrigin": 1794892874543.7
+      },
+      "lastAfter": {
+        "kind": "table-recompute-stages",
+        "sampleEvery": 64,
+        "checkpoint": 8192,
+        "calls": 8192,
+        "completed": 8192,
+        "samples": 128,
+        "samplesWithMarks": 128,
+        "inventoryMs": 1.5,
+        "topologyMs": 11.199998140335083,
+        "applicationMs": 19.80000066757202,
+        "incompleteSamples": 0,
+        "pageMs": 68992.69999980927,
+        "timeOrigin": 1794893623277
+      },
+      "sharedCheckpoints": [
+        {
+          "recomputeOrdinal": 1,
+          "before": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 1,
+            "calls": 1,
+            "completed": 1,
+            "samples": 1,
+            "samplesWithMarks": 1,
+            "inventoryMs": 0,
+            "topologyMs": 0.09999990463256836,
+            "applicationMs": 0.09999990463256836,
+            "incompleteSamples": 0,
+            "pageMs": 9474.899999856949,
+            "timeOrigin": 1794892874543.7
+          },
+          "after": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 1,
+            "calls": 1,
+            "completed": 1,
+            "samples": 1,
+            "samplesWithMarks": 1,
+            "inventoryMs": 0,
+            "topologyMs": 0.20000004768371582,
+            "applicationMs": 0.10000014305114746,
+            "incompleteSamples": 0,
+            "pageMs": 9313,
+            "timeOrigin": 1794893623277
+          }
+        },
+        {
+          "recomputeOrdinal": 2,
+          "before": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 2,
+            "calls": 2,
+            "completed": 2,
+            "samples": 1,
+            "samplesWithMarks": 1,
+            "inventoryMs": 0,
+            "topologyMs": 0.09999990463256836,
+            "applicationMs": 0.09999990463256836,
+            "incompleteSamples": 0,
+            "pageMs": 9476.700000047684,
+            "timeOrigin": 1794892874543.7
+          },
+          "after": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 2,
+            "calls": 2,
+            "completed": 2,
+            "samples": 1,
+            "samplesWithMarks": 1,
+            "inventoryMs": 0,
+            "topologyMs": 0.20000004768371582,
+            "applicationMs": 0.10000014305114746,
+            "incompleteSamples": 0,
+            "pageMs": 9314.799999952316,
+            "timeOrigin": 1794893623277
+          }
+        },
+        {
+          "recomputeOrdinal": 4,
+          "before": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 4,
+            "calls": 4,
+            "completed": 4,
+            "samples": 1,
+            "samplesWithMarks": 1,
+            "inventoryMs": 0,
+            "topologyMs": 0.09999990463256836,
+            "applicationMs": 0.09999990463256836,
+            "incompleteSamples": 0,
+            "pageMs": 9477,
+            "timeOrigin": 1794892874543.7
+          },
+          "after": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 4,
+            "calls": 4,
+            "completed": 4,
+            "samples": 1,
+            "samplesWithMarks": 1,
+            "inventoryMs": 0,
+            "topologyMs": 0.20000004768371582,
+            "applicationMs": 0.10000014305114746,
+            "incompleteSamples": 0,
+            "pageMs": 9315.099999904633,
+            "timeOrigin": 1794893623277
+          }
+        },
+        {
+          "recomputeOrdinal": 8,
+          "before": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 8,
+            "calls": 8,
+            "completed": 8,
+            "samples": 1,
+            "samplesWithMarks": 1,
+            "inventoryMs": 0,
+            "topologyMs": 0.09999990463256836,
+            "applicationMs": 0.09999990463256836,
+            "incompleteSamples": 0,
+            "pageMs": 9477.799999952316,
+            "timeOrigin": 1794892874543.7
+          },
+          "after": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 8,
+            "calls": 8,
+            "completed": 8,
+            "samples": 1,
+            "samplesWithMarks": 1,
+            "inventoryMs": 0,
+            "topologyMs": 0.20000004768371582,
+            "applicationMs": 0.10000014305114746,
+            "incompleteSamples": 0,
+            "pageMs": 9315.699999809265,
+            "timeOrigin": 1794893623277
+          }
+        },
+        {
+          "recomputeOrdinal": 16,
+          "before": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 16,
+            "calls": 16,
+            "completed": 16,
+            "samples": 1,
+            "samplesWithMarks": 1,
+            "inventoryMs": 0,
+            "topologyMs": 0.09999990463256836,
+            "applicationMs": 0.09999990463256836,
+            "incompleteSamples": 0,
+            "pageMs": 9479.099999904633,
+            "timeOrigin": 1794892874543.7
+          },
+          "after": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 16,
+            "calls": 16,
+            "completed": 16,
+            "samples": 1,
+            "samplesWithMarks": 1,
+            "inventoryMs": 0,
+            "topologyMs": 0.20000004768371582,
+            "applicationMs": 0.10000014305114746,
+            "incompleteSamples": 0,
+            "pageMs": 9316.799999952316,
+            "timeOrigin": 1794893623277
+          }
+        },
+        {
+          "recomputeOrdinal": 32,
+          "before": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 32,
+            "calls": 32,
+            "completed": 32,
+            "samples": 1,
+            "samplesWithMarks": 1,
+            "inventoryMs": 0,
+            "topologyMs": 0.09999990463256836,
+            "applicationMs": 0.09999990463256836,
+            "incompleteSamples": 0,
+            "pageMs": 9482.899999856949,
+            "timeOrigin": 1794892874543.7
+          },
+          "after": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 32,
+            "calls": 32,
+            "completed": 32,
+            "samples": 1,
+            "samplesWithMarks": 1,
+            "inventoryMs": 0,
+            "topologyMs": 0.20000004768371582,
+            "applicationMs": 0.10000014305114746,
+            "incompleteSamples": 0,
+            "pageMs": 9318.899999856949,
+            "timeOrigin": 1794893623277
+          }
+        },
+        {
+          "recomputeOrdinal": 64,
+          "before": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 64,
+            "calls": 64,
+            "completed": 64,
+            "samples": 1,
+            "samplesWithMarks": 1,
+            "inventoryMs": 0,
+            "topologyMs": 0.09999990463256836,
+            "applicationMs": 0.09999990463256836,
+            "incompleteSamples": 0,
+            "pageMs": 9505.099999904633,
+            "timeOrigin": 1794892874543.7
+          },
+          "after": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 64,
+            "calls": 64,
+            "completed": 64,
+            "samples": 1,
+            "samplesWithMarks": 1,
+            "inventoryMs": 0,
+            "topologyMs": 0.20000004768371582,
+            "applicationMs": 0.10000014305114746,
+            "incompleteSamples": 0,
+            "pageMs": 9324.399999856949,
+            "timeOrigin": 1794893623277
+          }
+        },
+        {
+          "recomputeOrdinal": 128,
+          "before": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 128,
+            "calls": 128,
+            "completed": 128,
+            "samples": 2,
+            "samplesWithMarks": 2,
+            "inventoryMs": 0,
+            "topologyMs": 0.09999990463256836,
+            "applicationMs": 0.8999998569488525,
+            "incompleteSamples": 0,
+            "pageMs": 14869.599999904633,
+            "timeOrigin": 1794892874543.7
+          },
+          "after": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 128,
+            "calls": 128,
+            "completed": 128,
+            "samples": 2,
+            "samplesWithMarks": 2,
+            "inventoryMs": 0,
+            "topologyMs": 0.20000004768371582,
+            "applicationMs": 0.20000004768371582,
+            "incompleteSamples": 0,
+            "pageMs": 9395.799999952316,
+            "timeOrigin": 1794893623277
+          }
+        },
+        {
+          "recomputeOrdinal": 256,
+          "before": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 256,
+            "calls": 256,
+            "completed": 256,
+            "samples": 4,
+            "samplesWithMarks": 4,
+            "inventoryMs": 0,
+            "topologyMs": 0.09999990463256836,
+            "applicationMs": 2.0999996662139893,
+            "incompleteSamples": 0,
+            "pageMs": 18634.799999952316,
+            "timeOrigin": 1794892874543.7
+          },
+          "after": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 256,
+            "calls": 256,
+            "completed": 256,
+            "samples": 4,
+            "samplesWithMarks": 4,
+            "inventoryMs": 0,
+            "topologyMs": 0.20000004768371582,
+            "applicationMs": 0.40000009536743164,
+            "incompleteSamples": 0,
+            "pageMs": 14466.899999856949,
+            "timeOrigin": 1794893623277
+          }
+        },
+        {
+          "recomputeOrdinal": 512,
+          "before": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 512,
+            "calls": 512,
+            "completed": 512,
+            "samples": 8,
+            "samplesWithMarks": 8,
+            "inventoryMs": 0,
+            "topologyMs": 0.09999990463256836,
+            "applicationMs": 3.8999996185302734,
+            "incompleteSamples": 0,
+            "pageMs": 19777.5,
+            "timeOrigin": 1794892874543.7
+          },
+          "after": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 512,
+            "calls": 512,
+            "completed": 512,
+            "samples": 8,
+            "samplesWithMarks": 8,
+            "inventoryMs": 0,
+            "topologyMs": 0.20000004768371582,
+            "applicationMs": 0.6999998092651367,
+            "incompleteSamples": 0,
+            "pageMs": 18827.39999985695,
+            "timeOrigin": 1794893623277
+          }
+        },
+        {
+          "recomputeOrdinal": 1024,
+          "before": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 1024,
+            "calls": 1024,
+            "completed": 1024,
+            "samples": 16,
+            "samplesWithMarks": 16,
+            "inventoryMs": 0.20000004768371582,
+            "topologyMs": 0.3000001907348633,
+            "applicationMs": 17.499999284744263,
+            "incompleteSamples": 0,
+            "pageMs": 26913.099999904633,
+            "timeOrigin": 1794892874543.7
+          },
+          "after": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 1024,
+            "calls": 1024,
+            "completed": 1024,
+            "samples": 16,
+            "samplesWithMarks": 16,
+            "inventoryMs": 0.20000004768371582,
+            "topologyMs": 0.2999999523162842,
+            "applicationMs": 1.6000003814697266,
+            "incompleteSamples": 0,
+            "pageMs": 24338.099999904633,
+            "timeOrigin": 1794893623277
+          }
+        },
+        {
+          "recomputeOrdinal": 2048,
+          "before": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 2048,
+            "calls": 2048,
+            "completed": 2048,
+            "samples": 32,
+            "samplesWithMarks": 32,
+            "inventoryMs": 0.40000009536743164,
+            "topologyMs": 0.9000003337860107,
+            "applicationMs": 54.29999899864197,
+            "incompleteSamples": 0,
+            "pageMs": 40011.700000047684,
+            "timeOrigin": 1794892874543.7
+          },
+          "after": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 2048,
+            "calls": 2048,
+            "completed": 2048,
+            "samples": 32,
+            "samplesWithMarks": 32,
+            "inventoryMs": 0.5,
+            "topologyMs": 0.9000000953674316,
+            "applicationMs": 3.5,
+            "incompleteSamples": 0,
+            "pageMs": 34361.299999952316,
+            "timeOrigin": 1794893623277
+          }
+        },
+        {
+          "recomputeOrdinal": 4096,
+          "before": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 4096,
+            "calls": 4096,
+            "completed": 4096,
+            "samples": 64,
+            "samplesWithMarks": 64,
+            "inventoryMs": 1.1999995708465576,
+            "topologyMs": 3.0999999046325684,
+            "applicationMs": 121.29999947547913,
+            "incompleteSamples": 0,
+            "pageMs": 53867.09999990463,
+            "timeOrigin": 1794892874543.7
+          },
+          "after": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 4096,
+            "calls": 4096,
+            "completed": 4096,
+            "samples": 64,
+            "samplesWithMarks": 64,
+            "inventoryMs": 0.7999999523162842,
+            "topologyMs": 3.1999995708465576,
+            "applicationMs": 10.600000381469727,
+            "incompleteSamples": 0,
+            "pageMs": 43481.299999952316,
+            "timeOrigin": 1794893623277
+          }
+        },
+        {
+          "recomputeOrdinal": 8192,
+          "before": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 8192,
+            "calls": 8192,
+            "completed": 8192,
+            "samples": 128,
+            "samplesWithMarks": 128,
+            "inventoryMs": 2.5999996662139893,
+            "topologyMs": 10.399998903274536,
+            "applicationMs": 265.09999990463257,
+            "incompleteSamples": 0,
+            "pageMs": 92276.20000004768,
+            "timeOrigin": 1794892874543.7
+          },
+          "after": {
+            "kind": "table-recompute-stages",
+            "sampleEvery": 64,
+            "checkpoint": 8192,
+            "calls": 8192,
+            "completed": 8192,
+            "samples": 128,
+            "samplesWithMarks": 128,
+            "inventoryMs": 1.5,
+            "topologyMs": 11.199998140335083,
+            "applicationMs": 19.80000066757202,
+            "incompleteSamples": 0,
+            "pageMs": 68992.69999980927,
+            "timeOrigin": 1794893623277
+          }
+        }
+      ]
+    }
+  }
+}

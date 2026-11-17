@@ -1,0 +1,7 @@
+# S4 scalar writes during stable Table projection
+
+The Chinese diagnostics retain the 1,268-preview build, Chrome 156.0.8078.79 and the original 60-second readiness and 150-second case guards. The first and every 64th accepted Table recompute are timed. At the shared 8,192-recompute checkpoint, the baseline has 128 samples with all marks and the candidate has 128. Inventory totals 2.6/1.5 ms, topology 10.4/11.2 ms, and applying the projection 265.1/19.8 ms. These are observed intervals across two mount schedules, including any nested work during application. They are not a whole startup measurement.
+
+Local signed 6e5226bf retains matching, exclusively owned scalar DOM values when the physical binding and optional epoch are unchanged. The native ABBA projector control has no view epoch. It updates a direct caption reference while preserving the existing role, row count and column count. The baseline writes the three matching attributes twice per arm and the candidate makes zero such writes. All four arms update the caption reference, replay after physical replacement, and restore the prior node and the host's later role rewrite on release.
+
+The new unversioned replay case fails on the prior source while the epoch-bearing control passes. All 245 focused cases pass on the final source, as do 47 public package builds, types, manifests and the five built-site Table browser cases. Both original full Matrix locales still hit the 150-second guard before Dialog. The test, served HTML, emitted diagnostic asset and restored source hashes are recorded.
