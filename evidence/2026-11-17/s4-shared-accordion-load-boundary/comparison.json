@@ -1,0 +1,36 @@
+{
+  "warm": [
+    {
+      "stage": "early-accordion-warm-start",
+      "pageMs": 5294.299999952316,
+      "timeOrigin": 1794877282678.3,
+      "receivedNodeMs": 6171.280833
+    },
+    {
+      "stage": "early-accordion-import-dispatch",
+      "pageMs": 5385,
+      "timeOrigin": 1794877282678.3,
+      "receivedNodeMs": 6262.280292
+    },
+    {
+      "stage": "early-accordion-import-return",
+      "pageMs": 12222.700000047684,
+      "timeOrigin": 1794877282678.3,
+      "receivedNodeMs": 13099.811208
+    }
+  ],
+  "ids": [
+    "base-accordion-root",
+    "base-accordion-item",
+    "base-accordion-heading",
+    "base-accordion-trigger",
+    "base-accordion-content"
+  ],
+  "registeredAtMs": {
+    "base-accordion-root": 31321.299999952316,
+    "base-accordion-item": 31321.39999985695,
+    "base-accordion-heading": 31321.39999985695,
+    "base-accordion-trigger": 31321.39999985695,
+    "base-accordion-content": 31321.5
+  }
+}

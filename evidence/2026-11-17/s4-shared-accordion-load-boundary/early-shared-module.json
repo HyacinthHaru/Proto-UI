@@ -1,0 +1,700 @@
+{
+  "source": {
+    "head": "5d4f911370ca5e9cb4e4a17f20eca0b1945d6862",
+    "tree": "84b1020b1d8fdd3511e6f9d4215aad6fa94bf83b",
+    "parents": [
+      "621355701553eb1bded8537b0ae5a1881038d61f",
+      "624b878c166658ee99f798eaba2ee6b20f1a6bd5"
+    ],
+    "suiteOverlaySHA256": "25071ba6b9e5547f669b36240154900c4ec07f8d1dc24650a5a0f401da2f8417",
+    "observerSHA256": "b56ec096f72172a42e3f9d05275c82802c641e1fec5574d841a9b17defcc91e6",
+    "htmlSHA256": "9e397ace2d4a9af31b295ea4e4c40d2e1e62ffd6505d4240110dfc2c91fbc7a4"
+  },
+  "environment": {
+    "node": "v24.21.0",
+    "pnpm": "10.32.1",
+    "chrome": "Google Chrome for Testing 156.0.8078.79",
+    "workers": 1
+  },
+  "limits": [1268, 60000, 150000],
+  "exit": 1,
+  "failures": ["page.waitForFunction: Timeout 60000ms exceeded."],
+  "verdict": {
+    "startupPassed": false,
+    "errors": [],
+    "consoleErrors": [],
+    "collectionOutcome": "budget-expired",
+    "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+  },
+  "lastReadiness": null,
+  "binding": {
+    "before": "6566bf256ce728628d090b1d4209ef7c28e781b2aef54dc45df9192e88a67c61",
+    "after": "29e5e35b80ff2ed267bbc85d65817bf8d8e7d7f958ad52e251beeb040b43791a",
+    "asset": "prototype-modules.C3t4Tjr5.js",
+    "targets": [
+      {
+        "id": "base-accordion-root",
+        "file": "index.DkQGVBxY.js",
+        "member": "accordionRoot"
+      },
+      {
+        "id": "base-accordion-item",
+        "file": "index.DkQGVBxY.js",
+        "member": "accordionItem"
+      },
+      {
+        "id": "base-accordion-heading",
+        "file": "index.DkQGVBxY.js",
+        "member": "accordionHeading"
+      },
+      {
+        "id": "base-accordion-trigger",
+        "file": "index.DkQGVBxY.js",
+        "member": "accordionTrigger"
+      },
+      {
+        "id": "base-accordion-content",
+        "file": "index.DkQGVBxY.js",
+        "member": "accordionContent"
+      },
+      {
+        "id": "base-button",
+        "file": "site-shadcn-controls.J4FPLybb.js",
+        "member": "button"
+      }
+    ]
+  },
+  "stages": {
+    "base-accordion-root": [
+      {
+        "stage": "prototype-loader-begin",
+        "id": "base-accordion-root",
+        "pageMs": 12518.5,
+        "timeOrigin": 1794877282678.3,
+        "receivedNodeMs": 13395.668
+      },
+      {
+        "stage": "prototype-import-dispatch",
+        "id": "base-accordion-root",
+        "pageMs": 12519.200000047684,
+        "timeOrigin": 1794877282678.3,
+        "receivedNodeMs": 13396.121667
+      },
+      {
+        "stage": "prototype-import-return",
+        "id": "base-accordion-root",
+        "pageMs": 31321.299999952316,
+        "timeOrigin": 1794877282678.3,
+        "receivedNodeMs": 32198.499958
+      },
+      {
+        "stage": "prototype-register-return",
+        "id": "base-accordion-root",
+        "pageMs": 31321.299999952316,
+        "timeOrigin": 1794877282678.3,
+        "receivedNodeMs": 32198.543958
+      }
+    ],
+    "base-accordion-item": [
+      {
+        "stage": "prototype-loader-begin",
+        "id": "base-accordion-item",
+        "pageMs": 12518.700000047684,
+        "timeOrigin": 1794877282678.3,
+        "receivedNodeMs": 13395.686167
+      },
+      {
+        "stage": "prototype-import-dispatch",
+        "id": "base-accordion-item",
+        "pageMs": 12519.200000047684,
+        "timeOrigin": 1794877282678.3,
+        "receivedNodeMs": 13396.245042
+      },
+      {
+        "stage": "prototype-import-return",
+        "id": "base-accordion-item",
+        "pageMs": 31321.39999985695,
+        "timeOrigin": 1794877282678.3,
+        "receivedNodeMs": 32198.564542
+      },
+      {
+        "stage": "prototype-register-return",
+        "id": "base-accordion-item",
+        "pageMs": 31321.39999985695,
+        "timeOrigin": 1794877282678.3,
+        "receivedNodeMs": 32198.578
+      }
+    ],
+    "base-accordion-heading": [
+      {
+        "stage": "prototype-loader-begin",
+        "id": "base-accordion-heading",
+        "pageMs": 12518.700000047684,
+        "timeOrigin": 1794877282678.3,
+        "receivedNodeMs": 13395.810833
+      },
+      {
+        "stage": "prototype-import-dispatch",
+        "id": "base-accordion-heading",
+        "pageMs": 12519.200000047684,
+        "timeOrigin": 1794877282678.3,
+        "receivedNodeMs": 13396.279792
+      },
+      {
+        "stage": "prototype-import-return",
+        "id": "base-accordion-heading",
+        "pageMs": 31321.39999985695,
+        "timeOrigin": 1794877282678.3,
+        "receivedNodeMs": 32198.589167
+      },
+      {
+        "stage": "prototype-register-return",
+        "id": "base-accordion-heading",
+        "pageMs": 31321.39999985695,
+        "timeOrigin": 1794877282678.3,
+        "receivedNodeMs": 32198.712667
+      }
+    ],
+    "base-accordion-trigger": [
+      {
+        "stage": "prototype-loader-begin",
+        "id": "base-accordion-trigger",
+        "pageMs": 12518.899999856949,
+        "timeOrigin": 1794877282678.3,
+        "receivedNodeMs": 13395.864625
+      },
+      {
+        "stage": "prototype-import-dispatch",
+        "id": "base-accordion-trigger",
+        "pageMs": 12519.200000047684,
+        "timeOrigin": 1794877282678.3,
+        "receivedNodeMs": 13396.387375
+      },
+      {
+        "stage": "prototype-import-return",
+        "id": "base-accordion-trigger",
+        "pageMs": 31321.39999985695,
+        "timeOrigin": 1794877282678.3,
+        "receivedNodeMs": 32198.735375
+      },
+      {
+        "stage": "prototype-register-return",
+        "id": "base-accordion-trigger",
+        "pageMs": 31321.39999985695,
+        "timeOrigin": 1794877282678.3,
+        "receivedNodeMs": 32198.749083
+      }
+    ],
+    "base-accordion-content": [
+      {
+        "stage": "prototype-loader-begin",
+        "id": "base-accordion-content",
+        "pageMs": 12519,
+        "timeOrigin": 1794877282678.3,
+        "receivedNodeMs": 13395.935
+      },
+      {
+        "stage": "prototype-import-dispatch",
+        "id": "base-accordion-content",
+        "pageMs": 12519.200000047684,
+        "timeOrigin": 1794877282678.3,
+        "receivedNodeMs": 13396.418667
+      },
+      {
+        "stage": "prototype-import-return",
+        "id": "base-accordion-content",
+        "pageMs": 31321.5,
+        "timeOrigin": 1794877282678.3,
+        "receivedNodeMs": 32198.760667
+      },
+      {
+        "stage": "prototype-register-return",
+        "id": "base-accordion-content",
+        "pageMs": 31321.5,
+        "timeOrigin": 1794877282678.3,
+        "receivedNodeMs": 32198.770917
+      }
+    ],
+    "base-button": [
+      {
+        "stage": "prototype-loader-begin",
+        "id": "base-button",
+        "pageMs": 12037.5,
+        "timeOrigin": 1794877282678.3,
+        "receivedNodeMs": 12914.598417
+      },
+      {
+        "stage": "prototype-import-dispatch",
+        "id": "base-button",
+        "pageMs": 12037.5,
+        "timeOrigin": 1794877282678.3,
+        "receivedNodeMs": 12914.661708
+      },
+      {
+        "stage": "prototype-import-return",
+        "id": "base-button",
+        "pageMs": 12471.099999904633,
+        "timeOrigin": 1794877282678.3,
+        "receivedNodeMs": 13347.988667
+      },
+      {
+        "stage": "prototype-register-return",
+        "id": "base-button",
+        "pageMs": 12471.099999904633,
+        "timeOrigin": 1794877282678.3,
+        "receivedNodeMs": 13348.07225
+      }
+    ]
+  },
+  "vue2Owner": [
+    {
+      "stage": "vue2-owner-demo-import-begin",
+      "owner": "pp-fyj7felv0ed",
+      "pageMs": 9443,
+      "timeOrigin": 1794877282678.3,
+      "children": 0,
+      "receivedNodeMs": 10320.494708
+    },
+    {
+      "stage": "vue2-owner-demo-import-return",
+      "owner": "pp-fyj7felv0ed",
+      "pageMs": 12518.399999856949,
+      "timeOrigin": 1794877282678.3,
+      "children": 0,
+      "receivedNodeMs": 13395.440625
+    },
+    {
+      "stage": "vue2-owner-prototype-imports-begin",
+      "owner": "pp-fyj7felv0ed",
+      "pageMs": 12518.5,
+      "timeOrigin": 1794877282678.3,
+      "children": 0,
+      "details": [
+        "base-accordion-root",
+        "base-accordion-item",
+        "base-accordion-heading",
+        "base-accordion-trigger",
+        "base-accordion-content",
+        "base-button"
+      ],
+      "receivedNodeMs": 13395.597708
+    },
+    {
+      "stage": "vue2-owner-prototype-imports-return",
+      "owner": "pp-fyj7felv0ed",
+      "pageMs": 31321.5,
+      "timeOrigin": 1794877282678.3,
+      "children": 0,
+      "receivedNodeMs": 32198.781042
+    },
+    {
+      "stage": "vue2-owner-render-call",
+      "owner": "pp-fyj7felv0ed",
+      "pageMs": 31321.5,
+      "timeOrigin": 1794877282678.3,
+      "children": 0,
+      "receivedNodeMs": 32198.790625
+    },
+    {
+      "stage": "vue2-owner-runtime-join-begin",
+      "pageMs": 31321.799999952316,
+      "timeOrigin": 1794877282678.3,
+      "owner": "pp-fyj7felv0ed",
+      "children": 0,
+      "receivedNodeMs": 32198.848
+    },
+    {
+      "stage": "vue2-owner-runtime-join-return",
+      "pageMs": 31377.39999985695,
+      "timeOrigin": 1794877282678.3,
+      "owner": "pp-fyj7felv0ed",
+      "children": 0,
+      "receivedNodeMs": 32254.449
+    },
+    {
+      "stage": "vue2-owner-mount-begin",
+      "pageMs": 31377.5,
+      "timeOrigin": 1794877282678.3,
+      "owner": "pp-fyj7felv0ed",
+      "children": 1,
+      "receivedNodeMs": 32254.569333
+    },
+    {
+      "stage": "vue2-owner-mount-return",
+      "pageMs": 31379.700000047684,
+      "timeOrigin": 1794877282678.3,
+      "owner": "pp-fyj7felv0ed",
+      "children": 1,
+      "receivedNodeMs": 32256.558792
+    },
+    {
+      "stage": "vue2-owner-paint-wait-begin",
+      "pageMs": 31379.700000047684,
+      "timeOrigin": 1794877282678.3,
+      "owner": "pp-fyj7felv0ed",
+      "children": 1,
+      "receivedNodeMs": 32256.612417
+    },
+    {
+      "stage": "vue2-owner-paint-wait-return",
+      "pageMs": 31710.39999985695,
+      "timeOrigin": 1794877282678.3,
+      "owner": "pp-fyj7felv0ed",
+      "children": 1,
+      "receivedNodeMs": 32587.299833
+    },
+    {
+      "stage": "vue2-owner-render-return",
+      "owner": "pp-fyj7felv0ed",
+      "pageMs": 31712.799999952316,
+      "timeOrigin": 1794877282678.3,
+      "children": 1,
+      "receivedNodeMs": 32589.710708
+    },
+    {
+      "stage": "vue2-owner-runtime-join-begin",
+      "pageMs": 31713.099999904633,
+      "timeOrigin": 1794877282678.3,
+      "owner": "pp-fyj7felv0ed",
+      "children": 0,
+      "receivedNodeMs": 32589.985875
+    },
+    {
+      "stage": "vue2-owner-runtime-join-return",
+      "pageMs": 31718.89999985695,
+      "timeOrigin": 1794877282678.3,
+      "owner": "pp-fyj7felv0ed",
+      "children": 0,
+      "receivedNodeMs": 32595.864917
+    },
+    {
+      "stage": "vue2-owner-mount-begin",
+      "pageMs": 31719,
+      "timeOrigin": 1794877282678.3,
+      "owner": "pp-fyj7felv0ed",
+      "children": 1,
+      "receivedNodeMs": 32595.964833
+    },
+    {
+      "stage": "vue2-owner-mount-return",
+      "pageMs": 31720.099999904633,
+      "timeOrigin": 1794877282678.3,
+      "owner": "pp-fyj7felv0ed",
+      "children": 1,
+      "receivedNodeMs": 32597.016458
+    },
+    {
+      "stage": "vue2-owner-paint-wait-begin",
+      "pageMs": 31720.099999904633,
+      "timeOrigin": 1794877282678.3,
+      "owner": "pp-fyj7felv0ed",
+      "children": 1,
+      "receivedNodeMs": 32597.060417
+    },
+    {
+      "stage": "vue2-owner-paint-wait-return",
+      "pageMs": 31970,
+      "timeOrigin": 1794877282678.3,
+      "owner": "pp-fyj7felv0ed",
+      "children": 1,
+      "receivedNodeMs": 32847.220292
+    },
+    {
+      "stage": "vue2-owner-surface-ready",
+      "owner": "pp-fyj7felv0ed",
+      "pageMs": 31994.200000047684,
+      "timeOrigin": 1794877282678.3,
+      "children": 1,
+      "receivedNodeMs": 32871.298208
+    }
+  ],
+  "moduleNetwork": {
+    "/_astro/site-shadcn-controls.J4FPLybb.js": [
+      {
+        "id": "39398.86",
+        "requestType": "Script",
+        "initiatorType": "script",
+        "initiatorFile": "/_astro/DocumentationImagePreview.astro_astro_type_script_index_0_lang.CRFGSGzd.js",
+        "events": [
+          {
+            "phase": "request",
+            "serial": 1,
+            "timestamp": 1248001.103337,
+            "nodeMs": 970.528,
+            "alignedPageMs": 91.586
+          },
+          {
+            "phase": "response",
+            "status": 200,
+            "protocol": "http/1.1",
+            "mime": "text/javascript",
+            "serial": 5,
+            "timestamp": 1248001.22728,
+            "nodeMs": 1094.738667,
+            "alignedPageMs": 215.529
+          },
+          {
+            "phase": "data",
+            "bytes": 54199,
+            "serial": 6,
+            "timestamp": 1248001.227283,
+            "nodeMs": 1094.763917,
+            "alignedPageMs": 215.532
+          },
+          {
+            "phase": "data",
+            "bytes": 25901,
+            "serial": 7,
+            "timestamp": 1248001.227284,
+            "nodeMs": 1094.770292,
+            "alignedPageMs": 215.533
+          },
+          {
+            "phase": "data",
+            "bytes": 30642,
+            "serial": 8,
+            "timestamp": 1248001.227284,
+            "nodeMs": 1094.773042,
+            "alignedPageMs": 215.533
+          },
+          {
+            "phase": "data",
+            "bytes": 56812,
+            "serial": 9,
+            "timestamp": 1248001.227285,
+            "nodeMs": 1094.780875,
+            "alignedPageMs": 215.534
+          },
+          {
+            "phase": "data",
+            "bytes": 766,
+            "serial": 10,
+            "timestamp": 1248001.227286,
+            "nodeMs": 1094.785083,
+            "alignedPageMs": 215.535
+          },
+          {
+            "phase": "data",
+            "bytes": 55793,
+            "serial": 11,
+            "timestamp": 1248001.227287,
+            "nodeMs": 1094.787083,
+            "alignedPageMs": 215.536
+          },
+          {
+            "phase": "data",
+            "bytes": 35170,
+            "serial": 12,
+            "timestamp": 1248001.227287,
+            "nodeMs": 1094.866167,
+            "alignedPageMs": 215.536
+          },
+          {
+            "phase": "data",
+            "bytes": 31013,
+            "serial": 13,
+            "timestamp": 1248001.227288,
+            "nodeMs": 1094.868125,
+            "alignedPageMs": 215.537
+          },
+          {
+            "phase": "data",
+            "bytes": 59259,
+            "serial": 14,
+            "timestamp": 1248001.227288,
+            "nodeMs": 1094.869708,
+            "alignedPageMs": 215.537
+          },
+          {
+            "phase": "data",
+            "bytes": 7792,
+            "serial": 15,
+            "timestamp": 1248001.227289,
+            "nodeMs": 1094.871208,
+            "alignedPageMs": 215.538
+          },
+          {
+            "phase": "data",
+            "bytes": 63643,
+            "serial": 16,
+            "timestamp": 1248001.22729,
+            "nodeMs": 1094.872667,
+            "alignedPageMs": 215.539
+          },
+          {
+            "phase": "data",
+            "bytes": 37033,
+            "serial": 17,
+            "timestamp": 1248001.22729,
+            "nodeMs": 1094.875208,
+            "alignedPageMs": 215.539
+          },
+          {
+            "phase": "data",
+            "bytes": 14888,
+            "serial": 18,
+            "timestamp": 1248001.227291,
+            "nodeMs": 1094.876792,
+            "alignedPageMs": 215.54
+          },
+          {
+            "phase": "data",
+            "bytes": 55331,
+            "serial": 19,
+            "timestamp": 1248001.227291,
+            "nodeMs": 1094.87825,
+            "alignedPageMs": 215.54
+          },
+          {
+            "phase": "data",
+            "bytes": 11838,
+            "serial": 20,
+            "timestamp": 1248001.227292,
+            "nodeMs": 1094.879667,
+            "alignedPageMs": 215.541
+          },
+          {
+            "phase": "data",
+            "bytes": 39941,
+            "serial": 21,
+            "timestamp": 1248001.227293,
+            "nodeMs": 1094.881042,
+            "alignedPageMs": 215.542
+          },
+          {
+            "phase": "data",
+            "bytes": 35311,
+            "serial": 22,
+            "timestamp": 1248001.227294,
+            "nodeMs": 1094.8825,
+            "alignedPageMs": 215.543
+          },
+          {
+            "phase": "data",
+            "bytes": 18000,
+            "serial": 23,
+            "timestamp": 1248001.227295,
+            "nodeMs": 1094.89125,
+            "alignedPageMs": 215.544
+          },
+          {
+            "phase": "data",
+            "bytes": 48581,
+            "serial": 24,
+            "timestamp": 1248001.227296,
+            "nodeMs": 1094.892875,
+            "alignedPageMs": 215.545
+          },
+          {
+            "phase": "data",
+            "bytes": 6226,
+            "serial": 25,
+            "timestamp": 1248001.227296,
+            "nodeMs": 1094.894333,
+            "alignedPageMs": 215.545
+          },
+          {
+            "phase": "data",
+            "bytes": 41626,
+            "serial": 26,
+            "timestamp": 1248001.227297,
+            "nodeMs": 1094.895792,
+            "alignedPageMs": 215.546
+          },
+          {
+            "phase": "data",
+            "bytes": 37030,
+            "serial": 27,
+            "timestamp": 1248001.227298,
+            "nodeMs": 1094.897292,
+            "alignedPageMs": 215.547
+          },
+          {
+            "phase": "data",
+            "bytes": 39335,
+            "serial": 28,
+            "timestamp": 1248001.227299,
+            "nodeMs": 1094.898667,
+            "alignedPageMs": 215.548
+          },
+          {
+            "phase": "data",
+            "bytes": 5383,
+            "serial": 29,
+            "timestamp": 1248001.227299,
+            "nodeMs": 1094.901,
+            "alignedPageMs": 215.548
+          },
+          {
+            "phase": "data",
+            "bytes": 0,
+            "serial": 30,
+            "timestamp": 1248001.227325,
+            "nodeMs": 1094.9025,
+            "alignedPageMs": 215.574
+          },
+          {
+            "phase": "finish",
+            "bytes": 231876,
+            "serial": 31,
+            "timestamp": 1248001.189594,
+            "nodeMs": 1094.906292,
+            "alignedPageMs": 177.843
+          }
+        ]
+      }
+    ],
+    "/_astro/index.DkQGVBxY.js": [
+      {
+        "id": "39398.211",
+        "requestType": "Script",
+        "initiatorType": "script",
+        "initiatorFile": null,
+        "events": [
+          {
+            "phase": "request",
+            "serial": 55,
+            "timestamp": 1248006.396807,
+            "nodeMs": 6262.555917,
+            "alignedPageMs": 5385.059
+          },
+          {
+            "phase": "response",
+            "status": 200,
+            "protocol": "http/1.1",
+            "mime": "text/javascript",
+            "serial": 68,
+            "timestamp": 1248012.747697,
+            "nodeMs": 12613.309667,
+            "alignedPageMs": 11735.949
+          },
+          {
+            "phase": "data",
+            "bytes": 11357,
+            "serial": 69,
+            "timestamp": 1248012.747714,
+            "nodeMs": 12613.319958,
+            "alignedPageMs": 11735.966
+          },
+          {
+            "phase": "data",
+            "bytes": 0,
+            "serial": 70,
+            "timestamp": 1248012.747766,
+            "nodeMs": 12613.323833,
+            "alignedPageMs": 11736.018
+          },
+          {
+            "phase": "finish",
+            "bytes": 4109,
+            "serial": 71,
+            "timestamp": 1248006.39987,
+            "nodeMs": 12613.326667,
+            "alignedPageMs": 5388.122
+          }
+        ]
+      }
+    ]
+  },
+  "rawLogSHA256": "7f795790b8162afced32e521bcbcb540e76d6c38cc1c30e945ece3862290ad85"
+}

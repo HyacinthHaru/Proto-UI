@@ -1,0 +1,527 @@
+{
+  "source": {
+    "head": "5d4f911370ca5e9cb4e4a17f20eca0b1945d6862",
+    "tree": "84b1020b1d8fdd3511e6f9d4215aad6fa94bf83b",
+    "parents": [
+      "621355701553eb1bded8537b0ae5a1881038d61f",
+      "624b878c166658ee99f798eaba2ee6b20f1a6bd5"
+    ],
+    "suiteOverlaySHA256": "e5c07414b8b7e718db7a8818eb38656dd1f1b157e47abc43cd444ab1e59bbbfe",
+    "observerSHA256": "b56ec096f72172a42e3f9d05275c82802c641e1fec5574d841a9b17defcc91e6",
+    "htmlSHA256": "9e397ace2d4a9af31b295ea4e4c40d2e1e62ffd6505d4240110dfc2c91fbc7a4"
+  },
+  "environment": {
+    "node": "v24.21.0",
+    "pnpm": "10.32.1",
+    "chrome": "Google Chrome for Testing 156.0.8078.79",
+    "workers": 1
+  },
+  "limits": [1268, 60000, 150000],
+  "exit": 1,
+  "failures": ["page.waitForFunction: Timeout 60000ms exceeded."],
+  "verdict": {
+    "startupPassed": false,
+    "errors": [],
+    "consoleErrors": [],
+    "collectionOutcome": "budget-expired",
+    "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+  },
+  "lastReadiness": {
+    "timeOrigin": 1794877135433.4,
+    "pageMs": 74080.89999985695,
+    "dateNow": 1794877209514,
+    "count": 1268,
+    "ready": false,
+    "firstMissing": {
+      "previewerId": "pp-o26223tgir",
+      "index": 0,
+      "inited": "1",
+      "hostChildren": 0
+    },
+    "firstMissingOwner": {
+      "demoId": "demo-base-accordion",
+      "prototypeId": "",
+      "declaredRuntime": "wc",
+      "projectionMode": null,
+      "projectionState": null,
+      "mounting": null,
+      "hostTag": "DIV",
+      "hostOwner": "pp-o26223tgir",
+      "startupPending": true,
+      "hostOwnInert": true,
+      "hostText": ""
+    }
+  },
+  "binding": {
+    "before": "6566bf256ce728628d090b1d4209ef7c28e781b2aef54dc45df9192e88a67c61",
+    "after": "29e5e35b80ff2ed267bbc85d65817bf8d8e7d7f958ad52e251beeb040b43791a",
+    "asset": "prototype-modules.C3t4Tjr5.js",
+    "targets": [
+      {
+        "id": "base-accordion-root",
+        "file": "index.DkQGVBxY.js",
+        "member": "accordionRoot"
+      },
+      {
+        "id": "base-accordion-item",
+        "file": "index.DkQGVBxY.js",
+        "member": "accordionItem"
+      },
+      {
+        "id": "base-accordion-heading",
+        "file": "index.DkQGVBxY.js",
+        "member": "accordionHeading"
+      },
+      {
+        "id": "base-accordion-trigger",
+        "file": "index.DkQGVBxY.js",
+        "member": "accordionTrigger"
+      },
+      {
+        "id": "base-accordion-content",
+        "file": "index.DkQGVBxY.js",
+        "member": "accordionContent"
+      },
+      {
+        "id": "base-button",
+        "file": "site-shadcn-controls.J4FPLybb.js",
+        "member": "button"
+      }
+    ]
+  },
+  "stages": {
+    "base-accordion-root": [
+      {
+        "stage": "prototype-loader-begin",
+        "id": "base-accordion-root",
+        "pageMs": 12668.699999809265,
+        "timeOrigin": 1794877135433.4,
+        "receivedNodeMs": 13513.778708
+      },
+      {
+        "stage": "prototype-import-dispatch",
+        "id": "base-accordion-root",
+        "pageMs": 12669.399999856949,
+        "timeOrigin": 1794877135433.4,
+        "receivedNodeMs": 13514.286583
+      }
+    ],
+    "base-accordion-item": [
+      {
+        "stage": "prototype-loader-begin",
+        "id": "base-accordion-item",
+        "pageMs": 12668.899999856949,
+        "timeOrigin": 1794877135433.4,
+        "receivedNodeMs": 13513.813208
+      },
+      {
+        "stage": "prototype-import-dispatch",
+        "id": "base-accordion-item",
+        "pageMs": 12669.399999856949,
+        "timeOrigin": 1794877135433.4,
+        "receivedNodeMs": 13514.526083
+      }
+    ],
+    "base-accordion-heading": [
+      {
+        "stage": "prototype-loader-begin",
+        "id": "base-accordion-heading",
+        "pageMs": 12669,
+        "timeOrigin": 1794877135433.4,
+        "receivedNodeMs": 13513.850458
+      },
+      {
+        "stage": "prototype-import-dispatch",
+        "id": "base-accordion-heading",
+        "pageMs": 12669.399999856949,
+        "timeOrigin": 1794877135433.4,
+        "receivedNodeMs": 13514.58775
+      }
+    ],
+    "base-accordion-trigger": [
+      {
+        "stage": "prototype-loader-begin",
+        "id": "base-accordion-trigger",
+        "pageMs": 12669.099999904633,
+        "timeOrigin": 1794877135433.4,
+        "receivedNodeMs": 13513.951541
+      },
+      {
+        "stage": "prototype-import-dispatch",
+        "id": "base-accordion-trigger",
+        "pageMs": 12669.399999856949,
+        "timeOrigin": 1794877135433.4,
+        "receivedNodeMs": 13514.671541
+      }
+    ],
+    "base-accordion-content": [
+      {
+        "stage": "prototype-loader-begin",
+        "id": "base-accordion-content",
+        "pageMs": 12669.299999952316,
+        "timeOrigin": 1794877135433.4,
+        "receivedNodeMs": 13514.068291
+      },
+      {
+        "stage": "prototype-import-dispatch",
+        "id": "base-accordion-content",
+        "pageMs": 12669.399999856949,
+        "timeOrigin": 1794877135433.4,
+        "receivedNodeMs": 13514.712291
+      }
+    ],
+    "base-button": [
+      {
+        "stage": "prototype-loader-begin",
+        "id": "base-button",
+        "pageMs": 11955.399999856949,
+        "timeOrigin": 1794877135433.4,
+        "receivedNodeMs": 12800.596416
+      },
+      {
+        "stage": "prototype-import-dispatch",
+        "id": "base-button",
+        "pageMs": 11955.5,
+        "timeOrigin": 1794877135433.4,
+        "receivedNodeMs": 12800.817583
+      },
+      {
+        "stage": "prototype-import-return",
+        "id": "base-button",
+        "pageMs": 12492.799999952316,
+        "timeOrigin": 1794877135433.4,
+        "receivedNodeMs": 13337.888208
+      },
+      {
+        "stage": "prototype-register-return",
+        "id": "base-button",
+        "pageMs": 12492.899999856949,
+        "timeOrigin": 1794877135433.4,
+        "receivedNodeMs": 13337.938416
+      }
+    ]
+  },
+  "vue2Owner": [
+    {
+      "stage": "vue2-owner-demo-import-begin",
+      "owner": "pp-fyj7felv0ed",
+      "pageMs": 8144.5,
+      "timeOrigin": 1794877135433.4,
+      "children": 0,
+      "receivedNodeMs": 8989.581833
+    },
+    {
+      "stage": "vue2-owner-demo-import-return",
+      "owner": "pp-fyj7felv0ed",
+      "pageMs": 12669.5,
+      "timeOrigin": 1794877135433.4,
+      "children": 0,
+      "receivedNodeMs": 13514.919875
+    },
+    {
+      "stage": "vue2-owner-prototype-imports-begin",
+      "owner": "pp-fyj7felv0ed",
+      "pageMs": 12669.599999904633,
+      "timeOrigin": 1794877135433.4,
+      "children": 0,
+      "details": [
+        "base-accordion-root",
+        "base-accordion-item",
+        "base-accordion-heading",
+        "base-accordion-trigger",
+        "base-accordion-content",
+        "base-button"
+      ],
+      "receivedNodeMs": 13515.042666
+    }
+  ],
+  "moduleNetwork": {
+    "/_astro/site-shadcn-controls.J4FPLybb.js": [
+      {
+        "id": "38658.86",
+        "requestType": "Script",
+        "initiatorType": "script",
+        "initiatorFile": "/_astro/DocumentationImagePreview.astro_astro_type_script_index_0_lang.CRFGSGzd.js",
+        "events": [
+          {
+            "phase": "request",
+            "serial": 1,
+            "timestamp": 1247853.859081,
+            "nodeMs": 937.9695,
+            "alignedPageMs": 92.229
+          },
+          {
+            "phase": "response",
+            "status": 200,
+            "protocol": "http/1.1",
+            "mime": "text/javascript",
+            "serial": 2,
+            "timestamp": 1247853.958333,
+            "nodeMs": 1039.266083,
+            "alignedPageMs": 191.481
+          },
+          {
+            "phase": "data",
+            "bytes": 54199,
+            "serial": 3,
+            "timestamp": 1247853.958337,
+            "nodeMs": 1039.29025,
+            "alignedPageMs": 191.485
+          },
+          {
+            "phase": "data",
+            "bytes": 25901,
+            "serial": 4,
+            "timestamp": 1247853.958338,
+            "nodeMs": 1039.296916,
+            "alignedPageMs": 191.486
+          },
+          {
+            "phase": "data",
+            "bytes": 30642,
+            "serial": 5,
+            "timestamp": 1247853.958338,
+            "nodeMs": 1039.30175,
+            "alignedPageMs": 191.486
+          },
+          {
+            "phase": "data",
+            "bytes": 56812,
+            "serial": 6,
+            "timestamp": 1247853.958339,
+            "nodeMs": 1039.306208,
+            "alignedPageMs": 191.487
+          },
+          {
+            "phase": "data",
+            "bytes": 766,
+            "serial": 7,
+            "timestamp": 1247853.95834,
+            "nodeMs": 1039.308708,
+            "alignedPageMs": 191.488
+          },
+          {
+            "phase": "data",
+            "bytes": 55793,
+            "serial": 8,
+            "timestamp": 1247853.95834,
+            "nodeMs": 1039.312541,
+            "alignedPageMs": 191.488
+          },
+          {
+            "phase": "data",
+            "bytes": 35170,
+            "serial": 9,
+            "timestamp": 1247853.958341,
+            "nodeMs": 1039.319125,
+            "alignedPageMs": 191.489
+          },
+          {
+            "phase": "data",
+            "bytes": 31013,
+            "serial": 10,
+            "timestamp": 1247853.958342,
+            "nodeMs": 1039.322958,
+            "alignedPageMs": 191.49
+          },
+          {
+            "phase": "data",
+            "bytes": 59259,
+            "serial": 11,
+            "timestamp": 1247853.958342,
+            "nodeMs": 1039.324791,
+            "alignedPageMs": 191.49
+          },
+          {
+            "phase": "data",
+            "bytes": 7792,
+            "serial": 12,
+            "timestamp": 1247853.958343,
+            "nodeMs": 1039.326375,
+            "alignedPageMs": 191.491
+          },
+          {
+            "phase": "data",
+            "bytes": 63643,
+            "serial": 13,
+            "timestamp": 1247853.958343,
+            "nodeMs": 1039.327916,
+            "alignedPageMs": 191.491
+          },
+          {
+            "phase": "data",
+            "bytes": 37033,
+            "serial": 14,
+            "timestamp": 1247853.958344,
+            "nodeMs": 1039.330958,
+            "alignedPageMs": 191.492
+          },
+          {
+            "phase": "data",
+            "bytes": 14888,
+            "serial": 15,
+            "timestamp": 1247853.958345,
+            "nodeMs": 1039.332583,
+            "alignedPageMs": 191.493
+          },
+          {
+            "phase": "data",
+            "bytes": 55331,
+            "serial": 16,
+            "timestamp": 1247853.958345,
+            "nodeMs": 1039.477791,
+            "alignedPageMs": 191.493
+          },
+          {
+            "phase": "data",
+            "bytes": 11838,
+            "serial": 17,
+            "timestamp": 1247853.958346,
+            "nodeMs": 1039.480125,
+            "alignedPageMs": 191.494
+          },
+          {
+            "phase": "data",
+            "bytes": 39941,
+            "serial": 18,
+            "timestamp": 1247853.958346,
+            "nodeMs": 1039.482,
+            "alignedPageMs": 191.494
+          },
+          {
+            "phase": "data",
+            "bytes": 35311,
+            "serial": 19,
+            "timestamp": 1247853.958347,
+            "nodeMs": 1039.484791,
+            "alignedPageMs": 191.495
+          },
+          {
+            "phase": "data",
+            "bytes": 18000,
+            "serial": 20,
+            "timestamp": 1247853.958348,
+            "nodeMs": 1039.486375,
+            "alignedPageMs": 191.496
+          },
+          {
+            "phase": "data",
+            "bytes": 48581,
+            "serial": 21,
+            "timestamp": 1247853.958348,
+            "nodeMs": 1039.487875,
+            "alignedPageMs": 191.496
+          },
+          {
+            "phase": "data",
+            "bytes": 6226,
+            "serial": 22,
+            "timestamp": 1247853.958349,
+            "nodeMs": 1039.489416,
+            "alignedPageMs": 191.497
+          },
+          {
+            "phase": "data",
+            "bytes": 41626,
+            "serial": 23,
+            "timestamp": 1247853.95835,
+            "nodeMs": 1039.490916,
+            "alignedPageMs": 191.498
+          },
+          {
+            "phase": "data",
+            "bytes": 37030,
+            "serial": 24,
+            "timestamp": 1247853.95835,
+            "nodeMs": 1039.492416,
+            "alignedPageMs": 191.498
+          },
+          {
+            "phase": "data",
+            "bytes": 39335,
+            "serial": 25,
+            "timestamp": 1247853.958351,
+            "nodeMs": 1039.494916,
+            "alignedPageMs": 191.499
+          },
+          {
+            "phase": "data",
+            "bytes": 5383,
+            "serial": 26,
+            "timestamp": 1247853.958351,
+            "nodeMs": 1039.496375,
+            "alignedPageMs": 191.499
+          },
+          {
+            "phase": "data",
+            "bytes": 0,
+            "serial": 27,
+            "timestamp": 1247853.95838,
+            "nodeMs": 1039.497916,
+            "alignedPageMs": 191.528
+          },
+          {
+            "phase": "finish",
+            "bytes": 231876,
+            "serial": 28,
+            "timestamp": 1247853.93108,
+            "nodeMs": 1039.501833,
+            "alignedPageMs": 164.228
+          }
+        ]
+      }
+    ],
+    "/_astro/index.DkQGVBxY.js": [
+      {
+        "id": "38658.803",
+        "requestType": "Script",
+        "initiatorType": "script",
+        "initiatorFile": "client",
+        "events": [
+          {
+            "phase": "request",
+            "serial": 87,
+            "timestamp": 1247866.378113,
+            "nodeMs": 13456.552416,
+            "alignedPageMs": 12611.248
+          },
+          {
+            "phase": "response",
+            "status": 200,
+            "protocol": "http/1.1",
+            "mime": "text/javascript",
+            "serial": 137,
+            "timestamp": 1247867.028254,
+            "nodeMs": 14106.809416,
+            "alignedPageMs": 13261.389
+          },
+          {
+            "phase": "data",
+            "bytes": 11357,
+            "serial": 138,
+            "timestamp": 1247867.028256,
+            "nodeMs": 14106.814916,
+            "alignedPageMs": 13261.391
+          },
+          {
+            "phase": "data",
+            "bytes": 0,
+            "serial": 139,
+            "timestamp": 1247867.028267,
+            "nodeMs": 14106.816666,
+            "alignedPageMs": 13261.402
+          },
+          {
+            "phase": "finish",
+            "bytes": 4109,
+            "serial": 140,
+            "timestamp": 1247866.394775,
+            "nodeMs": 14106.81925,
+            "alignedPageMs": 12627.91
+          }
+        ]
+      }
+    ]
+  },
+  "rawLogSHA256": "2c35da483d79c089623b1ea3e225d3db99dc427f90e30058494b5874b25b1af1"
+}
