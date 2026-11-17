@@ -1119,19 +1119,24 @@ export class AnatomyModuleImpl extends ModuleBase {
   }
 
   private sortClaims(claims: ClaimRecord[], comparisons?: OrderComparisons): ClaimRecord[] {
+    if (claims.length < 2) return claims.slice();
+    // Read each current target once per sort. Later recipients resolve their
+    // own targets after callbacks can replace or move them.
     return claims
-      .map((claim, index) => ({ claim, index }))
+      .map((claim, index) => ({ claim, index, target: claim.getRootTarget(claim.instance) }))
       .sort((left, right) => {
-        const cmp = this.compareClaims(left.claim, right.claim, comparisons);
+        const cmp = this.compareTargets(left.target, right.target, comparisons);
         if (cmp !== 0) return cmp;
         return left.index - right.index;
       })
       .map((entry) => entry.claim);
   }
 
-  private compareClaims(a: ClaimRecord, b: ClaimRecord, comparisons?: OrderComparisons): number {
-    const aTarget = a.getRootTarget(a.instance);
-    const bTarget = b.getRootTarget(b.instance);
+  private compareTargets(
+    aTarget: AnatomyRootTarget | null,
+    bTarget: AnatomyRootTarget | null,
+    comparisons?: OrderComparisons
+  ): number {
     if (!aTarget || !bTarget || aTarget === bTarget) return 0;
     if (typeof aTarget.compareDocumentPosition !== 'function') return 0;
 

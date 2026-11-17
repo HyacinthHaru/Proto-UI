@@ -44,6 +44,7 @@ function createDomain(subscriberCount: number, itemCount = 12) {
   const metadata = new Map<Owner, { label: string }>();
   const observers = new Map<object, () => void>();
   let comparisons = 0;
+  const targetReads = new Map<Owner, number>();
 
   const instrument = (target: HTMLElement) => {
     const compare = target.compareDocumentPosition.bind(target);
@@ -87,7 +88,14 @@ function createDomain(subscriberCount: number, itemCount = 12) {
           [ANATOMY_INSTANCE_TOKEN_CAP, owner],
           [ANATOMY_PARENT_CAP, (instance: unknown) => parents.get(instance as Owner) ?? null],
           [ANATOMY_GET_PROTO_CAP, (instance: unknown) => prototypes.get(instance as Owner) ?? null],
-          [ANATOMY_ROOT_TARGET_CAP, (instance: unknown) => targets.get(instance as Owner) ?? null],
+          [
+            ANATOMY_ROOT_TARGET_CAP,
+            (instance: unknown) => {
+              const owner = instance as Owner;
+              targetReads.set(owner, (targetReads.get(owner) ?? 0) + 1);
+              return targets.get(owner) ?? null;
+            },
+          ],
           [
             ANATOMY_ORDER_OBSERVER_CAP,
             (target: AnatomyRootTarget, notify: () => void) => {
@@ -128,6 +136,7 @@ function createDomain(subscriberCount: number, itemCount = 12) {
 
   const reset = () => {
     comparisons = 0;
+    targetReads.clear();
     for (const rows of notifications.values()) rows.length = 0;
   };
   cleanups.push(async () => {
@@ -160,6 +169,7 @@ function createDomain(subscriberCount: number, itemCount = 12) {
         .map((part) => part.getExpose('id') as string),
     version: (owner = root) => executions.get(owner)!.kernel!.run.anatomy.order.version(family),
     comparisons: () => comparisons,
+    targetReads,
     reset,
     sync: () => rootExecution.caps.getPort<AnatomyPort>('anatomy')!.syncStructure(),
     notify: (owner = root) => {
@@ -182,6 +192,8 @@ describe('Runtime Anatomy synchronous order fanout cost', () => {
       many[source]();
       expect([...many.notifications.values()].flat()).toEqual([]);
       expect(many.comparisons()).toBeLessThanOrEqual(singleReaderComparisons * 2);
+      expect(many.targetReads.size).toBe(many.items.length + 1);
+      expect(Math.max(...many.targetReads.values())).toBeLessThanOrEqual(many.items.length);
     });
   }
 
