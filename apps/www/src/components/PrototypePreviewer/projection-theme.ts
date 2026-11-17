@@ -154,9 +154,10 @@ export function scheduleProjectionThemeRead<T>(scope: Element, read: () => T): P
       publicationThemeReads.delete(document);
       for (const item of batch) item();
     };
-    const view = document.defaultView;
-    if (view) view.setTimeout(flush, 0);
-    else queueMicrotask(flush);
+    // Publication can be waiting inside a frame callback. Flush the pending
+    // reads before yielding to a browser task so a busy renderer cannot
+    // hold a current preview's appearance or watcher behind that task.
+    queueMicrotask(flush);
   });
 }
 

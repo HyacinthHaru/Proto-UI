@@ -55,6 +55,15 @@ describe('Website projection theme inputs', () => {
     }
   });
 
+  it('samples a pending publication without a timer-task turn', async () => {
+    const read = vi.fn(() => 'scope theme');
+    const pending = scheduleProjectionThemeRead(document.documentElement, read);
+    await Promise.resolve();
+    const sampledBeforeTask = read.mock.calls.length === 1;
+    await expect(pending).resolves.toBe('scope theme');
+    expect(sampledBeforeTask).toBe(true);
+  });
+
   it('leaves other queued publications readable when a theme read fails', async () => {
     const scope = document.documentElement;
     const invalid = scheduleProjectionThemeRead(scope, () => {
