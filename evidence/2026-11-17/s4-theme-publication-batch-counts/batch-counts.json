@@ -1,0 +1,113 @@
+{
+  "source": {
+    "head": "5d4f911370ca5e9cb4e4a17f20eca0b1945d6862",
+    "tree": "84b1020b1d8fdd3511e6f9d4215aad6fa94bf83b",
+    "parents": [
+      "621355701553eb1bded8537b0ae5a1881038d61f",
+      "624b878c166658ee99f798eaba2ee6b20f1a6bd5"
+    ],
+    "suiteOverlaySHA256": "e07a168f7414e8266c40b8366cc9e540a1a4eda387be929205e485c61c362d24",
+    "observerSHA256": "b56ec096f72172a42e3f9d05275c82802c641e1fec5574d841a9b17defcc91e6",
+    "htmlSHA256": "9e397ace2d4a9af31b295ea4e4c40d2e1e62ffd6505d4240110dfc2c91fbc7a4"
+  },
+  "environment": {
+    "node": "v24.21.0",
+    "pnpm": "10.32.1",
+    "chrome": "Google Chrome for Testing 156.0.8078.79",
+    "workers": 1
+  },
+  "limits": [1268, 60000, 150000],
+  "results": {
+    "failure": "page.waitForFunction: Timeout 60000ms exceeded.",
+    "exit": 1,
+    "verdict": {
+      "startupPassed": false,
+      "errors": [],
+      "consoleErrors": [],
+      "collectionOutcome": "budget-expired",
+      "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+    }
+  },
+  "batches": [
+    {
+      "id": 1,
+      "size": 3,
+      "start": 12308.700000047684,
+      "end": 12308.799999952316,
+      "publicationReadCount": 3,
+      "revokedPublicationReadCount": 0,
+      "failedPublicationReadCount": 0,
+      "appliedAppearanceCount": 0,
+      "timeOrigin": 1794874202480.1,
+      "wallMs": 0.1
+    },
+    {
+      "id": 2,
+      "size": 16,
+      "start": 13060.400000095367,
+      "end": 13060.799999952316,
+      "publicationReadCount": 19,
+      "revokedPublicationReadCount": 0,
+      "failedPublicationReadCount": 0,
+      "appliedAppearanceCount": 3,
+      "timeOrigin": 1794874202480.1,
+      "wallMs": 0.4
+    },
+    {
+      "id": 3,
+      "size": 104,
+      "start": 20361.400000095367,
+      "end": 20378.099999904633,
+      "publicationReadCount": 123,
+      "revokedPublicationReadCount": 0,
+      "failedPublicationReadCount": 0,
+      "appliedAppearanceCount": 19,
+      "timeOrigin": 1794874202480.1,
+      "wallMs": 16.7
+    }
+  ],
+  "appliedMilestones": [
+    {
+      "count": 1,
+      "pageMs": 12308.900000095367,
+      "timeOrigin": 1794874202480.1
+    },
+    {
+      "count": 2,
+      "pageMs": 12318.700000047684,
+      "timeOrigin": 1794874202480.1
+    },
+    {
+      "count": 4,
+      "pageMs": 13061.099999904633,
+      "timeOrigin": 1794874202480.1
+    },
+    {
+      "count": 8,
+      "pageMs": 13092,
+      "timeOrigin": 1794874202480.1
+    },
+    {
+      "count": 16,
+      "pageMs": 13150.099999904633,
+      "timeOrigin": 1794874202480.1
+    },
+    {
+      "count": 32,
+      "pageMs": 20498.700000047684,
+      "timeOrigin": 1794874202480.1
+    },
+    {
+      "count": 64,
+      "pageMs": 20811.799999952316,
+      "timeOrigin": 1794874202480.1
+    }
+  ],
+  "overlay": {
+    "before": "f656d1d1be721d0c9b395697f8d283623becf87c687c79ab3396c43ca45da0f9",
+    "after": "a7dda01b454698d9c19503c18df2f88076a8ae8a8ac960cf4ff57b023b2f4b7a",
+    "asset": "previewer-client.BhKnQCQC.js",
+    "helper": "c1590ec34f0d378532bba5dec91f3287ffc353c245cd5c9e5025271b99a77729",
+    "replacement": "0811c44a6eca75421b53913c7c3dbf6086bc5de20d3001339c3bf1e08e7ad519"
+  }
+}
