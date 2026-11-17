@@ -252,6 +252,57 @@ describe('eager preview admission', () => {
     }
   });
 
+  it('waits for a batch to initialize before scheduling its successor across page swaps', async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
+    try {
+      const oldRoots = eagerRoots(35);
+      const initPreviewer = vi.fn();
+      type Previewer = { initPreviewer: typeof initPreviewer };
+      let resolveOld!: (client: Previewer) => void;
+      let resolveNext!: (client: Previewer) => void;
+      const old = new Promise<Previewer>((resolve) => (resolveOld = resolve));
+      const next = new Promise<Previewer>((resolve) => (resolveNext = resolve));
+      const load = vi.fn(() => next).mockReturnValueOnce(old);
+      dispose = initPreviewerBootstrap(document, load);
+
+      document.dispatchEvent(new Event('astro:page-load'));
+      await vi.runOnlyPendingTimersAsync();
+      expect(oldRoots.filter((root) => root.dataset.mounting === '1')).toEqual(
+        oldRoots.slice(0, 32)
+      );
+      await vi.runOnlyPendingTimersAsync();
+      expect(oldRoots.filter((root) => root.dataset.mounting === '1')).toEqual(
+        oldRoots.slice(0, 32)
+      );
+
+      document.dispatchEvent(new Event('astro:before-swap'));
+      for (const root of oldRoots) root.remove();
+      const nextRoots = eagerRoots(35);
+      document.dispatchEvent(new Event('astro:page-load'));
+      await vi.runOnlyPendingTimersAsync();
+      resolveOld({ initPreviewer });
+      await flush();
+      await vi.runOnlyPendingTimersAsync();
+      expect(nextRoots.filter((root) => root.dataset.mounting === '1')).toEqual(
+        nextRoots.slice(0, 32)
+      );
+      expect(initPreviewer).not.toHaveBeenCalled();
+
+      resolveNext({ initPreviewer });
+      await flush();
+      expect(initPreviewer.mock.calls.map(([options]) => options.root)).toEqual(
+        nextRoots.slice(0, 32)
+      );
+      await vi.runOnlyPendingTimersAsync();
+      expect(initPreviewer.mock.calls.map(([options]) => options.root)).toEqual(nextRoots);
+      expect(load).toHaveBeenCalledTimes(2);
+    } finally {
+      dispose?.();
+      dispose = undefined;
+      vi.useRealTimers();
+    }
+  });
+
   it('drops an old queued generation and admits the next small page immediately', async () => {
     vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
     try {

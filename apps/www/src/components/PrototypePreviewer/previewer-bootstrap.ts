@@ -21,6 +21,7 @@ export function initPreviewerBootstrap(
   const pending = new Map<PreviewerRoot, PendingPreview>();
   const eager = new Set<PreviewerRoot>();
   let eagerTask: number | undefined;
+  let eagerGeneration = 0;
   let disposed = false;
   let clientLoad: ReturnType<typeof loadClient> | undefined;
   let eagerClientLoad: ReturnType<typeof loadClient> | undefined;
@@ -121,13 +122,21 @@ export function initPreviewerBootstrap(
   };
   const drainEager = (batchedStartup = false) => {
     if (disposed) return;
-    let remaining = EAGER_BATCH_SIZE;
+    const generation = eagerGeneration;
+    const mounts: Promise<void>[] = [];
     for (const root of eager) {
       eager.delete(root);
-      void mount(root, batchedStartup);
-      if (--remaining === 0) break;
+      mounts.push(mount(root, batchedStartup));
+      if (mounts.length === EAGER_BATCH_SIZE) break;
     }
-    eagerTask = eager.size ? view.setTimeout(() => drainEager(batchedStartup), 0) : undefined;
+    const scheduleNextBatch = () => {
+      if (disposed || generation !== eagerGeneration) return;
+      eagerTask = eager.size ? view.setTimeout(() => drainEager(batchedStartup), 0) : undefined;
+    };
+    // Let this batch finish acquiring and invoking the client before the next
+    // timer starts another batch, even when the client import is still pending.
+    if (batchedStartup) void Promise.allSettled(mounts).then(scheduleNextBatch);
+    else scheduleNextBatch();
   };
   const scan = () => {
     if (disposed) return;
@@ -170,6 +179,7 @@ export function initPreviewerBootstrap(
     for (const root of pending.keys()) void mount(root);
   });
   const clear = () => {
+    eagerGeneration++;
     if (eagerTask !== undefined) view.clearTimeout(eagerTask);
     eagerTask = undefined;
     clientLoad = undefined;
