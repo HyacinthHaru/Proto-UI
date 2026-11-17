@@ -1,0 +1,932 @@
+{
+  "source": {
+    "head": "3b473b5e6230b7f72f9517acaeec3a1f1fd60dd1",
+    "tree": "7544152f9a20e4f83a6a1882affaefa705ebd7b1",
+    "parent": "6e5226bf10094176141a822f81500019c13d9408",
+    "signature": "G"
+  },
+  "baseline": {
+    "head": "6e5226bf10094176141a822f81500019c13d9408",
+    "tree": "022bafc9b434eb745f37845ff7dfab8c88204e73",
+    "parent": "2a006890731166a44b6a1b206caa3242133bde4e",
+    "signature": "G"
+  },
+  "changedInputs": {
+    "apps/www/src/components/site-typography.ts": "0a41331a71caad22b3bdd49d3f2f92742fdf0c268022f1da5938117b510b17a9",
+    "apps/www/src/components/site-typography-discovery.test.ts": "a5e415b4ed3bbdf7d68ea665782f1a013bc39bbfc7549f1144db4e3427035470"
+  },
+  "buildInputs": {
+    "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "e6590db342bddc56b37fa367ce6b1cc519130cdb201e06e8d14061569d5e0317",
+    "apps/www/dist/zh-cn/internal/demo-matrix/index.html": "24579af5564235f8a56b99448ec2838358a4004467c53788cfd8976e40f162e6",
+    "apps/www/dist/en/internal/demo-matrix/index.html": "eddfb81eef05976ce2ca9a60117521e2b5bc860ea0d1db71840cd3a4f7dc172a"
+  },
+  "pages": {
+    "zh-cn": {
+      "bytes": 1862424,
+      "sha256": "24579af5564235f8a56b99448ec2838358a4004467c53788cfd8976e40f162e6",
+      "previews": 1268
+    },
+    "en": {
+      "bytes": 1914058,
+      "sha256": "eddfb81eef05976ce2ca9a60117521e2b5bc860ea0d1db71840cd3a4f7dc172a",
+      "previews": 1268
+    }
+  },
+  "versions": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79"],
+  "red": {
+    "tests": {
+      "numTotalTests": 16,
+      "numPassedTests": 15,
+      "numFailedTests": 1,
+      "numPendingTests": 0,
+      "cases": [
+        {
+          "name": "documentation typography discovery ownership inventories initial native source without borrowing a component island",
+          "status": "passed",
+          "duration": 110.32945799999993,
+          "firstMessages": []
+        },
+        {
+          "name": "documentation typography discovery ownership does not inventory results and actions committed inside data-pui-root",
+          "status": "passed",
+          "duration": 161.16875000000005,
+          "firstMessages": []
+        },
+        {
+          "name": "documentation typography discovery ownership does not inventory results and actions committed inside data-previewer-id",
+          "status": "failed",
+          "duration": 169.76825000000008,
+          "firstMessages": ["AssertionError: expected 1 to be +0 // Object.is equality"]
+        },
+        {
+          "name": "documentation typography discovery ownership does not rescan for an explicit typography marker that remains inside a private component",
+          "status": "passed",
+          "duration": 160.772833,
+          "firstMessages": []
+        },
+        {
+          "name": "documentation typography discovery ownership still refreshes explicit runtime and family selections after private mutations",
+          "status": "passed",
+          "duration": 313.7931249999999,
+          "firstMessages": []
+        },
+        {
+          "name": "documentation typography discovery ownership reconciles real article source appended outside its borrowed carrier",
+          "status": "passed",
+          "duration": 133.83966599999985,
+          "firstMessages": []
+        },
+        {
+          "name": "documentation typography discovery ownership discovers new Markdown and a native paragraph moved out of a component boundary",
+          "status": "passed",
+          "duration": 191.09445800000003,
+          "firstMessages": []
+        },
+        {
+          "name": "documentation typography discovery ownership keeps explicit native labels in an allowed passive Header frame discoverable",
+          "status": "passed",
+          "duration": 135.34204200000022,
+          "firstMessages": []
+        },
+        {
+          "name": "documentation typography discovery ownership discovers and retires an allowed Header frame inserted inside a private parent",
+          "status": "passed",
+          "duration": 189.31620899999962,
+          "firstMessages": []
+        },
+        {
+          "name": "documentation typography discovery ownership reconciles explicit labels moved into Header content and marker withdrawal there",
+          "status": "passed",
+          "duration": 297.9708340000002,
+          "firstMessages": []
+        },
+        {
+          "name": "documentation typography discovery ownership retires existing native labels when a private owner mutation follows lost Header eligibility",
+          "status": "passed",
+          "duration": 139.1647079999998,
+          "firstMessages": []
+        },
+        {
+          "name": "documentation typography discovery ownership keeps the explicit status exception inside a passive Header below another component owner",
+          "status": "passed",
+          "duration": 137.87975000000006,
+          "firstMessages": []
+        },
+        {
+          "name": "documentation typography discovery ownership still discovers and releases an explicit native status inside a Previewer",
+          "status": "passed",
+          "duration": 187.5116250000001,
+          "firstMessages": []
+        },
+        {
+          "name": "documentation typography discovery ownership rechecks an outer paragraph when inline data-pui-root changes block eligibility",
+          "status": "passed",
+          "duration": 139.42512499999975,
+          "firstMessages": []
+        },
+        {
+          "name": "documentation typography discovery ownership rechecks an outer paragraph when inline data-previewer-id changes block eligibility",
+          "status": "passed",
+          "duration": 135.27870799999982,
+          "firstMessages": []
+        },
+        {
+          "name": "documentation typography discovery ownership does not hide source mutations inside Typography own projected slot",
+          "status": "passed",
+          "duration": 132.95149999999967,
+          "firstMessages": []
+        }
+      ]
+    },
+    "logSHA256": "7ba59c087192bdbe679612e463c04e790780273a78c8e7df79ed0215f41bd498"
+  },
+  "focused": {
+    "cases": 189,
+    "logSHA256": "68e8ede2d3db812cf4b036e7ca3aa3644c131410dbbe7d4166a38e1e656bb0e6"
+  },
+  "originalMatrix": {
+    "tests": {
+      "numTotalTests": 2,
+      "numPassedTests": 0,
+      "numFailedTests": 2,
+      "numPendingTests": 0,
+      "cases": [
+        {
+          "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+          "status": "failed",
+          "duration": 150529.62258400003,
+          "firstMessages": ["Error: Test timed out in 150000ms."]
+        },
+        {
+          "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+          "status": "failed",
+          "duration": 150525.947,
+          "firstMessages": ["Error: Test timed out in 150000ms."]
+        }
+      ]
+    },
+    "guardMs": {
+      "readiness": 60000,
+      "case": 150000
+    },
+    "rawLogSHA256": "838013d0e7b7be4874025852524b8313cf0cd103fe18142f355c2c989537837e",
+    "startupByLocale": {
+      "zh-cn": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      },
+      "en": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      }
+    }
+  },
+  "builtinNativeTypography": {
+    "tests": {
+      "numTotalTests": 33,
+      "numPassedTests": 2,
+      "numFailedTests": 0,
+      "numPendingTests": 31,
+      "cases": [
+        {
+          "name": "native SiteTypography rendered evidence wc/shadcn: native labels, accessibility, original nodes, genuine copy and cross-generation selection",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence wc/brutalist: native labels, accessibility, original nodes, genuine copy and cross-generation selection",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence react/shadcn: native labels, accessibility, original nodes, genuine copy and cross-generation selection",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence react/brutalist: native labels, accessibility, original nodes, genuine copy and cross-generation selection",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence vue/shadcn: native labels, accessibility, original nodes, genuine copy and cross-generation selection",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence vue/brutalist: native labels, accessibility, original nodes, genuine copy and cross-generation selection",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence vue2/shadcn: native labels, accessibility, original nodes, genuine copy and cross-generation selection",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence vue2/brutalist: native labels, accessibility, original nodes, genuine copy and cross-generation selection",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence zh-cn/wc/shadcn: real homepage generation and narrow text resize",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence zh-cn/wc/brutalist: real homepage generation and narrow text resize",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence zh-cn/react/shadcn: real homepage generation and narrow text resize",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence zh-cn/react/brutalist: real homepage generation and narrow text resize",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence zh-cn/vue/shadcn: real homepage generation and narrow text resize",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence zh-cn/vue/brutalist: real homepage generation and narrow text resize",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence zh-cn/vue2/shadcn: real homepage generation and narrow text resize",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence zh-cn/vue2/brutalist: real homepage generation and narrow text resize",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence en/wc/shadcn: real homepage generation and narrow text resize",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence en/wc/brutalist: real homepage generation and narrow text resize",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence en/react/shadcn: real homepage generation and narrow text resize",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence en/react/brutalist: real homepage generation and narrow text resize",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence en/vue/shadcn: real homepage generation and narrow text resize",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence en/vue/brutalist: real homepage generation and narrow text resize",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence en/vue2/shadcn: real homepage generation and narrow text resize",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence en/vue2/brutalist: real homepage generation and narrow text resize",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence shadcn: real documentation follows shared runtime preferences with separate scope ownership",
+          "status": "passed",
+          "duration": 11125.844541999999,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence brutalist: real documentation follows shared runtime preferences with separate scope ownership",
+          "status": "passed",
+          "duration": 4029.820291,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence homepage/no-js: original SSR hierarchy and native activation remain available",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence native-fixture/no-js: original SSR hierarchy and native activation remain available",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence homepage/initial-module-failure: original SSR hierarchy and native activation remain available",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "native SiteTypography rendered evidence native-fixture/initial-module-failure: original SSR hierarchy and native activation remain available",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "document reading native fallback shadcn: retains its own no-JavaScript heading scale",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "document reading native fallback brutalist: retains its own no-JavaScript heading scale",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        },
+        {
+          "name": "document reading native fallback homepage: retains its own no-JavaScript heading scale",
+          "status": "skipped",
+          "duration": null,
+          "firstMessages": []
+        }
+      ]
+    },
+    "suite": {
+      "apps/www/src/content/docs/zh-cn/site-typography.browser.test.ts": "8e8fd43088f88aff8593bd3763bccfa57d9d0aded0cb7d4fd38c41f0555d0670"
+    },
+    "logSHA256": "e82f43fbc1329c74010a5790a1bb3d4927c1c943c1f0699e4c2a0a499dc3adb7",
+    "evidenceSHA256": "66a4bbc2c0bddb388dc22bb0c15d7005174002fddd750a4c8322de81b8ad2ac5",
+    "screenshots": {
+      "docs-shadcn.png": "069af653d7103860e5e819e10710e5d9fa7058999035b85d1ec1835bafbe597b",
+      "docs-brutalist.png": "71e9d5fec120aa150d28c38416946eea1bc2f55a63215b3977d66f468a67e049"
+    }
+  },
+  "sampler": {
+    "source": {
+      "head": "6e5226bf10094176141a822f81500019c13d9408",
+      "tree": "022bafc9b434eb745f37845ff7dfab8c88204e73",
+      "parent": "2a006890731166a44b6a1b206caa3242133bde4e",
+      "signature": "G"
+    },
+    "events": [
+      {
+        "stage": "requested",
+        "phase": "startup-wait",
+        "elapsedMs": 22013.556,
+        "nodeTimeOrigin": 1794893926612.712,
+        "requested": 22000
+      },
+      {
+        "stage": "acknowledged",
+        "phase": "startup-wait",
+        "elapsedMs": 22029.638,
+        "nodeTimeOrigin": 1794893926612.712,
+        "offset": 22000
+      },
+      {
+        "stage": "paused",
+        "phase": "startup-wait",
+        "elapsedMs": 22031.78,
+        "nodeTimeOrigin": 1794893926612.712,
+        "requested": 22000,
+        "reason": "other",
+        "frames": [
+          {
+            "name": "",
+            "path": "/_astro/projection-theme.gSbmFaZb.js",
+            "line": 0,
+            "column": 2539
+          },
+          {
+            "name": "E",
+            "path": "/_astro/projection-theme.gSbmFaZb.js",
+            "line": 0,
+            "column": 2486
+          },
+          {
+            "name": "T",
+            "path": "/_astro/projection-theme.gSbmFaZb.js",
+            "line": 0,
+            "column": 2985
+          },
+          {
+            "name": "",
+            "path": "/_astro/previewer-client.BtB2vqgm.js",
+            "line": 2,
+            "column": 1304
+          },
+          {
+            "name": "n",
+            "path": "/_astro/projection-theme.gSbmFaZb.js",
+            "line": 0,
+            "column": 3413
+          },
+          {
+            "name": "",
+            "path": "/_astro/projection-theme.gSbmFaZb.js",
+            "line": 0,
+            "column": 3540
+          }
+        ]
+      },
+      {
+        "stage": "resumed",
+        "phase": "startup-wait",
+        "elapsedMs": 22037.071,
+        "nodeTimeOrigin": 1794893926612.712,
+        "requested": 22000
+      },
+      {
+        "stage": "requested",
+        "phase": "startup-wait",
+        "elapsedMs": 38013.115,
+        "nodeTimeOrigin": 1794893926612.712,
+        "requested": 38000
+      },
+      {
+        "stage": "acknowledged",
+        "phase": "startup-wait",
+        "elapsedMs": 38015.332,
+        "nodeTimeOrigin": 1794893926612.712,
+        "offset": 38000
+      },
+      {
+        "stage": "paused",
+        "phase": "startup-wait",
+        "elapsedMs": 38016.144,
+        "nodeTimeOrigin": 1794893926612.712,
+        "requested": 38000,
+        "reason": "other",
+        "frames": [
+          {
+            "name": "pe",
+            "path": "/_astro/site-typography.DZkZKg4K.js",
+            "line": 0,
+            "column": 2034
+          },
+          {
+            "name": "$",
+            "path": "/_astro/site-typography.DZkZKg4K.js",
+            "line": 0,
+            "column": 4226
+          },
+          {
+            "name": "needsRefresh",
+            "path": "/_astro/site-typography.DZkZKg4K.js",
+            "line": 0,
+            "column": 4990
+          },
+          {
+            "name": "m",
+            "path": "/_astro/site-typography-client.DP5yOD67.js",
+            "line": 0,
+            "column": 1584
+          },
+          {
+            "name": "",
+            "path": "/_astro/site-typography-client.DP5yOD67.js",
+            "line": 0,
+            "column": 2026
+          }
+        ]
+      },
+      {
+        "stage": "resumed",
+        "phase": "startup-wait",
+        "elapsedMs": 38051.609,
+        "nodeTimeOrigin": 1794893926612.712,
+        "requested": 38000
+      },
+      {
+        "stage": "requested",
+        "phase": "startup-wait",
+        "elapsedMs": 54013.131,
+        "nodeTimeOrigin": 1794893926612.712,
+        "requested": 54000
+      },
+      {
+        "stage": "acknowledged",
+        "phase": "startup-wait",
+        "elapsedMs": 54015.599,
+        "nodeTimeOrigin": 1794893926612.712,
+        "offset": 54000
+      },
+      {
+        "stage": "paused",
+        "phase": "startup-wait",
+        "elapsedMs": 54030.645,
+        "nodeTimeOrigin": 1794893926612.712,
+        "requested": 54000,
+        "reason": "other",
+        "frames": [
+          {
+            "name": "F",
+            "path": "/_astro/site-shadcn-controls.slQLFosl.js",
+            "line": 8,
+            "column": 175142
+          },
+          {
+            "name": "M",
+            "path": "/_astro/site-shadcn-controls.slQLFosl.js",
+            "line": 8,
+            "column": 176363
+          },
+          {
+            "name": "P",
+            "path": "/_astro/site-shadcn-controls.slQLFosl.js",
+            "line": 8,
+            "column": 176609
+          },
+          {
+            "name": "",
+            "path": "/_astro/site-shadcn-controls.slQLFosl.js",
+            "line": 8,
+            "column": 169204
+          }
+        ]
+      },
+      {
+        "stage": "resumed",
+        "phase": "startup-wait",
+        "elapsedMs": 54033.653,
+        "nodeTimeOrigin": 1794893926612.712,
+        "requested": 54000
+      }
+    ],
+    "rawLogSHA256": "4ada1fa77a3e4408ddfc6769db19628adfa634d159d9519c9f484e107d4210f8"
+  },
+  "timing": {
+    "before": {
+      "binding": {
+        "file": "site-typography.DZkZKg4K.js",
+        "inputSHA256": "431575252f8eeb67dc27016e8abb712527b31ca6c0d3ff18cdb22ab73bce5e36",
+        "outputSHA256": "03eadc3a0b067ecfb9695e16c93b46751d59d3588e73ad43962e63fc497a54cc"
+      },
+      "overlaySHA256": "cee81d76c07946288dc56c63c0f3400f9a0ce75e8698aa308cc74371d664e843",
+      "rawLogSHA256": "6be4f6fedcf1cdd68250f5815ee8cce0da8a71195fe24e4908cbcb3edd1c6ec2",
+      "runnerOverlaySHA256": "f4dfdc5a855a801dbdb35f05d6d1f669eba23af4c0bfd169cd41c4b5eaa4b65f",
+      "native": {
+        "numTotalTests": 2,
+        "numPassedTests": 0,
+        "numFailedTests": 1,
+        "numPendingTests": 1,
+        "cases": [
+          {
+            "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+            "status": "failed",
+            "duration": 150534.16537499998,
+            "firstMessages": ["Error: Test timed out in 150000ms."]
+          },
+          {
+            "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+            "status": "skipped",
+            "duration": null,
+            "firstMessages": []
+          }
+        ]
+      },
+      "startup": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      },
+      "exit": 1
+    },
+    "after": {
+      "binding": {
+        "file": "site-typography.BYWswNWU.js",
+        "inputSHA256": "c334ecfc1062c128c420b09c52c882afe16cdd024d4af160027d6c1d1f93f6fc",
+        "outputSHA256": "5194750e209032100c7ee2e3997c3999239052a653d305c4cb023a88bec57f71"
+      },
+      "overlaySHA256": "cee81d76c07946288dc56c63c0f3400f9a0ce75e8698aa308cc74371d664e843",
+      "rawLogSHA256": "cc6f48cf095b1db90dd0ab3c91a6964b02c228f2e867027cc058665beaf2c633",
+      "runnerOverlaySHA256": "f4dfdc5a855a801dbdb35f05d6d1f669eba23af4c0bfd169cd41c4b5eaa4b65f",
+      "native": {
+        "numTotalTests": 2,
+        "numPassedTests": 0,
+        "numFailedTests": 1,
+        "numPendingTests": 1,
+        "cases": [
+          {
+            "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+            "status": "failed",
+            "duration": 150737.997708,
+            "firstMessages": ["Error: Test timed out in 150000ms."]
+          },
+          {
+            "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+            "status": "skipped",
+            "duration": null,
+            "firstMessages": []
+          }
+        ]
+      },
+      "startup": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      },
+      "exit": 1
+    },
+    "checkpoints": {
+      "lastDeliveredBefore": {
+        "kind": "typography-refresh",
+        "calls": 2048,
+        "unchanged": 2047,
+        "elapsedMs": 12531.299997329712,
+        "pageMs": 101152.89999985695,
+        "timeOrigin": 1794894174377.8
+      },
+      "lastDeliveredAfter": {
+        "kind": "typography-refresh",
+        "calls": 3,
+        "unchanged": 2,
+        "elapsedMs": 11.099999904632568,
+        "pageMs": 5789.899999856949,
+        "timeOrigin": 1794894984973.9
+      },
+      "before": [
+        {
+          "kind": "typography-refresh",
+          "calls": 1,
+          "unchanged": 0,
+          "elapsedMs": 3.5999999046325684,
+          "pageMs": 5478.399999856949,
+          "timeOrigin": 1794894174377.8
+        },
+        {
+          "kind": "typography-refresh",
+          "calls": 2,
+          "unchanged": 1,
+          "elapsedMs": 7.400000095367432,
+          "pageMs": 5761.5,
+          "timeOrigin": 1794894174377.8
+        },
+        {
+          "kind": "typography-refresh",
+          "calls": 3,
+          "unchanged": 2,
+          "elapsedMs": 11.100000143051147,
+          "pageMs": 5853.5,
+          "timeOrigin": 1794894174377.8
+        },
+        {
+          "kind": "typography-refresh",
+          "calls": 4,
+          "unchanged": 3,
+          "elapsedMs": 16.300000190734863,
+          "pageMs": 6233,
+          "timeOrigin": 1794894174377.8
+        },
+        {
+          "kind": "typography-refresh",
+          "calls": 5,
+          "unchanged": 4,
+          "elapsedMs": 21.200000286102295,
+          "pageMs": 6443.099999904633,
+          "timeOrigin": 1794894174377.8
+        },
+        {
+          "kind": "typography-refresh",
+          "calls": 6,
+          "unchanged": 5,
+          "elapsedMs": 26.300000429153442,
+          "pageMs": 6453.299999952316,
+          "timeOrigin": 1794894174377.8
+        },
+        {
+          "kind": "typography-refresh",
+          "calls": 7,
+          "unchanged": 6,
+          "elapsedMs": 31.100000381469727,
+          "pageMs": 6468.199999809265,
+          "timeOrigin": 1794894174377.8
+        },
+        {
+          "kind": "typography-refresh",
+          "calls": 8,
+          "unchanged": 7,
+          "elapsedMs": 35.80000042915344,
+          "pageMs": 6482.299999952316,
+          "timeOrigin": 1794894174377.8
+        },
+        {
+          "kind": "typography-refresh",
+          "calls": 9,
+          "unchanged": 8,
+          "elapsedMs": 41.00000047683716,
+          "pageMs": 6822.599999904633,
+          "timeOrigin": 1794894174377.8
+        },
+        {
+          "kind": "typography-refresh",
+          "calls": 10,
+          "unchanged": 9,
+          "elapsedMs": 46.200000524520874,
+          "pageMs": 6831.299999952316,
+          "timeOrigin": 1794894174377.8
+        },
+        {
+          "kind": "typography-refresh",
+          "calls": 11,
+          "unchanged": 10,
+          "elapsedMs": 51.30000042915344,
+          "pageMs": 6846.599999904633,
+          "timeOrigin": 1794894174377.8
+        },
+        {
+          "kind": "typography-refresh",
+          "calls": 12,
+          "unchanged": 11,
+          "elapsedMs": 56.700000524520874,
+          "pageMs": 6862.299999952316,
+          "timeOrigin": 1794894174377.8
+        },
+        {
+          "kind": "typography-refresh",
+          "calls": 13,
+          "unchanged": 12,
+          "elapsedMs": 62.40000057220459,
+          "pageMs": 6918.799999952316,
+          "timeOrigin": 1794894174377.8
+        },
+        {
+          "kind": "typography-refresh",
+          "calls": 14,
+          "unchanged": 13,
+          "elapsedMs": 67.50000047683716,
+          "pageMs": 6930.699999809265,
+          "timeOrigin": 1794894174377.8
+        },
+        {
+          "kind": "typography-refresh",
+          "calls": 15,
+          "unchanged": 14,
+          "elapsedMs": 72.60000038146973,
+          "pageMs": 6946.899999856949,
+          "timeOrigin": 1794894174377.8
+        },
+        {
+          "kind": "typography-refresh",
+          "calls": 16,
+          "unchanged": 15,
+          "elapsedMs": 77.50000023841858,
+          "pageMs": 6954.199999809265,
+          "timeOrigin": 1794894174377.8
+        },
+        {
+          "kind": "typography-refresh",
+          "calls": 32,
+          "unchanged": 31,
+          "elapsedMs": 159.79999995231628,
+          "pageMs": 7389.899999856949,
+          "timeOrigin": 1794894174377.8
+        },
+        {
+          "kind": "typography-refresh",
+          "calls": 64,
+          "unchanged": 63,
+          "elapsedMs": 313.19999957084656,
+          "pageMs": 7825.399999856949,
+          "timeOrigin": 1794894174377.8
+        },
+        {
+          "kind": "typography-refresh",
+          "calls": 128,
+          "unchanged": 127,
+          "elapsedMs": 635.0000004768372,
+          "pageMs": 9134.099999904633,
+          "timeOrigin": 1794894174377.8
+        },
+        {
+          "kind": "typography-refresh",
+          "calls": 256,
+          "unchanged": 255,
+          "elapsedMs": 1271.0999977588654,
+          "pageMs": 11725.199999809265,
+          "timeOrigin": 1794894174377.8
+        },
+        {
+          "kind": "typography-refresh",
+          "calls": 512,
+          "unchanged": 511,
+          "elapsedMs": 2613.099995136261,
+          "pageMs": 19432.299999952316,
+          "timeOrigin": 1794894174377.8
+        },
+        {
+          "kind": "typography-refresh",
+          "calls": 1024,
+          "unchanged": 1023,
+          "elapsedMs": 5456.499995231628,
+          "pageMs": 49523.39999985695,
+          "timeOrigin": 1794894174377.8
+        },
+        {
+          "kind": "typography-refresh",
+          "calls": 2048,
+          "unchanged": 2047,
+          "elapsedMs": 12531.299997329712,
+          "pageMs": 101152.89999985695,
+          "timeOrigin": 1794894174377.8
+        }
+      ],
+      "after": [
+        {
+          "kind": "typography-refresh",
+          "calls": 1,
+          "unchanged": 0,
+          "elapsedMs": 3.5,
+          "pageMs": 5410.399999856949,
+          "timeOrigin": 1794894984973.9
+        },
+        {
+          "kind": "typography-refresh",
+          "calls": 2,
+          "unchanged": 1,
+          "elapsedMs": 7.299999952316284,
+          "pageMs": 5697.199999809265,
+          "timeOrigin": 1794894984973.9
+        },
+        {
+          "kind": "typography-refresh",
+          "calls": 3,
+          "unchanged": 2,
+          "elapsedMs": 11.099999904632568,
+          "pageMs": 5789.899999856949,
+          "timeOrigin": 1794894984973.9
+        }
+      ],
+      "sharedObservedWindow": {
+        "throughPageMs": 5789.899999856949,
+        "before": {
+          "kind": "typography-refresh",
+          "calls": 2,
+          "unchanged": 1,
+          "elapsedMs": 7.400000095367432,
+          "pageMs": 5761.5,
+          "timeOrigin": 1794894174377.8
+        },
+        "after": {
+          "kind": "typography-refresh",
+          "calls": 3,
+          "unchanged": 2,
+          "elapsedMs": 11.099999904632568,
+          "pageMs": 5789.899999856949,
+          "timeOrigin": 1794894984973.9
+        }
+      }
+    }
+  }
+}

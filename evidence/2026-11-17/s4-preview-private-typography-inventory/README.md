@@ -1,0 +1,9 @@
+# S4 documentation Typography inventory during Previewer startup
+
+Three bounded debugger snapshots on exact 6e5226bf captured the current renderer in computed theme-value reading, documentation Typography inventory and the document A11y relationship observer. These are individual paused locations. On the same 1,268-preview Chinese build, a separate scan counter reached 2,048 full-document Typography checks by page time 101.153 s. Of those, 2,047 found unchanged input. The measured cumulative check time was 12.531 s.
+
+Local signed 3b473b5e filters private Previewer mutations at an existing typography ownership boundary. Borrowed native source, eligible status text, outside paragraph eligibility, and roots entering or leaving the document retain their existing reconciliation. The scoped regression reproduces one whole-page rescan for a private Previewer update on the previous source and zero after. Existing native status withdrawal and outer-ancestor positive controls pass. All 189 focused cases pass after generating the required test CSS with the repository command.
+
+The candidate scan run's last delivered checkpoint is 3 checks, 2 unchanged, and 0.011 s accumulated at page time 5.790 s. Both runs keep the same checkpoints policy and full preview inventory. Delivered checkpoints are sampled prefixes from separate mount schedules. They do not establish the total number of checks or whole-page performance at expiry.
+
+Both original Matrix locales keep all 1,268 previews and reach the 150-second guard before Dialog. All 47 public packages, types and manifests pass. The built Shadcn and Brutalist documentation preference cases pass across WC, React, Vue and Vue 2 on pinned Chrome 156.0.8078.79. The attached native screenshots show the final Vue 2 state of both doc journeys. The temporary test and emitted-asset overlays restore by hash.
