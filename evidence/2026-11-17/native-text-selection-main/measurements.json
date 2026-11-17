@@ -1,0 +1,1836 @@
+{
+  "source": {
+    "head": "e97761a5a5ace8bafe5efaee5314b77f161a9d75",
+    "tree": "ff8cc11d1383a36af7afca4d1e7a868768336fb3",
+    "parent": "0f0955a9d624e0ef5e250f56a0eaa0fc52bbfb53",
+    "signature": "G",
+    "files": [
+      "d6d135059bbc1a9eb2f4bb51b3b455c8220f78fee9e3765ddb07c0aa19c25996  apps/www/src/components/PrototypePreviewer/native-content-lease.test.ts",
+      "bfc19295f4a2ed1b630021ca32098814c2ba96d7ecb95f20dc76749faf5e43aa  apps/www/src/components/PrototypePreviewer/native-content-lease.ts"
+    ],
+    "contribution": "Focused follow-up to native content lease selection preservation, on current upstream main."
+  },
+  "focused": {
+    "red": {
+      "passed": 8,
+      "failed": 4,
+      "filtered": 0,
+      "files": 1,
+      "sha256": "178f22475043ee508fe5baa02ae60b5489671c4543ff100829cf164d47f359a0"
+    },
+    "green": {
+      "passed": 252,
+      "failed": 0,
+      "filtered": 0,
+      "files": 6,
+      "sha256": "320f6f21242337fe16fc7708238f5c3087d17271821b244b1c86661bb5dc1dc3"
+    }
+  },
+  "sourceBrowser": {
+    "observerSha256": "1a09cf012b529dba91878e104f20741eead58523730f1d7e66d83595409cd8c4",
+    "runs": {
+      "red": {
+        "binding": {
+          "control": "0cd96b3a1acc210bd6afda937d533f8bd0c4aee1da60fab43e12175b9ae36bb0",
+          "candidate": "0cd96b3a1acc210bd6afda937d533f8bd0c4aee1da60fab43e12175b9ae36bb0",
+          "bundle": "b79dae5d4b88e8275b39dae8e57644ce0772f9254676ef6874d5d342c49eaedc"
+        },
+        "result": {
+          "browser": "156.0.8078.79",
+          "rows": [
+            {
+              "mode": "empty",
+              "variant": "legacy",
+              "before": {
+                "mode": "empty",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": false,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 18,
+                "selectionEnd": 18,
+                "selectionDirection": "none",
+                "anchor": null,
+                "anchorOffset": 0,
+                "focus": null,
+                "focusOffset": 0
+              }
+            },
+            {
+              "mode": "empty",
+              "variant": "candidate",
+              "before": {
+                "mode": "empty",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": false,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 18,
+                "selectionEnd": 18,
+                "selectionDirection": "none",
+                "anchor": null,
+                "anchorOffset": 0,
+                "focus": null,
+                "focusOffset": 0
+              }
+            },
+            {
+              "mode": "forward",
+              "variant": "legacy",
+              "before": {
+                "mode": "forward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": false,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 18,
+                "selectionEnd": 18,
+                "selectionDirection": "none",
+                "anchor": "text",
+                "anchorOffset": 2,
+                "focus": "text",
+                "focusOffset": 10
+              }
+            },
+            {
+              "mode": "forward",
+              "variant": "candidate",
+              "before": {
+                "mode": "forward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": false,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 18,
+                "selectionEnd": 18,
+                "selectionDirection": "none",
+                "anchor": "text",
+                "anchorOffset": 2,
+                "focus": "text",
+                "focusOffset": 10
+              }
+            },
+            {
+              "mode": "backward",
+              "variant": "legacy",
+              "before": {
+                "mode": "backward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": false,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 18,
+                "selectionEnd": 18,
+                "selectionDirection": "none",
+                "anchor": "text",
+                "anchorOffset": 10,
+                "focus": "text",
+                "focusOffset": 2
+              }
+            },
+            {
+              "mode": "backward",
+              "variant": "candidate",
+              "before": {
+                "mode": "backward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": false,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 18,
+                "selectionEnd": 18,
+                "selectionDirection": "none",
+                "anchor": "text",
+                "anchorOffset": 10,
+                "focus": "text",
+                "focusOffset": 2
+              }
+            },
+            {
+              "mode": "crossing",
+              "variant": "legacy",
+              "before": {
+                "mode": "crossing",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": false,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 18,
+                "selectionEnd": 18,
+                "selectionDirection": "none",
+                "anchor": "text",
+                "anchorOffset": 2,
+                "focus": "outside",
+                "focusOffset": 5
+              }
+            },
+            {
+              "mode": "crossing",
+              "variant": "candidate",
+              "before": {
+                "mode": "crossing",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": false,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 18,
+                "selectionEnd": 18,
+                "selectionDirection": "none",
+                "anchor": "text",
+                "anchorOffset": 2,
+                "focus": "outside",
+                "focusOffset": 5
+              }
+            },
+            {
+              "mode": "registered-forward",
+              "variant": "legacy",
+              "before": {
+                "mode": "registered-forward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": false,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 18,
+                "selectionEnd": 18,
+                "selectionDirection": "none",
+                "anchor": "destination",
+                "anchorOffset": 0,
+                "focus": "destination",
+                "focusOffset": 1
+              }
+            },
+            {
+              "mode": "registered-forward",
+              "variant": "candidate",
+              "before": {
+                "mode": "registered-forward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 2,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": false,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 18,
+                "selectionEnd": 18,
+                "selectionDirection": "none",
+                "anchor": "destination",
+                "anchorOffset": 0,
+                "focus": "destination",
+                "focusOffset": 1
+              }
+            },
+            {
+              "mode": "registered-backward",
+              "variant": "legacy",
+              "before": {
+                "mode": "registered-backward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": false,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 18,
+                "selectionEnd": 18,
+                "selectionDirection": "none",
+                "anchor": "destination",
+                "anchorOffset": 1,
+                "focus": "destination",
+                "focusOffset": 0
+              }
+            },
+            {
+              "mode": "registered-backward",
+              "variant": "candidate",
+              "before": {
+                "mode": "registered-backward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": false,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 18,
+                "selectionEnd": 18,
+                "selectionDirection": "none",
+                "anchor": "destination",
+                "anchorOffset": 1,
+                "focus": "destination",
+                "focusOffset": 0
+              }
+            },
+            {
+              "mode": "input-forward",
+              "variant": "legacy",
+              "before": {
+                "mode": "input-forward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 2,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": true,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 0,
+                "selectionEnd": 0,
+                "selectionDirection": "forward",
+                "anchor": "SPAN",
+                "anchorOffset": 1,
+                "focus": "SPAN",
+                "focusOffset": 1
+              }
+            },
+            {
+              "mode": "input-forward",
+              "variant": "candidate",
+              "before": {
+                "mode": "input-forward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 2,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": true,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 0,
+                "selectionEnd": 0,
+                "selectionDirection": "forward",
+                "anchor": "SPAN",
+                "anchorOffset": 1,
+                "focus": "SPAN",
+                "focusOffset": 1
+              }
+            },
+            {
+              "mode": "input-backward",
+              "variant": "legacy",
+              "before": {
+                "mode": "input-backward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 2,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": true,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 0,
+                "selectionEnd": 0,
+                "selectionDirection": "forward",
+                "anchor": "SPAN",
+                "anchorOffset": 1,
+                "focus": "SPAN",
+                "focusOffset": 1
+              }
+            },
+            {
+              "mode": "input-backward",
+              "variant": "candidate",
+              "before": {
+                "mode": "input-backward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 2,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": true,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 0,
+                "selectionEnd": 0,
+                "selectionDirection": "forward",
+                "anchor": "SPAN",
+                "anchorOffset": 1,
+                "focus": "SPAN",
+                "focusOffset": 1
+              }
+            },
+            {
+              "mode": "textarea-forward",
+              "variant": "legacy",
+              "before": {
+                "mode": "textarea-forward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": true,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 0,
+                "selectionEnd": 0,
+                "selectionDirection": "forward",
+                "anchor": "SPAN",
+                "anchorOffset": 1,
+                "focus": "SPAN",
+                "focusOffset": 1
+              }
+            },
+            {
+              "mode": "textarea-forward",
+              "variant": "candidate",
+              "before": {
+                "mode": "textarea-forward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": true,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 0,
+                "selectionEnd": 0,
+                "selectionDirection": "forward",
+                "anchor": "SPAN",
+                "anchorOffset": 1,
+                "focus": "SPAN",
+                "focusOffset": 1
+              }
+            },
+            {
+              "mode": "textarea-backward",
+              "variant": "legacy",
+              "before": {
+                "mode": "textarea-backward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": true,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 0,
+                "selectionEnd": 0,
+                "selectionDirection": "forward",
+                "anchor": "SPAN",
+                "anchorOffset": 1,
+                "focus": "SPAN",
+                "focusOffset": 1
+              }
+            },
+            {
+              "mode": "textarea-backward",
+              "variant": "candidate",
+              "before": {
+                "mode": "textarea-backward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": true,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 0,
+                "selectionEnd": 0,
+                "selectionDirection": "forward",
+                "anchor": "SPAN",
+                "anchorOffset": 1,
+                "focus": "SPAN",
+                "focusOffset": 1
+              }
+            }
+          ],
+          "failures": [
+            {
+              "mode": "input-forward",
+              "variant": "legacy",
+              "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   0,\n+   0,\n-   3,\n-   8,\n    'forward'\n  ]\n"
+            },
+            {
+              "mode": "input-forward",
+              "variant": "candidate",
+              "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   0,\n+   0,\n-   3,\n-   8,\n    'forward'\n  ]\n"
+            },
+            {
+              "mode": "input-backward",
+              "variant": "legacy",
+              "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   0,\n+   0,\n+   'forward'\n-   3,\n-   8,\n-   'backward'\n  ]\n"
+            },
+            {
+              "mode": "input-backward",
+              "variant": "candidate",
+              "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   0,\n+   0,\n+   'forward'\n-   3,\n-   8,\n-   'backward'\n  ]\n"
+            },
+            {
+              "mode": "textarea-forward",
+              "variant": "legacy",
+              "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   0,\n+   0,\n-   3,\n-   8,\n    'forward'\n  ]\n"
+            },
+            {
+              "mode": "textarea-forward",
+              "variant": "candidate",
+              "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   0,\n+   0,\n-   3,\n-   8,\n    'forward'\n  ]\n"
+            },
+            {
+              "mode": "textarea-backward",
+              "variant": "legacy",
+              "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   0,\n+   0,\n+   'forward'\n-   3,\n-   8,\n-   'backward'\n  ]\n"
+            },
+            {
+              "mode": "textarea-backward",
+              "variant": "candidate",
+              "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   0,\n+   0,\n+   'forward'\n-   3,\n-   8,\n-   'backward'\n  ]\n"
+            }
+          ]
+        }
+      },
+      "green": {
+        "binding": {
+          "control": "0cd96b3a1acc210bd6afda937d533f8bd0c4aee1da60fab43e12175b9ae36bb0",
+          "candidate": "bfc19295f4a2ed1b630021ca32098814c2ba96d7ecb95f20dc76749faf5e43aa",
+          "bundle": "70f28e4e05ab11e8f27f96516dcecb86c8de6046c6f80eef402d1192d04c5aef"
+        },
+        "result": {
+          "browser": "156.0.8078.79",
+          "rows": [
+            {
+              "mode": "empty",
+              "variant": "legacy",
+              "before": {
+                "mode": "empty",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": false,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 18,
+                "selectionEnd": 18,
+                "selectionDirection": "none",
+                "anchor": null,
+                "anchorOffset": 0,
+                "focus": null,
+                "focusOffset": 0
+              }
+            },
+            {
+              "mode": "empty",
+              "variant": "candidate",
+              "before": {
+                "mode": "empty",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": false,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 18,
+                "selectionEnd": 18,
+                "selectionDirection": "none",
+                "anchor": null,
+                "anchorOffset": 0,
+                "focus": null,
+                "focusOffset": 0
+              }
+            },
+            {
+              "mode": "forward",
+              "variant": "legacy",
+              "before": {
+                "mode": "forward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": false,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 18,
+                "selectionEnd": 18,
+                "selectionDirection": "none",
+                "anchor": "text",
+                "anchorOffset": 2,
+                "focus": "text",
+                "focusOffset": 10
+              }
+            },
+            {
+              "mode": "forward",
+              "variant": "candidate",
+              "before": {
+                "mode": "forward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": false,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 18,
+                "selectionEnd": 18,
+                "selectionDirection": "none",
+                "anchor": "text",
+                "anchorOffset": 2,
+                "focus": "text",
+                "focusOffset": 10
+              }
+            },
+            {
+              "mode": "backward",
+              "variant": "legacy",
+              "before": {
+                "mode": "backward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": false,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 18,
+                "selectionEnd": 18,
+                "selectionDirection": "none",
+                "anchor": "text",
+                "anchorOffset": 10,
+                "focus": "text",
+                "focusOffset": 2
+              }
+            },
+            {
+              "mode": "backward",
+              "variant": "candidate",
+              "before": {
+                "mode": "backward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": false,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 18,
+                "selectionEnd": 18,
+                "selectionDirection": "none",
+                "anchor": "text",
+                "anchorOffset": 10,
+                "focus": "text",
+                "focusOffset": 2
+              }
+            },
+            {
+              "mode": "crossing",
+              "variant": "legacy",
+              "before": {
+                "mode": "crossing",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": false,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 18,
+                "selectionEnd": 18,
+                "selectionDirection": "none",
+                "anchor": "text",
+                "anchorOffset": 2,
+                "focus": "outside",
+                "focusOffset": 5
+              }
+            },
+            {
+              "mode": "crossing",
+              "variant": "candidate",
+              "before": {
+                "mode": "crossing",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": false,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 18,
+                "selectionEnd": 18,
+                "selectionDirection": "none",
+                "anchor": "text",
+                "anchorOffset": 2,
+                "focus": "outside",
+                "focusOffset": 5
+              }
+            },
+            {
+              "mode": "registered-forward",
+              "variant": "legacy",
+              "before": {
+                "mode": "registered-forward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": false,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 18,
+                "selectionEnd": 18,
+                "selectionDirection": "none",
+                "anchor": "destination",
+                "anchorOffset": 0,
+                "focus": "destination",
+                "focusOffset": 1
+              }
+            },
+            {
+              "mode": "registered-forward",
+              "variant": "candidate",
+              "before": {
+                "mode": "registered-forward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": false,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 18,
+                "selectionEnd": 18,
+                "selectionDirection": "none",
+                "anchor": "destination",
+                "anchorOffset": 0,
+                "focus": "destination",
+                "focusOffset": 1
+              }
+            },
+            {
+              "mode": "registered-backward",
+              "variant": "legacy",
+              "before": {
+                "mode": "registered-backward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": false,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 18,
+                "selectionEnd": 18,
+                "selectionDirection": "none",
+                "anchor": "destination",
+                "anchorOffset": 1,
+                "focus": "destination",
+                "focusOffset": 0
+              }
+            },
+            {
+              "mode": "registered-backward",
+              "variant": "candidate",
+              "before": {
+                "mode": "registered-backward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": false,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 18,
+                "selectionEnd": 18,
+                "selectionDirection": "none",
+                "anchor": "destination",
+                "anchorOffset": 1,
+                "focus": "destination",
+                "focusOffset": 0
+              }
+            },
+            {
+              "mode": "input-forward",
+              "variant": "legacy",
+              "before": {
+                "mode": "input-forward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 2,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": true,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 0,
+                "selectionEnd": 0,
+                "selectionDirection": "forward",
+                "anchor": "SPAN",
+                "anchorOffset": 1,
+                "focus": "SPAN",
+                "focusOffset": 1
+              }
+            },
+            {
+              "mode": "input-forward",
+              "variant": "candidate",
+              "before": {
+                "mode": "input-forward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 2,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": true,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 3,
+                "selectionEnd": 8,
+                "selectionDirection": "forward",
+                "anchor": "SPAN",
+                "anchorOffset": 1,
+                "focus": "SPAN",
+                "focusOffset": 1
+              }
+            },
+            {
+              "mode": "input-backward",
+              "variant": "legacy",
+              "before": {
+                "mode": "input-backward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 2,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": true,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 0,
+                "selectionEnd": 0,
+                "selectionDirection": "forward",
+                "anchor": "SPAN",
+                "anchorOffset": 1,
+                "focus": "SPAN",
+                "focusOffset": 1
+              }
+            },
+            {
+              "mode": "input-backward",
+              "variant": "candidate",
+              "before": {
+                "mode": "input-backward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 2,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": true,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 3,
+                "selectionEnd": 8,
+                "selectionDirection": "backward",
+                "anchor": "SPAN",
+                "anchorOffset": 1,
+                "focus": "SPAN",
+                "focusOffset": 1
+              }
+            },
+            {
+              "mode": "textarea-forward",
+              "variant": "legacy",
+              "before": {
+                "mode": "textarea-forward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": true,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 0,
+                "selectionEnd": 0,
+                "selectionDirection": "forward",
+                "anchor": "SPAN",
+                "anchorOffset": 1,
+                "focus": "SPAN",
+                "focusOffset": 1
+              }
+            },
+            {
+              "mode": "textarea-forward",
+              "variant": "candidate",
+              "before": {
+                "mode": "textarea-forward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": true,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 3,
+                "selectionEnd": 8,
+                "selectionDirection": "forward",
+                "anchor": "SPAN",
+                "anchorOffset": 1,
+                "focus": "SPAN",
+                "focusOffset": 1
+              }
+            },
+            {
+              "mode": "textarea-backward",
+              "variant": "legacy",
+              "before": {
+                "mode": "textarea-backward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": true,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 0,
+                "selectionEnd": 0,
+                "selectionDirection": "forward",
+                "anchor": "SPAN",
+                "anchorOffset": 1,
+                "focus": "SPAN",
+                "focusOffset": 1
+              }
+            },
+            {
+              "mode": "textarea-backward",
+              "variant": "candidate",
+              "before": {
+                "mode": "textarea-backward",
+                "hasNative": true
+              },
+              "operation": {
+                "selectionReads": 1,
+                "nativeMoves": 0
+              },
+              "layoutDelta": 1,
+              "result": {
+                "sourceRetained": true,
+                "activeInput": true,
+                "inputValue": "Uncontrolled input",
+                "selectionStart": 3,
+                "selectionEnd": 8,
+                "selectionDirection": "backward",
+                "anchor": "SPAN",
+                "anchorOffset": 1,
+                "focus": "SPAN",
+                "focusOffset": 1
+              }
+            }
+          ],
+          "failures": [
+            {
+              "mode": "input-forward",
+              "variant": "legacy",
+              "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   0,\n+   0,\n-   3,\n-   8,\n    'forward'\n  ]\n"
+            },
+            {
+              "mode": "input-backward",
+              "variant": "legacy",
+              "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   0,\n+   0,\n+   'forward'\n-   3,\n-   8,\n-   'backward'\n  ]\n"
+            },
+            {
+              "mode": "textarea-forward",
+              "variant": "legacy",
+              "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   0,\n+   0,\n-   3,\n-   8,\n    'forward'\n  ]\n"
+            },
+            {
+              "mode": "textarea-backward",
+              "variant": "legacy",
+              "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   0,\n+   0,\n+   'forward'\n-   3,\n-   8,\n-   'backward'\n  ]\n"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "productionBrowser": {
+    "observerSha256": "3bae6f650ad639c6189f64b66a5e87d41a6352e40192a4319532187c8c152eab",
+    "inputs": [
+      {
+        "asset": "native-content-lease.WSabe4iR.js",
+        "sha256": "5435e79edabba376cceea635bb29725695bf0ea15cc46903cbc22e3ba0257847"
+      },
+      {
+        "asset": "native-green.js",
+        "sha256": "70f28e4e05ab11e8f27f96516dcecb86c8de6046c6f80eef402d1192d04c5aef"
+      },
+      {
+        "asset": "packed-control.mjs",
+        "sha256": "3bae6f650ad639c6189f64b66a5e87d41a6352e40192a4319532187c8c152eab"
+      }
+    ],
+    "result": {
+      "browser": "156.0.8078.79",
+      "rows": [
+        {
+          "mode": "empty",
+          "variant": "legacy",
+          "before": {
+            "mode": "empty",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": null,
+            "anchorOffset": 0,
+            "focus": null,
+            "focusOffset": 0
+          }
+        },
+        {
+          "mode": "empty",
+          "variant": "candidate",
+          "before": {
+            "mode": "empty",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": null,
+            "anchorOffset": 0,
+            "focus": null,
+            "focusOffset": 0
+          }
+        },
+        {
+          "mode": "forward",
+          "variant": "legacy",
+          "before": {
+            "mode": "forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "text",
+            "anchorOffset": 2,
+            "focus": "text",
+            "focusOffset": 10
+          }
+        },
+        {
+          "mode": "forward",
+          "variant": "candidate",
+          "before": {
+            "mode": "forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "text",
+            "anchorOffset": 2,
+            "focus": "text",
+            "focusOffset": 10
+          }
+        },
+        {
+          "mode": "backward",
+          "variant": "legacy",
+          "before": {
+            "mode": "backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "text",
+            "anchorOffset": 10,
+            "focus": "text",
+            "focusOffset": 2
+          }
+        },
+        {
+          "mode": "backward",
+          "variant": "candidate",
+          "before": {
+            "mode": "backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "text",
+            "anchorOffset": 10,
+            "focus": "text",
+            "focusOffset": 2
+          }
+        },
+        {
+          "mode": "crossing",
+          "variant": "legacy",
+          "before": {
+            "mode": "crossing",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "text",
+            "anchorOffset": 2,
+            "focus": "outside",
+            "focusOffset": 5
+          }
+        },
+        {
+          "mode": "crossing",
+          "variant": "candidate",
+          "before": {
+            "mode": "crossing",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "text",
+            "anchorOffset": 2,
+            "focus": "outside",
+            "focusOffset": 5
+          }
+        },
+        {
+          "mode": "registered-forward",
+          "variant": "legacy",
+          "before": {
+            "mode": "registered-forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "destination",
+            "anchorOffset": 0,
+            "focus": "destination",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "registered-forward",
+          "variant": "candidate",
+          "before": {
+            "mode": "registered-forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "destination",
+            "anchorOffset": 0,
+            "focus": "destination",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "registered-backward",
+          "variant": "legacy",
+          "before": {
+            "mode": "registered-backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "destination",
+            "anchorOffset": 1,
+            "focus": "destination",
+            "focusOffset": 0
+          }
+        },
+        {
+          "mode": "registered-backward",
+          "variant": "candidate",
+          "before": {
+            "mode": "registered-backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": false,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 18,
+            "selectionEnd": 18,
+            "selectionDirection": "none",
+            "anchor": "destination",
+            "anchorOffset": 1,
+            "focus": "destination",
+            "focusOffset": 0
+          }
+        },
+        {
+          "mode": "input-forward",
+          "variant": "legacy",
+          "before": {
+            "mode": "input-forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 0,
+            "selectionEnd": 0,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "input-forward",
+          "variant": "candidate",
+          "before": {
+            "mode": "input-forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "input-backward",
+          "variant": "legacy",
+          "before": {
+            "mode": "input-backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 0,
+            "selectionEnd": 0,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "input-backward",
+          "variant": "candidate",
+          "before": {
+            "mode": "input-backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 2,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "backward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-forward",
+          "variant": "legacy",
+          "before": {
+            "mode": "textarea-forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 0,
+            "selectionEnd": 0,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-forward",
+          "variant": "candidate",
+          "before": {
+            "mode": "textarea-forward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-backward",
+          "variant": "legacy",
+          "before": {
+            "mode": "textarea-backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 0,
+            "selectionEnd": 0,
+            "selectionDirection": "forward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        },
+        {
+          "mode": "textarea-backward",
+          "variant": "candidate",
+          "before": {
+            "mode": "textarea-backward",
+            "hasNative": true
+          },
+          "operation": {
+            "selectionReads": 1,
+            "nativeMoves": 0
+          },
+          "layoutDelta": 1,
+          "result": {
+            "sourceRetained": true,
+            "activeInput": true,
+            "inputValue": "Uncontrolled input",
+            "selectionStart": 3,
+            "selectionEnd": 8,
+            "selectionDirection": "backward",
+            "anchor": "SPAN",
+            "anchorOffset": 1,
+            "focus": "SPAN",
+            "focusOffset": 1
+          }
+        }
+      ],
+      "failures": [
+        {
+          "mode": "input-forward",
+          "variant": "legacy",
+          "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   0,\n+   0,\n-   3,\n-   8,\n    'forward'\n  ]\n"
+        },
+        {
+          "mode": "input-backward",
+          "variant": "legacy",
+          "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   0,\n+   0,\n+   'forward'\n-   3,\n-   8,\n-   'backward'\n  ]\n"
+        },
+        {
+          "mode": "textarea-forward",
+          "variant": "legacy",
+          "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   0,\n+   0,\n-   3,\n-   8,\n    'forward'\n  ]\n"
+        },
+        {
+          "mode": "textarea-backward",
+          "variant": "legacy",
+          "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   0,\n+   0,\n+   'forward'\n-   3,\n-   8,\n-   'backward'\n  ]\n"
+        }
+      ]
+    }
+  },
+  "validation": {
+    "environment": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+    "packages": 47,
+    "pages": 685,
+    "typesExit": 0,
+    "manifestsExit": 0,
+    "budgetPolicyExit": 0,
+    "measuredBudgetRows": [
+      "PASS lucide/icons/x: 2879 / 3000 gzip bytes; overBudget=0; minified=8695 sha256=02838c5b1d4db7b0d62eab9b1d502848e268dfea098798ee87665caa966772fb",
+      "PASS lucide root: 637306 / 700000 gzip bytes; overBudget=0; minified=4087403 sha256=eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c",
+      "ADVISORY core root: 11373 / 7600 gzip bytes; overBudget=3773; minified=35723 sha256=bb0468537baccea449d0260ae56ac758902eb989dae84f699b6c27626212d913",
+      "ADVISORY runtime root: 100015 / 78500 gzip bytes; overBudget=21515; minified=386804 sha256=11347a17a9c7eda3575d4bf30a0a2954e770f801b4264c977ae838d6755f40e8",
+      "ADVISORY adapter-react root: 162083 / 106000 gzip bytes; overBudget=56083; minified=572391 sha256=9bcf583f0ac13f7143cc3d8668d1e882cdce5d227a37372b25db03ae372084f7",
+      "ADVISORY adapter-vue root: 160763 / 106000 gzip bytes; overBudget=54763; minified=567663 sha256=ab86703c9c1fe57210b94967c163a39b9d323192c27613b4e19d4789be160298",
+      "ADVISORY adapter-web-component root: 190375 / 132000 gzip bytes; overBudget=58375; minified=656550 sha256=d67b26dbeb71821f54b65dca1f0ade95eca22be1be793e79ec6790b47507732e",
+      "PASS prototypes-base/button: 5274 / 6000 gzip bytes; overBudget=0; minified=18158 sha256=6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67",
+      "ADVISORY prototypes-shadcn/button: 7803 / 7000 gzip bytes; overBudget=803; minified=34485 sha256=60b4ff9277e59fba01c34162ec9418282ce82c6b43e24f223a05c9e1df19db57"
+    ],
+    "matrix": {
+      "passed": 0,
+      "failed": 2,
+      "filtered": 0,
+      "files": 1,
+      "sha256": "d7987ad0304c0cb00f3e2573a293024c600433d3c6cb25cced5d6d0263ed6129"
+    },
+    "readinessMs": 60000,
+    "caseMs": 150000,
+    "previewsPerLocale": 1268,
+    "inventory": {
+      "zh-cn": {
+        "bytes": 1862437,
+        "sha256": "69945873309978768667083c60755670cabfbee0edce42a016a592d8d168eb4a",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914030,
+        "sha256": "39578e12352bbb2795f033c6ed127794fa7963ca9f13d39b967be02c8e865e29",
+        "previews": 1268
+      }
+    },
+    "packedScope": {
+      "passed": 11,
+      "failed": 0,
+      "filtered": 13,
+      "files": 3,
+      "sha256": "c5ac20e466efe406737d9ec01df2b6931e58a00b3155740a82423bec151e5a5e"
+    },
+    "article": {
+      "head": "e97761a5a5ace8bafe5efaee5314b77f161a9d75",
+      "tree": "ff8cc11d1383a36af7afca4d1e7a868768336fb3",
+      "distHashes": {
+        "zh-cn/index.html": "05057e6ed3e7f2a6841fa2dab2cd9282bc761085e6ebff9ec0985626ac0b2c53",
+        "zh-cn/ui-libraries/shadcn/button/index.html": "c0e28b84dab56a26c03db3ac8b7e38c12ab62a5a3aa9e11d8a26d3f5ceba257a",
+        "zh-cn/ui-libraries/brutalist/components/button/index.html": "f176338393f3071bdc24880d597c1e958b2f760c1189b91f699c498f5307d056"
+      },
+      "sourceCodeExamples": 9,
+      "renderedCodeExamples": 9,
+      "packedHeaderExit": 0,
+      "previewBrowserExit": 0,
+      "selector": "uses real family Popover Triggers|uses the same mobile shell|live available region|keeps Runtime Tabs outside"
+    },
+    "header": {
+      "head": "e97761a5a5ace8bafe5efaee5314b77f161a9d75",
+      "browser": "156.0.8078.79",
+      "scope": "First animation frame control on the exact static Astro preview. Geometry reads can force layout.",
+      "results": [
+        {
+          "width": 320,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1616.2999999523163,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1744.7000000476837,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1762.7999999523163,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        },
+        {
+          "width": 390,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1534.4000000953674,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1663,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1681,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        }
+      ]
+    }
+  },
+  "acceptance": {
+    "independentMaintainer": "pending",
+    "officialCI": "pending",
+    "merge": "pending"
+  }
+}
