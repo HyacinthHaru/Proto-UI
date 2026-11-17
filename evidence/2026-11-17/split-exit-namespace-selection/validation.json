@@ -1,0 +1,68 @@
+{
+  "author": {
+    "head": "9efd5cd7d5adb6ed98bf51d73ed1aeca990a669f",
+    "tree": "2d50579ab043705389ede029b7de46b379048b7b",
+    "parent": "049331500f9a3960e9ea380a074fb6b2145c1443",
+    "files": {
+      "packages/adapters/web-component/src/runtime/session.ts": "168a2eadc1e5ff7f48ef770a6620c20c94c97109837b224ebd8ed79f58d44ed9",
+      "packages/adapters/web-component/src/shadow-split-effects.ts": "c2fc15c71683866ec19cb188a96a4dcccfd2055dd0f5cbbb8e71f9669d9913d6",
+      "packages/adapters/web-component/test/shadow-closeout.browser.test.ts": "da9a0a631884a4372e0cae4568e62b09d4cbeff2f4e125d7b7b1e357da8ce924",
+      "packages/cli/src/services/prototype-style-tokens.ts": "50b9f4f1ad98250cff250c66df264dc8677423d231b4e57ba588aaf03ac827e5",
+      "packages/cli/test/shadow-template-style.test.ts": "780a208399c15080d885eac2159c9ca7e57e9a4825af23c697aee8cf44ba29e6"
+    }
+  },
+  "combined": {
+    "head": "3a686b72b8a4b8188402c33b1717d9e113296867",
+    "tree": "a60e545d4c34f013c2726f5a75571c0db670f968",
+    "parents": [
+      "fa76c52374b008b444ec4b85690a070fe55de0c8",
+      "9efd5cd7d5adb6ed98bf51d73ed1aeca990a669f"
+    ],
+    "files": {
+      "packages/adapters/web-component/src/runtime/session.ts": "168a2eadc1e5ff7f48ef770a6620c20c94c97109837b224ebd8ed79f58d44ed9",
+      "packages/adapters/web-component/src/shadow-split-effects.ts": "ee9448279edff750b536ed529ee5a1573b21d55092d1c35ebf95816a80c004e1",
+      "packages/adapters/web-component/test/shadow-closeout.browser.test.ts": "da9a0a631884a4372e0cae4568e62b09d4cbeff2f4e125d7b7b1e357da8ce924",
+      "packages/cli/src/services/prototype-style-tokens.ts": "50b9f4f1ad98250cff250c66df264dc8677423d231b4e57ba588aaf03ac827e5",
+      "packages/cli/test/shadow-template-style.test.ts": "780a208399c15080d885eac2159c9ca7e57e9a4825af23c697aee8cf44ba29e6"
+    },
+    "packages": 47,
+    "retainedScrollportPatchID": "a4261222b21deafecd9730fbab07c3cf4a074fc5"
+  },
+  "baseline": {
+    "head": "940261d62ed1ae5480875dc2758201c08521b24a",
+    "failed": 3,
+    "passed": 1,
+    "logSHA256": "e615f1b736b074b412620a8a25bd746d59ddc6c866e9504c240882c9c6636410"
+  },
+  "tests": {
+    "focused": {
+      "suites": 3,
+      "passed": 320,
+      "logSHA256": "3d5c400b48e793d9b0c69c1c91c15151588c8df39cef0752dce324dcc5dc06ee"
+    },
+    "types": {
+      "exit": 0,
+      "logSHA256": "1e14fa87e413ec8ef9585ae214d5f036450d3cc636c31a34c01c2346df2a4d42"
+    },
+    "chrome": "156.0.8078.79",
+    "combinedReviewCases": {
+      "passed": 4,
+      "logSHA256": "4ba326ef6a45516c3b63071ec2a669817962e8a8afc8ab7e77087b7df4de3595"
+    },
+    "isolatedDialog": {
+      "source": {
+        "light": 15,
+        "split": 15,
+        "mixed": 15
+      },
+      "dist": {
+        "light": 15,
+        "split": 15,
+        "mixed": 15
+      },
+      "sourceTotal": 45,
+      "distTotal": 45,
+      "sourceErrors": []
+    }
+  }
+}

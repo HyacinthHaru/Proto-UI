@@ -1,0 +1,14 @@
+{
+  "before": {
+    "suites": 34,
+    "failed": 25,
+    "passed": 751
+  },
+  "after": {
+    "suites": 34,
+    "failed": 25,
+    "passed": 753
+  },
+  "unchangedFailureNames": 25,
+  "unchangedFirstMessages": 25
+}
