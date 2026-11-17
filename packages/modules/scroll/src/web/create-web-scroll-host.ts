@@ -488,11 +488,16 @@ export function createWebScrollSurfaceHost(
         axis === 'horizontal'
           ? { axis, viewport: target.clientWidth, extent: target.scrollWidth }
           : { axis, viewport: target.clientHeight, extent: target.scrollHeight };
-      const isAxisAtEnd = (axis: ScrollAxis) => {
+      const isAxisAtEnd = (
+        axis: ScrollAxis,
+        layout?: { viewport: number; extent: number },
+        sampledOffset?: number
+      ) => {
         const horizontal = axis === 'horizontal';
-        const offset = horizontal ? target.scrollLeft : target.scrollTop;
-        const viewport = horizontal ? target.clientWidth : target.clientHeight;
-        const extent = horizontal ? target.scrollWidth : target.scrollHeight;
+        const offset = sampledOffset ?? (horizontal ? target.scrollLeft : target.scrollTop);
+        const viewport =
+          layout?.viewport ?? (horizontal ? target.clientWidth : target.clientHeight);
+        const extent = layout?.extent ?? (horizontal ? target.scrollWidth : target.scrollHeight);
         const range = Math.max(0, extent - viewport);
         const clampedOffset = Math.min(range, Math.max(0, Number.isFinite(offset) ? offset : 0));
         return range - clampedOffset <= endThreshold;
@@ -688,11 +693,15 @@ export function createWebScrollSurfaceHost(
           lastFollowLayout.viewport !== nextLayout.viewport ||
           lastFollowLayout.extent !== nextLayout.extent;
         lastFollowLayout = nextLayout;
-        if (endFollowState === 'following' && (layoutChanged || !isAxisAtEnd(axis))) {
+        if (endFollowState === 'following' && (layoutChanged || !isAxisAtEnd(axis, nextLayout))) {
           scheduleEnd(axis);
           return;
         }
-        if (endFollowState === 'paused' && requestedDepartureAxis !== axis && isAxisAtEnd(axis)) {
+        if (
+          endFollowState === 'paused' &&
+          requestedDepartureAxis !== axis &&
+          isAxisAtEnd(axis, nextLayout)
+        ) {
           endFollowState = 'following';
         }
         publish();
@@ -822,7 +831,7 @@ export function createWebScrollSurfaceHost(
             layout.viewport === contactOrigin.viewport &&
             layout.extent === contactOrigin.extent &&
             offset < contactOrigin.offset &&
-            !isAxisAtEnd(axis)
+            !isAxisAtEnd(axis, layout, offset)
           ) {
             cancelScheduledEnd(true);
             endFollowState = 'paused';

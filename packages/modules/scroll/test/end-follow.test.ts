@@ -1713,6 +1713,43 @@ describe('module-scroll: end-follow host contract', () => {
     lease.dispose();
   });
 
+  it('reuses the current follow layout for the end check and still reads geometry changes', () => {
+    const frames = installFrameHarness();
+    const target = document.createElement('div');
+    const updateMetrics = installMetrics(target, {
+      clientWidth: 100,
+      scrollWidth: 100,
+      clientHeight: 100,
+      scrollHeight: 400,
+    });
+    document.body.append(target);
+    const snapshots: ScrollSurfaceSnapshot[] = [];
+    const lease = attachEndFollow(target, snapshots);
+    try {
+      frames.runAll();
+      expect(target.scrollTop).toBe(300);
+
+      const height = vi.spyOn(target, 'clientHeight', 'get');
+      const extent = vi.spyOn(target, 'scrollHeight', 'get');
+      window.dispatchEvent(new Event('resize'));
+      expect(frames.pending()).toBe(0);
+      // Layout comparison and publication each read geometry. The end check
+      // between them uses that layout sample without rereading either size.
+      expect(height).toHaveBeenCalledTimes(2);
+      expect(extent).toHaveBeenCalledTimes(2);
+      expect(snapshots.at(-1)?.endFollow.state).toBe('following');
+
+      updateMetrics({ scrollHeight: 600 });
+      window.dispatchEvent(new Event('resize'));
+      expect(frames.pending()).toBe(1);
+      frames.runAll();
+      expect(target.scrollTop).toBe(500);
+      expect(snapshots.at(-1)?.endFollow.state).toBe('following');
+    } finally {
+      lease.dispose();
+    }
+  });
+
   it('realigns a following lease when reflow only changes the offset', () => {
     const frames = installFrameHarness();
     const target = document.createElement('div');
