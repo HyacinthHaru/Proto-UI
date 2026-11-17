@@ -329,6 +329,11 @@ describe('module-scroll: Web scroll surface host', () => {
     expect(thumb.getAttribute('role')).toBeNull();
     expect(thumb.tabIndex).toBe(-1);
 
+    const thumbWrite = vi.spyOn(thumb.style, 'setProperty');
+    target.ownerDocument.defaultView?.dispatchEvent(new Event('resize'));
+    expect(thumbWrite.mock.calls).toEqual([]);
+    thumbWrite.mockRestore();
+
     lease.request({ kind: 'to', axis: 'vertical', position: 0.5 });
     expect(thumb.style.getPropertyValue('--proto-ui-scroll-thumb-offset')).toBe('36px');
     expect(thumb.style.transform).toContain('var(--proto-ui-scroll-thumb-offset)');

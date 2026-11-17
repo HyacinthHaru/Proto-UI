@@ -43,12 +43,22 @@ const readDisplay = (target: HTMLElement): DisplayStyle => ({
   value: target.style.getPropertyValue('display'),
   priority: target.style.getPropertyPriority('display'),
 });
-const writeDisplay = (target: HTMLElement, next: DisplayStyle) => {
-  const current = readDisplay(target);
-  if (current.value === next.value && current.priority === next.priority) return;
-  if (next.value) target.style.setProperty('display', next.value, next.priority);
-  else target.style.removeProperty('display');
+const writeInlineStyle = (
+  style: CSSStyleDeclaration,
+  property: string,
+  value: string,
+  priority = ''
+) => {
+  if (
+    style.getPropertyValue(property) === value &&
+    style.getPropertyPriority(property) === priority
+  )
+    return;
+  if (value) style.setProperty(property, value, priority);
+  else style.removeProperty(property);
 };
+const writeDisplay = (target: HTMLElement, next: DisplayStyle) =>
+  writeInlineStyle(target.style, 'display', next.value, next.priority);
 
 type ThumbStyleSnapshot = Readonly<{
   width: string;
@@ -477,16 +487,25 @@ export function createWebScrollSurfaceHost(
           const offset = Math.max(0, available - thumbExtent) * clampRatio(axisFacts.position);
           const originalThumbStyle = thumbStyles.get(thumb);
           if (originalThumbStyle) writeDisplay(thumb, originalThumbStyle.display);
-          thumb.style.setProperty('--proto-ui-scroll-thumb-size', `${thumbExtent}px`);
-          thumb.style.setProperty('--proto-ui-scroll-thumb-offset', `${offset}px`);
+          const style = thumb.style;
+          writeInlineStyle(style, '--proto-ui-scroll-thumb-size', `${thumbExtent}px`);
+          writeInlineStyle(style, '--proto-ui-scroll-thumb-offset', `${offset}px`);
           if (axis === 'vertical') {
-            thumb.style.width = originalThumbStyle?.width ?? '';
-            thumb.style.height = 'var(--proto-ui-scroll-thumb-size)';
-            thumb.style.transform = 'translate3d(0, var(--proto-ui-scroll-thumb-offset), 0)';
+            writeInlineStyle(style, 'width', originalThumbStyle?.width ?? '');
+            writeInlineStyle(style, 'height', 'var(--proto-ui-scroll-thumb-size)');
+            writeInlineStyle(
+              style,
+              'transform',
+              'translate3d(0, var(--proto-ui-scroll-thumb-offset), 0)'
+            );
           } else {
-            thumb.style.height = originalThumbStyle?.height ?? '';
-            thumb.style.width = 'var(--proto-ui-scroll-thumb-size)';
-            thumb.style.transform = 'translate3d(var(--proto-ui-scroll-thumb-offset), 0, 0)';
+            writeInlineStyle(style, 'height', originalThumbStyle?.height ?? '');
+            writeInlineStyle(style, 'width', 'var(--proto-ui-scroll-thumb-size)');
+            writeInlineStyle(
+              style,
+              'transform',
+              'translate3d(var(--proto-ui-scroll-thumb-offset), 0, 0)'
+            );
           }
         }
         restoreInactiveThumbs(active);
