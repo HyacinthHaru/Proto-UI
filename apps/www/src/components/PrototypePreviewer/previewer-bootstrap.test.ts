@@ -193,13 +193,16 @@ describe('eager preview admission', () => {
     try {
       const owners = eagerRoots(35);
       const mounted: HTMLElement[] = [];
-      dispose = initPreviewerBootstrap(document, async () => ({
-        initPreviewer: ({ root, batchInitialThemeReads }) => {
-          root.dataset.inited = '1';
-          expect(batchInitialThemeReads).toBe(true);
-          mounted.push(root);
-        },
-      }));
+      const initPreviewer = ({
+        root,
+        batchInitialThemeReads,
+      }: Parameters<typeof import('./previewer-client').initPreviewer>[0]) => {
+        root.dataset.inited = '1';
+        expect(batchInitialThemeReads).toBe(true);
+        mounted.push(root);
+      };
+      const load = vi.fn(async () => ({ initPreviewer }));
+      dispose = initPreviewerBootstrap(document, load);
       document.dispatchEvent(new Event('astro:page-load'));
       await flush();
       expect(mounted).toEqual([]);
@@ -207,9 +210,44 @@ describe('eager preview admission', () => {
       expect(mounted).toEqual(owners.slice(0, 32));
       await vi.runOnlyPendingTimersAsync();
       expect(mounted).toEqual(owners);
+      expect(load).toHaveBeenCalledTimes(1);
+
+      document.dispatchEvent(new Event('astro:before-swap'));
+      for (const owner of owners) owner.remove();
+      const next = eagerRoots(35);
+      document.dispatchEvent(new Event('astro:page-load'));
+      await vi.runOnlyPendingTimersAsync();
+      await vi.runOnlyPendingTimersAsync();
+      expect(mounted).toEqual([...owners, ...next]);
+      expect(load).toHaveBeenCalledTimes(2);
     } finally {
       dispose?.();
       dispose = undefined;
+      vi.useRealTimers();
+    }
+  });
+
+  it('retries a rejected eager client import on the next batch', async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+    try {
+      const owners = eagerRoots(35);
+      const initPreviewer = vi.fn();
+      const load = vi
+        .fn(async () => ({ initPreviewer }))
+        .mockRejectedValueOnce(new Error('preview client unavailable'));
+      dispose = initPreviewerBootstrap(document, load);
+      document.dispatchEvent(new Event('astro:page-load'));
+      await vi.runOnlyPendingTimersAsync();
+      expect(load).toHaveBeenCalledTimes(1);
+      expect(initPreviewer).not.toHaveBeenCalled();
+      await vi.runOnlyPendingTimersAsync();
+      expect(load).toHaveBeenCalledTimes(2);
+      expect(initPreviewer.mock.calls.map(([options]) => options.root)).toEqual(owners.slice(32));
+    } finally {
+      dispose?.();
+      dispose = undefined;
+      log.mockRestore();
       vi.useRealTimers();
     }
   });

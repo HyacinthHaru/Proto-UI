@@ -23,12 +23,23 @@ export function initPreviewerBootstrap(
   let eagerTask: number | undefined;
   let disposed = false;
   let clientLoad: ReturnType<typeof loadClient> | undefined;
+  let eagerClientLoad: ReturnType<typeof loadClient> | undefined;
   const acquireClient = () => {
     if (clientLoad) return clientLoad;
     const loading = loadClient().finally(() => {
       if (clientLoad === loading) clientLoad = undefined;
     });
     clientLoad = loading;
+    return loading;
+  };
+  const acquireEagerClient = () => {
+    // Later startup batches use the same client in this page generation.
+    if (eagerClientLoad) return eagerClientLoad;
+    const loading = acquireClient().catch((error: unknown) => {
+      if (eagerClientLoad === loading) eagerClientLoad = undefined;
+      throw error;
+    });
+    eagerClientLoad = loading;
     return loading;
   };
   const release = (root: PreviewerRoot) => {
@@ -52,7 +63,7 @@ export function initPreviewerBootstrap(
     }
     return true;
   };
-  const mount = async (root: PreviewerRoot, batchInitialThemeReads = false) => {
+  const mount = async (root: PreviewerRoot, batchedStartup = false) => {
     const entry = pending.get(root);
     if (
       !entry?.active ||
@@ -66,7 +77,7 @@ export function initPreviewerBootstrap(
       return;
     root.dataset.mounting = '1';
     try {
-      const { initPreviewer } = await acquireClient();
+      const { initPreviewer } = await (batchedStartup ? acquireEagerClient() : acquireClient());
       if (
         disposed ||
         !entry.active ||
@@ -95,7 +106,7 @@ export function initPreviewerBootstrap(
           | ProjectionComponentId
           | undefined,
         projectionToolbar: root.dataset.projectionToolbar !== 'false',
-        batchInitialThemeReads,
+        batchInitialThemeReads: batchedStartup,
       });
     } catch (error) {
       if (disposed || !entry.active || !root.isConnected) return;
@@ -108,17 +119,15 @@ export function initPreviewerBootstrap(
       if (pending.get(root) === entry) delete root.dataset.mounting;
     }
   };
-  const drainEager = (batchInitialThemeReads = false) => {
+  const drainEager = (batchedStartup = false) => {
     if (disposed) return;
     let remaining = EAGER_BATCH_SIZE;
     for (const root of eager) {
       eager.delete(root);
-      void mount(root, batchInitialThemeReads);
+      void mount(root, batchedStartup);
       if (--remaining === 0) break;
     }
-    eagerTask = eager.size
-      ? view.setTimeout(() => drainEager(batchInitialThemeReads), 0)
-      : undefined;
+    eagerTask = eager.size ? view.setTimeout(() => drainEager(batchedStartup), 0) : undefined;
   };
   const scan = () => {
     if (disposed) return;
@@ -164,6 +173,7 @@ export function initPreviewerBootstrap(
     if (eagerTask !== undefined) view.clearTimeout(eagerTask);
     eagerTask = undefined;
     clientLoad = undefined;
+    eagerClientLoad = undefined;
     visibility.disconnect();
     for (const root of pending.keys()) release(root);
   };
