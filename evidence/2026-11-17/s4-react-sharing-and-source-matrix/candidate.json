@@ -1,0 +1,37 @@
+{
+  "head": "ad827afae56f048f085a6cc6a552e1d2d3352a39",
+  "tree": "a8577f135551810ba1fb7414f57325f087b9643e",
+  "parent": "c37f9d5fb0017ffce72adef9b8b6d39c60ce179f",
+  "signature": "G",
+  "files": [
+    "e3f25f6e5ba69bc3cbb8ac07a3ac11a0d264a7ebff5044f94a88ed3f7c04a3e0  apps/www/src/components/PrototypePreviewer/runtimes/react-loader.test.ts",
+    "06b5f502f676d8cce967ffa00330a357035bb3e1cea1d4902c1b68b601e222e0  apps/www/src/components/PrototypePreviewer/runtimes/react-runtime.ts"
+  ],
+  "red": {
+    "exit": 1,
+    "passed": 2,
+    "failed": 2,
+    "sha256": "86fa51e5d5fcd87ee46962fe94a3d02ae01bf69b79217458ec22b48ac68d583f"
+  },
+  "focused": {
+    "exit": 0,
+    "files": 6,
+    "passed": 100,
+    "sha256": "00bdd47e2676e3017fc75aefffc07038e97da2fd884fe09830816095ed682cde"
+  },
+  "broader": {
+    "exit": 1,
+    "assertionsPassed": 132,
+    "sha256": "45c69244c3f1cb3c2504dfe459cda8757b62878df42df2edbb489dca36ba8fff",
+    "baselineSHA256": "836a5635bc21e97eeb74e1e5ec57cd234db5b38ca16acbccb9be37658ac78779",
+    "sameTerminalExposureDiagnostics": {
+      "observedCount": 3,
+      "sameMessageAndLastAttributedTest": true,
+      "lastAttributedTests": {}
+    }
+  },
+  "typecheck": {
+    "exit": 0,
+    "sha256": "c6529115f538a4590ae019e10a8ff349c990576398e780215e48b0d472d1a3e4"
+  }
+}
