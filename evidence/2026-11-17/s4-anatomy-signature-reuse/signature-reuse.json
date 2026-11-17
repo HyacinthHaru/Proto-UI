@@ -1,0 +1,1258 @@
+{
+  "source": {
+    "head": "df8ac1937c63f3664c9e1b82170c76bd6a48de4a",
+    "tree": "04ea4c5665b50c67a8050ed6046d8cb343d79d38",
+    "parent": "1eae1af38b3fc72c5732faab604279f2db241147",
+    "signature": "G"
+  },
+  "parent": {
+    "head": "1eae1af38b3fc72c5732faab604279f2db241147",
+    "tree": "4b85da93cc178e6a42a8371d3885db5352ebfabf",
+    "parent": "067b44e1bc1d69ae28cd3e47cd6afcc3c580ab74",
+    "signature": "G"
+  },
+  "previousStage": {
+    "boundary": "Completed deterministic samples in the largest delivered prefix, inclusive at observed timer granularity. No full-run total or inference of exclusive wall time.",
+    "finished": "2026-11-17T08:33:15Z",
+    "last": {
+      "kind": "order-signature-stages",
+      "sampleEvery": 127,
+      "requests": 1048576,
+      "missing": 2578,
+      "bins": [
+        {
+          "size": "missing",
+          "samples": 24,
+          "claimSlots": 0,
+          "domainMs": 0,
+          "orderMs": 0,
+          "signatureMs": 0
+        },
+        {
+          "size": "0-1",
+          "samples": 8,
+          "claimSlots": 8,
+          "domainMs": 0,
+          "orderMs": 0,
+          "signatureMs": 0
+        },
+        {
+          "size": "2-15",
+          "samples": 2096,
+          "claimSlots": 12608,
+          "domainMs": 2.6999990940093994,
+          "orderMs": 1.4000000953674316,
+          "signatureMs": 0.7000000476837158
+        },
+        {
+          "size": "16-63",
+          "samples": 4564,
+          "claimSlots": 196794,
+          "domainMs": 2.4000000953674316,
+          "orderMs": 6.800001621246338,
+          "signatureMs": 8.999999046325684
+        },
+        {
+          "size": "64+",
+          "samples": 1565,
+          "claimSlots": 325326,
+          "domainMs": 0.7999999523162842,
+          "orderMs": 8.499998807907104,
+          "signatureMs": 9.800000190734863
+        }
+      ],
+      "pageMs": 42694.60000014305,
+      "timeOrigin": 1794904324350.3
+    },
+    "sums": {
+      "samples": 8257,
+      "domainMs": 5.899999141693115,
+      "orderMs": 16.700000524520874,
+      "signatureMs": 19.499999284744263
+    },
+    "checkpoints": 14
+  },
+  "previousRawSHA256": "c23af27318d99e49e43c9c602faa3e8042d1837d139289102eab2fed6c4d19b8",
+  "changedInputs": {
+    "packages/modules/anatomy/src/impl.ts": "61cf026029e0c7f11ddb916376f66a70a2db2945e28746b3065b752a450657ff",
+    "packages/runtime/test/contract/anatomy.order-fanout-cost.contract.test.ts": "88eeaaf29e2d038f00768c73469b37cc0ed8648364fd86be53055451f6e03cd3"
+  },
+  "matrixInputs": {
+    "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "e6590db342bddc56b37fa367ce6b1cc519130cdb201e06e8d14061569d5e0317",
+    "apps/www/dist/zh-cn/internal/demo-matrix/index.html": "b850e515275965b54fe99f737c52e649d11a96c2ec22688c783e0b90a773ddf0",
+    "apps/www/dist/en/internal/demo-matrix/index.html": "e3d737585a4ba9fb9bbb85947458e399c40d11f44076811a86a4f1b0bdc75923"
+  },
+  "pages": {
+    "zh-cn": {
+      "bytes": 1862419,
+      "sha256": "b850e515275965b54fe99f737c52e649d11a96c2ec22688c783e0b90a773ddf0",
+      "previews": 1268
+    },
+    "en": {
+      "bytes": 1914061,
+      "sha256": "e3d737585a4ba9fb9bbb85947458e399c40d11f44076811a86a4f1b0bdc75923",
+      "previews": 1268
+    }
+  },
+  "versions": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+  "budgets": {
+    "previous": [
+      "PASS lucide/icons/x: 2879 / 3000 gzip bytes; overBudget=0; minified=8695 sha256=da30ebe409a83a09d2569fe2a47880a133fcbe4d554d93ea305795356c4fccdb",
+      "PASS lucide root: 637306 / 700000 gzip bytes; overBudget=0; minified=4087403 sha256=eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c",
+      "ADVISORY core root: 11378 / 7600 gzip bytes; overBudget=3778; minified=35782 sha256=0e3c868d3ef719af46085b83881b15787a94acbaf893566ceae4047ceff72b44",
+      "ADVISORY runtime root: 101082 / 78500 gzip bytes; overBudget=22582; minified=390139 sha256=cd33e1fac8a7470483843f43b47c127d9522c67a5011c8a73541a5b88593c841",
+      "ADVISORY adapter-react root: 163261 / 106000 gzip bytes; overBudget=57261; minified=575989 sha256=fc4be96591d6da1d91ec8d6f3878690bff62d74a8d4be6c3582a0bff5b605492",
+      "ADVISORY adapter-vue root: 162019 / 106000 gzip bytes; overBudget=56019; minified=571244 sha256=3e075dfd36b1fd8019857be7e9499227ded0851633482ef96c2235fd05ec87b9",
+      "ADVISORY adapter-web-component root: 194806 / 132000 gzip bytes; overBudget=62806; minified=669687 sha256=1dcbda0451a35442143bcbb2603a457bf1fe75ec0da952e2dad6e1ffd1d77b9e",
+      "PASS prototypes-base/button: 5274 / 6000 gzip bytes; overBudget=0; minified=18158 sha256=6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67",
+      "ADVISORY prototypes-shadcn/button: 7803 / 7000 gzip bytes; overBudget=803; minified=34485 sha256=60b4ff9277e59fba01c34162ec9418282ce82c6b43e24f223a05c9e1df19db57"
+    ],
+    "candidate": [
+      "PASS lucide/icons/x: 2879 / 3000 gzip bytes; overBudget=0; minified=8695 sha256=da30ebe409a83a09d2569fe2a47880a133fcbe4d554d93ea305795356c4fccdb",
+      "PASS lucide root: 637306 / 700000 gzip bytes; overBudget=0; minified=4087403 sha256=eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c",
+      "ADVISORY core root: 11378 / 7600 gzip bytes; overBudget=3778; minified=35782 sha256=0e3c868d3ef719af46085b83881b15787a94acbaf893566ceae4047ceff72b44",
+      "ADVISORY runtime root: 101182 / 78500 gzip bytes; overBudget=22682; minified=390358 sha256=4c32cab153994559b00767c6c477157c5be4cee29fa1d816820ec1cf48690368",
+      "ADVISORY adapter-react root: 163354 / 106000 gzip bytes; overBudget=57354; minified=576210 sha256=ac509f6ecd80373226a2f728533a89adc67037d81cad0d78c6de86ccb30d0373",
+      "ADVISORY adapter-vue root: 162116 / 106000 gzip bytes; overBudget=56116; minified=571465 sha256=6972a5fcffe3b7418238c1a436127512d0e95cc4e6f43fcdd4e6aa3b95ffd8fa",
+      "ADVISORY adapter-web-component root: 194912 / 132000 gzip bytes; overBudget=62912; minified=669908 sha256=599f9a27111e90bc43cd84368dfecdac727015f5e3e15d3971a500770335b163",
+      "PASS prototypes-base/button: 5274 / 6000 gzip bytes; overBudget=0; minified=18158 sha256=6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67",
+      "ADVISORY prototypes-shadcn/button: 7803 / 7000 gzip bytes; overBudget=803; minified=34485 sha256=60b4ff9277e59fba01c34162ec9418282ce82c6b43e24f223a05c9e1df19db57"
+    ]
+  },
+  "red": {
+    "tests": {
+      "numTotalTests": 15,
+      "numPassedTests": 13,
+      "numFailedTests": 2,
+      "numPendingTests": 0,
+      "failedCases": [
+        {
+          "name": "Runtime Anatomy synchronous order fanout cost sync: keeps a stable order version without rebuilding the signature",
+          "first": "AssertionError: expected 12 to be +0 // Object.is equality"
+        },
+        {
+          "name": "Runtime Anatomy synchronous order fanout cost notify: keeps a stable order version without rebuilding the signature",
+          "first": "AssertionError: expected 12 to be +0 // Object.is equality"
+        }
+      ]
+    },
+    "logSHA256": "09fc896ffefcfcc4c7ac9d7f42d1d56561bb84515d946810aaf7f5f6f4b492f9",
+    "testPatchSHA256": "3c50cd967609ac2123bc9eb65278524d6cfb8072de3afc2097589e085f305ce0"
+  },
+  "focused": {
+    "tests": {
+      "numTotalTests": 502,
+      "numPassedTests": 502,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "failedCases": []
+    },
+    "logSHA256": "5af1569804358b698b4a8b4975c226b1388504ff081e24c2d26c4413b02a235e"
+  },
+  "superseded": {
+    "result": "143; 47 packages completed; stopped during website build before native. Replaced the per-module order stamp with a per-claim ID to keep the fast path record-specific across capability changes.",
+    "packageLogSHA256": "96421460a81acfb92d0b77b1ba1baf45c07f8bb88d3e56b39969f343062f3175"
+  },
+  "nativeAccordion": {
+    "tests": {
+      "numTotalTests": 33,
+      "numPassedTests": 4,
+      "numFailedTests": 0,
+      "numPendingTests": 29,
+      "failedCases": []
+    },
+    "suite": {
+      "apps/www/src/content/docs/zh-cn/demo-accordion-family.browser.test.ts": "efcef75bf104c655e4e99f4c5ba8ace7ecf3f9785a6b424e0b2846ddede18232"
+    },
+    "htmlSHA256": "45340cfec1beb7f294512cdb0c2a5496fc10fc24595fed5b7fbe79c6b3819ca8"
+  },
+  "isolatedDialog": {
+    "source": {
+      "result": [
+        {
+          "profile": "light",
+          "requests": 15,
+          "counts": {
+            "root": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "trigger": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "mask": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "content": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "title": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "description": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "close": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "icon": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "header": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "footer": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            }
+          }
+        },
+        {
+          "profile": "split",
+          "requests": 15,
+          "counts": {
+            "root": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "trigger": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "mask": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "content": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "title": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "description": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "close": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "icon": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "header": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "footer": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            }
+          }
+        },
+        {
+          "profile": "mixed",
+          "requests": 15,
+          "counts": {
+            "root": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "trigger": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "mask": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "content": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "title": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "description": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "close": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "icon": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "header": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "footer": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            }
+          }
+        }
+      ],
+      "errors": [],
+      "chrome": "156.0.8078.79"
+    },
+    "sourceLogSHA256": "7936e972cbe84321d64488bc94ca538fdc6ae96ec6e0ded0af2bef898d83f147",
+    "sourceFixtureSHA256": "6cb4e67d8f6d7fa3eda250c8973c6d7dc0debd35a1cefd9c364a7073c2ebfbfd",
+    "publicDist": {
+      "requestsByProfile": {
+        "light": 15,
+        "split": 15,
+        "mixed": 15
+      },
+      "logSHA256": "05bbf2e5a0e32d720dc2e79049267ceda9e847a1e30c357aa33f9479ce115907"
+    }
+  },
+  "originalMatrix": {
+    "guardMs": {
+      "readiness": 60000,
+      "case": 150000
+    },
+    "tests": {
+      "numTotalTests": 2,
+      "numPassedTests": 0,
+      "numFailedTests": 2,
+      "numPendingTests": 0,
+      "failedCases": [
+        {
+          "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+          "first": "page.waitForFunction: Timeout 60000ms exceeded."
+        },
+        {
+          "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+          "first": "page.waitForFunction: Timeout 60000ms exceeded."
+        }
+      ]
+    },
+    "exit": 1,
+    "startupByLocale": {
+      "zh-cn": {
+        "startupPassed": false,
+        "collectionOutcome": "budget-expired",
+        "pageErrorCount": 0,
+        "consoleErrorCount": 0
+      },
+      "en": {
+        "startupPassed": false,
+        "collectionOutcome": "budget-expired",
+        "pageErrorCount": 0,
+        "consoleErrorCount": 0
+      }
+    },
+    "rawLogSHA256": "ed3ccd675e36ad1abf906cf3a3cdadede16c438b7832babadeb22a10dbe95c9a"
+  },
+  "sampledReuse": {
+    "stats": {
+      "boundary": "Deterministic samples in the largest delivered prefix at Chrome timer precision.",
+      "last": {
+        "kind": "order-signature-stages",
+        "sampleEvery": 127,
+        "requests": 1048576,
+        "missing": 2568,
+        "reused": 1043471,
+        "formatted": 2537,
+        "formattedClaims": 68521,
+        "bins": [
+          {
+            "size": "missing",
+            "samples": 23,
+            "claimSlots": 0,
+            "domainMs": 0,
+            "orderMs": 0,
+            "signatureMs": 0
+          },
+          {
+            "size": "0-1",
+            "samples": 9,
+            "claimSlots": 9,
+            "domainMs": 0,
+            "orderMs": 0,
+            "signatureMs": 0
+          },
+          {
+            "size": "2-15",
+            "samples": 2093,
+            "claimSlots": 12425,
+            "domainMs": 2.8000001907348633,
+            "orderMs": 0.7999999523162842,
+            "signatureMs": 0.3000001907348633
+          },
+          {
+            "size": "16-63",
+            "samples": 4559,
+            "claimSlots": 196372,
+            "domainMs": 2.000000238418579,
+            "orderMs": 7.399998903274536,
+            "signatureMs": 0.8000001907348633
+          },
+          {
+            "size": "64+",
+            "samples": 1573,
+            "claimSlots": 327094,
+            "domainMs": 0.3000001907348633,
+            "orderMs": 10.200000047683716,
+            "signatureMs": 0.39999961853027344
+          }
+        ],
+        "pageMs": 41337.60000014305,
+        "timeOrigin": 1794905250997.6
+      },
+      "sums": {
+        "samples": 8257,
+        "domainMs": 5.100000619888306,
+        "orderMs": 18.399998903274536,
+        "signatureMs": 1.5
+      },
+      "checkpoints": [
+        {
+          "kind": "order-signature-stages",
+          "sampleEvery": 127,
+          "requests": 128,
+          "missing": 0,
+          "reused": 88,
+          "formatted": 40,
+          "formattedClaims": 309,
+          "bins": [
+            {
+              "size": "missing",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "0-1",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "2-15",
+              "samples": 2,
+              "claimSlots": 14,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "16-63",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "64+",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            }
+          ],
+          "pageMs": 391.5,
+          "timeOrigin": 1794905250997.6
+        },
+        {
+          "kind": "order-signature-stages",
+          "sampleEvery": 127,
+          "requests": 256,
+          "missing": 0,
+          "reused": 216,
+          "formatted": 40,
+          "formattedClaims": 309,
+          "bins": [
+            {
+              "size": "missing",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "0-1",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "2-15",
+              "samples": 3,
+              "claimSlots": 28,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "16-63",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "64+",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            }
+          ],
+          "pageMs": 409.7000000476837,
+          "timeOrigin": 1794905250997.6
+        },
+        {
+          "kind": "order-signature-stages",
+          "sampleEvery": 127,
+          "requests": 512,
+          "missing": 0,
+          "reused": 472,
+          "formatted": 40,
+          "formattedClaims": 309,
+          "bins": [
+            {
+              "size": "missing",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "0-1",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "2-15",
+              "samples": 5,
+              "claimSlots": 52,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "16-63",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "64+",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            }
+          ],
+          "pageMs": 457.2000000476837,
+          "timeOrigin": 1794905250997.6
+        },
+        {
+          "kind": "order-signature-stages",
+          "sampleEvery": 127,
+          "requests": 1024,
+          "missing": 0,
+          "reused": 931,
+          "formatted": 93,
+          "formattedClaims": 659,
+          "bins": [
+            {
+              "size": "missing",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "0-1",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "2-15",
+              "samples": 9,
+              "claimSlots": 84,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "16-63",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "64+",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            }
+          ],
+          "pageMs": 2716.9000000953674,
+          "timeOrigin": 1794905250997.6
+        },
+        {
+          "kind": "order-signature-stages",
+          "sampleEvery": 127,
+          "requests": 2048,
+          "missing": 0,
+          "reused": 1879,
+          "formatted": 169,
+          "formattedClaims": 1242,
+          "bins": [
+            {
+              "size": "missing",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "0-1",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "2-15",
+              "samples": 17,
+              "claimSlots": 153,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "16-63",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "64+",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            }
+          ],
+          "pageMs": 4399.100000143051,
+          "timeOrigin": 1794905250997.6
+        },
+        {
+          "kind": "order-signature-stages",
+          "sampleEvery": 127,
+          "requests": 4096,
+          "missing": 0,
+          "reused": 3839,
+          "formatted": 257,
+          "formattedClaims": 1598,
+          "bins": [
+            {
+              "size": "missing",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "0-1",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "2-15",
+              "samples": 33,
+              "claimSlots": 263,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "16-63",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "64+",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            }
+          ],
+          "pageMs": 6811.5,
+          "timeOrigin": 1794905250997.6
+        },
+        {
+          "kind": "order-signature-stages",
+          "sampleEvery": 127,
+          "requests": 8192,
+          "missing": 0,
+          "reused": 7857,
+          "formatted": 335,
+          "formattedClaims": 2531,
+          "bins": [
+            {
+              "size": "missing",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "0-1",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "2-15",
+              "samples": 55,
+              "claimSlots": 430,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "16-63",
+              "samples": 10,
+              "claimSlots": 260,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "64+",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            }
+          ],
+          "pageMs": 6971.800000190735,
+          "timeOrigin": 1794905250997.6
+        },
+        {
+          "kind": "order-signature-stages",
+          "sampleEvery": 127,
+          "requests": 16384,
+          "missing": 106,
+          "reused": 15784,
+          "formatted": 494,
+          "formattedClaims": 3250,
+          "bins": [
+            {
+              "size": "missing",
+              "samples": 1,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "0-1",
+              "samples": 1,
+              "claimSlots": 1,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "2-15",
+              "samples": 95,
+              "claimSlots": 697,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "16-63",
+              "samples": 33,
+              "claimSlots": 1566,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "64+",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            }
+          ],
+          "pageMs": 7645.600000143051,
+          "timeOrigin": 1794905250997.6
+        },
+        {
+          "kind": "order-signature-stages",
+          "sampleEvery": 127,
+          "requests": 32768,
+          "missing": 180,
+          "reused": 31774,
+          "formatted": 814,
+          "formattedClaims": 5071,
+          "bins": [
+            {
+              "size": "missing",
+              "samples": 2,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "0-1",
+              "samples": 2,
+              "claimSlots": 2,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "2-15",
+              "samples": 160,
+              "claimSlots": 1053,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "16-63",
+              "samples": 95,
+              "claimSlots": 4998,
+              "domainMs": 0,
+              "orderMs": 0.20000004768371582,
+              "signatureMs": 0
+            },
+            {
+              "size": "64+",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            }
+          ],
+          "pageMs": 9876.200000047684,
+          "timeOrigin": 1794905250997.6
+        },
+        {
+          "kind": "order-signature-stages",
+          "sampleEvery": 127,
+          "requests": 65536,
+          "missing": 342,
+          "reused": 64229,
+          "formatted": 965,
+          "formattedClaims": 5971,
+          "bins": [
+            {
+              "size": "missing",
+              "samples": 3,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "0-1",
+              "samples": 2,
+              "claimSlots": 2,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "2-15",
+              "samples": 296,
+              "claimSlots": 1789,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "16-63",
+              "samples": 216,
+              "claimSlots": 11090,
+              "domainMs": 0.09999990463256836,
+              "orderMs": 0.7000000476837158,
+              "signatureMs": 0
+            },
+            {
+              "size": "64+",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            }
+          ],
+          "pageMs": 11158.400000095367,
+          "timeOrigin": 1794905250997.6
+        },
+        {
+          "kind": "order-signature-stages",
+          "sampleEvery": 127,
+          "requests": 131072,
+          "missing": 547,
+          "reused": 129307,
+          "formatted": 1218,
+          "formattedClaims": 7455,
+          "bins": [
+            {
+              "size": "missing",
+              "samples": 5,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "0-1",
+              "samples": 4,
+              "claimSlots": 4,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "2-15",
+              "samples": 477,
+              "claimSlots": 2788,
+              "domainMs": 0.09999990463256836,
+              "orderMs": 0.2999999523162842,
+              "signatureMs": 0
+            },
+            {
+              "size": "16-63",
+              "samples": 547,
+              "claimSlots": 27468,
+              "domainMs": 0.2999999523162842,
+              "orderMs": 1.200000286102295,
+              "signatureMs": 0.19999980926513672
+            },
+            {
+              "size": "64+",
+              "samples": 0,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            }
+          ],
+          "pageMs": 17604,
+          "timeOrigin": 1794905250997.6
+        },
+        {
+          "kind": "order-signature-stages",
+          "sampleEvery": 127,
+          "requests": 262144,
+          "missing": 547,
+          "reused": 259832,
+          "formatted": 1765,
+          "formattedClaims": 31293,
+          "bins": [
+            {
+              "size": "missing",
+              "samples": 5,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "0-1",
+              "samples": 5,
+              "claimSlots": 5,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "2-15",
+              "samples": 1010,
+              "claimSlots": 5437,
+              "domainMs": 0.2999997138977051,
+              "orderMs": 0.40000009536743164,
+              "signatureMs": 0
+            },
+            {
+              "size": "16-63",
+              "samples": 1043,
+              "claimSlots": 45716,
+              "domainMs": 0.5,
+              "orderMs": 2,
+              "signatureMs": 0.2999997138977051
+            },
+            {
+              "size": "64+",
+              "samples": 2,
+              "claimSlots": 346,
+              "domainMs": 0.10000014305114746,
+              "orderMs": 0.09999990463256836,
+              "signatureMs": 0
+            }
+          ],
+          "pageMs": 24727.800000190735,
+          "timeOrigin": 1794905250997.6
+        },
+        {
+          "kind": "order-signature-stages",
+          "sampleEvery": 127,
+          "requests": 524288,
+          "missing": 547,
+          "reused": 521722,
+          "formatted": 2019,
+          "formattedClaims": 65533,
+          "bins": [
+            {
+              "size": "missing",
+              "samples": 5,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "0-1",
+              "samples": 5,
+              "claimSlots": 5,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "2-15",
+              "samples": 1128,
+              "claimSlots": 6478,
+              "domainMs": 0.6999998092651367,
+              "orderMs": 0.40000009536743164,
+              "signatureMs": 0.10000014305114746
+            },
+            {
+              "size": "16-63",
+              "samples": 2364,
+              "claimSlots": 98323,
+              "domainMs": 1.2000000476837158,
+              "orderMs": 3.499999523162842,
+              "signatureMs": 0.5
+            },
+            {
+              "size": "64+",
+              "samples": 627,
+              "claimSlots": 130326,
+              "domainMs": 0.20000028610229492,
+              "orderMs": 2.9999988079071045,
+              "signatureMs": 0.2999997138977051
+            }
+          ],
+          "pageMs": 26960.700000047684,
+          "timeOrigin": 1794905250997.6
+        },
+        {
+          "kind": "order-signature-stages",
+          "sampleEvery": 127,
+          "requests": 1048576,
+          "missing": 2568,
+          "reused": 1043471,
+          "formatted": 2537,
+          "formattedClaims": 68521,
+          "bins": [
+            {
+              "size": "missing",
+              "samples": 23,
+              "claimSlots": 0,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "0-1",
+              "samples": 9,
+              "claimSlots": 9,
+              "domainMs": 0,
+              "orderMs": 0,
+              "signatureMs": 0
+            },
+            {
+              "size": "2-15",
+              "samples": 2093,
+              "claimSlots": 12425,
+              "domainMs": 2.8000001907348633,
+              "orderMs": 0.7999999523162842,
+              "signatureMs": 0.3000001907348633
+            },
+            {
+              "size": "16-63",
+              "samples": 4559,
+              "claimSlots": 196372,
+              "domainMs": 2.000000238418579,
+              "orderMs": 7.399998903274536,
+              "signatureMs": 0.8000001907348633
+            },
+            {
+              "size": "64+",
+              "samples": 1573,
+              "claimSlots": 327094,
+              "domainMs": 0.3000001907348633,
+              "orderMs": 10.200000047683716,
+              "signatureMs": 0.39999961853027344
+            }
+          ],
+          "pageMs": 41337.60000014305,
+          "timeOrigin": 1794905250997.6
+        }
+      ]
+    },
+    "binding": {
+      "file": "site-shadcn-controls.Ck6CI_TQ.js",
+      "inputSHA256": "38f1c8ad598ad38e3d786972e58b3b4f92c64cd77812645d47a07879b7954fa5",
+      "outputSHA256": "839721c8f34cd58f6307c969e7ff38e75ac72bfb575eda177d5e7cb8ddfa1b7f"
+    },
+    "startup": {
+      "startupPassed": false,
+      "collectionOutcome": "budget-expired",
+      "pageErrorCount": 0,
+      "consoleErrorCount": 0
+    },
+    "exit": 1,
+    "tests": {
+      "numTotalTests": 2,
+      "numPassedTests": 0,
+      "numFailedTests": 1,
+      "numPendingTests": 1,
+      "failedCases": [
+        {
+          "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+          "first": "page.waitForFunction: Timeout 60000ms exceeded."
+        }
+      ]
+    },
+    "overlaySHA256": "b3a254b8833b45bb0fe29afd261e54098826dd1a9af26b396f5ff9d154b08a8a",
+    "rawLogSHA256": "968def80aa1feb113fa249f24decfaafe537541c567b0d38e9ad8a4df466da47",
+    "runnerSHA256": "8b8b39f39c89ebd674e6a0be31b78760a04ba7eaedab570a627769987d5e4754"
+  }
+}
