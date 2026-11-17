@@ -1,0 +1,1198 @@
+{
+  "source": {
+    "head": "947a65ebd02d9331ad67663ed1647d061b3b6316",
+    "tree": "5d442ae18a08c4d9a43808576fa54c418ab249e1",
+    "parent": "38f130516bdfe5844e6ce5ab012f10e6afc53a5c",
+    "signature": "G"
+  },
+  "explicitlyCombinedComparison": "f32211a5 is a separate older combination, excluded from these local runs.",
+  "versions": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+  "hosted": {
+    "headSha": "947a65ebd02d9331ad67663ed1647d061b3b6316",
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "name": "ci-config-audit",
+        "conclusion": "success"
+      },
+      {
+        "name": "public_package_plan",
+        "conclusion": "success"
+      },
+      {
+        "name": "lockstep-check",
+        "conclusion": "success"
+      },
+      {
+        "name": "test-plan",
+        "conclusion": "success"
+      },
+      {
+        "name": "compiler-gpui-consumers",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "release-scan",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "agent-operations-fixtures",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "rust",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "production-suites",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "rust-interop",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "type-check",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "coverage-governance",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "rust-macos",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "cycle-plan",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "test-general",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "test-browser",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "test",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "release-stage",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "cli-smoke",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "public_package_build",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "release-consumer-react",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "cycle-report",
+        "conclusion": "skipped"
+      }
+    ]
+  },
+  "build": {
+    "count": 47,
+    "packageLogSHA256": "da99e8858024d6ea4912a1a00d5354a9e120e013cee93d8c580d2576042d8367",
+    "budgetPolicyAdvisories": 6,
+    "commandStatus": {
+      "types": 0,
+      "astro-types": 0,
+      "manifests": 0,
+      "budgets": 0,
+      "spec": 0
+    },
+    "logSHA256": {
+      "types.log": "42cfb703f04838f815baec10111f41a915962b740a7c21e8dc908a31ebac02c4",
+      "astro-types.log": "634027736fd833fcc41199502efc687207381eac5b0e4f8e711c9513311f3144",
+      "manifests.log": "7bd0cedd869e1b6322e54cf4a837e9c1cce329be6d4f2e2da81bff52bc1a5cdd",
+      "budgets.log": "4d707edc8d0b0ab66284a6473a475aca17e53f8ca2490edf0fda5ce6bbc4a777",
+      "spec.log": "63f5749bf1acf4bb8cd9f43fd2bf95194071f4142e46823303825a69dcaabce8"
+    }
+  },
+  "focused": {
+    "exit": 0,
+    "passes": 296,
+    "failures": 0,
+    "suites": {
+      "packages/cli/test/shadow-template-style.test.ts": {
+        "native": false,
+        "cases": 133,
+        "passed": 133
+      },
+      "packages/adapters/web-component/test/shadow-closeout.browser.test.ts": {
+        "native": true,
+        "cases": 163,
+        "passed": 163
+      }
+    },
+    "logSHA256": "aef22fe96b8cb2443ddf0df1442c5f191406148afaff42f5ce6ec3638c1818a2"
+  },
+  "isolated": {
+    "sourceExit": 1,
+    "publicDistExit": 1,
+    "logSHA256": {
+      "dialog-source.log": "5d03f1c00177d20b3dc2594a0dde58aca892ca017d659517d109317db0aa205e",
+      "dialog-dist.log": "0440220be66d95941232845945b46886bff17916c7bb14d005b777335cb928ee"
+    },
+    "publicDistProfiles": [],
+    "distDiagnostic": "[shadcn-dialog-content]setup token \"overflow-y-auto\":unresolved-role; fix: companion or change/remove token"
+  },
+  "fullMatrix": {
+    "exit": 1,
+    "guardMs": {
+      "readiness": 60000,
+      "case": 150000
+    },
+    "tests": {
+      "numTotalTests": 2,
+      "numPassedTests": 0,
+      "numFailedTests": 2,
+      "numPendingTests": 0,
+      "cases": [
+        {
+          "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+          "status": "failed",
+          "duration": 150666.0375,
+          "firstMessages": ["Error: Test timed out in 150000ms."]
+        },
+        {
+          "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+          "status": "failed",
+          "duration": 151699.340667,
+          "firstMessages": ["Error: Test timed out in 150000ms."]
+        }
+      ]
+    },
+    "overlaySHA256": "ae44b882e227090c5a1e09b4838c5cee97d9e01618c51209cc2ed0ac5df39a3f",
+    "inputs": {
+      "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "e6590db342bddc56b37fa367ce6b1cc519130cdb201e06e8d14061569d5e0317",
+      "apps/www/dist/zh-cn/internal/demo-matrix/index.html": "23cd751bf5f742b57ceda9f123a4fd9688bbf735b18ffa82caa4f0a2d16f9a22",
+      "apps/www/dist/en/internal/demo-matrix/index.html": "84bce7f05a76e959003d7acf9d8994d1b98063c9f0af67e0bda6a60706322de6"
+    },
+    "pages": {
+      "zh-cn": {
+        "bytes": 1862484,
+        "sha256": "23cd751bf5f742b57ceda9f123a4fd9688bbf735b18ffa82caa4f0a2d16f9a22",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914058,
+        "sha256": "84bce7f05a76e959003d7acf9d8994d1b98063c9f0af67e0bda6a60706322de6",
+        "previews": 1268
+      }
+    },
+    "startupByLocale": {
+      "zh-cn": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": [
+          {
+            "phase": "startup-wait",
+            "nodeMs": 11444.638542,
+            "text": "Error: [PrototypePreviewer] projection recipe \"website-runtime-preview:demo-bootstrap-2-3-2-dialog\" uses undeclared Prototype(s): bootstrap-2-3-2-surface-root, bootstrap-2-3-2-text-root.\n    at fo (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:62308)\n    at Vo (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:68333)\n    at kt (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:83396)\n    at Wo (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:82345)\n    at Object.materialize (<local-origin>/_astro/previewer-client.CKcpPBXK.js:2:1808)\n    at async B (<local-origin>/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          },
+          {
+            "phase": "startup-wait",
+            "nodeMs": 11453.502208,
+            "text": "Error: [PrototypePreviewer] projection recipe \"website-runtime-preview:demo-bootstrap-2-3-2-dialog\" uses undeclared Prototype(s): bootstrap-2-3-2-surface-root, bootstrap-2-3-2-text-root.\n    at fo (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:62308)\n    at Vo (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:68333)\n    at kt (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:83396)\n    at Wo (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:82345)\n    at Object.materialize (<local-origin>/_astro/previewer-client.CKcpPBXK.js:2:1808)\n    at async B (<local-origin>/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          },
+          {
+            "phase": "startup-wait",
+            "nodeMs": 11460.6225,
+            "text": "Error: [PrototypePreviewer] projection recipe \"website-runtime-preview:demo-bootstrap-2-3-2-dialog\" uses undeclared Prototype(s): bootstrap-2-3-2-surface-root, bootstrap-2-3-2-text-root.\n    at fo (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:62308)\n    at Vo (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:68333)\n    at kt (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:83396)\n    at Wo (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:82345)\n    at Object.materialize (<local-origin>/_astro/previewer-client.CKcpPBXK.js:2:1808)\n    at async B (<local-origin>/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          },
+          {
+            "phase": "startup-wait",
+            "nodeMs": 11469.251125,
+            "text": "Error: [PrototypePreviewer] projection recipe \"website-runtime-preview:demo-bootstrap-2-3-2-dialog\" uses undeclared Prototype(s): bootstrap-2-3-2-surface-root, bootstrap-2-3-2-text-root.\n    at fo (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:62308)\n    at Vo (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:68333)\n    at kt (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:83396)\n    at Wo (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:82345)\n    at Object.materialize (<local-origin>/_astro/previewer-client.CKcpPBXK.js:2:1808)\n    at async B (<local-origin>/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          }
+        ]
+      },
+      "en": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": [
+          {
+            "phase": "startup-wait",
+            "nodeMs": 164244.455958,
+            "text": "Error: [PrototypePreviewer] projection recipe \"website-runtime-preview:demo-bootstrap-2-3-2-dialog\" uses undeclared Prototype(s): bootstrap-2-3-2-surface-root, bootstrap-2-3-2-text-root.\n    at fo (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:62308)\n    at Vo (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:68333)\n    at kt (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:83396)\n    at Wo (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:82345)\n    at Object.materialize (<local-origin>/_astro/previewer-client.CKcpPBXK.js:2:1808)\n    at async B (<local-origin>/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          },
+          {
+            "phase": "startup-wait",
+            "nodeMs": 164255.661,
+            "text": "Error: [PrototypePreviewer] projection recipe \"website-runtime-preview:demo-bootstrap-2-3-2-dialog\" uses undeclared Prototype(s): bootstrap-2-3-2-surface-root, bootstrap-2-3-2-text-root.\n    at fo (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:62308)\n    at Vo (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:68333)\n    at kt (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:83396)\n    at Wo (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:82345)\n    at Object.materialize (<local-origin>/_astro/previewer-client.CKcpPBXK.js:2:1808)\n    at async B (<local-origin>/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          },
+          {
+            "phase": "startup-wait",
+            "nodeMs": 164265.753417,
+            "text": "Error: [PrototypePreviewer] projection recipe \"website-runtime-preview:demo-bootstrap-2-3-2-dialog\" uses undeclared Prototype(s): bootstrap-2-3-2-surface-root, bootstrap-2-3-2-text-root.\n    at fo (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:62308)\n    at Vo (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:68333)\n    at kt (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:83396)\n    at Wo (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:82345)\n    at Object.materialize (<local-origin>/_astro/previewer-client.CKcpPBXK.js:2:1808)\n    at async B (<local-origin>/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          },
+          {
+            "phase": "startup-wait",
+            "nodeMs": 164276.164417,
+            "text": "Error: [PrototypePreviewer] projection recipe \"website-runtime-preview:demo-bootstrap-2-3-2-dialog\" uses undeclared Prototype(s): bootstrap-2-3-2-surface-root, bootstrap-2-3-2-text-root.\n    at fo (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:62308)\n    at Vo (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:68333)\n    at kt (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:83396)\n    at Wo (<local-origin>/_astro/projection-materializer.C9WV7-X2.js:5:82345)\n    at Object.materialize (<local-origin>/_astro/previewer-client.CKcpPBXK.js:2:1808)\n    at async B (<local-origin>/_astro/projection-scope.C38VOVYm.js:1:3779)"
+          }
+        ]
+      }
+    },
+    "logSHA256": "b6c569b11b92cc9431cccd790034865e26082e7f20f1e00fd0ff58bf96bf46ab"
+  },
+  "dependencyControl": {
+    "source": {
+      "head": "7b9a70f74c1a5e87b9e33de98d0af5706e87a6ba",
+      "tree": "d2e0418ac8b69fbd424d7f6e6d10abd925237a6e",
+      "parent": "947a65ebd02d9331ad67663ed1647d061b3b6316 52c89701fec2a6afaa4cd341fafb707795901fc8",
+      "signature": "G"
+    },
+    "paths": [
+      "packages/adapters/web-component/src/shadow-split-effects.ts",
+      "packages/adapters/web-component/test/shadow-split-effects.test.ts",
+      "packages/core/src/spec/feedback/application-role.ts",
+      "packages/core/test/feedback/application-role.test.ts",
+      "spec/decisions/D-FEEDBACK-STYLE-ROLE-RESOLUTION-0001.yaml",
+      "spec/tests/T-FEEDBACK-STYLE-ROLE-RESOLUTION-0001.yaml"
+    ],
+    "packageBuilds": 47,
+    "packageLogSHA256": "d5e8e91a5dc529b5f06c0e179bfadf701b828a6eebdef5f096635ac333ee69fd",
+    "sourceExit": 0,
+    "publicDistExit": 0,
+    "focused": {
+      "numTotalTests": 111,
+      "numPassedTests": 109,
+      "numFailedTests": 2,
+      "numPendingTests": 0,
+      "cases": [
+        {
+          "name": "private Shadow split effects keeps the exact vertical scrollport inside the max-height boundary",
+          "status": "passed",
+          "duration": 6.756666999999993,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects admits native static selection but atomically rejects invalid receipts and variant combinations",
+          "status": "passed",
+          "duration": 1.617791000000011,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects admits placeholder:text-foreground only on the actual surfaced editor",
+          "status": "passed",
+          "duration": 1.6131669999999758,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects admits placeholder:text-muted-foreground only on the actual surfaced editor",
+          "status": "passed",
+          "duration": 1.315499999999986,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects admits placeholder:text-primary only on the actual surfaced editor",
+          "status": "passed",
+          "duration": 1.2281249999999773,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects admits placeholder:text-destructive only on the actual surfaced editor",
+          "status": "passed",
+          "duration": 1.9589590000000499,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects rejects unsupported placeholder spelling placeholder:p-4 before any split DOM write",
+          "status": "passed",
+          "duration": 0.3870410000000106,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects rejects unsupported placeholder spelling placeholder:text-primary/50 before any split DOM write",
+          "status": "passed",
+          "duration": 0.29445900000001757,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects rejects unsupported placeholder spelling placeholder:text-[#fff] before any split DOM write",
+          "status": "passed",
+          "duration": 0.29666700000001356,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects rejects unimplemented animated border rounding but retains fixed-border sizing animation",
+          "status": "failed",
+          "duration": 3.5758749999999964,
+          "firstMessages": ["AssertionError: expected [Function] to throw an error"]
+        },
+        {
+          "name": "private Shadow split effects rejects overlapping animated border widths independently of effect entry order",
+          "status": "failed",
+          "duration": 0.6164999999999736,
+          "firstMessages": ["AssertionError: expected [Function] to throw an error"]
+        },
+        {
+          "name": "private Shadow split effects admits changing border widths when the H1 motion companion owns their compensation",
+          "status": "passed",
+          "duration": 0.9759170000000381,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects admits logical padding without reading writing mode during atomic preflight",
+          "status": "passed",
+          "duration": 1.1949169999999754,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects rejects logical padding combined with unrepresented directional compensation",
+          "status": "passed",
+          "duration": 0.42295799999999417,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects keeps geometry and hit tokens off the surface and rejects old recipes atomically",
+          "status": "passed",
+          "duration": 0.9785840000000121,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects routes placement only to host membership and surface/composite to inner membership",
+          "status": "passed",
+          "duration": 0.5870840000000044,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects rejects a conditionally lowered composite before changing either target",
+          "status": "passed",
+          "duration": 0.42120800000003555,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects rejects translate-x-2 before either target changes, including runtime origin in diagnostics",
+          "status": "passed",
+          "duration": 0.5837919999999599,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects rejects inline-grid before either target changes, including runtime origin in diagnostics",
+          "status": "passed",
+          "duration": 0.5629999999999882,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects rejects w-96 before either target changes, including runtime origin in diagnostics",
+          "status": "passed",
+          "duration": 0.9637079999999969,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects rejects transition-all before either target changes, including runtime origin in diagnostics",
+          "status": "passed",
+          "duration": 0.5307500000000118,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects rejects initial unresolved effects with no marker or token residue",
+          "status": "passed",
+          "duration": 0.4637920000000122,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects rejects fallback tokens absent from the artifact before changing either target",
+          "status": "passed",
+          "duration": 0.5347090000000208,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects rejects recipe and token receipts that exist only in comments or unrelated selectors",
+          "status": "passed",
+          "duration": 1.0254580000000146,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects rejects a compiled token receipt with an unrelated required host gate",
+          "status": "passed",
+          "duration": 0.45995899999996936,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects rejects the sizing recipe when the artifact is behind an unrelated conditional gate",
+          "status": "passed",
+          "duration": 0.373958000000016,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects rejects a sizing recipe missing the base declaration display: grid;",
+          "status": "passed",
+          "duration": 0.5495420000000308,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects rejects a sizing recipe missing the base declaration --pui-split-padding-top: 0px;",
+          "status": "passed",
+          "duration": 0.4898330000000328,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects rejects a sizing recipe missing the base declaration padding-top: var(--pui-split-padding-top);",
+          "status": "passed",
+          "duration": 0.4156669999999849,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects rejects a sizing recipe missing the base declaration border-top-width: var(--pui-split-border-top);",
+          "status": "passed",
+          "duration": 0.41229199999997945,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects rejects a compiled token receipt behind an unrelated conditional gate",
+          "status": "passed",
+          "duration": 0.5605410000000006,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects rejects a self-consistent receipt whose declarations differ from the canonical recipe",
+          "status": "passed",
+          "duration": 0.49670900000000984,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects treats recomputed non-sizing receipts as companion integrity, not canonical authentication",
+          "status": "passed",
+          "duration": 0.53125,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects rejects receipts nested in an invalid list-form layer block",
+          "status": "passed",
+          "duration": 0.3581670000000372,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects accepts the generated unconditional layer wrapper case-insensitively",
+          "status": "passed",
+          "duration": 0.7662090000000035,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects rejects a compiled token receipt embedded in an invalid selector list",
+          "status": "passed",
+          "duration": 0.4682919999999626,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects rejects a compiled token receipt whose declaration recipe was altered",
+          "status": "passed",
+          "duration": 0.4614159999999856,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects retains punctuation inside the compiled token selector value",
+          "status": "passed",
+          "duration": 0.32304200000004357,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects preserves fallback provenance when the exact physical token belongs to the artifact",
+          "status": "passed",
+          "duration": 0.6975419999999986,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects rolls back both targets after an injected DOM write failure",
+          "status": "passed",
+          "duration": 0.8272079999999846,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects enforces exclusive ownership and can rebind after disposal",
+          "status": "passed",
+          "duration": 0.6838329999999928,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects keeps each flush snapshot coherent when another effect is queued during a write",
+          "status": "passed",
+          "duration": 0.4908330000000092,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects attempts all owned cleanup even if clearing surface tokens throws",
+          "status": "passed",
+          "duration": 0.70150000000001,
+          "firstMessages": []
+        },
+        {
+          "name": "private Shadow split effects drains a reentrant flush request after completing the current coherent projection",
+          "status": "passed",
+          "duration": 0.5457499999999982,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 does not claim canonical role support for field-sizing-auto",
+          "status": "passed",
+          "duration": 0.5078339999999741,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 does not claim canonical role support for -field-sizing-content",
+          "status": "passed",
+          "duration": 0.08595800000000509,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 does not claim canonical role support for field-sizing-[content]",
+          "status": "passed",
+          "duration": 0.054000000000002046,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies bg-primary as a canonical surface token",
+          "status": "passed",
+          "duration": 0.2323340000000087,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies border-ring as a canonical surface token",
+          "status": "passed",
+          "duration": 0.059291999999999234,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies rounded-md as a canonical surface token",
+          "status": "passed",
+          "duration": 0.05875000000000341,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies shadow-sm as a canonical surface token",
+          "status": "passed",
+          "duration": 0.05795799999998508,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies px-3 as a canonical surface token",
+          "status": "passed",
+          "duration": 0.06316699999999287,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies flex-row as a canonical surface token",
+          "status": "passed",
+          "duration": 0.04854100000000017,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies items-center as a canonical surface token",
+          "status": "passed",
+          "duration": 0.05004100000002154,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies justify-between as a canonical surface token",
+          "status": "passed",
+          "duration": 0.03700000000000614,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies gap-2 as a canonical surface token",
+          "status": "passed",
+          "duration": 0.04054099999999039,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies opacity-50 as a canonical surface token",
+          "status": "passed",
+          "duration": 0.03725000000000023,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies group/button as a canonical surface token",
+          "status": "passed",
+          "duration": 0.03341700000001424,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies peer as a canonical surface token",
+          "status": "passed",
+          "duration": 0.029875000000004093,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies resize-y as a canonical surface token",
+          "status": "passed",
+          "duration": 0.03166699999999878,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies resize-none as a canonical surface token",
+          "status": "passed",
+          "duration": 0.039249999999981355,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies field-sizing-content as a canonical surface token",
+          "status": "passed",
+          "duration": 0.02579099999999812,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies field-sizing-fixed as a canonical surface token",
+          "status": "passed",
+          "duration": 0.029749999999978627,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies underline-offset-4 as a canonical surface token",
+          "status": "passed",
+          "duration": 0.033416000000016766,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies uppercase as a canonical surface token",
+          "status": "passed",
+          "duration": 0.026250000000004547,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies whitespace-nowrap as a canonical surface token",
+          "status": "passed",
+          "duration": 0.032457999999991216,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 resolves the exact vertical scroll token on the surface",
+          "status": "passed",
+          "duration": 0.0327920000000006,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies order-2 as a canonical placement token",
+          "status": "passed",
+          "duration": 0.04595799999998462,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies self-start as a canonical placement token",
+          "status": "passed",
+          "duration": 0.03408399999997869,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies grow as a canonical placement token",
+          "status": "passed",
+          "duration": 0.03608300000001918,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies shrink-0 as a canonical placement token",
+          "status": "passed",
+          "duration": 0.035082999999985987,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies basis-1/2 as a canonical placement token",
+          "status": "passed",
+          "duration": 0.02679200000000037,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies flex-1 as a canonical placement token",
+          "status": "passed",
+          "duration": 0.028790999999984024,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies mt-2 as a canonical placement token",
+          "status": "passed",
+          "duration": 0.027625000000000455,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies -ml-1 as a canonical placement token",
+          "status": "passed",
+          "duration": 0.029415999999997666,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies absolute as a canonical placement token",
+          "status": "passed",
+          "duration": 0.02991700000001174,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies fixed as a canonical placement token",
+          "status": "passed",
+          "duration": 0.03554099999999494,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies inset-0 as a canonical placement token",
+          "status": "passed",
+          "duration": 0.027999999999991587,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies -left-1/2 as a canonical placement token",
+          "status": "passed",
+          "duration": 0.02945900000000279,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies z-40 as a canonical placement token",
+          "status": "passed",
+          "duration": 0.027583999999990283,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies w-full as a canonical placement token",
+          "status": "passed",
+          "duration": 0.03058299999997871,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies min-h-28 as a canonical placement token",
+          "status": "passed",
+          "duration": 0.02445800000000986,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies size-5 as a canonical placement token",
+          "status": "passed",
+          "duration": 0.02404099999998266,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies float-right as a canonical placement token",
+          "status": "passed",
+          "duration": 0.030249999999995225,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies align-top as a canonical placement token",
+          "status": "passed",
+          "duration": 0.0292090000000087,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies align-middle as a canonical placement token",
+          "status": "passed",
+          "duration": 0.023457999999976664,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies align-bottom as a canonical placement token",
+          "status": "passed",
+          "duration": 0.023624999999981355,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies flex as a canonical composite token",
+          "status": "passed",
+          "duration": 0.03891699999999787,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies inline-flex as a canonical composite token",
+          "status": "passed",
+          "duration": 0.030333000000013044,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies grid as a canonical composite token",
+          "status": "passed",
+          "duration": 0.04245799999998212,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies inline-grid as a canonical composite token",
+          "status": "passed",
+          "duration": 0.024208999999984826,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies block as a canonical composite token",
+          "status": "passed",
+          "duration": 0.030667000000022426,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies inline-block as a canonical composite token",
+          "status": "passed",
+          "duration": 0.02420799999998735,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies table as a canonical composite token",
+          "status": "passed",
+          "duration": 0.03516700000000128,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies table-row as a canonical composite token",
+          "status": "passed",
+          "duration": 0.04895899999999642,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies table-cell as a canonical composite token",
+          "status": "passed",
+          "duration": 0.023458000000005086,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 classifies table-caption as a canonical composite token",
+          "status": "passed",
+          "duration": 0.03333299999999895,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 keeps invisible unresolved instead of guessing a target",
+          "status": "passed",
+          "duration": 0.03283300000001077,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 keeps visible unresolved instead of guessing a target",
+          "status": "passed",
+          "duration": 0.02441699999999969,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 keeps overflow-auto unresolved instead of guessing a target",
+          "status": "passed",
+          "duration": 0.03237500000000182,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 keeps overflow-x-auto unresolved instead of guessing a target",
+          "status": "passed",
+          "duration": 0.022916999999978316,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 keeps overflow-y-hidden unresolved instead of guessing a target",
+          "status": "passed",
+          "duration": 0.024750000000011596,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 keeps pointer-events-auto unresolved instead of guessing a target",
+          "status": "passed",
+          "duration": 0.02049999999999841,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 keeps translate-x-2 unresolved instead of guessing a target",
+          "status": "passed",
+          "duration": 0.030666999999994005,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 keeps -translate-x-1/3 unresolved instead of guessing a target",
+          "status": "passed",
+          "duration": 0.02079100000000267,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 keeps scale-[0.97] unresolved instead of guessing a target",
+          "status": "passed",
+          "duration": 0.02820800000000645,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 keeps will-change-contents unresolved instead of guessing a target",
+          "status": "passed",
+          "duration": 0.02179200000000492,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 falls an unknown extension token back to surface without claiming it is canonical",
+          "status": "passed",
+          "duration": 0.034166999999996506,
+          "firstMessages": []
+        },
+        {
+          "name": "feedback style application-role classification v0 preserves the exact raw token and does not parse public role qualifiers",
+          "status": "passed",
+          "duration": 0.027208000000001675,
+          "firstMessages": []
+        },
+        {
+          "name": "admits only the source-bound fractional and affine Root geometry additions",
+          "status": "passed",
+          "duration": 0.10745800000000827,
+          "firstMessages": []
+        },
+        {
+          "name": "admits only the exact font-relative resident spacing token, independently of component identity",
+          "status": "passed",
+          "duration": 0.08087499999999181,
+          "firstMessages": []
+        }
+      ]
+    },
+    "borderComparison": {
+      "plain": [
+        {
+          "name": "private Shadow split effects rejects unimplemented animated border rounding but retains fixed-border sizing animation",
+          "first": "AssertionError: expected [Function] to throw an error"
+        },
+        {
+          "name": "private Shadow split effects rejects overlapping animated border widths independently of effect entry order",
+          "first": "AssertionError: expected [Function] to throw an error"
+        }
+      ],
+      "variant": [
+        {
+          "name": "private Shadow split effects rejects unimplemented animated border rounding but retains fixed-border sizing animation",
+          "first": "AssertionError: expected [Function] to throw an error"
+        },
+        {
+          "name": "private Shadow split effects rejects overlapping animated border widths independently of effect entry order",
+          "first": "AssertionError: expected [Function] to throw an error"
+        }
+      ],
+      "same": true
+    },
+    "plainBorderLogSHA256": "e28f3c8efebe488a555801544001c5eb15c648086ce8dd16325a3352d586bd25",
+    "publicDistProfiles": [
+      {
+        "profile": "light",
+        "requests": 15
+      },
+      {
+        "profile": "split",
+        "requests": 15
+      },
+      {
+        "profile": "mixed",
+        "requests": 15
+      }
+    ],
+    "logs": {
+      "dialog-source.log": "c22c752f228fb4aaa26e318584092cf63f9f21b5a24b312ea157ccdb10567a47",
+      "dialog-dist.log": "05bbf2e5a0e32d720dc2e79049267ceda9e847a1e30c357aa33f9479ce115907"
+    },
+    "sourceResult": {
+      "result": [
+        {
+          "profile": "light",
+          "requests": 15,
+          "counts": {
+            "root": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "trigger": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "mask": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "content": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "title": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "description": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "close": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "icon": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "header": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "footer": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            }
+          }
+        },
+        {
+          "profile": "split",
+          "requests": 15,
+          "counts": {
+            "root": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "trigger": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "mask": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "content": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "title": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "description": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "close": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "icon": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "header": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "footer": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            }
+          }
+        },
+        {
+          "profile": "mixed",
+          "requests": 15,
+          "counts": {
+            "root": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "trigger": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "mask": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "content": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "title": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "description": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "close": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "icon": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "header": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "footer": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            }
+          }
+        }
+      ],
+      "errors": [],
+      "chrome": "156.0.8078.79"
+    }
+  }
+}
