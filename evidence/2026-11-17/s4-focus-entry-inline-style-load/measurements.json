@@ -1,0 +1,1902 @@
+{
+  "source": {
+    "head": "246e21faef8305abaa66993699b62ba8fa767273",
+    "tree": "288c5e228517e1de1416064d71878344a239543e",
+    "parent": "0cce314ef62d15e8ca55c517914e505beae41001",
+    "signature": "G",
+    "changedSource": [
+      "1aeedf24a436308e139703e50695308ec86df589917fd22a280470ebe8305d18  packages/adapters/web-component/src/runtime/modules.ts",
+      "95e1306058d5e4706328ffffdfbe46bf8781c139ed2886b97931457a5219c127  packages/adapters/web-component/test/shadow-closeout.browser.test.ts"
+    ],
+    "integratedMain": {
+      "merge": "0cce314ef62d15e8ca55c517914e505beae41001",
+      "tree": "01447c77a5611e2b086108b27f49751a79ac9d69",
+      "parents": [
+        "b4e2f87bba9c5d83ae4554e30118e540691feb76",
+        "ccc207626178a159e925a2ae83b95b52a89fb67d"
+      ]
+    }
+  },
+  "environment": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+  "trustedInlineLoad": {
+    "failedBaselineTests": 1,
+    "passedBaselineAsyncControls": 2,
+    "passedCurrentNativeControls": 3,
+    "synchronousRuleCount": 1,
+    "fallbackBeforeNativeLoad": "0",
+    "baselineAdditionalRebuilds": 1,
+    "currentAdditionalRebuilds": 0,
+    "matchedTestSha256": "95e1306058d5e4706328ffffdfbe46bf8781c139ed2886b97931457a5219c127",
+    "baselineReport": "a62942bcfda3a3b72616c109deaaf58b21bc204a0061fc70c0d0a4ba7b442c54",
+    "currentReport": "4159ede072daa57f3a1302e96ec5338dd59a5fd0bf6150e0931a10534a86b132"
+  },
+  "groupedDiagnostics": {
+    "scope": "Separate pinned Chromium runs with scoped observer overlays. Subscriber counts are sums at capture points, not a page-speed estimate.",
+    "before": {
+      "head": "b4e2f87bba9c5d83ae4554e30118e540691feb76",
+      "source": {
+        "asset": "site-shadcn-controls.BGP_vrfF.js",
+        "source": "57dc75a6ba514aa662fd4de78aa1ac745934d6d43e50138a77308defb3d6d73e",
+        "instrumented": "437191e046998007505837aa1f56420720f7d7afca79ba04ee7aa11e3ad40ea5"
+      },
+      "rows": [
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 37093.799999952316,
+          "inspectionMs": 0.20000004768371582
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 37151.40000009537,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 37479,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 37504.799999952316,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 38028.10000014305,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 38049.700000047684,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 38072.299999952316,
+          "inspectionMs": 0.10000014305114746
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 38094.60000014305,
+          "inspectionMs": 0.09999990463256836
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 38772.90000009537,
+          "inspectionMs": 0.09999990463256836
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 49408,
+          "inspectionMs": 0.10000014305114746
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 49432.299999952316,
+          "inspectionMs": 0.10000014305114746
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 49451.90000009537,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 49471.5,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 49496.90000009537,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 49716,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 49737.700000047684,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 49759.299999952316,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 49781.5,
+          "inspectionMs": 0.10000014305114746
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 49801,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 49918.200000047684,
+          "inspectionMs": 0.09999990463256836
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 49939.40000009537,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 49962.5,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 49983,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50002.40000009537,
+          "inspectionMs": 0.09999990463256836
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50074.10000014305,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50097.90000009537,
+          "inspectionMs": 0.09999990463256836
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50120.60000014305,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50140.60000014305,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50160.40000009537,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50205.5,
+          "inspectionMs": 0.10000014305114746
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50333.10000014305,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50354.60000014305,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50374,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50396.299999952316,
+          "inspectionMs": 0.10000014305114746
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50418.40000009537,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50464.5,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50485.90000009537,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50505.60000014305,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50529.90000009537,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50549.90000009537,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50577.700000047684,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50597.90000009537,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50620.10000014305,
+          "inspectionMs": 0.09999990463256836
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50641.799999952316,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50661.700000047684,
+          "inspectionMs": 0.09999990463256836
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50682.90000009537,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50702.40000009537,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50725.5,
+          "inspectionMs": 0.10000014305114746
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50746.299999952316,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50766,
+          "inspectionMs": 0.10000014305114746
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50787.40000009537,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50807.200000047684,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50832.60000014305,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50852.40000009537,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50872.200000047684,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50893.200000047684,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50916.299999952316,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50937.700000047684,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50957.10000014305,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50976.700000047684,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 50998,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 51022.90000009537,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 51043.90000009537,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 51063.5,
+          "inspectionMs": 0
+        },
+        {
+          "path": "/zh-cn/internal/demo-matrix/",
+          "tag": "style",
+          "root": 9,
+          "subscribers": 7,
+          "hasSheet": true,
+          "linkMedia": "",
+          "trusted": true,
+          "counts": {
+            "rules": 1,
+            "media": 0,
+            "imported": 0,
+            "unknown": 0,
+            "sibling": 0,
+            "relational": 0,
+            "variables": 0
+          },
+          "at": 51083.200000047684,
+          "inspectionMs": 0
+        }
+      ],
+      "events": 65,
+      "subscriberDeliveries": 455,
+      "latestPageMs": 51083.200000047684,
+      "ruleCounts": {
+        "1": 65
+      },
+      "unknownSum": 0,
+      "nativeExit": 1,
+      "logSHA256": "95af292138264ddf67f901d6e57f95d76af1b86befa5ba1e0145aaf8d2f533db"
+    },
+    "after": {
+      "exactBuiltHead": "246e21faef8305abaa66993699b62ba8fa767273",
+      "input": {
+        "asset": "site-shadcn-controls.Drqoz6Tz.js",
+        "source": "ab98b1a0b90e0368c28850d28cbd923d7d905d121c393cdf2fa5299a87b1c1d6",
+        "instrumented": "d46eef26a3d6033ae4b158bc06d6e916b1f7d53fa3baad11295889a17a9f162d"
+      },
+      "latestDeliveredFanout": {
+        "broad": {
+          "setter:value": 37,
+          "stylesheet-dom-records": 14
+        },
+        "inline": {
+          "method:setProperty": 179184,
+          "setter:cssText": 252356,
+          "method:removeProperty": 1413,
+          "setter:display": 1188
+        },
+        "flushes": 2816,
+        "broadFlushes": 28,
+        "inlineDeliveries": 21629,
+        "broadDeliveries": 193,
+        "broadSources": {
+          "setter:value": 95,
+          "stylesheet-dom-records": 98
+        },
+        "skippedNativeInline": 65,
+        "skippedSubscribers": 455,
+        "pageMs": 74515.70000004768
+      },
+      "inventories": [
+        {
+          "pageMs": 45207.700000047684,
+          "inventory": {
+            "wc": {
+              "total": 317,
+              "childReady": 130,
+              "pending": 35,
+              "examples": [
+                "demo-shadcn-menubar",
+                "demo-shadcn-message-scroller",
+                "demo-shadcn-meter",
+                "demo-shadcn-navigation-menu",
+                "demo-shadcn-popover-navigation"
+              ]
+            },
+            "react": {
+              "total": 317,
+              "childReady": 130,
+              "pending": 37,
+              "examples": [
+                "demo-shadcn-menubar",
+                "demo-shadcn-message-scroller",
+                "demo-shadcn-meter",
+                "demo-shadcn-navigation-menu",
+                "demo-shadcn-popover-navigation"
+              ]
+            },
+            "vue": {
+              "total": 317,
+              "childReady": 130,
+              "pending": 35,
+              "examples": [
+                "demo-shadcn-menubar",
+                "demo-shadcn-message-scroller",
+                "demo-shadcn-meter",
+                "demo-shadcn-navigation-menu",
+                "demo-shadcn-popover-navigation"
+              ]
+            },
+            "vue2": {
+              "total": 317,
+              "childReady": 130,
+              "pending": 35,
+              "examples": [
+                "demo-shadcn-menubar",
+                "demo-shadcn-message-scroller",
+                "demo-shadcn-meter",
+                "demo-shadcn-navigation-menu",
+                "demo-shadcn-popover-navigation"
+              ]
+            }
+          },
+          "inspectionMs": 0.20000004768371582
+        },
+        {
+          "pageMs": 55405,
+          "inventory": {
+            "wc": {
+              "total": 317,
+              "childReady": 150,
+              "pending": 33,
+              "examples": [
+                "demo-shadcn-tooltip",
+                "demo-shadcn-transition",
+                "demo-shadcn-tree",
+                "demo-shadcn-virtual-list",
+                "demo-bootstrap-2-3-2-alert-dialog"
+              ]
+            },
+            "react": {
+              "total": 317,
+              "childReady": 150,
+              "pending": 35,
+              "examples": [
+                "demo-shadcn-tooltip",
+                "demo-shadcn-transition",
+                "demo-shadcn-tree",
+                "demo-shadcn-virtual-list",
+                "demo-bootstrap-2-3-2-alert-dialog"
+              ]
+            },
+            "vue": {
+              "total": 317,
+              "childReady": 150,
+              "pending": 33,
+              "examples": [
+                "demo-shadcn-tooltip",
+                "demo-shadcn-transition",
+                "demo-shadcn-tree",
+                "demo-shadcn-virtual-list",
+                "demo-bootstrap-2-3-2-alert-dialog"
+              ]
+            },
+            "vue2": {
+              "total": 317,
+              "childReady": 150,
+              "pending": 33,
+              "examples": [
+                "demo-shadcn-tooltip",
+                "demo-shadcn-transition",
+                "demo-shadcn-tree",
+                "demo-shadcn-virtual-list",
+                "demo-bootstrap-2-3-2-alert-dialog"
+              ]
+            }
+          },
+          "inspectionMs": 0.20000004768371582
+        },
+        {
+          "pageMs": 66869.70000004768,
+          "inventory": {
+            "wc": {
+              "total": 317,
+              "childReady": 169,
+              "pending": 24,
+              "examples": [
+                "demo-bootstrap-2-3-2-async-region",
+                "demo-bootstrap-2-3-2-calendar",
+                "demo-bootstrap-2-3-2-checkbox-group",
+                "demo-bootstrap-2-3-2-drawer",
+                "demo-bootstrap-2-3-2-drawer-scroll"
+              ]
+            },
+            "react": {
+              "total": 317,
+              "childReady": 169,
+              "pending": 27,
+              "examples": [
+                "demo-bootstrap-2-3-2-async-region",
+                "demo-bootstrap-2-3-2-calendar",
+                "demo-bootstrap-2-3-2-checkbox-group",
+                "demo-bootstrap-2-3-2-drawer",
+                "demo-bootstrap-2-3-2-drawer-scroll"
+              ]
+            },
+            "vue": {
+              "total": 317,
+              "childReady": 169,
+              "pending": 25,
+              "examples": [
+                "demo-bootstrap-2-3-2-async-region",
+                "demo-bootstrap-2-3-2-calendar",
+                "demo-bootstrap-2-3-2-checkbox-group",
+                "demo-bootstrap-2-3-2-drawer",
+                "demo-bootstrap-2-3-2-drawer-scroll"
+              ]
+            },
+            "vue2": {
+              "total": 317,
+              "childReady": 169,
+              "pending": 25,
+              "examples": [
+                "demo-bootstrap-2-3-2-async-region",
+                "demo-bootstrap-2-3-2-calendar",
+                "demo-bootstrap-2-3-2-checkbox-group",
+                "demo-bootstrap-2-3-2-drawer",
+                "demo-bootstrap-2-3-2-drawer-scroll"
+              ]
+            }
+          },
+          "inspectionMs": 0.2999999523162842
+        }
+      ],
+      "servedPreviews": [
+        {
+          "locale": "zh-cn",
+          "replicas": [
+            {
+              "runtime": "wc",
+              "lazy": "false",
+              "mode": null,
+              "count": 239
+            },
+            {
+              "runtime": "react",
+              "lazy": "false",
+              "mode": null,
+              "count": 239
+            },
+            {
+              "runtime": "vue",
+              "lazy": "false",
+              "mode": null,
+              "count": 239
+            },
+            {
+              "runtime": "vue2",
+              "lazy": "false",
+              "mode": null,
+              "count": 239
+            },
+            {
+              "runtime": "wc",
+              "lazy": "false",
+              "mode": "fixed-family",
+              "count": 78
+            },
+            {
+              "runtime": "react",
+              "lazy": "false",
+              "mode": "fixed-family",
+              "count": 78
+            },
+            {
+              "runtime": "vue",
+              "lazy": "false",
+              "mode": "fixed-family",
+              "count": 78
+            },
+            {
+              "runtime": "vue2",
+              "lazy": "false",
+              "mode": "fixed-family",
+              "count": 78
+            }
+          ]
+        },
+        {
+          "locale": "en",
+          "replicas": [
+            {
+              "runtime": "wc",
+              "lazy": "false",
+              "mode": null,
+              "count": 239
+            },
+            {
+              "runtime": "react",
+              "lazy": "false",
+              "mode": null,
+              "count": 239
+            },
+            {
+              "runtime": "vue",
+              "lazy": "false",
+              "mode": null,
+              "count": 239
+            },
+            {
+              "runtime": "vue2",
+              "lazy": "false",
+              "mode": null,
+              "count": 239
+            },
+            {
+              "runtime": "wc",
+              "lazy": "false",
+              "mode": "fixed-family",
+              "count": 78
+            },
+            {
+              "runtime": "react",
+              "lazy": "false",
+              "mode": "fixed-family",
+              "count": 78
+            },
+            {
+              "runtime": "vue",
+              "lazy": "false",
+              "mode": "fixed-family",
+              "count": 78
+            },
+            {
+              "runtime": "vue2",
+              "lazy": "false",
+              "mode": "fixed-family",
+              "count": 78
+            }
+          ]
+        }
+      ],
+      "originalExit": 1,
+      "scope": "Chinese diagnostic with local observer overlays. Inventory counts raw nonempty hosts and pending markers, not completed renderer publication or exact deadline snapshots.",
+      "logChecksum": "a7ed75a271d7d96c578d540ed554ea9b270a29a465f69b05c67c9c19f043417a"
+    }
+  },
+  "exactProduct": {
+    "focusedFiles": 8,
+    "focusedPassed": 136,
+    "packageBuilds": 47,
+    "previewPages": 685,
+    "typesExit": 0,
+    "manifestsExit": 0,
+    "activeBudgetPolicyExit": 0,
+    "changedBudgetRows": [
+      {
+        "previous": "ADVISORY adapter-web-component root: 195069 / 132000 gzip bytes; overBudget=63069; minified=670183 sha256=cf9ac14ffd9d6d477b1d1f02e3fedd64f417c54690142c32a3555c305e25d26f",
+        "current": "ADVISORY adapter-web-component root: 195119 / 132000 gzip bytes; overBudget=63119; minified=670323 sha256=bfafdab334becdb12664a80811daca6946cc88abb1d4457ef2c20af1622ff7bc"
+      }
+    ],
+    "servedPreviews": {
+      "zh-cn": {
+        "bytes": 1862507,
+        "sha256": "76d15a0703465732252659c132b03125f967de24bff5f66e8eba19fc8278dda3",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914158,
+        "sha256": "6a891676a4c4d999aea7ac62ddf1afbfbd6f82e3285218687cb6f26fbdcc3bbe",
+        "previews": 1268
+      }
+    },
+    "preview": {
+      "head": "246e21faef8305abaa66993699b62ba8fa767273",
+      "tree": "288c5e228517e1de1416064d71878344a239543e",
+      "distHashes": {
+        "zh-cn/index.html": "cc96b6f8e6babc1e6e0b899ac603bf9d51e880aac0762ac62cdb8b670e6aa946",
+        "zh-cn/ui-libraries/shadcn/button/index.html": "2fb5c655546661531836f2324249c948b969c6082845a978ad28c4e3b99160da",
+        "zh-cn/ui-libraries/brutalist/components/button/index.html": "2e91f7f762ac94586c7d1a49b4722e3b0f7a9e6ff0a9323c70fdfa811cd8ba9c"
+      },
+      "sourceCodeExamples": 9,
+      "renderedCodeExamples": 9,
+      "packedHeaderExit": 0,
+      "previewBrowserExit": 0,
+      "selector": "uses real family Popover Triggers|uses the same mobile shell|live available region|keeps Runtime Tabs outside"
+    },
+    "header": {
+      "head": "246e21faef8305abaa66993699b62ba8fa767273",
+      "browser": "156.0.8078.79",
+      "scope": "First animation frame control on the exact static Astro preview. Geometry reads can force layout.",
+      "results": [
+        {
+          "width": 320,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1597.5,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1729.7999999523163,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1751,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        },
+        {
+          "width": 390,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1626.0999999046326,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1757.7000000476837,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1780.5999999046326,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        }
+      ]
+    },
+    "nativeCases": {
+      "native": {
+        "passed": 0,
+        "failed": 2,
+        "skipped": 0,
+        "failedCases": [
+          "zh-cn: native Light/split/mixed acceptance",
+          "en: native Light/split/mixed acceptance"
+        ],
+        "reportSha256": "2aa04082aafa8e81e193851eb5e525436240fade2582322a78f4d844174e5001"
+      },
+      "accordion-native": {
+        "passed": 4,
+        "failed": 0,
+        "skipped": 29,
+        "failedCases": [],
+        "reportSha256": "83b054cbae454ed72459b1b1f0d01bad87faa5851e3fa4e7ebf3d6e5b6ccab44"
+      },
+      "optics-native": {
+        "passed": 3,
+        "failed": 0,
+        "skipped": 1,
+        "failedCases": [],
+        "reportSha256": "4fd6f9414131ab216f379dba6574d23cf39eb2f7260bb47f511dc38f4b1de551"
+      },
+      "portal-native": {
+        "passed": 5,
+        "failed": 0,
+        "skipped": 50,
+        "failedCases": [],
+        "reportSha256": "60a4030218660ca71ffaf6e671e27ee39eaa1abe5864c4e8747c9784c743ab46"
+      },
+      "preview-browser": {
+        "passed": 11,
+        "failed": 0,
+        "skipped": 13,
+        "failedCases": [],
+        "reportSha256": "f7513309befb91e060d8495a2770d7648822640db14d9428aaeaeadcd1775fa4"
+      },
+      "shadow": {
+        "passed": 165,
+        "failed": 0,
+        "skipped": 0,
+        "failedCases": [],
+        "reportSha256": "e8f7f35d781902e39af8670f2516dda2c3fa3d5f3d6bb4e042c3f6d54d8df27f"
+      }
+    },
+    "originalMatrixTimeoutMs": 60000,
+    "originalOuterTimeoutMs": 150000,
+    "lastDelivered": {
+      "zh-cn": {
+        "pageMs": 55730,
+        "previewCount": 1268,
+        "firstMissing": {
+          "previewerId": "pp-m4osdnu24xc",
+          "index": 576,
+          "inited": "1",
+          "hostChildren": 0
+        },
+        "owner": {
+          "demoId": "demo-shadcn-virtual-list",
+          "prototypeId": "",
+          "declaredRuntime": "wc",
+          "projectionMode": null,
+          "projectionState": null,
+          "mounting": null,
+          "hostTag": "DIV",
+          "hostOwner": "pp-m4osdnu24xc",
+          "startupPending": true,
+          "hostOwnInert": true,
+          "hostText": ""
+        }
+      },
+      "en": {
+        "pageMs": 65847.89999985695,
+        "previewCount": 1268,
+        "firstMissing": {
+          "previewerId": "pp-xiieysetqk",
+          "index": 596,
+          "inited": "1",
+          "hostChildren": 0
+        },
+        "owner": {
+          "demoId": "demo-bootstrap-2-3-2-calendar",
+          "prototypeId": "",
+          "declaredRuntime": "wc",
+          "projectionMode": null,
+          "projectionState": null,
+          "mounting": null,
+          "hostTag": "DIV",
+          "hostOwner": "pp-xiieysetqk",
+          "startupPending": true,
+          "hostOwnInert": true,
+          "hostText": ""
+        }
+      }
+    }
+  }
+}
