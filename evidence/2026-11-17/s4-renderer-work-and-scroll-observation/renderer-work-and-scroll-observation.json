@@ -1,0 +1,1433 @@
+{
+  "source": {
+    "head": "29468465a80e5d1b170a0f2880c3fb1123299f8f",
+    "tree": "f01bf0da16940a702282aef53426b57b7a620d20",
+    "parent": "91e9fd6e30a09670c6c00639bd7c3fb678b4d7c3",
+    "signature": "G"
+  },
+  "inputs": {
+    "packages/modules/scroll/src/web/create-web-scroll-host.ts": "b82dc21a4739836c6bc4746d0c746a5e7960021139b4f8f70f7d05b8b94b1c0e",
+    "packages/modules/scroll/test/web-scroll-host.test.ts": "82f62c0eb4419522a9a9117af4f08d758533ffe8e31943a00a459577b225252f"
+  },
+  "versions": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+  "registryMergeSource": {
+    "head": "91e9fd6e30a09670c6c00639bd7c3fb678b4d7c3",
+    "tree": "f52d22e24b9c76dc731b353e5cc204740448a1e4",
+    "parents": [
+      "9ec4042454a3c9cc34666660db09b96ea53dc5a3",
+      "e485e75c82b2634067fe636d709a242fceb844e2"
+    ],
+    "signature": "G",
+    "tests": {
+      "numTotalTests": 173,
+      "numPassedTests": 173,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "failures": []
+    }
+  },
+  "red": {
+    "tests": {
+      "numTotalTests": 15,
+      "numPassedTests": 0,
+      "numFailedTests": 1,
+      "numPendingTests": 14,
+      "failures": [
+        {
+          "name": "module-scroll: Web scroll surface host keeps geometry observation attached across an update with the same targets",
+          "first": "AssertionError: expected \"spy\" to not be called at all, but actually been called 1 times"
+        }
+      ]
+    },
+    "rawLogSHA256": "9bcb1dbddd2f9f1d6bfb557a503ed9e93c57e0f26a66e2c660a03eb5ba1e9270",
+    "patchSHA256": "298d5d89a49cf2a2a1f6ee94a25c99c508839e7043f1284b07e7ca014b234c02"
+  },
+  "focused": {
+    "tests": {
+      "numTotalTests": 218,
+      "numPassedTests": 218,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "failures": []
+    },
+    "rawLogSHA256": "cc719def74f363a117ab2241d88b1d75e0e9d22cd39f33c9b18804b436380074"
+  },
+  "executionProfile": {
+    "source": "9ec4042454a3c9cc34666660db09b96ea53dc5a3",
+    "renderer": [19045, 23742707],
+    "traceReceipt": {
+      "bytes": 45669028,
+      "eof": true,
+      "dataLossOccurred": false
+    },
+    "traceEvents": 178762,
+    "taskEvents": 7769,
+    "windows": [
+      {
+        "asset": "_astro/index.DitFunag.js",
+        "owner": "demo-shadcn-table",
+        "innerImportAt": 52409.09999990463,
+        "observedEnd": 62689.09999990463,
+        "analyzedEnd": 62689.1,
+        "taskCoverageMs": 4525.129,
+        "samples": 1395,
+        "sampledMs": 10280.0,
+        "leaf": [
+          {
+            "function": "(anonymous)",
+            "asset": "_astro/projection-theme.glgKE2UX.js",
+            "line": 1,
+            "column": 2491,
+            "sampledMs": 1568.499
+          },
+          {
+            "function": "O",
+            "asset": "_astro/native-content-lease.BkYU4WVV.js",
+            "line": 1,
+            "column": 543,
+            "sampledMs": 1255.976
+          },
+          {
+            "function": "te",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 10,
+            "column": 389471,
+            "sampledMs": 1241.323
+          },
+          {
+            "function": "(program)",
+            "asset": "",
+            "line": 0,
+            "column": 0,
+            "sampledMs": 592.302
+          },
+          {
+            "function": "T.Object.defineProperty.get",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 16,
+            "column": 36217,
+            "sampledMs": 479.384
+          },
+          {
+            "function": "H",
+            "asset": "_astro/sink.CMPiZvfo.js",
+            "line": 11,
+            "column": 22055,
+            "sampledMs": 450.312
+          },
+          {
+            "function": "addEventListener",
+            "asset": "",
+            "line": 0,
+            "column": 0,
+            "sampledMs": 414.932
+          },
+          {
+            "function": "Uw",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 10,
+            "column": 254995,
+            "sampledMs": 312.712
+          },
+          {
+            "function": "nh",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 10,
+            "column": 383035,
+            "sampledMs": 162.232
+          },
+          {
+            "function": "getClaim",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 10,
+            "column": 86209,
+            "sampledMs": 156.705
+          },
+          {
+            "function": "querySelectorAll",
+            "asset": "",
+            "line": 0,
+            "column": 0,
+            "sampledMs": 151.821
+          },
+          {
+            "function": "ne",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 10,
+            "column": 389602,
+            "sampledMs": 135.043
+          },
+          {
+            "function": "(anonymous)",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 10,
+            "column": 108322,
+            "sampledMs": 118.558
+          },
+          {
+            "function": "getSnapshot",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 10,
+            "column": 162066,
+            "sampledMs": 112.497
+          },
+          {
+            "function": "isViewReady",
+            "asset": "_astro/index.zPe_Z9WQ.js",
+            "line": 1,
+            "column": 19729,
+            "sampledMs": 112.489
+          },
+          {
+            "function": "isViewReady",
+            "asset": "_astro/index.CgJlftEH.js",
+            "line": 1,
+            "column": 23170,
+            "sampledMs": 103.966
+          },
+          {
+            "function": "(anonymous)",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 10,
+            "column": 416822,
+            "sampledMs": 97.209
+          },
+          {
+            "function": "v",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 10,
+            "column": 418327,
+            "sampledMs": 90.001
+          },
+          {
+            "function": "isViewReady",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 19,
+            "column": 43302,
+            "sampledMs": 89.981
+          },
+          {
+            "function": "findDomainRoot",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 10,
+            "column": 108494,
+            "sampledMs": 89.929
+          },
+          {
+            "function": "de",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 10,
+            "column": 178265,
+            "sampledMs": 82.519
+          },
+          {
+            "function": "y",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 16,
+            "column": 32824,
+            "sampledMs": 82.51
+          },
+          {
+            "function": "isViewReady",
+            "asset": "_astro/index.BfSjSdzA.js",
+            "line": 1,
+            "column": 22636,
+            "sampledMs": 81.081
+          },
+          {
+            "function": "(garbage collector)",
+            "asset": "",
+            "line": 0,
+            "column": 0,
+            "sampledMs": 74.776
+          }
+        ],
+        "inclusive": [
+          {
+            "function": "(root)",
+            "asset": "",
+            "line": 0,
+            "column": 0,
+            "sampledMs": 10280.0
+          },
+          {
+            "function": "runInScope",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 10,
+            "column": 426633,
+            "sampledMs": 3244.107
+          },
+          {
+            "function": "notifyTargetChange",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 10,
+            "column": 101937,
+            "sampledMs": 2881.366
+          },
+          {
+            "function": "runNoSync",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 10,
+            "column": 426586,
+            "sampledMs": 2851.35
+          },
+          {
+            "function": "(anonymous)",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 10,
+            "column": 428099,
+            "sampledMs": 2821.34
+          },
+          {
+            "function": "(anonymous)",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 10,
+            "column": 428121,
+            "sampledMs": 2798.842
+          },
+          {
+            "function": "(anonymous)",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 10,
+            "column": 102305,
+            "sampledMs": 2776.346
+          },
+          {
+            "function": "attachView",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 10,
+            "column": 439267,
+            "sampledMs": 2003.913
+          },
+          {
+            "function": "B",
+            "asset": "_astro/projection-scope.C38VOVYm.js",
+            "line": 1,
+            "column": 3745,
+            "sampledMs": 1899.276
+          },
+          {
+            "function": "replace",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 6,
+            "column": 107073,
+            "sampledMs": 1676.233
+          },
+          {
+            "function": "(anonymous)",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 6,
+            "column": 27079,
+            "sampledMs": 1661.21
+          },
+          {
+            "function": "bump",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 6,
+            "column": 26853,
+            "sampledMs": 1661.21
+          },
+          {
+            "function": "onCapsEpoch",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 10,
+            "column": 97475,
+            "sampledMs": 1653.694
+          },
+          {
+            "function": "publish",
+            "asset": "_astro/runtime-preview-surface.CCzB9S_5.js",
+            "line": 1,
+            "column": 3564,
+            "sampledMs": 1577.645
+          },
+          {
+            "function": "O",
+            "asset": "_astro/native-content-lease.BkYU4WVV.js",
+            "line": 1,
+            "column": 543,
+            "sampledMs": 1577.645
+          },
+          {
+            "function": "P",
+            "asset": "_astro/runtime-preview-surface.CCzB9S_5.js",
+            "line": 1,
+            "column": 1666,
+            "sampledMs": 1577.645
+          },
+          {
+            "function": "k",
+            "asset": "_astro/projection-theme.glgKE2UX.js",
+            "line": 1,
+            "column": 2957,
+            "sampledMs": 1568.499
+          },
+          {
+            "function": "(anonymous)",
+            "asset": "_astro/projection-theme.glgKE2UX.js",
+            "line": 1,
+            "column": 2491,
+            "sampledMs": 1568.499
+          },
+          {
+            "function": "T",
+            "asset": "_astro/projection-theme.glgKE2UX.js",
+            "line": 1,
+            "column": 2327,
+            "sampledMs": 1568.499
+          },
+          {
+            "function": "reset",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 10,
+            "column": 425034,
+            "sampledMs": 1303.91
+          },
+          {
+            "function": "resetAttached",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 6,
+            "column": 26677,
+            "sampledMs": 1303.91
+          },
+          {
+            "function": "i",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 6,
+            "column": 106962,
+            "sampledMs": 1303.91
+          },
+          {
+            "function": "reset",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 10,
+            "column": 424075,
+            "sampledMs": 1303.91
+          },
+          {
+            "function": "H",
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "line": 10,
+            "column": 392155,
+            "sampledMs": 1299.86
+          }
+        ],
+        "entryEvaluationStart": null,
+        "entryEvaluationEnd": null,
+        "resource": [
+          {
+            "asset": "_astro/index.DitFunag.js",
+            "evaluation": {
+              "start": null,
+              "end": null
+            },
+            "timing": null,
+            "stylesheet": null
+          },
+          {
+            "asset": "_astro/site-shadcn-controls.utF2VcOc.js",
+            "evaluation": {
+              "start": 305.39999985694885,
+              "end": 306.7000000476837
+            },
+            "timing": {
+              "startTime": 91.5,
+              "responseEnd": 179.5,
+              "initiatorType": "script"
+            },
+            "stylesheet": null
+          },
+          {
+            "asset": "_astro/index.DQ0xqlk8.js",
+            "evaluation": {
+              "start": 7806,
+              "end": 7806
+            },
+            "timing": {
+              "startTime": 6735,
+              "responseEnd": 6769.5,
+              "initiatorType": "script"
+            },
+            "stylesheet": null
+          }
+        ]
+      }
+    ],
+    "profile": {
+      "start": -4.935,
+      "end": 65195.972,
+      "totalSamples": 9978,
+      "clockAnchor": 22.799999952316284
+    },
+    "traceSHA256": "b6259e673b4f21a2e31cfb1cbb0e4d43fcebf705dbfa0e795245a3273d8a49a2",
+    "profileSHA256": "622ee5679093bda73dea44e401b4627cfe64beebdb973d6a55a2d46fc39cd2eb"
+  },
+  "firstParserAttempt": {
+    "source": "9ec4042454a3c9cc34666660db09b96ea53dc5a3",
+    "rowCount": 16,
+    "rows": [
+      {
+        "pageMs": 15221.5,
+        "receivedNodeMs": 17024.944291,
+        "scriptParsedNodeMs": 18699.991,
+        "asset": "_astro/group.proto.B4Wu3yU8.js",
+        "matchedResource": 3,
+        "totalResources": 3,
+        "id": "base-tooltip-group",
+        "firstMissingOwner": "demo-base-tooltip"
+      },
+      {
+        "pageMs": 15221.5,
+        "receivedNodeMs": 17024.944291,
+        "scriptParsedNodeMs": 18700.023333,
+        "asset": "_astro/root.proto.BlwRw26c.js",
+        "matchedResource": 4,
+        "totalResources": 4,
+        "id": "base-tooltip-root",
+        "firstMissingOwner": "demo-base-tooltip"
+      },
+      {
+        "pageMs": 15221.5,
+        "receivedNodeMs": 17024.944291,
+        "scriptParsedNodeMs": 18700.026958,
+        "asset": "_astro/trigger.proto.Cp0oQayt.js",
+        "matchedResource": 3,
+        "totalResources": 3,
+        "id": "base-tooltip-trigger",
+        "firstMissingOwner": "demo-base-tooltip"
+      },
+      {
+        "pageMs": 15221.5,
+        "receivedNodeMs": 17024.944291,
+        "scriptParsedNodeMs": 18749.9455,
+        "asset": "_astro/content.proto.AEAcFJxy.js",
+        "matchedResource": 3,
+        "totalResources": 3,
+        "id": "base-tooltip-content",
+        "firstMissingOwner": "demo-base-tooltip"
+      },
+      {
+        "pageMs": 17007.599999904633,
+        "receivedNodeMs": 18811.108291,
+        "scriptParsedNodeMs": 20011.410375,
+        "asset": "_astro/index.K2Dr66BP.js",
+        "matchedResource": 3,
+        "totalResources": 3,
+        "id": "base-virtual-list-root",
+        "firstMissingOwner": "demo-base-virtual-list"
+      },
+      {
+        "pageMs": 17007.599999904633,
+        "receivedNodeMs": 18811.108291,
+        "scriptParsedNodeMs": 20011.410375,
+        "asset": "_astro/index.K2Dr66BP.js",
+        "matchedResource": 3,
+        "totalResources": 3,
+        "id": "base-virtual-list-viewport",
+        "firstMissingOwner": "demo-base-virtual-list"
+      },
+      {
+        "pageMs": 17007.599999904633,
+        "receivedNodeMs": 18811.108291,
+        "scriptParsedNodeMs": 20011.410375,
+        "asset": "_astro/index.K2Dr66BP.js",
+        "matchedResource": 3,
+        "totalResources": 3,
+        "id": "base-virtual-list-content",
+        "firstMissingOwner": "demo-base-virtual-list"
+      },
+      {
+        "pageMs": 58120.09999990463,
+        "receivedNodeMs": 59923.784875,
+        "scriptParsedNodeMs": 62458.3035,
+        "asset": "_astro/index.DitFunag.js",
+        "matchedResource": 2,
+        "totalResources": 3,
+        "id": "shadcn-table-root",
+        "firstMissingOwner": "demo-shadcn-table"
+      },
+      {
+        "pageMs": 58120.09999990463,
+        "receivedNodeMs": 59923.784875,
+        "scriptParsedNodeMs": 62458.3035,
+        "asset": "_astro/index.DitFunag.js",
+        "matchedResource": 2,
+        "totalResources": 3,
+        "id": "shadcn-table-caption",
+        "firstMissingOwner": "demo-shadcn-table"
+      },
+      {
+        "pageMs": 58120.09999990463,
+        "receivedNodeMs": 59923.784875,
+        "scriptParsedNodeMs": 62458.3035,
+        "asset": "_astro/index.DitFunag.js",
+        "matchedResource": 2,
+        "totalResources": 3,
+        "id": "shadcn-table-row",
+        "firstMissingOwner": "demo-shadcn-table"
+      },
+      {
+        "pageMs": 58120.09999990463,
+        "receivedNodeMs": 59923.784875,
+        "scriptParsedNodeMs": 62458.3035,
+        "asset": "_astro/index.DitFunag.js",
+        "matchedResource": 2,
+        "totalResources": 3,
+        "id": "shadcn-table-header-cell",
+        "firstMissingOwner": "demo-shadcn-table"
+      },
+      {
+        "pageMs": 58120.09999990463,
+        "receivedNodeMs": 59923.784875,
+        "scriptParsedNodeMs": 62458.3035,
+        "asset": "_astro/index.DitFunag.js",
+        "matchedResource": 2,
+        "totalResources": 3,
+        "id": "shadcn-table-cell",
+        "firstMissingOwner": "demo-shadcn-table"
+      },
+      {
+        "pageMs": 65210.90000009537,
+        "receivedNodeMs": 67014.754,
+        "scriptParsedNodeMs": 68436.089375,
+        "asset": "_astro/index.S_ed8ZzR.js",
+        "matchedResource": 9,
+        "totalResources": 9,
+        "id": "shadcn-tooltip-group",
+        "firstMissingOwner": "demo-shadcn-tooltip"
+      },
+      {
+        "pageMs": 65210.90000009537,
+        "receivedNodeMs": 67014.754,
+        "scriptParsedNodeMs": 68436.089375,
+        "asset": "_astro/index.S_ed8ZzR.js",
+        "matchedResource": 9,
+        "totalResources": 9,
+        "id": "shadcn-tooltip-root",
+        "firstMissingOwner": "demo-shadcn-tooltip"
+      },
+      {
+        "pageMs": 65210.90000009537,
+        "receivedNodeMs": 67014.754,
+        "scriptParsedNodeMs": 68436.089375,
+        "asset": "_astro/index.S_ed8ZzR.js",
+        "matchedResource": 9,
+        "totalResources": 9,
+        "id": "shadcn-tooltip-trigger",
+        "firstMissingOwner": "demo-shadcn-tooltip"
+      },
+      {
+        "pageMs": 65210.90000009537,
+        "receivedNodeMs": 67014.754,
+        "scriptParsedNodeMs": 68436.089375,
+        "asset": "_astro/index.S_ed8ZzR.js",
+        "matchedResource": 9,
+        "totalResources": 9,
+        "id": "shadcn-tooltip-content",
+        "firstMissingOwner": "demo-shadcn-tooltip"
+      }
+    ],
+    "parsedCount": 17,
+    "rawLogSHA256": "e28c7b05da737b83b2c3428df64456f5484bbf08603b0673bd67be97cd49ed2a",
+    "note": "Node delivery observations for both channels, not exact V8 parser timestamps."
+  },
+  "observerProbes": {
+    "base": {
+      "samples": [
+        {
+          "total": 1,
+          "stable": 0,
+          "childrenChanged": 0,
+          "tracksChanged": 0,
+          "followChanged": 0,
+          "leases": 1,
+          "observedMs": 0,
+          "pageMs": 7224.400000095367,
+          "locale": "zh-cn",
+          "receivedNodeMs": 8718.186833
+        },
+        {
+          "total": 2,
+          "stable": 0,
+          "childrenChanged": 0,
+          "tracksChanged": 0,
+          "followChanged": 0,
+          "leases": 2,
+          "observedMs": 0,
+          "pageMs": 7948.400000095367,
+          "locale": "zh-cn",
+          "receivedNodeMs": 9440.61425
+        },
+        {
+          "total": 4,
+          "stable": 2,
+          "childrenChanged": 0,
+          "tracksChanged": 0,
+          "followChanged": 0,
+          "leases": 2,
+          "observedMs": 0,
+          "pageMs": 7989.5,
+          "locale": "zh-cn",
+          "receivedNodeMs": 9481.942958
+        },
+        {
+          "total": 8,
+          "stable": 6,
+          "childrenChanged": 0,
+          "tracksChanged": 0,
+          "followChanged": 0,
+          "leases": 2,
+          "observedMs": 0.09999990463256836,
+          "pageMs": 8215.799999952316,
+          "locale": "zh-cn",
+          "receivedNodeMs": 9708.143208
+        },
+        {
+          "total": 16,
+          "stable": 13,
+          "childrenChanged": 0,
+          "tracksChanged": 0,
+          "followChanged": 0,
+          "leases": 3,
+          "observedMs": 0.19999980926513672,
+          "pageMs": 8217.099999904633,
+          "locale": "zh-cn",
+          "receivedNodeMs": 9709.363083
+        },
+        {
+          "total": 32,
+          "stable": 27,
+          "childrenChanged": 0,
+          "tracksChanged": 1,
+          "followChanged": 0,
+          "leases": 4,
+          "observedMs": 0.40000009536743164,
+          "pageMs": 8227.599999904633,
+          "locale": "zh-cn",
+          "receivedNodeMs": 9719.811208
+        },
+        {
+          "total": 64,
+          "stable": 59,
+          "childrenChanged": 0,
+          "tracksChanged": 1,
+          "followChanged": 0,
+          "leases": 4,
+          "observedMs": 0.6000001430511475,
+          "pageMs": 8707.400000095367,
+          "locale": "zh-cn",
+          "receivedNodeMs": 10199.980083
+        },
+        {
+          "total": 128,
+          "stable": 119,
+          "childrenChanged": 0,
+          "tracksChanged": 1,
+          "followChanged": 0,
+          "leases": 8,
+          "observedMs": 0.7999999523162842,
+          "pageMs": 9459.099999904633,
+          "locale": "zh-cn",
+          "receivedNodeMs": 10951.737417
+        },
+        {
+          "total": 256,
+          "stable": 242,
+          "childrenChanged": 0,
+          "tracksChanged": 1,
+          "followChanged": 0,
+          "leases": 13,
+          "observedMs": 1.1999998092651367,
+          "pageMs": 13901.700000047684,
+          "locale": "zh-cn",
+          "receivedNodeMs": 15394.639875
+        },
+        {
+          "total": 512,
+          "stable": 490,
+          "childrenChanged": 2,
+          "tracksChanged": 2,
+          "followChanged": 0,
+          "leases": 18,
+          "observedMs": 1.6999998092651367,
+          "pageMs": 18045.099999904633,
+          "locale": "zh-cn",
+          "receivedNodeMs": 19537.516792
+        },
+        {
+          "total": 768,
+          "stable": 738,
+          "childrenChanged": 3,
+          "tracksChanged": 2,
+          "followChanged": 0,
+          "leases": 25,
+          "observedMs": 2.0999999046325684,
+          "pageMs": 52991.09999990463,
+          "locale": "zh-cn",
+          "receivedNodeMs": 54483.783667
+        },
+        {
+          "total": 1024,
+          "stable": 991,
+          "childrenChanged": 3,
+          "tracksChanged": 2,
+          "followChanged": 0,
+          "leases": 28,
+          "observedMs": 2.6999995708465576,
+          "pageMs": 58637.299999952316,
+          "locale": "zh-cn",
+          "receivedNodeMs": 60129.890333
+        },
+        {
+          "total": 1280,
+          "stable": 1244,
+          "childrenChanged": 3,
+          "tracksChanged": 4,
+          "followChanged": 0,
+          "leases": 29,
+          "observedMs": 3.09999942779541,
+          "pageMs": 58747.5,
+          "locale": "zh-cn",
+          "receivedNodeMs": 60240.031583
+        },
+        {
+          "total": 1536,
+          "stable": 1497,
+          "childrenChanged": 3,
+          "tracksChanged": 6,
+          "followChanged": 0,
+          "leases": 30,
+          "observedMs": 3.299999475479126,
+          "pageMs": 58937.700000047684,
+          "locale": "zh-cn",
+          "receivedNodeMs": 60429.981
+        },
+        {
+          "total": 1792,
+          "stable": 1753,
+          "childrenChanged": 3,
+          "tracksChanged": 6,
+          "followChanged": 0,
+          "leases": 30,
+          "observedMs": 3.799999475479126,
+          "pageMs": 59205.09999990463,
+          "locale": "zh-cn",
+          "receivedNodeMs": 60697.3305
+        },
+        {
+          "total": 2048,
+          "stable": 2008,
+          "childrenChanged": 3,
+          "tracksChanged": 6,
+          "followChanged": 0,
+          "leases": 31,
+          "observedMs": 3.999999523162842,
+          "pageMs": 59229.09999990463,
+          "locale": "zh-cn",
+          "receivedNodeMs": 60721.519917
+        }
+      ],
+      "binding": {
+        "asset": "site-shadcn-controls.utF2VcOc.js",
+        "source": "d200cfc71ba3d128193664f8d1348e73ae1125b41d39b928e7b6c4b87c46da62",
+        "instrumented": "c49ad5b794ed8c59fed9281feab29e14b8c19e1454bd9ae6c2d3c8c826f27b59"
+      },
+      "rawLogSHA256": "4347c0f7bf22a1c38e7d70ca93cd101058aba054a2d3e760b8f953d7191bb792"
+    },
+    "candidate": {
+      "samples": [
+        {
+          "total": 1,
+          "reused": 0,
+          "rewired": 1,
+          "pageMs": 7232.200000047684,
+          "locale": "zh-cn",
+          "receivedNodeMs": 8473.469458
+        },
+        {
+          "total": 2,
+          "reused": 0,
+          "rewired": 2,
+          "pageMs": 7982.399999856949,
+          "locale": "zh-cn",
+          "receivedNodeMs": 9222.064166
+        },
+        {
+          "total": 4,
+          "reused": 2,
+          "rewired": 2,
+          "pageMs": 8028.299999952316,
+          "locale": "zh-cn",
+          "receivedNodeMs": 9268.126625
+        },
+        {
+          "total": 8,
+          "reused": 6,
+          "rewired": 2,
+          "pageMs": 8522,
+          "locale": "zh-cn",
+          "receivedNodeMs": 9761.915625
+        },
+        {
+          "total": 16,
+          "reused": 13,
+          "rewired": 3,
+          "pageMs": 8523.399999856949,
+          "locale": "zh-cn",
+          "receivedNodeMs": 9763.051916
+        },
+        {
+          "total": 32,
+          "reused": 27,
+          "rewired": 5,
+          "pageMs": 8535.200000047684,
+          "locale": "zh-cn",
+          "receivedNodeMs": 9774.947666
+        },
+        {
+          "total": 64,
+          "reused": 59,
+          "rewired": 5,
+          "pageMs": 8784,
+          "locale": "zh-cn",
+          "receivedNodeMs": 10024.03175
+        },
+        {
+          "total": 128,
+          "reused": 119,
+          "rewired": 9,
+          "pageMs": 9608.899999856949,
+          "locale": "zh-cn",
+          "receivedNodeMs": 10849.20075
+        },
+        {
+          "total": 256,
+          "reused": 242,
+          "rewired": 14,
+          "pageMs": 12831.899999856949,
+          "locale": "zh-cn",
+          "receivedNodeMs": 14072.173875
+        },
+        {
+          "total": 512,
+          "reused": 490,
+          "rewired": 22,
+          "pageMs": 18563.799999952316,
+          "locale": "zh-cn",
+          "receivedNodeMs": 19803.696708
+        },
+        {
+          "total": 768,
+          "reused": 738,
+          "rewired": 30,
+          "pageMs": 54419.5,
+          "locale": "zh-cn",
+          "receivedNodeMs": 55660.317583
+        },
+        {
+          "total": 1024,
+          "reused": 991,
+          "rewired": 33,
+          "pageMs": 58343.59999990463,
+          "locale": "zh-cn",
+          "receivedNodeMs": 59583.435416
+        },
+        {
+          "total": 1280,
+          "reused": 1244,
+          "rewired": 36,
+          "pageMs": 58456.5,
+          "locale": "zh-cn",
+          "receivedNodeMs": 59696.350458
+        },
+        {
+          "total": 1536,
+          "reused": 1497,
+          "rewired": 39,
+          "pageMs": 58688.299999952316,
+          "locale": "zh-cn",
+          "receivedNodeMs": 59928.122458
+        },
+        {
+          "total": 1792,
+          "reused": 1753,
+          "rewired": 39,
+          "pageMs": 58962.59999990463,
+          "locale": "zh-cn",
+          "receivedNodeMs": 60202.360125
+        },
+        {
+          "total": 2048,
+          "reused": 2008,
+          "rewired": 40,
+          "pageMs": 58988.59999990463,
+          "locale": "zh-cn",
+          "receivedNodeMs": 60228.46475
+        }
+      ],
+      "binding": {
+        "asset": "site-shadcn-controls.v0SF8om3.js",
+        "source": "ec790aa71f71d01bffaea15383bf9b45c12052efe817dabd17e5155a0f753e22",
+        "instrumented": "38f791de422eea571e935c01ec7cbf7924976a6130c64f64af57d1677451159a"
+      },
+      "rawLogSHA256": "bac735073a170a46907b306ea6dafd3d74742d0db9c8dd06da9ce8c19586504b"
+    }
+  },
+  "matrix": {
+    "tests": {
+      "numTotalTests": 2,
+      "numPassedTests": 0,
+      "numFailedTests": 2,
+      "numPendingTests": 0,
+      "failures": [
+        {
+          "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+          "first": "page.waitForFunction: Timeout 60000ms exceeded."
+        },
+        {
+          "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+          "first": "page.waitForFunction: Timeout 60000ms exceeded."
+        }
+      ]
+    },
+    "readinessMs": 60000,
+    "caseMs": 150000,
+    "pages": {
+      "zh-cn": {
+        "bytes": 1862463,
+        "sha256": "f3fbfb813eeef2d3c6e8c7497c30d3a02b7e74ad6878b8ba8745ff14b4fb5bf9",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914140,
+        "sha256": "23f6d9e6317c9bae106a2431810d9c4a96f85e0a090768641a55b357de97025d",
+        "previews": 1268
+      }
+    },
+    "inputs": {
+      "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "e6590db342bddc56b37fa367ce6b1cc519130cdb201e06e8d14061569d5e0317",
+      "apps/www/dist/zh-cn/internal/demo-matrix/index.html": "f3fbfb813eeef2d3c6e8c7497c30d3a02b7e74ad6878b8ba8745ff14b4fb5bf9",
+      "apps/www/dist/en/internal/demo-matrix/index.html": "23f6d9e6317c9bae106a2431810d9c4a96f85e0a090768641a55b357de97025d"
+    },
+    "nativeLogSHA256": "4f5c6916748729fcf2244213a0d028a73a1934ac0dd2bbda3ebb070cca24d566"
+  },
+  "scoped": {
+    "scroll": {
+      "numTotalTests": 6,
+      "numPassedTests": 6,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "failures": []
+    },
+    "accordion": {
+      "numTotalTests": 33,
+      "numPassedTests": 4,
+      "numFailedTests": 0,
+      "numPendingTests": 29,
+      "failures": []
+    },
+    "optics": {
+      "numTotalTests": 4,
+      "numPassedTests": 2,
+      "numFailedTests": 1,
+      "numPendingTests": 1,
+      "failures": [
+        {
+          "name": "V2 optical paint through four real Web Adapter runtimes dark: visible dynamic source, optical pixels, motion, input and revocation",
+          "first": "AssertionError: expected 9 to be less than 8"
+        }
+      ]
+    },
+    "portal": {
+      "numTotalTests": 55,
+      "numPassedTests": 5,
+      "numFailedTests": 0,
+      "numPendingTests": 50,
+      "failures": []
+    }
+  },
+  "assetUploadDiagnostics": {
+    "base": {
+      "source": "9ec4042454a3c9cc34666660db09b96ea53dc5a3",
+      "binding": {
+        "asset": "program.QbpjFpS9.js",
+        "source": "4a3591872e3c6db52bd66294c6315599dfbaa63aadc6819423471197d1245ba8",
+        "instrumented": "3246a006fc8db14e1ed474bf817e31b36784765cc9ae3c3292968c5e7233479d"
+      },
+      "tests": {
+        "numTotalTests": 4,
+        "numPassedTests": 2,
+        "numFailedTests": 1,
+        "numPendingTests": 1,
+        "failures": [
+          {
+            "name": "V2 optical paint through four real Web Adapter runtimes dark: visible dynamic source, optical pixels, motion, input and revocation",
+            "first": "page.waitForFunction: Timeout 20000ms exceeded."
+          }
+        ]
+      },
+      "uploads": [
+        {
+          "phase": "stress-upload-probe",
+          "theme": "light",
+          "beforeStress": {
+            "contexts": 1,
+            "consumers": 12,
+            "lost": false,
+            "renders": 139,
+            "programBuilds": 12,
+            "sourceUploads": 58,
+            "sourcePreparations": 58,
+            "renderMilliseconds": 912.5000004768372,
+            "encodeMilliseconds": 136.8000009059906,
+            "pendingImages": 0,
+            "decodedImages": 8,
+            "imagePreparations": 139,
+            "peakPendingImages": 8
+          },
+          "afterStress": {
+            "contexts": 1,
+            "consumers": 32,
+            "lost": false,
+            "renders": 159,
+            "programBuilds": 12,
+            "sourceUploads": 59,
+            "sourcePreparations": 59,
+            "renderMilliseconds": 988.6000003814697,
+            "encodeMilliseconds": 153.80000114440918,
+            "pendingImages": 0,
+            "decodedImages": 28,
+            "imagePreparations": 159,
+            "peakPendingImages": 20
+          },
+          "uploads": [
+            {
+              "label": "stress",
+              "canvas": 1,
+              "source": 3,
+              "width": 512,
+              "height": 456,
+              "variant": "regular",
+              "uploads": 59,
+              "pageMs": 3676.600000143051
+            }
+          ]
+        }
+      ],
+      "nativeLogSHA256": "4e718de32b9cf220acd5d5081daa934b9f7b9cd3137f6f46b4759aa65657c60b",
+      "testOverlaySHA256": "ad3004e9121eb237748e3042d7157728021dd5db9f80f2ed8dd6ee56416a088f"
+    },
+    "candidate": {
+      "source": "29468465a80e5d1b170a0f2880c3fb1123299f8f",
+      "binding": {
+        "asset": "program.VRnXjnMy.js",
+        "source": "ff4ed57d0bde16a2cc85a41136c8f6262bdec99359aa6dfef60714857340ee35",
+        "instrumented": "47043699d1b4ab3a2298cf612c2fbdbc8d432fec846071b0584414c6ee8f7644"
+      },
+      "tests": {
+        "numTotalTests": 4,
+        "numPassedTests": 3,
+        "numFailedTests": 0,
+        "numPendingTests": 1,
+        "failures": []
+      },
+      "uploads": [
+        {
+          "phase": "stress-upload-probe",
+          "theme": "light",
+          "beforeStress": {
+            "contexts": 1,
+            "consumers": 12,
+            "lost": false,
+            "renders": 152,
+            "programBuilds": 14,
+            "sourceUploads": 64,
+            "sourcePreparations": 64,
+            "renderMilliseconds": 976.7000007629395,
+            "encodeMilliseconds": 133.60000014305115,
+            "pendingImages": 0,
+            "decodedImages": 8,
+            "imagePreparations": 152,
+            "peakPendingImages": 8
+          },
+          "afterStress": {
+            "contexts": 1,
+            "consumers": 32,
+            "lost": false,
+            "renders": 172,
+            "programBuilds": 14,
+            "sourceUploads": 65,
+            "sourcePreparations": 65,
+            "renderMilliseconds": 1047.7000000476837,
+            "encodeMilliseconds": 148.2000002861023,
+            "pendingImages": 0,
+            "decodedImages": 28,
+            "imagePreparations": 172,
+            "peakPendingImages": 20
+          },
+          "uploads": [
+            {
+              "label": "stress",
+              "canvas": 1,
+              "source": 3,
+              "width": 512,
+              "height": 456,
+              "variant": "regular",
+              "uploads": 65,
+              "pageMs": 3525.7999999523163
+            }
+          ]
+        },
+        {
+          "phase": "stress-upload-probe",
+          "theme": "dark",
+          "beforeStress": {
+            "contexts": 1,
+            "consumers": 12,
+            "lost": false,
+            "renders": 131,
+            "programBuilds": 12,
+            "sourceUploads": 55,
+            "sourcePreparations": 55,
+            "renderMilliseconds": 721.2999999523163,
+            "encodeMilliseconds": 107.60000133514404,
+            "pendingImages": 0,
+            "decodedImages": 8,
+            "imagePreparations": 131,
+            "peakPendingImages": 8
+          },
+          "afterStress": {
+            "contexts": 1,
+            "consumers": 32,
+            "lost": false,
+            "renders": 151,
+            "programBuilds": 12,
+            "sourceUploads": 56,
+            "sourcePreparations": 56,
+            "renderMilliseconds": 794.5000007152557,
+            "encodeMilliseconds": 122.40000200271606,
+            "pendingImages": 0,
+            "decodedImages": 28,
+            "imagePreparations": 151,
+            "peakPendingImages": 20
+          },
+          "uploads": [
+            {
+              "label": "stress",
+              "canvas": 1,
+              "source": 3,
+              "width": 512,
+              "height": 456,
+              "variant": "regular",
+              "uploads": 56,
+              "pageMs": 2992.5999999046326
+            }
+          ]
+        }
+      ],
+      "nativeLogSHA256": "c76c37d274e7e14ceedd40cc1f07e9f741fbb4a93fb3c903c5c23b0d82330283",
+      "testOverlaySHA256": "ad3004e9121eb237748e3042d7157728021dd5db9f80f2ed8dd6ee56416a088f"
+    }
+  },
+  "experimentalBudget": {
+    "binding": {
+      "asset": "previewer-client.BASal0sw.js",
+      "source": "4c2f6f86183647f1f33e9e04e589e5d7f8cf190e2863de8cd0be9df0e74d6c31",
+      "instrumented": "6cb15eab50ee1994ca16c93a41ca2124b37c0617425b25f5f8a907b33412983d",
+      "budget": 32,
+      "sourceGuard": "()=>!C&&i===y"
+    },
+    "tests": {
+      "numTotalTests": 2,
+      "numPassedTests": 0,
+      "numFailedTests": 1,
+      "numPendingTests": 1,
+      "failures": [
+        {
+          "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+          "first": "page.waitForFunction: Timeout 60000ms exceeded."
+        }
+      ]
+    },
+    "checkpoints": [
+      {
+        "queued": 12,
+        "started": 12,
+        "retired": 0,
+        "batches": 1,
+        "maxDepth": 12,
+        "waiting": 0,
+        "pageMs": 6294.5,
+        "locale": "zh-cn",
+        "receivedNodeMs": 7778.490417
+      },
+      {
+        "queued": 32,
+        "started": 32,
+        "retired": 0,
+        "batches": 2,
+        "maxDepth": 20,
+        "waiting": 0,
+        "pageMs": 6437.300000190735,
+        "locale": "zh-cn",
+        "receivedNodeMs": 7921.234875
+      },
+      {
+        "queued": 204,
+        "started": 96,
+        "retired": 0,
+        "batches": 4,
+        "maxDepth": 140,
+        "waiting": 108,
+        "pageMs": 6981.300000190735,
+        "locale": "zh-cn",
+        "receivedNodeMs": 8465.33125
+      },
+      {
+        "queued": 304,
+        "started": 224,
+        "retired": 0,
+        "batches": 8,
+        "maxDepth": 144,
+        "waiting": 80,
+        "pageMs": 14052.5,
+        "locale": "zh-cn",
+        "receivedNodeMs": 15536.420958
+      },
+      {
+        "queued": 304,
+        "started": 304,
+        "retired": 0,
+        "batches": 11,
+        "maxDepth": 144,
+        "waiting": 0,
+        "pageMs": 21950.700000047684,
+        "locale": "zh-cn",
+        "receivedNodeMs": 23434.667292
+      },
+      {
+        "queued": 348,
+        "started": 336,
+        "retired": 0,
+        "batches": 12,
+        "maxDepth": 144,
+        "waiting": 12,
+        "pageMs": 23639.10000014305,
+        "locale": "zh-cn",
+        "receivedNodeMs": 25123.070708
+      },
+      {
+        "queued": 348,
+        "started": 348,
+        "retired": 0,
+        "batches": 13,
+        "maxDepth": 144,
+        "waiting": 0,
+        "pageMs": 29017.900000095367,
+        "locale": "zh-cn",
+        "receivedNodeMs": 30501.90075
+      },
+      {
+        "queued": 408,
+        "started": 408,
+        "retired": 0,
+        "batches": 15,
+        "maxDepth": 144,
+        "waiting": 0,
+        "pageMs": 44203,
+        "locale": "zh-cn",
+        "receivedNodeMs": 45687.961458
+      },
+      {
+        "queued": 444,
+        "started": 440,
+        "retired": 0,
+        "batches": 16,
+        "maxDepth": 144,
+        "waiting": 4,
+        "pageMs": 51318,
+        "locale": "zh-cn",
+        "receivedNodeMs": 52802.509542
+      },
+      {
+        "queued": 444,
+        "started": 444,
+        "retired": 0,
+        "batches": 17,
+        "maxDepth": 144,
+        "waiting": 0,
+        "pageMs": 56791.200000047684,
+        "locale": "zh-cn",
+        "receivedNodeMs": 58275.105583
+      },
+      {
+        "queued": 532,
+        "started": 532,
+        "retired": 0,
+        "batches": 20,
+        "maxDepth": 144,
+        "waiting": 0,
+        "pageMs": 74423,
+        "locale": "zh-cn",
+        "receivedNodeMs": 75907.057583
+      }
+    ],
+    "lastOrdinaryChinese": {
+      "timeOrigin": 1794913558287.5,
+      "pageMs": 66205.59999990463,
+      "dateNow": 1794913624493,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-j3qd6rrxgu",
+        "index": 556,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-toggle-group",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-j3qd6rrxgu",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "locale": "zh-cn",
+      "receivedNodeMs": 67616.99525
+    },
+    "lastVariant": {
+      "timeOrigin": 1794914149587.1,
+      "pageMs": 67291.80000019073,
+      "dateNow": 1794914216878,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-uan1go4gm6",
+        "index": 576,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-virtual-list",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-uan1go4gm6",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "locale": "zh-cn",
+      "receivedNodeMs": 68776.365583
+    },
+    "rawLogSHA256": "d6051cd9004139bc2ac795418eb78341673a706cea707f9e513b02d534d1afd7"
+  }
+}
