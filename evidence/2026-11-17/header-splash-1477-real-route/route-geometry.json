@@ -1,0 +1,134 @@
+{
+  "source": {
+    "head": "9615f397c13e9e75eb6aed5f5f4004dd6f067156",
+    "tree": "a1168a9b6fb3f804900268f3efa1f2b7284ee7b8",
+    "parent": "49e99f2cca39fefe976699c2e1ddade2ab436ac4",
+    "files": [
+      [
+        "d9ec35edad7887ee7ae9ca83cadf7ed2dbb0b0a438fede1dc08218919de645c9",
+        "apps/www/src/components/site-header-layout.test.ts"
+      ],
+      [
+        "1240ab49493e08f54d71439cdf12198ebbfec6d1d051decf86a044a423bf5168",
+        "apps/www/src/content/docs/zh-cn/site-docs-columns.browser.test.ts"
+      ]
+    ]
+  },
+  "results": {
+    "mainBaseline": {
+      "passed": 4,
+      "failed": 4
+    },
+    "interim": {
+      "passed": 5,
+      "failed": 4
+    },
+    "final": {
+      "passed": 9,
+      "failed": 0
+    },
+    "unitPassed": 46,
+    "nativeLogSHA256": "960d96f983b930ac1f690d0254efe54155815698530825ca5e1a6665cb0df6f0",
+    "baselineLogSHA256": "d37ac98bc3381f13d49d9aa2a36cf905a3628c445deb21446145aa1e43204860"
+  },
+  "samples": [
+    {
+      "locale": "en",
+      "kind": "nojs-splash-no-toc",
+      "route": "/en/internal/demo-matrix/#_top",
+      "observed": {
+        "fragment": "#_top",
+        "titleTop": 88,
+        "headerBottom": 48,
+        "fragmentScrollClearance": 88,
+        "rootFontSize": 16,
+        "layout": "splash",
+        "tocCount": 0,
+        "maxWidth": "1408px",
+        "width": 1408,
+        "overflow": 0
+      }
+    },
+    {
+      "locale": "en",
+      "kind": "nojs-reading-gutter",
+      "route": "/en/start-here/why-proto-ui/",
+      "observed": {
+        "canvasContentLeft": 16,
+        "mainLeft": 16,
+        "proseLeft": 16,
+        "overflow": 0,
+        "mainWidth": 358,
+        "navVisible": true,
+        "headerPosition": "static",
+        "anchors": 305
+      }
+    },
+    {
+      "locale": "zh-cn",
+      "kind": "nojs-splash-no-toc",
+      "route": "/zh-cn/internal/demo-matrix/#_top",
+      "observed": {
+        "fragment": "#_top",
+        "titleTop": 88,
+        "headerBottom": 48,
+        "fragmentScrollClearance": 88,
+        "rootFontSize": 16,
+        "layout": "splash",
+        "tocCount": 0,
+        "maxWidth": "1408px",
+        "width": 1408,
+        "overflow": 0
+      }
+    },
+    {
+      "locale": "zh-cn",
+      "kind": "nojs-reading-gutter",
+      "route": "/zh-cn/start-here/why-proto-ui/",
+      "observed": {
+        "canvasContentLeft": 16,
+        "mainLeft": 16,
+        "proseLeft": 16,
+        "overflow": 0,
+        "mainWidth": 358,
+        "navVisible": true,
+        "headerPosition": "static",
+        "anchors": 305
+      }
+    }
+  ],
+  "desktop": [
+    {
+      "route": "/en/ui-libraries/brutalist/components/card/",
+      "witness": "en-brutalist-dark-1280-root16",
+      "desktopLinkWidths": [224, 224, 224],
+      "mobileLinkWidths": [0, 0, 0],
+      "root": 16,
+      "rightWidth": 288
+    },
+    {
+      "route": "/en/ui-libraries/brutalist/components/card/",
+      "witness": "en-brutalist-light-1280-root16",
+      "desktopLinkWidths": [224, 224, 224],
+      "mobileLinkWidths": [0, 0, 0],
+      "root": 16,
+      "rightWidth": 288
+    },
+    {
+      "route": "/en/ui-libraries/shadcn/card/",
+      "witness": "en-shadcn-dark-1280-root16",
+      "desktopLinkWidths": [224, 224, 224, 224],
+      "mobileLinkWidths": [0, 0, 0, 0],
+      "root": 16,
+      "rightWidth": 288
+    },
+    {
+      "route": "/en/ui-libraries/shadcn/card/",
+      "witness": "en-shadcn-light-1280-root16",
+      "desktopLinkWidths": [224, 224, 224, 224],
+      "mobileLinkWidths": [0, 0, 0, 0],
+      "root": 16,
+      "rightWidth": 288
+    }
+  ]
+}
