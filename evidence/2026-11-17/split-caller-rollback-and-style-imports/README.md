@@ -1,0 +1,7 @@
+# Split caller rollback and style import provenance
+
+The three findings on #1484 head `f79f9786` reproduce as seven failing cases with three passing controls. Two pinned Chrome cases show staged connected reactions changing a caller's input value, slot, focus, text and selections before rejection. The updated validation rejects the same publish and restores the recorded caller state on the current owner. The control path retains its original ownership and successful commit. The restoration covers the captured state and does not extend to arbitrary nested subtree reparenting.
+
+The CLI follows named and namespace style-handle imports through the authored source resolver and retains verified Root preflight. Canonical prototype factory checks recognize parentheses, assertions and satisfies around const specs while keeping the existing escape checks.
+
+The exact committed inputs pass 290 cases in two files and workspace types. The 34-file comparison passes 773 cases and has the same 25 failure names and first messages as its prior comparable run. The signed combination retains the previous scrollport patch and builds 47 packages. The built CLI emits only Template padding for the wrapped spec and rejects the actual aliased Root usage. The four selected pinned Chrome cases and isolated Light, split and mixed Dialog profiles pass in the composition. Source and public dist each issue 15 requests per profile. Full Matrix readiness is a separate run.

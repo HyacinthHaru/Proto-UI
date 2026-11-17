@@ -1,0 +1,64 @@
+{
+  "author": {
+    "head": "614b88ca661b09ab63a2fb510ac422a8821c2fa3",
+    "tree": "59e0bb85868cd0a692f950f5746636a6c79b33e9",
+    "parent": "a07e2987b96051655ca986161122a29f53432481",
+    "wcFix": "a07e2987b96051655ca986161122a29f53432481",
+    "files": {
+      "packages/adapters/web-component/src/runtime/session.ts": "f20ec840f73d470ce36229a8ed8d6b30ece6b9b3b97548a679ca5adcfcfaccd7",
+      "packages/adapters/web-component/test/shadow-closeout.browser.test.ts": "3a6bcd03754922bd6c8ebd88319c0a4c10bbf4e2d4dc7225e40082502f5b58d3",
+      "packages/cli/src/services/hook-source-summary.ts": "1bf19d2581c60ecd4e834a2ff32b6aa2c56a8dd2b963f9690e82683f6b3b714f",
+      "packages/cli/src/services/prototype-style-tokens.ts": "9ea5454ed869dd6aea967f8dfa3123bf91b7f339235469cf2f384aaca6e9c144",
+      "packages/cli/test/shadow-template-style.test.ts": "1f896fedc45558db91a77193e4cdb98622df7afdaa6519d8a1556f33d0e9638c"
+    }
+  },
+  "combined": {
+    "head": "a5dd70b81b8d023f7c75705c1c6cb35464a90f7b",
+    "tree": "e6f935440db0408bb781709756865c7c5d6fe02b",
+    "parents": [
+      "940635ad222ff41c4d984a0341736ab48bfbbdce",
+      "614b88ca661b09ab63a2fb510ac422a8821c2fa3"
+    ],
+    "packages": 47,
+    "matchingChangedFileCount": 5,
+    "retainedScrollportPatchID": "a4261222b21deafecd9730fbab07c3cf4a074fc5"
+  },
+  "baseline": {
+    "head": "f79f9786694aa2a23a4bbb83bb7dadafa5c3e351",
+    "reviewFailures": 7,
+    "controlsPassed": 3,
+    "redSHA256": "93a64213e3dd910067641625121bdd3f292021eb7b1969e04fc926df753e24e5",
+    "testOverlaySHA256": "20434ab4e5337088975ebc0bc2bdbb07cea5ba4b36ad221f1137174c23c15f06"
+  },
+  "tests": {
+    "focused": {
+      "files": 2,
+      "passed": 290,
+      "logSHA256": "f3add99ef7b12590cf3d70147d430427c5ab0e0092f15b14c63bfecbca2d1fc5"
+    },
+    "types": {
+      "exit": 0,
+      "logSHA256": "1e14fa87e413ec8ef9585ae214d5f036450d3cc636c31a34c01c2346df2a4d42"
+    },
+    "combinedNative": {
+      "passed": 4,
+      "logSHA256": "f425d858c6bf67dd98599a20b62656a81c0f13bb0031bfc438b67f3ff98975df"
+    },
+    "isolatedDialog": {
+      "source": {
+        "light": 15,
+        "split": 15,
+        "mixed": 15
+      },
+      "publicDist": {
+        "light": 15,
+        "split": 15,
+        "mixed": 15
+      },
+      "sourceErrors": [],
+      "chrome": "156.0.8078.79",
+      "sourceLogSHA256": "df2947dd825731b0eca4b64220fd22b1733fe4a305dd2f595996be10ee2f219a",
+      "publicDistLogSHA256": "05bbf2e5a0e32d720dc2e79049267ceda9e847a1e30c357aa33f9479ce115907"
+    }
+  }
+}
