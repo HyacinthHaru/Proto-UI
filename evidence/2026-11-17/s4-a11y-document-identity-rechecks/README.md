@@ -1,0 +1,9 @@
+# S4 A11y document observation and identity-scoped reconciliation
+
+On the exact 3b473b5e Chinese build, the renderer's independent Typography counter still records 3 checks at 115.993 s. This samples the later renderer clock that the previous last-mutation log lacked.
+
+Local signed 27949249 retains live identity checks for observed owners, and runs dependent reconciliation when an ID mutation, a changed document binding, or an added or removed subtree can affect identity. The weak physical markers include already-projected bindings and their Shadow hosts. The pinned Chrome controls retain nested duplicate-ID insertion and removal, light-DOM cross-document source movement and closed Shadow host adoption and return. The initial candidate without Shadow lineage fails that last native case. The final eight browser arms show two document ID lookups per unrelated mutation control on the baseline and zero on the candidate.
+
+The matched 1,268-preview Chinese diagnostic checkpoint at 2,048 observer batches records 2,048 dependent passes and 735,780 reference visits on the baseline. The candidate records 741 passes and 187,578 reference visits. The 740,766 observed-owner visits on the candidate still perform the live-identity checks. The mutation sequences through these checkpoints can differ by mount schedule, and timed callbacks use one-in-64 sampling. These counters do not measure whole startup performance.
+
+The focused regression has one expected failing case on the old source and 193 focused passes on the final source. The 47 public packages, workspace types and manifests pass. Both unchanged full Matrix locales still reach 150 seconds before Dialog. The original suite, served HTML, and both temporary emitted overlays are hash checked, restored and bound to the two exact source trees.

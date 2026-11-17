@@ -1,0 +1,1233 @@
+{
+  "source": {
+    "head": "2794924930e3243dd697d24aa233dbd136da6e29",
+    "tree": "423a577706184b6b6db2bb13b88aca241e7a25dc",
+    "parent": "3b473b5e6230b7f72f9517acaeec3a1f1fd60dd1",
+    "signature": "G"
+  },
+  "baseline": {
+    "head": "3b473b5e6230b7f72f9517acaeec3a1f1fd60dd1",
+    "tree": "7544152f9a20e4f83a6a1882affaefa705ebd7b1",
+    "parent": "6e5226bf10094176141a822f81500019c13d9408",
+    "signature": "G"
+  },
+  "changedInputs": {
+    "packages/modules/a11y/src/web.ts": "4c21bfd12e27e12500cd301b4783a9d5c04adb8abf1629fb3733dba33a2e1e6e",
+    "packages/modules/a11y/test/web-reference.test.ts": "0b33d60a128bf0d0ebcf1390b7fed216c9ae976ecf87e591d3dc6df626dbbd26"
+  },
+  "buildInputs": {
+    "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "e6590db342bddc56b37fa367ce6b1cc519130cdb201e06e8d14061569d5e0317",
+    "apps/www/dist/zh-cn/internal/demo-matrix/index.html": "af7c51671835b4b8f3ee641e108637a1cb5e7c692e7f2e03635225a95007417a",
+    "apps/www/dist/en/internal/demo-matrix/index.html": "e8bba825b94c793dd18903960339d6b9148194071aa3746dd7a75176942355f7"
+  },
+  "pages": {
+    "zh-cn": {
+      "bytes": 1862470,
+      "sha256": "af7c51671835b4b8f3ee641e108637a1cb5e7c692e7f2e03635225a95007417a",
+      "previews": 1268
+    },
+    "en": {
+      "bytes": 1914076,
+      "sha256": "e8bba825b94c793dd18903960339d6b9148194071aa3746dd7a75176942355f7",
+      "previews": 1268
+    }
+  },
+  "versions": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79"],
+  "red": {
+    "tests": {
+      "numTotalTests": 68,
+      "numPassedTests": 67,
+      "numFailedTests": 1,
+      "numPendingTests": 0,
+      "cases": [
+        {
+          "name": "Web A11y opaque semantic-object references distinguishes authored names from owned derived Label IDREFs",
+          "status": "passed",
+          "duration": 2.071875000000034,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references keeps the consumer aria-label baseline visible to Label conflict checks",
+          "status": "passed",
+          "duration": 0.24812500000001592,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references acquires matching scalar attributes without writing and still restores changed values",
+          "status": "passed",
+          "duration": 0.6557080000000042,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references projects ordered targets atomically across missing, removal, rematerialization, and disposal",
+          "status": "passed",
+          "duration": 0.9630000000000223,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references preserves unrelated additive tokens while a referenced target is unavailable",
+          "status": "passed",
+          "duration": 0.20195800000004738,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references preserves a host rewrite that retains the projected token when the projection is released",
+          "status": "passed",
+          "duration": 0.19379200000003038,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references clears prior string ownership when a relation changes to structured refs or is removed",
+          "status": "passed",
+          "duration": 0.2044159999999806,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references keeps one reserved target identity across projector-cap replacement",
+          "status": "passed",
+          "duration": 0.2241669999999658,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references fails closed on duplicate bindings and preserves an adopted host-authored target id",
+          "status": "passed",
+          "duration": 0.17337500000002137,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references preserves the native relation when another element already owns author-target",
+          "status": "passed",
+          "duration": 0.49541700000003175,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references preserves the native relation when another element already owns author:target[0]",
+          "status": "passed",
+          "duration": 0.40654200000000174,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references 3967157821: preserves the survivor reservation after releasing the reserved duplicate",
+          "status": "passed",
+          "duration": 0.5553750000000264,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references scopes adopted target-id reservations to each owner document",
+          "status": "passed",
+          "duration": 0.23366700000002538,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references rebinds reservations and dependents when a target moves between documents",
+          "status": "passed",
+          "duration": 0.34954199999998536,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references does not reconcile the structured graph for an unrelated legacy update",
+          "status": "passed",
+          "duration": 0.141208000000006,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references keeps settled scalar attributes in place during a same-view replay (epoch undefined)",
+          "status": "passed",
+          "duration": 0.166541000000052,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references keeps settled scalar attributes in place during a same-view replay (epoch 1)",
+          "status": "passed",
+          "duration": 0.33474999999998545,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references keeps shared scalar attributes until every projector releases them",
+          "status": "passed",
+          "duration": 0.10149999999998727,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references 3980446677: restores an overwritten host scalar baseline on release",
+          "status": "passed",
+          "duration": 0.07637499999998454,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references keeps the surviving scalar contribution when the top owner is released",
+          "status": "passed",
+          "duration": 0.08141700000004448,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references preserves a matching host scalar baseline with reverse shared-owner release",
+          "status": "passed",
+          "duration": 0.06554199999999355,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references 3980446683: preserves host heading levels through detach and rematerialization",
+          "status": "passed",
+          "duration": 0.195541999999989,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references 3980446683: retains a live shared heading owner after another view detaches",
+          "status": "passed",
+          "duration": 0.11787499999996953,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references rebinds a reserved target when the host changes its id",
+          "status": "passed",
+          "duration": 0.13162499999998545,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-SCALAR-GENERATED-ID-BASELINE: releases an explicit id after generated identity",
+          "status": "passed",
+          "duration": 0.236582999999996,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-SCALAR-GENERATED-ID-BASELINE: releases an explicit id after host-authored identity",
+          "status": "passed",
+          "duration": 0.2344169999999508,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-SCALAR-GENERATED-ID-BASELINE: shared-target provenance, generator-first disposal",
+          "status": "passed",
+          "duration": 0.18420800000001236,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-SCALAR-GENERATED-ID-BASELINE: shared-target provenance, writer-first disposal",
+          "status": "passed",
+          "duration": 0.17279099999996106,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-GENERATED-ID-SURVIVOR-RELEASE: same id, writer-first",
+          "status": "passed",
+          "duration": 0.3059999999999832,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-GENERATED-ID-SURVIVOR-RELEASE: same id, generator-first",
+          "status": "passed",
+          "duration": 0.17966699999999491,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-GENERATED-ID-SURVIVOR-RELEASE: different id, writer-first",
+          "status": "passed",
+          "duration": 0.16066599999999198,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-GENERATED-ID-SURVIVOR-RELEASE: different id, generator-first",
+          "status": "passed",
+          "duration": 0.15412500000002183,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references retains generated identity through shared writer updates and detached final release",
+          "status": "passed",
+          "duration": 0.2894579999999678,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-LOCAL-LEASED-HOST-ID-REBIND: follows a live ID change with an older cap lease",
+          "status": "passed",
+          "duration": 0.47579200000001265,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references keeps an appended token until every projector releases it",
+          "status": "passed",
+          "duration": 0.12412500000004911,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references does not clear a host id written after projector disposal begins",
+          "status": "passed",
+          "duration": 0.04666700000001356,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references preserves a host id written after detach before terminal disposal",
+          "status": "passed",
+          "duration": 0.05216699999999719,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references retains a token when one projector changes append mode to replace",
+          "status": "passed",
+          "duration": 0.10904199999998809,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references does not restore historical IDREFs over a host rewrite",
+          "status": "passed",
+          "duration": 0.07887500000003911,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references restores only the host baseline after overlapping replacements are disposed older-first",
+          "status": "passed",
+          "duration": 0.14287500000000364,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references restores only the host baseline after overlapping replacements are disposed newer-first",
+          "status": "passed",
+          "duration": 0.11829199999999673,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references projects valid ARIA table coordinates and removes invalid numeric facts",
+          "status": "passed",
+          "duration": 0.19054199999999355,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references releases one scalar binding before reentering the same physical target",
+          "status": "passed",
+          "duration": 1.0732079999999655,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references preserves shared scalar ownership and host rewrites during physical replacement",
+          "status": "passed",
+          "duration": 0.16883400000000393,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-LOCAL-LIVE-APPEND-RESTORE: restores a live append after replacement release",
+          "status": "passed",
+          "duration": 0.2282910000000129,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-LOCAL-MIXED-IDREF-OWNERS: 'legacy-first', host baseline=false",
+          "status": "passed",
+          "duration": 0.13012499999996407,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-LOCAL-MIXED-IDREF-OWNERS: 'structured-first', host baseline=false",
+          "status": "passed",
+          "duration": 0.09041600000000471,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-LOCAL-MIXED-IDREF-OWNERS: 'legacy-first', host baseline=true",
+          "status": "passed",
+          "duration": 0.08699999999998909,
+          "firstMessages": []
+        },
+        {
+          "name": "Web A11y opaque semantic-object references PUI-625-LOCAL-MIXED-IDREF-OWNERS: 'structured-first', host baseline=true",
+          "status": "passed",
+          "duration": 0.06454199999996035,
+          "firstMessages": []
+        },
+        {
+          "name": "part-relationship host observation releases document observation on view detach and terminal disposal",
+          "status": "passed",
+          "duration": 0.26829200000003084,
+          "firstMessages": []
+        },
+        {
+          "name": "part-relationship identity observation ownership skips unrelated DOM edits and still observes the insertion and removal of a nested duplicate ID",
+          "status": "failed",
+          "duration": 7.641750000000002,
+          "firstMessages": [
+            "AssertionError: expected \"querySelectorAll\" to not be called at all, but actually been called 2 times"
+          ]
+        },
+        {
+          "name": "part-relationship identity observation ownership PUI-549-REVIEW-LIVE-EXPLICIT-ID: preserves an author rewrite, replay before delivery=false",
+          "status": "passed",
+          "duration": 3.2331250000000296,
+          "firstMessages": []
+        },
+        {
+          "name": "part-relationship identity observation ownership PUI-549-REVIEW-LIVE-EXPLICIT-ID: preserves an author rewrite, replay before delivery=true",
+          "status": "passed",
+          "duration": 3.129292000000021,
+          "firstMessages": []
+        },
+        {
+          "name": "part-relationship identity observation ownership PUI-549-REVIEW-INDEPENDENT-ID-WRITER: dependent present=true, replay before delivery=false",
+          "status": "passed",
+          "duration": 7.114792000000023,
+          "firstMessages": []
+        },
+        {
+          "name": "part-relationship identity observation ownership PUI-549-REVIEW-INDEPENDENT-ID-WRITER: dependent present=false, replay before delivery=false",
+          "status": "passed",
+          "duration": 7.023874999999975,
+          "firstMessages": []
+        },
+        {
+          "name": "part-relationship identity observation ownership PUI-549-REVIEW-INDEPENDENT-ID-WRITER: dependent present=true, replay before delivery=true",
+          "status": "passed",
+          "duration": 6.913833000000011,
+          "firstMessages": []
+        },
+        {
+          "name": "part-relationship identity observation ownership PUI-549-REVIEW-INDEPENDENT-ID-WRITER: dependent present=false, replay before delivery=true",
+          "status": "passed",
+          "duration": 6.943458000000021,
+          "firstMessages": []
+        },
+        {
+          "name": "pending live identity at view revocation PUI-549-REVIEW-PENDING-ID-DETACH: explicit=false delivery=false boundary='detach'",
+          "status": "passed",
+          "duration": 2.8901670000000195,
+          "firstMessages": []
+        },
+        {
+          "name": "pending live identity at view revocation PUI-549-REVIEW-PENDING-ID-DETACH: explicit=false delivery=false boundary='replace'",
+          "status": "passed",
+          "duration": 3.0397499999999695,
+          "firstMessages": []
+        },
+        {
+          "name": "pending live identity at view revocation PUI-549-REVIEW-PENDING-ID-DETACH: explicit=false delivery=true boundary='detach'",
+          "status": "passed",
+          "duration": 4.151374999999973,
+          "firstMessages": []
+        },
+        {
+          "name": "pending live identity at view revocation PUI-549-REVIEW-PENDING-ID-DETACH: explicit=false delivery=true boundary='replace'",
+          "status": "passed",
+          "duration": 4.339749999999981,
+          "firstMessages": []
+        },
+        {
+          "name": "pending live identity at view revocation PUI-549-REVIEW-PENDING-ID-DETACH: explicit=true delivery=false boundary='detach'",
+          "status": "passed",
+          "duration": 2.915458000000001,
+          "firstMessages": []
+        },
+        {
+          "name": "pending live identity at view revocation PUI-549-REVIEW-PENDING-ID-DETACH: explicit=true delivery=false boundary='replace'",
+          "status": "passed",
+          "duration": 2.934792000000016,
+          "firstMessages": []
+        },
+        {
+          "name": "pending live identity at view revocation PUI-549-REVIEW-PENDING-ID-DETACH: explicit=true delivery=true boundary='detach'",
+          "status": "passed",
+          "duration": 4.169958000000008,
+          "firstMessages": []
+        },
+        {
+          "name": "pending live identity at view revocation PUI-549-REVIEW-PENDING-ID-DETACH: explicit=true delivery=true boundary='replace'",
+          "status": "passed",
+          "duration": 4.246916999999996,
+          "firstMessages": []
+        },
+        {
+          "name": "pending live identity at view revocation preserves and fails closed on an ID written after detach, explicit=false",
+          "status": "passed",
+          "duration": 2.8550840000000335,
+          "firstMessages": []
+        },
+        {
+          "name": "pending live identity at view revocation preserves and fails closed on an ID written after detach, explicit=true",
+          "status": "passed",
+          "duration": 2.7606660000000147,
+          "firstMessages": []
+        },
+        {
+          "name": "active descendant semantic relationship tracks option identity, withdrawal and host-owned baseline without a component DOM patch",
+          "status": "passed",
+          "duration": 0.25387499999999363,
+          "firstMessages": []
+        }
+      ]
+    },
+    "logSHA256": "6ee45ee65ac280ac8c0a40e1caf85a82dbf54158b285828f58878d1c514b9bcb"
+  },
+  "focused": {
+    "cases": 193,
+    "logSHA256": "1a80a0817b928c5aa5a43d1174a7510d5e997fca39dc7c0c913a36bfe4daa18e"
+  },
+  "nativeControl": {
+    "chrome": "156.0.8078.79",
+    "beforeSHA256": "ffd66c880637c05107b2526010773746aa3987fc9c236d12142605b732ffa6af",
+    "afterSHA256": "4c21bfd12e27e12500cd301b4783a9d5c04adb8abf1629fb3733dba33a2e1e6e",
+    "rows": [
+      {
+        "arm": "before",
+        "shadow": false,
+        "before": "observed-target",
+        "unrelatedReads": 2,
+        "afterUnrelated": "observed-target",
+        "colliding": null,
+        "recovered": "observed-target",
+        "moved": null,
+        "returned": "observed-target",
+        "sourceHasId": false
+      },
+      {
+        "arm": "before",
+        "shadow": true,
+        "before": "observed-target",
+        "unrelatedReads": 2,
+        "afterUnrelated": "observed-target",
+        "colliding": null,
+        "recovered": "observed-target",
+        "moved": null,
+        "returned": "observed-target",
+        "sourceHasId": false
+      },
+      {
+        "arm": "after",
+        "shadow": false,
+        "before": "observed-target",
+        "unrelatedReads": 0,
+        "afterUnrelated": "observed-target",
+        "colliding": null,
+        "recovered": "observed-target",
+        "moved": null,
+        "returned": "observed-target",
+        "sourceHasId": false
+      },
+      {
+        "arm": "after",
+        "shadow": true,
+        "before": "observed-target",
+        "unrelatedReads": 0,
+        "afterUnrelated": "observed-target",
+        "colliding": null,
+        "recovered": "observed-target",
+        "moved": null,
+        "returned": "observed-target",
+        "sourceHasId": false
+      },
+      {
+        "arm": "after",
+        "shadow": false,
+        "before": "observed-target",
+        "unrelatedReads": 0,
+        "afterUnrelated": "observed-target",
+        "colliding": null,
+        "recovered": "observed-target",
+        "moved": null,
+        "returned": "observed-target",
+        "sourceHasId": false
+      },
+      {
+        "arm": "after",
+        "shadow": true,
+        "before": "observed-target",
+        "unrelatedReads": 0,
+        "afterUnrelated": "observed-target",
+        "colliding": null,
+        "recovered": "observed-target",
+        "moved": null,
+        "returned": "observed-target",
+        "sourceHasId": false
+      },
+      {
+        "arm": "before",
+        "shadow": false,
+        "before": "observed-target",
+        "unrelatedReads": 2,
+        "afterUnrelated": "observed-target",
+        "colliding": null,
+        "recovered": "observed-target",
+        "moved": null,
+        "returned": "observed-target",
+        "sourceHasId": false
+      },
+      {
+        "arm": "before",
+        "shadow": true,
+        "before": "observed-target",
+        "unrelatedReads": 2,
+        "afterUnrelated": "observed-target",
+        "colliding": null,
+        "recovered": "observed-target",
+        "moved": null,
+        "returned": "observed-target",
+        "sourceHasId": false
+      }
+    ]
+  },
+  "probeSHA256": "57abe8914b8fb2b67f35bdf8421bb790345fd25184de495cda7bc7a4e8ba9d95",
+  "closedShadowLineageReproduction": {
+    "exit": 1,
+    "logSHA256": "89853abfef3450ec4913062c2d6e936816d21d2269bb2e72dc0d5548d0175cba"
+  },
+  "originalMatrix": {
+    "tests": {
+      "numTotalTests": 2,
+      "numPassedTests": 0,
+      "numFailedTests": 2,
+      "numPendingTests": 0,
+      "cases": [
+        {
+          "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+          "status": "failed",
+          "duration": 150534.69900000002,
+          "firstMessages": ["Error: Test timed out in 150000ms."]
+        },
+        {
+          "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+          "status": "failed",
+          "duration": 150522.26691600002,
+          "firstMessages": ["Error: Test timed out in 150000ms."]
+        }
+      ]
+    },
+    "guardMs": {
+      "readiness": 60000,
+      "case": 150000
+    },
+    "rawLogSHA256": "98e69f292951ee68dd3956cde2b3b8ac1ca4915bb34610be4cc10a30c4ba13be",
+    "startupByLocale": {
+      "zh-cn": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      },
+      "en": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      }
+    }
+  },
+  "timing": {
+    "before": {
+      "binding": {
+        "file": "site-shadcn-controls.DGCAgxzH.js",
+        "inputSHA256": "288f63423e50d3024dd47fc986a97c2b5729ee037c2e531c8f1ecacebdbcddec",
+        "outputSHA256": "1e5775af2bb880f7344dd7039aead210974e536558cdbca29d076457841b2580"
+      },
+      "overlaySHA256": "4c658737dfe0ced3fa23cbb168633742979f2f43f1f9ddbf442a96cd56e2d575",
+      "typographyBinding": {
+        "file": "site-typography.BYWswNWU.js",
+        "inputSHA256": "c334ecfc1062c128c420b09c52c882afe16cdd024d4af160027d6c1d1f93f6fc",
+        "outputSHA256": "a51a7b39a03a6850ac410d191079db78b9a3deb7deaff406b79fa004bc93f56d"
+      },
+      "typographyOverlaySHA256": "d6ce9177a25903ab29b85b397617895af6278a613ac809822152a14ac7777fdf",
+      "rawLogSHA256": "3aee4d638f0936c8e335ebbe5595c1854b3512f198bc0cf0d8094ec11fee23cf",
+      "runnerOverlaySHA256": "f4dfdc5a855a801dbdb35f05d6d1f669eba23af4c0bfd169cd41c4b5eaa4b65f",
+      "native": {
+        "numTotalTests": 2,
+        "numPassedTests": 0,
+        "numFailedTests": 1,
+        "numPendingTests": 1,
+        "cases": [
+          {
+            "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+            "status": "failed",
+            "duration": 150523.967458,
+            "firstMessages": ["Error: Test timed out in 150000ms."]
+          },
+          {
+            "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+            "status": "skipped",
+            "duration": null,
+            "firstMessages": []
+          }
+        ]
+      },
+      "startup": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      },
+      "exit": 1
+    },
+    "after": {
+      "binding": {
+        "file": "site-shadcn-controls.BF_aKGUH.js",
+        "inputSHA256": "d5185b13576455d7553b0a526786412668d78a6ee70b1d8d32ad24f7ecc8ddbd",
+        "outputSHA256": "46bc7d36dd6286011847bc7fe8e6532af4b69497702151222637b78e25c3ac9f"
+      },
+      "overlaySHA256": "e6e0c9c4363deaa587e7486af126edabfe14bcef347ce9240a2330c9bd89e3aa",
+      "typographyBinding": {
+        "file": "site-typography.CEQsl2pK.js",
+        "inputSHA256": "2175524a60c45b32bc0d18d54126171c8057e758e37ed5baa0a65bd4383a52c5",
+        "outputSHA256": "0060bd77b3091e177a4877c641c8b7cd7e165486da4d00a91c5291b243d40aa7"
+      },
+      "typographyOverlaySHA256": "d6ce9177a25903ab29b85b397617895af6278a613ac809822152a14ac7777fdf",
+      "rawLogSHA256": "9053799cf0802f58f5ec8559e3adc38775e15d3ae4bd0c386c67f2d14ddab759",
+      "runnerOverlaySHA256": "f4dfdc5a855a801dbdb35f05d6d1f669eba23af4c0bfd169cd41c4b5eaa4b65f",
+      "native": {
+        "numTotalTests": 2,
+        "numPassedTests": 0,
+        "numFailedTests": 1,
+        "numPendingTests": 1,
+        "cases": [
+          {
+            "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+            "status": "failed",
+            "duration": 150521.139125,
+            "firstMessages": ["Error: Test timed out in 150000ms."]
+          },
+          {
+            "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+            "status": "skipped",
+            "duration": null,
+            "firstMessages": []
+          }
+        ]
+      },
+      "startup": {
+        "startupPassed": false,
+        "collectionComplete": true,
+        "collectionOutcome": "rejected",
+        "collectionReason": "Error: page.evaluate: Target page, context or browser has been closed",
+        "errors": [],
+        "consoleErrors": []
+      },
+      "exit": 1
+    },
+    "checkpoints": {
+      "lastShared": {
+        "batches": 2048,
+        "before": {
+          "kind": "a11y-document-observer",
+          "sampleEvery": 64,
+          "batches": 2048,
+          "mutationRecords": 27404,
+          "ownerVisits": 735780,
+          "refVisits": 735780,
+          "samples": 32,
+          "withAttribute": 3,
+          "withIdBearingSubtree": 5,
+          "noObservedId": 27,
+          "sampledMs": 15.399999141693115,
+          "pageMs": 46490.700000047684,
+          "timeOrigin": 1794895215200.5,
+          "fullPasses": 2048
+        },
+        "after": {
+          "kind": "a11y-document-observer",
+          "sampleEvery": 64,
+          "batches": 2048,
+          "mutationRecords": 27407,
+          "ownerVisits": 740766,
+          "refVisits": 187578,
+          "fullPasses": 741,
+          "samples": 32,
+          "withAttribute": 6,
+          "withIdBearingSubtree": 6,
+          "noObservedId": 25,
+          "sampledMs": 6.59999942779541,
+          "pageMs": 45884,
+          "timeOrigin": 1794896428762.5
+        }
+      },
+      "paired": [
+        {
+          "batches": 1,
+          "before": {
+            "kind": "a11y-document-observer",
+            "sampleEvery": 64,
+            "batches": 1,
+            "mutationRecords": 30,
+            "ownerVisits": 15,
+            "refVisits": 15,
+            "samples": 1,
+            "withAttribute": 1,
+            "withIdBearingSubtree": 1,
+            "noObservedId": 0,
+            "sampledMs": 0.09999990463256836,
+            "pageMs": 2288.7999999523163,
+            "timeOrigin": 1794895215200.5,
+            "fullPasses": 1
+          },
+          "after": {
+            "kind": "a11y-document-observer",
+            "sampleEvery": 64,
+            "batches": 1,
+            "mutationRecords": 30,
+            "ownerVisits": 15,
+            "refVisits": 15,
+            "fullPasses": 1,
+            "samples": 1,
+            "withAttribute": 1,
+            "withIdBearingSubtree": 1,
+            "noObservedId": 0,
+            "sampledMs": 0.09999990463256836,
+            "pageMs": 2255,
+            "timeOrigin": 1794896428762.5
+          }
+        },
+        {
+          "batches": 2,
+          "before": {
+            "kind": "a11y-document-observer",
+            "sampleEvery": 64,
+            "batches": 2,
+            "mutationRecords": 31,
+            "ownerVisits": 30,
+            "refVisits": 30,
+            "samples": 1,
+            "withAttribute": 1,
+            "withIdBearingSubtree": 1,
+            "noObservedId": 0,
+            "sampledMs": 0.09999990463256836,
+            "pageMs": 2526.9000000953674,
+            "timeOrigin": 1794895215200.5,
+            "fullPasses": 2
+          },
+          "after": {
+            "kind": "a11y-document-observer",
+            "sampleEvery": 64,
+            "batches": 2,
+            "mutationRecords": 31,
+            "ownerVisits": 30,
+            "refVisits": 15,
+            "fullPasses": 1,
+            "samples": 1,
+            "withAttribute": 1,
+            "withIdBearingSubtree": 1,
+            "noObservedId": 0,
+            "sampledMs": 0.09999990463256836,
+            "pageMs": 2489.4000000953674,
+            "timeOrigin": 1794896428762.5
+          }
+        },
+        {
+          "batches": 4,
+          "before": {
+            "kind": "a11y-document-observer",
+            "sampleEvery": 64,
+            "batches": 4,
+            "mutationRecords": 33,
+            "ownerVisits": 60,
+            "refVisits": 60,
+            "samples": 1,
+            "withAttribute": 1,
+            "withIdBearingSubtree": 1,
+            "noObservedId": 0,
+            "sampledMs": 0.09999990463256836,
+            "pageMs": 2529.4000000953674,
+            "timeOrigin": 1794895215200.5,
+            "fullPasses": 4
+          },
+          "after": {
+            "kind": "a11y-document-observer",
+            "sampleEvery": 64,
+            "batches": 4,
+            "mutationRecords": 33,
+            "ownerVisits": 60,
+            "refVisits": 15,
+            "fullPasses": 1,
+            "samples": 1,
+            "withAttribute": 1,
+            "withIdBearingSubtree": 1,
+            "noObservedId": 0,
+            "sampledMs": 0.09999990463256836,
+            "pageMs": 2492,
+            "timeOrigin": 1794896428762.5
+          }
+        },
+        {
+          "batches": 8,
+          "before": {
+            "kind": "a11y-document-observer",
+            "sampleEvery": 64,
+            "batches": 8,
+            "mutationRecords": 37,
+            "ownerVisits": 120,
+            "refVisits": 120,
+            "samples": 1,
+            "withAttribute": 1,
+            "withIdBearingSubtree": 1,
+            "noObservedId": 0,
+            "sampledMs": 0.09999990463256836,
+            "pageMs": 2529.5,
+            "timeOrigin": 1794895215200.5,
+            "fullPasses": 8
+          },
+          "after": {
+            "kind": "a11y-document-observer",
+            "sampleEvery": 64,
+            "batches": 8,
+            "mutationRecords": 37,
+            "ownerVisits": 120,
+            "refVisits": 15,
+            "fullPasses": 1,
+            "samples": 1,
+            "withAttribute": 1,
+            "withIdBearingSubtree": 1,
+            "noObservedId": 0,
+            "sampledMs": 0.09999990463256836,
+            "pageMs": 2492.0999999046326,
+            "timeOrigin": 1794896428762.5
+          }
+        },
+        {
+          "batches": 16,
+          "before": {
+            "kind": "a11y-document-observer",
+            "sampleEvery": 64,
+            "batches": 16,
+            "mutationRecords": 45,
+            "ownerVisits": 240,
+            "refVisits": 240,
+            "samples": 1,
+            "withAttribute": 1,
+            "withIdBearingSubtree": 1,
+            "noObservedId": 0,
+            "sampledMs": 0.09999990463256836,
+            "pageMs": 2529.7999999523163,
+            "timeOrigin": 1794895215200.5,
+            "fullPasses": 16
+          },
+          "after": {
+            "kind": "a11y-document-observer",
+            "sampleEvery": 64,
+            "batches": 16,
+            "mutationRecords": 45,
+            "ownerVisits": 240,
+            "refVisits": 15,
+            "fullPasses": 1,
+            "samples": 1,
+            "withAttribute": 1,
+            "withIdBearingSubtree": 1,
+            "noObservedId": 0,
+            "sampledMs": 0.09999990463256836,
+            "pageMs": 2492.2000000476837,
+            "timeOrigin": 1794896428762.5
+          }
+        },
+        {
+          "batches": 32,
+          "before": {
+            "kind": "a11y-document-observer",
+            "sampleEvery": 64,
+            "batches": 32,
+            "mutationRecords": 61,
+            "ownerVisits": 480,
+            "refVisits": 480,
+            "samples": 1,
+            "withAttribute": 1,
+            "withIdBearingSubtree": 1,
+            "noObservedId": 0,
+            "sampledMs": 0.09999990463256836,
+            "pageMs": 2545.0999999046326,
+            "timeOrigin": 1794895215200.5,
+            "fullPasses": 32
+          },
+          "after": {
+            "kind": "a11y-document-observer",
+            "sampleEvery": 64,
+            "batches": 32,
+            "mutationRecords": 61,
+            "ownerVisits": 480,
+            "refVisits": 15,
+            "fullPasses": 1,
+            "samples": 1,
+            "withAttribute": 1,
+            "withIdBearingSubtree": 1,
+            "noObservedId": 0,
+            "sampledMs": 0.09999990463256836,
+            "pageMs": 2507,
+            "timeOrigin": 1794896428762.5
+          }
+        },
+        {
+          "batches": 64,
+          "before": {
+            "kind": "a11y-document-observer",
+            "sampleEvery": 64,
+            "batches": 64,
+            "mutationRecords": 93,
+            "ownerVisits": 960,
+            "refVisits": 960,
+            "samples": 1,
+            "withAttribute": 1,
+            "withIdBearingSubtree": 1,
+            "noObservedId": 0,
+            "sampledMs": 0.09999990463256836,
+            "pageMs": 2558.2999999523163,
+            "timeOrigin": 1794895215200.5,
+            "fullPasses": 64
+          },
+          "after": {
+            "kind": "a11y-document-observer",
+            "sampleEvery": 64,
+            "batches": 64,
+            "mutationRecords": 93,
+            "ownerVisits": 960,
+            "refVisits": 15,
+            "fullPasses": 1,
+            "samples": 1,
+            "withAttribute": 1,
+            "withIdBearingSubtree": 1,
+            "noObservedId": 0,
+            "sampledMs": 0.09999990463256836,
+            "pageMs": 2519.2000000476837,
+            "timeOrigin": 1794896428762.5
+          }
+        },
+        {
+          "batches": 128,
+          "before": {
+            "kind": "a11y-document-observer",
+            "sampleEvery": 64,
+            "batches": 128,
+            "mutationRecords": 214,
+            "ownerVisits": 2475,
+            "refVisits": 2475,
+            "samples": 2,
+            "withAttribute": 1,
+            "withIdBearingSubtree": 1,
+            "noObservedId": 1,
+            "sampledMs": 0.09999990463256836,
+            "pageMs": 4178.900000095367,
+            "timeOrigin": 1794895215200.5,
+            "fullPasses": 128
+          },
+          "after": {
+            "kind": "a11y-document-observer",
+            "sampleEvery": 64,
+            "batches": 128,
+            "mutationRecords": 214,
+            "ownerVisits": 2475,
+            "refVisits": 45,
+            "fullPasses": 2,
+            "samples": 2,
+            "withAttribute": 1,
+            "withIdBearingSubtree": 1,
+            "noObservedId": 1,
+            "sampledMs": 0.09999990463256836,
+            "pageMs": 4210.400000095367,
+            "timeOrigin": 1794896428762.5
+          }
+        },
+        {
+          "batches": 256,
+          "before": {
+            "kind": "a11y-document-observer",
+            "sampleEvery": 64,
+            "batches": 256,
+            "mutationRecords": 11020,
+            "ownerVisits": 7305,
+            "refVisits": 7305,
+            "samples": 4,
+            "withAttribute": 1,
+            "withIdBearingSubtree": 1,
+            "noObservedId": 3,
+            "sampledMs": 0.09999990463256836,
+            "pageMs": 6750,
+            "timeOrigin": 1794895215200.5,
+            "fullPasses": 256
+          },
+          "after": {
+            "kind": "a11y-document-observer",
+            "sampleEvery": 64,
+            "batches": 256,
+            "mutationRecords": 11028,
+            "ownerVisits": 7305,
+            "refVisits": 552,
+            "fullPasses": 15,
+            "samples": 4,
+            "withAttribute": 1,
+            "withIdBearingSubtree": 1,
+            "noObservedId": 3,
+            "sampledMs": 0.09999990463256836,
+            "pageMs": 6822.299999952316,
+            "timeOrigin": 1794896428762.5
+          }
+        },
+        {
+          "batches": 512,
+          "before": {
+            "kind": "a11y-document-observer",
+            "sampleEvery": 64,
+            "batches": 512,
+            "mutationRecords": 12038,
+            "ownerVisits": 18061,
+            "refVisits": 18061,
+            "samples": 8,
+            "withAttribute": 1,
+            "withIdBearingSubtree": 1,
+            "noObservedId": 7,
+            "sampledMs": 0.5999996662139893,
+            "pageMs": 8575.200000047684,
+            "timeOrigin": 1794895215200.5,
+            "fullPasses": 512
+          },
+          "after": {
+            "kind": "a11y-document-observer",
+            "sampleEvery": 64,
+            "batches": 512,
+            "mutationRecords": 12138,
+            "ownerVisits": 18073,
+            "refVisits": 4644,
+            "fullPasses": 111,
+            "samples": 8,
+            "withAttribute": 1,
+            "withIdBearingSubtree": 1,
+            "noObservedId": 7,
+            "sampledMs": 0.09999990463256836,
+            "pageMs": 8662,
+            "timeOrigin": 1794896428762.5
+          }
+        },
+        {
+          "batches": 1024,
+          "before": {
+            "kind": "a11y-document-observer",
+            "sampleEvery": 64,
+            "batches": 1024,
+            "mutationRecords": 17090,
+            "ownerVisits": 112870,
+            "refVisits": 112870,
+            "samples": 16,
+            "withAttribute": 2,
+            "withIdBearingSubtree": 4,
+            "noObservedId": 12,
+            "sampledMs": 5.1999993324279785,
+            "pageMs": 20558.599999904633,
+            "timeOrigin": 1794895215200.5,
+            "fullPasses": 1024
+          },
+          "after": {
+            "kind": "a11y-document-observer",
+            "sampleEvery": 64,
+            "batches": 1024,
+            "mutationRecords": 17071,
+            "ownerVisits": 117221,
+            "refVisits": 73225,
+            "fullPasses": 466,
+            "samples": 16,
+            "withAttribute": 5,
+            "withIdBearingSubtree": 5,
+            "noObservedId": 10,
+            "sampledMs": 2.4000000953674316,
+            "pageMs": 20687.5,
+            "timeOrigin": 1794896428762.5
+          }
+        },
+        {
+          "batches": 2048,
+          "before": {
+            "kind": "a11y-document-observer",
+            "sampleEvery": 64,
+            "batches": 2048,
+            "mutationRecords": 27404,
+            "ownerVisits": 735780,
+            "refVisits": 735780,
+            "samples": 32,
+            "withAttribute": 3,
+            "withIdBearingSubtree": 5,
+            "noObservedId": 27,
+            "sampledMs": 15.399999141693115,
+            "pageMs": 46490.700000047684,
+            "timeOrigin": 1794895215200.5,
+            "fullPasses": 2048
+          },
+          "after": {
+            "kind": "a11y-document-observer",
+            "sampleEvery": 64,
+            "batches": 2048,
+            "mutationRecords": 27407,
+            "ownerVisits": 740766,
+            "refVisits": 187578,
+            "fullPasses": 741,
+            "samples": 32,
+            "withAttribute": 6,
+            "withIdBearingSubtree": 6,
+            "noObservedId": 25,
+            "sampledMs": 6.59999942779541,
+            "pageMs": 45884,
+            "timeOrigin": 1794896428762.5
+          }
+        }
+      ],
+      "lastBefore": {
+        "kind": "a11y-document-observer",
+        "sampleEvery": 64,
+        "batches": 2048,
+        "mutationRecords": 27404,
+        "ownerVisits": 735780,
+        "refVisits": 735780,
+        "samples": 32,
+        "withAttribute": 3,
+        "withIdBearingSubtree": 5,
+        "noObservedId": 27,
+        "sampledMs": 15.399999141693115,
+        "pageMs": 46490.700000047684,
+        "timeOrigin": 1794895215200.5,
+        "fullPasses": 2048
+      },
+      "lastAfter": {
+        "kind": "a11y-document-observer",
+        "sampleEvery": 64,
+        "batches": 4096,
+        "mutationRecords": 37489,
+        "ownerVisits": 2899342,
+        "refVisits": 751326,
+        "fullPasses": 1260,
+        "samples": 64,
+        "withAttribute": 6,
+        "withIdBearingSubtree": 8,
+        "noObservedId": 55,
+        "sampledMs": 24.399999618530273,
+        "pageMs": 147750.59999990463,
+        "timeOrigin": 1794896428762.5
+      },
+      "typographyClockBefore": [
+        {
+          "kind": "typography-refresh-clock",
+          "calls": 3,
+          "unchanged": 2,
+          "elapsedMs": 11,
+          "pageMs": 24636,
+          "timeOrigin": 1794895215200.5
+        },
+        {
+          "kind": "typography-refresh-clock",
+          "calls": 3,
+          "unchanged": 2,
+          "elapsedMs": 11,
+          "pageMs": 115992.90000009537,
+          "timeOrigin": 1794895215200.5
+        }
+      ],
+      "typographyClockAfter": [
+        {
+          "kind": "typography-refresh-clock",
+          "calls": 3,
+          "unchanged": 2,
+          "elapsedMs": 11.200000047683716,
+          "pageMs": 24684.700000047684,
+          "timeOrigin": 1794896428762.5
+        },
+        {
+          "kind": "typography-refresh-clock",
+          "calls": 3,
+          "unchanged": 2,
+          "elapsedMs": 11.200000047683716,
+          "pageMs": 113269.5,
+          "timeOrigin": 1794896428762.5
+        }
+      ]
+    }
+  }
+}
