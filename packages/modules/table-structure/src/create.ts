@@ -130,9 +130,13 @@ export class TableStructureModuleImpl extends ModuleBase {
       });
     }
     if (role === 'root' && !this.stopTargets) {
-      this.stopTargets = this.anatomy.subscribeTargets(TABLE_STRUCTURE_FAMILY, () => {
-        if (this.mountPhase === 'mounted') this.notifyRoot();
-      });
+      this.stopTargets = this.anatomy.subscribeTargets(
+        TABLE_STRUCTURE_FAMILY,
+        () => {
+          if (this.mountPhase === 'mounted') this.notifyRoot();
+        },
+        'current-domain'
+      );
     }
     return Object.freeze({
       role,
