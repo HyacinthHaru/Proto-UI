@@ -1,0 +1,117 @@
+{
+  "head": "b523c052cb39081241de16fd04db5c925608f791",
+  "tree": "c97130da71dfeeea393e77c26aefb177ab550159",
+  "parent": "aa6d6b15d4aedb2863a935168dac73ea5f26ace1",
+  "signature": "G",
+  "sourceCandidate": "7c11fd2301a50d4ac2c6c1402b7ec15c60bcec1e",
+  "matchingInputs": [
+    "791ad73a0a4191729f43c346fc5fc20f3ce2fa9a936b0e30da078ee56226be01  packages/adapters/base/src/host/exposes.ts",
+    "11ea507b8e45a610965e69f13cdcd7ed003ddc870b91961c20a5d3b9449486ef  packages/adapters/base/test/contract/expose-record.v0.contract.test.ts"
+  ],
+  "tests": {
+    "passed": 96,
+    "files": 4,
+    "exit": 0,
+    "logSHA256": "eb3e2ef2409f0c4b956283c3913d1c295089c772921d4e89ed0886fcd80940da"
+  },
+  "workspaceTypes": {
+    "initialExit": 2,
+    "missingGeneratedStyleLogSHA256": "e09dcc92e0570cdd436ac6ea75be8d1e1928e6edd113b300bef4c2cc29be4356",
+    "finalExit": 0,
+    "finalLogSHA256": "780dbf5f050160d92c190377db411c2c20d6bf84abe0c6e83d2057a83e8828f9"
+  },
+  "build": {
+    "packages": 47,
+    "logSHA256": "a2e38abd1d2a42e8721053fad786ca283986aa1629aa132643fd24aa46f85e02"
+  },
+  "manifestsExit": 0,
+  "budgets": {
+    "mode": "finf-development",
+    "exit": 0,
+    "policyTestsPassed": 9,
+    "entries": [
+      {
+        "status": "PASS",
+        "label": "lucide/icons/x",
+        "bytes": 2879,
+        "limit": 3000,
+        "overBudget": 0,
+        "minified": 8695,
+        "sha256": "02838c5b1d4db7b0d62eab9b1d502848e268dfea098798ee87665caa966772fb"
+      },
+      {
+        "status": "PASS",
+        "label": "lucide root",
+        "bytes": 637306,
+        "limit": 700000,
+        "overBudget": 0,
+        "minified": 4087403,
+        "sha256": "eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c"
+      },
+      {
+        "status": "ADVISORY",
+        "label": "core root",
+        "bytes": 11373,
+        "limit": 7600,
+        "overBudget": 3773,
+        "minified": 35723,
+        "sha256": "bb0468537baccea449d0260ae56ac758902eb989dae84f699b6c27626212d913"
+      },
+      {
+        "status": "ADVISORY",
+        "label": "runtime root",
+        "bytes": 100015,
+        "limit": 78500,
+        "overBudget": 21515,
+        "minified": 386804,
+        "sha256": "11347a17a9c7eda3575d4bf30a0a2954e770f801b4264c977ae838d6755f40e8"
+      },
+      {
+        "status": "ADVISORY",
+        "label": "adapter-react root",
+        "bytes": 161940,
+        "limit": 106000,
+        "overBudget": 55940,
+        "minified": 572005,
+        "sha256": "9ba7a536f74b0b3d3e4a07a7bb2b2ecfbfdc982cba449008490d610aa547f6d5"
+      },
+      {
+        "status": "ADVISORY",
+        "label": "adapter-vue root",
+        "bytes": 160629,
+        "limit": 106000,
+        "overBudget": 54629,
+        "minified": 567277,
+        "sha256": "cdee482043d79114a06868d139cdf1c448a572453797017709156c1075146269"
+      },
+      {
+        "status": "ADVISORY",
+        "label": "adapter-web-component root",
+        "bytes": 190259,
+        "limit": 132000,
+        "overBudget": 58259,
+        "minified": 656164,
+        "sha256": "11e72ebd26646a314db87706701a78bfb49d19c841ef17e97bde0698e6460a23"
+      },
+      {
+        "status": "PASS",
+        "label": "prototypes-base/button",
+        "bytes": 5274,
+        "limit": 6000,
+        "overBudget": 0,
+        "minified": 18158,
+        "sha256": "6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67"
+      },
+      {
+        "status": "ADVISORY",
+        "label": "prototypes-shadcn/button",
+        "bytes": 7803,
+        "limit": 7000,
+        "overBudget": 803,
+        "minified": 34485,
+        "sha256": "60b4ff9277e59fba01c34162ec9418282ce82c6b43e24f223a05c9e1df19db57"
+      }
+    ],
+    "logSHA256": "5d7f8edba959c993aaffb9293e1af5edefaef5e56a0642c0e9cc4da5f3b8bd68"
+  }
+}
