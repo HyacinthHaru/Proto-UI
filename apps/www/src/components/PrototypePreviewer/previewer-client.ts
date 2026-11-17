@@ -1,3 +1,4 @@
+import { observePreviewerRemoval } from './previewer-removal';
 import { createRuntimeTabs, type RuntimeTabsFocusLease } from './runtime-tabs';
 // src/next-www/src/components/PrototypePreviewer/previewer-client.ts
 import { loadPrototype, loadPrototypes } from './prototype-modules';
@@ -554,7 +555,7 @@ export function initPreviewer(options: PreviewerOptions) {
       stopThemeWatcher = null;
       stopFamilyObserver = null;
       activeSurface = null;
-      ro.disconnect();
+      stopWatchingRemoval();
       releaseHostMount(host);
       document.removeEventListener('proto-adapter:change', onAdapterChange);
       if (selectRoot && !usesSharedAdapterSelect) {
@@ -578,11 +579,10 @@ export function initPreviewer(options: PreviewerOptions) {
   };
 
   // 组件卸载守护（如果父层会移除节点）
-  const ro = new MutationObserver(() => {
+  const stopWatchingRemoval = observePreviewerRemoval(document.body, () => {
     if (!document.body.contains(root)) {
       (root as any).__previewer__?.destroy?.();
-      ro.disconnect();
+      stopWatchingRemoval();
     }
   });
-  ro.observe(document.body, { childList: true, subtree: true });
 }
