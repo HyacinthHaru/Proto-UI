@@ -1,0 +1,169 @@
+{
+  "head": "01159b2ab270b16698e91a53fa9bbf0f5b0d7c25",
+  "tree": "3ae5f3025cb8d708aaef4417752c4cfdd0f70af6",
+  "parent": "04c433c426b8a2e01baca474464656a9a3615fcf",
+  "signature": "G",
+  "changedPaths": [
+    "apps/www/src/components/PrototypePreviewer/demo-modules.test.ts",
+    "apps/www/src/components/PrototypePreviewer/demo-registry.ts"
+  ],
+  "checks": {
+    "zh-cn": {
+      "bytes": 1862394,
+      "sha256": "9e2acad586b9db46588b158f1b49281b7094f727b196cfd3ecc78b786a344570",
+      "previews": 1268
+    },
+    "en": {
+      "bytes": 1914026,
+      "sha256": "ab3aa22ddfd610176e22310ba9f04fde9f8da3e72eadb93ca026355c9b1f9940",
+      "previews": 1268
+    }
+  },
+  "renderAdmissionOverlaySHA256": "ae44b882e227090c5a1e09b4838c5cee97d9e01618c51209cc2ed0ac5df39a3f",
+  "tests": {
+    "exit": 1,
+    "logSHA256": "033f8ad2534bfd9e730c6447b7fd0f44ef471aa31feff4de56b2b09c1ee9ae5a",
+    "cases": [
+      {
+        "title": "zh-cn: native Light/split/mixed acceptance",
+        "status": "failed",
+        "elapsedMs": 150527.551542,
+        "firstFailure": "Error: Test timed out in 150000ms."
+      },
+      {
+        "title": "en: native Light/split/mixed acceptance",
+        "status": "failed",
+        "elapsedMs": 150525.56033399998,
+        "firstFailure": "Error: Test timed out in 150000ms."
+      }
+    ]
+  },
+  "observations": {
+    "zh-cn": {
+      "last": null,
+      "collectionOutcome": "rejected",
+      "streamed": [
+        {
+          "nodePhase": "startup-wait",
+          "receivedNodeMs": 12995.44125,
+          "timeOrigin": 1794884512545.3,
+          "pageMs": 11769.700000047684,
+          "dateNow": 1794884524315,
+          "count": 1268,
+          "ready": false,
+          "firstMissing": {
+            "previewerId": "pp-btu8a3qu1n9",
+            "index": 0,
+            "inited": "1",
+            "hostChildren": 0
+          },
+          "firstMissingOwner": {
+            "demoId": "demo-base-accordion",
+            "prototypeId": "",
+            "declaredRuntime": "wc",
+            "projectionMode": null,
+            "projectionState": null,
+            "mounting": null,
+            "hostTag": "DIV",
+            "hostOwner": "pp-btu8a3qu1n9",
+            "startupPending": true,
+            "hostOwnInert": true,
+            "hostText": ""
+          }
+        },
+        {
+          "nodePhase": "startup-wait",
+          "receivedNodeMs": 28365.153792,
+          "timeOrigin": 1794884512545.3,
+          "pageMs": 27139.60000014305,
+          "dateNow": 1794884539684,
+          "count": 1268,
+          "ready": false,
+          "firstMissing": {
+            "previewerId": "pp-2fj86iyed4v",
+            "index": 1,
+            "inited": "1",
+            "hostChildren": 0
+          },
+          "firstMissingOwner": {
+            "demoId": "demo-base-accordion",
+            "prototypeId": "",
+            "declaredRuntime": "react",
+            "projectionMode": null,
+            "projectionState": null,
+            "mounting": null,
+            "hostTag": "DIV",
+            "hostOwner": "pp-2fj86iyed4v",
+            "startupPending": true,
+            "hostOwnInert": true,
+            "hostText": ""
+          }
+        }
+      ],
+      "expressionSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+    },
+    "en": {
+      "last": null,
+      "collectionOutcome": "rejected",
+      "streamed": [
+        {
+          "nodePhase": "startup-wait",
+          "receivedNodeMs": 163294.82475,
+          "timeOrigin": 1794884663070.2,
+          "pageMs": 11544.600000143051,
+          "dateNow": 1794884674614,
+          "count": 1268,
+          "ready": false,
+          "firstMissing": {
+            "previewerId": "pp-x7wk89ukdl",
+            "index": 0,
+            "inited": "1",
+            "hostChildren": 0
+          },
+          "firstMissingOwner": {
+            "demoId": "demo-base-accordion",
+            "prototypeId": "",
+            "declaredRuntime": "wc",
+            "projectionMode": null,
+            "projectionState": null,
+            "mounting": null,
+            "hostTag": "DIV",
+            "hostOwner": "pp-x7wk89ukdl",
+            "startupPending": true,
+            "hostOwnInert": true,
+            "hostText": ""
+          }
+        },
+        {
+          "nodePhase": "startup-wait",
+          "receivedNodeMs": 184422.491792,
+          "timeOrigin": 1794884663070.2,
+          "pageMs": 32672.200000047684,
+          "dateNow": 1794884695742,
+          "count": 1268,
+          "ready": false,
+          "firstMissing": {
+            "previewerId": "pp-5i7r89sgz5n",
+            "index": 1,
+            "inited": "1",
+            "hostChildren": 0
+          },
+          "firstMissingOwner": {
+            "demoId": "demo-base-accordion",
+            "prototypeId": "",
+            "declaredRuntime": "react",
+            "projectionMode": null,
+            "projectionState": null,
+            "mounting": null,
+            "hostTag": "DIV",
+            "hostOwner": "pp-5i7r89sgz5n",
+            "startupPending": true,
+            "hostOwnInert": true,
+            "hostText": ""
+          }
+        }
+      ],
+      "expressionSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+    }
+  }
+}

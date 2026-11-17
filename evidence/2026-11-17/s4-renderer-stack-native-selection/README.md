@@ -1,0 +1,11 @@
+# Native Selection work in the built Matrix startup
+
+The signed `01159b2a` source comparison adds only the shared demo-loader change over `04c433c4`. Both static pages contain all 1,268 previews. Chinese and English each reach the original 150s outer limit before Dialog. The last streamed samples still show an empty React Base Accordion host. This is an exact built result for demo sharing alone.
+
+Separate diagnostic runs reuse the same Chinese HTML. The early CPU recorder requests a stop at 20s and does not obtain a profile inside its bounded stop window. The Long Animation Frames observer delivers its first 64 frame records above the configured 120ms threshold and reports truncation. The prototype loader script has the largest sum of recorded script entries in that window. Long-frame attribution identifies script entry points and can include nested work. See the [Chrome API documentation](https://developer.chrome.com/docs/web-platform/long-animation-frames).
+
+A single debugger stack requested during readiness captures the preview surface publishing through the native content lease and the Selection boundary capture. The exact bundle location reads an entire child node list even though the lease only needs adjacent boundary nodes. The debugger resumes in the same observation sequence. This is a stack sample, with no percentage attribution to the full Matrix time.
+
+Local signed candidate `8660756e` reads adjacent endpoints without copying the list. It skips wholly unrelated capture and resolves only a Selection it owns after the move. A regression on unrelated child reads fails before the change. All 133 focused tests and workspace types pass. In four pinned Chrome fixture arms with 4,096 unrelated children and 128 physical moves per arm, childNodes getter reads are 512, 0, 0, and 512. The unrelated Selection and forward and backward crossing ranges remain correct in each arm. The isolated timing is descriptive. Full bilingual composition validation is separate.
+
+Local test-only `99e656b3` corrects the raw-props oracle by comparing function identities inside the actual owner, and keeps the original dispatch assertions. Public callable scope stays in place. The six-file selection now passes 115 cases. The unchanged main fixture reproduces one failure among 15, and the corrected fixture alone passes all 15 on the same main.

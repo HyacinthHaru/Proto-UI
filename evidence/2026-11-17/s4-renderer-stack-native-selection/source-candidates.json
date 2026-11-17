@@ -1,0 +1,83 @@
+{
+  "selection": {
+    "head": "8660756e75ea2ada29a9197d3d8a86ca8f279002",
+    "tree": "204605fdf9ef8acd28cc72e9dde15840c79b8ed3",
+    "parent": "99e656b3e3155847df6a6926b59896a058b79ef6",
+    "signature": "G",
+    "inputs": [
+      "0191dbb9f8e86dfe2bb963b229717d94570f326a247ae47ec3e236705c78851b  apps/www/src/components/PrototypePreviewer/native-content-lease.test.ts",
+      "2a979f35aa275ffc5fcea0cb21f2205294c518aa710303e1ef0e2b16177599d6  apps/www/src/components/PrototypePreviewer/native-content-lease.ts"
+    ],
+    "baselineLogSHA256": "351ea5c5f6de996ed06eaf903a63e4ab4b6a540d6ac58d8d03197e0a19a2c4be",
+    "focusedPassed": 133,
+    "typesExit": 0,
+    "native": {
+      "chrome": "156.0.8078.79",
+      "beforeSHA256": "0cd96b3a1acc210bd6afda937d533f8bd0c4aee1da60fab43e12175b9ae36bb0",
+      "afterSHA256": "2a979f35aa275ffc5fcea0cb21f2205294c518aa710303e1ef0e2b16177599d6",
+      "rows": [
+        {
+          "arm": "before",
+          "childReads": 512,
+          "elapsed": 75.09999990463257,
+          "retained": true,
+          "forward": true,
+          "backward": true,
+          "repetitions": 128,
+          "unrelatedChildren": 4096
+        },
+        {
+          "arm": "after",
+          "childReads": 0,
+          "elapsed": 0.09999990463256836,
+          "retained": true,
+          "forward": true,
+          "backward": true,
+          "repetitions": 128,
+          "unrelatedChildren": 4096
+        },
+        {
+          "arm": "after",
+          "childReads": 0,
+          "elapsed": 0.10000014305114746,
+          "retained": true,
+          "forward": true,
+          "backward": true,
+          "repetitions": 128,
+          "unrelatedChildren": 4096
+        },
+        {
+          "arm": "before",
+          "childReads": 512,
+          "elapsed": 76.90000009536743,
+          "retained": true,
+          "forward": true,
+          "backward": true,
+          "repetitions": 128,
+          "unrelatedChildren": 4096
+        }
+      ]
+    },
+    "browserFixtureSHA256": "161d0a2c28fcb235a12337fc6f495707ff4ab3d5afba3fc9a487a8aa01819bd4"
+  },
+  "rawPropsOracle": {
+    "head": "99e656b3e3155847df6a6926b59896a058b79ef6",
+    "tree": "8f4d5e5f6e4eb6e5d7dce1ec0b5c4a71759af18c",
+    "parent": "8101c7fff4d1bd20911b1fe8ba6e0eb8ee83dc3e",
+    "signature": "G",
+    "inputs": [
+      "19467e4bfb79c64b3176c320c88fbe1a6ce07bff7baa55ebd6b180392cc637b5  apps/www/src/components/PrototypePreviewer/demo-renderer.expose-events.test.ts"
+    ],
+    "focusedPassed": 115,
+    "typesExit": 0,
+    "cleanMainBefore": {
+      "failed": 1,
+      "passed": 14,
+      "logSHA256": "f5cc1cbb7f23a7465fcf39b622c11b3e0dfd3842c8e1330a8196b3068ec2c88c"
+    },
+    "cleanMainWithOnlyFixture": {
+      "passed": 15,
+      "logSHA256": "3d25b54ee37795404f86c429f0398edb385fb19944a06d3050ae5d73c3084952"
+    }
+  }
+}
