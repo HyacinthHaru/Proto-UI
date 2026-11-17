@@ -80,11 +80,15 @@ export function createScrollPolicyLease(target: HTMLElement) {
       try {
         for (let i = 0; i < properties.length; i++) {
           const name = properties[i]!;
+          const current = owned.get(name);
+          if (current?.value === values[i] && current.priority === '') continue;
           style.setProperty(name, values[i]!);
           owned.set(name, read(style, name));
         }
-        target.setAttribute('data-pui-scroll-projection', connection.projection);
-        ownedAttribute = connection.projection;
+        if (ownedAttribute !== connection.projection) {
+          target.setAttribute('data-pui-scroll-projection', connection.projection);
+          ownedAttribute = connection.projection;
+        }
       } catch (error) {
         try {
           release();

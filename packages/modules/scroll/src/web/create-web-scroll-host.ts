@@ -285,10 +285,18 @@ export function createWebScrollSurfaceHost(
           return;
         }
         const axes = connection.config.axes;
-        target.style.overflowX = axes === 'vertical' ? 'hidden' : 'auto';
-        target.style.overflowY = axes === 'horizontal' ? 'hidden' : 'auto';
-        target.style.scrollbarWidth = connection.projection === 'composed' ? 'none' : '';
-        target.setAttribute('data-pui-scroll-projection', connection.projection);
+        const overflowX = axes === 'vertical' ? 'hidden' : 'auto';
+        const overflowY = axes === 'horizontal' ? 'hidden' : 'auto';
+        const scrollbarWidth = connection.projection === 'composed' ? 'none' : '';
+        const style = target.style;
+        if (style.overflowX !== overflowX || style.getPropertyPriority('overflow-x'))
+          style.overflowX = overflowX;
+        if (style.overflowY !== overflowY || style.getPropertyPriority('overflow-y'))
+          style.overflowY = overflowY;
+        if (style.scrollbarWidth !== scrollbarWidth || style.getPropertyPriority('scrollbar-width'))
+          style.scrollbarWidth = scrollbarWidth;
+        if (target.getAttribute('data-pui-scroll-projection') !== connection.projection)
+          target.setAttribute('data-pui-scroll-projection', connection.projection);
       };
       const snapshot = (): ScrollSurfaceSnapshot =>
         Object.freeze({

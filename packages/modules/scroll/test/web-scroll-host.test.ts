@@ -139,6 +139,52 @@ describe('module-scroll: Web scroll surface host', () => {
     }
   );
 
+  it.each([false, true])(
+    'keeps matching scroll policy DOM stable on a geometry update (exclusive=%s)',
+    (exclusivePolicy) => {
+      const target = document.createElement('div');
+      const initial = {
+        clientWidth: 100,
+        scrollWidth: 100,
+        clientHeight: 100,
+        scrollHeight: 400,
+      };
+      setMetrics(target, initial);
+      document.body.append(target);
+      const snapshots: ScrollSurfaceSnapshot[] = [];
+      const connection = {
+        config: { axes: 'vertical', projection: 'system', endFollow: { mode: 'off' } },
+        projection: 'system',
+        onFacts: (facts: ScrollSurfaceSnapshot) => snapshots.push(facts),
+      } as const;
+      const lease = createWebScrollSurfaceHost(target, {
+        moveGestureHost: createMoveHarness().host,
+        exclusivePolicy,
+      }).attach(connection);
+      const writes = vi.spyOn(target.style, 'setProperty');
+      const attributes = vi.spyOn(target, 'setAttribute');
+      try {
+        expect(snapshots.at(-1)?.vertical.visibleRatio).toBe(0.25);
+        setMetrics(target, { ...initial, scrollHeight: 500 });
+        lease.update(connection);
+        expect(snapshots.at(-1)?.vertical.visibleRatio).toBe(0.2);
+        expect(writes).not.toHaveBeenCalled();
+        expect(
+          attributes.mock.calls.filter(([name]) => name === 'data-pui-scroll-projection')
+        ).toHaveLength(0);
+
+        lease.update({ ...connection, projection: 'composed' });
+        expect(target.getAttribute('data-pui-scroll-projection')).toBe('composed');
+        expect(snapshots.at(-1)?.projection).toBe('composed');
+      } finally {
+        writes.mockRestore();
+        attributes.mockRestore();
+        lease.dispose();
+      }
+      expect(target.hasAttribute('data-pui-scroll-projection')).toBe(false);
+    }
+  );
+
   it('upgrades an already-none display to important and restores its empty priority', () => {
     const target = document.createElement('div');
     const track = document.createElement('div');
