@@ -1,5 +1,9 @@
 # Website native Selection: open Shadow and callback focus ownership
 
+## Consumer provenance correction (2026-11-17)
+
+The separate explicit-Shadow Input fixture imported public package names, but its esbuild invocation inherited repository tsconfig path aliases. The preserved input metadata resolves **37 WC Adapter source files and zero WC Adapter dist files**. Its native observations and unchanged captures are valid for a **source-resolved public-API consumer**, not a dist or installed-tarball consumer. Earlier descriptions of this fixture as “actual built/packed public Input” were incorrect. The actual production Website emitted-helper and served-page runs remain production-artifact evidence; they are separate executions. This correction does not rerun or relabel any old execution. Original scripts, metadata, measurements and image bytes are retained; see `consumer-provenance-correction.json`.
+
 Agent request paraphrase: continue authorized Website regression repairs and valid PR feedback, retain all page content and original assertions/deadlines, verify source and packed consumers, then report precise acceptance and remaining work.
 
 PR #1494, final candidate in this packet: `a0f5a03e01c8bde328aa167a5b5a98eaa20b4cf8`, tree `b5721270ef2389b4bfe6b3cc2bcadacb272a5f17`, parent `4e58cc582abcc06cf084b5bec01620153b9ae606`. All four PR commits are signed by the same responsible contributor with DCO; two Website source/test paths differ from main `0f0955a9d624e0ef5e250f56a0eaa0fc52bbfb53`. No package, public API or lifecycle change. The Website projection and Shadow profile decisions retain their actual draft lifecycle.
@@ -10,13 +14,13 @@ PR #1494, final candidate in this packet: `a0f5a03e01c8bde328aa167a5b5a98eaa20b4
 
 The first public Input probe incorrectly required a shadow root and failed that fixture precondition before measuring either variant. Its script and failure disposition are retained. The corrected public Shadcn Input route actually reports **Light** and succeeds with both the previous and candidate helpers after a direct preview-host move, immediately and after two animation frames.
 
-A separate consumer imports the actual built public `AdaptToWebComponent` and `shadcnInputRoot` exports, explicitly passes `shadow:true`, and mounts in a synthetic same-origin native host fixture. It uses the actual emitted Website lease module for the candidate. This is an explicit supported direct-Shadow consumer control, not the Website default or a full RuntimeBox family-switch journey. Document CSS is not imported into this direct Shadow fixture; its plain native appearance is not a family visual-conformance claim.
+A separate source-resolved consumer imports the public `AdaptToWebComponent` and `shadcnInputRoot` exports, explicitly passes `shadow:true`, and mounts in a synthetic same-origin native host fixture. It uses the actual emitted Website lease module for the candidate. This is an explicit supported direct-Shadow consumer control, not the Website default or a full RuntimeBox family-switch journey. Document CSS is not imported into this direct Shadow fixture; its plain native appearance is not a family visual-conformance claim.
 
 ## Shadow repair at 4e58cc58
 
 The helper now follows `shadowRoot.activeElement` for both capture and restoration, and crosses `ShadowRoot.host` when checking retained-scope ownership. The four added input/textarea original/focus-callback cases fail on 0eca with 16 other unit cases passing; 4e gives 260 focused passes. Its source and actual emitted-module observers each run 18 candidate modes, all pass, while retaining four baseline shadow failures.
 
-Actual public-package direct-Shadow result, website/consumer artifacts held constant:
+Source-resolved public-API direct-Shadow result, website/consumer artifacts held constant:
 
 | Phase | 0eca helper | 4e emitted helper |
 | --- | --- | --- |
@@ -28,7 +32,7 @@ Actual public-package direct-Shadow result, website/consumer artifacts held cons
 
 ![Same explicit direct Shadow public Input using the 4e emitted helper: original selected range remains](shadow-after-4e.png)
 
-These unedited 1280×900 captures show the actual packed Input consumer under light color preference. The surrounding fixture label identifies its explicit profile; the variable rows carry exact endpoints and direction.
+These unedited 1280×900 captures show the source-resolved public-API Input consumer under light color preference. The surrounding fixture label identifies its explicit profile; the variable rows carry exact endpoints and direction.
 
 ## Callback focus precedence at a0f5a03e
 
@@ -52,7 +56,7 @@ The original unit transport ordering and value/range assertions were restored. F
 - Node 24.21.0, pnpm 10.32.1, Chrome 156.0.8078.79, macOS arm64; source/observer/served-module hashes in `measurements.json`.
 - Fresh workspace types exit 0; actual Website build 685 pages, temporary draft-route overlay restored. Fresh inventory retains all 1,268 roots in each locale.
 - Actual packed Contents/Dialog/Runtime Tabs: 11 tests pass, 13 filtered. Original assertions/deadlines retained. Header trusted-family first-frame geometry at 320/390 px passes; those geometry reads can force layout. Public article retains 9/9 CodeExample entries.
-- Final emitted helper passes all 22 native modes. Actual public Website **Light** Input and separate public-package **explicit direct Shadow** Input each retain the same native field, focus, value and 3–8 backward range immediately and after two frames, for both 4e baseline and a0f candidate. These are regression controls; they are not claimed as new baseline failures.
+- Final emitted helper passes all 22 native modes. Actual public Website **Light** Input and separate source-resolved public-API **explicit direct Shadow** Input each retain the same native field, focus, value and 3–8 backward range immediately and after two frames, for both 4e baseline and a0f candidate. These are regression controls; they are not claimed as new baseline failures.
 - Package source/config/lockfile/manifests remain unchanged. The 47-package build, manifest pass and 3 PASS / 6 ADVISORY measurements are explicitly prior local e977 evidence. Actual excesses and source identities remain recorded; there was no new package build or canonical hosted measurement for these Website-only deltas.
 - Original full bilingual S4 startup failures are bound to e977, with the original 60 s readiness / 150 s case limits and all roots retained, before Dialog. That unchanged full startup suite was not rerun for these focus-only changes; there is no new-head full S4 pass.
 

@@ -1,5 +1,9 @@
 # Distinguish connected blur from native transport; preserve descendant focus
 
+## Consumer provenance correction (2026-11-17)
+
+The separate explicit-Shadow Input fixture imported public package names, but its esbuild invocation inherited repository tsconfig path aliases. The preserved input metadata resolves **37 WC Adapter source files and zero WC Adapter dist files**. Its native observations and unchanged captures are valid for a **source-resolved public-API consumer**, not a dist or installed-tarball consumer. Earlier descriptions of this fixture as “actual built/packed public Input” were incorrect. The actual production Website emitted-helper and served-page runs remain production-artifact evidence; they are separate executions. This correction does not rerun or relabel any old execution. Original scripts, metadata, measurements and image bytes are retained; see `consumer-provenance-correction.json`.
+
 Agent request paraphrase: continue the authorized PR #1494 Website repairs and current review feedback, preserve content/assertions/deadlines, retain real failures and verify the exact source and packed candidate before reporting acceptance.
 
 Candidate `22e90bc7cec5f59303c93d07fc4497c52a9156ce`, tree `bedac43346f5d4857247c2ee8af67998e8e340d3`, parent `a0f5a03e01c8bde328aa167a5b5a98eaa20b4cf8`, on main `0f0955a9d624e0ef5e250f56a0eaa0fc52bbfb53`. Five signed/DCO commits still change only the private Website native-content-lease source and its unit tests. Applicable projection and Text Control entities remain draft; no public API, Adapter identity or lifecycle change.
@@ -32,12 +36,12 @@ These observations explain why the earlier connected-focusout-only guard was inv
 - Same final native observer on a0f on both sides: 54 rows with six expected failures. Candidate source and actual emitted-module runs: **27/27 modes pass in each**, retaining three a0f failures (connected input blur, connected textarea blur, host-to-descendant focus). The extra same-parent light/shadow controls pass on both versions. No original assertion was weakened.
 - Fresh workspace types exit 0; actual Website build **685 pages** with the two disposable draft-route overlays restored. Fresh artifact inventory has **1,268 roots in each locale**; public article **9/9 CodeExample** entries retained.
 - Actual packed Contents/Dialog/Runtime Tabs: **11 tests passed**, 13 filtered, original deadlines intact. Header trusted-family first-frame geometry passes at 320/390 px; geometry sampling can force layout.
-- Actual public Shadcn Input **Light default** and separate actual public-package Input with explicit **shadow:true** each preserve same native field, focus, value and 3–8 backward range immediately and after two animation frames, for both a0f baseline and current emitted helper. They are positive regression controls, not new red baselines. The explicit Shadow fixture does not import document CSS and is not a full RuntimeBox family-switch or family-appearance acceptance.
-- Node24.21.0/pnpm10.32.1/Chrome156.0.8078.79 on macOS arm64. Actual observer, source, served-module, artifact and image bytes are bound in the JSON. The two public observer scripts and unchanged explicit package consumer are bound to their prior public source; their actual new executions are recorded here.
+- Actual public Shadcn Input **Light default** and separate source-resolved public-API Input with explicit **shadow:true** each preserve same native field, focus, value and 3–8 backward range immediately and after two animation frames, for both a0f baseline and current emitted helper. They are positive regression controls, not new red baselines. The explicit Shadow fixture does not import document CSS and is not a full RuntimeBox family-switch or family-appearance acceptance.
+- Node24.21.0/pnpm10.32.1/Chrome156.0.8078.79 on macOS arm64. Actual observer, source, served-module, artifact and image bytes are bound in the JSON. The two public observer scripts and unchanged explicit source-resolved consumer are bound to their prior public source; their actual new executions are recorded here.
 
 ![Actual current public Input page, WC Light default, field selection retained after direct host movement](public-light-candidate.png)
 
-![Actual current public-package Input with explicit direct Shadow, native field selection retained after host movement](public-shadow-candidate.png)
+![Source-resolved public-API Input with explicit direct Shadow, native field selection retained after host movement](public-shadow-candidate.png)
 
 These unedited 1280×900 light-preference captures were individually inspected. The default Light field is near the viewport bottom; the full page and all resources remain. The direct Shadow fixture's plain native appearance is deliberate evidence scope, not a new visual-conformance claim.
 

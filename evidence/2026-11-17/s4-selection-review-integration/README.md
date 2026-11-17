@@ -1,5 +1,9 @@
 # Integrate reviewed native selection fixes into the broader S4 candidate
 
+## Consumer provenance correction (2026-11-17)
+
+The separate explicit-Shadow Input fixture imported public package names, but its esbuild invocation inherited repository tsconfig path aliases. The preserved input metadata resolves **37 WC Adapter source files and zero WC Adapter dist files**. Its native observations and unchanged captures are valid for a **source-resolved public-API consumer**, not a dist or installed-tarball consumer. Earlier descriptions of this fixture as “actual built/packed public Input” were incorrect. The actual production Website emitted-helper and served-page runs remain production-artifact evidence; they are separate executions. This correction does not rerun or relabel any old execution. Original scripts, metadata, measurements and image bytes are retained; see `consumer-provenance-correction.json`.
+
 Agent request paraphrase: continue the authorized Website C-group work with complete pages/resources, original assertions and deadlines; combine current native-selection correctness with the retained S4 optimizations and verify the actual resulting source/packed composition.
 
 Signed fork candidate `b6bfa4f0b978275dd2a2f0769fee19741c197459`, tree `dc207e9bf518274ced9aca313f6eff5095524a90`, is a non-rewriting merge with parents `ca3dff46432109bbe7a10b76ad19df4d5263ffb0` and `22e90bc7cec5f59303c93d07fc4497c52a9156ce`. It is published on the existing `codex/s4-text-selection-lease` fork branch, not merged upstream. PR #1494 remains the separate two-file main-based repair.
@@ -20,7 +24,7 @@ All nine fresh local whole-entry gzip/minified/hash rows equal the earlier ca3 m
 
 - Actual static preview: **11 Contents/Dialog/Runtime Tabs tests pass**, 13 filtered. Header trusted-family first-frame geometry at 320/390px passes; geometry reads can force layout.
 - Actual public Shadcn Input: the real Runtime Tabs select **WC/React/Vue/Vue2**, and the existing committed-runtime getter is read. Each host runs ca3-helper and current-emitted-helper controls: **8/8 rows pass**, retaining the same native field, focus, uncontrolled value and 3–8 backward range immediately and after two animation frames. These are direct physical preview-host moves after real runtime selection, not full family-switch or hosted-shard acceptance.
-- A fresh consumer of the actual newly built public Shadcn Input/Adapter explicitly uses `shadow:true`. On the same candidate package/Website artifacts, ca3 helper collapses the range to 0–0 forward while the merged emitted helper retains 3–8 backward. Field identity, focus and value remain; immediate and two-frame results agree. The Website default remains Light; this separate direct Shadow fixture does not import document CSS or establish family appearance conformance.
+- A fresh source-resolved public-API Shadcn Input/Adapter consumer explicitly uses `shadow:true`. With the same source-resolved consumer and candidate Website artifacts, ca3 helper collapses the range to 0–0 forward while the merged emitted helper retains 3–8 backward. Field identity, focus and value remain; immediate and two-frame results agree. The Website default remains Light; this separate direct Shadow fixture does not import document CSS or establish family appearance conformance.
 
 ![Merged candidate actual public Input under Web Components, selected range retained](public-wc-candidate.png)
 
@@ -30,9 +34,9 @@ All nine fresh local whole-entry gzip/minified/hash rows equal the earlier ca3 m
 
 ![Merged candidate actual public Input under Vue2, selected range retained](public-vue2-candidate.png)
 
-![Same newly built direct Shadow package consumer using ca3 helper, selection collapsed](public-shadow-legacy.png)
+![Same source-resolved direct Shadow public-API consumer using ca3 helper, selection collapsed](public-shadow-legacy.png)
 
-![Same direct Shadow package consumer using merged emitted helper, selection retained](public-shadow-candidate.png)
+![Same source-resolved direct Shadow public-API consumer using merged emitted helper, selection retained](public-shadow-candidate.png)
 
 All six unedited 1280×900 light-preference captures were individually inspected. The field is near the lower viewport edge on the complete documentation page. The two helper variants use the same newly built consumer/page; the legacy variant is not represented as the old whole Website build. This is scoped functional evidence, not all accessibility, typography, family appearance or browser conformance.
 

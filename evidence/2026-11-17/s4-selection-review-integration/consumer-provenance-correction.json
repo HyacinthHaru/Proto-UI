@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 1,
+  "correction": "Explicit Shadow standalone consumer was source-resolved via tsconfig aliases, not dist/installed tarball. Original native data remain unchanged; production Website emitted helper/page execution is separate.",
+  "measurementSha256": "431bc24a49fd2c257b58d39ff8a4463a394e8a0ecf619e692182b6cd59086f8d",
+  "bindings": [
+    {
+      "metadataKey": "measurements.consumer",
+      "wcSourceCount": 37,
+      "wcDistCount": 0,
+      "inputs": [
+        {
+          "path": "packages/adapters/web-component/src/platform/instance-tree.ts",
+          "origin": "resolved package artifact",
+          "sha256": "193727c6f6f75bfcc9f5b5f1305ad1e9c9263829bb7b56df46e3bfdbdd80cb37"
+        },
+        {
+          "path": "packages/adapters/web-component/src/owned-relocation.ts",
+          "origin": "resolved package artifact",
+          "sha256": "50967ab7ece0e982fe4b61a6bef0d7dd7c6d38e6852af6433831a0821c17021a"
+        },
+        {
+          "path": "packages/adapters/web-component/src/props.ts",
+          "origin": "resolved package artifact",
+          "sha256": "75e81bfdfadf6c0dad3affc3d837d586613ea2a9eaab7d9ce29f2a5cca3ae3fd"
+        },
+        {
+          "path": "packages/adapters/web-component/src/visual-surface.ts",
+          "origin": "resolved package artifact",
+          "sha256": "1c9613d30b0d020871a12ae79b73da92e4f1aea61b12c77e1a992772140b42ef"
+        },
+        {
+          "path": "packages/adapters/web-component/src/slot-projector.ts",
+          "origin": "resolved package artifact",
+          "sha256": "b1a598fb4d61cba3ac78feee49e961c3e75262bd5e2d4660a24ad2af16b26794"
+        },
+        {
+          "path": "packages/adapters/web-component/src/feedback-style.ts",
+          "origin": "resolved package artifact",
+          "sha256": "a1fa6600cfdda774af1aa0c4f8b3042d28a75c6b14ea65f6609a56becf9412e6"
+        },
+        {
+          "path": "packages/adapters/web-component/src/native-text-layout.ts",
+          "origin": "resolved package artifact",
+          "sha256": "166fa1d9e23f21628d18b6b1750a6222bb04525b97b7845a0fff1b34d7962a29"
+        },
+        {
+          "path": "packages/adapters/web-component/src/debug/hooks.ts",
+          "origin": "resolved package artifact",
+          "sha256": "c7d6a62ae4b8e8b5d97fef9b57950cd3bcd91bfa8de79792be491d5db264002f"
+        },
+        {
+          "path": "packages/adapters/web-component/src/host-display.ts",
+          "origin": "resolved package artifact",
+          "sha256": "c5f232f6038c6623b55145ec7bb163dc9fbfc5ecf82c3ff4aba85d16f1955813"
+        },
+        {
+          "path": "packages/adapters/web-component/src/platform/meta.ts",
+          "origin": "resolved package artifact",
+          "sha256": "a724209ed2f47ded40f5ff3f179d6fac31c5b8ed821e25b32a0aaab313a668cb"
+        },
+        {
+          "path": "packages/adapters/web-component/src/runtime/effects-port.ts",
+          "origin": "resolved package artifact",
+          "sha256": "c7faae8e6436dc7afe4ec241898cd9233b16df1eb0aa3c33b77b37a076d52c8a"
+        },
+        {
+          "path": "packages/adapters/web-component/src/runtime/experimental-visual-consumer.ts",
+          "origin": "resolved package artifact",
+          "sha256": "e07dc8022c003ebb29f07ddaf25b4c4b40305bee0641331dbee8460182b6bbc5"
+        },
+        {
+          "path": "packages/adapters/web-component/src/material/owned-texture-sink.ts",
+          "origin": "resolved package artifact",
+          "sha256": "dd96fa72626b0d1a2008d9fc4cf2c3d81cf70564ec353fc295c2295b19688bbb"
+        },
+        {
+          "path": "packages/adapters/web-component/src/shadow-text-control-surface.ts",
+          "origin": "resolved package artifact",
+          "sha256": "5eee9aa23572cc68105b543298b96bba488c63235ca2b0116bce1f7431f82f8e"
+        },
+        {
+          "path": "packages/adapters/web-component/src/runtime/scroll-target.ts",
+          "origin": "resolved package artifact",
+          "sha256": "30cf30dc1023a6bbccc724f41e32448c607b52287fa10693f81ffe127abdac71"
+        },
+        {
+          "path": "packages/adapters/web-component/src/portal-mount.ts",
+          "origin": "resolved package artifact",
+          "sha256": "6a5c0599b0f5c168d7f2cc9158a325b3c8b3eb60c4a1dfcce012d4d01b4ebc22"
+        },
+        {
+          "path": "packages/adapters/web-component/src/focus-scope-targets.ts",
+          "origin": "resolved package artifact",
+          "sha256": "784690dab5f675c5e90d61e7e3d11af872e7b5be85e329098df1adb5d8a5131a"
+        },
+        {
+          "path": "packages/adapters/web-component/src/runtime/modules.ts",
+          "origin": "resolved package artifact",
+          "sha256": "1aeedf24a436308e139703e50695308ec86df589917fd22a280470ebe8305d18"
+        },
+        {
+          "path": "packages/adapters/web-component/src/style.ts",
+          "origin": "resolved package artifact",
+          "sha256": "9e871c721b010b6e05d8908909ed6e984e146b05ba67b100f13baa373c9b93db"
+        },
+        {
+          "path": "packages/adapters/web-component/src/owned-decoration.ts",
+          "origin": "resolved package artifact",
+          "sha256": "8537955f131cd4ed6ea23b9e9a0f6354bd0259b1cd286b7c9799613ceae6683c"
+        },
+        {
+          "path": "packages/adapters/web-component/src/commit.ts",
+          "origin": "resolved package artifact",
+          "sha256": "922c034d70a50dbe693273dc457a044a0441e54b61a768cfe06f8121657d6f85"
+        },
+        {
+          "path": "packages/adapters/web-component/src/shadow-stylesheet-owner.ts",
+          "origin": "resolved package artifact",
+          "sha256": "62d9c2a759987980b77f631c32fb3349810b982c2b2fe93026e6e85a288f3010"
+        },
+        {
+          "path": "packages/adapters/web-component/src/shadow-style-artifact.ts",
+          "origin": "resolved package artifact",
+          "sha256": "5c09f68e69e94baceb4c2f1c88ab5c7e9f8b8b76f57a8686e43b17127c6c4b68"
+        },
+        {
+          "path": "packages/adapters/web-component/src/shadow-split-effects.ts",
+          "origin": "resolved package artifact",
+          "sha256": "43121b0bc34ebf00f6978c22143e1114dbbc1f84bba7a58ac7afd33eb21d73f6"
+        },
+        {
+          "path": "packages/adapters/web-component/src/runtime/session.ts",
+          "origin": "resolved package artifact",
+          "sha256": "dc759d6f28a594b7c5d09844ce21dd74d3012a00f0441f7ce89bc7507feb44ee"
+        },
+        {
+          "path": "packages/adapters/web-component/src/shadow-owner-shell.ts",
+          "origin": "resolved package artifact",
+          "sha256": "810fb0f6d632c6df89a1e8d5b4a0da024539a71f8ab8a518816a57740ae1268f"
+        },
+        {
+          "path": "packages/adapters/web-component/src/shadow-profile.ts",
+          "origin": "resolved package artifact",
+          "sha256": "b764c1c284ef7b8670290fe96e7d644563e81d8ef89c7b9ec6f3594a0cf96340"
+        },
+        {
+          "path": "packages/adapters/web-component/src/shadow-color-scheme-environment.ts",
+          "origin": "resolved package artifact",
+          "sha256": "0013e57a5935d6f3cc50246baaedab12e87a8c7f402ccee0f85a338a29cea0c1"
+        },
+        {
+          "path": "packages/adapters/web-component/src/shadow-inner-surface.ts",
+          "origin": "resolved package artifact",
+          "sha256": "fda6f183d9564d984f9854ebb37276febc35a0084c7d3439bd352fc66e7dc197"
+        },
+        {
+          "path": "packages/adapters/web-component/src/shadow-split-meta.ts",
+          "origin": "resolved package artifact",
+          "sha256": "5e9b78edab7cbb329526759a3edd552e908d8f9816e9255f222be2c78a6e40c5"
+        },
+        {
+          "path": "packages/adapters/web-component/src/shadow-split-resources.ts",
+          "origin": "resolved package artifact",
+          "sha256": "54719289abfc026c4dae529834e65dff522d5795fb5a1b6ff6b6cc38e9857a24"
+        },
+        {
+          "path": "packages/adapters/web-component/src/portal-conceal.ts",
+          "origin": "resolved package artifact",
+          "sha256": "bc1f5227f9eaad6abe2aceb724c34f6fa1e55cb2108be8c74ebda0539c2cf991"
+        },
+        {
+          "path": "packages/adapters/web-component/src/color-scheme-source.ts",
+          "origin": "resolved package artifact",
+          "sha256": "dfefd972179ce2e8713c462bbd0ddf21a6adafb9abd9014cd6f130679abe39df"
+        },
+        {
+          "path": "packages/adapters/web-component/src/keyed-meta-sources.ts",
+          "origin": "resolved package artifact",
+          "sha256": "9a532d5e22046fe4ed62f549b50856ddc31efc525d6a68590bf89747054a2009"
+        },
+        {
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "origin": "resolved package artifact",
+          "sha256": "009806c0f9d37f9c70de3966dc6b60d969532fa3033467cd37e0923e39fdd1af"
+        },
+        {
+          "path": "packages/adapters/web-component/src/types.ts",
+          "origin": "resolved package artifact",
+          "sha256": "3e777c15101d10672f81eb57cbbd6fc049cec38eaf3523e381ce7c0229445b58"
+        },
+        {
+          "path": "packages/adapters/web-component/src/index.ts",
+          "origin": "resolved package artifact",
+          "sha256": "e39105e61c4765a105ad3a3b165d3fd33f80bb4f6fa251bb9faf981e6b2b8397"
+        }
+      ]
+    }
+  ]
+}
