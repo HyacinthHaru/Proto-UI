@@ -1,0 +1,3205 @@
+{
+  "source": {
+    "head": "0774aa5009d62f20f3770e8fff3c6cecdc0371e9",
+    "tree": "796489e59c50be6d7a44624947dd40c754d857a0",
+    "parent": "5c8229e198c7b0c270dd9d394703d7aee480fb6c",
+    "signature": "G"
+  },
+  "intermediate": {
+    "head": "5c8229e198c7b0c270dd9d394703d7aee480fb6c",
+    "tree": "08cb764ece3845d31b06c55762a01f7abaefca5b",
+    "parent": "43fdd0e8172c2ce31b3f5be5c5ae98beadb62f55",
+    "signature": "G"
+  },
+  "inputs": [
+    "71b77fb291f36d6b7f5db1e819a25a685c3daf453154e2b84a4d5b4442897c7b  packages/modules/scroll/src/web/create-web-scroll-host.ts",
+    "c37cebcb7887c5013f100ec3d43cfdbc4779abf3cd994ba26d55fd11b9691952  packages/modules/scroll/test/end-follow.test.ts"
+  ],
+  "focused": {
+    "beforeBatching": {
+      "passed": 87,
+      "failed": 5,
+      "filtered": 0,
+      "files": 1,
+      "failures": [
+        {
+          "title": "shares a following Anatomy sample while preserving layout ordering",
+          "message": "AssertionError: expected [ { axes: 'vertical', …(5) }, …(2) ] to have a length of 2 but got 3"
+        },
+        {
+          "title": "shares a following Anatomy sample while preserving key ordering",
+          "message": "AssertionError: expected [ { axes: 'vertical', …(5) }, …(2) ] to have a length of 2 but got 3"
+        },
+        {
+          "title": "shares a following Anatomy sample while preserving wheel ordering",
+          "message": "AssertionError: expected [ { axes: 'vertical', …(5) }, …(2) ] to have a length of 2 but got 3"
+        },
+        {
+          "title": "shares a following Anatomy sample while preserving contact ordering",
+          "message": "AssertionError: expected [ { axes: 'vertical', …(5) }, …(2) ] to have a length of 2 but got 3"
+        },
+        {
+          "title": "shares a following Anatomy sample while preserving request ordering",
+          "message": "AssertionError: expected [ { axes: 'vertical', …(5) }, …(2) ] to have a length of 2 but got 3"
+        }
+      ],
+      "sha256": "307774d06f0b7cf11d438f90a9f76cbbd4742ae2a5b887605bf607c94b635d87"
+    },
+    "beforeRevealCorrection": {
+      "passed": 0,
+      "failed": 1,
+      "filtered": 92,
+      "files": 1,
+      "failures": [
+        {
+          "title": "shares a following Anatomy sample while preserving rejected reveal ordering",
+          "message": "AssertionError: expected [ { axes: 'vertical', …(5) }, …(1) ] to have a length of 3 but got 2"
+        }
+      ],
+      "sha256": "a45ca76efbeeb593952a9d41662428d014cca325fd93667131ab741cfd488c2e"
+    },
+    "current": {
+      "passed": 236,
+      "failed": 0,
+      "filtered": 0,
+      "files": 13,
+      "failures": [],
+      "sha256": "362ce4bf3f8fd3e3d3cc5d510522f3e0a507e5c39592e32f6bd92fef9ae4ee1b"
+    },
+    "sourceBrowser": {
+      "passed": 10,
+      "failed": 0,
+      "filtered": 0,
+      "files": 2,
+      "failures": [],
+      "sha256": "df933c2db4d04d3bdece56b9e0acf08e22a7f8fa49decf8ca4744610a24be8ba"
+    }
+  },
+  "diagnostics": {
+    "scope": "Separate Chinese Original S4 tests with scoped temporary instrumentation. Only the temporary variant changes program scheduling.",
+    "runs": {
+      "baseline": {
+        "source": {
+          "head": "43fdd0e8172c2ce31b3f5be5c5ae98beadb62f55",
+          "tree": "8b6c4f09eab00436aada8770b7d30b7c75171800",
+          "parent": "ee0de87a5a2d4c2f3deb11dedcf44f61574361a1",
+          "signature": "G"
+        },
+        "asset": {
+          "asset": "site-shadcn-controls.BujDy4oW.js",
+          "source": "db466cfce4105f2fc20b7d55e862e90655d39bf1bb019d7505ee3b65592870b9",
+          "instrumented": "b04c969137926dcb73f2e2a8711f2453f4b237667b25d65d718bd9b262e86ac3",
+          "variant": false
+        },
+        "logSha256": "50551c7b4349d901c7e6730774c7346eb27d07f2120568bf9288131ddc577148",
+        "rows": [
+          {
+            "notifies": 1,
+            "layoutRuns": 0,
+            "layoutReads": 0,
+            "layoutMs": 0,
+            "directMs": 0,
+            "deferredMs": 0,
+            "queued": 1,
+            "joined": 0,
+            "drained": 0,
+            "byState": {
+              "pending": {
+                "total": 1,
+                "compatible": 1,
+                "queued": 1
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 7364.700000047684
+          },
+          {
+            "notifies": 2,
+            "layoutRuns": 0,
+            "layoutReads": 0,
+            "layoutMs": 0,
+            "directMs": 0,
+            "deferredMs": 0,
+            "queued": 2,
+            "joined": 1,
+            "drained": 0,
+            "byState": {
+              "pending": {
+                "total": 2,
+                "compatible": 2,
+                "queued": 2
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 7366
+          },
+          {
+            "notifies": 3,
+            "layoutRuns": 0,
+            "layoutReads": 0,
+            "layoutMs": 0,
+            "directMs": 0,
+            "deferredMs": 0,
+            "queued": 2,
+            "joined": 1,
+            "drained": 0,
+            "byState": {
+              "pending": {
+                "total": 2,
+                "compatible": 2,
+                "queued": 2
+              },
+              "following": {
+                "total": 1,
+                "compatible": 1,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 7908.600000143051
+          },
+          {
+            "notifies": 4,
+            "layoutRuns": 1,
+            "layoutReads": 1,
+            "layoutMs": 10.299999952316284,
+            "directMs": 10.299999952316284,
+            "deferredMs": 0,
+            "queued": 2,
+            "joined": 1,
+            "drained": 0,
+            "byState": {
+              "pending": {
+                "total": 2,
+                "compatible": 2,
+                "queued": 2
+              },
+              "following": {
+                "total": 2,
+                "compatible": 2,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 7919.700000047684
+          },
+          {
+            "notifies": 32,
+            "layoutRuns": 29,
+            "layoutReads": 29,
+            "layoutMs": 95.50000023841858,
+            "directMs": 95.7000002861023,
+            "deferredMs": 0,
+            "queued": 2,
+            "joined": 1,
+            "drained": 0,
+            "byState": {
+              "pending": {
+                "total": 2,
+                "compatible": 2,
+                "queued": 2
+              },
+              "following": {
+                "total": 30,
+                "compatible": 30,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 8360.800000190735
+          },
+          {
+            "notifies": 64,
+            "layoutRuns": 57,
+            "layoutReads": 57,
+            "layoutMs": 241,
+            "directMs": 256.7999999523163,
+            "deferredMs": 0,
+            "queued": 6,
+            "joined": 4,
+            "drained": 0,
+            "byState": {
+              "pending": {
+                "total": 6,
+                "compatible": 6,
+                "queued": 6
+              },
+              "following": {
+                "total": 58,
+                "compatible": 58,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 9414.400000095367
+          },
+          {
+            "notifies": 96,
+            "layoutRuns": 84,
+            "layoutReads": 84,
+            "layoutMs": 316.69999957084656,
+            "directMs": 332.5999994277954,
+            "deferredMs": 0,
+            "queued": 12,
+            "joined": 8,
+            "drained": 0,
+            "byState": {
+              "pending": {
+                "total": 12,
+                "compatible": 12,
+                "queued": 12
+              },
+              "following": {
+                "total": 84,
+                "compatible": 84,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 12501.400000095367
+          },
+          {
+            "notifies": 128,
+            "layoutRuns": 108,
+            "layoutReads": 108,
+            "layoutMs": 341.99999952316284,
+            "directMs": 357.99999928474426,
+            "deferredMs": 0,
+            "queued": 20,
+            "joined": 16,
+            "drained": 0,
+            "byState": {
+              "pending": {
+                "total": 20,
+                "compatible": 20,
+                "queued": 20
+              },
+              "following": {
+                "total": 108,
+                "compatible": 108,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 12531
+          },
+          {
+            "notifies": 160,
+            "layoutRuns": 137,
+            "layoutReads": 137,
+            "layoutMs": 442.7999997138977,
+            "directMs": 459.2999997138977,
+            "deferredMs": 0,
+            "queued": 22,
+            "joined": 18,
+            "drained": 0,
+            "byState": {
+              "pending": {
+                "total": 22,
+                "compatible": 22,
+                "queued": 22
+              },
+              "following": {
+                "total": 138,
+                "compatible": 138,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 16338.100000143051
+          },
+          {
+            "notifies": 192,
+            "layoutRuns": 169,
+            "layoutReads": 169,
+            "layoutMs": 527.7999999523163,
+            "directMs": 544.5,
+            "deferredMs": 0,
+            "queued": 22,
+            "joined": 18,
+            "drained": 0,
+            "byState": {
+              "pending": {
+                "total": 22,
+                "compatible": 22,
+                "queued": 22
+              },
+              "following": {
+                "total": 170,
+                "compatible": 170,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 16449
+          },
+          {
+            "notifies": 224,
+            "layoutRuns": 201,
+            "layoutReads": 201,
+            "layoutMs": 622.0999999046326,
+            "directMs": 639.1000001430511,
+            "deferredMs": 0,
+            "queued": 22,
+            "joined": 18,
+            "drained": 0,
+            "byState": {
+              "pending": {
+                "total": 22,
+                "compatible": 22,
+                "queued": 22
+              },
+              "following": {
+                "total": 202,
+                "compatible": 202,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 45059.200000047684
+          },
+          {
+            "notifies": 256,
+            "layoutRuns": 227,
+            "layoutReads": 227,
+            "layoutMs": 822.3000001907349,
+            "directMs": 839.3000004291534,
+            "deferredMs": 0,
+            "queued": 30,
+            "joined": 23,
+            "drained": 1,
+            "byState": {
+              "pending": {
+                "total": 30,
+                "compatible": 30,
+                "queued": 30
+              },
+              "following": {
+                "total": 226,
+                "compatible": 226,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 45375.90000009537
+          },
+          {
+            "notifies": 288,
+            "layoutRuns": 249,
+            "layoutReads": 249,
+            "layoutMs": 984.9000000953674,
+            "directMs": 1002.1000006198883,
+            "deferredMs": 0,
+            "queued": 40,
+            "joined": 30,
+            "drained": 2,
+            "byState": {
+              "pending": {
+                "total": 40,
+                "compatible": 40,
+                "queued": 40
+              },
+              "following": {
+                "total": 248,
+                "compatible": 248,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 45641.700000047684
+          },
+          {
+            "notifies": 320,
+            "layoutRuns": 275,
+            "layoutReads": 275,
+            "layoutMs": 1111.7999999523163,
+            "directMs": 1128.9000005722046,
+            "deferredMs": 0.09999990463256836,
+            "queued": 48,
+            "joined": 37,
+            "drained": 4,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 272,
+                "compatible": 272,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49622.300000190735
+          },
+          {
+            "notifies": 352,
+            "layoutRuns": 307,
+            "layoutReads": 307,
+            "layoutMs": 1113.0000002384186,
+            "directMs": 1130.2000007629395,
+            "deferredMs": 0.09999990463256836,
+            "queued": 48,
+            "joined": 37,
+            "drained": 4,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 304,
+                "compatible": 304,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49629.90000009537
+          },
+          {
+            "notifies": 384,
+            "layoutRuns": 339,
+            "layoutReads": 339,
+            "layoutMs": 1114.1000001430511,
+            "directMs": 1131.4000008106232,
+            "deferredMs": 0.09999990463256836,
+            "queued": 48,
+            "joined": 37,
+            "drained": 4,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 336,
+                "compatible": 336,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49637.200000047684
+          },
+          {
+            "notifies": 416,
+            "layoutRuns": 371,
+            "layoutReads": 371,
+            "layoutMs": 1155.400000333786,
+            "directMs": 1173.0000009536743,
+            "deferredMs": 0.09999990463256836,
+            "queued": 48,
+            "joined": 37,
+            "drained": 4,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 368,
+                "compatible": 368,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49700.5
+          },
+          {
+            "notifies": 448,
+            "layoutRuns": 403,
+            "layoutReads": 403,
+            "layoutMs": 1236.4000000953674,
+            "directMs": 1254.2000007629395,
+            "deferredMs": 0.09999990463256836,
+            "queued": 48,
+            "joined": 37,
+            "drained": 4,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 400,
+                "compatible": 400,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49787.800000190735
+          },
+          {
+            "notifies": 480,
+            "layoutRuns": 435,
+            "layoutReads": 435,
+            "layoutMs": 1277.7000002861023,
+            "directMs": 1295.700001001358,
+            "deferredMs": 0.09999990463256836,
+            "queued": 48,
+            "joined": 37,
+            "drained": 4,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 432,
+                "compatible": 432,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49835.60000014305
+          },
+          {
+            "notifies": 512,
+            "layoutRuns": 467,
+            "layoutReads": 467,
+            "layoutMs": 1357.2000002861023,
+            "directMs": 1375.3000009059906,
+            "deferredMs": 0.09999990463256836,
+            "queued": 48,
+            "joined": 37,
+            "drained": 4,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 464,
+                "compatible": 464,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49969.700000047684
+          },
+          {
+            "notifies": 544,
+            "layoutRuns": 499,
+            "layoutReads": 499,
+            "layoutMs": 1398.1999998092651,
+            "directMs": 1416.5000002384186,
+            "deferredMs": 0.09999990463256836,
+            "queued": 48,
+            "joined": 37,
+            "drained": 4,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 496,
+                "compatible": 496,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 50017.700000047684
+          },
+          {
+            "notifies": 576,
+            "layoutRuns": 531,
+            "layoutReads": 531,
+            "layoutMs": 1478.9000000953674,
+            "directMs": 1497.3000004291534,
+            "deferredMs": 0.09999990463256836,
+            "queued": 48,
+            "joined": 37,
+            "drained": 4,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 528,
+                "compatible": 528,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 50152.300000190735
+          },
+          {
+            "notifies": 608,
+            "layoutRuns": 563,
+            "layoutReads": 563,
+            "layoutMs": 1598.9000005722046,
+            "directMs": 1617.3000009059906,
+            "deferredMs": 0.09999990463256836,
+            "queued": 48,
+            "joined": 37,
+            "drained": 4,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 560,
+                "compatible": 560,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 50279.90000009537
+          },
+          {
+            "notifies": 640,
+            "layoutRuns": 595,
+            "layoutReads": 595,
+            "layoutMs": 1600.5000007152557,
+            "directMs": 1618.9000010490417,
+            "deferredMs": 0.09999990463256836,
+            "queued": 48,
+            "joined": 37,
+            "drained": 4,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 592,
+                "compatible": 592,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 50285.800000190735
+          },
+          {
+            "notifies": 672,
+            "layoutRuns": 627,
+            "layoutReads": 627,
+            "layoutMs": 1601.3000009059906,
+            "directMs": 1619.8000013828278,
+            "deferredMs": 0.09999990463256836,
+            "queued": 48,
+            "joined": 37,
+            "drained": 4,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 624,
+                "compatible": 624,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 50292.5
+          },
+          {
+            "notifies": 704,
+            "layoutRuns": 659,
+            "layoutReads": 659,
+            "layoutMs": 1602.200001001358,
+            "directMs": 1620.7000014781952,
+            "deferredMs": 0.09999990463256836,
+            "queued": 48,
+            "joined": 37,
+            "drained": 4,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 656,
+                "compatible": 656,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 50300.10000014305
+          },
+          {
+            "notifies": 736,
+            "layoutRuns": 691,
+            "layoutReads": 691,
+            "layoutMs": 1603.200001001358,
+            "directMs": 1621.8000013828278,
+            "deferredMs": 0.09999990463256836,
+            "queued": 48,
+            "joined": 37,
+            "drained": 4,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 688,
+                "compatible": 688,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 50305.60000014305
+          },
+          {
+            "notifies": 768,
+            "layoutRuns": 723,
+            "layoutReads": 723,
+            "layoutMs": 1694.0000009536743,
+            "directMs": 1712.8000011444092,
+            "deferredMs": 0.09999990463256836,
+            "queued": 48,
+            "joined": 37,
+            "drained": 4,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 720,
+                "compatible": 720,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 58995.200000047684
+          },
+          {
+            "notifies": 800,
+            "layoutRuns": 755,
+            "layoutReads": 755,
+            "layoutMs": 1829.300000667572,
+            "directMs": 1848.4000010490417,
+            "deferredMs": 0.09999990463256836,
+            "queued": 48,
+            "joined": 37,
+            "drained": 4,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 752,
+                "compatible": 752,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 59306.700000047684
+          },
+          {
+            "notifies": 832,
+            "layoutRuns": 787,
+            "layoutReads": 787,
+            "layoutMs": 2012.8000004291534,
+            "directMs": 2032.300000667572,
+            "deferredMs": 0.09999990463256836,
+            "queued": 48,
+            "joined": 37,
+            "drained": 4,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 784,
+                "compatible": 784,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 59609.5
+          },
+          {
+            "notifies": 864,
+            "layoutRuns": 819,
+            "layoutReads": 819,
+            "layoutMs": 2106.100000858307,
+            "directMs": 2126.100000858307,
+            "deferredMs": 0.09999990463256836,
+            "queued": 48,
+            "joined": 37,
+            "drained": 4,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 816,
+                "compatible": 816,
+                "queued": 0
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 59757.40000009537
+          }
+        ],
+        "last": {
+          "notifies": 864,
+          "layoutRuns": 819,
+          "layoutReads": 819,
+          "layoutMs": 2106.100000858307,
+          "directMs": 2126.100000858307,
+          "deferredMs": 0.09999990463256836,
+          "queued": 48,
+          "joined": 37,
+          "drained": 4,
+          "byState": {
+            "pending": {
+              "total": 48,
+              "compatible": 48,
+              "queued": 48
+            },
+            "following": {
+              "total": 816,
+              "compatible": 816,
+              "queued": 0
+            }
+          },
+          "policyMismatch": 0,
+          "scopeMismatch": 0,
+          "controls": 0,
+          "at": 59757.40000009537
+        },
+        "comparable": {
+          "notifies": 800,
+          "layoutRuns": 755,
+          "layoutReads": 755,
+          "layoutMs": 1829.300000667572,
+          "directMs": 1848.4000010490417,
+          "deferredMs": 0.09999990463256836,
+          "queued": 48,
+          "joined": 37,
+          "drained": 4,
+          "byState": {
+            "pending": {
+              "total": 48,
+              "compatible": 48,
+              "queued": 48
+            },
+            "following": {
+              "total": 752,
+              "compatible": 752,
+              "queued": 0
+            }
+          },
+          "policyMismatch": 0,
+          "scopeMismatch": 0,
+          "controls": 0,
+          "at": 59306.700000047684
+        }
+      },
+      "temporaryVariant": {
+        "source": {
+          "head": "43fdd0e8172c2ce31b3f5be5c5ae98beadb62f55",
+          "tree": "8b6c4f09eab00436aada8770b7d30b7c75171800",
+          "parent": "ee0de87a5a2d4c2f3deb11dedcf44f61574361a1",
+          "signature": "G"
+        },
+        "asset": {
+          "asset": "site-shadcn-controls.BujDy4oW.js",
+          "source": "db466cfce4105f2fc20b7d55e862e90655d39bf1bb019d7505ee3b65592870b9",
+          "instrumented": "9ece009d53a2b6716e7a8f3f4a7691a718afbef6cc4e311bcab0a181bed5c929",
+          "variant": true
+        },
+        "logSha256": "89720a1de4fd90a9a009714195264bf4f7028b1bf2b77f3e9ea009af9f74541c",
+        "rows": [
+          {
+            "notifies": 1,
+            "layoutRuns": 0,
+            "layoutReads": 0,
+            "layoutMs": 0,
+            "directMs": 0,
+            "deferredMs": 0,
+            "queued": 1,
+            "joined": 0,
+            "drained": 0,
+            "byState": {
+              "pending": {
+                "total": 1,
+                "compatible": 1,
+                "queued": 1
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 7173
+          },
+          {
+            "notifies": 2,
+            "layoutRuns": 0,
+            "layoutReads": 0,
+            "layoutMs": 0,
+            "directMs": 0,
+            "deferredMs": 0,
+            "queued": 2,
+            "joined": 1,
+            "drained": 0,
+            "byState": {
+              "pending": {
+                "total": 2,
+                "compatible": 2,
+                "queued": 2
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 7174.300000190735
+          },
+          {
+            "notifies": 3,
+            "layoutRuns": 0,
+            "layoutReads": 0,
+            "layoutMs": 0,
+            "directMs": 0,
+            "deferredMs": 0,
+            "queued": 3,
+            "joined": 1,
+            "drained": 0,
+            "byState": {
+              "pending": {
+                "total": 2,
+                "compatible": 2,
+                "queued": 2
+              },
+              "following": {
+                "total": 1,
+                "compatible": 1,
+                "queued": 1
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 7280.200000047684
+          },
+          {
+            "notifies": 4,
+            "layoutRuns": 0,
+            "layoutReads": 0,
+            "layoutMs": 0,
+            "directMs": 0,
+            "deferredMs": 0,
+            "queued": 4,
+            "joined": 2,
+            "drained": 0,
+            "byState": {
+              "pending": {
+                "total": 2,
+                "compatible": 2,
+                "queued": 2
+              },
+              "following": {
+                "total": 2,
+                "compatible": 2,
+                "queued": 2
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 7322.600000143051
+          },
+          {
+            "notifies": 32,
+            "layoutRuns": 6,
+            "layoutReads": 6,
+            "layoutMs": 32.80000019073486,
+            "directMs": 0,
+            "deferredMs": 33.00000023841858,
+            "queued": 32,
+            "joined": 22,
+            "drained": 6,
+            "byState": {
+              "pending": {
+                "total": 2,
+                "compatible": 2,
+                "queued": 2
+              },
+              "following": {
+                "total": 30,
+                "compatible": 30,
+                "queued": 30
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 10223.700000047684
+          },
+          {
+            "notifies": 64,
+            "layoutRuns": 9,
+            "layoutReads": 9,
+            "layoutMs": 32.80000019073486,
+            "directMs": 0,
+            "deferredMs": 33.00000023841858,
+            "queued": 64,
+            "joined": 51,
+            "drained": 9,
+            "byState": {
+              "pending": {
+                "total": 2,
+                "compatible": 2,
+                "queued": 2
+              },
+              "following": {
+                "total": 62,
+                "compatible": 62,
+                "queued": 62
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 10272.800000190735
+          },
+          {
+            "notifies": 96,
+            "layoutRuns": 12,
+            "layoutReads": 12,
+            "layoutMs": 32.80000019073486,
+            "directMs": 0,
+            "deferredMs": 33.10000014305115,
+            "queued": 96,
+            "joined": 80,
+            "drained": 12,
+            "byState": {
+              "pending": {
+                "total": 2,
+                "compatible": 2,
+                "queued": 2
+              },
+              "following": {
+                "total": 94,
+                "compatible": 94,
+                "queued": 94
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 10348.300000190735
+          },
+          {
+            "notifies": 128,
+            "layoutRuns": 15,
+            "layoutReads": 15,
+            "layoutMs": 32.90000009536743,
+            "directMs": 0,
+            "deferredMs": 33.200000047683716,
+            "queued": 128,
+            "joined": 109,
+            "drained": 15,
+            "byState": {
+              "pending": {
+                "total": 2,
+                "compatible": 2,
+                "queued": 2
+              },
+              "following": {
+                "total": 126,
+                "compatible": 126,
+                "queued": 126
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 10363.400000095367
+          },
+          {
+            "notifies": 160,
+            "layoutRuns": 18,
+            "layoutReads": 18,
+            "layoutMs": 32.90000009536743,
+            "directMs": 0,
+            "deferredMs": 33.200000047683716,
+            "queued": 160,
+            "joined": 137,
+            "drained": 18,
+            "byState": {
+              "pending": {
+                "total": 4,
+                "compatible": 4,
+                "queued": 4
+              },
+              "following": {
+                "total": 156,
+                "compatible": 156,
+                "queued": 156
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 11790.400000095367
+          },
+          {
+            "notifies": 192,
+            "layoutRuns": 18,
+            "layoutReads": 18,
+            "layoutMs": 32.90000009536743,
+            "directMs": 0,
+            "deferredMs": 33.200000047683716,
+            "queued": 192,
+            "joined": 169,
+            "drained": 18,
+            "byState": {
+              "pending": {
+                "total": 12,
+                "compatible": 12,
+                "queued": 12
+              },
+              "following": {
+                "total": 180,
+                "compatible": 180,
+                "queued": 180
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 11819.800000190735
+          },
+          {
+            "notifies": 224,
+            "layoutRuns": 25,
+            "layoutReads": 25,
+            "layoutMs": 50.10000014305115,
+            "directMs": 0,
+            "deferredMs": 50.59999990463257,
+            "queued": 224,
+            "joined": 193,
+            "drained": 25,
+            "byState": {
+              "pending": {
+                "total": 14,
+                "compatible": 14,
+                "queued": 14
+              },
+              "following": {
+                "total": 210,
+                "compatible": 210,
+                "queued": 210
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 16259.800000190735
+          },
+          {
+            "notifies": 256,
+            "layoutRuns": 33,
+            "layoutReads": 33,
+            "layoutMs": 50.10000014305115,
+            "directMs": 0,
+            "deferredMs": 50.700000047683716,
+            "queued": 256,
+            "joined": 217,
+            "drained": 33,
+            "byState": {
+              "pending": {
+                "total": 14,
+                "compatible": 14,
+                "queued": 14
+              },
+              "following": {
+                "total": 242,
+                "compatible": 242,
+                "queued": 242
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 16377.600000143051
+          },
+          {
+            "notifies": 288,
+            "layoutRuns": 41,
+            "layoutReads": 41,
+            "layoutMs": 62.799999952316284,
+            "directMs": 0,
+            "deferredMs": 63.49999976158142,
+            "queued": 288,
+            "joined": 241,
+            "drained": 41,
+            "byState": {
+              "pending": {
+                "total": 14,
+                "compatible": 14,
+                "queued": 14
+              },
+              "following": {
+                "total": 274,
+                "compatible": 274,
+                "queued": 274
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 44548.40000009537
+          },
+          {
+            "notifies": 320,
+            "layoutRuns": 50,
+            "layoutReads": 50,
+            "layoutMs": 62.799999952316284,
+            "directMs": 0,
+            "deferredMs": 63.59999966621399,
+            "queued": 320,
+            "joined": 262,
+            "drained": 50,
+            "byState": {
+              "pending": {
+                "total": 22,
+                "compatible": 22,
+                "queued": 22
+              },
+              "following": {
+                "total": 298,
+                "compatible": 298,
+                "queued": 298
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 44853.10000014305
+          },
+          {
+            "notifies": 352,
+            "layoutRuns": 55,
+            "layoutReads": 55,
+            "layoutMs": 62.799999952316284,
+            "directMs": 0,
+            "deferredMs": 63.59999966621399,
+            "queued": 352,
+            "joined": 287,
+            "drained": 55,
+            "byState": {
+              "pending": {
+                "total": 32,
+                "compatible": 32,
+                "queued": 32
+              },
+              "following": {
+                "total": 320,
+                "compatible": 320,
+                "queued": 320
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 45067.40000009537
+          },
+          {
+            "notifies": 384,
+            "layoutRuns": 61,
+            "layoutReads": 61,
+            "layoutMs": 101.39999985694885,
+            "directMs": 0,
+            "deferredMs": 102.19999957084656,
+            "queued": 384,
+            "joined": 310,
+            "drained": 61,
+            "byState": {
+              "pending": {
+                "total": 40,
+                "compatible": 40,
+                "queued": 40
+              },
+              "following": {
+                "total": 344,
+                "compatible": 344,
+                "queued": 344
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49387.90000009537
+          },
+          {
+            "notifies": 416,
+            "layoutRuns": 61,
+            "layoutReads": 61,
+            "layoutMs": 101.39999985694885,
+            "directMs": 0,
+            "deferredMs": 102.19999957084656,
+            "queued": 416,
+            "joined": 342,
+            "drained": 61,
+            "byState": {
+              "pending": {
+                "total": 40,
+                "compatible": 40,
+                "queued": 40
+              },
+              "following": {
+                "total": 376,
+                "compatible": 376,
+                "queued": 376
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49394.5
+          },
+          {
+            "notifies": 448,
+            "layoutRuns": 61,
+            "layoutReads": 61,
+            "layoutMs": 101.39999985694885,
+            "directMs": 0,
+            "deferredMs": 102.19999957084656,
+            "queued": 448,
+            "joined": 374,
+            "drained": 61,
+            "byState": {
+              "pending": {
+                "total": 40,
+                "compatible": 40,
+                "queued": 40
+              },
+              "following": {
+                "total": 408,
+                "compatible": 408,
+                "queued": 408
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49400.5
+          },
+          {
+            "notifies": 480,
+            "layoutRuns": 69,
+            "layoutReads": 69,
+            "layoutMs": 101.5,
+            "directMs": 0,
+            "deferredMs": 102.2999997138977,
+            "queued": 480,
+            "joined": 398,
+            "drained": 69,
+            "byState": {
+              "pending": {
+                "total": 40,
+                "compatible": 40,
+                "queued": 40
+              },
+              "following": {
+                "total": 440,
+                "compatible": 440,
+                "queued": 440
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49459.700000047684
+          },
+          {
+            "notifies": 512,
+            "layoutRuns": 69,
+            "layoutReads": 69,
+            "layoutMs": 101.5,
+            "directMs": 0,
+            "deferredMs": 102.2999997138977,
+            "queued": 512,
+            "joined": 430,
+            "drained": 69,
+            "byState": {
+              "pending": {
+                "total": 40,
+                "compatible": 40,
+                "queued": 40
+              },
+              "following": {
+                "total": 472,
+                "compatible": 472,
+                "queued": 472
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49546.300000190735
+          },
+          {
+            "notifies": 544,
+            "layoutRuns": 69,
+            "layoutReads": 69,
+            "layoutMs": 101.5,
+            "directMs": 0,
+            "deferredMs": 102.2999997138977,
+            "queued": 544,
+            "joined": 462,
+            "drained": 69,
+            "byState": {
+              "pending": {
+                "total": 40,
+                "compatible": 40,
+                "queued": 40
+              },
+              "following": {
+                "total": 504,
+                "compatible": 504,
+                "queued": 504
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49593.800000190735
+          },
+          {
+            "notifies": 576,
+            "layoutRuns": 77,
+            "layoutReads": 77,
+            "layoutMs": 101.5,
+            "directMs": 0,
+            "deferredMs": 102.39999961853027,
+            "queued": 576,
+            "joined": 486,
+            "drained": 77,
+            "byState": {
+              "pending": {
+                "total": 40,
+                "compatible": 40,
+                "queued": 40
+              },
+              "following": {
+                "total": 536,
+                "compatible": 536,
+                "queued": 536
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49730.60000014305
+          },
+          {
+            "notifies": 608,
+            "layoutRuns": 77,
+            "layoutReads": 77,
+            "layoutMs": 101.5,
+            "directMs": 0,
+            "deferredMs": 102.39999961853027,
+            "queued": 608,
+            "joined": 518,
+            "drained": 77,
+            "byState": {
+              "pending": {
+                "total": 40,
+                "compatible": 40,
+                "queued": 40
+              },
+              "following": {
+                "total": 568,
+                "compatible": 568,
+                "queued": 568
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49778.40000009537
+          },
+          {
+            "notifies": 640,
+            "layoutRuns": 85,
+            "layoutReads": 85,
+            "layoutMs": 141.30000019073486,
+            "directMs": 0,
+            "deferredMs": 142.19999980926514,
+            "queued": 640,
+            "joined": 542,
+            "drained": 85,
+            "byState": {
+              "pending": {
+                "total": 40,
+                "compatible": 40,
+                "queued": 40
+              },
+              "following": {
+                "total": 600,
+                "compatible": 600,
+                "queued": 600
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49911.5
+          },
+          {
+            "notifies": 672,
+            "layoutRuns": 85,
+            "layoutReads": 85,
+            "layoutMs": 141.30000019073486,
+            "directMs": 0,
+            "deferredMs": 142.19999980926514,
+            "queued": 672,
+            "joined": 574,
+            "drained": 85,
+            "byState": {
+              "pending": {
+                "total": 40,
+                "compatible": 40,
+                "queued": 40
+              },
+              "following": {
+                "total": 632,
+                "compatible": 632,
+                "queued": 632
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 50039.5
+          },
+          {
+            "notifies": 704,
+            "layoutRuns": 85,
+            "layoutReads": 85,
+            "layoutMs": 141.30000019073486,
+            "directMs": 0,
+            "deferredMs": 142.19999980926514,
+            "queued": 704,
+            "joined": 606,
+            "drained": 85,
+            "byState": {
+              "pending": {
+                "total": 40,
+                "compatible": 40,
+                "queued": 40
+              },
+              "following": {
+                "total": 664,
+                "compatible": 664,
+                "queued": 664
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 50045.10000014305
+          },
+          {
+            "notifies": 736,
+            "layoutRuns": 85,
+            "layoutReads": 85,
+            "layoutMs": 141.30000019073486,
+            "directMs": 0,
+            "deferredMs": 142.19999980926514,
+            "queued": 736,
+            "joined": 638,
+            "drained": 85,
+            "byState": {
+              "pending": {
+                "total": 40,
+                "compatible": 40,
+                "queued": 40
+              },
+              "following": {
+                "total": 696,
+                "compatible": 696,
+                "queued": 696
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 50051.60000014305
+          },
+          {
+            "notifies": 768,
+            "layoutRuns": 85,
+            "layoutReads": 85,
+            "layoutMs": 141.30000019073486,
+            "directMs": 0,
+            "deferredMs": 142.19999980926514,
+            "queued": 768,
+            "joined": 670,
+            "drained": 85,
+            "byState": {
+              "pending": {
+                "total": 40,
+                "compatible": 40,
+                "queued": 40
+              },
+              "following": {
+                "total": 728,
+                "compatible": 728,
+                "queued": 728
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 50059.200000047684
+          },
+          {
+            "notifies": 800,
+            "layoutRuns": 85,
+            "layoutReads": 85,
+            "layoutMs": 141.30000019073486,
+            "directMs": 0,
+            "deferredMs": 142.19999980926514,
+            "queued": 800,
+            "joined": 702,
+            "drained": 85,
+            "byState": {
+              "pending": {
+                "total": 40,
+                "compatible": 40,
+                "queued": 40
+              },
+              "following": {
+                "total": 760,
+                "compatible": 760,
+                "queued": 760
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 50064.5
+          },
+          {
+            "notifies": 832,
+            "layoutRuns": 93,
+            "layoutReads": 93,
+            "layoutMs": 141.40000009536743,
+            "directMs": 0,
+            "deferredMs": 142.39999985694885,
+            "queued": 832,
+            "joined": 726,
+            "drained": 93,
+            "byState": {
+              "pending": {
+                "total": 40,
+                "compatible": 40,
+                "queued": 40
+              },
+              "following": {
+                "total": 792,
+                "compatible": 792,
+                "queued": 792
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 58804.300000190735
+          },
+          {
+            "notifies": 864,
+            "layoutRuns": 101,
+            "layoutReads": 101,
+            "layoutMs": 141.69999980926514,
+            "directMs": 0,
+            "deferredMs": 142.69999957084656,
+            "queued": 864,
+            "joined": 750,
+            "drained": 101,
+            "byState": {
+              "pending": {
+                "total": 40,
+                "compatible": 40,
+                "queued": 40
+              },
+              "following": {
+                "total": 824,
+                "compatible": 824,
+                "queued": 824
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 59120.800000190735
+          },
+          {
+            "notifies": 896,
+            "layoutRuns": 117,
+            "layoutReads": 117,
+            "layoutMs": 187.599999666214,
+            "directMs": 0,
+            "deferredMs": 188.5999994277954,
+            "queued": 896,
+            "joined": 766,
+            "drained": 117,
+            "byState": {
+              "pending": {
+                "total": 40,
+                "compatible": 40,
+                "queued": 40
+              },
+              "following": {
+                "total": 856,
+                "compatible": 856,
+                "queued": 856
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 59423
+          },
+          {
+            "notifies": 928,
+            "layoutRuns": 117,
+            "layoutReads": 117,
+            "layoutMs": 187.599999666214,
+            "directMs": 0,
+            "deferredMs": 188.5999994277954,
+            "queued": 928,
+            "joined": 798,
+            "drained": 117,
+            "byState": {
+              "pending": {
+                "total": 40,
+                "compatible": 40,
+                "queued": 40
+              },
+              "following": {
+                "total": 888,
+                "compatible": 888,
+                "queued": 888
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 59565.700000047684
+          }
+        ],
+        "last": {
+          "notifies": 928,
+          "layoutRuns": 117,
+          "layoutReads": 117,
+          "layoutMs": 187.599999666214,
+          "directMs": 0,
+          "deferredMs": 188.5999994277954,
+          "queued": 928,
+          "joined": 798,
+          "drained": 117,
+          "byState": {
+            "pending": {
+              "total": 40,
+              "compatible": 40,
+              "queued": 40
+            },
+            "following": {
+              "total": 888,
+              "compatible": 888,
+              "queued": 888
+            }
+          },
+          "policyMismatch": 0,
+          "scopeMismatch": 0,
+          "controls": 0,
+          "at": 59565.700000047684
+        },
+        "comparable": {
+          "notifies": 800,
+          "layoutRuns": 85,
+          "layoutReads": 85,
+          "layoutMs": 141.30000019073486,
+          "directMs": 0,
+          "deferredMs": 142.19999980926514,
+          "queued": 800,
+          "joined": 702,
+          "drained": 85,
+          "byState": {
+            "pending": {
+              "total": 40,
+              "compatible": 40,
+              "queued": 40
+            },
+            "following": {
+              "total": 760,
+              "compatible": 760,
+              "queued": 760
+            }
+          },
+          "policyMismatch": 0,
+          "scopeMismatch": 0,
+          "controls": 0,
+          "at": 50064.5
+        }
+      },
+      "observedFinalCandidate": {
+        "source": {
+          "head": "0774aa5009d62f20f3770e8fff3c6cecdc0371e9",
+          "tree": "796489e59c50be6d7a44624947dd40c754d857a0",
+          "parent": "5c8229e198c7b0c270dd9d394703d7aee480fb6c",
+          "signature": "G"
+        },
+        "asset": {
+          "asset": "site-shadcn-controls.DBj1OvVV.js",
+          "source": "6eef6c61a3127eafb198b631953c3c37f8a108280a5aaaab6c7b8e2f2ee501f3",
+          "instrumented": "f33cf0b06f5149b2fe1b5745159eb17459dc7129bc28192c9359241f4b93f9ae",
+          "variant": "signed-observation"
+        },
+        "logSha256": "9335ccb49da0fcbb5ceb2a287bbc05abfbd940de6a1fcc2b427541c546c8adf2",
+        "rows": [
+          {
+            "notifies": 1,
+            "layoutRuns": 0,
+            "layoutReads": 0,
+            "layoutMs": 0,
+            "directMs": 0,
+            "deferredMs": 0,
+            "queued": 1,
+            "joined": 0,
+            "drained": 0,
+            "byState": {
+              "pending": {
+                "total": 1,
+                "compatible": 1,
+                "queued": 1
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 7267
+          },
+          {
+            "notifies": 2,
+            "layoutRuns": 0,
+            "layoutReads": 0,
+            "layoutMs": 0,
+            "directMs": 0,
+            "deferredMs": 0,
+            "queued": 2,
+            "joined": 1,
+            "drained": 0,
+            "byState": {
+              "pending": {
+                "total": 2,
+                "compatible": 2,
+                "queued": 2
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 7268.200000047684
+          },
+          {
+            "notifies": 3,
+            "layoutRuns": 0,
+            "layoutReads": 0,
+            "layoutMs": 0,
+            "directMs": 0,
+            "deferredMs": 0,
+            "queued": 3,
+            "joined": 1,
+            "drained": 0,
+            "byState": {
+              "pending": {
+                "total": 2,
+                "compatible": 2,
+                "queued": 2
+              },
+              "following": {
+                "total": 1,
+                "compatible": 1,
+                "queued": 1
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 7714.5
+          },
+          {
+            "notifies": 4,
+            "layoutRuns": 0,
+            "layoutReads": 0,
+            "layoutMs": 0,
+            "directMs": 0,
+            "deferredMs": 0,
+            "queued": 4,
+            "joined": 2,
+            "drained": 0,
+            "byState": {
+              "pending": {
+                "total": 2,
+                "compatible": 2,
+                "queued": 2
+              },
+              "following": {
+                "total": 2,
+                "compatible": 2,
+                "queued": 2
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 7715.100000143051
+          },
+          {
+            "notifies": 32,
+            "layoutRuns": 3,
+            "layoutReads": 3,
+            "layoutMs": 10.700000047683716,
+            "directMs": 0,
+            "deferredMs": 10.899999856948853,
+            "queued": 32,
+            "joined": 27,
+            "drained": 3,
+            "byState": {
+              "pending": {
+                "total": 2,
+                "compatible": 2,
+                "queued": 2
+              },
+              "following": {
+                "total": 30,
+                "compatible": 30,
+                "queued": 30
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 8378
+          },
+          {
+            "notifies": 64,
+            "layoutRuns": 6,
+            "layoutReads": 6,
+            "layoutMs": 29.100000143051147,
+            "directMs": 0,
+            "deferredMs": 29.299999952316284,
+            "queued": 64,
+            "joined": 54,
+            "drained": 6,
+            "byState": {
+              "pending": {
+                "total": 6,
+                "compatible": 6,
+                "queued": 6
+              },
+              "following": {
+                "total": 58,
+                "compatible": 58,
+                "queued": 58
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 9433
+          },
+          {
+            "notifies": 96,
+            "layoutRuns": 8,
+            "layoutReads": 8,
+            "layoutMs": 31.600000143051147,
+            "directMs": 0,
+            "deferredMs": 31.899999856948853,
+            "queued": 96,
+            "joined": 81,
+            "drained": 8,
+            "byState": {
+              "pending": {
+                "total": 12,
+                "compatible": 12,
+                "queued": 12
+              },
+              "following": {
+                "total": 84,
+                "compatible": 84,
+                "queued": 84
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 12767.600000143051
+          },
+          {
+            "notifies": 128,
+            "layoutRuns": 8,
+            "layoutReads": 8,
+            "layoutMs": 31.600000143051147,
+            "directMs": 0,
+            "deferredMs": 31.899999856948853,
+            "queued": 128,
+            "joined": 113,
+            "drained": 8,
+            "byState": {
+              "pending": {
+                "total": 20,
+                "compatible": 20,
+                "queued": 20
+              },
+              "following": {
+                "total": 108,
+                "compatible": 108,
+                "queued": 108
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 12797.5
+          },
+          {
+            "notifies": 160,
+            "layoutRuns": 15,
+            "layoutReads": 15,
+            "layoutMs": 49.60000014305115,
+            "directMs": 0,
+            "deferredMs": 50.09999990463257,
+            "queued": 160,
+            "joined": 137,
+            "drained": 15,
+            "byState": {
+              "pending": {
+                "total": 22,
+                "compatible": 22,
+                "queued": 22
+              },
+              "following": {
+                "total": 138,
+                "compatible": 138,
+                "queued": 138
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 16302.5
+          },
+          {
+            "notifies": 192,
+            "layoutRuns": 23,
+            "layoutReads": 23,
+            "layoutMs": 49.60000014305115,
+            "directMs": 0,
+            "deferredMs": 50.19999980926514,
+            "queued": 192,
+            "joined": 161,
+            "drained": 23,
+            "byState": {
+              "pending": {
+                "total": 22,
+                "compatible": 22,
+                "queued": 22
+              },
+              "following": {
+                "total": 170,
+                "compatible": 170,
+                "queued": 170
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 16418
+          },
+          {
+            "notifies": 224,
+            "layoutRuns": 31,
+            "layoutReads": 31,
+            "layoutMs": 62,
+            "directMs": 0,
+            "deferredMs": 62.799999713897705,
+            "queued": 224,
+            "joined": 185,
+            "drained": 31,
+            "byState": {
+              "pending": {
+                "total": 22,
+                "compatible": 22,
+                "queued": 22
+              },
+              "following": {
+                "total": 202,
+                "compatible": 202,
+                "queued": 202
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 44351.800000190735
+          },
+          {
+            "notifies": 256,
+            "layoutRuns": 40,
+            "layoutReads": 40,
+            "layoutMs": 62,
+            "directMs": 0,
+            "deferredMs": 62.799999713897705,
+            "queued": 256,
+            "joined": 206,
+            "drained": 40,
+            "byState": {
+              "pending": {
+                "total": 30,
+                "compatible": 30,
+                "queued": 30
+              },
+              "following": {
+                "total": 226,
+                "compatible": 226,
+                "queued": 226
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 44653.300000190735
+          },
+          {
+            "notifies": 288,
+            "layoutRuns": 45,
+            "layoutReads": 45,
+            "layoutMs": 62,
+            "directMs": 0,
+            "deferredMs": 62.89999961853027,
+            "queued": 288,
+            "joined": 231,
+            "drained": 45,
+            "byState": {
+              "pending": {
+                "total": 40,
+                "compatible": 40,
+                "queued": 40
+              },
+              "following": {
+                "total": 248,
+                "compatible": 248,
+                "queued": 248
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 44906.5
+          },
+          {
+            "notifies": 320,
+            "layoutRuns": 51,
+            "layoutReads": 51,
+            "layoutMs": 99.59999990463257,
+            "directMs": 0,
+            "deferredMs": 100.49999952316284,
+            "queued": 320,
+            "joined": 254,
+            "drained": 51,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 272,
+                "compatible": 272,
+                "queued": 272
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49142.5
+          },
+          {
+            "notifies": 352,
+            "layoutRuns": 51,
+            "layoutReads": 51,
+            "layoutMs": 99.59999990463257,
+            "directMs": 0,
+            "deferredMs": 100.49999952316284,
+            "queued": 352,
+            "joined": 286,
+            "drained": 51,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 304,
+                "compatible": 304,
+                "queued": 304
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49148.90000009537
+          },
+          {
+            "notifies": 384,
+            "layoutRuns": 51,
+            "layoutReads": 51,
+            "layoutMs": 99.59999990463257,
+            "directMs": 0,
+            "deferredMs": 100.49999952316284,
+            "queued": 384,
+            "joined": 318,
+            "drained": 51,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 336,
+                "compatible": 336,
+                "queued": 336
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49154.5
+          },
+          {
+            "notifies": 416,
+            "layoutRuns": 59,
+            "layoutReads": 59,
+            "layoutMs": 99.59999990463257,
+            "directMs": 0,
+            "deferredMs": 100.59999966621399,
+            "queued": 416,
+            "joined": 342,
+            "drained": 59,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 368,
+                "compatible": 368,
+                "queued": 368
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49215.60000014305
+          },
+          {
+            "notifies": 448,
+            "layoutRuns": 59,
+            "layoutReads": 59,
+            "layoutMs": 99.59999990463257,
+            "directMs": 0,
+            "deferredMs": 100.59999966621399,
+            "queued": 448,
+            "joined": 374,
+            "drained": 59,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 400,
+                "compatible": 400,
+                "queued": 400
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49301.40000009537
+          },
+          {
+            "notifies": 480,
+            "layoutRuns": 59,
+            "layoutReads": 59,
+            "layoutMs": 99.59999990463257,
+            "directMs": 0,
+            "deferredMs": 100.59999966621399,
+            "queued": 480,
+            "joined": 406,
+            "drained": 59,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 432,
+                "compatible": 432,
+                "queued": 432
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49349.10000014305
+          },
+          {
+            "notifies": 512,
+            "layoutRuns": 67,
+            "layoutReads": 67,
+            "layoutMs": 99.59999990463257,
+            "directMs": 0,
+            "deferredMs": 100.59999966621399,
+            "queued": 512,
+            "joined": 430,
+            "drained": 67,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 464,
+                "compatible": 464,
+                "queued": 464
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49481.700000047684
+          },
+          {
+            "notifies": 544,
+            "layoutRuns": 67,
+            "layoutReads": 67,
+            "layoutMs": 99.59999990463257,
+            "directMs": 0,
+            "deferredMs": 100.59999966621399,
+            "queued": 544,
+            "joined": 462,
+            "drained": 67,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 496,
+                "compatible": 496,
+                "queued": 496
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49529.10000014305
+          },
+          {
+            "notifies": 576,
+            "layoutRuns": 75,
+            "layoutReads": 75,
+            "layoutMs": 139.20000004768372,
+            "directMs": 0,
+            "deferredMs": 140.19999980926514,
+            "queued": 576,
+            "joined": 486,
+            "drained": 75,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 528,
+                "compatible": 528,
+                "queued": 528
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49660.40000009537
+          },
+          {
+            "notifies": 608,
+            "layoutRuns": 75,
+            "layoutReads": 75,
+            "layoutMs": 139.20000004768372,
+            "directMs": 0,
+            "deferredMs": 140.19999980926514,
+            "queued": 608,
+            "joined": 518,
+            "drained": 75,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 560,
+                "compatible": 560,
+                "queued": 560
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49785.90000009537
+          },
+          {
+            "notifies": 640,
+            "layoutRuns": 75,
+            "layoutReads": 75,
+            "layoutMs": 139.20000004768372,
+            "directMs": 0,
+            "deferredMs": 140.19999980926514,
+            "queued": 640,
+            "joined": 550,
+            "drained": 75,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 592,
+                "compatible": 592,
+                "queued": 592
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49791.700000047684
+          },
+          {
+            "notifies": 672,
+            "layoutRuns": 75,
+            "layoutReads": 75,
+            "layoutMs": 139.20000004768372,
+            "directMs": 0,
+            "deferredMs": 140.19999980926514,
+            "queued": 672,
+            "joined": 582,
+            "drained": 75,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 624,
+                "compatible": 624,
+                "queued": 624
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49798.700000047684
+          },
+          {
+            "notifies": 704,
+            "layoutRuns": 75,
+            "layoutReads": 75,
+            "layoutMs": 139.20000004768372,
+            "directMs": 0,
+            "deferredMs": 140.19999980926514,
+            "queued": 704,
+            "joined": 614,
+            "drained": 75,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 656,
+                "compatible": 656,
+                "queued": 656
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49806.10000014305
+          },
+          {
+            "notifies": 736,
+            "layoutRuns": 75,
+            "layoutReads": 75,
+            "layoutMs": 139.20000004768372,
+            "directMs": 0,
+            "deferredMs": 140.19999980926514,
+            "queued": 736,
+            "joined": 646,
+            "drained": 75,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 688,
+                "compatible": 688,
+                "queued": 688
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 49811.40000009537
+          },
+          {
+            "notifies": 768,
+            "layoutRuns": 83,
+            "layoutReads": 83,
+            "layoutMs": 139.30000019073486,
+            "directMs": 0,
+            "deferredMs": 140.39999985694885,
+            "queued": 768,
+            "joined": 670,
+            "drained": 83,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 720,
+                "compatible": 720,
+                "queued": 720
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 58311.90000009537
+          },
+          {
+            "notifies": 800,
+            "layoutRuns": 91,
+            "layoutReads": 91,
+            "layoutMs": 139.400000333786,
+            "directMs": 0,
+            "deferredMs": 140.59999990463257,
+            "queued": 800,
+            "joined": 694,
+            "drained": 91,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 752,
+                "compatible": 752,
+                "queued": 752
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 58620.700000047684
+          },
+          {
+            "notifies": 832,
+            "layoutRuns": 107,
+            "layoutReads": 107,
+            "layoutMs": 185.10000014305115,
+            "directMs": 0,
+            "deferredMs": 186.5,
+            "queued": 832,
+            "joined": 710,
+            "drained": 107,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 784,
+                "compatible": 784,
+                "queued": 784
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 58919.40000009537
+          },
+          {
+            "notifies": 864,
+            "layoutRuns": 107,
+            "layoutReads": 107,
+            "layoutMs": 185.10000014305115,
+            "directMs": 0,
+            "deferredMs": 186.5,
+            "queued": 864,
+            "joined": 742,
+            "drained": 107,
+            "byState": {
+              "pending": {
+                "total": 48,
+                "compatible": 48,
+                "queued": 48
+              },
+              "following": {
+                "total": 816,
+                "compatible": 816,
+                "queued": 816
+              }
+            },
+            "policyMismatch": 0,
+            "scopeMismatch": 0,
+            "controls": 0,
+            "at": 59061.300000190735
+          }
+        ],
+        "last": {
+          "notifies": 864,
+          "layoutRuns": 107,
+          "layoutReads": 107,
+          "layoutMs": 185.10000014305115,
+          "directMs": 0,
+          "deferredMs": 186.5,
+          "queued": 864,
+          "joined": 742,
+          "drained": 107,
+          "byState": {
+            "pending": {
+              "total": 48,
+              "compatible": 48,
+              "queued": 48
+            },
+            "following": {
+              "total": 816,
+              "compatible": 816,
+              "queued": 816
+            }
+          },
+          "policyMismatch": 0,
+          "scopeMismatch": 0,
+          "controls": 0,
+          "at": 59061.300000190735
+        },
+        "comparable": {
+          "notifies": 800,
+          "layoutRuns": 91,
+          "layoutReads": 91,
+          "layoutMs": 139.400000333786,
+          "directMs": 0,
+          "deferredMs": 140.59999990463257,
+          "queued": 800,
+          "joined": 694,
+          "drained": 91,
+          "byState": {
+            "pending": {
+              "total": 48,
+              "compatible": 48,
+              "queued": 48
+            },
+            "following": {
+              "total": 752,
+              "compatible": 752,
+              "queued": 752
+            }
+          },
+          "policyMismatch": 0,
+          "scopeMismatch": 0,
+          "controls": 0,
+          "at": 58620.700000047684
+        }
+      }
+    },
+    "matchedAnatomyCount": 800
+  },
+  "validation": {
+    "packages": 47,
+    "pages": 685,
+    "types": 0,
+    "manifests": 0,
+    "budgetExit": 0,
+    "budgetRows": [
+      {
+        "before": "PASS lucide/icons/x: 2879 / 3000 gzip bytes; overBudget=0; minified=8695 sha256=da30ebe409a83a09d2569fe2a47880a133fcbe4d554d93ea305795356c4fccdb",
+        "after": "PASS lucide/icons/x: 2879 / 3000 gzip bytes; overBudget=0; minified=8695 sha256=da30ebe409a83a09d2569fe2a47880a133fcbe4d554d93ea305795356c4fccdb"
+      },
+      {
+        "before": "PASS lucide root: 637306 / 700000 gzip bytes; overBudget=0; minified=4087403 sha256=eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c",
+        "after": "PASS lucide root: 637306 / 700000 gzip bytes; overBudget=0; minified=4087403 sha256=eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c"
+      },
+      {
+        "before": "ADVISORY core root: 11378 / 7600 gzip bytes; overBudget=3778; minified=35782 sha256=0e3c868d3ef719af46085b83881b15787a94acbaf893566ceae4047ceff72b44",
+        "after": "ADVISORY core root: 11378 / 7600 gzip bytes; overBudget=3778; minified=35782 sha256=0e3c868d3ef719af46085b83881b15787a94acbaf893566ceae4047ceff72b44"
+      },
+      {
+        "before": "ADVISORY runtime root: 101217 / 78500 gzip bytes; overBudget=22717; minified=390470 sha256=84ddbb8b9e893f050fb5c5bdb55a115d1ad522ead59198ec22eedeb94bc57d00",
+        "after": "ADVISORY runtime root: 101217 / 78500 gzip bytes; overBudget=22717; minified=390470 sha256=84ddbb8b9e893f050fb5c5bdb55a115d1ad522ead59198ec22eedeb94bc57d00"
+      },
+      {
+        "before": "ADVISORY adapter-react root: 163748 / 106000 gzip bytes; overBudget=57748; minified=577401 sha256=914327c38e067e98ffe01f79ce2f13a38af3036a33eb61a6608f808eeba2cf2d",
+        "after": "ADVISORY adapter-react root: 163849 / 106000 gzip bytes; overBudget=57849; minified=577679 sha256=9478583c4026d4a68fe7e7df40b127be16db4426fabb5cc69718f2b401a96b5e"
+      },
+      {
+        "before": "ADVISORY adapter-vue root: 162539 / 106000 gzip bytes; overBudget=56539; minified=572634 sha256=df940517f66d44edabea4d81adeb7ef992f75308848fca06f23127774750665f",
+        "after": "ADVISORY adapter-vue root: 162630 / 106000 gzip bytes; overBudget=56630; minified=572932 sha256=b751c8d467106d3f6ff41c41099cf1dd0b9319ab587b3d1391090175003658d4"
+      },
+      {
+        "before": "ADVISORY adapter-web-component root: 195507 / 132000 gzip bytes; overBudget=63507; minified=671296 sha256=5be3235acff9fd0a141a4f1084bf4cb22053925ca49168bd6d6ef25f09f4d738",
+        "after": "ADVISORY adapter-web-component root: 195577 / 132000 gzip bytes; overBudget=63577; minified=671583 sha256=156cd499dd73ecd7659017bdcbccccf233adab971cbff2f59c739d3977df1e32"
+      },
+      {
+        "before": "PASS prototypes-base/button: 5274 / 6000 gzip bytes; overBudget=0; minified=18158 sha256=6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67",
+        "after": "PASS prototypes-base/button: 5274 / 6000 gzip bytes; overBudget=0; minified=18158 sha256=6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67"
+      },
+      {
+        "before": "ADVISORY prototypes-shadcn/button: 7803 / 7000 gzip bytes; overBudget=803; minified=34485 sha256=60b4ff9277e59fba01c34162ec9418282ce82c6b43e24f223a05c9e1df19db57",
+        "after": "ADVISORY prototypes-shadcn/button: 7803 / 7000 gzip bytes; overBudget=803; minified=34485 sha256=60b4ff9277e59fba01c34162ec9418282ce82c6b43e24f223a05c9e1df19db57"
+      }
+    ],
+    "readinessMs": 60000,
+    "caseMs": 150000,
+    "previews": 1268,
+    "matrix": {
+      "passed": 0,
+      "failed": 2,
+      "filtered": 0,
+      "files": 1,
+      "failures": [
+        {
+          "title": "zh-cn: native Light/split/mixed acceptance",
+          "message": "page.waitForFunction: Timeout 60000ms exceeded."
+        },
+        {
+          "title": "en: native Light/split/mixed acceptance",
+          "message": "page.waitForFunction: Timeout 60000ms exceeded."
+        }
+      ],
+      "sha256": "64f2bfc91235d42ab67815a6e60c4d8f7c8362229cb25b1a587dc32dec3e0e59"
+    },
+    "packed": {
+      "passed": 11,
+      "failed": 0,
+      "filtered": 13,
+      "files": 3,
+      "failures": [],
+      "sha256": "618b606cc35d7d0c20373ca2f8402cba38557f4e79ce23a2639c3e3ed2b172a4"
+    },
+    "preview": {
+      "head": "0774aa5009d62f20f3770e8fff3c6cecdc0371e9",
+      "tree": "796489e59c50be6d7a44624947dd40c754d857a0",
+      "distHashes": {
+        "zh-cn/index.html": "e4ea905cf416717f1533f3d97832b13a8b3db0e543ea52d30dc75d257cc44ee3",
+        "zh-cn/ui-libraries/shadcn/button/index.html": "ea1b58a18c87d8e751a0f8d1b168b7dc17df06145f9f5577f69063490b4fa6f9",
+        "zh-cn/ui-libraries/brutalist/components/button/index.html": "65c8fcfd7b69bf3dd62e658cc64a20ca0cc6e2eb0cd418048c795a20f5ddb996"
+      },
+      "sourceCodeExamples": 9,
+      "renderedCodeExamples": 9,
+      "packedHeaderExit": 0,
+      "previewBrowserExit": 0,
+      "selector": "uses real family Popover Triggers|uses the same mobile shell|live available region|keeps Runtime Tabs outside"
+    },
+    "header": {
+      "head": "0774aa5009d62f20f3770e8fff3c6cecdc0371e9",
+      "browser": "156.0.8078.79",
+      "scope": "First animation frame control on the exact static Astro preview. Geometry reads can force layout.",
+      "results": [
+        {
+          "width": 320,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1658.6000001430511,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1781,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1803,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        },
+        {
+          "width": 390,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1606,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1755,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1774.9000000953674,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        }
+      ]
+    }
+  },
+  "home": {
+    "originalProbeSha256": "68b1a3c2439ffff089b823c6075ee7d091e7bde6027a2c9f8dc5a4552fbe4a71",
+    "bindings": [
+      {
+        "asset": "message-candidate-served.html",
+        "sha256": "7f3b847f322b2fa8c915d06f484a87c80b2656ddab06242ab85dd1b58d503911"
+      },
+      {
+        "asset": "site-shadcn-controls.DBj1OvVV.js",
+        "sha256": "6eef6c61a3127eafb198b631953c3c37f8a108280a5aaaab6c7b8e2f2ee501f3"
+      }
+    ],
+    "result": {
+      "browser": "156.0.8078.79",
+      "variant": "candidate",
+      "result": [
+        {
+          "runtime": "wc",
+          "initial": {
+            "top": 1054,
+            "maximum": 1054,
+            "following": "following",
+            "request": "applied",
+            "ownsFocus": false
+          },
+          "paused": {
+            "top": 0,
+            "maximum": 1054,
+            "following": "paused",
+            "request": "applied",
+            "ownsFocus": true
+          },
+          "afterPaused": {
+            "top": 0,
+            "maximum": 1114,
+            "following": "paused",
+            "request": "applied",
+            "ownsFocus": true
+          },
+          "resumed": {
+            "top": 1114,
+            "maximum": 1114,
+            "following": "following",
+            "request": "applied",
+            "ownsFocus": false
+          },
+          "afterFollowing": {
+            "top": 1174,
+            "maximum": 1174,
+            "following": "following",
+            "request": "applied",
+            "ownsFocus": false
+          },
+          "focusAfterJump": true,
+          "focusAfterGrowth": true,
+          "focusPreserved": true
+        },
+        {
+          "runtime": "react",
+          "initial": {
+            "top": 1054,
+            "maximum": 1054,
+            "following": "following",
+            "request": "applied",
+            "ownsFocus": false
+          },
+          "paused": {
+            "top": 0,
+            "maximum": 1054,
+            "following": "paused",
+            "request": "applied",
+            "ownsFocus": true
+          },
+          "afterPaused": {
+            "top": 0,
+            "maximum": 1114,
+            "following": "paused",
+            "request": "applied",
+            "ownsFocus": true
+          },
+          "resumed": {
+            "top": 1114,
+            "maximum": 1114,
+            "following": "following",
+            "request": "applied",
+            "ownsFocus": false
+          },
+          "afterFollowing": {
+            "top": 1174,
+            "maximum": 1174,
+            "following": "following",
+            "request": "applied",
+            "ownsFocus": false
+          },
+          "focusAfterJump": true,
+          "focusAfterGrowth": true,
+          "focusPreserved": true
+        },
+        {
+          "runtime": "vue",
+          "initial": {
+            "top": 1054,
+            "maximum": 1054,
+            "following": "following",
+            "request": "applied",
+            "ownsFocus": false
+          },
+          "paused": {
+            "top": 1,
+            "maximum": 1054,
+            "following": "paused",
+            "request": "applied",
+            "ownsFocus": true
+          },
+          "afterPaused": {
+            "top": 0,
+            "maximum": 1114,
+            "following": "paused",
+            "request": "applied",
+            "ownsFocus": true
+          },
+          "resumed": {
+            "top": 1114,
+            "maximum": 1114,
+            "following": "following",
+            "request": "applied",
+            "ownsFocus": false
+          },
+          "afterFollowing": {
+            "top": 1174,
+            "maximum": 1174,
+            "following": "following",
+            "request": "applied",
+            "ownsFocus": false
+          },
+          "focusAfterJump": true,
+          "focusAfterGrowth": true,
+          "focusPreserved": true
+        },
+        {
+          "runtime": "vue2",
+          "initial": {
+            "top": 1054,
+            "maximum": 1054,
+            "following": "following",
+            "request": "applied",
+            "ownsFocus": false
+          },
+          "paused": {
+            "top": 0,
+            "maximum": 1054,
+            "following": "paused",
+            "request": "applied",
+            "ownsFocus": true
+          },
+          "afterPaused": {
+            "top": 0,
+            "maximum": 1114,
+            "following": "paused",
+            "request": "applied",
+            "ownsFocus": true
+          },
+          "resumed": {
+            "top": 1114,
+            "maximum": 1114,
+            "following": "following",
+            "request": "applied",
+            "ownsFocus": false
+          },
+          "afterFollowing": {
+            "top": 1174,
+            "maximum": 1174,
+            "following": "following",
+            "request": "applied",
+            "ownsFocus": false
+          },
+          "focusAfterJump": true,
+          "focusAfterGrowth": true,
+          "focusPreserved": true
+        }
+      ]
+    }
+  }
+}
