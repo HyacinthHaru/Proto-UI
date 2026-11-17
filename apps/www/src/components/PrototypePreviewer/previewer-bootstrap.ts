@@ -187,7 +187,15 @@ export function initPreviewerBootstrap(
     visibility.disconnect();
     for (const root of pending.keys()) release(root);
   };
-  const removal = new view.MutationObserver(() => {
+  const removal = new view.MutationObserver((records) => {
+    // Additions and text changes cannot disconnect a pending preview.
+    if (
+      !records.some(({ removedNodes }) => {
+        for (const node of removedNodes) if (node.nodeType === Node.ELEMENT_NODE) return true;
+        return false;
+      })
+    )
+      return;
     for (const root of pending.keys()) if (!root.isConnected) release(root);
   });
   removal.observe(document.documentElement, { childList: true, subtree: true });

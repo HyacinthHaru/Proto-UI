@@ -150,6 +150,63 @@ describe('RuntimeBox lazy bootstrap lifetime', () => {
     }
   });
 
+  it('does not inspect pending owners for additions or removed text', async () => {
+    const element = root();
+    const text = document.createTextNode('Unrelated text');
+    document.body.append(text);
+    dispose = initPreviewerBootstrap(document, async () => ({ initPreviewer: vi.fn() }));
+    document.dispatchEvent(new Event('astro:page-load'));
+
+    const readConnected = Object.getOwnPropertyDescriptor(Node.prototype, 'isConnected')!.get!;
+    const isConnected = vi.fn(() => readConnected.call(element));
+    Object.defineProperty(element, 'isConnected', { configurable: true, get: isConnected });
+    let deliver!: (records: MutationRecord[]) => void;
+    const delivery = new Promise<MutationRecord[]>((resolve) => {
+      deliver = resolve;
+    });
+    const observer = new MutationObserver(deliver);
+    observer.observe(document.body, { childList: true });
+    try {
+      const added = document.createElement('span');
+      document.body.append(added);
+      text.remove();
+      const records = await delivery;
+      expect(records.some((record) => Array.from(record.addedNodes).includes(added))).toBe(true);
+      expect(records.some((record) => Array.from(record.removedNodes).includes(text))).toBe(true);
+      expect(isConnected).not.toHaveBeenCalled();
+      expect(disconnects[0]).not.toHaveBeenCalled();
+    } finally {
+      observer.disconnect();
+      Reflect.deleteProperty(element, 'isConnected');
+    }
+  });
+
+  it('releases a removed ancestor while retaining a preview moved in the same delivery', async () => {
+    const last = root();
+    const moved = root();
+    const ancestor = document.createElement('div');
+    document.body.append(ancestor);
+    ancestor.append(last, moved);
+    dispose = initPreviewerBootstrap(document, async () => ({ initPreviewer: vi.fn() }));
+    document.dispatchEvent(new Event('astro:page-load'));
+    const destroyLast = vi.fn();
+    const destroyMoved = vi.fn();
+    (last as HTMLElement & { __previewer__: unknown }).__previewer__ = { destroy: destroyLast };
+    (moved as HTMLElement & { __previewer__: unknown }).__previewer__ = { destroy: destroyMoved };
+
+    document.body.append(moved);
+    ancestor.remove();
+
+    await vi.waitFor(() => expect(destroyLast).toHaveBeenCalledOnce());
+    expect(disconnects[0]).toHaveBeenCalledOnce();
+    expect(destroyMoved).not.toHaveBeenCalled();
+    expect(disconnects[1]).not.toHaveBeenCalled();
+
+    dispose();
+    expect(destroyLast).toHaveBeenCalledOnce();
+    expect(destroyMoved).toHaveBeenCalledOnce();
+  });
+
   it('disconnects a never-visible removed card and calls a mounted owner cleanup only once', async () => {
     const element = root();
     const destroy = vi.fn();
