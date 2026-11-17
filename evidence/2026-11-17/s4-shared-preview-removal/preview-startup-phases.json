@@ -1,0 +1,1147 @@
+{
+  "source": "d9abbf27f5d9852b811eef47883d543cb29397b7",
+  "assetBinding": {
+    "asset": "previewer-client.lwLxVLbl.js",
+    "sourceSha256": "2650b9b83891c51fb22240ada5f6fa6db72c69e92cb6d98fcf03c299f23f3b85",
+    "instrumentedSha256": "041e525dd4f413a8a06dae1f9bbaba3708d819dee9192b6b472bbfa9ad71bc27"
+  },
+  "rows": [
+    {
+      "timeOrigin": 1794910536831.8,
+      "pageMs": 6042.100000143051,
+      "dateNow": 1794910542873,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-f1dw8q8j5n",
+        "index": 0,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-f1dw8q8j5n",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 6028.900000095367,
+          "runtime": "wc"
+        }
+      ],
+      "receivedNodeMs": 7193.323917
+    },
+    {
+      "timeOrigin": 1794910536831.8,
+      "pageMs": 6091,
+      "dateNow": 1794910542922,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-f1dw8q8j5n",
+        "index": 0,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-f1dw8q8j5n",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 6028.900000095367,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 6087.700000047684,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 6088.5,
+          "runtime": "wc"
+        }
+      ],
+      "receivedNodeMs": 7242.108208
+    },
+    {
+      "timeOrigin": 1794910536831.8,
+      "pageMs": 6652.900000095367,
+      "dateNow": 1794910543484,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-9fpix4440xk",
+        "index": 1,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "declaredRuntime": "react",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-9fpix4440xk",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 6029.700000047684,
+          "runtime": "react"
+        },
+        {
+          "phase": "demo-return",
+          "at": 6088.5,
+          "runtime": "react"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 6088.5,
+          "runtime": "react"
+        },
+        {
+          "phase": "prototype-return",
+          "at": 6618.799999952316,
+          "runtime": "react"
+        },
+        {
+          "phase": "render-start",
+          "at": 6618.799999952316,
+          "runtime": "react"
+        }
+      ],
+      "receivedNodeMs": 7804.285875
+    },
+    {
+      "timeOrigin": 1794910536831.8,
+      "pageMs": 15190.299999952316,
+      "dateNow": 1794910552022,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-7wo2h6w9jo",
+        "index": 236,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-base-virtual-list",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-7wo2h6w9jo",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 6193.600000143051,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 7799.100000143051,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 7807.600000143051,
+          "runtime": "wc"
+        }
+      ],
+      "receivedNodeMs": 16341.8985
+    },
+    {
+      "timeOrigin": 1794910536831.8,
+      "pageMs": 16908.200000047684,
+      "dateNow": 1794910553740,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-ubc4ebyb1os",
+        "index": 320,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-alert-dialog",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-ubc4ebyb1os",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 8486.799999952316,
+          "runtime": "wc"
+        }
+      ],
+      "receivedNodeMs": 18060.320667
+    },
+    {
+      "timeOrigin": 1794910536831.8,
+      "pageMs": 20999.10000014305,
+      "dateNow": 1794910557830,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-ubc4ebyb1os",
+        "index": 320,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-alert-dialog",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-ubc4ebyb1os",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 8486.799999952316,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 20868.400000095367,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 20869.700000047684,
+          "runtime": "wc"
+        }
+      ],
+      "receivedNodeMs": 22151.67175
+    },
+    {
+      "timeOrigin": 1794910536831.8,
+      "pageMs": 23860.900000095367,
+      "dateNow": 1794910560692,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-02q7pt0v0wyn",
+        "index": 328,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-autocomplete",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-02q7pt0v0wyn",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 8487.799999952316,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 20893.5,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 20910.400000095367,
+          "runtime": "wc"
+        }
+      ],
+      "receivedNodeMs": 25012.596125
+    },
+    {
+      "timeOrigin": 1794910536831.8,
+      "pageMs": 25163.10000014305,
+      "dateNow": 1794910561994,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-jqvu08a6b4c",
+        "index": 336,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-calendar",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-jqvu08a6b4c",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 8488.400000095367,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 21374.700000047684,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 21374.799999952316,
+          "runtime": "wc"
+        }
+      ],
+      "receivedNodeMs": 26314.54625
+    },
+    {
+      "timeOrigin": 1794910536831.8,
+      "pageMs": 29065.900000095367,
+      "dateNow": 1794910565897,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-11tua6n7gj1l",
+        "index": 344,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-carousel",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-11tua6n7gj1l",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 8489.100000143051,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 21386,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 21387.299999952316,
+          "runtime": "wc"
+        }
+      ],
+      "receivedNodeMs": 30217.478583
+    },
+    {
+      "timeOrigin": 1794910536831.8,
+      "pageMs": 29597.60000014305,
+      "dateNow": 1794910566429,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-7545rb7rxb8",
+        "index": 352,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-checkbox-group",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-7545rb7rxb8",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 8490.299999952316,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 21396.400000095367,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 21396.5,
+          "runtime": "wc"
+        }
+      ],
+      "receivedNodeMs": 30749.224333
+    },
+    {
+      "timeOrigin": 1794910536831.8,
+      "pageMs": 30180.5,
+      "dateNow": 1794910567012,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-8ypy0jw0dh9",
+        "index": 360,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-combobox",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-8ypy0jw0dh9",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 8490.900000095367,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 21407,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 21408.5,
+          "runtime": "wc"
+        }
+      ],
+      "receivedNodeMs": 31331.826875
+    },
+    {
+      "timeOrigin": 1794910536831.8,
+      "pageMs": 31146.900000095367,
+      "dateNow": 1794910567978,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-6j6cajjcara",
+        "index": 364,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-command",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-6j6cajjcara",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 8491.400000095367,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 21410.299999952316,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 21411.900000095367,
+          "runtime": "wc"
+        }
+      ],
+      "receivedNodeMs": 32298.223208
+    },
+    {
+      "timeOrigin": 1794910536831.8,
+      "pageMs": 31611.299999952316,
+      "dateNow": 1794910568443,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-cr7s9mb9hg",
+        "index": 368,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-context-menu",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-cr7s9mb9hg",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 8491.799999952316,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 21414.900000095367,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 21416.299999952316,
+          "runtime": "wc"
+        }
+      ],
+      "receivedNodeMs": 32762.648333
+    },
+    {
+      "timeOrigin": 1794910536831.8,
+      "pageMs": 32309.400000095367,
+      "dateNow": 1794910569141,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-lge6yifkzum",
+        "index": 376,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-date-picker",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-lge6yifkzum",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 8492.5,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 21420.200000047684,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 21421.10000014305,
+          "runtime": "wc"
+        }
+      ],
+      "receivedNodeMs": 33460.864292
+    },
+    {
+      "timeOrigin": 1794910536831.8,
+      "pageMs": 33551.10000014305,
+      "dateNow": 1794910570382,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-ei6w5augn1p",
+        "index": 384,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-drawer",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-ei6w5augn1p",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 20812.299999952316,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 23481.700000047684,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 23482.900000095367,
+          "runtime": "wc"
+        }
+      ],
+      "receivedNodeMs": 34702.521542
+    },
+    {
+      "timeOrigin": 1794910536831.8,
+      "pageMs": 35193.200000047684,
+      "dateNow": 1794910572025,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-6idn7m96s75",
+        "index": 396,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-dropdown-destructive",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-6idn7m96s75",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 20821.60000014305,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 23476.60000014305,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 23477.900000095367,
+          "runtime": "wc"
+        }
+      ],
+      "receivedNodeMs": 36344.510292
+    },
+    {
+      "timeOrigin": 1794910536831.8,
+      "pageMs": 35527.799999952316,
+      "dateNow": 1794910572359,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-2igtuniib6e",
+        "index": 400,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-dropdown-inset",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-2igtuniib6e",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 20822.299999952316,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 23490.60000014305,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 23490.60000014305,
+          "runtime": "wc"
+        }
+      ],
+      "receivedNodeMs": 36679.05675
+    },
+    {
+      "timeOrigin": 1794910536831.8,
+      "pageMs": 36483.90000009537,
+      "dateNow": 1794910573315,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-stkcer4qnq",
+        "index": 412,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-fieldset",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-stkcer4qnq",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 20824.700000047684,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 23513.200000047684,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 23514.60000014305,
+          "runtime": "wc"
+        }
+      ],
+      "receivedNodeMs": 37635.239
+    },
+    {
+      "timeOrigin": 1794910536831.8,
+      "pageMs": 39271.10000014305,
+      "dateNow": 1794910576102,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-dl72wz34svp",
+        "index": 416,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-form",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-dl72wz34svp",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 20825.5,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 23523.299999952316,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 23524.200000047684,
+          "runtime": "wc"
+        }
+      ],
+      "receivedNodeMs": 40423.46625
+    },
+    {
+      "timeOrigin": 1794910536831.8,
+      "pageMs": 42267.40000009537,
+      "dateNow": 1794910579099,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-yj5ujqs3yu",
+        "index": 436,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-input-shell",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-yj5ujqs3yu",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 20829.400000095367,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 23687.900000095367,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 23687.900000095367,
+          "runtime": "wc"
+        }
+      ],
+      "receivedNodeMs": 43420.004625
+    },
+    {
+      "timeOrigin": 1794910536831.8,
+      "pageMs": 45681.799999952316,
+      "dateNow": 1794910582513,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-72tg29tzn1v",
+        "index": 448,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-menubar",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-72tg29tzn1v",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 22940.5,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 34520,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 34520,
+          "runtime": "wc"
+        }
+      ],
+      "receivedNodeMs": 46834.057458
+    },
+    {
+      "timeOrigin": 1794910536831.8,
+      "pageMs": 60076.799999952316,
+      "dateNow": 1794910596908,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-jvwhlyn8ht",
+        "index": 460,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-navigation-menu",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-jvwhlyn8ht",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 22943.60000014305,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 34521.299999952316,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 34522.40000009537,
+          "runtime": "wc"
+        }
+      ],
+      "receivedNodeMs": 61229.248208
+    },
+    {
+      "timeOrigin": 1794910536831.8,
+      "pageMs": 60762.40000009537,
+      "dateNow": 1794910597594,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-z6b2uzaugpb",
+        "index": 476,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-progress",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-z6b2uzaugpb",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 22946.400000095367,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 34530.5,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 34530.60000014305,
+          "runtime": "wc"
+        }
+      ],
+      "receivedNodeMs": 61914.0165
+    },
+    {
+      "timeOrigin": 1794910536831.8,
+      "pageMs": 61311.700000047684,
+      "dateNow": 1794910598143,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-3uhbn0usrej",
+        "index": 484,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-resizable",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-3uhbn0usrej",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 22947.799999952316,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 34532,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 34533.299999952316,
+          "runtime": "wc"
+        }
+      ],
+      "receivedNodeMs": 62463.059792
+    },
+    {
+      "timeOrigin": 1794910536831.8,
+      "pageMs": 61889.40000009537,
+      "dateNow": 1794910598721,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-jzrtdky0pc",
+        "index": 488,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-scroll-area",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-jzrtdky0pc",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 22948.60000014305,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 34660.40000009537,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 34661.799999952316,
+          "runtime": "wc"
+        }
+      ],
+      "receivedNodeMs": 63040.729208
+    },
+    {
+      "timeOrigin": 1794910536831.8,
+      "pageMs": 64912.40000009537,
+      "dateNow": 1794910601744,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-6uvbu8x71ic",
+        "index": 520,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-shadcn-table",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-6uvbu8x71ic",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "firstMissingPhases": [
+        {
+          "phase": "demo-start",
+          "at": 34214.299999952316,
+          "runtime": "wc"
+        },
+        {
+          "phase": "demo-return",
+          "at": 49724.799999952316,
+          "runtime": "wc"
+        },
+        {
+          "phase": "prototype-start",
+          "at": 49724.90000009537,
+          "runtime": "wc"
+        }
+      ],
+      "receivedNodeMs": 66063.845125
+    }
+  ],
+  "collectionOutcome": "budget-expired",
+  "rawLogSHA256": "e57c5ab62961aaef531ebaeaec0be89f2159f9537807ff57791693947f93a66c",
+  "runnerOverlaySHA256": "6cc49eb4eabb3094d6fcbcdf9b42c2818910fe547903f4b942cfe0db3c00aa3b"
+}

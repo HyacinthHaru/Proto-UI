@@ -1,0 +1,1073 @@
+{
+  "source": {
+    "head": "d9abbf27f5d9852b811eef47883d543cb29397b7",
+    "tree": "e9c6c027b5a435a1bc6f5d31636e850354f9af97",
+    "parent": "0efc04bfb4112c6652fd52a5cae0a7fb7ddcc69b",
+    "signature": "G"
+  },
+  "latestMainApplyCheck": "e11e2fc9be99d0494a41b6da3e94a11e9b6f11d7",
+  "versions": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+  "changedInputs": {
+    "apps/www/src/components/PrototypePreviewer/previewer-client.ts": "12f9f490b65dc80221132bab28d6f22d5c8d9a68264debc1ee2a891992362b57",
+    "apps/www/src/components/PrototypePreviewer/projected-previewer-client.ts": "8cc0008be2131c2970195de37ef4968846ff6553bb031a4a69a220240c1e9665",
+    "apps/www/src/components/PrototypePreviewer/previewer-removal.ts": "468d3b8fe0563caffd66bbde02caf933bec6b81bcf088847e88b5df7907a5f19",
+    "apps/www/src/components/PrototypePreviewer/previewer-client.test.ts": "255f73026e1746137b3ba0a83e4cd55aeb07ec10c2fca0c26ad8bdc858f116cf"
+  },
+  "red": {
+    "tests": {
+      "numTotalTests": 18,
+      "numPassedTests": 0,
+      "numFailedTests": 1,
+      "numPendingTests": 17,
+      "failures": [
+        {
+          "name": "PrototypePreviewer adapter preference synchronization shares body removal observation and retires only the detached preview",
+          "first": "AssertionError: expected [ [ <body>…(2)</body>, …(1) ], …(1) ] to have a length of 1 but got 2"
+        }
+      ]
+    },
+    "rawLogSHA256": "16b0a18bbe87804a0be577e2636516192ae6aed3d0940c4dcf3e425616124cd8",
+    "patchSHA256": "c31fe39a4a053185bb67a382c1085f914a2afd7e65189c804fd439ed0ca90dc7"
+  },
+  "focused": {
+    "tests": {
+      "numTotalTests": 136,
+      "numPassedTests": 136,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "failures": []
+    },
+    "rawLogSHA256": "f031f26cf1be939b36af100ba94b7539b2b467a9e509166eb056ab274c5a24b7"
+  },
+  "builds": {
+    "packages": 47,
+    "types": 0,
+    "manifests": 0,
+    "finfBudgetGate": 0
+  },
+  "bootstrapProbe": {
+    "samples": [
+      {
+        "callbacks": 1,
+        "checks": 1268,
+        "removed": 0,
+        "withRemoval": 0,
+        "addOnly": 1,
+        "checksAddOnly": 1268,
+        "checkedMs": 0.20000004768371582,
+        "msAddOnly": 0.20000004768371582,
+        "releaseMs": 0,
+        "maxMs": 0.20000004768371582,
+        "pageMs": 5472.700000047684,
+        "pending": 1268,
+        "receivedNodeMs": 6283.073625
+      },
+      {
+        "callbacks": 2,
+        "checks": 2536,
+        "removed": 0,
+        "withRemoval": 0,
+        "addOnly": 2,
+        "checksAddOnly": 2536,
+        "checkedMs": 0.2999999523162842,
+        "msAddOnly": 0.2999999523162842,
+        "releaseMs": 0,
+        "maxMs": 0.20000004768371582,
+        "pageMs": 5479.599999904633,
+        "pending": 1268,
+        "receivedNodeMs": 6290.316208
+      },
+      {
+        "callbacks": 4,
+        "checks": 5072,
+        "removed": 0,
+        "withRemoval": 1,
+        "addOnly": 3,
+        "checksAddOnly": 3804,
+        "checkedMs": 0.39999985694885254,
+        "msAddOnly": 0.2999999523162842,
+        "releaseMs": 0,
+        "maxMs": 0.20000004768371582,
+        "pageMs": 5511.099999904633,
+        "pending": 1268,
+        "receivedNodeMs": 6321.234708
+      },
+      {
+        "callbacks": 8,
+        "checks": 10144,
+        "removed": 0,
+        "withRemoval": 3,
+        "addOnly": 5,
+        "checksAddOnly": 6340,
+        "checkedMs": 0.5999996662139893,
+        "msAddOnly": 0.39999985694885254,
+        "releaseMs": 0,
+        "maxMs": 0.20000004768371582,
+        "pageMs": 5866,
+        "pending": 1268,
+        "receivedNodeMs": 6676.201
+      },
+      {
+        "callbacks": 16,
+        "checks": 20288,
+        "removed": 0,
+        "withRemoval": 8,
+        "addOnly": 8,
+        "checksAddOnly": 10144,
+        "checkedMs": 1.1999993324279785,
+        "msAddOnly": 0.6999998092651367,
+        "releaseMs": 0,
+        "maxMs": 0.20000004768371582,
+        "pageMs": 6381.099999904633,
+        "pending": 1268,
+        "receivedNodeMs": 7191.316791
+      },
+      {
+        "callbacks": 32,
+        "checks": 40576,
+        "removed": 0,
+        "withRemoval": 10,
+        "addOnly": 22,
+        "checksAddOnly": 27896,
+        "checkedMs": 1.4999992847442627,
+        "msAddOnly": 0.8999998569488525,
+        "releaseMs": 0,
+        "maxMs": 0.20000004768371582,
+        "pageMs": 6457,
+        "pending": 1268,
+        "receivedNodeMs": 7267.072416
+      },
+      {
+        "callbacks": 64,
+        "checks": 81152,
+        "removed": 0,
+        "withRemoval": 17,
+        "addOnly": 47,
+        "checksAddOnly": 59596,
+        "checkedMs": 2.599999189376831,
+        "msAddOnly": 1.8999998569488525,
+        "releaseMs": 0,
+        "maxMs": 0.20000004768371582,
+        "pageMs": 6672.299999952316,
+        "pending": 1268,
+        "receivedNodeMs": 7482.137375
+      },
+      {
+        "callbacks": 128,
+        "checks": 162304,
+        "removed": 0,
+        "withRemoval": 51,
+        "addOnly": 77,
+        "checksAddOnly": 97636,
+        "checkedMs": 3.9999992847442627,
+        "msAddOnly": 2.799999952316284,
+        "releaseMs": 0,
+        "maxMs": 0.20000004768371582,
+        "pageMs": 7450.400000095367,
+        "pending": 1268,
+        "receivedNodeMs": 8260.436791
+      },
+      {
+        "callbacks": 256,
+        "checks": 324608,
+        "removed": 0,
+        "withRemoval": 115,
+        "addOnly": 141,
+        "checksAddOnly": 178788,
+        "checkedMs": 7.900000333786011,
+        "msAddOnly": 5.100000381469727,
+        "releaseMs": 0,
+        "maxMs": 0.20000004768371582,
+        "pageMs": 8816.900000095367,
+        "pending": 1268,
+        "receivedNodeMs": 9627.167708
+      },
+      {
+        "callbacks": 512,
+        "checks": 649216,
+        "removed": 0,
+        "withRemoval": 316,
+        "addOnly": 196,
+        "checksAddOnly": 248528,
+        "checkedMs": 13.200001239776611,
+        "msAddOnly": 6.300000905990601,
+        "releaseMs": 0,
+        "maxMs": 0.20000004768371582,
+        "pageMs": 11979.299999952316,
+        "pending": 1268,
+        "receivedNodeMs": 12789.43725
+      },
+      {
+        "callbacks": 768,
+        "checks": 973824,
+        "removed": 0,
+        "withRemoval": 418,
+        "addOnly": 350,
+        "checksAddOnly": 443800,
+        "checkedMs": 19.300000190734863,
+        "msAddOnly": 9.40000057220459,
+        "releaseMs": 0,
+        "maxMs": 0.20000004768371582,
+        "pageMs": 13467.200000047684,
+        "pending": 1268,
+        "receivedNodeMs": 14277.320916
+      },
+      {
+        "callbacks": 1024,
+        "checks": 1298432,
+        "removed": 0,
+        "withRemoval": 505,
+        "addOnly": 519,
+        "checksAddOnly": 658092,
+        "checkedMs": 22.99999976158142,
+        "msAddOnly": 11.800000429153442,
+        "releaseMs": 0,
+        "maxMs": 0.20000004768371582,
+        "pageMs": 16067,
+        "pending": 1268,
+        "receivedNodeMs": 16877.238583
+      },
+      {
+        "callbacks": 1280,
+        "checks": 1623040,
+        "removed": 0,
+        "withRemoval": 706,
+        "addOnly": 574,
+        "checksAddOnly": 727832,
+        "checkedMs": 29.499999523162842,
+        "msAddOnly": 13.100000143051147,
+        "releaseMs": 0,
+        "maxMs": 0.20000004768371582,
+        "pageMs": 18974.700000047684,
+        "pending": 1268,
+        "receivedNodeMs": 19784.808875
+      },
+      {
+        "callbacks": 1536,
+        "checks": 1947648,
+        "removed": 0,
+        "withRemoval": 857,
+        "addOnly": 679,
+        "checksAddOnly": 860972,
+        "checkedMs": 35.19999933242798,
+        "msAddOnly": 15.100000143051147,
+        "releaseMs": 0,
+        "maxMs": 0.20000004768371582,
+        "pageMs": 22993.400000095367,
+        "pending": 1268,
+        "receivedNodeMs": 23803.857666
+      },
+      {
+        "callbacks": 1792,
+        "checks": 2272256,
+        "removed": 0,
+        "withRemoval": 1000,
+        "addOnly": 792,
+        "checksAddOnly": 1004256,
+        "checkedMs": 43.29999852180481,
+        "msAddOnly": 18.09999966621399,
+        "releaseMs": 0,
+        "maxMs": 0.20000004768371582,
+        "pageMs": 32813.700000047684,
+        "pending": 1268,
+        "receivedNodeMs": 33623.996833
+      },
+      {
+        "callbacks": 2048,
+        "checks": 2596864,
+        "removed": 0,
+        "withRemoval": 1145,
+        "addOnly": 903,
+        "checksAddOnly": 1145004,
+        "checkedMs": 51.59999966621399,
+        "msAddOnly": 21.200000524520874,
+        "releaseMs": 0,
+        "maxMs": 0.20000004768371582,
+        "pageMs": 42097.59999990463,
+        "pending": 1268,
+        "receivedNodeMs": 42907.973458
+      },
+      {
+        "callbacks": 2304,
+        "checks": 2921472,
+        "removed": 0,
+        "withRemoval": 1311,
+        "addOnly": 993,
+        "checksAddOnly": 1259124,
+        "checkedMs": 59.399999141693115,
+        "msAddOnly": 23.600000381469727,
+        "releaseMs": 0,
+        "maxMs": 0.20000004768371582,
+        "pageMs": 51743.09999990463,
+        "pending": 1268,
+        "receivedNodeMs": 52553.228416
+      },
+      {
+        "callbacks": 2560,
+        "checks": 3246080,
+        "removed": 0,
+        "withRemoval": 1451,
+        "addOnly": 1109,
+        "checksAddOnly": 1406212,
+        "checkedMs": 68.59999966621399,
+        "msAddOnly": 26.90000009536743,
+        "releaseMs": 0,
+        "maxMs": 0.20000004768371582,
+        "pageMs": 63176.5,
+        "pending": 1268,
+        "receivedNodeMs": 63986.62225
+      }
+    ],
+    "test": {
+      "numTotalTests": 2,
+      "numPassedTests": 0,
+      "numFailedTests": 1,
+      "numPendingTests": 1,
+      "failures": [
+        {
+          "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+          "first": "page.waitForFunction: Timeout 60000ms exceeded."
+        }
+      ]
+    },
+    "binding": {
+      "asset": "PrototypePreviewer.astro_astro_type_script_index_0_lang.jnT1Km6g.js",
+      "sourceSha256": "b09a2775d25e8afb18db12f4992dc2a5a8555400a61778bdf8ca10e5bb40b699",
+      "instrumentedSha256": "4b84b62ecc20831f166176726d948d81dd5f283d521d4d2d46a67dadd86730e9"
+    },
+    "rawLogSHA256": "10eb9f280094651c1bb020458aa4c63f399e9f384ada2ea724d3b5348ac2ce03",
+    "testOverlaySHA256": "21212433be9b27c2c1923c67eebfe9c0474b96b2ed03490dc71f917441d22341"
+  },
+  "perRootProbe": {
+    "samples": [
+      {
+        "total": 1,
+        "kinds": {
+          "generic": {
+            "created": 128,
+            "callbacks": 1,
+            "timed": 1,
+            "sampledMs": 0
+          }
+        },
+        "pageMs": 6205.299999952316,
+        "receivedNodeMs": 7599.475083
+      },
+      {
+        "total": 2,
+        "kinds": {
+          "generic": {
+            "created": 128,
+            "callbacks": 2,
+            "timed": 1,
+            "sampledMs": 0
+          }
+        },
+        "pageMs": 6205.399999856949,
+        "receivedNodeMs": 7599.578625
+      },
+      {
+        "total": 4,
+        "kinds": {
+          "generic": {
+            "created": 128,
+            "callbacks": 4,
+            "timed": 1,
+            "sampledMs": 0
+          }
+        },
+        "pageMs": 6205.399999856949,
+        "receivedNodeMs": 7599.602166
+      },
+      {
+        "total": 8,
+        "kinds": {
+          "generic": {
+            "created": 128,
+            "callbacks": 8,
+            "timed": 1,
+            "sampledMs": 0
+          }
+        },
+        "pageMs": 6205.599999904633,
+        "receivedNodeMs": 7599.675875
+      },
+      {
+        "total": 16,
+        "kinds": {
+          "generic": {
+            "created": 128,
+            "callbacks": 16,
+            "timed": 1,
+            "sampledMs": 0
+          }
+        },
+        "pageMs": 6205.700000047684,
+        "receivedNodeMs": 7599.770375
+      },
+      {
+        "total": 32,
+        "kinds": {
+          "generic": {
+            "created": 128,
+            "callbacks": 32,
+            "timed": 1,
+            "sampledMs": 0
+          }
+        },
+        "pageMs": 6206.099999904633,
+        "receivedNodeMs": 7600.028958
+      },
+      {
+        "total": 64,
+        "kinds": {
+          "generic": {
+            "created": 128,
+            "callbacks": 64,
+            "timed": 1,
+            "sampledMs": 0
+          }
+        },
+        "pageMs": 6206.700000047684,
+        "receivedNodeMs": 7600.794416
+      },
+      {
+        "total": 128,
+        "kinds": {
+          "generic": {
+            "created": 192,
+            "callbacks": 128,
+            "timed": 1,
+            "sampledMs": 0
+          }
+        },
+        "pageMs": 6243.5,
+        "receivedNodeMs": 7637.69425
+      },
+      {
+        "total": 256,
+        "kinds": {
+          "generic": {
+            "created": 192,
+            "callbacks": 256,
+            "timed": 1,
+            "sampledMs": 0
+          }
+        },
+        "pageMs": 6244.799999952316,
+        "receivedNodeMs": 7638.872916
+      },
+      {
+        "total": 512,
+        "kinds": {
+          "generic": {
+            "created": 192,
+            "callbacks": 512,
+            "timed": 1,
+            "sampledMs": 0
+          }
+        },
+        "pageMs": 6303,
+        "receivedNodeMs": 7697.286833
+      },
+      {
+        "total": 1024,
+        "kinds": {
+          "generic": {
+            "created": 192,
+            "callbacks": 1024,
+            "timed": 1,
+            "sampledMs": 0
+          }
+        },
+        "pageMs": 6321.799999952316,
+        "receivedNodeMs": 7715.889958
+      },
+      {
+        "total": 2048,
+        "kinds": {
+          "generic": {
+            "created": 248,
+            "callbacks": 2048,
+            "timed": 2,
+            "sampledMs": 0
+          },
+          "projected": {
+            "created": 8,
+            "callbacks": 0,
+            "timed": 0,
+            "sampledMs": 0
+          }
+        },
+        "pageMs": 6403.5,
+        "receivedNodeMs": 7797.448375
+      },
+      {
+        "total": 4096,
+        "kinds": {
+          "generic": {
+            "created": 248,
+            "callbacks": 4032,
+            "timed": 4,
+            "sampledMs": 0
+          },
+          "projected": {
+            "created": 8,
+            "callbacks": 64,
+            "timed": 1,
+            "sampledMs": 0
+          }
+        },
+        "pageMs": 6543.599999904633,
+        "receivedNodeMs": 7937.861875
+      },
+      {
+        "total": 8192,
+        "kinds": {
+          "generic": {
+            "created": 248,
+            "callbacks": 8000,
+            "timed": 8,
+            "sampledMs": 0
+          },
+          "projected": {
+            "created": 8,
+            "callbacks": 192,
+            "timed": 1,
+            "sampledMs": 0
+          }
+        },
+        "pageMs": 6646,
+        "receivedNodeMs": 8040.21025
+      },
+      {
+        "total": 16384,
+        "kinds": {
+          "generic": {
+            "created": 248,
+            "callbacks": 15936,
+            "timed": 16,
+            "sampledMs": 0
+          },
+          "projected": {
+            "created": 8,
+            "callbacks": 448,
+            "timed": 1,
+            "sampledMs": 0
+          }
+        },
+        "pageMs": 7076.299999952316,
+        "receivedNodeMs": 8470.446958
+      },
+      {
+        "total": 32768,
+        "kinds": {
+          "generic": {
+            "created": 304,
+            "callbacks": 31584,
+            "timed": 31,
+            "sampledMs": 0.09999990463256836
+          },
+          "projected": {
+            "created": 16,
+            "callbacks": 1184,
+            "timed": 2,
+            "sampledMs": 0
+          }
+        },
+        "pageMs": 7750.200000047684,
+        "receivedNodeMs": 9144.48225
+      },
+      {
+        "total": 65536,
+        "kinds": {
+          "generic": {
+            "created": 304,
+            "callbacks": 62720,
+            "timed": 62,
+            "sampledMs": 0.09999990463256836
+          },
+          "projected": {
+            "created": 16,
+            "callbacks": 2816,
+            "timed": 3,
+            "sampledMs": 0
+          }
+        },
+        "pageMs": 9499.799999952316,
+        "receivedNodeMs": 10894.213666
+      },
+      {
+        "total": 131072,
+        "kinds": {
+          "generic": {
+            "created": 304,
+            "callbacks": 124976,
+            "timed": 123,
+            "sampledMs": 0.09999990463256836
+          },
+          "projected": {
+            "created": 16,
+            "callbacks": 6096,
+            "timed": 6,
+            "sampledMs": 0
+          }
+        },
+        "pageMs": 11022.899999856949,
+        "receivedNodeMs": 12417.103458
+      },
+      {
+        "total": 262144,
+        "kinds": {
+          "generic": {
+            "created": 348,
+            "callbacks": 247368,
+            "timed": 242,
+            "sampledMs": 0.09999990463256836
+          },
+          "projected": {
+            "created": 36,
+            "callbacks": 14776,
+            "timed": 15,
+            "sampledMs": 0
+          }
+        },
+        "pageMs": 13714.5,
+        "receivedNodeMs": 15108.719208
+      },
+      {
+        "total": 393216,
+        "kinds": {
+          "generic": {
+            "created": 348,
+            "callbacks": 366144,
+            "timed": 358,
+            "sampledMs": 0.09999990463256836
+          },
+          "projected": {
+            "created": 36,
+            "callbacks": 27072,
+            "timed": 27,
+            "sampledMs": 0
+          }
+        },
+        "pageMs": 17283.89999985695,
+        "receivedNodeMs": 18678.48025
+      },
+      {
+        "total": 524288,
+        "kinds": {
+          "generic": {
+            "created": 436,
+            "callbacks": 481368,
+            "timed": 471,
+            "sampledMs": 0.09999990463256836
+          },
+          "projected": {
+            "created": 76,
+            "callbacks": 42920,
+            "timed": 42,
+            "sampledMs": 0
+          }
+        },
+        "pageMs": 21828.799999952316,
+        "receivedNodeMs": 23223.35775
+      },
+      {
+        "total": 655360,
+        "kinds": {
+          "generic": {
+            "created": 436,
+            "callbacks": 592984,
+            "timed": 580,
+            "sampledMs": 0.09999990463256836
+          },
+          "projected": {
+            "created": 76,
+            "callbacks": 62376,
+            "timed": 61,
+            "sampledMs": 0.10000014305114746
+          }
+        },
+        "pageMs": 31119.299999952316,
+        "receivedNodeMs": 32513.57025
+      },
+      {
+        "total": 786432,
+        "kinds": {
+          "generic": {
+            "created": 484,
+            "callbacks": 703404,
+            "timed": 687,
+            "sampledMs": 0.09999990463256836
+          },
+          "projected": {
+            "created": 92,
+            "callbacks": 83028,
+            "timed": 82,
+            "sampledMs": 0.10000014305114746
+          }
+        },
+        "pageMs": 38456.59999990463,
+        "receivedNodeMs": 39851.050375
+      },
+      {
+        "total": 917504,
+        "kinds": {
+          "generic": {
+            "created": 532,
+            "callbacks": 813456,
+            "timed": 795,
+            "sampledMs": 0.19999980926513672
+          },
+          "projected": {
+            "created": 108,
+            "callbacks": 104048,
+            "timed": 102,
+            "sampledMs": 0.20000004768371582
+          }
+        },
+        "pageMs": 46036.200000047684,
+        "receivedNodeMs": 47430.70975
+      },
+      {
+        "total": 1048576,
+        "kinds": {
+          "generic": {
+            "created": 532,
+            "callbacks": 922388,
+            "timed": 901,
+            "sampledMs": 0.2999997138977051
+          },
+          "projected": {
+            "created": 108,
+            "callbacks": 126188,
+            "timed": 124,
+            "sampledMs": 0.20000004768371582
+          }
+        },
+        "pageMs": 56899.09999990463,
+        "receivedNodeMs": 58293.547375
+      },
+      {
+        "total": 1179648,
+        "kinds": {
+          "generic": {
+            "created": 576,
+            "callbacks": 1030860,
+            "timed": 1007,
+            "sampledMs": 0.2999997138977051
+          },
+          "projected": {
+            "created": 128,
+            "callbacks": 148788,
+            "timed": 146,
+            "sampledMs": 0.20000004768371582
+          }
+        },
+        "pageMs": 66995.09999990463,
+        "receivedNodeMs": 68389.381083
+      },
+      {
+        "total": 1310720,
+        "kinds": {
+          "generic": {
+            "created": 612,
+            "callbacks": 1137308,
+            "timed": 1111,
+            "sampledMs": 0.7000000476837158
+          },
+          "projected": {
+            "created": 156,
+            "callbacks": 173412,
+            "timed": 170,
+            "sampledMs": 0.3000001907348633
+          }
+        },
+        "pageMs": 73401.29999995232,
+        "receivedNodeMs": 74795.669125
+      }
+    ],
+    "test": {
+      "numTotalTests": 2,
+      "numPassedTests": 0,
+      "numFailedTests": 1,
+      "numPendingTests": 1,
+      "failures": [
+        {
+          "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+          "first": "page.waitForFunction: Timeout 60000ms exceeded."
+        }
+      ]
+    },
+    "binding": [
+      {
+        "asset": "previewer-client.DB3gdUAp.js",
+        "matched": ["generic", "projected"],
+        "sourceSha256": "315f4a66a3966d25c4a95c7b3b1ca4a05bd61c7e7a9f0b8d8d2535635e737239",
+        "instrumentedSha256": "b7c7bf8304ac24aa63ec2077fea7d7ecdcb66e671aefb0308be5b84dfcd00a5b"
+      },
+      {
+        "asset": "code-panel-client.CZHhgeVK.js",
+        "matched": ["code"],
+        "sourceSha256": "bc25d13f3e416ef6a53f5e79a2385daba5cc9008744aae6339098f94d01d7bd2",
+        "instrumentedSha256": "c587410e13e6212f1ee6fb4b76e4c8e8ec287b607e5d72d89b1994087f13407f"
+      }
+    ],
+    "rawLogSHA256": "8b06b5baf9a6e47ba383449b4e5218aa5f3d7b8b1c95d53d910c787019163ae6",
+    "testOverlaySHA256": "9ef20b1a1a5ce79aaad1dc303176bbc7ae59328648307b6cd96fe38c860d8d1e"
+  },
+  "sharedProbe": {
+    "samples": [
+      {
+        "callbacks": 1,
+        "checks": 128,
+        "owners": 128,
+        "ms": 0,
+        "pageMs": 6002.700000047684,
+        "receivedNodeMs": 6782.37825
+      },
+      {
+        "callbacks": 2,
+        "checks": 320,
+        "owners": 192,
+        "ms": 0.10000014305114746,
+        "pageMs": 6030.700000047684,
+        "receivedNodeMs": 6810.379125
+      },
+      {
+        "callbacks": 4,
+        "checks": 704,
+        "owners": 192,
+        "ms": 0.10000014305114746,
+        "pageMs": 6074.700000047684,
+        "receivedNodeMs": 6854.484583
+      },
+      {
+        "callbacks": 8,
+        "checks": 1536,
+        "owners": 224,
+        "ms": 0.10000014305114746,
+        "pageMs": 6140.900000095367,
+        "receivedNodeMs": 6920.336958
+      },
+      {
+        "callbacks": 16,
+        "checks": 3328,
+        "owners": 224,
+        "ms": 0.10000014305114746,
+        "pageMs": 6230.900000095367,
+        "receivedNodeMs": 7010.285417
+      },
+      {
+        "callbacks": 32,
+        "checks": 7488,
+        "owners": 288,
+        "ms": 0.6000003814697266,
+        "pageMs": 6481.400000095367,
+        "receivedNodeMs": 7260.978125
+      },
+      {
+        "callbacks": 64,
+        "checks": 16704,
+        "owners": 288,
+        "ms": 1.499999761581421,
+        "pageMs": 6825.099999904633,
+        "receivedNodeMs": 7604.604917
+      },
+      {
+        "callbacks": 128,
+        "checks": 35136,
+        "owners": 288,
+        "ms": 3.200000047683716,
+        "pageMs": 7450.599999904633,
+        "receivedNodeMs": 8230.349
+      },
+      {
+        "callbacks": 256,
+        "checks": 76096,
+        "owners": 352,
+        "ms": 6.300000190734863,
+        "pageMs": 9149.799999952316,
+        "receivedNodeMs": 9929.419167
+      },
+      {
+        "callbacks": 512,
+        "checks": 166208,
+        "owners": 352,
+        "ms": 12.500001192092896,
+        "pageMs": 11475,
+        "receivedNodeMs": 12254.749917
+      },
+      {
+        "callbacks": 768,
+        "checks": 256320,
+        "owners": 352,
+        "ms": 19.300002098083496,
+        "pageMs": 12873.400000095367,
+        "receivedNodeMs": 13653.0815
+      },
+      {
+        "callbacks": 1024,
+        "checks": 346432,
+        "owners": 352,
+        "ms": 24.600000858306885,
+        "pageMs": 15668,
+        "receivedNodeMs": 16447.923167
+      },
+      {
+        "callbacks": 1280,
+        "checks": 446528,
+        "owners": 416,
+        "ms": 30.90000057220459,
+        "pageMs": 17840.599999904633,
+        "receivedNodeMs": 18620.394083
+      },
+      {
+        "callbacks": 1536,
+        "checks": 559296,
+        "owners": 480,
+        "ms": 39.60000038146973,
+        "pageMs": 25457.400000095367,
+        "receivedNodeMs": 26237.190458
+      },
+      {
+        "callbacks": 1792,
+        "checks": 694336,
+        "owners": 544,
+        "ms": 49.59999871253967,
+        "pageMs": 31978.299999952316,
+        "receivedNodeMs": 32757.986167
+      },
+      {
+        "callbacks": 2048,
+        "checks": 840000,
+        "owners": 608,
+        "ms": 60.69999885559082,
+        "pageMs": 42007.200000047684,
+        "receivedNodeMs": 42787.136125
+      },
+      {
+        "callbacks": 2304,
+        "checks": 995648,
+        "owners": 608,
+        "ms": 77.89999771118164,
+        "pageMs": 52484.200000047684,
+        "receivedNodeMs": 53263.935083
+      },
+      {
+        "callbacks": 2560,
+        "checks": 1159424,
+        "owners": 672,
+        "ms": 91.99999523162842,
+        "pageMs": 63207.59999990463,
+        "receivedNodeMs": 63987.287292
+      },
+      {
+        "callbacks": 2816,
+        "checks": 1345408,
+        "owners": 736,
+        "ms": 107.89999651908875,
+        "pageMs": 72303.59999990463,
+        "receivedNodeMs": 73083.681833
+      }
+    ],
+    "test": {
+      "numTotalTests": 2,
+      "numPassedTests": 0,
+      "numFailedTests": 1,
+      "numPendingTests": 1,
+      "failures": [
+        {
+          "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+          "first": "page.waitForFunction: Timeout 60000ms exceeded."
+        }
+      ]
+    },
+    "binding": {
+      "asset": "previewer-client.lwLxVLbl.js",
+      "sourceSha256": "2650b9b83891c51fb22240ada5f6fa6db72c69e92cb6d98fcf03c299f23f3b85",
+      "instrumentedSha256": "c63da80762233fec14316331948a2f682ef6ec9fafbfd9be06fdd9c7566956aa"
+    },
+    "rawLogSHA256": "331e4b88c92676a5c66daeafdc77fe47d2cafb885b66a35f9158561db6c005df",
+    "testOverlaySHA256": "ead16b189d073c9779a04b7fd32aac412ea55cf2cdeb4c66d36a34a90a4fdfa5"
+  },
+  "matrix": {
+    "tests": {
+      "numTotalTests": 2,
+      "numPassedTests": 0,
+      "numFailedTests": 2,
+      "numPendingTests": 0,
+      "failures": [
+        {
+          "name": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+          "first": "page.waitForFunction: Timeout 60000ms exceeded."
+        },
+        {
+          "name": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+          "first": "page.waitForFunction: Timeout 60000ms exceeded."
+        }
+      ]
+    },
+    "inputs": {
+      "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "e6590db342bddc56b37fa367ce6b1cc519130cdb201e06e8d14061569d5e0317",
+      "apps/www/dist/zh-cn/internal/demo-matrix/index.html": "2b26900ee53f1931c273255133a475aa61d3ddc034fe90a8c2095208d5b67794",
+      "apps/www/dist/en/internal/demo-matrix/index.html": "e2ff7c34dc1c8df2e542de4db8f438be5c6109ece2187c7dbd1294951276c067"
+    },
+    "pages": {
+      "zh-cn": {
+        "bytes": 1862527,
+        "sha256": "2b26900ee53f1931c273255133a475aa61d3ddc034fe90a8c2095208d5b67794",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914187,
+        "sha256": "e2ff7c34dc1c8df2e542de4db8f438be5c6109ece2187c7dbd1294951276c067",
+        "previews": 1268
+      }
+    },
+    "readinessMs": 60000,
+    "caseMs": 150000,
+    "rawLogSHA256": "27f1a4e5ddbf7ed4942e5a7d5620497bfc5064c35328becc4d01915a17f0d94b"
+  },
+  "accordion": {
+    "tests": {
+      "numTotalTests": 33,
+      "numPassedTests": 4,
+      "numFailedTests": 0,
+      "numPendingTests": 29,
+      "failures": []
+    },
+    "suiteSHA256": "d4029eb0bed80c79a7d6ea743ce2cae57d4284ddec7f2654c541e3cd0e3ceb69",
+    "rawLogSHA256": "922bd1e926f3966ba4f2dd0cdad03a54aaafb1e7eff3cc0801c7b88122964eab"
+  },
+  "optics": {
+    "tests": {
+      "numTotalTests": 4,
+      "numPassedTests": 3,
+      "numFailedTests": 0,
+      "numPendingTests": 1,
+      "failures": []
+    },
+    "inputs": {
+      "apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts": "0a821afca35de54fe083ea8de515eee24f47dd37e68c15449493be4529666e37",
+      "apps/www/dist/en/test/liquid-glass-material/index.html": "56ac26ad94e05682d801f7aecc50e611d5f50ae84d60cbd4c432d2bc10121c68",
+      "apps/www/dist/en/ui-libraries/liquid-glass/button/index.html": "c1559f878c44967abe1ed2eedacac661b5b6e66a9c1da3074af31119c30be642"
+    },
+    "rawLogSHA256": "5669673d764d262086bb4a8201fa9849381ad2e7e8211e08ea6ccb7f6053c12f"
+  },
+  "portal": {
+    "tests": {
+      "numTotalTests": 55,
+      "numPassedTests": 5,
+      "numFailedTests": 0,
+      "numPendingTests": 50,
+      "failures": []
+    },
+    "inputs": {
+      "apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts": "3913100f3c56c41a7011b116e742c57fe0ad05efd02be19ac16587277102767e",
+      "apps/www/dist/en/test/liquid-glass-portal/index.html": "a57ece4e12b2265a6468150f03f849b5157806f15706ef37f3eb95d7eb466f65"
+    },
+    "rawLogSHA256": "ddffce6a3e68804354c75d3528b579fe01521310636cbacad95b9784f505e307"
+  }
+}
