@@ -1,0 +1,22 @@
+{
+  "head": "8101c7fff4d1bd20911b1fe8ba6e0eb8ee83dc3e",
+  "tree": "670af4b2138d8648168d4e9952d72e9ce330ce6e",
+  "parent": "7c11fd2301a50d4ac2c6c1402b7ec15c60bcec1e",
+  "signature": "G",
+  "inputs": [
+    "3b5532eaa49683053e7ee10936ec16e6098b300cd312fbc9816f709765c64374  apps/www/src/components/PrototypePreviewer/demo-modules.test.ts",
+    "d115cd9a6ae9439c1636ceeeba071b5021011816a1d4724b25d8eb3bdf45eb47  apps/www/src/components/PrototypePreviewer/demo-registry.ts"
+  ],
+  "baselineFailures": 2,
+  "redLogSHA256": "df333ed1e99dbdb676377e555d3f85248f1ad5b2558e1f5cd270117d8e65f8f3",
+  "focusedPassed": 100,
+  "focusedLogSHA256": "af2d4b0e3c9bc90895dc8a553c2665e674bd1875c020a470b31633ccf9104d10",
+  "typesExit": 0,
+  "typeLogSHA256": "c6529115f538a4590ae019e10a8ff349c990576398e780215e48b0d472d1a3e4",
+  "broaderPassed": 114,
+  "broaderLogSHA256": "d63977462c9aaddff84a3ce8aad9f9696a175a9fda22593f4827947fdd3bfedc",
+  "baselineFailure": {
+    "WC DemoRuntimeApi callback projection maps onX to payload callbacks while preserving the original raw props snapshot": "AssertionError: expected { \u2026(4) } to match object { onValueChange: [Function spy], \u2026(3) }"
+  },
+  "baselineExposureLogSHA256": "3979316056da8683a966f361a7ad9361958f5219c04e2ec4b5e21f8d42d113b7"
+}

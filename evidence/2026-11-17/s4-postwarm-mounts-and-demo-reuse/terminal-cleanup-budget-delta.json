@@ -1,0 +1,180 @@
+{
+  "base": "aa6d6b15d4aedb2863a935168dac73ea5f26ace1",
+  "tree": "567fab63609b0492a19d2c0246ee480beb131bee",
+  "head": "b523c052cb39081241de16fd04db5c925608f791",
+  "baselineLogSHA256": "ff09612845b1e756c42b5883a2a394d45fe84e853783fe4874eb2431dc52bfd9",
+  "candidateLogSHA256": "5d7f8edba959c993aaffb9293e1af5edefaef5e56a0642c0e9cc4da5f3b8bd68",
+  "rows": {
+    "lucide/icons/x": {
+      "baseline": {
+        "status": "PASS",
+        "gzip": 2879,
+        "limit": 3000,
+        "excess": 0,
+        "minified": 8695,
+        "sha256": "02838c5b1d4db7b0d62eab9b1d502848e268dfea098798ee87665caa966772fb"
+      },
+      "candidate": {
+        "status": "PASS",
+        "gzip": 2879,
+        "limit": 3000,
+        "excess": 0,
+        "minified": 8695,
+        "sha256": "02838c5b1d4db7b0d62eab9b1d502848e268dfea098798ee87665caa966772fb"
+      },
+      "gzipDelta": 0
+    },
+    "lucide root": {
+      "baseline": {
+        "status": "PASS",
+        "gzip": 637306,
+        "limit": 700000,
+        "excess": 0,
+        "minified": 4087403,
+        "sha256": "eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c"
+      },
+      "candidate": {
+        "status": "PASS",
+        "gzip": 637306,
+        "limit": 700000,
+        "excess": 0,
+        "minified": 4087403,
+        "sha256": "eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c"
+      },
+      "gzipDelta": 0
+    },
+    "core root": {
+      "baseline": {
+        "status": "ADVISORY",
+        "gzip": 11373,
+        "limit": 7600,
+        "excess": 3773,
+        "minified": 35723,
+        "sha256": "bb0468537baccea449d0260ae56ac758902eb989dae84f699b6c27626212d913"
+      },
+      "candidate": {
+        "status": "ADVISORY",
+        "gzip": 11373,
+        "limit": 7600,
+        "excess": 3773,
+        "minified": 35723,
+        "sha256": "bb0468537baccea449d0260ae56ac758902eb989dae84f699b6c27626212d913"
+      },
+      "gzipDelta": 0
+    },
+    "runtime root": {
+      "baseline": {
+        "status": "ADVISORY",
+        "gzip": 100015,
+        "limit": 78500,
+        "excess": 21515,
+        "minified": 386804,
+        "sha256": "11347a17a9c7eda3575d4bf30a0a2954e770f801b4264c977ae838d6755f40e8"
+      },
+      "candidate": {
+        "status": "ADVISORY",
+        "gzip": 100015,
+        "limit": 78500,
+        "excess": 21515,
+        "minified": 386804,
+        "sha256": "11347a17a9c7eda3575d4bf30a0a2954e770f801b4264c977ae838d6755f40e8"
+      },
+      "gzipDelta": 0
+    },
+    "adapter-react root": {
+      "baseline": {
+        "status": "ADVISORY",
+        "gzip": 161908,
+        "limit": 106000,
+        "excess": 55908,
+        "minified": 571918,
+        "sha256": "d8f7783fa592ea37b74cec1340b833004b53bf0c42b9013d3270079fe83b5702"
+      },
+      "candidate": {
+        "status": "ADVISORY",
+        "gzip": 161940,
+        "limit": 106000,
+        "excess": 55940,
+        "minified": 572005,
+        "sha256": "9ba7a536f74b0b3d3e4a07a7bb2b2ecfbfdc982cba449008490d610aa547f6d5"
+      },
+      "gzipDelta": 32
+    },
+    "adapter-vue root": {
+      "baseline": {
+        "status": "ADVISORY",
+        "gzip": 160579,
+        "limit": 106000,
+        "excess": 54579,
+        "minified": 567190,
+        "sha256": "842f98171c8859e80d078d0c35c2706b43bf681afcafb826191cca3c7026efcb"
+      },
+      "candidate": {
+        "status": "ADVISORY",
+        "gzip": 160629,
+        "limit": 106000,
+        "excess": 54629,
+        "minified": 567277,
+        "sha256": "cdee482043d79114a06868d139cdf1c448a572453797017709156c1075146269"
+      },
+      "gzipDelta": 50
+    },
+    "adapter-web-component root": {
+      "baseline": {
+        "status": "ADVISORY",
+        "gzip": 190208,
+        "limit": 132000,
+        "excess": 58208,
+        "minified": 656077,
+        "sha256": "68e58f87386afa1a84ec248e33a6749f3b3b4401dba44d9cf65f0b826b387c85"
+      },
+      "candidate": {
+        "status": "ADVISORY",
+        "gzip": 190259,
+        "limit": 132000,
+        "excess": 58259,
+        "minified": 656164,
+        "sha256": "11e72ebd26646a314db87706701a78bfb49d19c841ef17e97bde0698e6460a23"
+      },
+      "gzipDelta": 51
+    },
+    "prototypes-base/button": {
+      "baseline": {
+        "status": "PASS",
+        "gzip": 5274,
+        "limit": 6000,
+        "excess": 0,
+        "minified": 18158,
+        "sha256": "6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67"
+      },
+      "candidate": {
+        "status": "PASS",
+        "gzip": 5274,
+        "limit": 6000,
+        "excess": 0,
+        "minified": 18158,
+        "sha256": "6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67"
+      },
+      "gzipDelta": 0
+    },
+    "prototypes-shadcn/button": {
+      "baseline": {
+        "status": "ADVISORY",
+        "gzip": 7803,
+        "limit": 7000,
+        "excess": 803,
+        "minified": 34485,
+        "sha256": "60b4ff9277e59fba01c34162ec9418282ce82c6b43e24f223a05c9e1df19db57"
+      },
+      "candidate": {
+        "status": "ADVISORY",
+        "gzip": 7803,
+        "limit": 7000,
+        "excess": 803,
+        "minified": 34485,
+        "sha256": "60b4ff9277e59fba01c34162ec9418282ce82c6b43e24f223a05c9e1df19db57"
+      },
+      "gzipDelta": 0
+    }
+  }
+}

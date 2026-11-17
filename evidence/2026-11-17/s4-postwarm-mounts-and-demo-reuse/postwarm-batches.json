@@ -1,0 +1,1444 @@
+{
+  "browser": [
+    {
+      "nodePhase": "goto",
+      "receivedNodeMs": 6181.121042,
+      "stage": "module-barrier-begin",
+      "owner": null,
+      "runtime": null,
+      "details": {},
+      "pageMs": 5301.299999952316,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 6951.256584,
+      "stage": "module-barrier-demo-start",
+      "owner": null,
+      "runtime": null,
+      "details": {
+        "count": 317
+      },
+      "pageMs": 6071.900000095367,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7267.779917,
+      "stage": "shared-dependency-join-begin",
+      "owner": null,
+      "pageMs": 6388,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "react"
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7267.853667,
+      "stage": "dependency-vite-begin",
+      "owner": null,
+      "runtime": "react",
+      "dependency": "react",
+      "pageMs": 6388.099999904633,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7268.056792,
+      "stage": "dependency-vite-begin",
+      "owner": null,
+      "runtime": "react",
+      "dependency": "react-dom",
+      "pageMs": 6388.799999952316,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7268.504917,
+      "stage": "dependency-vite-begin",
+      "owner": null,
+      "runtime": "react",
+      "dependency": "react-dom-client",
+      "pageMs": 6389.299999952316,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7269.093792,
+      "stage": "dependency-import-dispatch",
+      "owner": null,
+      "runtime": "react",
+      "dependency": "react",
+      "pageMs": 6389.799999952316,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7269.220292,
+      "stage": "dependency-import-dispatch",
+      "owner": null,
+      "runtime": "react",
+      "dependency": "react-dom",
+      "pageMs": 6389.799999952316,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7269.242417,
+      "stage": "dependency-import-dispatch",
+      "owner": null,
+      "runtime": "react",
+      "dependency": "react-dom-client",
+      "pageMs": 6389.799999952316,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7490.468084,
+      "stage": "module-barrier-demo-return",
+      "owner": null,
+      "runtime": null,
+      "details": {
+        "fulfilled": 317,
+        "rejected": 0
+      },
+      "pageMs": 6611.200000047684,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7493.657959,
+      "stage": "module-barrier-prototypes-start",
+      "owner": null,
+      "runtime": null,
+      "details": {
+        "count": 1149
+      },
+      "pageMs": 6614.400000095367,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7668.844542,
+      "stage": "module-body-enter",
+      "owner": null,
+      "runtime": "react",
+      "asset": "index.BVKZFYvx.js",
+      "pageMs": 6784.700000047684,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7668.890709,
+      "stage": "module-body-leave",
+      "owner": null,
+      "runtime": "react",
+      "asset": "index.BVKZFYvx.js",
+      "pageMs": 6784.900000095367,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7668.974375,
+      "stage": "module-body-enter",
+      "owner": null,
+      "runtime": "react",
+      "asset": "index.C47PDzzu.js",
+      "pageMs": 6785,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7668.990375,
+      "stage": "module-body-leave",
+      "owner": null,
+      "runtime": "react",
+      "asset": "index.C47PDzzu.js",
+      "pageMs": 6785.099999904633,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7669.002334,
+      "stage": "module-body-enter",
+      "owner": null,
+      "runtime": "react",
+      "asset": "index.J7E9Px8p.js",
+      "pageMs": 6785.099999904633,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7669.013584,
+      "stage": "module-body-leave",
+      "owner": null,
+      "runtime": "react",
+      "asset": "index.J7E9Px8p.js",
+      "pageMs": 6785.099999904633,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7669.02375,
+      "stage": "dependency-import-return",
+      "owner": null,
+      "runtime": "react",
+      "dependency": "react",
+      "pageMs": 6785.200000047684,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7669.211542,
+      "stage": "module-body-enter",
+      "owner": null,
+      "runtime": "react",
+      "asset": "index.D5ahegtX.js",
+      "pageMs": 6785.200000047684,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7669.242375,
+      "stage": "module-body-leave",
+      "owner": null,
+      "runtime": "react",
+      "asset": "index.D5ahegtX.js",
+      "pageMs": 6786.5,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7669.260042,
+      "stage": "module-body-enter",
+      "owner": null,
+      "runtime": "react",
+      "asset": "index.CDDwQV5v.js",
+      "pageMs": 6786.5,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7669.273917,
+      "stage": "module-body-leave",
+      "owner": null,
+      "runtime": "react",
+      "asset": "index.CDDwQV5v.js",
+      "pageMs": 6787.599999904633,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7669.293334,
+      "stage": "module-body-enter",
+      "owner": null,
+      "runtime": "react",
+      "asset": "index.CWLepCMo.js",
+      "pageMs": 6787.700000047684,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7669.304875,
+      "stage": "module-body-leave",
+      "owner": null,
+      "runtime": "react",
+      "asset": "index.CWLepCMo.js",
+      "pageMs": 6787.700000047684,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7669.315459,
+      "stage": "dependency-import-return",
+      "owner": null,
+      "runtime": "react",
+      "dependency": "react-dom",
+      "pageMs": 6787.700000047684,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7669.32575,
+      "stage": "module-body-enter",
+      "owner": null,
+      "runtime": "react",
+      "asset": "client.nHzutAOZ.js",
+      "pageMs": 6787.700000047684,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7669.33625,
+      "stage": "module-body-leave",
+      "owner": null,
+      "runtime": "react",
+      "asset": "client.nHzutAOZ.js",
+      "pageMs": 6787.700000047684,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7669.3465,
+      "stage": "module-body-enter",
+      "owner": null,
+      "runtime": "react",
+      "asset": "client.CwoxijIM.js",
+      "pageMs": 6787.700000047684,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7669.362292,
+      "stage": "module-body-leave",
+      "owner": null,
+      "runtime": "react",
+      "asset": "client.CwoxijIM.js",
+      "pageMs": 6787.799999952316,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7669.372917,
+      "stage": "dependency-import-return",
+      "owner": null,
+      "runtime": "react",
+      "dependency": "react-dom-client",
+      "pageMs": 6787.799999952316,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7669.383084,
+      "stage": "shared-dependency-join-return",
+      "owner": null,
+      "pageMs": 6787.799999952316,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "react"
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 7669.393042,
+      "stage": "shared-assembly-return",
+      "owner": null,
+      "pageMs": 6787.799999952316,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "react"
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 8029.009167,
+      "stage": "module-barrier-prototypes-return",
+      "owner": null,
+      "runtime": null,
+      "details": {
+        "fulfilled": 1149,
+        "rejected": 0,
+        "runtimes": ["fulfilled", "fulfilled", "fulfilled"]
+      },
+      "pageMs": 7149.799999952316,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 8029.100917,
+      "stage": "module-barrier-open",
+      "owner": null,
+      "runtime": null,
+      "details": {
+        "count": 1268
+      },
+      "pageMs": 7149.799999952316,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 8037.086084,
+      "stage": "module-barrier-mount-batch",
+      "owner": null,
+      "runtime": null,
+      "details": {
+        "batch": 1,
+        "dispatched": 64,
+        "remaining": 1204
+      },
+      "pageMs": 7157.799999952316,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 8044.904625,
+      "stage": "module-barrier-mount-batch",
+      "owner": null,
+      "runtime": null,
+      "details": {
+        "batch": 2,
+        "dispatched": 128,
+        "remaining": 1140
+      },
+      "pageMs": 7165.700000047684,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 8079.768,
+      "stage": "demo-import-begin",
+      "owner": "pp-xdurvsr23t",
+      "pageMs": 7200.299999952316,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "wc",
+      "children": 0
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 8114.493459,
+      "stage": "demo-import-begin",
+      "owner": "pp-prwwhqhmwzg",
+      "pageMs": 7235.299999952316,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "react",
+      "children": 0
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 8408.065584,
+      "stage": "module-barrier-mount-batch",
+      "owner": null,
+      "runtime": null,
+      "details": {
+        "batch": 4,
+        "dispatched": 256,
+        "remaining": 1012
+      },
+      "pageMs": 7528.599999904633,
+      "timeOrigin": 1794884092876.5
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 16318.660334,
+      "stage": "demo-import-return",
+      "owner": "pp-xdurvsr23t",
+      "pageMs": 15439,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "wc",
+      "children": 0
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 16318.716584,
+      "stage": "initial-theme-start",
+      "owner": "pp-xdurvsr23t",
+      "pageMs": 15439.099999904633,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "wc",
+      "children": 0
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 16328.236125,
+      "stage": "initial-theme-return",
+      "owner": "pp-xdurvsr23t",
+      "pageMs": 15448.900000095367,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "wc",
+      "children": 0
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 16328.339375,
+      "stage": "prototype-imports-begin",
+      "owner": "pp-xdurvsr23t",
+      "pageMs": 15449,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "wc",
+      "children": 0,
+      "prototypeIds": [
+        "base-accordion-root",
+        "base-accordion-item",
+        "base-accordion-heading",
+        "base-accordion-trigger",
+        "base-accordion-content",
+        "base-button"
+      ]
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 16328.362334,
+      "stage": "prototype-imports-return",
+      "owner": "pp-xdurvsr23t",
+      "pageMs": 15449,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "wc",
+      "children": 0
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 16328.376542,
+      "stage": "render-begin",
+      "owner": "pp-xdurvsr23t",
+      "pageMs": 15449,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "wc",
+      "children": 0
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 16374.168292,
+      "stage": "render-return",
+      "owner": "pp-xdurvsr23t",
+      "pageMs": 15494.799999952316,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "wc",
+      "children": 1
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 16415.244792,
+      "stage": "surface-ready",
+      "owner": "pp-xdurvsr23t",
+      "pageMs": 15535.700000047684,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "wc",
+      "children": 1
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 16424.551917,
+      "stage": "published",
+      "owner": "pp-xdurvsr23t",
+      "pageMs": 15545.299999952316,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "wc",
+      "children": 1
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 16568.952959,
+      "stage": "demo-import-return",
+      "owner": "pp-prwwhqhmwzg",
+      "pageMs": 15689.5,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "react",
+      "children": 0
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 16568.995709,
+      "stage": "initial-theme-start",
+      "owner": "pp-prwwhqhmwzg",
+      "pageMs": 15689.599999904633,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "react",
+      "children": 0
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 16577.873084,
+      "stage": "initial-theme-return",
+      "owner": "pp-prwwhqhmwzg",
+      "pageMs": 15698.5,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "react",
+      "children": 0
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 16577.911,
+      "stage": "prototype-imports-begin",
+      "owner": "pp-prwwhqhmwzg",
+      "pageMs": 15698.599999904633,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "react",
+      "children": 0,
+      "prototypeIds": [
+        "base-accordion-root",
+        "base-accordion-item",
+        "base-accordion-heading",
+        "base-accordion-trigger",
+        "base-accordion-content",
+        "base-button"
+      ]
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 16577.9825,
+      "stage": "prototype-imports-return",
+      "owner": "pp-prwwhqhmwzg",
+      "pageMs": 15698.599999904633,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "react",
+      "children": 0
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 16578.00275,
+      "stage": "render-begin",
+      "owner": "pp-prwwhqhmwzg",
+      "pageMs": 15698.599999904633,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "react",
+      "children": 0
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 16578.326209,
+      "stage": "react-join-begin",
+      "owner": "pp-prwwhqhmwzg",
+      "pageMs": 15698.900000095367,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "react",
+      "children": 0
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 16578.378542,
+      "stage": "react-join-return",
+      "owner": "pp-prwwhqhmwzg",
+      "pageMs": 15699.099999904633,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "react",
+      "children": 0
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 16578.4185,
+      "stage": "sync-render-begin",
+      "owner": "pp-prwwhqhmwzg",
+      "pageMs": 15699.200000047684,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "react",
+      "children": 0
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 16622.125334,
+      "stage": "sync-render-return",
+      "owner": "pp-prwwhqhmwzg",
+      "pageMs": 15742.599999904633,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "react",
+      "children": 1
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 16955.731709,
+      "stage": "frame-one",
+      "owner": "pp-prwwhqhmwzg",
+      "pageMs": 16076.200000047684,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "react",
+      "children": 1
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 17386.160167,
+      "stage": "frame-two-return",
+      "owner": "pp-prwwhqhmwzg",
+      "pageMs": 16506.700000047684,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "react",
+      "children": 1
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 17390.059875,
+      "stage": "render-return",
+      "owner": "pp-prwwhqhmwzg",
+      "pageMs": 16510.700000047684,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "react",
+      "children": 1
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 17390.222584,
+      "stage": "react-join-begin",
+      "owner": "pp-prwwhqhmwzg",
+      "pageMs": 16511,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "react",
+      "children": 0
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 17395.541334,
+      "stage": "react-join-return",
+      "owner": "pp-prwwhqhmwzg",
+      "pageMs": 16516.299999952316,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "react",
+      "children": 0
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 17395.590917,
+      "stage": "sync-render-begin",
+      "owner": "pp-prwwhqhmwzg",
+      "pageMs": 16516.299999952316,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "react",
+      "children": 0
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 17396.422625,
+      "stage": "sync-render-return",
+      "owner": "pp-prwwhqhmwzg",
+      "pageMs": 16517.200000047684,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "react",
+      "children": 1
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 18192.507084,
+      "stage": "frame-one",
+      "owner": "pp-prwwhqhmwzg",
+      "pageMs": 17313,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "react",
+      "children": 1
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 18424.719959,
+      "stage": "frame-two-return",
+      "owner": "pp-prwwhqhmwzg",
+      "pageMs": 17545.299999952316,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "react",
+      "children": 1
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 18439.11725,
+      "stage": "surface-ready",
+      "owner": "pp-prwwhqhmwzg",
+      "pageMs": 17559.799999952316,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "react",
+      "children": 1
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 18447.498334,
+      "stage": "published",
+      "owner": "pp-prwwhqhmwzg",
+      "pageMs": 17568.299999952316,
+      "timeOrigin": 1794884092876.5,
+      "runtime": "react",
+      "children": 1
+    },
+    {
+      "nodePhase": "startup-wait",
+      "receivedNodeMs": 35074.962625,
+      "stage": "module-barrier-mount-batch",
+      "owner": null,
+      "runtime": null,
+      "details": {
+        "batch": 8,
+        "dispatched": 512,
+        "remaining": 756
+      },
+      "pageMs": 34195.40000009537,
+      "timeOrigin": 1794884092876.5
+    }
+  ],
+  "targets": {
+    "react": {
+      "file": "/_astro/index.J7E9Px8p.js",
+      "browserPhases": [
+        {
+          "nodePhase": "startup-wait",
+          "receivedNodeMs": 7267.853667,
+          "stage": "dependency-vite-begin",
+          "owner": null,
+          "runtime": "react",
+          "dependency": "react",
+          "pageMs": 6388.099999904633,
+          "timeOrigin": 1794884092876.5
+        },
+        {
+          "nodePhase": "startup-wait",
+          "receivedNodeMs": 7269.093792,
+          "stage": "dependency-import-dispatch",
+          "owner": null,
+          "runtime": "react",
+          "dependency": "react",
+          "pageMs": 6389.799999952316,
+          "timeOrigin": 1794884092876.5
+        },
+        {
+          "nodePhase": "startup-wait",
+          "receivedNodeMs": 7669.02375,
+          "stage": "dependency-import-return",
+          "owner": null,
+          "runtime": "react",
+          "dependency": "react",
+          "pageMs": 6785.200000047684,
+          "timeOrigin": 1794884092876.5
+        }
+      ],
+      "wire": [
+        {
+          "phase": "request",
+          "serial": 11,
+          "nodeMs": 7269.322042,
+          "nodeTimeOrigin": 1794884091997.449,
+          "id": "67746.548",
+          "file": "/_astro/index.J7E9Px8p.js",
+          "timestamp": 1254817.598411,
+          "wallTime": 1794884099.264952,
+          "type": "Script",
+          "initiatorType": "script",
+          "initiatorFile": "client",
+          "alignedPageMs": 6388.452
+        },
+        {
+          "phase": "response",
+          "serial": 19,
+          "nodeMs": 7661.8435,
+          "nodeTimeOrigin": 1794884091997.449,
+          "id": "67746.548",
+          "timestamp": 1254817.986061,
+          "status": 200,
+          "cache": false,
+          "protocol": "http/1.1",
+          "mime": "text/javascript",
+          "file": "/_astro/index.J7E9Px8p.js",
+          "alignedPageMs": 6776.102
+        },
+        {
+          "phase": "finish",
+          "serial": 22,
+          "nodeMs": 7661.907875,
+          "nodeTimeOrigin": 1794884091997.449,
+          "id": "67746.548",
+          "timestamp": 1254817.823608,
+          "bytes": 795,
+          "file": "/_astro/index.J7E9Px8p.js",
+          "alignedPageMs": 6613.649
+        }
+      ],
+      "mappedPreloads": [
+        "_astro/index.J7E9Px8p.js",
+        "_astro/index.BVKZFYvx.js",
+        "_astro/index.C47PDzzu.js"
+      ]
+    },
+    "react-dom": {
+      "file": "/_astro/index.CWLepCMo.js",
+      "browserPhases": [
+        {
+          "nodePhase": "startup-wait",
+          "receivedNodeMs": 7268.056792,
+          "stage": "dependency-vite-begin",
+          "owner": null,
+          "runtime": "react",
+          "dependency": "react-dom",
+          "pageMs": 6388.799999952316,
+          "timeOrigin": 1794884092876.5
+        },
+        {
+          "nodePhase": "startup-wait",
+          "receivedNodeMs": 7269.220292,
+          "stage": "dependency-import-dispatch",
+          "owner": null,
+          "runtime": "react",
+          "dependency": "react-dom",
+          "pageMs": 6389.799999952316,
+          "timeOrigin": 1794884092876.5
+        },
+        {
+          "nodePhase": "startup-wait",
+          "receivedNodeMs": 7669.315459,
+          "stage": "dependency-import-return",
+          "owner": null,
+          "runtime": "react",
+          "dependency": "react-dom",
+          "pageMs": 6787.700000047684,
+          "timeOrigin": 1794884092876.5
+        }
+      ],
+      "wire": [
+        {
+          "phase": "request",
+          "serial": 14,
+          "nodeMs": 7269.355792,
+          "nodeTimeOrigin": 1794884091997.449,
+          "id": "67746.551",
+          "file": "/_astro/index.CWLepCMo.js",
+          "timestamp": 1254817.598981,
+          "wallTime": 1794884099.265516,
+          "type": "Script",
+          "initiatorType": "script",
+          "initiatorFile": "client",
+          "alignedPageMs": 6389.016
+        },
+        {
+          "phase": "response",
+          "serial": 27,
+          "nodeMs": 7661.997709,
+          "nodeTimeOrigin": 1794884091997.449,
+          "id": "67746.551",
+          "timestamp": 1254817.986248,
+          "status": 200,
+          "cache": false,
+          "protocol": "http/1.1",
+          "mime": "text/javascript",
+          "file": "/_astro/index.CWLepCMo.js",
+          "alignedPageMs": 6776.283
+        },
+        {
+          "phase": "finish",
+          "serial": 30,
+          "nodeMs": 7662.08525,
+          "nodeTimeOrigin": 1794884091997.449,
+          "id": "67746.551",
+          "timestamp": 1254817.827534,
+          "bytes": 823,
+          "file": "/_astro/index.CWLepCMo.js",
+          "alignedPageMs": 6617.569
+        }
+      ],
+      "mappedPreloads": [
+        "_astro/index.CWLepCMo.js",
+        "_astro/index.BVKZFYvx.js",
+        "_astro/index.D5ahegtX.js",
+        "_astro/index.CDDwQV5v.js"
+      ]
+    },
+    "react-dom-client": {
+      "file": "/_astro/client.CwoxijIM.js",
+      "browserPhases": [
+        {
+          "nodePhase": "startup-wait",
+          "receivedNodeMs": 7268.504917,
+          "stage": "dependency-vite-begin",
+          "owner": null,
+          "runtime": "react",
+          "dependency": "react-dom-client",
+          "pageMs": 6389.299999952316,
+          "timeOrigin": 1794884092876.5
+        },
+        {
+          "nodePhase": "startup-wait",
+          "receivedNodeMs": 7269.242417,
+          "stage": "dependency-import-dispatch",
+          "owner": null,
+          "runtime": "react",
+          "dependency": "react-dom-client",
+          "pageMs": 6389.799999952316,
+          "timeOrigin": 1794884092876.5
+        },
+        {
+          "nodePhase": "startup-wait",
+          "receivedNodeMs": 7669.372917,
+          "stage": "dependency-import-return",
+          "owner": null,
+          "runtime": "react",
+          "dependency": "react-dom-client",
+          "pageMs": 6787.799999952316,
+          "timeOrigin": 1794884092876.5
+        }
+      ],
+      "wire": [
+        {
+          "phase": "request",
+          "serial": 17,
+          "nodeMs": 7269.380209,
+          "nodeTimeOrigin": 1794884091997.449,
+          "id": "67746.554",
+          "file": "/_astro/client.CwoxijIM.js",
+          "timestamp": 1254817.599469,
+          "wallTime": 1794884099.266004,
+          "type": "Script",
+          "initiatorType": "script",
+          "initiatorFile": "client",
+          "alignedPageMs": 6389.504
+        },
+        {
+          "phase": "response",
+          "serial": 39,
+          "nodeMs": 7662.195084,
+          "nodeTimeOrigin": 1794884091997.449,
+          "id": "67746.554",
+          "timestamp": 1254817.986437,
+          "status": 200,
+          "cache": false,
+          "protocol": "http/1.1",
+          "mime": "text/javascript",
+          "file": "/_astro/client.CwoxijIM.js",
+          "alignedPageMs": 6776.472
+        },
+        {
+          "phase": "finish",
+          "serial": 42,
+          "nodeMs": 7662.204584,
+          "nodeTimeOrigin": 1794884091997.449,
+          "id": "67746.554",
+          "timestamp": 1254817.832676,
+          "bytes": 826,
+          "file": "/_astro/client.CwoxijIM.js",
+          "alignedPageMs": 6622.711
+        }
+      ],
+      "mappedPreloads": [
+        "_astro/client.CwoxijIM.js",
+        "_astro/index.BVKZFYvx.js",
+        "_astro/client.nHzutAOZ.js",
+        "_astro/index.D5ahegtX.js"
+      ]
+    }
+  },
+  "wire": [
+    {
+      "phase": "request",
+      "serial": 1,
+      "nodeMs": 1086.938125,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.152",
+      "file": "/_astro/preload-helper.BlTxHScW.js",
+      "timestamp": 1254811.416251,
+      "wallTime": 1794884093.082787,
+      "type": "Script",
+      "initiatorType": "script",
+      "initiatorFile": "/_astro/Search.astro_astro_type_script_index_0_lang.BS1vgFKV.js",
+      "alignedPageMs": 206.287
+    },
+    {
+      "phase": "response",
+      "serial": 2,
+      "nodeMs": 1211.984334,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.152",
+      "timestamp": 1254811.542254,
+      "status": 200,
+      "cache": false,
+      "protocol": "http/1.1",
+      "mime": "text/javascript",
+      "file": "/_astro/preload-helper.BlTxHScW.js",
+      "alignedPageMs": 332.29
+    },
+    {
+      "phase": "finish",
+      "serial": 5,
+      "nodeMs": 1212.086542,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.152",
+      "timestamp": 1254811.465697,
+      "bytes": 1021,
+      "file": "/_astro/preload-helper.BlTxHScW.js",
+      "alignedPageMs": 255.733
+    },
+    {
+      "phase": "request",
+      "serial": 6,
+      "nodeMs": 7005.937792,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.392",
+      "file": "/_astro/react-runtime.BHOu3vdb.js",
+      "timestamp": 1254817.320287,
+      "wallTime": 1794884098.986822,
+      "type": "Script",
+      "initiatorType": "script",
+      "initiatorFile": "client",
+      "alignedPageMs": 6110.322
+    },
+    {
+      "phase": "response",
+      "serial": 7,
+      "nodeMs": 7267.358959,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.392",
+      "timestamp": 1254817.597756,
+      "status": 200,
+      "cache": false,
+      "protocol": "http/1.1",
+      "mime": "text/javascript",
+      "file": "/_astro/react-runtime.BHOu3vdb.js",
+      "alignedPageMs": 6387.791
+    },
+    {
+      "phase": "finish",
+      "serial": 10,
+      "nodeMs": 7267.435417,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.392",
+      "timestamp": 1254817.597464,
+      "bytes": 1337,
+      "file": "/_astro/react-runtime.BHOu3vdb.js",
+      "alignedPageMs": 6387.499
+    },
+    {
+      "phase": "request",
+      "serial": 11,
+      "nodeMs": 7269.322042,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.548",
+      "file": "/_astro/index.J7E9Px8p.js",
+      "timestamp": 1254817.598411,
+      "wallTime": 1794884099.264952,
+      "type": "Script",
+      "initiatorType": "script",
+      "initiatorFile": "client",
+      "alignedPageMs": 6388.452
+    },
+    {
+      "phase": "request",
+      "serial": 12,
+      "nodeMs": 7269.336875,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.549",
+      "file": "/_astro/index.BVKZFYvx.js",
+      "timestamp": 1254817.598569,
+      "wallTime": 1794884099.265105,
+      "type": "Script",
+      "initiatorType": "script",
+      "initiatorFile": "client",
+      "alignedPageMs": 6388.605
+    },
+    {
+      "phase": "request",
+      "serial": 13,
+      "nodeMs": 7269.346292,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.550",
+      "file": "/_astro/index.C47PDzzu.js",
+      "timestamp": 1254817.598694,
+      "wallTime": 1794884099.265229,
+      "type": "Script",
+      "initiatorType": "script",
+      "initiatorFile": "client",
+      "alignedPageMs": 6388.729
+    },
+    {
+      "phase": "request",
+      "serial": 14,
+      "nodeMs": 7269.355792,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.551",
+      "file": "/_astro/index.CWLepCMo.js",
+      "timestamp": 1254817.598981,
+      "wallTime": 1794884099.265516,
+      "type": "Script",
+      "initiatorType": "script",
+      "initiatorFile": "client",
+      "alignedPageMs": 6389.016
+    },
+    {
+      "phase": "request",
+      "serial": 15,
+      "nodeMs": 7269.364084,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.552",
+      "file": "/_astro/index.D5ahegtX.js",
+      "timestamp": 1254817.599099,
+      "wallTime": 1794884099.265635,
+      "type": "Script",
+      "initiatorType": "script",
+      "initiatorFile": "client",
+      "alignedPageMs": 6389.135
+    },
+    {
+      "phase": "request",
+      "serial": 16,
+      "nodeMs": 7269.3715,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.553",
+      "file": "/_astro/index.CDDwQV5v.js",
+      "timestamp": 1254817.599215,
+      "wallTime": 1794884099.26575,
+      "type": "Script",
+      "initiatorType": "script",
+      "initiatorFile": "client",
+      "alignedPageMs": 6389.25
+    },
+    {
+      "phase": "request",
+      "serial": 17,
+      "nodeMs": 7269.380209,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.554",
+      "file": "/_astro/client.CwoxijIM.js",
+      "timestamp": 1254817.599469,
+      "wallTime": 1794884099.266004,
+      "type": "Script",
+      "initiatorType": "script",
+      "initiatorFile": "client",
+      "alignedPageMs": 6389.504
+    },
+    {
+      "phase": "request",
+      "serial": 18,
+      "nodeMs": 7269.38775,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.555",
+      "file": "/_astro/client.nHzutAOZ.js",
+      "timestamp": 1254817.599587,
+      "wallTime": 1794884099.266154,
+      "type": "Script",
+      "initiatorType": "script",
+      "initiatorFile": "client",
+      "alignedPageMs": 6389.654
+    },
+    {
+      "phase": "response",
+      "serial": 19,
+      "nodeMs": 7661.8435,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.548",
+      "timestamp": 1254817.986061,
+      "status": 200,
+      "cache": false,
+      "protocol": "http/1.1",
+      "mime": "text/javascript",
+      "file": "/_astro/index.J7E9Px8p.js",
+      "alignedPageMs": 6776.102
+    },
+    {
+      "phase": "finish",
+      "serial": 22,
+      "nodeMs": 7661.907875,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.548",
+      "timestamp": 1254817.823608,
+      "bytes": 795,
+      "file": "/_astro/index.J7E9Px8p.js",
+      "alignedPageMs": 6613.649
+    },
+    {
+      "phase": "response",
+      "serial": 23,
+      "nodeMs": 7661.975459,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.550",
+      "timestamp": 1254817.986184,
+      "status": 200,
+      "cache": false,
+      "protocol": "http/1.1",
+      "mime": "text/javascript",
+      "file": "/_astro/index.C47PDzzu.js",
+      "alignedPageMs": 6776.219
+    },
+    {
+      "phase": "finish",
+      "serial": 26,
+      "nodeMs": 7661.99025,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.550",
+      "timestamp": 1254817.825819,
+      "bytes": 1176,
+      "file": "/_astro/index.C47PDzzu.js",
+      "alignedPageMs": 6615.854
+    },
+    {
+      "phase": "response",
+      "serial": 27,
+      "nodeMs": 7661.997709,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.551",
+      "timestamp": 1254817.986248,
+      "status": 200,
+      "cache": false,
+      "protocol": "http/1.1",
+      "mime": "text/javascript",
+      "file": "/_astro/index.CWLepCMo.js",
+      "alignedPageMs": 6776.283
+    },
+    {
+      "phase": "finish",
+      "serial": 30,
+      "nodeMs": 7662.08525,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.551",
+      "timestamp": 1254817.827534,
+      "bytes": 823,
+      "file": "/_astro/index.CWLepCMo.js",
+      "alignedPageMs": 6617.569
+    },
+    {
+      "phase": "response",
+      "serial": 31,
+      "nodeMs": 7662.093209,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.549",
+      "timestamp": 1254817.986317,
+      "status": 200,
+      "cache": false,
+      "protocol": "http/1.1",
+      "mime": "text/javascript",
+      "file": "/_astro/index.BVKZFYvx.js",
+      "alignedPageMs": 6776.353
+    },
+    {
+      "phase": "finish",
+      "serial": 34,
+      "nodeMs": 7662.102459,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.549",
+      "timestamp": 1254817.829273,
+      "bytes": 3263,
+      "file": "/_astro/index.BVKZFYvx.js",
+      "alignedPageMs": 6619.309
+    },
+    {
+      "phase": "response",
+      "serial": 35,
+      "nodeMs": 7662.113,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.553",
+      "timestamp": 1254817.986373,
+      "status": 200,
+      "cache": false,
+      "protocol": "http/1.1",
+      "mime": "text/javascript",
+      "file": "/_astro/index.CDDwQV5v.js",
+      "alignedPageMs": 6776.408
+    },
+    {
+      "phase": "finish",
+      "serial": 38,
+      "nodeMs": 7662.128084,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.553",
+      "timestamp": 1254817.830995,
+      "bytes": 1209,
+      "file": "/_astro/index.CDDwQV5v.js",
+      "alignedPageMs": 6621.03
+    },
+    {
+      "phase": "response",
+      "serial": 39,
+      "nodeMs": 7662.195084,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.554",
+      "timestamp": 1254817.986437,
+      "status": 200,
+      "cache": false,
+      "protocol": "http/1.1",
+      "mime": "text/javascript",
+      "file": "/_astro/client.CwoxijIM.js",
+      "alignedPageMs": 6776.472
+    },
+    {
+      "phase": "finish",
+      "serial": 42,
+      "nodeMs": 7662.204584,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.554",
+      "timestamp": 1254817.832676,
+      "bytes": 826,
+      "file": "/_astro/client.CwoxijIM.js",
+      "alignedPageMs": 6622.711
+    },
+    {
+      "phase": "response",
+      "serial": 43,
+      "nodeMs": 7662.34525,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.555",
+      "timestamp": 1254817.986563,
+      "status": 200,
+      "cache": false,
+      "protocol": "http/1.1",
+      "mime": "text/javascript",
+      "file": "/_astro/client.nHzutAOZ.js",
+      "alignedPageMs": 6776.63
+    },
+    {
+      "phase": "finish",
+      "serial": 46,
+      "nodeMs": 7662.355625,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.555",
+      "timestamp": 1254817.834585,
+      "bytes": 1328,
+      "file": "/_astro/client.nHzutAOZ.js",
+      "alignedPageMs": 6624.652
+    },
+    {
+      "phase": "response",
+      "serial": 47,
+      "nodeMs": 7662.47275,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.552",
+      "timestamp": 1254817.986809,
+      "status": 200,
+      "cache": false,
+      "protocol": "http/1.1",
+      "mime": "text/javascript",
+      "file": "/_astro/index.D5ahegtX.js",
+      "alignedPageMs": 6776.845
+    },
+    {
+      "phase": "finish",
+      "serial": 54,
+      "nodeMs": 7662.487292,
+      "nodeTimeOrigin": 1794884091997.449,
+      "id": "67746.552",
+      "timestamp": 1254817.83937,
+      "bytes": 43833,
+      "file": "/_astro/index.D5ahegtX.js",
+      "alignedPageMs": 6629.406
+    }
+  ],
+  "artifactSHA256": "1e1afceec6597291437d2d2df8b8ca5055f4201797f907b27ecfce362e963376",
+  "executionLogSHA256": "357915bdf08aa51eeb80be610ef6412bb09a7cfb7d6363f902d29e21fdda8826",
+  "buildSettings": {
+    "selectedLocale": "zh-cn",
+    "readinessMs": 60000,
+    "outerMs": 150000
+  },
+  "assetBindings": [
+    {
+      "file": "previewer-client.CRzJkf6b.js",
+      "inputSHA256": "215eeb09c4c0ec69e8f463197d3ef66f7de0fe875617c1e26a6adeef34930a5f",
+      "outputSHA256": "939359085ac0a494ce687135c3e2489f35d2a86db8dc2bacaaa397959e3bb6a7"
+    },
+    {
+      "file": "demo-renderer.DqE7uBFG.js",
+      "inputSHA256": "61d98c7fcb3a0b8abe8f8888e1284e94c31fad9eb68970af7936ae116a05ade7",
+      "outputSHA256": "ece85587f44cfbb4043804124030e12ae47f3ef7eeee65f5fe38cad860a5c4b7"
+    },
+    {
+      "file": "react-runtime.BHOu3vdb.js",
+      "inputSHA256": "65e7f7ce7b6219d490f2cd8f88a2207918851da098afba1f2429a5b87aa8afac",
+      "outputSHA256": "9e68f7817416e68077fe9ab9bd3644f15d2a232ed053ac8d100886101e701a90"
+    }
+  ],
+  "wireBinding": {
+    "file": "react-runtime.BHOu3vdb.js",
+    "inputSHA256": "9e68f7817416e68077fe9ab9bd3644f15d2a232ed053ac8d100886101e701a90",
+    "outputSHA256": "d3ff74e39b9950b7f25414484dac28d8fb288c9f8b0b57b6031a36e1701416b9"
+  },
+  "test": {
+    "exit": 1,
+    "status": "failed",
+    "durationMs": 88516.602,
+    "failure": "page.waitForFunction: Timeout 60000ms exceeded."
+  },
+  "nativeCollectionOutcome": "budget-expired",
+  "originalPredicateSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+  "mountIntervention": {
+    "asset": "PrototypePreviewer.astro_astro_type_script_index_0_lang.CAcWJfEA.js",
+    "inputSHA256": "18da403e8efbe5b36df3b2ec5c768611783a0ccf3946886eff5be0db2b3d90a5",
+    "outputSHA256": "8835c97b64b989e922cf1eef8af76086078d3809e4dc733e91da7e8c7d1801b7",
+    "consultedAssets": {
+      "demo-renderer.DqE7uBFG.js": "ece85587f44cfbb4043804124030e12ae47f3ef7eeee65f5fe38cad860a5c4b7",
+      "projection-materializer.CXhDDqJY.js": "b4cde497142b085753232d0f47b6f685572799e09f986500fa19b09f48972894",
+      "prototype-modules.wID6EUeU.js": "c9bf195f9d40508e78069904714573f161c0479f8d163735067a85dd8137fbe2",
+      "runtime-preview-surface.BD4AwvdZ.js": "7f7d73e38f079a875c9587a2d1ea2f865285d5bbf3c1f255163eacb98efe3e75"
+    }
+  },
+  "previousUnbatchedIntervention": {
+    "asset": "PrototypePreviewer.astro_astro_type_script_index_0_lang.CAcWJfEA.js",
+    "inputSHA256": "18da403e8efbe5b36df3b2ec5c768611783a0ccf3946886eff5be0db2b3d90a5",
+    "outputSHA256": "26a05ad9c9e152b0a4ad05a76337513d858589c60fbf92770ae703a25e729012",
+    "consultedAssets": {
+      "demo-renderer.DqE7uBFG.js": "ece85587f44cfbb4043804124030e12ae47f3ef7eeee65f5fe38cad860a5c4b7",
+      "projection-materializer.CXhDDqJY.js": "b4cde497142b085753232d0f47b6f685572799e09f986500fa19b09f48972894",
+      "prototype-modules.wID6EUeU.js": "c9bf195f9d40508e78069904714573f161c0479f8d163735067a85dd8137fbe2",
+      "runtime-preview-surface.BD4AwvdZ.js": "7f7d73e38f079a875c9587a2d1ea2f865285d5bbf3c1f255163eacb98efe3e75"
+    }
+  }
+}
