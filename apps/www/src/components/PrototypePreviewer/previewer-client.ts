@@ -7,6 +7,7 @@ import { collectPrototypeIds, type DemoSpec } from './demo-types';
 import { createRuntimePreviewSurface, runtimePreviewFamily } from './runtime-preview-surface';
 import {
   resolveProjectionThemeSurfaceStyle,
+  scheduleProjectionThemeRead,
   watchProjectionThemeSurfaceStyle,
 } from './projection-theme';
 import { releaseHostMount } from './runtimes/host-mount';
@@ -379,8 +380,18 @@ export function initPreviewer(options: PreviewerOptions) {
         if (!destroyed && myVersion === version) {
           // The renderer already owns a framework root and setup resources.
           // Keep all unpublished shell preparation inside its cleanup boundary.
-          family = runtimePreviewFamily(root);
-          await surface.setAppearance(family, resolveProjectionThemeSurfaceStyle(family, root));
+          const appearance = await scheduleProjectionThemeRead(root, () => {
+            if (destroyed || myVersion !== version) return null;
+            const nextFamily = runtimePreviewFamily(root);
+            return {
+              family: nextFamily,
+              theme: resolveProjectionThemeSurfaceStyle(nextFamily, root),
+            };
+          });
+          if (appearance && !destroyed && myVersion === version) {
+            family = appearance.family;
+            await surface.setAppearance(family, appearance.theme);
+          }
         }
       } catch (error) {
         await result.destroy();

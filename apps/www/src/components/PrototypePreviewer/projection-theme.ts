@@ -130,6 +130,36 @@ export function resolveProjectionThemeSurfaceStyle(
   throw new Error(`[PrototypePreviewer] unsupported projection theme ${String(exhaustive)}.`);
 }
 
+const publicationThemeReads = new WeakMap<Document, Array<() => void>>();
+
+/** Sample each pending scope before its caller resumes and writes theme styles. */
+export function scheduleProjectionThemeRead<T>(scope: Element, read: () => T): Promise<T> {
+  const document = scope.ownerDocument;
+  return new Promise<T>((resolve, reject) => {
+    const sample = () => {
+      try {
+        resolve(read());
+      } catch (error) {
+        reject(error);
+      }
+    };
+    const pending = publicationThemeReads.get(document);
+    if (pending) {
+      pending.push(sample);
+      return;
+    }
+    const batch = [sample];
+    publicationThemeReads.set(document, batch);
+    const flush = () => {
+      publicationThemeReads.delete(document);
+      for (const item of batch) item();
+    };
+    const view = document.defaultView;
+    if (view) view.setTimeout(flush, 0);
+    else queueMicrotask(flush);
+  });
+}
+
 export function applyProjectionThemeSurfaceStyle(
   element: ProjectionThemeSurface,
   theme: ProjectionThemeSurfaceStyle
