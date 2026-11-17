@@ -1,0 +1,627 @@
+{
+  "source": {
+    "head": "5d4f911370ca5e9cb4e4a17f20eca0b1945d6862",
+    "tree": "84b1020b1d8fdd3511e6f9d4215aad6fa94bf83b",
+    "parents": [
+      "621355701553eb1bded8537b0ae5a1881038d61f",
+      "624b878c166658ee99f798eaba2ee6b20f1a6bd5"
+    ],
+    "suiteOverlaySHA256": "000f72d9bd4413104980fe69f60595dc64ea7cff812294739dcd279ff619af47",
+    "observerSHA256": "b56ec096f72172a42e3f9d05275c82802c641e1fec5574d841a9b17defcc91e6",
+    "htmlSHA256": "9e397ace2d4a9af31b295ea4e4c40d2e1e62ffd6505d4240110dfc2c91fbc7a4"
+  },
+  "environment": {
+    "node": "v24.21.0",
+    "pnpm": "10.32.1",
+    "chrome": "Google Chrome for Testing 156.0.8078.79",
+    "workers": 1
+  },
+  "run": {
+    "locale": "zh-cn",
+    "otherLocale": "unselected",
+    "previews": 1268,
+    "readinessMs": 60000,
+    "outerMs": 150000,
+    "exit": 1,
+    "latestOriginalReadiness": null,
+    "verdict": {
+      "startupPassed": false,
+      "errors": [],
+      "consoleErrors": [],
+      "collectionOutcome": "budget-expired",
+      "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+    }
+  },
+  "failure": "TimeoutError: page.waitForFunction: Timeout 60000ms exceeded.",
+  "nativeLogSHA256": "4d4a997229c798e02e09d5674ee7a01e2c752ca6792b721acbe9349da7a0451d",
+  "overlay": [
+    {
+      "asset": "demo-renderer.B7Ear75z.js",
+      "inputSHA256": "db84de866a5bc20a7786d4ba992c3fb8e9be9b9c83be5b6f24ed418194c431d6",
+      "outputSHA256": "f6d73f785f823be5a8a59f05939a07856663ec4feba572330b847cb9bc8f068d",
+      "originalSHA256": "1b82864878c378f606afaa3ea6b6f3a0e23afaf1a4c83212039f3cfac4e694de"
+    },
+    {
+      "asset": "react-runtime.vwl59Oq4.js",
+      "inputSHA256": "f3f06db74ca0d3627d6d719c007d3f3e83ce22eb99e935bf84c421b0e6aa5b39",
+      "outputSHA256": "866bd51cabaf57453fa30215585cd9db347a5e378663b8ee8bf0bf5d9d24629a",
+      "originalSHA256": "f3f06db74ca0d3627d6d719c007d3f3e83ce22eb99e935bf84c421b0e6aa5b39"
+    }
+  ],
+  "reactRuntimeWire": {
+    "/_astro/index.J7E9Px8p.js": [
+      {
+        "id": "46246.730",
+        "requestType": "Script",
+        "initiatorType": "script",
+        "initiatorFile": "client",
+        "events": [
+          {
+            "phase": "request",
+            "serial": 74,
+            "timestamp": 1249673.447562,
+            "nodeMs": 13111.500458,
+            "alignedPageMs": 11983.301
+          },
+          {
+            "phase": "response",
+            "status": 200,
+            "protocol": "http/1.1",
+            "mime": "text/javascript",
+            "serial": 99,
+            "timestamp": 1249674.044116,
+            "nodeMs": 13706.488375,
+            "alignedPageMs": 12579.855
+          },
+          {
+            "phase": "data",
+            "bytes": 90,
+            "serial": 100,
+            "timestamp": 1249674.044119,
+            "nodeMs": 13706.524791,
+            "alignedPageMs": 12579.858
+          },
+          {
+            "phase": "data",
+            "bytes": 0,
+            "serial": 101,
+            "timestamp": 1249674.044132,
+            "nodeMs": 13706.528833,
+            "alignedPageMs": 12579.871
+          },
+          {
+            "phase": "finish",
+            "bytes": 410,
+            "serial": 102,
+            "timestamp": 1249673.460649,
+            "nodeMs": 13706.693583,
+            "alignedPageMs": 11996.388
+          }
+        ]
+      }
+    ],
+    "/_astro/index.CWLepCMo.js": [
+      {
+        "id": "46246.733",
+        "requestType": "Script",
+        "initiatorType": "script",
+        "initiatorFile": "client",
+        "events": [
+          {
+            "phase": "request",
+            "serial": 77,
+            "timestamp": 1249673.448095,
+            "nodeMs": 13111.510583,
+            "alignedPageMs": 11983.831
+          },
+          {
+            "phase": "response",
+            "status": 200,
+            "protocol": "http/1.1",
+            "mime": "text/javascript",
+            "serial": 95,
+            "timestamp": 1249674.044065,
+            "nodeMs": 13706.420375,
+            "alignedPageMs": 12579.801
+          },
+          {
+            "phase": "data",
+            "bytes": 118,
+            "serial": 96,
+            "timestamp": 1249674.044068,
+            "nodeMs": 13706.4235,
+            "alignedPageMs": 12579.804
+          },
+          {
+            "phase": "data",
+            "bytes": 0,
+            "serial": 97,
+            "timestamp": 1249674.044078,
+            "nodeMs": 13706.425,
+            "alignedPageMs": 12579.814
+          },
+          {
+            "phase": "finish",
+            "bytes": 440,
+            "serial": 98,
+            "timestamp": 1249673.460429,
+            "nodeMs": 13706.434833,
+            "alignedPageMs": 11996.165
+          }
+        ]
+      }
+    ],
+    "/_astro/client.CwoxijIM.js": [
+      {
+        "id": "46246.736",
+        "requestType": "Script",
+        "initiatorType": "script",
+        "initiatorFile": "client",
+        "events": [
+          {
+            "phase": "request",
+            "serial": 80,
+            "timestamp": 1249673.44859,
+            "nodeMs": 13111.564166,
+            "alignedPageMs": 11984.326
+          },
+          {
+            "phase": "response",
+            "status": 200,
+            "protocol": "http/1.1",
+            "mime": "text/javascript",
+            "serial": 111,
+            "timestamp": 1249674.044298,
+            "nodeMs": 13707.781875,
+            "alignedPageMs": 12580.034
+          },
+          {
+            "phase": "data",
+            "bytes": 119,
+            "serial": 112,
+            "timestamp": 1249674.044301,
+            "nodeMs": 13707.785625,
+            "alignedPageMs": 12580.037
+          },
+          {
+            "phase": "data",
+            "bytes": 0,
+            "serial": 113,
+            "timestamp": 1249674.04431,
+            "nodeMs": 13707.789166,
+            "alignedPageMs": 12580.046
+          },
+          {
+            "phase": "finish",
+            "bytes": 441,
+            "serial": 114,
+            "timestamp": 1249673.468603,
+            "nodeMs": 13707.792708,
+            "alignedPageMs": 12004.339
+          }
+        ]
+      }
+    ]
+  },
+  "sharedRuntimeStages": [
+    {
+      "stage": "react-import-begin",
+      "pageMs": 11983.099999904633,
+      "timeOrigin": 1794878943130.8,
+      "receivedNodeMs": 13109.98675
+    },
+    {
+      "stage": "react-dom-import-begin",
+      "pageMs": 11983.700000047684,
+      "timeOrigin": 1794878943130.8,
+      "receivedNodeMs": 13110.49325
+    },
+    {
+      "stage": "react-dom/client-import-begin",
+      "pageMs": 11984.200000047684,
+      "timeOrigin": 1794878943130.8,
+      "receivedNodeMs": 13111.0655
+    },
+    {
+      "stage": "react-native-import-dispatch",
+      "pageMs": 11984.700000047684,
+      "timeOrigin": 1794878943130.8,
+      "receivedNodeMs": 13111.350333
+    },
+    {
+      "stage": "react-dom-native-import-dispatch",
+      "pageMs": 11984.799999952316,
+      "timeOrigin": 1794878943130.8,
+      "receivedNodeMs": 13111.434875
+    },
+    {
+      "stage": "react-dom/client-native-import-dispatch",
+      "pageMs": 11984.799999952316,
+      "timeOrigin": 1794878943130.8,
+      "receivedNodeMs": 13111.452541
+    },
+    {
+      "stage": "react-dom-import-return",
+      "pageMs": 56145.89999985695,
+      "timeOrigin": 1794878943130.8,
+      "receivedNodeMs": 57272.621791
+    },
+    {
+      "stage": "react-import-return",
+      "pageMs": 56146.200000047684,
+      "timeOrigin": 1794878943130.8,
+      "receivedNodeMs": 57272.711333
+    },
+    {
+      "stage": "react-dom/client-import-return",
+      "pageMs": 56146.299999952316,
+      "timeOrigin": 1794878943130.8,
+      "receivedNodeMs": 57272.768916
+    },
+    {
+      "stage": "early-runtime-return",
+      "pageMs": 56146.39999985695,
+      "timeOrigin": 1794878943130.8,
+      "receivedNodeMs": 57272.897666
+    }
+  ],
+  "owner": "pp-715ggtjnivc",
+  "ownerStages": [
+    {
+      "stage": "demo-import-begin",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 9339.099999904633,
+      "timeOrigin": 1794878943130.8,
+      "children": 0,
+      "receivedNodeMs": 10466.066666
+    },
+    {
+      "stage": "demo-import-return",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 12522.799999952316,
+      "timeOrigin": 1794878943130.8,
+      "children": 0,
+      "receivedNodeMs": 13649.481458
+    },
+    {
+      "stage": "prototype-imports-begin",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 12522.899999856949,
+      "timeOrigin": 1794878943130.8,
+      "children": 0,
+      "details": [
+        "base-accordion-root",
+        "base-accordion-item",
+        "base-accordion-heading",
+        "base-accordion-trigger",
+        "base-accordion-content",
+        "base-button"
+      ],
+      "receivedNodeMs": 13649.491208
+    },
+    {
+      "stage": "prototype-imports-return",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 51999.5,
+      "timeOrigin": 1794878943130.8,
+      "children": 0,
+      "receivedNodeMs": 53126.016541
+    },
+    {
+      "stage": "render-call",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 51999.5,
+      "timeOrigin": 1794878943130.8,
+      "children": 0,
+      "receivedNodeMs": 53126.2
+    },
+    {
+      "stage": "runtime-join-begin",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 51999.799999952316,
+      "timeOrigin": 1794878943130.8,
+      "children": 0,
+      "receivedNodeMs": 53126.41
+    },
+    {
+      "stage": "runtime-join-return",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 69125.79999995232,
+      "timeOrigin": 1794878943130.8,
+      "children": 0,
+      "details": {
+        "hasRuntime": true,
+        "ownsLease": true
+      },
+      "receivedNodeMs": 70252.377916
+    },
+    {
+      "stage": "create-root-begin",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 69125.79999995232,
+      "timeOrigin": 1794878943130.8,
+      "children": 0,
+      "receivedNodeMs": 70252.449875
+    },
+    {
+      "stage": "create-root-return",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 69125.89999985695,
+      "timeOrigin": 1794878943130.8,
+      "children": 0,
+      "receivedNodeMs": 70252.465583
+    },
+    {
+      "stage": "initial-render-begin",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 69126,
+      "timeOrigin": 1794878943130.8,
+      "children": 0,
+      "receivedNodeMs": 70252.475166
+    },
+    {
+      "stage": "initial-render-return",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 69219.09999990463,
+      "timeOrigin": 1794878943130.8,
+      "children": 1,
+      "receivedNodeMs": 70345.866
+    },
+    {
+      "stage": "first-animation-frame",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 71814.89999985695,
+      "timeOrigin": 1794878943130.8,
+      "children": 1,
+      "receivedNodeMs": 72941.420125
+    },
+    {
+      "stage": "paint-wait-return",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 73995.09999990463,
+      "timeOrigin": 1794878943130.8,
+      "children": 1,
+      "details": {
+        "ownsLease": true
+      },
+      "receivedNodeMs": 75121.854666
+    },
+    {
+      "stage": "setup-begin",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 73996.39999985695,
+      "timeOrigin": 1794878943130.8,
+      "children": 1,
+      "receivedNodeMs": 75123.28275
+    },
+    {
+      "stage": "setup-return",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 74000.20000004768,
+      "timeOrigin": 1794878943130.8,
+      "children": 1,
+      "receivedNodeMs": 75126.711833
+    },
+    {
+      "stage": "render-return",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 74002.59999990463,
+      "timeOrigin": 1794878943130.8,
+      "children": 1,
+      "receivedNodeMs": 75129.122
+    },
+    {
+      "stage": "runtime-join-begin",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 74003,
+      "timeOrigin": 1794878943130.8,
+      "children": 0,
+      "receivedNodeMs": 75129.430208
+    },
+    {
+      "stage": "runtime-join-return",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 74010.59999990463,
+      "timeOrigin": 1794878943130.8,
+      "children": 0,
+      "details": {
+        "hasRuntime": true,
+        "ownsLease": true
+      },
+      "receivedNodeMs": 75137.133458
+    },
+    {
+      "stage": "create-root-begin",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 74010.59999990463,
+      "timeOrigin": 1794878943130.8,
+      "children": 0,
+      "receivedNodeMs": 75137.207958
+    },
+    {
+      "stage": "create-root-return",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 74010.70000004768,
+      "timeOrigin": 1794878943130.8,
+      "children": 0,
+      "receivedNodeMs": 75137.22375
+    },
+    {
+      "stage": "initial-render-begin",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 74010.70000004768,
+      "timeOrigin": 1794878943130.8,
+      "children": 0,
+      "receivedNodeMs": 75137.263583
+    },
+    {
+      "stage": "initial-render-return",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 74012.39999985695,
+      "timeOrigin": 1794878943130.8,
+      "children": 1,
+      "receivedNodeMs": 75138.911625
+    }
+  ],
+  "publicationSamples": [
+    {
+      "receivedNodeMs": 12762.512,
+      "publishedCount": 1,
+      "observedCount": 1268,
+      "firstMissing": {
+        "index": 0,
+        "owner": "pp-o26223tgir",
+        "inited": "1",
+        "children": 0,
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "initialRuntime": "wc",
+        "startupPending": true
+      },
+      "pageMs": 11635.799999952316,
+      "timeOrigin": 1794878943130.8
+    },
+    {
+      "receivedNodeMs": 12831.333916,
+      "publishedCount": 2,
+      "observedCount": 1268,
+      "firstMissing": {
+        "index": 0,
+        "owner": "pp-o26223tgir",
+        "inited": "1",
+        "children": 0,
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "initialRuntime": "wc",
+        "startupPending": true
+      },
+      "pageMs": 11704.799999952316,
+      "timeOrigin": 1794878943130.8
+    },
+    {
+      "receivedNodeMs": 13169.010625,
+      "publishedCount": 4,
+      "observedCount": 1268,
+      "firstMissing": {
+        "index": 0,
+        "owner": "pp-o26223tgir",
+        "inited": "1",
+        "children": 0,
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "initialRuntime": "wc",
+        "startupPending": true
+      },
+      "pageMs": 12042.5,
+      "timeOrigin": 1794878943130.8
+    },
+    {
+      "receivedNodeMs": 13320.467791,
+      "publishedCount": 8,
+      "observedCount": 1268,
+      "firstMissing": {
+        "index": 0,
+        "owner": "pp-o26223tgir",
+        "inited": "1",
+        "children": 0,
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "initialRuntime": "wc",
+        "startupPending": true
+      },
+      "pageMs": 12194,
+      "timeOrigin": 1794878943130.8
+    },
+    {
+      "receivedNodeMs": 13898.483375,
+      "publishedCount": 16,
+      "observedCount": 1268,
+      "firstMissing": {
+        "index": 0,
+        "owner": "pp-o26223tgir",
+        "inited": "1",
+        "children": 0,
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "initialRuntime": "wc",
+        "startupPending": true
+      },
+      "pageMs": 12771.899999856949,
+      "timeOrigin": 1794878943130.8
+    },
+    {
+      "receivedNodeMs": 16595.799125,
+      "publishedCount": 32,
+      "observedCount": 1268,
+      "firstMissing": {
+        "index": 0,
+        "owner": "pp-o26223tgir",
+        "inited": "1",
+        "children": 0,
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "initialRuntime": "wc",
+        "startupPending": true
+      },
+      "pageMs": 15469.200000047684,
+      "timeOrigin": 1794878943130.8
+    },
+    {
+      "receivedNodeMs": 19875.906333,
+      "publishedCount": 64,
+      "observedCount": 1268,
+      "firstMissing": {
+        "index": 0,
+        "owner": "pp-o26223tgir",
+        "inited": "1",
+        "children": 0,
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "initialRuntime": "wc",
+        "startupPending": true
+      },
+      "pageMs": 18749.299999952316,
+      "timeOrigin": 1794878943130.8
+    },
+    {
+      "receivedNodeMs": 26645.486458,
+      "publishedCount": 128,
+      "observedCount": 1268,
+      "firstMissing": {
+        "index": 0,
+        "owner": "pp-o26223tgir",
+        "inited": "1",
+        "children": 0,
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "initialRuntime": "wc",
+        "startupPending": true
+      },
+      "pageMs": 25519,
+      "timeOrigin": 1794878943130.8
+    },
+    {
+      "receivedNodeMs": 47647.776875,
+      "publishedCount": 256,
+      "observedCount": 1268,
+      "firstMissing": {
+        "index": 0,
+        "owner": "pp-o26223tgir",
+        "inited": "1",
+        "children": 0,
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "initialRuntime": "wc",
+        "startupPending": true
+      },
+      "pageMs": 46521.09999990463,
+      "timeOrigin": 1794878943130.8
+    }
+  ],
+  "intervalsMs": {
+    "earlyRuntimeReturnToOwnerFirstJoinReturn": 12979.4,
+    "ownerFirstSyncRender": 93.1,
+    "ownerFirstRenderReturnToFirstAnimationFrame": 2595.8,
+    "ownerFirstRenderReturnToTwoFrames": 4776.0
+  }
+}
