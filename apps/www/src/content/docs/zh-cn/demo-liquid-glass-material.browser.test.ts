@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import type { Browser, BrowserContext, CDPSession, Page } from 'playwright-core';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { observeOwnedMaterialPaint } from './material-paint-observation';
 import {
   launchBrowser,
@@ -20,6 +20,9 @@ let browser: Browser,
   page: Page,
   cdp: CDPSession,
   baseUrl = '';
+type OpticalDisplay = { width: number; height: number; dpr: number };
+const wideDisplay = { width: 1440, height: 1050, dpr: 1 };
+let nativeDisplay: { windowId: number; screenId: string } | undefined;
 const observations: unknown[] = [];
 const safe = {
   'prefers-reduced-motion': 'no-preference',
@@ -41,17 +44,79 @@ async function capture(name: string) {
   }
 }
 let qualityWaitSequence = 0;
-async function quality(value: string) {
+async function setNativeScale(screenId: string, devicePixelRatio: number) {
+  // The installed Playwright protocol types predate the headless screen update command.
+  const session = cdp as CDPSession & {
+    send(
+      method: 'Emulation.updateScreen',
+      params: { screenId: string; devicePixelRatio: number }
+    ): Promise<unknown>;
+  };
+  await session.send('Emulation.updateScreen', { screenId, devicePixelRatio });
+}
+
+async function setNativeSize(windowId: number, { width, height }: OpticalDisplay) {
+  await cdp.send('Browser.setContentsSize', { windowId, width, height });
+}
+
+async function changeDisplay(display: OpticalDisplay, change: 'size' | 'scale') {
+  if (nativeDisplay) {
+    const priorRevisions = await page
+      .locator('[data-demo-ref="regular"]')
+      .evaluateAll((hosts) =>
+        hosts.map((host) => Number(host.getAttribute('data-material-source-revision')))
+      );
+    if (change === 'size') await setNativeSize(nativeDisplay.windowId, display);
+    else await setNativeScale(nativeDisplay.screenId, display.dpr);
+    await quality('self-optical', { ...display, priorRevisions });
+    return;
+  }
+
+  // Keep the existing device-metrics driver for Chromium versions without screen updates.
+  const { width, height, dpr } = display;
+  if (change === 'size') await page.setViewportSize({ width, height });
+  else if (dpr === 1) await cdp.send('Emulation.clearDeviceMetricsOverride');
+  else
+    await cdp.send('Emulation.setDeviceMetricsOverride', {
+      width,
+      height,
+      deviceScaleFactor: dpr,
+      mobile: false,
+    });
+  await quality('self-optical');
+}
+
+async function quality(value: string, display?: OpticalDisplay & { priorRevisions: number[] }) {
   const sequence = ++qualityWaitSequence;
   try {
     await page.waitForFunction(
-      (expected) =>
-        Array.from(document.querySelectorAll<HTMLElement>('[data-demo-ref="regular"]')).length ===
-          4 &&
-        Array.from(document.querySelectorAll<HTMLElement>('[data-demo-ref="regular"]')).every(
-          (el) => el.dataset.materialQuality === expected
-        ),
-      value,
+      ({ expected, display }) => {
+        const hosts = Array.from(
+          document.querySelectorAll<HTMLElement>('[data-demo-ref="regular"]')
+        );
+        if (hosts.length !== 4 || !hosts.every((host) => host.dataset.materialQuality === expected))
+          return false;
+        if (!display) return true;
+        if (
+          devicePixelRatio !== display.dpr ||
+          innerWidth !== display.width ||
+          innerHeight !== display.height
+        )
+          return false;
+        return hosts.every((host, index) => {
+          const canvas = host
+            .closest('[data-material-host]')
+            ?.querySelector<HTMLCanvasElement>('[data-material-backdrop]');
+          if (!canvas) return false;
+          const bounds = canvas.getBoundingClientRect();
+          return (
+            canvas.width === Math.ceil(bounds.width * display.dpr) &&
+            canvas.height === Math.ceil(bounds.height * display.dpr) &&
+            Number(host.dataset.materialSourceRevision) > display.priorRevisions[index]!
+          );
+        });
+      },
+      { expected: value, display },
       { timeout: 20000 }
     );
   } catch (error) {
@@ -169,7 +234,7 @@ async function quality(value: string) {
 beforeAll(async () => {
   baseUrl = await startServer(ROUTE);
   browser = await launchBrowser();
-  context = await browser.newContext({ viewport: { width: 1440, height: 1050 } });
+  context = await browser.newContext({ viewport: null });
   // Only this owned fixture and its same-origin assets may be requested.
   await context.route('**/*', (route) =>
     new URL(route.request().url()).origin === new URL(baseUrl).origin
@@ -192,6 +257,19 @@ beforeAll(async () => {
   });
   page = await context.newPage();
   cdp = await context.newCDPSession(page);
+  try {
+    const { screenInfos } = await cdp.send('Emulation.getScreenInfos');
+    const primary = screenInfos.find((screen) => screen.isPrimary);
+    if (!primary) throw new Error('Headless Chromium has no primary screen.');
+    const { windowId } = await cdp.send('Browser.getWindowForTarget');
+    await setNativeScale(primary.id, wideDisplay.dpr);
+    await setNativeSize(windowId, wideDisplay);
+    nativeDisplay = { windowId, screenId: primary.id };
+  } catch (error) {
+    if (!(error instanceof Error) || !/Protocol error.*wasn't found/.test(error.message))
+      throw error;
+    await page.setViewportSize({ width: wideDisplay.width, height: wideDisplay.height });
+  }
 }, 150000);
 afterAll(async () => {
   if (evidence) {
@@ -219,6 +297,12 @@ afterAll(async () => {
   await stopServer();
 }, 60000);
 describe.sequential('V2 optical paint through four real Web Adapter runtimes', () => {
+  beforeEach(async () => {
+    if (!nativeDisplay) return;
+    await setNativeScale(nativeDisplay.screenId, wideDisplay.dpr);
+    await setNativeSize(nativeDisplay.windowId, wideDisplay);
+  });
+
   for (const theme of ['light', 'dark'] as const)
     it(`${theme}: visible dynamic source, optical pixels, motion, input and revocation`, async () => {
       await preference(theme);
@@ -405,20 +489,12 @@ describe.sequential('V2 optical paint through four real Web Adapter runtimes', (
             )
         )
         .toBe(true);
-      await page.setViewportSize({ width: 1100, height: 1000 });
-      await quality('self-optical');
-      await cdp.send('Emulation.setDeviceMetricsOverride', {
-        width: 1100,
-        height: 1000,
-        deviceScaleFactor: 2,
-        mobile: false,
-      });
-      await quality('self-optical');
+      const narrow = { width: 1100, height: 1000, dpr: 1 };
+      await changeDisplay(narrow, 'size');
+      await changeDisplay({ ...narrow, dpr: 2 }, 'scale');
       await capture(`${theme}-dpr-two`);
-      await cdp.send('Emulation.clearDeviceMetricsOverride');
-      await quality('self-optical');
-      await page.setViewportSize({ width: 1440, height: 1050 });
-      await quality('self-optical');
+      await changeDisplay(narrow, 'scale');
+      await changeDisplay(wideDisplay, 'size');
       // Same-generation inputs are shared, and >16 surfaces keep one live rendering context.
       const beforeStress = await page.evaluate(() =>
         (window as any).liquidMaterialFixture.metrics()
