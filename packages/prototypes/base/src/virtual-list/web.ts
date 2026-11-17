@@ -127,7 +127,21 @@ export function attachWebVirtualList(options: {
             views.delete(key);
           }
         }
-        for (let index = 0; index < request.keys.length; index++) {
+        const retainedWindow =
+          created.size === 0 &&
+          staged.every(
+            (node, index) =>
+              node.parentNode === content &&
+              node.nextSibling === (staged[index + 1] ?? trailing) &&
+              node.getAttribute('role') === 'listitem' &&
+              node.getAttribute('aria-posinset') === String(request.start + index + 1) &&
+              node.getAttribute('aria-setsize') === String(keys.length)
+          );
+        if (retainedWindow && !isCurrent(request)) {
+          abort();
+          return;
+        }
+        for (let index = 0; !retainedWindow && index < request.keys.length; index++) {
           if (!isCurrent(request)) {
             abort();
             return;
@@ -155,6 +169,7 @@ export function attachWebVirtualList(options: {
         }
         // Measure the projected window after its structural and attribute writes.
         // Reading between insertions forces layout once per dirty row.
+        // Keep reading the current geometry when the existing window is retained.
         for (let index = 0; index < request.keys.length; index++) {
           const key = request.keys[index]!,
             node = staged[index]!;

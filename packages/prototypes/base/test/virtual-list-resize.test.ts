@@ -153,6 +153,40 @@ it('does not schedule corrections for unchanged effective measurements', async (
   expect(f.propose).toHaveBeenCalledTimes(3);
   expect(f.rows()).toEqual(original);
 });
+it('remeasures a retained window without reprojecting its unchanged rows', async () => {
+  const f = fixture();
+  const original = f.rows();
+  const insert = vi.spyOn(f.content, 'insertBefore');
+  const observe = vi.spyOn(f.observer, 'observe');
+  const attributes = original.map((row) => vi.spyOn(row, 'setAttribute'));
+  const measure = original.map((row) => vi.spyOn(row, 'getBoundingClientRect'));
+
+  f.heights.set('row-0', 22);
+  f.observer.fire();
+  await flush();
+
+  expect(f.rows()).toEqual(original);
+  expect(measure.every((read) => read.mock.calls.length > 0)).toBe(true);
+  expect(f.extent()).toBe(62);
+  expect(insert).not.toHaveBeenCalled();
+  expect(observe).not.toHaveBeenCalled();
+  for (const write of attributes) expect(write).not.toHaveBeenCalled();
+});
+
+it('repairs the real order and accessibility metadata of a displaced retained row', async () => {
+  const f = fixture();
+  const original = f.rows();
+
+  f.content.insertBefore(original[2]!, original[0]!);
+  original[1]!.setAttribute('aria-posinset', '99');
+  f.observer.fire();
+  await flush();
+
+  expect(f.rows()).toEqual(original);
+  expect(original.map((row) => row.getAttribute('aria-posinset'))).toEqual(['1', '2', '3']);
+  expect(f.collection.snapshot().materializedKeys).toEqual(['row-0', 'row-1', 'row-2']);
+});
+
 it.each([0, -1, Number.NaN, Number.POSITIVE_INFINITY])(
   'ignores invalid measurement %s without retrying',
   async (size) => {
