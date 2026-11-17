@@ -1,0 +1,768 @@
+{
+  "validatedCommit": "5d554e0038133db21a98b6726085e469c01121be",
+  "tree": "88a349f1d9d5396fb81280df076886d8501083fd",
+  "parent": "28b5b6c725173588d8fb4f5f0536d673c64c4ab2",
+  "mergeBase": "e485e75c82b2634067fe636d709a242fceb844e2",
+  "sourceFiles": [
+    "apps/www/src/components/PrototypePreviewer/previewer-bootstrap.test.ts",
+    "apps/www/src/components/PrototypePreviewer/previewer-bootstrap.ts",
+    "apps/www/src/components/PrototypePreviewer/previewer-client.ts",
+    "apps/www/src/components/PrototypePreviewer/projection-theme.test.ts",
+    "apps/www/src/components/PrototypePreviewer/projection-theme.ts"
+  ],
+  "environment": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+  "exactChecks": {
+    "focusedTests": 167,
+    "focusedFiles": 7,
+    "packages": 47,
+    "sitePages": 685,
+    "typeExit": 0,
+    "manifestExit": 0,
+    "budgetPolicyExit": 0,
+    "budgetMeasurements": [
+      "PASS lucide/icons/x: 2879 / 3000 gzip bytes; overBudget=0; minified=8695 sha256=da30ebe409a83a09d2569fe2a47880a133fcbe4d554d93ea305795356c4fccdb",
+      "PASS lucide root: 637306 / 700000 gzip bytes; overBudget=0; minified=4087403 sha256=eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c",
+      "ADVISORY core root: 11378 / 7600 gzip bytes; overBudget=3778; minified=35782 sha256=0e3c868d3ef719af46085b83881b15787a94acbaf893566ceae4047ceff72b44",
+      "ADVISORY runtime root: 101213 / 78500 gzip bytes; overBudget=22713; minified=390460 sha256=0b0e275b387d948bf58ae9596d85f34adc3fd37b07339d19821fc3daafa6d28c",
+      "ADVISORY adapter-react root: 163435 / 106000 gzip bytes; overBudget=57435; minified=576464 sha256=d9fb104467b102f685e625abe18e3f768f2a93123aee28af66f4d8460a98b5fd",
+      "ADVISORY adapter-vue root: 162215 / 106000 gzip bytes; overBudget=56215; minified=571708 sha256=f0d17946712d52eff65fbe78dc65c86296306ec51df5790aecde736da0c2cf28",
+      "ADVISORY adapter-web-component root: 195022 / 132000 gzip bytes; overBudget=63022; minified=670118 sha256=41091625d098ef4c9afbd44cec597a8e2e0c355b7444b1b4da724a2581f1773f",
+      "PASS prototypes-base/button: 5274 / 6000 gzip bytes; overBudget=0; minified=18158 sha256=6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67",
+      "ADVISORY prototypes-shadcn/button: 7803 / 7000 gzip bytes; overBudget=803; minified=34485 sha256=60b4ff9277e59fba01c34162ec9418282ce82c6b43e24f223a05c9e1df19db57"
+    ],
+    "routes": {
+      "zh-cn": {
+        "bytes": 1862426,
+        "sha256": "44d0b945a14e6ac80cc358ae64400855d5927b98605c4c4b0ccfb612ebbd0093",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914095,
+        "sha256": "88b36a88bf15ce13d7f6319738d3e6af01c42eefbf614517862b305b710dde0c",
+        "previews": 1268
+      }
+    },
+    "preview": {
+      "head": "5d554e0038133db21a98b6726085e469c01121be",
+      "tree": "88a349f1d9d5396fb81280df076886d8501083fd",
+      "distHashes": {
+        "zh-cn/index.html": "c3546ad28f6a0e083b4dfb9e1ac3757495453274874be7ae329b791a6eaed4a1",
+        "zh-cn/ui-libraries/shadcn/button/index.html": "a420778211b97a3b2fbe9dab79b8cb1700da18f3be0581459985c64b15996ca5",
+        "zh-cn/ui-libraries/brutalist/components/button/index.html": "f8ce73f3f1a223d719c02650734b3305a0ff84fd767a68e42a076596d4435118"
+      },
+      "sourceCodeExamples": 9,
+      "renderedCodeExamples": 9,
+      "packedHeaderExit": 0,
+      "previewBrowserExit": 0,
+      "selector": "uses real family Popover Triggers|uses the same mobile shell|live available region|keeps Runtime Tabs outside"
+    },
+    "browser": {
+      "completeMatrix": {
+        "passed": 0,
+        "failed": 2,
+        "skipped": 0,
+        "tests": [
+          {
+            "name": "zh-cn: native Light/split/mixed acceptance",
+            "status": "failed"
+          },
+          {
+            "name": "en: native Light/split/mixed acceptance",
+            "status": "failed"
+          }
+        ],
+        "reportSha256": "23928fe15ef76b180e56fdae7d8637a578b631b02fb4a7090aa837d8691a4adf",
+        "predicateDeadlineMs": 60000,
+        "outerDeadlineMs": 150000,
+        "lastDeliveredObservation": {
+          "zh-cn": {
+            "pageMs": 71807,
+            "previewCount": 1268,
+            "ready": false,
+            "firstMissing": {
+              "previewerId": "pp-a4l7zlp2qvr",
+              "index": 640,
+              "inited": "1",
+              "hostChildren": 0
+            },
+            "owner": {
+              "demoId": "demo-bootstrap-2-3-2-drawer",
+              "prototypeId": "",
+              "declaredRuntime": "wc",
+              "projectionMode": null,
+              "projectionState": null,
+              "mounting": null,
+              "hostTag": "DIV",
+              "hostOwner": "pp-a4l7zlp2qvr",
+              "startupPending": true,
+              "hostOwnInert": true,
+              "hostText": ""
+            }
+          },
+          "en": {
+            "pageMs": 55506.09999990463,
+            "previewCount": 1268,
+            "ready": false,
+            "firstMissing": {
+              "previewerId": "pp-c9s36s1kvza",
+              "index": 572,
+              "inited": "1",
+              "hostChildren": 0
+            },
+            "owner": {
+              "demoId": "demo-shadcn-tree",
+              "prototypeId": "",
+              "declaredRuntime": "wc",
+              "projectionMode": null,
+              "projectionState": null,
+              "mounting": null,
+              "hostTag": "DIV",
+              "hostOwner": "pp-c9s36s1kvza",
+              "startupPending": true,
+              "hostOwnInert": true,
+              "hostText": ""
+            }
+          }
+        }
+      },
+      "accordion": {
+        "passed": 4,
+        "failed": 0,
+        "skipped": 29,
+        "tests": [
+          {
+            "name": "base wc preserves activation, natural Tab, ownership, relationships and repeatable lifetime",
+            "status": "passed"
+          },
+          {
+            "name": "base react preserves activation, natural Tab, ownership, relationships and repeatable lifetime",
+            "status": "passed"
+          },
+          {
+            "name": "base vue preserves activation, natural Tab, ownership, relationships and repeatable lifetime",
+            "status": "passed"
+          },
+          {
+            "name": "base vue2 preserves activation, natural Tab, ownership, relationships and repeatable lifetime",
+            "status": "passed"
+          }
+        ],
+        "reportSha256": "044380ce3228ac69645aef83c6f24f8b6658e764450a27628f1e6cc0ddfd2500"
+      },
+      "optics": {
+        "passed": 3,
+        "failed": 0,
+        "skipped": 1,
+        "tests": [
+          {
+            "name": "light: visible dynamic source, optical pixels, motion, input and revocation",
+            "status": "passed"
+          },
+          {
+            "name": "dark: visible dynamic source, optical pixels, motion, input and revocation",
+            "status": "passed"
+          },
+          {
+            "name": "the actual public Button documentation uses the same optical path on all four runtime panels",
+            "status": "passed"
+          }
+        ],
+        "reportSha256": "95857a604de2984e0be60f0c8b577722c79695a2faa9dbfb1356835c0531956d"
+      },
+      "portal": {
+        "passed": 5,
+        "failed": 0,
+        "skipped": 50,
+        "tests": [
+          {
+            "name": "wc light regular DPR1: actual Content optics and complete source bounds",
+            "status": "passed"
+          },
+          {
+            "name": "react light regular DPR1: actual Content optics and complete source bounds",
+            "status": "passed"
+          },
+          {
+            "name": "vue light regular DPR1: actual Content optics and complete source bounds",
+            "status": "passed"
+          },
+          {
+            "name": "vue2 light regular DPR1: actual Content optics and complete source bounds",
+            "status": "passed"
+          },
+          {
+            "name": "wc: one-pixel source loss, intervening paint, withdrawal, registration revocation/restoration and preferences",
+            "status": "passed"
+          }
+        ],
+        "reportSha256": "a33bbfd2f1de09588552e0b4def48e4d9fffb1fe3864e33c9dd3b2597917ecac"
+      },
+      "contentsDialogRuntimeTabs": {
+        "passed": 11,
+        "failed": 0,
+        "skipped": 13,
+        "tests": [
+          {
+            "name": "shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "name": "shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "name": "shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "name": "shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "name": "brutalist/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "name": "brutalist/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "name": "brutalist/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "name": "brutalist/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "name": "uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence",
+            "status": "passed"
+          },
+          {
+            "name": "uses the same mobile shell on documentation with independent global navigation and contents",
+            "status": "passed"
+          },
+          {
+            "name": "keeps Runtime Tabs outside the canvas and the demonstrated Select popup usable at 390px",
+            "status": "passed"
+          }
+        ],
+        "reportSha256": "e0c2c5a32c03e2a6b01304fd498ebe25f01d893fdc84dbe56a796e91519a97c6"
+      },
+      "firstHeaderFrame": {
+        "head": "5d554e0038133db21a98b6726085e469c01121be",
+        "browser": "156.0.8078.79",
+        "scope": "First animation frame control on the exact static Astro preview. Geometry reads can force layout.",
+        "results": [
+          {
+            "width": 320,
+            "samples": [
+              {
+                "phase": "family mutation delivery",
+                "at": 1630.9000000953674,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 312,
+                "width": 304,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              },
+              {
+                "phase": "first animation frame",
+                "at": 1757.1000001430511,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 312,
+                "width": 304,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              },
+              {
+                "phase": "second animation frame",
+                "at": 1778.6000001430511,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 312,
+                "width": 304,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              }
+            ],
+            "trusted": true
+          },
+          {
+            "width": 390,
+            "samples": [
+              {
+                "phase": "family mutation delivery",
+                "at": 1590.2000000476837,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 382,
+                "width": 374,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              },
+              {
+                "phase": "first animation frame",
+                "at": 1715.9000000953674,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 382,
+                "width": 374,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              },
+              {
+                "phase": "second animation frame",
+                "at": 1734.2999999523163,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 382,
+                "width": 374,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              }
+            ],
+            "trusted": true
+          }
+        ]
+      }
+    },
+    "darkAndLight": [
+      {
+        "theme": "light",
+        "runtime": "wc",
+        "requested": "liquid-glass",
+        "backend": "self-optical",
+        "source": "visible-app-canvas",
+        "pressPixelsChanged": true,
+        "sourceLossRecovered": true,
+        "overlapRejected": true
+      },
+      {
+        "theme": "light",
+        "runtime": "react",
+        "requested": "liquid-glass",
+        "backend": "self-optical",
+        "source": "visible-app-canvas",
+        "pressPixelsChanged": true,
+        "sourceLossRecovered": true,
+        "overlapRejected": true
+      },
+      {
+        "theme": "light",
+        "runtime": "vue",
+        "requested": "liquid-glass",
+        "backend": "self-optical",
+        "source": "visible-app-canvas",
+        "pressPixelsChanged": true,
+        "sourceLossRecovered": true,
+        "overlapRejected": true
+      },
+      {
+        "theme": "light",
+        "runtime": "vue2",
+        "requested": "liquid-glass",
+        "backend": "self-optical",
+        "source": "visible-app-canvas",
+        "pressPixelsChanged": true,
+        "sourceLossRecovered": true,
+        "overlapRejected": true
+      },
+      {
+        "theme": "light",
+        "beforeStress": {
+          "contexts": 1,
+          "consumers": 12,
+          "lost": false,
+          "renders": 151,
+          "programBuilds": 12,
+          "sourceUploads": 63,
+          "sourcePreparations": 63,
+          "renderMilliseconds": 998.4999995231628,
+          "encodeMilliseconds": 147.69999980926514,
+          "pendingImages": 8,
+          "decodedImages": 0,
+          "imagePreparations": 151,
+          "peakPendingImages": 8
+        },
+        "afterStress": {
+          "contexts": 1,
+          "consumers": 32,
+          "lost": false,
+          "renders": 172,
+          "programBuilds": 12,
+          "sourceUploads": 64,
+          "sourcePreparations": 64,
+          "renderMilliseconds": 1077.0999987125397,
+          "encodeMilliseconds": 165.1999990940094,
+          "pendingImages": 0,
+          "decodedImages": 28,
+          "imagePreparations": 172,
+          "peakPendingImages": 20
+        },
+        "staticStart": {
+          "contexts": 1,
+          "consumers": 32,
+          "lost": false,
+          "renders": 172,
+          "programBuilds": 12,
+          "sourceUploads": 64,
+          "sourcePreparations": 64,
+          "renderMilliseconds": 1077.0999987125397,
+          "encodeMilliseconds": 165.1999990940094,
+          "pendingImages": 0,
+          "decodedImages": 28,
+          "imagePreparations": 172,
+          "peakPendingImages": 20
+        },
+        "staticEnd": {
+          "contexts": 1,
+          "consumers": 32,
+          "lost": false,
+          "renders": 172,
+          "programBuilds": 12,
+          "sourceUploads": 64,
+          "sourcePreparations": 64,
+          "renderMilliseconds": 1077.0999987125397,
+          "encodeMilliseconds": 165.1999990940094,
+          "pendingImages": 0,
+          "decodedImages": 28,
+          "imagePreparations": 172,
+          "peakPendingImages": 20
+        },
+        "sharedContextLossRecovered": true
+      },
+      {
+        "theme": "dark",
+        "runtime": "wc",
+        "requested": "liquid-glass",
+        "backend": "self-optical",
+        "source": "visible-app-canvas",
+        "pressPixelsChanged": true,
+        "sourceLossRecovered": true,
+        "overlapRejected": true
+      },
+      {
+        "theme": "dark",
+        "runtime": "react",
+        "requested": "liquid-glass",
+        "backend": "self-optical",
+        "source": "visible-app-canvas",
+        "pressPixelsChanged": true,
+        "sourceLossRecovered": true,
+        "overlapRejected": true
+      },
+      {
+        "theme": "dark",
+        "runtime": "vue",
+        "requested": "liquid-glass",
+        "backend": "self-optical",
+        "source": "visible-app-canvas",
+        "pressPixelsChanged": true,
+        "sourceLossRecovered": true,
+        "overlapRejected": true
+      },
+      {
+        "theme": "dark",
+        "runtime": "vue2",
+        "requested": "liquid-glass",
+        "backend": "self-optical",
+        "source": "visible-app-canvas",
+        "pressPixelsChanged": true,
+        "sourceLossRecovered": true,
+        "overlapRejected": true
+      },
+      {
+        "theme": "dark",
+        "beforeStress": {
+          "contexts": 1,
+          "consumers": 12,
+          "lost": false,
+          "renders": 150,
+          "programBuilds": 12,
+          "sourceUploads": 63,
+          "sourcePreparations": 63,
+          "renderMilliseconds": 988.2999997138977,
+          "encodeMilliseconds": 152,
+          "pendingImages": 8,
+          "decodedImages": 0,
+          "imagePreparations": 150,
+          "peakPendingImages": 8
+        },
+        "afterStress": {
+          "contexts": 1,
+          "consumers": 32,
+          "lost": false,
+          "renders": 171,
+          "programBuilds": 12,
+          "sourceUploads": 64,
+          "sourcePreparations": 64,
+          "renderMilliseconds": 1063.6000001430511,
+          "encodeMilliseconds": 169.5,
+          "pendingImages": 0,
+          "decodedImages": 28,
+          "imagePreparations": 171,
+          "peakPendingImages": 20
+        },
+        "staticStart": {
+          "contexts": 1,
+          "consumers": 32,
+          "lost": false,
+          "renders": 171,
+          "programBuilds": 12,
+          "sourceUploads": 64,
+          "sourcePreparations": 64,
+          "renderMilliseconds": 1063.6000001430511,
+          "encodeMilliseconds": 169.5,
+          "pendingImages": 0,
+          "decodedImages": 28,
+          "imagePreparations": 171,
+          "peakPendingImages": 20
+        },
+        "staticEnd": {
+          "contexts": 1,
+          "consumers": 32,
+          "lost": false,
+          "renders": 171,
+          "programBuilds": 12,
+          "sourceUploads": 64,
+          "sourcePreparations": 64,
+          "renderMilliseconds": 1063.6000001430511,
+          "encodeMilliseconds": 169.5,
+          "pendingImages": 0,
+          "decodedImages": 28,
+          "imagePreparations": 171,
+          "peakPendingImages": 20
+        },
+        "sharedContextLossRecovered": true
+      },
+      {
+        "publicRoute": "/en/ui-libraries/liquid-glass/button/",
+        "runtime": "wc",
+        "quality": "self-optical",
+        "actualPreviewer": true,
+        "baseActivation": true
+      },
+      {
+        "publicRoute": "/en/ui-libraries/liquid-glass/button/",
+        "runtime": "react",
+        "quality": "self-optical",
+        "actualPreviewer": true,
+        "baseActivation": true
+      },
+      {
+        "publicRoute": "/en/ui-libraries/liquid-glass/button/",
+        "runtime": "vue",
+        "quality": "self-optical",
+        "actualPreviewer": true,
+        "baseActivation": true
+      },
+      {
+        "publicRoute": "/en/ui-libraries/liquid-glass/button/",
+        "runtime": "vue2",
+        "quality": "self-optical",
+        "actualPreviewer": true,
+        "baseActivation": true
+      }
+    ]
+  },
+  "diagnosticScope": "Separate native sessions with bounded built-JS observers. Matched read count, not a whole-page benchmark. Read and flush durations overlap. Displayed hosts are the last delivered browser samples, not a snapshot at the exact assertion deadline.",
+  "diagnostic": [
+    {
+      "scope": "Exact 294 parent product with original microtask schedule",
+      "assetBindings": [
+        {
+          "asset": "projection-theme.glgKE2UX.js",
+          "source": "559379e0e37c84df07b46adf54d35378200f1b314950c2af0b45126ce3a4248d",
+          "instrumented": "5c50edd30729aebe26cc09ab94051f312c4503e2e2a86a973099ede92edfada6"
+        },
+        {
+          "asset": "native-content-lease.BkYU4WVV.js",
+          "source": "e71b0766389dc3bccc6b8d64578482e207cbd435d9117e7c922d40fbde5f061e",
+          "instrumented": "ec9e5cf3b357ad1b5fc2f5ce6b987669d0d03851750be17c9e5ad0f2fc881698"
+        }
+      ],
+      "exactMatchedReadCount": {
+        "reads": 1152,
+        "initialScopes": 652,
+        "readMs": 7970.899998188019,
+        "styleObjectMs": 1.5999996662139893,
+        "batches": 400,
+        "batchReads": 416,
+        "largestBatch": 9,
+        "singleBatches": 394,
+        "flushMs": 5878.499999046326,
+        "kind": "theme",
+        "pageMs": 55063.700000047684
+      },
+      "originalReadinessExit": 1,
+      "lastObservedHosts": {
+        "zh-cn": {
+          "pageMs": 68407.20000004768,
+          "previewCount": 1268,
+          "ready": false,
+          "firstMissing": {
+            "previewerId": "pp-b5iljqj720a",
+            "index": 572,
+            "inited": "1",
+            "hostChildren": 0
+          },
+          "owner": {
+            "demoId": "demo-shadcn-tree",
+            "prototypeId": "",
+            "declaredRuntime": "wc",
+            "projectionMode": null,
+            "projectionState": null,
+            "mounting": null,
+            "hostTag": "DIV",
+            "hostOwner": "pp-b5iljqj720a",
+            "startupPending": true,
+            "hostOwnInert": true,
+            "hostText": ""
+          }
+        }
+      },
+      "fullLogSha256": "81f9a9b2baeec7d2e9521108f2196984ee3339d605215b81487eb01010d2c1a5"
+    },
+    {
+      "scope": "Exact 294 build with a temporary browser-task switch when the document had >32 preview roots",
+      "assetBindings": [
+        {
+          "asset": "projection-theme.glgKE2UX.js",
+          "source": "559379e0e37c84df07b46adf54d35378200f1b314950c2af0b45126ce3a4248d",
+          "instrumented": "3cfe30b301aa0047846a15dc135ed5e59664d0e56ef34d43d12e842ef00f6f6a"
+        },
+        {
+          "asset": "native-content-lease.BkYU4WVV.js",
+          "source": "e71b0766389dc3bccc6b8d64578482e207cbd435d9117e7c922d40fbde5f061e",
+          "instrumented": "ec9e5cf3b357ad1b5fc2f5ce6b987669d0d03851750be17c9e5ad0f2fc881698"
+        }
+      ],
+      "exactMatchedReadCount": {
+        "reads": 1152,
+        "initialScopes": 654,
+        "readMs": 2398.5999965667725,
+        "styleObjectMs": 0.3000001907348633,
+        "batches": 13,
+        "batchReads": 414,
+        "largestBatch": 131,
+        "singleBatches": 2,
+        "flushMs": 132.79999995231628,
+        "kind": "theme",
+        "pageMs": 48006.200000047684
+      },
+      "originalReadinessExit": 1,
+      "lastObservedHosts": {
+        "zh-cn": {
+          "pageMs": 72338.90000009537,
+          "previewCount": 1268,
+          "ready": false,
+          "firstMissing": {
+            "previewerId": "pp-zm8xhw0nr6",
+            "index": 640,
+            "inited": "1",
+            "hostChildren": 0
+          },
+          "owner": {
+            "demoId": "demo-bootstrap-2-3-2-drawer",
+            "prototypeId": "",
+            "declaredRuntime": "wc",
+            "projectionMode": null,
+            "projectionState": null,
+            "mounting": null,
+            "hostTag": "DIV",
+            "hostOwner": "pp-zm8xhw0nr6",
+            "startupPending": true,
+            "hostOwnInert": true,
+            "hostText": ""
+          }
+        }
+      },
+      "fullLogSha256": "f9a7fef19437d6b603fe84bd2be8464c1d2e884ce995e3c0a4c16c869fa62ad7"
+    },
+    {
+      "scope": "Exact 5d554e00 build with its scoped first eager-publication scheduler",
+      "assetBindings": [
+        {
+          "asset": "projection-theme.DmjJLKPq.js",
+          "source": "2f89096f31d7b6f6cefe08c9881908c5d6d6e1a8437b347e33e4d463c73a4536",
+          "instrumented": "22bcdd25ae5f4b0275a8a8e7245de50b581308c50ba5f9d9bbed80824005a289"
+        },
+        {
+          "asset": "native-content-lease.BkYU4WVV.js",
+          "source": "e71b0766389dc3bccc6b8d64578482e207cbd435d9117e7c922d40fbde5f061e",
+          "instrumented": "ec9e5cf3b357ad1b5fc2f5ce6b987669d0d03851750be17c9e5ad0f2fc881698"
+        }
+      ],
+      "exactMatchedReadCount": {
+        "reads": 1152,
+        "initialScopes": 658,
+        "readMs": 2412.0999989509583,
+        "styleObjectMs": 1.0999999046325684,
+        "batches": 14,
+        "batchReads": 444,
+        "largestBatch": 155,
+        "singleBatches": 3,
+        "flushMs": 59.50000023841858,
+        "startupBatches": 14,
+        "startupReads": 444,
+        "kind": "theme",
+        "pageMs": 50937.699999809265
+      },
+      "originalReadinessExit": 1,
+      "lastObservedHosts": {
+        "zh-cn": {
+          "pageMs": 68156.39999985695,
+          "previewCount": 1268,
+          "ready": false,
+          "firstMissing": {
+            "previewerId": "pp-7lfzw3ydztn",
+            "index": 596,
+            "inited": "1",
+            "hostChildren": 0
+          },
+          "owner": {
+            "demoId": "demo-bootstrap-2-3-2-calendar",
+            "prototypeId": "",
+            "declaredRuntime": "wc",
+            "projectionMode": null,
+            "projectionState": null,
+            "mounting": null,
+            "hostTag": "DIV",
+            "hostOwner": "pp-7lfzw3ydztn",
+            "startupPending": true,
+            "hostOwnInert": true,
+            "hostText": ""
+          }
+        }
+      },
+      "fullLogSha256": "a510773f0e436b074549817cf63c2a9b9f45021c85c2fcfe58f2a02d2e9ab1cd"
+    }
+  ]
+}

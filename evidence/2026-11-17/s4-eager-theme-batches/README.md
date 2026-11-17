@@ -1,0 +1,11 @@
+# Eager preview theme reads under the S4 Matrix load
+
+The signed local candidate `5d554e0038133db21a98b6726085e469c01121be` batches the first generic Runtime preview's publication reads when the existing eager bootstrap splits a large page into tasks. Every pending scope is sampled independently. Small and interactive publications retain their microtask queue. The fixed-family projection uses its existing path. The stale-generation checks, watcher and initial hidden mount boundary still apply.
+
+Three separate runs reached a checkpoint at 1,152 token reads with Chrome for Testing 156.0.8078.79. The parent run recorded 400 scheduled batches, 394 singleton batches and 7,970.9 ms inclusive token-read time. The temporary emitted-asset experiment recorded 13 batches, 2 singleton batches and 2,398.6 ms. The exact candidate recorded 14 batches, all in the startup queue, including three singleton batches, and 2,412.1 ms. The runs sampled 652, 654 and 658 distinct scopes respectively. Flush durations are nested in the same work. These are per-run checkpoints, with no across-run whole-page speed estimate.
+
+The production site built all 685 pages and 47 public packages. Workspace types, manifest and Finf budget-policy checks completed successfully. The nine budget rows are identical to the parent product measurement and retain six advisory overages. Seven focused files passed all 167 tests.
+
+The exact production preview passed 11 selected Contents, Dialog and Runtime Tabs tests, four Accordion tests, three Material optics tests and five Portal tests. The exact Header first-frame geometry control passed at 320 px and 390 px with trusted input. All nine CodeExamples on the checked Shadcn Button article remained in the served HTML.
+
+The original full S4 Chinese and English tests each kept all 1,268 previews and failed their original 60-second readiness predicate before reaching the Dialog interaction. Their original 150-second outer deadline remains intact. The separate Chinese instrumentation runs also failed that predicate. Later browser observations show the latest delivered missing host and carry no exact-expiry claim. All temporary diagnostic assets were restored and checked against their originals.
