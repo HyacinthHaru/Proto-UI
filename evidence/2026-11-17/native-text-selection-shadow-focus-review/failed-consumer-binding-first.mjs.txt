@@ -1,0 +1,15 @@
+import {createRequire} from 'node:module';
+import {writeFile,readFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import path from 'node:path';
+const {build}=createRequire(process.cwd()+'/package.json')('esbuild');
+const out=process.argv[2];
+const entry=`import {AdaptToWebComponent,setElementProps} from '@proto.ui/adapter-web-component';
+import {shadcnInputRoot} from '@proto.ui/prototypes-shadcn/input';
+customElements.define('lease-shadow-input',AdaptToWebComponent(shadcnInputRoot,{register:false,registerAs:'lease-shadow-input',shadow:true}));
+globalThis.mountLeaseShadowInput=()=>{const host=document.createElement('lease-shadow-input');setElementProps(host,{defaultValue:'Retained authored text',ariaLabel:'Explicit Shadow Input'});return host;};`;
+const result=await build({stdin:{contents:entry,loader:'ts',resolveDir:process.cwd(),sourcefile:'explicit-shadow-input-fixture.ts'},bundle:true,format:'iife',target:'es2022',metafile:true,outfile:path.join(out,'public-shadow-consumer.js')});
+const hash=b=>createHash('sha256').update(b).digest('hex');
+const inputs=[];
+for(const name of Object.keys(result.metafile.inputs))if(!name.startsWith('<'))inputs.push({path:name,sha256:hash(await readFile(name))});
+await writeFile(path.join(out,'public-shadow-consumer-binding.json'),JSON.stringify({source:entry,consumerSha256:hash(await readFile(path.join(out,'public-shadow-consumer.js'))),inputs},null,2)+'\n');
