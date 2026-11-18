@@ -1,0 +1,137 @@
+{
+  "standalone": {
+    "head": "21bd507e4893064d69f06188ead9535444a2b73f",
+    "tree": "f221355f85cb157a29b075bb8009c358b866ed35",
+    "testedMain": "b5e41dd601d67ba48cb5d030811f93394893116d",
+    "deltaSha256": "33f7c4036bb88cd58e57ece56d12e624fad11f4948b8f7095bc8ed713d67f01f",
+    "red": {
+      "passed": 4,
+      "failed": 1,
+      "skipped": 0,
+      "reportSha256": "8fa45d7856697566f606a3fd25a4eee88d4fdc3b76519fff5b1f68bd4daa8c28",
+      "expectedUnrelatedReads": 0,
+      "actualUnrelatedReads": 24
+    },
+    "focused": {
+      "passed": 629,
+      "failed": 0,
+      "skipped": 0,
+      "reportSha256": "fff8e9d5f959bfffdaa61e2fca7f2c31e9605c52d74a35fd641ac91817969e8c"
+    },
+    "packagesBuilt": 47,
+    "passed": ["workspace types", "manifest check", "Finf budget command", "site CSS generation"]
+  },
+  "combinedProduct": {
+    "head": "b60cf1c6e78763d5714a50d9de8d21cfbf389385",
+    "tree": "ce5bcd1479c13e5aaff90256072792ae7ef1a4e2",
+    "acceptedMain": "b5e41dd601d67ba48cb5d030811f93394893116d",
+    "packagesBuilt": 47,
+    "builtPages": 685,
+    "servedMatrixPages": {
+      "zh-cn": {
+        "bytes": 1862497,
+        "sha256": "30a1daa14aceb1bb7e70b2f6f7ae06aa76a5f7138e2daabe3ededbea5274600c",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914187,
+        "sha256": "6cda950bba8fae62fbaab527903cb537d5d5d28f54d586bde246991c64a56936",
+        "previews": 1268
+      }
+    },
+    "suiteResults": {
+      "focused": {
+        "passed": 677,
+        "failed": 0,
+        "skipped": 0,
+        "reportSha256": "b302038e99ead363e13a8aaf6f7cfaefab7caefe81e1fc7db0e94d93355b46b9"
+      },
+      "preview-browser": {
+        "passed": 15,
+        "failed": 0,
+        "skipped": 9,
+        "reportSha256": "db05095ebe75fbea31bb022f051a05ece05b064e93a7c86edb0c764544de2082"
+      },
+      "code-grammar": {
+        "passed": 3,
+        "failed": 0,
+        "skipped": 23,
+        "reportSha256": "27ad8072ed5ab5886c35c59c516efdf4e7cea6d7974f0858d2a2ea907bc9766b"
+      },
+      "copy-commands": {
+        "passed": 1,
+        "failed": 0,
+        "skipped": 14,
+        "reportSha256": "e3245bc3f75353fb8cbdf85967507311ad071d2499d8635dc993ba5b8fdddb53"
+      },
+      "scroll-chain": {
+        "passed": 2,
+        "failed": 0,
+        "skipped": 4,
+        "reportSha256": "c017ab35a3929a22c45137e8b12331d098f741a42d539563affe05b166e60fc3"
+      },
+      "wc-shadow": {
+        "passed": 165,
+        "failed": 0,
+        "skipped": 0,
+        "reportSha256": "995dfb7d1932146576801373ccc70b9178cc5f9339449edb57132b298daa3e3c"
+      },
+      "projection-scope": {
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0,
+        "reportSha256": "e4ae01198a0410bb80b35964ee83827bc520544edb378e7ad37b0593f8930047"
+      },
+      "codeexample": {
+        "passed": 12,
+        "failed": 0,
+        "skipped": 14,
+        "reportSha256": "297c0f461e304042d1a724e76528ae910b9bcb90b612f5864041e0191f93c019"
+      },
+      "docs-columns": {
+        "passed": 10,
+        "failed": 0,
+        "skipped": 0,
+        "reportSha256": "193902d268b4b51e4c606139401826a4b80bccc5ae835fb81b11829a17028e23"
+      },
+      "liquid-optics": {
+        "passed": 3,
+        "failed": 0,
+        "skipped": 1,
+        "reportSha256": "5c8dc98714dfe60ff00f5d95097c2c47357eca2aea635735604d99cd2bb89594"
+      }
+    },
+    "shadcnButtonDocumentationCodeExamples": 9,
+    "packedGeometryReportSha256": "794a1f9304318e18e765bfc8660da315fa3dee0f7b033d785ed8efeaa3312ff2",
+    "s4": {
+      "sources": ["apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts"],
+      "readinessMs": 60000,
+      "caseMs": 150000,
+      "cases": [
+        {
+          "name": "zh-cn: native Light/split/mixed acceptance",
+          "status": "failed",
+          "reason": "The original 60000 ms readiness assertion failed before the Dialog journey."
+        },
+        {
+          "name": "en: native Light/split/mixed acceptance",
+          "status": "failed",
+          "reason": "The original 60000 ms readiness assertion failed before the Dialog journey."
+        }
+      ],
+      "counts": {
+        "passed": 0,
+        "failed": 2,
+        "skipped": 0,
+        "reportSha256": "c0f947da30b6d8f4438fe44566e62184860c3c7f4f052772b5b1eb9ae913a484"
+      },
+      "reportSha256": "c0f947da30b6d8f4438fe44566e62184860c3c7f4f052772b5b1eb9ae913a484"
+    },
+    "checks": {
+      "types": "passed",
+      "manifests": "passed",
+      "finfBudgetPass": 3,
+      "finfBudgetAdvisory": 6
+    }
+  }
+}

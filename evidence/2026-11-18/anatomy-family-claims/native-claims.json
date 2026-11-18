@@ -1,0 +1,80 @@
+{
+  "head": "21bd507e4893064d69f06188ead9535444a2b73f",
+  "parent": "b5e41dd601d67ba48cb5d030811f93394893116d",
+  "chrome": "156.0.8078.79",
+  "scopedInputs": {
+    "parent": {
+      "blob": "54a23a5a9fdf531561433f6aae7f84e7621880134d0a943363a4ae07c020f5b7",
+      "bundle": "3df5ac9555097845e5d04f9b70a43dcdd19f9b84de66548719e251eec3594842",
+      "inputs": 57
+    },
+    "candidate": {
+      "blob": "50a4f0ff576951f50a4bcb955efb592b2fdc698a1927dd1310c5c5d2804fd672",
+      "bundle": "684363ed2c3c616d4ded6c0e2735f58ca2d80101396fe42bd3bcc868b6221525",
+      "inputs": 57
+    }
+  },
+  "rows": [
+    {
+      "kind": "parent",
+      "noise": 3072,
+      "first": ["root", "family-only"],
+      "second": ["root", "shared", "family-only"],
+      "beforeMove": ["root", "family-only", "shared"],
+      "afterMove": ["root", "shared", "family-only"],
+      "retired": ["root", "family-only"],
+      "renewed": ["root", "family-only", "renewed"],
+      "foreignReads": 3072,
+      "roundedMs": [
+        1.5000009536743164, 2.4000000953674316, 1.2999999523162842, 0.9000000953674316,
+        0.799999475479126, 0.9000000953674316
+      ],
+      "coldQueriesPerBatch": 64
+    },
+    {
+      "kind": "candidate",
+      "noise": 3072,
+      "first": ["root", "family-only"],
+      "second": ["root", "shared", "family-only"],
+      "beforeMove": ["root", "family-only", "shared"],
+      "afterMove": ["root", "shared", "family-only"],
+      "retired": ["root", "family-only"],
+      "renewed": ["root", "family-only", "renewed"],
+      "foreignReads": 0,
+      "roundedMs": [
+        0.20000004768371582, 0.20000004768371582, 0.09999990463256836, 0.09999990463256836, 0,
+        0.09999990463256836
+      ],
+      "coldQueriesPerBatch": 64
+    },
+    {
+      "kind": "candidate",
+      "noise": 3072,
+      "first": ["root", "family-only"],
+      "second": ["root", "shared", "family-only"],
+      "beforeMove": ["root", "family-only", "shared"],
+      "afterMove": ["root", "shared", "family-only"],
+      "retired": ["root", "family-only"],
+      "renewed": ["root", "family-only", "renewed"],
+      "foreignReads": 0,
+      "roundedMs": [0, 0.20000028610229492, 0, 0, 0, 0],
+      "coldQueriesPerBatch": 64
+    },
+    {
+      "kind": "parent",
+      "noise": 3072,
+      "first": ["root", "family-only"],
+      "second": ["root", "shared", "family-only"],
+      "beforeMove": ["root", "family-only", "shared"],
+      "afterMove": ["root", "shared", "family-only"],
+      "retired": ["root", "family-only"],
+      "renewed": ["root", "family-only", "renewed"],
+      "foreignReads": 3072,
+      "roundedMs": [
+        1.4999992847442627, 1.299999713897705, 1.0999996662139893, 1.1000001430511475,
+        1.3000001907348633, 0.8999998569488525
+      ],
+      "coldQueriesPerBatch": 64
+    }
+  ]
+}
