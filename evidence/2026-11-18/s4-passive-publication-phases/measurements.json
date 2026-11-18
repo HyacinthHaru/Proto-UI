@@ -1,0 +1,1423 @@
+{
+  "head": "9ed1270c88dcd55a93b9e06eadbbc117695f2ee3",
+  "rows": [
+    {
+      "browser": {
+        "count": 1,
+        "pageMs": 6062.200000047684,
+        "totals": {
+          "generation1": {
+            "calls": 1,
+            "elapsed": 8.600000143051147,
+            "phases": {
+              "displayWrite": {
+                "calls": 1,
+                "ms": 0,
+                "max": 0
+              },
+              "appearancePublish": {
+                "calls": 1,
+                "ms": 0,
+                "max": 0
+              },
+              "getSelection": {
+                "calls": 1,
+                "ms": 0,
+                "max": 0
+              },
+              "anchorNode": {
+                "calls": 1,
+                "ms": 8.200000047683716,
+                "max": 8.200000047683716
+              },
+              "focusNode": {
+                "calls": 1,
+                "ms": 0,
+                "max": 0
+              },
+              "physicalMove": {
+                "calls": 1,
+                "ms": 0.2999999523162842,
+                "max": 0.2999999523162842
+              }
+            }
+          }
+        },
+        "firstSlow": []
+      },
+      "nodeReceivedMs": 7414.445292,
+      "phase": "startup-wait"
+    },
+    {
+      "browser": {
+        "count": 2,
+        "pageMs": 6128.099999904633,
+        "totals": {
+          "generation1": {
+            "calls": 2,
+            "elapsed": 16.5,
+            "phases": {
+              "displayWrite": {
+                "calls": 2,
+                "ms": 0,
+                "max": 0
+              },
+              "appearancePublish": {
+                "calls": 2,
+                "ms": 0,
+                "max": 0
+              },
+              "getSelection": {
+                "calls": 2,
+                "ms": 0,
+                "max": 0
+              },
+              "anchorNode": {
+                "calls": 2,
+                "ms": 16,
+                "max": 8.200000047683716
+              },
+              "focusNode": {
+                "calls": 2,
+                "ms": 0,
+                "max": 0
+              },
+              "physicalMove": {
+                "calls": 2,
+                "ms": 0.39999985694885254,
+                "max": 0.2999999523162842
+              }
+            }
+          }
+        },
+        "firstSlow": []
+      },
+      "nodeReceivedMs": 7479.956917,
+      "phase": "startup-wait"
+    },
+    {
+      "browser": {
+        "count": 4,
+        "pageMs": 6183.900000095367,
+        "totals": {
+          "generation1": {
+            "calls": 4,
+            "elapsed": 33.90000009536743,
+            "phases": {
+              "displayWrite": {
+                "calls": 4,
+                "ms": 0,
+                "max": 0
+              },
+              "appearancePublish": {
+                "calls": 4,
+                "ms": 0,
+                "max": 0
+              },
+              "getSelection": {
+                "calls": 4,
+                "ms": 0,
+                "max": 0
+              },
+              "anchorNode": {
+                "calls": 4,
+                "ms": 32.5,
+                "max": 8.599999904632568
+              },
+              "focusNode": {
+                "calls": 4,
+                "ms": 0.09999990463256836,
+                "max": 0.09999990463256836
+              },
+              "physicalMove": {
+                "calls": 4,
+                "ms": 1.0999999046325684,
+                "max": 0.5
+              }
+            }
+          }
+        },
+        "firstSlow": []
+      },
+      "nodeReceivedMs": 7535.824375,
+      "phase": "startup-wait"
+    },
+    {
+      "browser": {
+        "count": 8,
+        "pageMs": 6325.599999904633,
+        "totals": {
+          "generation1": {
+            "calls": 8,
+            "elapsed": 80.79999995231628,
+            "phases": {
+              "displayWrite": {
+                "calls": 8,
+                "ms": 0,
+                "max": 0
+              },
+              "appearancePublish": {
+                "calls": 8,
+                "ms": 0,
+                "max": 0
+              },
+              "getSelection": {
+                "calls": 8,
+                "ms": 0,
+                "max": 0
+              },
+              "anchorNode": {
+                "calls": 8,
+                "ms": 66.89999985694885,
+                "max": 9.700000047683716
+              },
+              "focusNode": {
+                "calls": 8,
+                "ms": 0.20000004768371582,
+                "max": 0.10000014305114746
+              },
+              "physicalMove": {
+                "calls": 8,
+                "ms": 13.199999570846558,
+                "max": 10.099999904632568
+              }
+            }
+          }
+        },
+        "firstSlow": []
+      },
+      "nodeReceivedMs": 7677.500125,
+      "phase": "startup-wait"
+    },
+    {
+      "browser": {
+        "count": 16,
+        "pageMs": 6690.599999904633,
+        "totals": {
+          "generation1": {
+            "calls": 16,
+            "elapsed": 188,
+            "phases": {
+              "displayWrite": {
+                "calls": 16,
+                "ms": 0,
+                "max": 0
+              },
+              "appearancePublish": {
+                "calls": 16,
+                "ms": 0,
+                "max": 0
+              },
+              "getSelection": {
+                "calls": 16,
+                "ms": 0,
+                "max": 0
+              },
+              "anchorNode": {
+                "calls": 16,
+                "ms": 145.70000004768372,
+                "max": 19.399999856948853
+              },
+              "focusNode": {
+                "calls": 16,
+                "ms": 0.2999999523162842,
+                "max": 0.10000014305114746
+              },
+              "physicalMove": {
+                "calls": 16,
+                "ms": 41.49999952316284,
+                "max": 20.299999952316284
+              }
+            }
+          }
+        },
+        "firstSlow": []
+      },
+      "nodeReceivedMs": 8042.544333,
+      "phase": "startup-wait"
+    },
+    {
+      "browser": {
+        "count": 32,
+        "pageMs": 7195,
+        "totals": {
+          "generation1": {
+            "calls": 32,
+            "elapsed": 364.29999923706055,
+            "phases": {
+              "displayWrite": {
+                "calls": 32,
+                "ms": 0.20000028610229492,
+                "max": 0.10000014305114746
+              },
+              "appearancePublish": {
+                "calls": 32,
+                "ms": 0,
+                "max": 0
+              },
+              "getSelection": {
+                "calls": 32,
+                "ms": 0,
+                "max": 0
+              },
+              "anchorNode": {
+                "calls": 32,
+                "ms": 281.5,
+                "max": 19.399999856948853
+              },
+              "focusNode": {
+                "calls": 32,
+                "ms": 0.2999999523162842,
+                "max": 0.10000014305114746
+              },
+              "physicalMove": {
+                "calls": 32,
+                "ms": 81.59999871253967,
+                "max": 20.299999952316284
+              }
+            }
+          }
+        },
+        "firstSlow": []
+      },
+      "nodeReceivedMs": 8546.987125,
+      "phase": "startup-wait"
+    },
+    {
+      "browser": {
+        "count": 64,
+        "pageMs": 8898.099999904633,
+        "totals": {
+          "generation1": {
+            "calls": 64,
+            "elapsed": 634.699999332428,
+            "phases": {
+              "displayWrite": {
+                "calls": 64,
+                "ms": 0.3000004291534424,
+                "max": 0.10000014305114746
+              },
+              "appearancePublish": {
+                "calls": 64,
+                "ms": 0,
+                "max": 0
+              },
+              "getSelection": {
+                "calls": 64,
+                "ms": 0,
+                "max": 0
+              },
+              "anchorNode": {
+                "calls": 64,
+                "ms": 543.9999997615814,
+                "max": 19.399999856948853
+              },
+              "focusNode": {
+                "calls": 64,
+                "ms": 0.2999999523162842,
+                "max": 0.10000014305114746
+              },
+              "physicalMove": {
+                "calls": 64,
+                "ms": 89.39999890327454,
+                "max": 20.299999952316284
+              }
+            }
+          }
+        },
+        "firstSlow": []
+      },
+      "nodeReceivedMs": 10250.091583,
+      "phase": "startup-wait"
+    },
+    {
+      "browser": {
+        "count": 128,
+        "pageMs": 10281.299999952316,
+        "totals": {
+          "generation1": {
+            "calls": 128,
+            "elapsed": 1259.299998998642,
+            "phases": {
+              "displayWrite": {
+                "calls": 128,
+                "ms": 0.8000004291534424,
+                "max": 0.10000014305114746
+              },
+              "appearancePublish": {
+                "calls": 128,
+                "ms": 0,
+                "max": 0
+              },
+              "getSelection": {
+                "calls": 128,
+                "ms": 0,
+                "max": 0
+              },
+              "anchorNode": {
+                "calls": 128,
+                "ms": 1136.6999998092651,
+                "max": 24.200000047683716
+              },
+              "focusNode": {
+                "calls": 128,
+                "ms": 0.2999999523162842,
+                "max": 0.10000014305114746
+              },
+              "physicalMove": {
+                "calls": 128,
+                "ms": 120.49999833106995,
+                "max": 20.299999952316284
+              }
+            }
+          }
+        },
+        "firstSlow": []
+      },
+      "nodeReceivedMs": 11633.2575,
+      "phase": "startup-wait"
+    },
+    {
+      "browser": {
+        "count": 192,
+        "pageMs": 12928.400000095367,
+        "totals": {
+          "generation1": {
+            "calls": 192,
+            "elapsed": 2046.5999987125397,
+            "phases": {
+              "displayWrite": {
+                "calls": 192,
+                "ms": 1.3000004291534424,
+                "max": 0.10000014305114746
+              },
+              "appearancePublish": {
+                "calls": 192,
+                "ms": 0.20000004768371582,
+                "max": 0.10000014305114746
+              },
+              "getSelection": {
+                "calls": 192,
+                "ms": 0.09999990463256836,
+                "max": 0.09999990463256836
+              },
+              "anchorNode": {
+                "calls": 192,
+                "ms": 1896.3999998569489,
+                "max": 28.800000190734863
+              },
+              "focusNode": {
+                "calls": 192,
+                "ms": 0.2999999523162842,
+                "max": 0.10000014305114746
+              },
+              "physicalMove": {
+                "calls": 192,
+                "ms": 146.79999828338623,
+                "max": 20.299999952316284
+              }
+            }
+          }
+        },
+        "firstSlow": []
+      },
+      "nodeReceivedMs": 14280.304,
+      "phase": "startup-wait"
+    },
+    {
+      "browser": {
+        "count": 256,
+        "pageMs": 14212.099999904633,
+        "totals": {
+          "generation1": {
+            "calls": 256,
+            "elapsed": 2806.0999977588654,
+            "phases": {
+              "displayWrite": {
+                "calls": 256,
+                "ms": 1.8000004291534424,
+                "max": 0.10000014305114746
+              },
+              "appearancePublish": {
+                "calls": 256,
+                "ms": 0.5,
+                "max": 0.10000014305114746
+              },
+              "getSelection": {
+                "calls": 256,
+                "ms": 0.09999990463256836,
+                "max": 0.09999990463256836
+              },
+              "anchorNode": {
+                "calls": 256,
+                "ms": 2645.699998140335,
+                "max": 28.800000190734863
+              },
+              "focusNode": {
+                "calls": 256,
+                "ms": 0.2999999523162842,
+                "max": 0.10000014305114746
+              },
+              "physicalMove": {
+                "calls": 256,
+                "ms": 155.5999984741211,
+                "max": 20.299999952316284
+              }
+            }
+          }
+        },
+        "firstSlow": []
+      },
+      "nodeReceivedMs": 15564.133875,
+      "phase": "startup-wait"
+    },
+    {
+      "browser": {
+        "count": 320,
+        "pageMs": 17426.900000095367,
+        "totals": {
+          "generation1": {
+            "calls": 320,
+            "elapsed": 3803.6999983787537,
+            "phases": {
+              "displayWrite": {
+                "calls": 320,
+                "ms": 2.8000001907348633,
+                "max": 0.10000014305114746
+              },
+              "appearancePublish": {
+                "calls": 320,
+                "ms": 0.6999998092651367,
+                "max": 0.10000014305114746
+              },
+              "getSelection": {
+                "calls": 320,
+                "ms": 0.09999990463256836,
+                "max": 0.09999990463256836
+              },
+              "anchorNode": {
+                "calls": 320,
+                "ms": 3563.6999983787537,
+                "max": 55.09999990463257
+              },
+              "focusNode": {
+                "calls": 320,
+                "ms": 0.40000009536743164,
+                "max": 0.10000014305114746
+              },
+              "physicalMove": {
+                "calls": 320,
+                "ms": 233.29999899864197,
+                "max": 47.40000009536743
+              }
+            }
+          }
+        },
+        "firstSlow": [
+          {
+            "generation": 1,
+            "begin": 15351.900000095367,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [55.09999990463257],
+              "focusNode": [0],
+              "physicalMove": [0]
+            },
+            "end": 15407
+          },
+          {
+            "generation": 1,
+            "begin": 16770.299999952316,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [35.5],
+              "focusNode": [0],
+              "physicalMove": [47.40000009536743]
+            },
+            "end": 16853.200000047684
+          }
+        ]
+      },
+      "nodeReceivedMs": 18778.942875,
+      "phase": "startup-wait"
+    },
+    {
+      "browser": {
+        "count": 384,
+        "pageMs": 27027.599999904633,
+        "totals": {
+          "generation1": {
+            "calls": 384,
+            "elapsed": 5803.199998378754,
+            "phases": {
+              "displayWrite": {
+                "calls": 384,
+                "ms": 3.4000003337860107,
+                "max": 0.10000014305114746
+              },
+              "appearancePublish": {
+                "calls": 384,
+                "ms": 0.9000000953674316,
+                "max": 0.10000014305114746
+              },
+              "getSelection": {
+                "calls": 384,
+                "ms": 0.20000004768371582,
+                "max": 0.10000014305114746
+              },
+              "anchorNode": {
+                "calls": 384,
+                "ms": 4792.799999237061,
+                "max": 55.09999990463257
+              },
+              "focusNode": {
+                "calls": 384,
+                "ms": 0.40000009536743164,
+                "max": 0.10000014305114746
+              },
+              "physicalMove": {
+                "calls": 384,
+                "ms": 1002.3999974727631,
+                "max": 562.7999999523163
+              }
+            }
+          }
+        },
+        "firstSlow": [
+          {
+            "generation": 1,
+            "begin": 15351.900000095367,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [55.09999990463257],
+              "focusNode": [0],
+              "physicalMove": [0]
+            },
+            "end": 15407
+          },
+          {
+            "generation": 1,
+            "begin": 16770.299999952316,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [35.5],
+              "focusNode": [0],
+              "physicalMove": [47.40000009536743]
+            },
+            "end": 16853.200000047684
+          },
+          {
+            "generation": 1,
+            "begin": 19036.900000095367,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [45.59999990463257],
+              "focusNode": [0],
+              "physicalMove": [562.7999999523163]
+            },
+            "end": 19645.299999952316
+          },
+          {
+            "generation": 1,
+            "begin": 21012.200000047684,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [55],
+              "focusNode": [0],
+              "physicalMove": [0.09999990463256836]
+            },
+            "end": 21067.299999952316
+          },
+          {
+            "generation": 1,
+            "begin": 22181.299999952316,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0.10000014305114746],
+              "anchorNode": [50.799999952316284],
+              "focusNode": [0],
+              "physicalMove": [5.700000047683716]
+            },
+            "end": 22237.900000095367
+          },
+          {
+            "generation": 1,
+            "begin": 25004.599999904633,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [42.40000009536743],
+              "focusNode": [0],
+              "physicalMove": [29.09999990463257]
+            },
+            "end": 25076.099999904633
+          },
+          {
+            "generation": 1,
+            "begin": 25704.299999952316,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [22.799999952316284],
+              "focusNode": [0],
+              "physicalMove": [98.5]
+            },
+            "end": 25825.599999904633
+          }
+        ]
+      },
+      "nodeReceivedMs": 28379.798292,
+      "phase": "startup-wait"
+    },
+    {
+      "browser": {
+        "count": 448,
+        "pageMs": 36569.700000047684,
+        "totals": {
+          "generation1": {
+            "calls": 448,
+            "elapsed": 7816.599998950958,
+            "phases": {
+              "displayWrite": {
+                "calls": 448,
+                "ms": 4.900000333786011,
+                "max": 0.10000014305114746
+              },
+              "appearancePublish": {
+                "calls": 448,
+                "ms": 1,
+                "max": 0.10000014305114746
+              },
+              "getSelection": {
+                "calls": 448,
+                "ms": 0.20000004768371582,
+                "max": 0.10000014305114746
+              },
+              "anchorNode": {
+                "calls": 448,
+                "ms": 6476.699999332428,
+                "max": 55.09999990463257
+              },
+              "focusNode": {
+                "calls": 448,
+                "ms": 0.40000009536743164,
+                "max": 0.10000014305114746
+              },
+              "physicalMove": {
+                "calls": 448,
+                "ms": 1329.99999833107,
+                "max": 562.7999999523163
+              }
+            }
+          }
+        },
+        "firstSlow": [
+          {
+            "generation": 1,
+            "begin": 15351.900000095367,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [55.09999990463257],
+              "focusNode": [0],
+              "physicalMove": [0]
+            },
+            "end": 15407
+          },
+          {
+            "generation": 1,
+            "begin": 16770.299999952316,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [35.5],
+              "focusNode": [0],
+              "physicalMove": [47.40000009536743]
+            },
+            "end": 16853.200000047684
+          },
+          {
+            "generation": 1,
+            "begin": 19036.900000095367,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [45.59999990463257],
+              "focusNode": [0],
+              "physicalMove": [562.7999999523163]
+            },
+            "end": 19645.299999952316
+          },
+          {
+            "generation": 1,
+            "begin": 21012.200000047684,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [55],
+              "focusNode": [0],
+              "physicalMove": [0.09999990463256836]
+            },
+            "end": 21067.299999952316
+          },
+          {
+            "generation": 1,
+            "begin": 22181.299999952316,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0.10000014305114746],
+              "anchorNode": [50.799999952316284],
+              "focusNode": [0],
+              "physicalMove": [5.700000047683716]
+            },
+            "end": 22237.900000095367
+          },
+          {
+            "generation": 1,
+            "begin": 25004.599999904633,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [42.40000009536743],
+              "focusNode": [0],
+              "physicalMove": [29.09999990463257]
+            },
+            "end": 25076.099999904633
+          },
+          {
+            "generation": 1,
+            "begin": 25704.299999952316,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [22.799999952316284],
+              "focusNode": [0],
+              "physicalMove": [98.5]
+            },
+            "end": 25825.599999904633
+          },
+          {
+            "generation": 1,
+            "begin": 28756.799999952316,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [37],
+              "focusNode": [0],
+              "physicalMove": [146.5]
+            },
+            "end": 28940.299999952316
+          },
+          {
+            "generation": 1,
+            "begin": 31877.900000095367,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [30.59999990463257],
+              "focusNode": [0],
+              "physicalMove": [50.700000047683716]
+            },
+            "end": 31959.200000047684
+          },
+          {
+            "generation": 1,
+            "begin": 33689.299999952316,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [47.60000014305115],
+              "focusNode": [0],
+              "physicalMove": [10]
+            },
+            "end": 33746.90000009537
+          }
+        ]
+      },
+      "nodeReceivedMs": 37921.727333,
+      "phase": "startup-wait"
+    },
+    {
+      "browser": {
+        "count": 512,
+        "pageMs": 46678,
+        "totals": {
+          "generation1": {
+            "calls": 512,
+            "elapsed": 10282.999998807907,
+            "phases": {
+              "displayWrite": {
+                "calls": 512,
+                "ms": 5.5,
+                "max": 0.10000014305114746
+              },
+              "appearancePublish": {
+                "calls": 512,
+                "ms": 1.799999713897705,
+                "max": 0.2999999523162842
+              },
+              "getSelection": {
+                "calls": 512,
+                "ms": 0.20000004768371582,
+                "max": 0.10000014305114746
+              },
+              "anchorNode": {
+                "calls": 512,
+                "ms": 8634.199999570847,
+                "max": 80.60000014305115
+              },
+              "focusNode": {
+                "calls": 512,
+                "ms": 0.5,
+                "max": 0.10000014305114746
+              },
+              "physicalMove": {
+                "calls": 512,
+                "ms": 1636.899998664856,
+                "max": 562.7999999523163
+              }
+            }
+          }
+        },
+        "firstSlow": [
+          {
+            "generation": 1,
+            "begin": 15351.900000095367,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [55.09999990463257],
+              "focusNode": [0],
+              "physicalMove": [0]
+            },
+            "end": 15407
+          },
+          {
+            "generation": 1,
+            "begin": 16770.299999952316,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [35.5],
+              "focusNode": [0],
+              "physicalMove": [47.40000009536743]
+            },
+            "end": 16853.200000047684
+          },
+          {
+            "generation": 1,
+            "begin": 19036.900000095367,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [45.59999990463257],
+              "focusNode": [0],
+              "physicalMove": [562.7999999523163]
+            },
+            "end": 19645.299999952316
+          },
+          {
+            "generation": 1,
+            "begin": 21012.200000047684,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [55],
+              "focusNode": [0],
+              "physicalMove": [0.09999990463256836]
+            },
+            "end": 21067.299999952316
+          },
+          {
+            "generation": 1,
+            "begin": 22181.299999952316,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0.10000014305114746],
+              "anchorNode": [50.799999952316284],
+              "focusNode": [0],
+              "physicalMove": [5.700000047683716]
+            },
+            "end": 22237.900000095367
+          },
+          {
+            "generation": 1,
+            "begin": 25004.599999904633,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [42.40000009536743],
+              "focusNode": [0],
+              "physicalMove": [29.09999990463257]
+            },
+            "end": 25076.099999904633
+          },
+          {
+            "generation": 1,
+            "begin": 25704.299999952316,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [22.799999952316284],
+              "focusNode": [0],
+              "physicalMove": [98.5]
+            },
+            "end": 25825.599999904633
+          },
+          {
+            "generation": 1,
+            "begin": 28756.799999952316,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [37],
+              "focusNode": [0],
+              "physicalMove": [146.5]
+            },
+            "end": 28940.299999952316
+          },
+          {
+            "generation": 1,
+            "begin": 31877.900000095367,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [30.59999990463257],
+              "focusNode": [0],
+              "physicalMove": [50.700000047683716]
+            },
+            "end": 31959.200000047684
+          },
+          {
+            "generation": 1,
+            "begin": 33689.299999952316,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [47.60000014305115],
+              "focusNode": [0],
+              "physicalMove": [10]
+            },
+            "end": 33746.90000009537
+          }
+        ]
+      },
+      "nodeReceivedMs": 48030.015042,
+      "phase": "startup-wait"
+    },
+    {
+      "browser": {
+        "count": 576,
+        "pageMs": 55381.5,
+        "totals": {
+          "generation1": {
+            "calls": 576,
+            "elapsed": 13160.399998664856,
+            "phases": {
+              "displayWrite": {
+                "calls": 576,
+                "ms": 7.199999570846558,
+                "max": 0.10000014305114746
+              },
+              "appearancePublish": {
+                "calls": 576,
+                "ms": 1.8999996185302734,
+                "max": 0.2999999523162842
+              },
+              "getSelection": {
+                "calls": 576,
+                "ms": 0.20000004768371582,
+                "max": 0.10000014305114746
+              },
+              "anchorNode": {
+                "calls": 576,
+                "ms": 11311.099999666214,
+                "max": 80.60000014305115
+              },
+              "focusNode": {
+                "calls": 576,
+                "ms": 0.7000000476837158,
+                "max": 0.10000014305114746
+              },
+              "physicalMove": {
+                "calls": 576,
+                "ms": 1834.5999989509583,
+                "max": 562.7999999523163
+              }
+            }
+          }
+        },
+        "firstSlow": [
+          {
+            "generation": 1,
+            "begin": 15351.900000095367,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [55.09999990463257],
+              "focusNode": [0],
+              "physicalMove": [0]
+            },
+            "end": 15407
+          },
+          {
+            "generation": 1,
+            "begin": 16770.299999952316,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [35.5],
+              "focusNode": [0],
+              "physicalMove": [47.40000009536743]
+            },
+            "end": 16853.200000047684
+          },
+          {
+            "generation": 1,
+            "begin": 19036.900000095367,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [45.59999990463257],
+              "focusNode": [0],
+              "physicalMove": [562.7999999523163]
+            },
+            "end": 19645.299999952316
+          },
+          {
+            "generation": 1,
+            "begin": 21012.200000047684,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [55],
+              "focusNode": [0],
+              "physicalMove": [0.09999990463256836]
+            },
+            "end": 21067.299999952316
+          },
+          {
+            "generation": 1,
+            "begin": 22181.299999952316,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0.10000014305114746],
+              "anchorNode": [50.799999952316284],
+              "focusNode": [0],
+              "physicalMove": [5.700000047683716]
+            },
+            "end": 22237.900000095367
+          },
+          {
+            "generation": 1,
+            "begin": 25004.599999904633,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [42.40000009536743],
+              "focusNode": [0],
+              "physicalMove": [29.09999990463257]
+            },
+            "end": 25076.099999904633
+          },
+          {
+            "generation": 1,
+            "begin": 25704.299999952316,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [22.799999952316284],
+              "focusNode": [0],
+              "physicalMove": [98.5]
+            },
+            "end": 25825.599999904633
+          },
+          {
+            "generation": 1,
+            "begin": 28756.799999952316,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [37],
+              "focusNode": [0],
+              "physicalMove": [146.5]
+            },
+            "end": 28940.299999952316
+          },
+          {
+            "generation": 1,
+            "begin": 31877.900000095367,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [30.59999990463257],
+              "focusNode": [0],
+              "physicalMove": [50.700000047683716]
+            },
+            "end": 31959.200000047684
+          },
+          {
+            "generation": 1,
+            "begin": 33689.299999952316,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [47.60000014305115],
+              "focusNode": [0],
+              "physicalMove": [10]
+            },
+            "end": 33746.90000009537
+          }
+        ]
+      },
+      "nodeReceivedMs": 56733.88625,
+      "phase": "startup-wait"
+    },
+    {
+      "browser": {
+        "count": 640,
+        "pageMs": 69988.09999990463,
+        "totals": {
+          "generation1": {
+            "calls": 640,
+            "elapsed": 17159.599997758865,
+            "phases": {
+              "displayWrite": {
+                "calls": 640,
+                "ms": 7.699999570846558,
+                "max": 0.10000014305114746
+              },
+              "appearancePublish": {
+                "calls": 640,
+                "ms": 1.9999995231628418,
+                "max": 0.2999999523162842
+              },
+              "getSelection": {
+                "calls": 640,
+                "ms": 0.20000004768371582,
+                "max": 0.10000014305114746
+              },
+              "anchorNode": {
+                "calls": 640,
+                "ms": 14610.19999909401,
+                "max": 115.70000004768372
+              },
+              "focusNode": {
+                "calls": 640,
+                "ms": 0.7999999523162842,
+                "max": 0.10000014305114746
+              },
+              "physicalMove": {
+                "calls": 640,
+                "ms": 2533.399998664856,
+                "max": 562.7999999523163
+              }
+            }
+          }
+        },
+        "firstSlow": [
+          {
+            "generation": 1,
+            "begin": 15351.900000095367,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [55.09999990463257],
+              "focusNode": [0],
+              "physicalMove": [0]
+            },
+            "end": 15407
+          },
+          {
+            "generation": 1,
+            "begin": 16770.299999952316,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [35.5],
+              "focusNode": [0],
+              "physicalMove": [47.40000009536743]
+            },
+            "end": 16853.200000047684
+          },
+          {
+            "generation": 1,
+            "begin": 19036.900000095367,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [45.59999990463257],
+              "focusNode": [0],
+              "physicalMove": [562.7999999523163]
+            },
+            "end": 19645.299999952316
+          },
+          {
+            "generation": 1,
+            "begin": 21012.200000047684,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [55],
+              "focusNode": [0],
+              "physicalMove": [0.09999990463256836]
+            },
+            "end": 21067.299999952316
+          },
+          {
+            "generation": 1,
+            "begin": 22181.299999952316,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0.10000014305114746],
+              "anchorNode": [50.799999952316284],
+              "focusNode": [0],
+              "physicalMove": [5.700000047683716]
+            },
+            "end": 22237.900000095367
+          },
+          {
+            "generation": 1,
+            "begin": 25004.599999904633,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [42.40000009536743],
+              "focusNode": [0],
+              "physicalMove": [29.09999990463257]
+            },
+            "end": 25076.099999904633
+          },
+          {
+            "generation": 1,
+            "begin": 25704.299999952316,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [22.799999952316284],
+              "focusNode": [0],
+              "physicalMove": [98.5]
+            },
+            "end": 25825.599999904633
+          },
+          {
+            "generation": 1,
+            "begin": 28756.799999952316,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [37],
+              "focusNode": [0],
+              "physicalMove": [146.5]
+            },
+            "end": 28940.299999952316
+          },
+          {
+            "generation": 1,
+            "begin": 31877.900000095367,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [30.59999990463257],
+              "focusNode": [0],
+              "physicalMove": [50.700000047683716]
+            },
+            "end": 31959.200000047684
+          },
+          {
+            "generation": 1,
+            "begin": 33689.299999952316,
+            "phases": {
+              "displayWrite": [0],
+              "appearancePublish": [0],
+              "getSelection": [0],
+              "anchorNode": [47.60000014305115],
+              "focusNode": [0],
+              "physicalMove": [10]
+            },
+            "end": 33746.90000009537
+          }
+        ]
+      },
+      "nodeReceivedMs": 71340.267833,
+      "phase": "startup-wait"
+    }
+  ],
+  "bindings": {
+    "scope": "Only timed wrappers; callbacks and physical move stay in original order. First slow rows capped at ten, periodic delivered checkpoints, no deadline totals. Getter can include native layout caused by preceding work.",
+    "files": {
+      "native-content-lease.BX94nT5e.js": {
+        "original": "3c047e467106bc44336a02afac991d246adeba97da83322a8d1bbd4f130dbaa0",
+        "observed": "d945359a7335704ab12e542b754b7547f92d6b5748dea26804eddbf6933f3332"
+      },
+      "runtime-preview-surface.B593Aqpp.js": {
+        "original": "986c528b16179f7a49ec396a1e9fb8e758f170d971adbe05d49f869e3dbd6b5a",
+        "observed": "83069bf8c7984599e7edc8a5073f6158f5a7ac2a6cd05d1468d0857990e9a886"
+      }
+    }
+  },
+  "actualOriginalCase": "Chinese S4 1 failed, English filtered. Original 60000ms readiness failure.",
+  "nativeExit": 1,
+  "postrestoreExit": 1,
+  "restoration": "Both emitted assets matched original byte hashes and the Git worktree was clean.",
+  "scope": "All checkpoints are bounded delivered page observations. Timings are synchronous inclusive durations at each wrapper, not exclusive style costs or deadline totals. No app source changes.",
+  "bindingChecks": {
+    "nativeLogSha256": "25b14f35d0e25ec8ac3cb3cf65e00106e27f5c7cadb0f6da89c69bddb083700a",
+    "runnerPatchSha256": "eef06bca31a475ef0e31ebba41e3d4c75d77963b5cb4562cc271f5b9829dbdd9",
+    "overlayScriptSha256": "0c723a55f1e3e1fc505bdb8dfca2e128758d38f8e5f7dd1d51919b9b0171895a"
+  }
+}

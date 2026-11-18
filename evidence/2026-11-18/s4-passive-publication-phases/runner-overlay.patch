@@ -1,0 +1,13 @@
+diff --git a/apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts b/apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts
+index 2953f8254..099277242 100644
+--- a/apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts
++++ b/apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts
+@@ -83,7 +83,7 @@ describe.sequential('S4 complete public Dialog settings', () => {
+             } else consoleErrorsDropped++;
+             return;
+           }
+-          if (!text.startsWith('[S4 startup change]') && !text.startsWith('[S4 init observation]'))
++          if (!text.startsWith('[S4 startup change]') && !text.startsWith('[S4 init observation]') && !text.startsWith('[S4 passive phase]'))
+             return;
+           console.info(
+             '[S4 browser stream]',
