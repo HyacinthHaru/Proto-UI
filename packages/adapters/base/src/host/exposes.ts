@@ -1,6 +1,7 @@
 import {
   isAppMakerExposeRecordEntry,
   isExposeStateExternalHandle,
+  isExposeStateSubscriptionCancellation,
 } from '@proto.ui/module-expose-state';
 
 export type CallbackScopeInvoker = (fn: () => void) => void;
@@ -42,6 +43,9 @@ export function createScopedExposesReader(
     currentReceiver: () => object = () => receiver,
     stateSubscribe = false
   ): ((...args: unknown[]) => unknown) => {
+    // Cancelling an issued State subscription revokes a resource without entering
+    // its retired owner. Authored callbacks and ordinary return values stay scoped.
+    if (isExposeStateSubscriptionCancellation(value)) return value;
     if (projectedCallables.has(value)) return value;
     let receiverCache = callableCache.get(receiver);
     if (!receiverCache) {
