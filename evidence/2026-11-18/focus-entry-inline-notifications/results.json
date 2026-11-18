@@ -1,0 +1,288 @@
+{
+  "sources": {
+    "main": {
+      "exact": {
+        "head": "4a95f7bea150c214c78ded1dc4aa10365ee8fca5",
+        "tree": "74224295a838676358f8f6cae663375162e5895d",
+        "distHashes": {
+          "zh-cn/index.html": "af62d1ef02443a3e721171076da6f57144f91ff7d580f1cb81d19c24ba32e812",
+          "zh-cn/ui-libraries/shadcn/button/index.html": "ccfb67c7fa74259f643dc5497e611ae0e55ab3b2c80807da0a6434131ddc4bac",
+          "zh-cn/ui-libraries/brutalist/components/button/index.html": "57eba6b86724e478ead65ebbecc2fcea90ae2b944b72f84fd4db1128f141275c"
+        },
+        "sourceCodeExamples": 9,
+        "renderedCodeExamples": 9,
+        "packedHeaderExit": 0,
+        "previewBrowserExit": 0,
+        "codeGrammarExit": 0,
+        "copyCommandsExit": 0,
+        "scrollChainExit": 0,
+        "selector": "uses real family Popover Triggers|uses the same mobile shell|retains (shadcn|brutalist) preference owners|compact (shadcn|brutalist)|live available region|keeps Runtime Tabs outside"
+      },
+      "tests": {
+        "preview_browser": {
+          "passed": 15,
+          "filtered": 9,
+          "reportSha256": "651d5cecba29b4c01db8fb32af0d0f0a174dd38992353d2918d8bd32f935831a"
+        },
+        "code_grammar": {
+          "passed": 3,
+          "filtered": 23,
+          "reportSha256": "a1d32a312ebe215f1c0e763979f6ae2d4e45ec0a009e012f4912915389d76832"
+        },
+        "copy_commands": {
+          "passed": 1,
+          "filtered": 14,
+          "reportSha256": "be79e2095671ce735fe1dc11dbde73b330807ee1c513754b67c17c01ee3a765e"
+        },
+        "scroll_chain": {
+          "passed": 2,
+          "filtered": 4,
+          "reportSha256": "6373a98103a6c9a0971c3beb09929cb307273bdfac1827b93b4fdede03cdff93"
+        },
+        "focused": {
+          "passed": 129,
+          "filtered": 0,
+          "reportSha256": "74fad6981997168749b38757a6593a5aa5fd64f7943cb332218365af4d1fdd01"
+        },
+        "wc_shadow": {
+          "passed": 153,
+          "filtered": 0,
+          "reportSha256": "49bdeb1c1c95d7e5079ae306c6c3e890263550df73fd1ff6fb3705523d8f5d09"
+        }
+      },
+      "native": {
+        "head": "4a95f7bea150c214c78ded1dc4aa10365ee8fca5",
+        "parent": "0f0955a9d624e0ef5e250f56a0eaa0fc52bbfb53",
+        "chromium": "156.0.8078.79",
+        "clean": true,
+        "results": [
+          {
+            "kind": "parent",
+            "before": 1,
+            "withRadio": 1,
+            "after": 1,
+            "entryFallbackRestored": true
+          },
+          {
+            "kind": "candidate",
+            "before": 0,
+            "withRadio": 1,
+            "after": 0,
+            "entryFallbackRestored": true
+          },
+          {
+            "kind": "candidate",
+            "before": 0,
+            "withRadio": 1,
+            "after": 0,
+            "entryFallbackRestored": true
+          },
+          {
+            "kind": "parent",
+            "before": 1,
+            "withRadio": 1,
+            "after": 1,
+            "entryFallbackRestored": true
+          }
+        ],
+        "sourceFingerprints": {
+          "parent": {
+            "runtime": "b49434403b081de5380610be17b144c8557723e5576677e43705b98d1ae74046",
+            "bundle": "bcaa6182d05a7aec26064f23275cf4aa11552ebde6247ad2fcb13586cc942a1e",
+            "inputs": 388
+          },
+          "candidate": {
+            "runtime": "bdf0eb841cfc79a34f15c51cc0ec0376a7237d2bad8b318e23c15829c4056f67",
+            "bundle": "2f50377cf9fab488f6cef8674c2244c9fe8b0cdcb615fb3d4f8b967d4b8816f5",
+            "inputs": 388
+          }
+        }
+      }
+    },
+    "integrated": {
+      "exact": {
+        "head": "a4da799e7c3fb2b7b17c063fe93613b97b2edd86",
+        "tree": "3102cc2998365a57b521eb313453fe1e33ab9870",
+        "distHashes": {
+          "zh-cn/index.html": "3e3e043a81e9814ee3d3a52ef77e2ba3a6f81efc7ebaeb2035a48f742436d73c",
+          "zh-cn/ui-libraries/shadcn/button/index.html": "fd1ec7b3cab0e28ee7e258cae79002c2064c8a9d57a711aef48968d23063f01e",
+          "zh-cn/ui-libraries/brutalist/components/button/index.html": "df524db54d756cb9ecff7af8fe152bbc389636a8dd36eaa50a99e1b17d90f6bb"
+        },
+        "sourceCodeExamples": 9,
+        "renderedCodeExamples": 9,
+        "packedHeaderExit": 0,
+        "previewBrowserExit": 0,
+        "codeGrammarExit": 0,
+        "copyCommandsExit": 0,
+        "scrollChainExit": 0,
+        "selector": "uses real family Popover Triggers|uses the same mobile shell|retains (shadcn|brutalist) preference owners|compact (shadcn|brutalist)|live available region|keeps Runtime Tabs outside"
+      },
+      "tests": {
+        "preview_browser": {
+          "passed": 15,
+          "filtered": 9,
+          "reportSha256": "f0aaba0ec27178002cd004cf2b2d620a30a2c13eee57b388eb13a98c1bb64795"
+        },
+        "code_grammar": {
+          "passed": 3,
+          "filtered": 23,
+          "reportSha256": "2b13dad23a11e99f9efecbd33b0a2da286a1001357af4c45a6446b162fe39bdd"
+        },
+        "copy_commands": {
+          "passed": 1,
+          "filtered": 14,
+          "reportSha256": "7713587c16e4715478a00a01cdd2bb8ca2645f36175c04b51cfd6b5128d283a4"
+        },
+        "scroll_chain": {
+          "passed": 2,
+          "filtered": 4,
+          "reportSha256": "349b56ff5733b9252eb6f70b2ffacb563409e133394d5f5390baf9e05af614dd"
+        },
+        "focused": {
+          "passed": 137,
+          "filtered": 0,
+          "reportSha256": "71444308e7a739ea7aa7c045118245dd0a4645a65dbad5cf137a1d7387c7db34"
+        },
+        "wc_shadow": {
+          "passed": 165,
+          "filtered": 0,
+          "reportSha256": "6f6cf14e97eaf8dfc2b320f9631216f4d73ad968034dfc620863c20f3bf8e943"
+        }
+      },
+      "native": {
+        "head": "a4da799e7c3fb2b7b17c063fe93613b97b2edd86",
+        "parent": "a8e6d058e8a556dced7bd2465e9c100456e6580e",
+        "chromium": "156.0.8078.79",
+        "clean": true,
+        "results": [
+          {
+            "kind": "parent",
+            "before": 1,
+            "withRadio": 1,
+            "after": 1,
+            "entryFallbackRestored": true
+          },
+          {
+            "kind": "candidate",
+            "before": 0,
+            "withRadio": 1,
+            "after": 0,
+            "entryFallbackRestored": true
+          },
+          {
+            "kind": "candidate",
+            "before": 0,
+            "withRadio": 1,
+            "after": 0,
+            "entryFallbackRestored": true
+          },
+          {
+            "kind": "parent",
+            "before": 1,
+            "withRadio": 1,
+            "after": 1,
+            "entryFallbackRestored": true
+          }
+        ],
+        "sourceFingerprints": {
+          "parent": {
+            "runtime": "d12562524aa81c52a1231083360bf11f94afc2a79562a7df1aa7c8e410da0c09",
+            "bundle": "5f801c3e86eba0e676bd94e663b7fd5a2b6e1ad4eec90e7e5bd2da48aff07cfe",
+            "inputs": 389
+          },
+          "candidate": {
+            "runtime": "183c7a911f25bbadb1d555a70c2f6cfcf0582d25c4a4c39dbdd334e182088e17",
+            "bundle": "263d0458816157c3515cd9740bc23a350852e2dbb1e30d3c4800069f446eb20c",
+            "inputs": 389
+          }
+        }
+      }
+    }
+  },
+  "originalS4": {
+    "locales": ["zh-cn", "en"],
+    "previewRootsEachLocale": 1268,
+    "readinessDeadlineMs": 60000,
+    "outerDeadlineMs": 150000,
+    "failed": 2,
+    "passed": 0,
+    "reportSha256": "2f7695acb21f9031e3901bbe7990cc799205db8d160c2fe4dfb7888d86b04199"
+  },
+  "oldSample": {
+    "pageMs": 73972,
+    "broadFlushes": 35,
+    "broadDeliveries": 271,
+    "inlineDeliveries": 33546,
+    "flushes": 3840
+  },
+  "candidateSample": {
+    "receivedNodeMs": 73350.848417,
+    "inlineCalls": 565248,
+    "inlineWithObservers": 0,
+    "inlineSkipped": 565248,
+    "broadCalls": 64,
+    "inlineFlushes": 0,
+    "broadFlushes": 34,
+    "inlineDeliveries": 0,
+    "broadDeliveries": 260,
+    "maxSubscribers": 12,
+    "maxInlineSubscribers": 0,
+    "pageMs": 71920.79999995232,
+    "timeOrigin": 1794987393249.1
+  },
+  "standaloneBudgets": {
+    "before": {
+      "lucide/icons/x": 2879,
+      "lucide root": 637306,
+      "core root": 11373,
+      "runtime root": 100015,
+      "adapter-react root": 162083,
+      "adapter-vue root": 160763,
+      "adapter-web-component root": 190375,
+      "prototypes-base/button": 5274,
+      "prototypes-shadcn/button": 7803
+    },
+    "after": {
+      "lucide/icons/x": 2879,
+      "lucide root": 637306,
+      "core root": 11373,
+      "runtime root": 100015,
+      "adapter-react root": 162083,
+      "adapter-vue root": 160763,
+      "adapter-web-component root": 190487,
+      "prototypes-base/button": 5274,
+      "prototypes-shadcn/button": 7803
+    }
+  },
+  "integratedBudgets": {
+    "before": {
+      "lucide/icons/x": 2879,
+      "lucide root": 637306,
+      "core root": 11378,
+      "runtime root": 101217,
+      "adapter-react root": 164125,
+      "adapter-vue root": 162941,
+      "adapter-web-component root": 196014,
+      "prototypes-base/button": 5274,
+      "prototypes-shadcn/button": 7803
+    },
+    "after": {
+      "lucide/icons/x": 2879,
+      "lucide root": 637306,
+      "core root": 11378,
+      "runtime root": 101217,
+      "adapter-react root": 164125,
+      "adapter-vue root": 162941,
+      "adapter-web-component root": 196089,
+      "prototypes-base/button": 5274,
+      "prototypes-shadcn/button": 7803
+    }
+  },
+  "subsequentIntegrationRef": "5a9e24a982eb452eaba6babcc7920b5165e81ce1",
+  "graphics": {
+    "brutalist-wc-runtime-narrow-focus-ring.png": {
+      "sha256": "56cfbac5003ee7cdeca167b9b727e744684ea1439da8af6bf1b7fbbba4ea9a66",
+      "exactHead": "4a95f7bea150c214c78ded1dc4aa10365ee8fca5"
+    }
+  }
+}

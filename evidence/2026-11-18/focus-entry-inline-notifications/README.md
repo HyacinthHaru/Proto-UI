@@ -1,0 +1,11 @@
+# Focus Entry inline notification scope
+
+A Focus Entry that observes an external image map or a named radio group subscribes to Window inline-style updates. Entries whose eligibility inputs are covered by their own observers use those observers. Whole-window stylesheet and native form-state changes still reach the original subscriber set.
+
+The new focused regression adds and removes a named radio dependency. The previous implementation schedules a microtask before that dependency exists. The candidate schedules only during the external dependency and preserves the radio-driven fallback result.
+
+The pinned Chromium parent/candidate/candidate/parent sequence uses a fresh native form and Focus Entry in each arm. The three ordered inline writes enqueue 1, 1 and 1 microtasks on both parent arms and 0, 1 and 0 on both candidate arms. The fallback returns when the outside checked radio is revealed. The ESBuild input audit allows a difference in the exact WC runtime modules file only. The standalone and integrated source-bound experiments both report these outcomes.
+
+The main-based checkout passed 129 focused cases and 153 native Shadow cases. The integration passed 137 focused cases and 165 native Shadow cases. Both built 47 public packages and 685 Website pages, passed workspace types and manifests, and passed 21 selected packaged browser cases with the existing CodeExample, Contents, Dialog, Copy and scroll oracles. The checked page retains all nine CodeExamples. First-frame Header checks passed at 320px and 390px. The screenshot records real narrow Brutalist WC focus-ring paint on the standalone checkout. Local WC gzip grew 112 bytes on the main-based checkout and 75 bytes in the integration. Existing Finf package budget policy and ceilings apply.
+
+In a delivered candidate sample at page 71.921s of the complete 1,268-preview Matrix, 565,248 inline-only notifications had no subscribed external owner and enqueued no inline delivery. The same sample retains 260 broad notifications. A separate baseline run had delivered 33,546 inline callbacks by page 73.972s. These are independent sample boundaries with no whole-page duration claim. Full uninstrumented Chinese and English S4 still failed the original 60-second readiness predicate under their original 150-second case limits.
