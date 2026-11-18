@@ -1,0 +1,277 @@
+{
+  "source": "5a9e24a982eb452eaba6babcc7920b5165e81ce1",
+  "scopedResources": 27,
+  "proof": "CDP request wall time plus same-request monotonic delta, compared to browser timeOrigin plus page marker; approximate same-run boundary.",
+  "earlierWireRun": {
+    "demo-bootstrap-2-3-2-toast": {
+      "demoStaticFiles": 1,
+      "lastStaticFinishToEntryBodyMs": 10903.518798828125,
+      "demoAwaitMs": 10922.700000047684,
+      "prototypeIds": 7,
+      "prototypeMappedIds": 7,
+      "prototypeMappedNotObserved": [],
+      "prototypeAwaitMs": 5907.799999952316,
+      "prototypeLastMappedStaticToReturnMs": 5904.204833984375,
+      "childObservedPageMs": 57184.799999952316
+    },
+    "demo-brutalist-calendar": {
+      "demoStaticFiles": 3,
+      "lastStaticFinishToEntryBodyMs": 13707.299072265625,
+      "demoAwaitMs": 13710.700000047684,
+      "prototypeIds": 17,
+      "prototypeMappedIds": 10,
+      "prototypeMappedNotObserved": [],
+      "prototypeAwaitMs": 5177.200000047684,
+      "prototypeLastMappedStaticToReturnMs": 5173.292724609375,
+      "childObservedPageMs": 61407.09999990463
+    },
+    "demo-brutalist-carousel": {
+      "demoStaticFiles": 1,
+      "lastStaticFinishToEntryBodyMs": 4072.98681640625,
+      "demoAwaitMs": 4089.699999809265,
+      "prototypeIds": 5,
+      "prototypeMappedIds": 5,
+      "prototypeMappedNotObserved": [],
+      "prototypeAwaitMs": 8751.399999856949,
+      "prototypeLastMappedStaticToReturnMs": 8748.071044921875,
+      "childObservedPageMs": 64255
+    },
+    "demo-brutalist-checkbox-group": {
+      "demoStaticFiles": 2,
+      "lastStaticFinishToEntryBodyMs": 6350.870849609375,
+      "demoAwaitMs": 6355.0,
+      "prototypeIds": 3,
+      "prototypeMappedIds": 3,
+      "prototypeMappedNotObserved": [],
+      "prototypeAwaitMs": 9648.700000047684,
+      "prototypeLastMappedStaticToReturnMs": 9644.324951171875,
+      "childObservedPageMs": 67468.59999990463
+    },
+    "demo-brutalist-date-picker": {
+      "demoStaticFiles": 1,
+      "lastStaticFinishToEntryBodyMs": 3936.073974609375,
+      "demoAwaitMs": 3955.5,
+      "prototypeIds": 8,
+      "prototypeMappedIds": 8,
+      "prototypeMappedNotObserved": [],
+      "prototypeAwaitMs": 10742.899999856949,
+      "prototypeLastMappedStaticToReturnMs": 10739.0361328125,
+      "childObservedPageMs": 68876.79999995232
+    },
+    "demo-brutalist-fieldset": {
+      "demoStaticFiles": 2,
+      "lastStaticFinishToEntryBodyMs": 4895.9990234375,
+      "demoAwaitMs": 4899.300000190735,
+      "prototypeIds": 7,
+      "prototypeMappedIds": 3,
+      "prototypeMappedNotObserved": [],
+      "prototypeAwaitMs": 15801.799999952316,
+      "prototypeLastMappedStaticToReturnMs": 15798.335205078125,
+      "childObservedPageMs": 74626.09999990463
+    }
+  },
+  "matchedTraceRun": {
+    "demo-bootstrap-2-3-2-toast": {
+      "demoStaticFiles": 1,
+      "lastStaticFinishToEntryBodyMs": 10379.67626953125,
+      "demoAwaitMs": 10399.700000047684,
+      "prototypeIds": 7,
+      "prototypeMappedIds": 7,
+      "prototypeMappedNotObserved": [],
+      "prototypeAwaitMs": 5620.100000143051,
+      "prototypeLastMappedStaticToReturnMs": 5616.368896484375,
+      "childObservedPageMs": 55417.90000009537
+    },
+    "demo-brutalist-calendar": {
+      "demoStaticFiles": 3,
+      "lastStaticFinishToEntryBodyMs": 13001.120849609375,
+      "demoAwaitMs": 13004.399999856949,
+      "prototypeIds": 17,
+      "prototypeMappedIds": 10,
+      "prototypeMappedNotObserved": [],
+      "prototypeAwaitMs": 4956.299999952316,
+      "prototypeLastMappedStaticToReturnMs": 4952.302001953125,
+      "childObservedPageMs": 59466.200000047684
+    },
+    "demo-brutalist-carousel": {
+      "demoStaticFiles": 1,
+      "lastStaticFinishToEntryBodyMs": 3967.43408203125,
+      "demoAwaitMs": 3983.0,
+      "prototypeIds": 5,
+      "prototypeMappedIds": 5,
+      "prototypeMappedNotObserved": [],
+      "prototypeAwaitMs": 8043.600000143051,
+      "prototypeLastMappedStaticToReturnMs": 8040.253173828125,
+      "childObservedPageMs": 61860.799999952316
+    },
+    "demo-brutalist-checkbox-group": {
+      "demoStaticFiles": 2,
+      "lastStaticFinishToEntryBodyMs": 6103.551025390625,
+      "demoAwaitMs": 6106.899999856949,
+      "prototypeIds": 3,
+      "prototypeMappedIds": 3,
+      "prototypeMappedNotObserved": [],
+      "prototypeAwaitMs": 9306.799999952316,
+      "prototypeLastMappedStaticToReturnMs": 9301.8818359375,
+      "childObservedPageMs": 65291.59999990463
+    },
+    "demo-brutalist-date-picker": {
+      "demoStaticFiles": 1,
+      "lastStaticFinishToEntryBodyMs": 3709.74169921875,
+      "demoAwaitMs": 3729.4000000953674,
+      "prototypeIds": 8,
+      "prototypeMappedIds": 8,
+      "prototypeMappedNotObserved": [],
+      "prototypeAwaitMs": 10372.099999904633,
+      "prototypeLastMappedStaticToReturnMs": 10368.427978515625,
+      "childObservedPageMs": 66669.09999990463
+    },
+    "demo-brutalist-fieldset": {
+      "demoStaticFiles": 2,
+      "lastStaticFinishToEntryBodyMs": 4153.904052734375,
+      "demoAwaitMs": 4157.299999952316,
+      "prototypeIds": 7,
+      "prototypeMappedIds": 3,
+      "prototypeMappedNotObserved": [],
+      "prototypeAwaitMs": 16143.699999809265,
+      "prototypeLastMappedStaticToReturnMs": 16136.381103515625,
+      "childObservedPageMs": 72643.20000004768
+    }
+  },
+  "firstCapture": {
+    "categories": "toplevel,devtools.timeline,blink.user_timing,v8.execute",
+    "trigger": {
+      "pageMs": 54929.800000190735,
+      "nodeMs": 56258.892209
+    },
+    "startNodeMs": 65182.812417,
+    "stopNodeMs": 66533.486625,
+    "stopReason": "prototype-return",
+    "eof": true,
+    "dataLoss": false,
+    "bytes": 4339705,
+    "errors": [],
+    "outcome": {
+      "complete": true,
+      "outcomes": [
+        {
+          "status": "fulfilled"
+        }
+      ]
+    }
+  },
+  "prearmedCapture": {
+    "categories": "toplevel,devtools.timeline,blink.user_timing",
+    "trigger": {
+      "pageMs": 39376.299999952316,
+      "nodeMs": 40727.186875
+    },
+    "startNodeMs": 50770.53675,
+    "stopNodeMs": 67650.159542,
+    "stopReason": "prototype-return",
+    "eof": true,
+    "dataLoss": false,
+    "bytes": 28955217,
+    "errors": [],
+    "outcome": {
+      "complete": true,
+      "outcomes": [
+        {
+          "status": "fulfilled"
+        }
+      ]
+    }
+  },
+  "stages": {
+    "nominalDeadlineNodeMs": 65884.028333,
+    "observedVerdictNodeMs": 70320.101167,
+    "sampleLastReceivedBeforeNominal": {
+      "receivedNodeMs": 64173.202625,
+      "timeOrigin": 1794988689791.7,
+      "pageMs": 62949.5,
+      "dateNow": 1794988752741,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-kd6m0k0obk",
+        "index": 864,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-brutalist-date-picker",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-kd6m0k0obk",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      },
+      "lateSamePredicate": true,
+      "predicateSamples": 124,
+      "initObservedRecords": 53162
+    },
+    "sampledOwnerPhases": {
+      "demo-bootstrap-2-3-2-toast": {
+        "demoLoadEntered": 37470.5,
+        "durations": {
+          "demo-load": 10107.6,
+          "prototype-load": 5278.5,
+          "render": 22.4,
+          "surface-ready": 71.1,
+          "theme-activation": 660.5
+        },
+        "childFirstObserved": 52881.39999985695,
+        "published": 53613.299999952316
+      },
+      "demo-brutalist-calendar": {
+        "demoLoadEntered": 38740.59999990463,
+        "durations": {
+          "demo-load": 12528.2,
+          "prototype-load": 4588.9,
+          "render": 673.9,
+          "surface-ready": 1992.3,
+          "theme-activation": 289.1
+        },
+        "childFirstObserved": 56534.09999990463,
+        "published": 58815.799999952316
+      },
+      "demo-brutalist-carousel": {
+        "demoLoadEntered": 47597.299999952316,
+        "durations": {
+          "demo-load": 3677.9,
+          "prototype-load": 7547.5,
+          "render": 27.8,
+          "surface-ready": 91.9,
+          "theme-activation": 2971.6
+        },
+        "childFirstObserved": 58852.5,
+        "published": 61916.299999952316
+      },
+      "demo-brutalist-checkbox-group": {
+        "demoLoadEntered": 47598.700000047684,
+        "durations": {
+          "demo-load": 5801.8,
+          "prototype-load": 8538.4,
+          "render": 70.3,
+          "surface-ready": 194.0,
+          "theme-activation": 6041.0
+        },
+        "childFirstObserved": 62009.5,
+        "published": 68245.09999990463
+      }
+    },
+    "allLateRows": 8
+  },
+  "nativeOracles": {
+    "previews": 1268,
+    "readinessMs": 60000,
+    "caseMs": 150000,
+    "chineseExit": 1,
+    "englishFiltered": true
+  }
+}

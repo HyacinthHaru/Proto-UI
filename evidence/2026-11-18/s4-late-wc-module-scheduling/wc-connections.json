@@ -1,0 +1,190 @@
+{
+  "pageMs": 68639.89999985695,
+  "marks": 50304,
+  "groups": {
+    "retarget-window": {
+      "count": 9149,
+      "sumMs": 3.899998903274536,
+      "maxMs": 0.10000014305114746
+    },
+    "initial-instance": {
+      "count": 4376,
+      "sumMs": 24.100001335144043,
+      "maxMs": 0.20000004768371582
+    },
+    "initial-kernel": {
+      "count": 4376,
+      "sumMs": 1288.600005865097,
+      "maxMs": 7.5
+    },
+    "initial-view": {
+      "count": 4375,
+      "sumMs": 10930.800003051758,
+      "maxMs": 244.29999995231628
+    },
+    "first-owner": {
+      "count": 4375,
+      "sumMs": 13679.600005149841,
+      "maxMs": 244.59999990463257
+    },
+    "reconnect-parent": {
+      "count": 4773,
+      "sumMs": 1.900000810623169,
+      "maxMs": 0.10000014305114746
+    },
+    "reconnect-instance": {
+      "count": 4773,
+      "sumMs": 100.1000030040741,
+      "maxMs": 1.9000000953674316
+    },
+    "reconnect-anatomy": {
+      "count": 4773,
+      "sumMs": 3448.899999856949,
+      "maxMs": 11.199999809265137
+    },
+    "existing-owner": {
+      "count": 4773,
+      "sumMs": 5045.600004434586,
+      "maxMs": 14.399999856948853
+    },
+    "reconnect-update": {
+      "count": 4561,
+      "sumMs": 868.7000043392181,
+      "maxMs": 8.099999904632568
+    }
+  },
+  "top": [
+    {
+      "scope": "existing-owner|wc-shadcn-select-item",
+      "count": 131,
+      "sumMs": 488.9000005722046,
+      "maxMs": 7.400000095367432
+    },
+    {
+      "scope": "first-owner|wc-bootstrap-2-3-2-select-item",
+      "count": 51,
+      "sumMs": 416.49999952316284,
+      "maxMs": 19.899999856948853
+    },
+    {
+      "scope": "initial-view|wc-bootstrap-2-3-2-select-item",
+      "count": 51,
+      "sumMs": 397.5,
+      "maxMs": 18.899999856948853
+    },
+    {
+      "scope": "first-owner|wc-shadcn-select-surface",
+      "count": 6,
+      "sumMs": 388.2000000476837,
+      "maxMs": 244.59999990463257
+    },
+    {
+      "scope": "initial-view|wc-shadcn-select-surface",
+      "count": 6,
+      "sumMs": 385.80000019073486,
+      "maxMs": 244.29999995231628
+    },
+    {
+      "scope": "first-owner|wc-shadcn-select-item",
+      "count": 125,
+      "sumMs": 323.0000002384186,
+      "maxMs": 10.5
+    },
+    {
+      "scope": "initial-view|wc-shadcn-select-item",
+      "count": 125,
+      "sumMs": 290.5000002384186,
+      "maxMs": 10.099999904632568
+    },
+    {
+      "scope": "first-owner|wc-brutalist-select-item",
+      "count": 33,
+      "sumMs": 286.59999990463257,
+      "maxMs": 15
+    },
+    {
+      "scope": "first-owner|wc-brutalist-date-picker-day",
+      "count": 42,
+      "sumMs": 275.80000042915344,
+      "maxMs": 14.400000095367432
+    },
+    {
+      "scope": "initial-view|wc-brutalist-select-item",
+      "count": 33,
+      "sumMs": 270,
+      "maxMs": 11.699999809265137
+    },
+    {
+      "scope": "reconnect-update|wc-shadcn-select-item",
+      "count": 125,
+      "sumMs": 262.900000333786,
+      "maxMs": 5.6000001430511475
+    },
+    {
+      "scope": "existing-owner|wc-bootstrap-2-3-2-select-item",
+      "count": 51,
+      "sumMs": 261.79999899864197,
+      "maxMs": 8.600000143051147
+    },
+    {
+      "scope": "initial-view|wc-brutalist-date-picker-day",
+      "count": 42,
+      "sumMs": 250.5,
+      "maxMs": 7.700000047683716
+    },
+    {
+      "scope": "first-owner|wc-brutalist-calendar-day",
+      "count": 42,
+      "sumMs": 247.69999957084656,
+      "maxMs": 13.099999904632568
+    },
+    {
+      "scope": "first-owner|wc-shadcn-text-root",
+      "count": 840,
+      "sumMs": 239.5000033378601,
+      "maxMs": 3.5
+    },
+    {
+      "scope": "first-owner|wc-shadcn-surface-root",
+      "count": 212,
+      "sumMs": 238.90000247955322,
+      "maxMs": 7.300000190734863
+    },
+    {
+      "scope": "first-owner|wc-bootstrap-2-3-2-field-label",
+      "count": 15,
+      "sumMs": 235.99999928474426,
+      "maxMs": 19.5
+    },
+    {
+      "scope": "existing-owner|wc-shadcn-select-item-text",
+      "count": 158,
+      "sumMs": 234.69999957084656,
+      "maxMs": 5
+    },
+    {
+      "scope": "reconnect-anatomy|wc-shadcn-select-item-text",
+      "count": 158,
+      "sumMs": 223.19999885559082,
+      "maxMs": 3.299999952316284
+    },
+    {
+      "scope": "initial-view|wc-brutalist-calendar-day",
+      "count": 42,
+      "sumMs": 219.599999666214,
+      "maxMs": 7.5
+    },
+    {
+      "scope": "initial-view|wc-bootstrap-2-3-2-field-label",
+      "count": 15,
+      "sumMs": 214.2999997138977,
+      "maxMs": 17.299999952316284
+    },
+    {
+      "scope": "reconnect-anatomy|wc-shadcn-select-item",
+      "count": 131,
+      "sumMs": 209.90000128746033,
+      "maxMs": 4.799999952316284
+    }
+  ]
+}

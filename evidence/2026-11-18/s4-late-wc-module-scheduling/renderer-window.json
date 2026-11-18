@@ -1,0 +1,262 @@
+{
+  "source": "5a9e24a982eb452eaba6babcc7920b5165e81ce1",
+  "traceSha": "52f709e95cada1ae728af734359d5da29a9c0a633788510cd65dd2dcb4bfbc92",
+  "traceEvents": 93991,
+  "rendererTid": 32416301,
+  "rendererPid": 31755,
+  "boundary": "Earliest trace thread event precedes prototype request mark. Last mapped static finish is approximated in trace time from the matching page fulfillment mark and same-run Network timestamps.",
+  "lastMappedFinishToReturnMs": 10368.427978515625,
+  "groups": {
+    "rendererTask": {
+      "events": 974,
+      "unionMs": 2365.271,
+      "maxMs": 292.822
+    },
+    "microtasks": {
+      "events": 455,
+      "unionMs": 7999.255978515625,
+      "maxMs": 2801.217
+    },
+    "layout": {
+      "events": 453,
+      "unionMs": 887.599978515625,
+      "maxMs": 54.932
+    },
+    "function": {
+      "events": 18085,
+      "unionMs": 4177.511,
+      "maxMs": 58.011
+    },
+    "animation": {
+      "events": 1419,
+      "unionMs": 1917.636,
+      "maxMs": 64.419
+    },
+    "v8": {
+      "events": 105,
+      "unionMs": 1.697,
+      "maxMs": 0.179
+    }
+  },
+  "largestTasks": [
+    {
+      "kind": "ThreadControllerImpl::RunTask",
+      "startMs": 5602.821978515625,
+      "durationMs": 292.822,
+      "nestedUnionMs": {
+        "microtasks": 0.0,
+        "layout": 83.581,
+        "function": 79.312,
+        "animation": 261.19,
+        "v8": 0.0
+      }
+    },
+    {
+      "kind": "ThreadControllerImpl::RunTask",
+      "startMs": 2577.205978515625,
+      "durationMs": 223.814,
+      "nestedUnionMs": {
+        "microtasks": 0.0,
+        "layout": 49.829,
+        "function": 66.663,
+        "animation": 182.412,
+        "v8": 0.0
+      }
+    },
+    {
+      "kind": "ThreadControllerImpl::RunTask",
+      "startMs": 1112.721978515625,
+      "durationMs": 165.456,
+      "nestedUnionMs": {
+        "microtasks": 0.0,
+        "layout": 35.672,
+        "function": 76.072,
+        "animation": 141.9,
+        "v8": 0.0
+      }
+    },
+    {
+      "kind": "ThreadControllerImpl::RunTask",
+      "startMs": 6024.734978515625,
+      "durationMs": 142.509,
+      "nestedUnionMs": {
+        "microtasks": 0.0,
+        "layout": 46.711,
+        "function": 51.908,
+        "animation": 119.366,
+        "v8": 0.0
+      }
+    },
+    {
+      "kind": "ThreadControllerImpl::RunTask",
+      "startMs": 6712.667978515625,
+      "durationMs": 127.595,
+      "nestedUnionMs": {
+        "microtasks": 0.0,
+        "layout": 39.477,
+        "function": 53.922,
+        "animation": 110.891,
+        "v8": 0.0
+      }
+    },
+    {
+      "kind": "ThreadControllerImpl::RunTask",
+      "startMs": 9128.629978515624,
+      "durationMs": 125.464,
+      "nestedUnionMs": {
+        "microtasks": 0.0,
+        "layout": 72.634,
+        "function": 38.42,
+        "animation": 117.308,
+        "v8": 0.0
+      }
+    }
+  ],
+  "byFunctionLocation": [
+    {
+      "file": "/_astro/site-shadcn-controls.C_xK_esE.js",
+      "name": "connectedCallback",
+      "line": 18,
+      "column": 32968,
+      "count": 634,
+      "unionMs": 2398.093
+    },
+    {
+      "file": "/_astro/site-shadcn-controls.C_xK_esE.js",
+      "name": "",
+      "line": 9,
+      "column": 169783,
+      "count": 421,
+      "unionMs": 395.083
+    },
+    {
+      "file": "/_astro/demo-renderer.DyP-BIzF.js",
+      "name": "O",
+      "line": 4,
+      "column": 950,
+      "count": 403,
+      "unionMs": 293.438
+    },
+    {
+      "file": "/_astro/site-shadcn-controls.C_xK_esE.js",
+      "name": "",
+      "line": 9,
+      "column": 433644,
+      "count": 1209,
+      "unionMs": 249.998
+    },
+    {
+      "file": "/_astro/sink.B8FQoJHo.js",
+      "name": "",
+      "line": 11,
+      "column": 5404,
+      "count": 18,
+      "unionMs": 198.463
+    },
+    {
+      "file": "/_astro/site-shadcn-controls.C_xK_esE.js",
+      "name": "",
+      "line": 9,
+      "column": 417786,
+      "count": 420,
+      "unionMs": 186.948
+    },
+    {
+      "file": "/_astro/projection-materializer.CYiLVCIq.js",
+      "name": "",
+      "line": 5,
+      "column": 80709,
+      "count": 472,
+      "unionMs": 62.047
+    },
+    {
+      "file": "/_astro/projection-materializer.CYiLVCIq.js",
+      "name": "",
+      "line": 5,
+      "column": 59727,
+      "count": 395,
+      "unionMs": 42.824
+    },
+    {
+      "file": "/_astro/DocumentationImagePreview.astro_astro_type_script_index_0_lang.CqMk2Wc_.js",
+      "name": "",
+      "line": 1,
+      "column": 15934,
+      "count": 1330,
+      "unionMs": 41.228
+    },
+    {
+      "file": "/_astro/site-typography-client.MRkvkjBf.js",
+      "name": "",
+      "line": 1,
+      "column": 1921,
+      "count": 403,
+      "unionMs": 34.935
+    },
+    {
+      "file": "/_astro/previewer-client.DCBKi2O1.js",
+      "name": "",
+      "line": 1,
+      "column": 1777,
+      "count": 391,
+      "unionMs": 29.599
+    },
+    {
+      "file": "/_astro/web.B0-M0T9X.js",
+      "name": "K.S",
+      "line": 1,
+      "column": 2781,
+      "count": 7,
+      "unionMs": 26.642
+    },
+    {
+      "file": "(unspecified)",
+      "name": "next",
+      "line": 25,
+      "column": 22,
+      "count": 18,
+      "unionMs": 26.272
+    },
+    {
+      "file": "/_astro/site-shadcn-controls.C_xK_esE.js",
+      "name": "disconnectedCallback",
+      "line": 18,
+      "column": 46170,
+      "count": 306,
+      "unionMs": 22.739
+    },
+    {
+      "file": "/_astro/index.D5ahegtX.js",
+      "name": "Mn",
+      "line": 9,
+      "column": 1984,
+      "count": 3,
+      "unionMs": 16.978
+    },
+    {
+      "file": "/_astro/site-shadcn-controls.C_xK_esE.js",
+      "name": "",
+      "line": 13,
+      "column": 25800,
+      "count": 604,
+      "unionMs": 13.946
+    },
+    {
+      "file": "/_astro/site-shadcn-controls.C_xK_esE.js",
+      "name": "",
+      "line": 13,
+      "column": 28889,
+      "count": 582,
+      "unionMs": 13.845
+    },
+    {
+      "file": "/_astro/site-shadcn-controls.C_xK_esE.js",
+      "name": "",
+      "line": 13,
+      "column": 25775,
+      "count": 604,
+      "unionMs": 13.24
+    }
+  ],
+  "note": "Group spans overlap, task durations are clipped to the observed interval."
+}
