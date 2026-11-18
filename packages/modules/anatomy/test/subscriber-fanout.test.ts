@@ -1,6 +1,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createAnatomyFamily } from '@proto.ui/core';
-import { ANATOMY_INSTANCE_TOKEN_CAP, ANATOMY_PARENT_CAP } from '../src/caps';
+import {
+  ANATOMY_INSTANCE_TOKEN_CAP,
+  ANATOMY_PARENT_CAP,
+  type AnatomyRootTargetGetter,
+} from '../src/caps';
 import { AnatomyModuleImpl } from '../src/impl';
 import { makeCaps } from './utils/fake-caps';
 
@@ -10,7 +14,7 @@ afterEach(() => {
   for (const owner of cleanup.splice(0).reverse()) owner.dispose();
 });
 
-function fixture() {
+function fixture(getRootTarget?: AnatomyRootTargetGetter) {
   const family = createAnatomyFamily('subscriber-fanout', {
     roles: {
       root: { cardinality: { min: 1, max: 1 } },
@@ -18,12 +22,14 @@ function fixture() {
     },
   });
   const rootToken = {};
+  const getParent = (instance: unknown) => (instance === rootToken ? null : rootToken);
   const make = (role?: 'root' | 'item') => {
     const token = role === 'root' ? rootToken : {};
     const caps = makeCaps({
       instance: token,
-      getParent: (instance) => (instance === rootToken ? null : rootToken),
+      getParent,
       getPrototype: () => ({ name: 'fanout-owner', setup() {} }),
+      getRootTarget,
     });
     const owner = new AnatomyModuleImpl(caps, 'fanout-owner', {
       get: () => undefined,
@@ -228,6 +234,35 @@ describe('Anatomy current-domain target notifications', () => {
 });
 
 describe('Anatomy family subscriber notification', () => {
+  it('uses the current host comparator when the target identity is unchanged', () => {
+    const itemTarget = { compareDocumentPosition: () => 2 };
+    const rootTarget = { compareDocumentPosition: () => 4 };
+    let rootReads = 0;
+    let replaceComparator = false;
+    let rootInstance: unknown;
+    const f = fixture((instance) => {
+      if (instance !== rootInstance) return itemTarget;
+      if (replaceComparator && ++rootReads === 2) {
+        itemTarget.compareDocumentPosition = () => 4;
+        rootTarget.compareDocumentPosition = () => 2;
+      }
+      return rootTarget;
+    });
+    rootInstance = f.root.port.resolveSelfInstance();
+    f.make('item');
+    const first = f.make();
+    const second = f.make();
+    const firstOrder = vi.fn();
+    const secondOrder = vi.fn();
+    first.port.subscribeOrder(f.family, firstOrder);
+    second.port.subscribeOrder(f.family, secondOrder);
+
+    replaceComparator = true;
+    f.notify();
+    expect(firstOrder).not.toHaveBeenCalled();
+    expect(secondOrder).toHaveBeenCalledTimes(1);
+  });
+
   it('shares ancestry reads while collecting one order notification', () => {
     const f = domainFixture();
     const branch = f.item(f.first.token);
