@@ -1,0 +1,69 @@
+{
+  "head": "8e49e640ea4ad2fe78fe942134d4af2ffb24c64f",
+  "parent": "b5e41dd601d67ba48cb5d030811f93394893116d",
+  "chrome": "156.0.8078.79",
+  "scopedInputs": {
+    "parent": {
+      "blob": "54a23a5a9fdf531561433f6aae7f84e7621880134d0a943363a4ae07c020f5b7",
+      "bundle": "88f4868c7b34137f3a5c5fb3c5bbbfaf33b67cf99c7b3dff85d17779d65eedc5",
+      "inputs": 58
+    },
+    "candidate": {
+      "blob": "f09dfa94816933bbd633fc2011de1cf31493c05c5a0e102b1a2ecac7cf6a0238",
+      "bundle": "9f0d5527ca5db8c9f065fefdab432fa9c9b2de9a618c381fa5beac16e90f6a8f",
+      "inputs": 58
+    }
+  },
+  "rows": [
+    {
+      "kind": "parent",
+      "before": ["A"],
+      "moved": [[3, 2]],
+      "physicalOrder": [2, 3],
+      "afterReorder": [[3, 2]],
+      "reorderDeliveries": [],
+      "final": [[3, 2], [2]],
+      "starts": ["A"],
+      "stops": []
+    },
+    {
+      "kind": "candidate",
+      "before": ["A"],
+      "moved": [[3, 2]],
+      "physicalOrder": [2, 3],
+      "afterReorder": [
+        [3, 2],
+        [2, 3]
+      ],
+      "reorderDeliveries": ["B"],
+      "final": [[3, 2], [2, 3], [2]],
+      "starts": ["A", "B"],
+      "stops": ["B"]
+    },
+    {
+      "kind": "candidate",
+      "before": ["A"],
+      "moved": [[3, 2]],
+      "physicalOrder": [2, 3],
+      "afterReorder": [
+        [3, 2],
+        [2, 3]
+      ],
+      "reorderDeliveries": ["B"],
+      "final": [[3, 2], [2, 3], [2]],
+      "starts": ["A", "B"],
+      "stops": ["B"]
+    },
+    {
+      "kind": "parent",
+      "before": ["A"],
+      "moved": [[3, 2]],
+      "physicalOrder": [2, 3],
+      "afterReorder": [[3, 2]],
+      "reorderDeliveries": [],
+      "final": [[3, 2], [2]],
+      "starts": ["A"],
+      "stops": []
+    }
+  ]
+}

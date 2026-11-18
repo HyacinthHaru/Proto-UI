@@ -1,0 +1,123 @@
+{
+  "standalone": {
+    "head": "8e49e640ea4ad2fe78fe942134d4af2ffb24c64f",
+    "tree": "1e202a128f7017a32e32cf17ba3189e19e90c98d",
+    "base": "b5e41dd601d67ba48cb5d030811f93394893116d",
+    "governingCriteria": [
+      "C-ANATOMY-ORDER-0003-B",
+      "HC-ANATOMY-ORDER-0001-B",
+      "T-ANATOMY-0004-CASE-ORDER"
+    ],
+    "regressionParent": {
+      "passed": 4,
+      "failed": 1,
+      "skipped": 0,
+      "reportSha256": "5e98f03b2c3ab2b70f6d49cb1b74595de1abe2247d1917a27c42c917decb5d75"
+    },
+    "fourAdapter": {
+      "passed": 99,
+      "failed": 0,
+      "skipped": 0,
+      "reportSha256": "1e0d62791dca08221a0aeb1a4a8edc4a2b52550ef448f7c015d8d426edebd853"
+    },
+    "packagesBuilt": 47,
+    "workspaceTypes": "pass",
+    "manifests": "pass",
+    "budgetCommand": "pass"
+  },
+  "combined": {
+    "head": "c24218a584df7711b3dca15024d5b2c329396040",
+    "tree": "84a4e44c1b37db5e50f52c92a776f0aecdabb5dd",
+    "packagesBuilt": 47,
+    "builtPages": 685,
+    "servedMatrix": {
+      "zh-cn": {
+        "bytes": 1862502,
+        "sha256": "ec63d6cb02435f082b704606835e37969d8b4cf24b651a652c89140e98b091ed",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914143,
+        "sha256": "cfa18ea881f08cc06ba65c4aa3c048bb8205a9c3187e1410592e0891e33d0e43",
+        "previews": 1268
+      }
+    },
+    "scoped": {
+      "focused": {
+        "passed": 678,
+        "failed": 0,
+        "skipped": 0,
+        "reportSha256": "6dc18434ad8c3d540df96c1c801e4656bf956d5857bd3650f34db31a67254688"
+      },
+      "preview-browser": {
+        "passed": 15,
+        "failed": 0,
+        "skipped": 9,
+        "reportSha256": "de7f714705fec75bb765a7832b5dc8e39ea25eb339592a24964309854cba5205"
+      },
+      "code-grammar": {
+        "passed": 3,
+        "failed": 0,
+        "skipped": 23,
+        "reportSha256": "9a394a704190bdc1231be7a5cda2fb91268c0fefe59398fc0511bf0b64491db6"
+      },
+      "copy-commands": {
+        "passed": 1,
+        "failed": 0,
+        "skipped": 14,
+        "reportSha256": "8f3f6d4fce9cd320ee608700666c01496428df5d05526d337a84608b11780d88"
+      },
+      "scroll-chain": {
+        "passed": 2,
+        "failed": 0,
+        "skipped": 4,
+        "reportSha256": "724464ac6ee35c8cd7c8774a808901b078feeec6400e4965c850ce28e69b320a"
+      },
+      "wc-shadow": {
+        "passed": 165,
+        "failed": 0,
+        "skipped": 0,
+        "reportSha256": "819cd7b4de718ec64e41d44a166d887e51e855d3e6225d7f558b7c707c73e4f4"
+      },
+      "projection-scope": {
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0,
+        "reportSha256": "31af641a3b711d88fb0c15265beff26d5b354b3e1dda05c21b45c234868f750d"
+      },
+      "codeexample": {
+        "passed": 12,
+        "failed": 0,
+        "skipped": 14,
+        "reportSha256": "20d5fca665fbb77fddf7085242f10a8b39f9656fda1947580fe87a12a62bd6de"
+      },
+      "docs-columns": {
+        "passed": 10,
+        "failed": 0,
+        "skipped": 0,
+        "reportSha256": "c70fc8444ad7fd20a60b9e63c6590d58f090b19b81cd593c22f0c9d5ae9f440b"
+      },
+      "liquid-optics": {
+        "passed": 3,
+        "failed": 0,
+        "skipped": 1,
+        "reportSha256": "87065967d4ea7eb7d39bbf8d624596cc4aaf080df39d42e7c60ba4ba1b8a6c2e"
+      }
+    },
+    "shadcnButtonDocumentationCodeExamples": 9,
+    "originalS4": {
+      "readinessMs": 60000,
+      "caseMs": 150000,
+      "outcomes": {
+        "zh-cn": "original readiness timeout before Dialog",
+        "en": "original readiness timeout before Dialog"
+      },
+      "report": {
+        "passed": 0,
+        "failed": 2,
+        "skipped": 0,
+        "reportSha256": "705726f6c4f533e1dbb12ad99ce1d9cc5d792381efc60dcf7dc87c3b29eb1a51"
+      }
+    }
+  }
+}
