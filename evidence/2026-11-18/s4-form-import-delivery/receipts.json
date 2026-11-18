@@ -1,0 +1,225 @@
+{
+  "head": "bfd7b4fcde8901f8b5927ff53f74e867a6d821d3",
+  "tree": "25095f36b478ddf6b1c44897e71dcfcb7097c5db",
+  "parent": "aad84982a165a5f57889edbb404db1a1791ea969",
+  "run": "English only with original Chinese case filtered",
+  "exactRestoration": true,
+  "matrixCount": 1268,
+  "readinessMs": 60000,
+  "caseMs": 150000,
+  "verdict": {
+    "passed": 0,
+    "failed": 1,
+    "filtered": 1
+  },
+  "scope": {
+    "coveredPrototypeLoaderKeys": 71,
+    "coveredDemos": 2,
+    "uniqueMappedStaticAssets": 37,
+    "wireResponses": {
+      "200": 37
+    }
+  },
+  "codeAsset": {
+    "asset": "previewer-client.uw4APAeQ.js",
+    "stockSha256": "994f2876d1108d5899fc88a60d8eb490f34a42fe07275daa1440b3cb26a36732",
+    "observedSha256": "361201ac89e84092936396a50b006adc5ccae119e52c404b5b4b96bf2c6716d7"
+  },
+  "moduleAssets": {
+    "prototype-modules.D6Ynct1R.js": {
+      "stock": "4a6608daa20dd46109380ea3c3e6ff95080f2ca93af03939c0b8b4aefac81300",
+      "observed": "ed03b62f08698b09622932fa6eca8a437a094b4926213e90790dfb13d8e168f3"
+    },
+    "demo-bootstrap-2-3-2-form.demo.UFKJ0jRE.js": {
+      "stock": "43213403b4081117984c3934d246c9132b0127c0d06118defaeb12837686de79",
+      "observed": "d2f5fd775133c974672c90e7ffefe2e9cbb928208c324ee6971b9c7931576334"
+    },
+    "demo-brutalist-form.demo.DRP5X0Tn.js": {
+      "stock": "5e232437b22c45a37f48e1d681b094fd2e3a057fff1c13743f2d03fbfbd8103a",
+      "observed": "1f0ddbe88f29afd61eaafa812436e0557a7d842a6d7cef47e7e37a4912de6006"
+    },
+    "index.BcnSakRc.js": {
+      "stock": "62c3d4c93745b201cc75214cee756e1bc8893cd0b8f37b8fe6bcedaecf151217",
+      "observed": "c2d4092cfc623f04c976f7d6957bc0aa4a6fb1da2463a10f2735395e841dd766"
+    },
+    "index.BcqjDBGr.js": {
+      "stock": "e690db3f0ab62f514f31b8ece3dd82c90d594c20af11fe443b42329ce037b397",
+      "observed": "e41584f913fa416b0dac72aff4ba820f0c4b141477e1c8d8eb1e030528915863"
+    },
+    "index.By3CSXTc.js": {
+      "stock": "491d4fadfe405f6630a83eb2141439f997514d7c1626fd3aa4cda984f752707f",
+      "observed": "4b1fe6aab52d44b7f6e54f7a9cff98ff959334e921e537f4ccfdbbe12c720d09"
+    },
+    "index.CJAdu-KW.js": {
+      "stock": "961c7029012c15e8864514b92754bb431a8c9adb361ecb4bf1edef215c08e492",
+      "observed": "7c48ff246ea1dc15b2cc6a2a3c5d11bda0f2c18e1599c54487e771af50170b28"
+    },
+    "index.CS_5sjh8.js": {
+      "stock": "46d0b1765ea665b7582a4723e113801d500b72f232cb2b92bc2fd4b0a1e10a63",
+      "observed": "95a7716e8bfd1c45700c559f4552f6cf0a440e7025405eb79391669c8e9befc0"
+    },
+    "index.CliJz24H.js": {
+      "stock": "da36b28a925ce54d7272c3e0e1d1e60f0a7694d63c4be8ee7489546be54e8eac",
+      "observed": "3508c044ed1f59b2e65ca1f1169f65a5d44a7909a06b74deceb352c4d8dd76e5"
+    },
+    "index.D5viToBl.js": {
+      "stock": "cb19cb671bc41049626853638b6f76e49b6cafcc69a1baef3a52e055407f8a52",
+      "observed": "330d353b092ab48cdc674494baaccc414f20a45fe3c1b43934e6dd8946d57203"
+    },
+    "index.DLLc1DVE.js": {
+      "stock": "62b3799204f0ac0a537da1432baf6987fa84ebf2baf93ea323044b3d5a9bdf5a",
+      "observed": "add7e006a118bc1b717001234e52c1dc17c3141fedde79235aa8c6472dbcdab1"
+    },
+    "index.DVvfj7im.js": {
+      "stock": "5efba99babcf6a1b99d1a4a395a740f672b38a5ce12bfc69d9fcb6303223568a",
+      "observed": "2288bc140b7ed4f11b2c48d820e2bb0f17ee5fcd31aab175212085a326289265"
+    },
+    "index.DmJ8Rt0L.js": {
+      "stock": "54c52120f555e2a9762854ec7f77446cffe295aebd4e13643b17de472c26d166",
+      "observed": "71c9bef91a90e8524bac29f909652041ff250560c9bb97de4c9bc98f31a29354"
+    },
+    "index.Kay94bVq.js": {
+      "stock": "247447d823a56e3c3e03088f55255f557c4c494b62222818c31debf6dcdf50d6",
+      "observed": "3c0e54f9c9a807573807c5ff4c8f05d22aa42233a648f031715fa3fb86ae06a3"
+    },
+    "index.xTYN75-o.js": {
+      "stock": "476142137f424dad0cd511403e5b3d90b9818a121f410a2283597b71f40c2bfd",
+      "observed": "25bd36c50d9e814f9925dcc86d90bf8b0f76c7e3fbc8aab68467755b2806d64f"
+    }
+  },
+  "observedForms": {
+    "demo-bootstrap-2-3-2-form": {
+      "loadedTags": [
+        "demo-load-enter",
+        "demo-load-return",
+        "first-theme-enter",
+        "first-theme-return",
+        "prototype-load-enter",
+        "prototype-load-return",
+        "publish",
+        "render-enter",
+        "render-return",
+        "surface-ready-enter",
+        "surface-ready-return",
+        "theme-activation-enter",
+        "theme-activation-return"
+      ],
+      "demoStartPageMs": 27824.799999952316,
+      "demoStaticFiles": 2,
+      "demoStaticNotObserved": [],
+      "demoLastStaticFinishFile": "demo-bootstrap-2-3-2-form.demo.UFKJ0jRE.js",
+      "demoLastStaticFinishRelativeMs": 8.81298828125,
+      "demoBodyStartPageMs": 31106.299999952316,
+      "demoBodyReturnPageMs": 31106.400000095367,
+      "lastStaticFinishToEntryBodyMs": 3272.68701171875,
+      "demoAwaitMs": 3281.600000143051,
+      "prototypeIds": 20,
+      "prototypeMappedIds": 20,
+      "prototypeUnmappedIds": [],
+      "prototypeMappedStaticFiles": 28,
+      "prototypeMappedNotObserved": [],
+      "prototypeLastMappedStaticFinishFile": "index.Kay94bVq.js",
+      "prototypeLastMappedStaticRelativeMs": 10.148193359375,
+      "prototypeAwaitMs": 12361.0,
+      "prototypeLastMappedStaticToReturnMs": 12350.851806640625,
+      "ownerStagesPageMs": {
+        "demo-load-enter": 27824.799999952316,
+        "demo-load-return": 31106.400000095367,
+        "first-theme-enter": 31106.5,
+        "first-theme-return": 31108.200000047684,
+        "prototype-load-enter": 31108.299999952316,
+        "prototype-load-return": 43469.299999952316,
+        "render-enter": 43469.299999952316,
+        "render-return": 43826.200000047684,
+        "surface-ready-enter": 43826.200000047684,
+        "surface-ready-return": 44973,
+        "theme-activation-enter": 44973.10000014305,
+        "theme-activation-return": 48263.40000009537,
+        "publish": 48263.60000014305
+      },
+      "childObservedPageMs": 43826.200000047684,
+      "entryObservations": {
+        "expectedEntryAssets": 6,
+        "entryBodyReturnObserved": 6,
+        "missingEntryBodyAssets": [],
+        "latestEntryBodyReturnMs": 43469.200000047684,
+        "latestScopedWireFinishToLatestObservedEntryBodyReturnMs": 12350.751806735992,
+        "latestObservedEntryBodyReturnToPrototypeJoinMs": 0.09999990463256836
+      }
+    },
+    "demo-brutalist-form": {
+      "loadedTags": [
+        "demo-load-enter",
+        "demo-load-return",
+        "first-theme-enter",
+        "first-theme-return",
+        "prototype-load-enter",
+        "prototype-load-return",
+        "publish",
+        "render-enter",
+        "render-return",
+        "surface-ready-enter",
+        "surface-ready-return",
+        "theme-activation-enter",
+        "theme-activation-return"
+      ],
+      "demoStartPageMs": 51981.5,
+      "demoStaticFiles": 2,
+      "demoStaticNotObserved": [],
+      "demoLastStaticFinishFile": "demo-brutalist-form.demo.DRP5X0Tn.js",
+      "demoLastStaticFinishRelativeMs": 2.5048828125,
+      "demoBodyStartPageMs": 61905.90000009537,
+      "demoBodyReturnPageMs": 61906,
+      "lastStaticFinishToEntryBodyMs": 9921.89501953125,
+      "demoAwaitMs": 9924.700000047684,
+      "prototypeIds": 20,
+      "prototypeMappedIds": 20,
+      "prototypeUnmappedIds": [],
+      "prototypeMappedStaticFiles": 18,
+      "prototypeMappedNotObserved": [],
+      "prototypeLastMappedStaticFinishFile": "index.CJAdu-KW.js",
+      "prototypeLastMappedStaticRelativeMs": 9.240966796875,
+      "prototypeAwaitMs": 8046.900000095367,
+      "prototypeLastMappedStaticToReturnMs": 8037.6591796875,
+      "ownerStagesPageMs": {
+        "demo-load-enter": 51981.5,
+        "demo-load-return": 61906.200000047684,
+        "first-theme-enter": 61906.200000047684,
+        "first-theme-return": 61909.200000047684,
+        "prototype-load-enter": 61909.200000047684,
+        "prototype-load-return": 69956.10000014305,
+        "render-enter": 69956.10000014305,
+        "render-return": 70432.79999995232,
+        "surface-ready-enter": 70432.90000009537,
+        "surface-ready-return": 71901.40000009537,
+        "theme-activation-enter": 71901.40000009537,
+        "theme-activation-return": 74048.90000009537,
+        "publish": 74049.10000014305
+      },
+      "childObservedPageMs": 70432.79999995232,
+      "entryObservations": {
+        "expectedEntryAssets": 6,
+        "entryBodyReturnObserved": 6,
+        "missingEntryBodyAssets": [],
+        "latestEntryBodyReturnMs": 69955.90000009537,
+        "latestScopedWireFinishToLatestObservedEntryBodyReturnMs": 8037.459033250809,
+        "latestObservedEntryBodyReturnToPrototypeJoinMs": 0.20000004768371582
+      }
+    }
+  },
+  "lastSparseOriginalSample": {
+    "pageMs": 68311.20000004768,
+    "index": 892,
+    "demo": "demo-brutalist-fieldset",
+    "runtime": "wc",
+    "hostChildren": 0
+  },
+  "clock": "CDP request wall time plus same-request monotonic delta, compared to browser timeOrigin plus page marker; approximate same-run boundary.",
+  "sources": {
+    "native.log": "71f21b5506b640ed85f87b2f831ca548653bc8aae5985747ec3d57f72591fbbd",
+    "wire-rows.json": "59b4b87d0b64ab4936a6ae7b92b1e926bda18d73fe31510b1d6fbf6446b38892",
+    "static-closure.json": "04b4df53a6da7ffb9d156c60459176e01d6fa2fa08c37e9eae020c0f56b92a3d",
+    "observation-overlay.patch": "593cf59bd7dde24049cfbfbbb15ae5df34dc3ec12a264c4c82f266024b4940fb",
+    "postrestore.log": "53da4e768ac9c36ec10e99fff2a768457cd9cca3198d60ad629b9990285e7176"
+  }
+}
