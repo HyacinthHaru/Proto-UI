@@ -1,0 +1,51 @@
+{
+  "standalone": {
+    "head": "a7120addadfb7dee40e0a6377554332a1b115699",
+    "tree": "89162966627192e6f1013f63a197a23d4b728d39",
+    "parents": "3b206f445068a4d6d90ea2901d392201fdb7c56f"
+  },
+  "extractedOrigin": "d9abbf27f5d9852b811eef47883d543cb29397b7",
+  "negativeControl": {
+    "actualBodyObservers": 2,
+    "expected": 1,
+    "logSha": "31e2f43e24cea5dbbcc298dba5ea733fd32b9d3a68adb81b6d18ae06f6e1ff29"
+  },
+  "exactFocused": {
+    "passed": 132,
+    "failed": 0,
+    "filtered": 0,
+    "sha256": "96477cb5dd5b03dbe9ce07c6c793baa8f413cf38cb81ef21b858509026f04f1f"
+  },
+  "exactProjection": {
+    "passed": 5,
+    "failed": 0,
+    "filtered": 0,
+    "sha256": "d36d00689616fc7337da04d854c9fa07c272d7f754b55d7b28c078c623231555"
+  },
+  "native": {
+    "head": "a7120addadfb7dee40e0a6377554332a1b115699",
+    "chrome": "156.0.8078.79",
+    "input": "apps/www/src/components/PrototypePreviewer/previewer-removal.ts",
+    "sourceSha": "468d3b8fe0563caffd66bbde02caf933bec6b81bcf088847e88b5df7907a5f19",
+    "emittedSha": "a09af13f7851cbdf06b315a5d70d94da895336ccc27a58f658aca402e9b6a9bd",
+    "measured": {
+      "initialObservers": 1,
+      "afterReinsert": [1, 0],
+      "afterLastRemoval": [1, 1],
+      "firstRoundDisconnections": 1,
+      "scopes": ["previous", "replacement"],
+      "continued": 1,
+      "errors": ["Uncaught Error: controlled removal callback failure"],
+      "totalObservers": 4,
+      "totalDisconnections": 4
+    }
+  },
+  "exactBuild": {
+    "packages": 47,
+    "pages": 683,
+    "typesExit": 0,
+    "manifestExit": 0,
+    "packageLogSha": "0f75683a687e8357358bf4ca09dc1f17e27049f4b49c759888ae514916c76c01",
+    "siteLogSha": "971801b86ccea7a66940171ab0cf5a170481f5b60720c745248e4f6d23d795c9"
+  }
+}
