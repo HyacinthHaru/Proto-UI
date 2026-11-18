@@ -1,0 +1,13 @@
+# Demo ref observation after text and comment removal
+
+Preview ref observation continues processing added and removed subtrees. Only removal of an element requests a sweep of all previously indexed element refs. This keeps disconnected and stripped Portal cleanup and the original publication order.
+
+On the original Chinese S4 production page with 1,268 preview roots, the pre-change removal census observes 5,687,238 known-ref probes across 1,763 removal sweeps at the last delivered prefix. A subset of 355 sweeps containing no element removals accounts for 1,088,836 probes. This is a diagnostic prefix from a pinned Chromium run that reached the original 60-second readiness timeout. It does not measure total startup or claim recovered latency.
+
+In four alternating real Chrome source-probe contexts with 200 owners, removing text and a comment delivered actual node types 3 and 8. The parent made 200 tracked containment calls and the candidate made zero in each matching fixture. In all four contexts the real removed-and-emptied Portal subtree retired its ref and the other ref identities held.
+
+For the integrated source at 831b5cf4947fb364382f07a90cdb644bb415dd8b, 295 tests pass across 13 files. The final new regression fails alone on the previous source. The first test attempt is retained because a frame boundary had let late initial attachment delivery mix with the intended removal. The final case waits for the actual initial delivery and queued flush. The production Website builds 685 pages using unchanged package outputs. The original Chinese S4 readiness case remains red at 60 seconds within the unchanged 150-second case limit. The English case was filtered.
+
+The main-based standalone head ad63be6ec768e8aaab9c42ffe85fba2e81a6d108 builds all 47 packages and 685 Website pages. Workspace types and manifests pass and the budget check reports three passes with six advisory results. With the candidate test retained, the previous observer reports 293 passes, two failed assertions and three terminal-disposal rejections. The candidate reports 294 passes, one failed assertion and the same three terminal-disposal rejections. The shared assertion compares raw-props function identity after Expose wraps callbacks. The shared rejections originate in Input Shell binding retirement. The production observer was the only file replaced in this parent control and was restored.
+
+Both production candidates pass 15 selected original Contents, Homepage, Dialog available-space and RuntimeBox journeys with nine filtered. The maintained Header geometry probe passes 320px and 390px. The Shadcn Button article keeps all nine authored CodeExample blocks, and the snapshot is the actual open React Brutalist Contents panel on the standalone product.

@@ -1,0 +1,121 @@
+import { createRequire, stripTypeScriptTypes } from 'node:module';
+import { readFile, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import assert from 'node:assert/strict';
+
+const [packagePath, parentPath, candidatePath, output] = process.argv.slice(2);
+const { chromium } = createRequire(packagePath)('playwright-core');
+const source = {
+  parent: await readFile(parentPath, 'utf8'),
+  candidate: await readFile(candidatePath, 'utf8'),
+};
+const hash = (text) => createHash('sha256').update(text).digest('hex');
+const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH });
+const results = [];
+try {
+  for (const verdict of ['parent', 'candidate', 'candidate', 'parent']) {
+    const page = await browser.newPage();
+    try {
+      await page.setContent('<main></main>');
+      await page.addScriptTag({
+        type: 'module',
+        content:
+          stripTypeScriptTypes(source[verdict]) +
+          '\nwindow.refProbe = { collectOwnedDemoRefs, observeOwnedDemoRefs };',
+      });
+      await page.waitForFunction(() => typeof window.refProbe === 'object');
+      const result = await page.evaluate(async () => {
+        const main = document.querySelector('main');
+        const hosts = Array.from({ length: 200 }, (_, index) => {
+          const host = document.createElement('div');
+          const ref = document.createElement('button');
+          const owner = 'owner-' + index;
+          ref.dataset.demoRef = 'item';
+          ref.dataset.demoOwner = owner;
+          host.append(ref);
+          main.append(host);
+          return { host, ref, owner };
+        });
+        const decoration = document.createElement('div');
+        const text = document.createTextNode('visible text');
+        const comment = document.createComment('renderer marker');
+        decoration.append(text, comment);
+        main.append(decoration);
+        const wrapper = document.createElement('section');
+        const portalRef = document.createElement('button');
+        portalRef.dataset.demoRef = 'portal';
+        portalRef.dataset.demoOwner = hosts[0].owner;
+        wrapper.append(portalRef);
+        main.append(wrapper);
+        const owners = hosts.map(({ host, owner }) => {
+          const { refs, nodes } = window.refProbe.collectOwnedDemoRefs(host, owner);
+          return {
+            refs,
+            stop: window.refProbe.observeOwnedDemoRefs(host, owner, refs, () => true, nodes),
+          };
+        });
+        const tracked = new Set(hosts.map(({ ref }) => ref));
+        const original = document.contains;
+        let calls = 0;
+        document.contains = function (node) {
+          if (tracked.has(node)) calls++;
+          return original.call(this, node);
+        };
+        const mutate = async (act, matches) => {
+          const received = await new Promise((resolve) => {
+            const observer = new MutationObserver((records) => {
+              if (!records.some(matches)) return;
+              observer.disconnect();
+              resolve(records.flatMap((record) => Array.from(record.removedNodes, (n) => n.nodeType)));
+            });
+            observer.observe(main, { childList: true, subtree: true });
+            act();
+          });
+          await new Promise(requestAnimationFrame);
+          return received;
+        };
+        try {
+          const removedNodeTypes = await mutate(
+            () => { text.remove(); comment.remove(); },
+            (record) => [...record.removedNodes].includes(text)
+          );
+          const unrelatedKnownRefProbes = calls;
+          const identitiesPreserved = owners.every(({ refs }, index) => refs.item === hosts[index].ref);
+          const portalInitiallyPublished = owners[0].refs.portal === portalRef;
+          const elementRemovalTypes = await mutate(
+            () => {
+              wrapper.remove();
+              wrapper.replaceChildren();
+              portalRef.removeAttribute('data-demo-ref');
+            },
+            (record) => [...record.removedNodes].includes(wrapper)
+          );
+          return {
+            owners: owners.length, removedNodeTypes, unrelatedKnownRefProbes, identitiesPreserved,
+            portalInitiallyPublished, elementRemovalTypes, portalRetired: !owners[0].refs.portal,
+          };
+        } finally {
+          document.contains = original;
+          for (const owner of owners) owner.stop();
+        }
+      });
+      results.push({ verdict, ...result });
+    } finally {
+      await page.close();
+    }
+  }
+  await writeFile(output, JSON.stringify({
+    chrome: browser.version(), sha256: Object.fromEntries(Object.entries(source).map(([key, text]) => [key, hash(text)])),
+    order: results,
+  }, null, 2) + '\n');
+  for (const r of results) {
+    assert.deepEqual(r.removedNodeTypes, [3, 8]);
+    assert.equal(r.owners, 200);
+    assert.equal(r.unrelatedKnownRefProbes, r.verdict === 'parent' ? 200 : 0);
+    assert.ok(r.identitiesPreserved && r.portalInitiallyPublished && r.portalRetired);
+    assert.ok(r.elementRemovalTypes.includes(1));
+  }
+  console.log(results.map((r) => [r.verdict, r.unrelatedKnownRefProbes]));
+} finally {
+  await browser.close();
+}

@@ -1,0 +1,32 @@
+from hashlib import sha256
+from pathlib import Path
+import json,sys
+q, dist = map(Path, sys.argv[1:])
+asset, = dist.glob('demo-renderer.*.js')
+before=asset.read_text()
+assert before.count('duplicate ref observation owner')==1
+stats = '(globalThis.__puiRefCensus??={calls:0,initial:0,initialMs:0,batches:0,records:0,enqueueMs:0,classes:0,classWithoutRef:0,ignoredClass:0,flushes:0,flushMs:0,removedBatches:0,nonElementOnlyRemovals:0,noElementKnownChecks:0,hasElementRemoval:0,knownChecks:0,pruned:0,refCollect:0,subtrees:0,affected:0})'
+s=before
+
+def replace(old,new):
+    global s
+    assert s.count(old)==1, (old,s.count(old))
+    s=s.replace(old,new,1)
+
+replace('function me(e,t){const r=','function me(e,t){const _trace='+stats+',_tic=performance.now();_trace.initial++;const r=')
+replace('return{refs:i,nodes:o}}function ye','_trace.initialMs+=performance.now()-_tic;return{refs:i,nodes:o}}function ye')
+replace('O=()=>{if(v=!1,!h)return;const E=','O=()=>{if(v=!1,!h)return;const _trace='+stats+',_tic=performance.now();_trace.flushes++;const E=')
+replace('if(u.clear(),I)for(const s of g.values())for(const n of s.nodes)x(n,s)||(s.nodes.delete(n),D.add(s));','const _removedElement=_trace.hasElementRemoval;_trace.hasElementRemoval=0;if(u.clear(),I){_trace.removedBatches++;if(!_removedElement)_trace.nonElementOnlyRemovals++;for(const s of g.values())for(const n of s.nodes){_trace.knownChecks++;if(!_removedElement)_trace.noElementKnownChecks++;x(n,s)||(_trace.pruned++,s.nodes.delete(n),D.add(s))}}')
+replace('const _=new Set,V=s=>{if(_.has(s)','const _=new Set,V=s=>{_trace.refCollect++;if(_.has(s)')
+replace('for(const s of E)if(s.nodeType===1){V(s);','for(const s of E)if(s.nodeType===1){_trace.subtrees++;V(s);')
+replace('for(const s of D){if(g.get(s.owner)','_trace.affected+=D.size;for(const s of D){if(g.get(s.owner)')
+replace('ee(s.refs,n)}},j=E=>{if(h){for(const I of E)','ee(s.refs,n)}_trace.flushMs+=performance.now()-_tic},j=E=>{if(h){const _trace='+stats+',_tic=performance.now();_trace.batches++;_trace.records+=E.length;for(const I of E)')
+replace('if(I.attributeName==="class"){const n=V(I.oldValue),f=V(D.getAttribute("class"));if(n.length===f.length&&n.every(y=>f.includes(y)))continue;',
+        'if(I.attributeName==="class"){_trace.classes++;if(!D.hasAttribute("data-demo-ref"))_trace.classWithoutRef++;const n=V(I.oldValue),f=V(D.getAttribute("class"));if(n.length===f.length&&n.every(y=>f.includes(y))){_trace.ignoredClass++;continue;}')
+replace('I.removedNodes.length&&(k=!0);for', 'I.removedNodes.length&&(k=!0);if(!_trace.hasElementRemoval&&Array.from(I.removedNodes).some(_node=>_node.nodeType===1))_trace.hasElementRemoval=1;for')
+replace('!p.size&&!u.size||v||(v=!0,queueMicrotask(O))}},R=', '!p.size&&!u.size||v||(v=!0,queueMicrotask(O));_trace.enqueueMs+=performance.now()-_tic;if(_trace.batches===1||_trace.batches%512===0)console.info("[S4 demo refs] "+JSON.stringify({..._trace,pageMs:performance.now()}))}},R=')
+asset.write_text(s)
+(q/'asset-binding.json').write_text(json.dumps(dict(
+    asset=asset.name,original=sha256(before.encode()).hexdigest(),observed=sha256(s.encode()).hexdigest(),
+    scope='Measures initial collection, enqueue and flush self windows including their calls. Counts visits and existing class comparisons. Partitions actual queued removal flushes by element versus other nodes and counts successful prunes. Adds diagnostic checks for class records and removed nodes. Existing publish order and decisions are unchanged.'
+),indent=2)+'\n')

@@ -1,0 +1,802 @@
+{
+  "scope": "Site preview ref observation. Node 24.21.0 and pinned Chrome 156.0.8078.79. No changes to the browser predicates or deadlines.",
+  "baseline": {
+    "observedAsset": {
+      "asset": "demo-renderer.DPyGFnY9.js",
+      "original": "3edb9565b5f90c0f5e76bc41b3a9288a42221ad0dccd8dcb33f25638abcd7d1d",
+      "observed": "fea8e80d797f813191e32da61b52003b7f00ef82f77cec9786c5f4b628930663",
+      "scope": "Measures initial collection, enqueue and flush self windows including their calls. Counts visits and existing class comparisons. Partitions actual queued removal flushes by element versus other nodes and counts successful prunes. Adds diagnostic checks for class records and removed nodes. Existing publish order and decisions are unchanged."
+    },
+    "source": [
+      "ffd372aceabd51d2756c3dd0ee1338f1d9072cb0",
+      "94aebcb5fe0ecc6cec26d480d208bb66674f1b04"
+    ],
+    "lastDelivered": {
+      "calls": 0,
+      "initial": 1710,
+      "initialMs": 1507.9999935626984,
+      "batches": 6656,
+      "records": 58717,
+      "enqueueMs": 34.80000448226929,
+      "classes": 25121,
+      "classWithoutRef": 15216,
+      "ignoredClass": 25121,
+      "flushes": 3460,
+      "flushMs": 1329.0000014305115,
+      "removedBatches": 1763,
+      "nonElementOnlyRemovals": 355,
+      "noElementKnownChecks": 1088836,
+      "hasElementRemoval": 0,
+      "knownChecks": 5687238,
+      "pruned": 12,
+      "refCollect": 39386,
+      "subtrees": 19319,
+      "affected": 637,
+      "pageMs": 65306.300000190735
+    },
+    "series": [
+      {
+        "calls": 0,
+        "initial": 133,
+        "initialMs": 59.59999942779541,
+        "batches": 1,
+        "records": 1,
+        "enqueueMs": 0,
+        "classes": 0,
+        "classWithoutRef": 0,
+        "ignoredClass": 0,
+        "flushes": 0,
+        "flushMs": 0,
+        "removedBatches": 0,
+        "nonElementOnlyRemovals": 0,
+        "noElementKnownChecks": 0,
+        "hasElementRemoval": 0,
+        "knownChecks": 0,
+        "pruned": 0,
+        "refCollect": 0,
+        "subtrees": 0,
+        "affected": 0,
+        "pageMs": 7135.800000190735
+      },
+      {
+        "calls": 0,
+        "initial": 243,
+        "initialMs": 102.29999923706055,
+        "batches": 512,
+        "records": 1672,
+        "enqueueMs": 1.1999993324279785,
+        "classes": 50,
+        "classWithoutRef": 48,
+        "ignoredClass": 50,
+        "flushes": 233,
+        "flushMs": 5.299999475479126,
+        "removedBatches": 63,
+        "nonElementOnlyRemovals": 8,
+        "noElementKnownChecks": 2466,
+        "hasElementRemoval": 1,
+        "knownChecks": 24417,
+        "pruned": 0,
+        "refCollect": 1520,
+        "subtrees": 791,
+        "affected": 52,
+        "pageMs": 8140.300000190735
+      },
+      {
+        "calls": 0,
+        "initial": 364,
+        "initialMs": 151.70000004768372,
+        "batches": 1024,
+        "records": 3074,
+        "enqueueMs": 2.1999988555908203,
+        "classes": 252,
+        "classWithoutRef": 210,
+        "ignoredClass": 252,
+        "flushes": 469,
+        "flushMs": 22.90000057220459,
+        "removedBatches": 236,
+        "nonElementOnlyRemovals": 68,
+        "noElementKnownChecks": 42053,
+        "hasElementRemoval": 1,
+        "knownChecks": 147796,
+        "pruned": 0,
+        "refCollect": 2330,
+        "subtrees": 1250,
+        "affected": 103,
+        "pageMs": 8580.600000143051
+      },
+      {
+        "calls": 0,
+        "initial": 491,
+        "initialMs": 212.60000133514404,
+        "batches": 1536,
+        "records": 5811,
+        "enqueueMs": 3.599999189376831,
+        "classes": 642,
+        "classWithoutRef": 528,
+        "ignoredClass": 642,
+        "flushes": 737,
+        "flushMs": 37.20000147819519,
+        "removedBatches": 308,
+        "nonElementOnlyRemovals": 85,
+        "noElementKnownChecks": 61916,
+        "hasElementRemoval": 0,
+        "knownChecks": 225909,
+        "pruned": 0,
+        "refCollect": 4575,
+        "subtrees": 2619,
+        "affected": 126,
+        "pageMs": 10033.5
+      },
+      {
+        "calls": 0,
+        "initial": 634,
+        "initialMs": 282.6000008583069,
+        "batches": 2048,
+        "records": 7453,
+        "enqueueMs": 4.099999189376831,
+        "classes": 878,
+        "classWithoutRef": 645,
+        "ignoredClass": 878,
+        "flushes": 961,
+        "flushMs": 71.10000252723694,
+        "removedBatches": 453,
+        "nonElementOnlyRemovals": 107,
+        "noElementKnownChecks": 97083,
+        "hasElementRemoval": 1,
+        "knownChecks": 450809,
+        "pruned": 0,
+        "refCollect": 5859,
+        "subtrees": 3289,
+        "affected": 221,
+        "pageMs": 10919.400000095367
+      },
+      {
+        "calls": 0,
+        "initial": 743,
+        "initialMs": 356.0000009536743,
+        "batches": 2560,
+        "records": 17093,
+        "enqueueMs": 8.1999990940094,
+        "classes": 5283,
+        "classWithoutRef": 4456,
+        "ignoredClass": 5283,
+        "flushes": 1237,
+        "flushMs": 130.30000233650208,
+        "removedBatches": 600,
+        "nonElementOnlyRemovals": 133,
+        "noElementKnownChecks": 148353,
+        "hasElementRemoval": 0,
+        "knownChecks": 738651,
+        "pruned": 0,
+        "refCollect": 10977,
+        "subtrees": 6671,
+        "affected": 268,
+        "pageMs": 16624.5
+      },
+      {
+        "calls": 0,
+        "initial": 872,
+        "initialMs": 458.19999957084656,
+        "batches": 3072,
+        "records": 28740,
+        "enqueueMs": 16.600000143051147,
+        "classes": 13750,
+        "classWithoutRef": 8745,
+        "ignoredClass": 13750,
+        "flushes": 1514,
+        "flushMs": 204.60000157356262,
+        "removedBatches": 741,
+        "nonElementOnlyRemovals": 161,
+        "noElementKnownChecks": 215936,
+        "hasElementRemoval": 1,
+        "knownChecks": 1076424,
+        "pruned": 0,
+        "refCollect": 15453,
+        "subtrees": 8507,
+        "affected": 314,
+        "pageMs": 22458.300000190735
+      },
+      {
+        "calls": 0,
+        "initial": 990,
+        "initialMs": 563.9999978542328,
+        "batches": 3584,
+        "records": 32761,
+        "enqueueMs": 19.300000190734863,
+        "classes": 15357,
+        "classWithoutRef": 9352,
+        "ignoredClass": 15357,
+        "flushes": 1794,
+        "flushMs": 312.10000014305115,
+        "removedBatches": 900,
+        "nonElementOnlyRemovals": 192,
+        "noElementKnownChecks": 307922,
+        "hasElementRemoval": 1,
+        "knownChecks": 1555518,
+        "pruned": 6,
+        "refCollect": 19698,
+        "subtrees": 9886,
+        "affected": 363,
+        "pageMs": 27812.400000095367
+      },
+      {
+        "calls": 0,
+        "initial": 1119,
+        "initialMs": 696.9999980926514,
+        "batches": 4096,
+        "records": 36548,
+        "enqueueMs": 22.100001335144043,
+        "classes": 16696,
+        "classWithoutRef": 10039,
+        "ignoredClass": 16696,
+        "flushes": 2079,
+        "flushMs": 426.69999861717224,
+        "removedBatches": 1036,
+        "nonElementOnlyRemovals": 216,
+        "noElementKnownChecks": 393881,
+        "hasElementRemoval": 0,
+        "knownChecks": 2044228,
+        "pruned": 6,
+        "refCollect": 22706,
+        "subtrees": 11270,
+        "affected": 410,
+        "pageMs": 32029.300000190735
+      },
+      {
+        "calls": 0,
+        "initial": 1236,
+        "initialMs": 823.3999984264374,
+        "batches": 4608,
+        "records": 41510,
+        "enqueueMs": 24.900001525878906,
+        "classes": 18595,
+        "classWithoutRef": 11307,
+        "ignoredClass": 18595,
+        "flushes": 2349,
+        "flushMs": 557.8000004291534,
+        "removedBatches": 1181,
+        "nonElementOnlyRemovals": 250,
+        "noElementKnownChecks": 531851,
+        "hasElementRemoval": 1,
+        "knownChecks": 2626763,
+        "pruned": 6,
+        "refCollect": 26339,
+        "subtrees": 13116,
+        "affected": 455,
+        "pageMs": 37281.5
+      },
+      {
+        "calls": 0,
+        "initial": 1361,
+        "initialMs": 981.9999976158142,
+        "batches": 5120,
+        "records": 46578,
+        "enqueueMs": 27.60000205039978,
+        "classes": 20687,
+        "classWithoutRef": 12699,
+        "ignoredClass": 20687,
+        "flushes": 2626,
+        "flushMs": 720.2000005245209,
+        "removedBatches": 1322,
+        "nonElementOnlyRemovals": 274,
+        "noElementKnownChecks": 639303,
+        "hasElementRemoval": 0,
+        "knownChecks": 3258100,
+        "pruned": 6,
+        "refCollect": 30016,
+        "subtrees": 14828,
+        "affected": 502,
+        "pageMs": 47053.90000009537
+      },
+      {
+        "calls": 0,
+        "initial": 1482,
+        "initialMs": 1155.099995136261,
+        "batches": 5632,
+        "records": 50965,
+        "enqueueMs": 30.400002241134644,
+        "classes": 22287,
+        "classWithoutRef": 13431,
+        "ignoredClass": 22287,
+        "flushes": 2913,
+        "flushMs": 917.4000020027161,
+        "removedBatches": 1477,
+        "nonElementOnlyRemovals": 303,
+        "noElementKnownChecks": 786300,
+        "hasElementRemoval": 1,
+        "knownChecks": 4039310,
+        "pruned": 10,
+        "refCollect": 33782,
+        "subtrees": 16460,
+        "affected": 547,
+        "pageMs": 52609.90000009537
+      },
+      {
+        "calls": 0,
+        "initial": 1590,
+        "initialMs": 1315.4999947547913,
+        "batches": 6144,
+        "records": 53463,
+        "enqueueMs": 33.000004053115845,
+        "classes": 23139,
+        "classWithoutRef": 13894,
+        "ignoredClass": 23139,
+        "flushes": 3181,
+        "flushMs": 1097.9000005722046,
+        "removedBatches": 1612,
+        "nonElementOnlyRemovals": 323,
+        "noElementKnownChecks": 897374,
+        "hasElementRemoval": 0,
+        "knownChecks": 4786767,
+        "pruned": 12,
+        "refCollect": 35597,
+        "subtrees": 17360,
+        "affected": 589,
+        "pageMs": 56821.60000014305
+      },
+      {
+        "calls": 0,
+        "initial": 1710,
+        "initialMs": 1507.9999935626984,
+        "batches": 6656,
+        "records": 58717,
+        "enqueueMs": 34.80000448226929,
+        "classes": 25121,
+        "classWithoutRef": 15216,
+        "ignoredClass": 25121,
+        "flushes": 3460,
+        "flushMs": 1329.0000014305115,
+        "removedBatches": 1763,
+        "nonElementOnlyRemovals": 355,
+        "noElementKnownChecks": 1088836,
+        "hasElementRemoval": 0,
+        "knownChecks": 5687238,
+        "pruned": 12,
+        "refCollect": 39386,
+        "subtrees": 19319,
+        "affected": 637,
+        "pageMs": 65306.300000190735
+      }
+    ],
+    "native": {
+      "passed": 0,
+      "failed": 1,
+      "filtered": 1,
+      "files": 1,
+      "failures": ["S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance"]
+    }
+  },
+  "testPremiseCorrection": "The first new test awaited a frame rather than the first actual observer delivery. Candidate still revalidated the second host from the pending attachment. Same failure preserved separately. The verified case waits for delivery and its queued flush before the removal.",
+  "initialTestRed": {
+    "passed": 14,
+    "failed": 1,
+    "filtered": 0,
+    "files": 1,
+    "failures": [
+      "Website owner ref observation, using real MutationObserver delivery does not recheck indexed elements after removing only text and comment nodes"
+    ]
+  },
+  "initialCandidate": {
+    "passed": 294,
+    "failed": 1,
+    "filtered": 0,
+    "files": 13,
+    "failures": [
+      "Website owner ref observation, using real MutationObserver delivery does not recheck indexed elements after removing only text and comment nodes"
+    ]
+  },
+  "formalExactParent": {
+    "passed": 14,
+    "failed": 1,
+    "filtered": 0,
+    "files": 1,
+    "failures": [
+      "Website owner ref observation, using real MutationObserver delivery does not recheck indexed elements after removing only text and comment nodes"
+    ]
+  },
+  "formalCandidate": {
+    "passed": 295,
+    "failed": 0,
+    "filtered": 0,
+    "files": 13,
+    "failures": []
+  },
+  "standaloneSourceProbe": {
+    "chrome": "156.0.8078.79",
+    "sha256": {
+      "parent": "2981c46c9fc0dfad7c5e1cb366ef8712fec13f2b63c99b40f75d7136364f6bf4",
+      "candidate": "2deffc4b66094720739a7983d8d87e517d16e3f4b697e15ea28099bee40818cf"
+    },
+    "order": [
+      {
+        "verdict": "parent",
+        "owners": 200,
+        "removedNodeTypes": [3, 8],
+        "unrelatedKnownRefProbes": 200,
+        "identitiesPreserved": true,
+        "portalInitiallyPublished": true,
+        "elementRemovalTypes": [1, 1],
+        "portalRetired": true
+      },
+      {
+        "verdict": "candidate",
+        "owners": 200,
+        "removedNodeTypes": [3, 8],
+        "unrelatedKnownRefProbes": 0,
+        "identitiesPreserved": true,
+        "portalInitiallyPublished": true,
+        "elementRemovalTypes": [1, 1],
+        "portalRetired": true
+      },
+      {
+        "verdict": "candidate",
+        "owners": 200,
+        "removedNodeTypes": [3, 8],
+        "unrelatedKnownRefProbes": 0,
+        "identitiesPreserved": true,
+        "portalInitiallyPublished": true,
+        "elementRemovalTypes": [1, 1],
+        "portalRetired": true
+      },
+      {
+        "verdict": "parent",
+        "owners": 200,
+        "removedNodeTypes": [3, 8],
+        "unrelatedKnownRefProbes": 200,
+        "identitiesPreserved": true,
+        "portalInitiallyPublished": true,
+        "elementRemovalTypes": [1, 1],
+        "portalRetired": true
+      }
+    ]
+  },
+  "integrated": {
+    "preview": {
+      "product": {
+        "head": "831b5cf4947fb364382f07a90cdb644bb415dd8b",
+        "tree": "f28d602b5f2818c835933aa559b97cfa3390e4e9",
+        "distHashes": {
+          "zh-cn/index.html": "eea479e0cba8324a973e3c332e37483b5939d9aad17fe36d4d0e88b9a571e160",
+          "zh-cn/ui-libraries/shadcn/button/index.html": "b4aef0b2f03e68b00f19cad4c103309ecb3d266e17ad768f58a844f561cab3f1",
+          "zh-cn/ui-libraries/brutalist/components/button/index.html": "b5fda6031271ff6d0af316fc4d8d26483cba23ac3823d132aa92d29d2e4881b3"
+        },
+        "sourceCodeExamples": 9,
+        "renderedCodeExamples": 9,
+        "packedHeaderExit": 0,
+        "previewBrowserExit": 0,
+        "selector": "uses real family Popover Triggers|uses the same mobile shell|retains (shadcn|brutalist) preference owners|compact (shadcn|brutalist)|live available region|keeps Runtime Tabs outside"
+      },
+      "header": {
+        "head": "831b5cf4947fb364382f07a90cdb644bb415dd8b",
+        "browser": "156.0.8078.79",
+        "scope": "First animation frame control on the exact static Astro preview. Geometry reads can force layout.",
+        "results": [
+          {
+            "width": 320,
+            "samples": [
+              {
+                "phase": "family mutation delivery",
+                "at": 1559.4000000953674,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 312,
+                "width": 304,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              },
+              {
+                "phase": "first animation frame",
+                "at": 1738.5,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 312,
+                "width": 304,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              },
+              {
+                "phase": "second animation frame",
+                "at": 1759.8000001907349,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 312,
+                "width": 304,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              }
+            ],
+            "trusted": true
+          },
+          {
+            "width": 390,
+            "samples": [
+              {
+                "phase": "family mutation delivery",
+                "at": 1511.3999998569489,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 382,
+                "width": 374,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              },
+              {
+                "phase": "first animation frame",
+                "at": 1665.5,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 382,
+                "width": 374,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              },
+              {
+                "phase": "second animation frame",
+                "at": 1698.2000000476837,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 382,
+                "width": 374,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              }
+            ],
+            "trusted": true
+          }
+        ]
+      },
+      "selectedBrowser": {
+        "passed": 15,
+        "failed": 0,
+        "filtered": 9,
+        "files": 3,
+        "failures": []
+      },
+      "matrix": {
+        "zh-cn": {
+          "bytes": 1862533,
+          "sha256": "0bfd94ee5dd06b318c9bea35afa3d186d2e78eced2723e56f9213a6287d9c4ea",
+          "previews": 1268
+        },
+        "en": {
+          "bytes": 1914125,
+          "sha256": "85e519186e5ef89aa470bdd0ab3fd362e1ac33eae139a29c94d09df0f723ca7c",
+          "previews": 1268
+        }
+      },
+      "siteBuildPass": true,
+      "typesPass": true
+    },
+    "originalChineseS4": {
+      "passed": 0,
+      "failed": 1,
+      "filtered": 1,
+      "files": 1,
+      "failures": ["S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance"]
+    },
+    "unchangedLimitsMs": {
+      "readiness": 60000,
+      "case": 150000
+    },
+    "inputSHA256": {
+      "apps/www/src/components/PrototypePreviewer/demo-ref-observer.ts": "2deffc4b66094720739a7983d8d87e517d16e3f4b697e15ea28099bee40818cf",
+      "apps/www/src/components/PrototypePreviewer/demo-ref-observer.test.ts": "090b0b2c031a65a9f9a276339e45fc0a579ed17602957f5d273ee778133ab635"
+    }
+  },
+  "standaloneMain": {
+    "scope": {
+      "head": "ad63be6ec768e8aaab9c42ffe85fba2e81a6d108",
+      "tree": "8661880213e970df0555626e08045ef9a15e4891",
+      "base": "0f0955a9d624e0ef5e250f56a0eaa0fc52bbfb53",
+      "integrated": "831b5cf4947fb364382f07a90cdb644bb415dd8b",
+      "files": {
+        "apps/www/src/components/PrototypePreviewer/demo-ref-observer.ts": "2deffc4b66094720739a7983d8d87e517d16e3f4b697e15ea28099bee40818cf",
+        "apps/www/src/components/PrototypePreviewer/demo-ref-observer.test.ts": "090b0b2c031a65a9f9a276339e45fc0a579ed17602957f5d273ee778133ab635"
+      },
+      "signature": "G"
+    },
+    "environment": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+    "native": {
+      "product": {
+        "head": "ad63be6ec768e8aaab9c42ffe85fba2e81a6d108",
+        "tree": "8661880213e970df0555626e08045ef9a15e4891",
+        "distHashes": {
+          "zh-cn/index.html": "867ef958849538feb3aa4029d35768519079b4ea14208283f95f76317ec003ea",
+          "zh-cn/ui-libraries/shadcn/button/index.html": "0cd05c58fe923f4fcada464a07c0122895b5d0ceaec1a735b69d0040125723f8",
+          "zh-cn/ui-libraries/brutalist/components/button/index.html": "bae8d8d00e3669b13a576d310d2263149bf65ae6828bcfd5ea8a3965c732a5c2"
+        },
+        "sourceCodeExamples": 9,
+        "renderedCodeExamples": 9,
+        "packedHeaderExit": 0,
+        "previewBrowserExit": 0,
+        "selector": "uses real family Popover Triggers|uses the same mobile shell|retains (shadcn|brutalist) preference owners|compact (shadcn|brutalist)|live available region|keeps Runtime Tabs outside"
+      },
+      "header": {
+        "head": "ad63be6ec768e8aaab9c42ffe85fba2e81a6d108",
+        "browser": "156.0.8078.79",
+        "scope": "First animation frame control on the exact static Astro preview. Geometry reads can force layout.",
+        "results": [
+          {
+            "width": 320,
+            "samples": [
+              {
+                "phase": "family mutation delivery",
+                "at": 1621.9000000953674,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 312,
+                "width": 304,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              },
+              {
+                "phase": "first animation frame",
+                "at": 1752.2000000476837,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 312,
+                "width": 304,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              },
+              {
+                "phase": "second animation frame",
+                "at": 1777.7999999523163,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 312,
+                "width": 304,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              }
+            ],
+            "trusted": true
+          },
+          {
+            "width": 390,
+            "samples": [
+              {
+                "phase": "family mutation delivery",
+                "at": 1513.2999999523163,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 382,
+                "width": 374,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              },
+              {
+                "phase": "first animation frame",
+                "at": 1666,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 382,
+                "width": 374,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              },
+              {
+                "phase": "second animation frame",
+                "at": 1686.1999998092651,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 382,
+                "width": 374,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              }
+            ],
+            "trusted": true
+          }
+        ]
+      },
+      "selectedBrowser": {
+        "passed": 15,
+        "failed": 0,
+        "filtered": 9,
+        "files": 3,
+        "failures": []
+      },
+      "matrix": {
+        "zh-cn": {
+          "bytes": 1862490,
+          "sha256": "bfc2ad05218db36a52664a50f1f4d0b495b0d94f2d456a02435ed2627dc9e078",
+          "previews": 1268
+        },
+        "en": {
+          "bytes": 1914030,
+          "sha256": "c0cdf0bbb6490741ec468fa8b09ddd4805200ad4a245a5c8683bfc28bf3a6123",
+          "previews": 1268
+        }
+      },
+      "siteBuildPass": true,
+      "typesPass": true
+    },
+    "focused": {
+      "passed": 294,
+      "failed": 1,
+      "filtered": 0,
+      "files": 13,
+      "failures": [
+        "WC DemoRuntimeApi callback projection maps onX to payload callbacks while preserving the original raw props snapshot"
+      ]
+    },
+    "adjacentParentControl": {
+      "candidate": "ad63be6ec768e8aaab9c42ffe85fba2e81a6d108",
+      "parentSHA256": "2981c46c9fc0dfad7c5e1cb366ef8712fec13f2b63c99b40f75d7136364f6bf4",
+      "candidateSHA256": "2deffc4b66094720739a7983d8d87e517d16e3f4b697e15ea28099bee40818cf",
+      "scope": "Only the production observer blob was switched. Candidate test and dependency files were retained. The original candidate blob was restored after the control.",
+      "parent": {
+        "exit": 1,
+        "failed": [
+          "Website owner ref observation, using real MutationObserver delivery does not recheck indexed elements after removing only text and comment nodes",
+          "WC DemoRuntimeApi callback projection maps onX to payload callbacks while preserving the original raw props snapshot"
+        ],
+        "passed": 293,
+        "terminalDisposalErrors": 3
+      },
+      "candidateReport": {
+        "exit": 1,
+        "failed": [
+          "WC DemoRuntimeApi callback projection maps onX to payload callbacks while preserving the original raw props snapshot"
+        ],
+        "passed": 294,
+        "terminalDisposalErrors": 3
+      }
+    },
+    "packages": 47,
+    "pages": 685,
+    "manifestsExit": 0,
+    "budgetExit": 0,
+    "budgetPasses": 3,
+    "budgetAdvisories": 6
+  }
+}
