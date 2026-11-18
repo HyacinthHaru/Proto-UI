@@ -1,0 +1,121 @@
+{
+  "candidate": "81268ecd460086f1a32b8f01a1d68745cd564f55",
+  "parent": "ec695f0c244cea7f255fd6c697cc5fad6a25fa68",
+  "actualCalls": [
+    {
+      "at": "2026-11-18T06:42:08.103Z",
+      "method": "GET",
+      "route": "repos/Proto-UI/Proto-UI/issues?state=all&creator=HyacinthHaru&per_page=100",
+      "pages": 2,
+      "count": 151,
+      "exact": []
+    },
+    {
+      "at": "2026-11-18T06:42:14.751Z",
+      "method": "GET",
+      "route": "repos/Proto-UI/Proto-UI/issues?state=all&creator=HyacinthHaru&per_page=100",
+      "pages": 2,
+      "count": 151,
+      "exact": []
+    },
+    {
+      "at": "2026-11-18T06:42:17.009Z",
+      "method": "POST",
+      "route": "repos/Proto-UI/Proto-UI/pulls",
+      "exact": {
+        "number": 1508,
+        "id": 5371251130,
+        "bodySha256": "e3331f50babbb7f194e228e0a114bcac182feb57c5363f05367871b698df78bf",
+        "author": "HyacinthHaru",
+        "head": "80f7455f4b270e0c0ad6a30eb1b24dfdd3007a96",
+        "base": "0f0955a9d624e0ef5e250f56a0eaa0fc52bbfb53"
+      }
+    },
+    {
+      "at": "2026-11-18T06:42:18.900Z",
+      "method": "GET",
+      "route": "repos/Proto-UI/Proto-UI/issues?state=all&creator=HyacinthHaru&per_page=100",
+      "pages": 2,
+      "count": 151,
+      "exact": []
+    }
+  ],
+  "guardedReadOnlyReplay": {
+    "head": "80f7455f4b270e0c0ad6a30eb1b24dfdd3007a96",
+    "pullNumber": 1508,
+    "acknowledged": {
+      "number": 1508,
+      "id": 5371251130,
+      "bodySha256": "e3331f50babbb7f194e228e0a114bcac182feb57c5363f05367871b698df78bf",
+      "author": "HyacinthHaru",
+      "head": "80f7455f4b270e0c0ad6a30eb1b24dfdd3007a96",
+      "base": "0f0955a9d624e0ef5e250f56a0eaa0fc52bbfb53"
+    },
+    "runs": [
+      {
+        "label": "parent",
+        "simulatedPosts": 1,
+        "outcome": "PublicationUnknown",
+        "calls": [
+          {
+            "phase": "replayed-stale-author-list",
+            "pages": 2
+          },
+          {
+            "phase": "replayed-stale-author-list",
+            "pages": 2
+          },
+          {
+            "phase": "replayed-ack",
+            "number": 1508,
+            "id": 5371251130
+          },
+          {
+            "phase": "replayed-stale-author-list",
+            "pages": 2
+          },
+          {
+            "phase": "error",
+            "message": "GitHub acknowledged publication but exact full-body readback is unknown; no retry was attempted"
+          },
+          {
+            "phase": "done",
+            "outcome": "PublicationUnknown"
+          }
+        ]
+      },
+      {
+        "label": "candidate",
+        "simulatedPosts": 1,
+        "outcome": "published",
+        "calls": [
+          {
+            "phase": "replayed-stale-author-list",
+            "pages": 2
+          },
+          {
+            "phase": "replayed-stale-author-list",
+            "pages": 2
+          },
+          {
+            "phase": "replayed-ack",
+            "number": 1508,
+            "id": 5371251130
+          },
+          {
+            "phase": "direct-live-readback",
+            "number": 1508
+          },
+          {
+            "phase": "done",
+            "outcome": "published"
+          }
+        ]
+      }
+    ],
+    "externalMutations": 0
+  },
+  "focusedPassed": 62,
+  "agentOperationsPassed": 1549,
+  "agentDocExit": 0
+}
