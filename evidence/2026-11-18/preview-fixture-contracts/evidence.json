@@ -1,0 +1,161 @@
+{
+  "native": {
+    "head": "8752b08ebba24fb69c2567f7e936881844b8204b",
+    "artifactHead": "2db37bcf09a5892f730926c1c26048b176f5d793",
+    "browser": "156.0.8078.79",
+    "reports": [
+      {
+        "lang": "zh-cn",
+        "route": "/zh-cn/ui-libraries/base/button/",
+        "html": "4be509790db8d651403039e08712e8587165edd358b961bbd5deb12d3938a935",
+        "states": [
+          {
+            "id": "wc",
+            "current": "wc",
+            "selected": "true",
+            "empty": false,
+            "pending": false,
+            "buttons": 2
+          },
+          {
+            "id": "react",
+            "current": "react",
+            "selected": "true",
+            "empty": false,
+            "pending": false,
+            "buttons": 2
+          },
+          {
+            "id": "vue",
+            "current": "vue",
+            "selected": "true",
+            "empty": false,
+            "pending": false,
+            "buttons": 2
+          },
+          {
+            "id": "vue2",
+            "current": "vue2",
+            "selected": "true",
+            "empty": false,
+            "pending": false,
+            "buttons": 2
+          }
+        ]
+      },
+      {
+        "lang": "en",
+        "route": "/en/ui-libraries/base/button/",
+        "html": "b47fe4d58405bf253f0b24b861e6af1bb1281cca2d1edf155b126cefc38ca07a",
+        "states": [
+          {
+            "id": "wc",
+            "current": "wc",
+            "selected": "true",
+            "empty": false,
+            "pending": false,
+            "buttons": 2
+          },
+          {
+            "id": "react",
+            "current": "react",
+            "selected": "true",
+            "empty": false,
+            "pending": false,
+            "buttons": 2
+          },
+          {
+            "id": "vue",
+            "current": "vue",
+            "selected": "true",
+            "empty": false,
+            "pending": false,
+            "buttons": 2
+          },
+          {
+            "id": "vue2",
+            "current": "vue2",
+            "selected": "true",
+            "empty": false,
+            "pending": false,
+            "buttons": 2
+          }
+        ]
+      }
+    ],
+    "matrixFacts": {
+      "results": [
+        [
+          {
+            "role": "textbox",
+            "name": "Notes"
+          },
+          {
+            "role": "button",
+            "name": "Focus"
+          },
+          {
+            "role": "button",
+            "name": "Blur"
+          }
+        ],
+        [
+          {
+            "role": "textbox",
+            "name": "Notes"
+          },
+          {
+            "role": "button",
+            "name": "Focus"
+          },
+          {
+            "role": "button",
+            "name": "Blur"
+          }
+        ],
+        [
+          {
+            "role": "textbox",
+            "name": "Notes"
+          },
+          {
+            "role": "button",
+            "name": "Focus"
+          },
+          {
+            "role": "button",
+            "name": "Blur"
+          }
+        ],
+        [
+          {
+            "role": "textbox",
+            "name": "Notes"
+          },
+          {
+            "role": "button",
+            "name": "Focus"
+          },
+          {
+            "role": "button",
+            "name": "Blur"
+          }
+        ]
+      ],
+      "nativeNamedTextboxes": 4
+    }
+  },
+  "before": {
+    "pass": 35,
+    "fail": 3
+  },
+  "firstCandidate": {
+    "pass": 37,
+    "fail": 1
+  },
+  "final": {
+    "pass": 38,
+    "fail": 0
+  },
+  "screenshotSha256": "9661a748461d4437f56c1f55c67c73475b1551fa9fef196c9357492a02f7ae91"
+}
