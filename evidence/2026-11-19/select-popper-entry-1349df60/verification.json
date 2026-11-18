@@ -1,0 +1,794 @@
+{
+  "source": {
+    "head": "1349df60901838e9e7a524b1ade1f89181aaabc5",
+    "tree": "df7c8a700c1a899bbb832455f8055186eed4793c",
+    "main": "534caf4a241f7f7ef49b7b073662ad982e938c91"
+  },
+  "sourceComparison": {
+    "parent": "534caf4a241f7f7ef49b7b073662ad982e938c91",
+    "parentTree": "74043266d041acd2e79cf30cfb1107dfa74de368",
+    "candidatePatchSHA256": "24d5f5ca20df0d6b57afd721a8f93b821b731644018a8224ff9ee7c87eed7f71",
+    "candidateStatus": "uncommitted diagnostic candidate",
+    "originalFixtureSHA256": "c01d6d601773c406fb86a16f85ea8909519b0efd1875c246638b3d7c5d2e741d",
+    "nativeChrome": "156.0.8078.79",
+    "main": {
+      "mainHead": "534caf4a241f7f7ef49b7b073662ad982e938c91",
+      "nativeExit": 1,
+      "suiteSHA256": "c01d6d601773c406fb86a16f85ea8909519b0efd1875c246638b3d7c5d2e741d",
+      "servedHtmlSHA256": "1e1ec6aa105ab9cee3731471dc88bd02d5b17c40fcbc554cb00aac71734f7250",
+      "chrome": "156.0.8078.79",
+      "durationDeadlineMs": 30000,
+      "scope": "Four original Bootstrap light full selection cases. Temporary browser observation before controlled open and after original failure. Product served from exact main.",
+      "cases": [
+        {
+          "name": "actual Bootstrap/Liquid Select input, layout and source-bound paint bootstrap-2-3-2/wc/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+          "status": "failed"
+        },
+        {
+          "name": "actual Bootstrap/Liquid Select input, layout and source-bound paint bootstrap-2-3-2/react/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+          "status": "passed"
+        },
+        {
+          "name": "actual Bootstrap/Liquid Select input, layout and source-bound paint bootstrap-2-3-2/vue/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+          "status": "failed"
+        },
+        {
+          "name": "actual Bootstrap/Liquid Select input, layout and source-bound paint bootstrap-2-3-2/vue2/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+          "status": "failed"
+        }
+      ],
+      "sameFailureTimelines": {
+        "vue": {
+          "focusBefore": {
+            "pageMs": 1355.4000000953674,
+            "scrollY": 0,
+            "popup": {
+              "tag": "DIV",
+              "id": "pui-select-9-content",
+              "ref": "controlledContent",
+              "role": "listbox",
+              "x": 0,
+              "y": 2924.34375,
+              "height": 188,
+              "scrollTop": 0,
+              "inlinePosition": "",
+              "inlineTop": "",
+              "inlineLeft": "",
+              "positionSide": null,
+              "isDirectBodyChild": true,
+              "controllingListbox": "pui-select-9-content"
+            },
+            "option": {
+              "tag": "DIV",
+              "id": "",
+              "ref": null,
+              "role": "option",
+              "x": 1,
+              "y": 2956.34375,
+              "height": 26,
+              "scrollTop": 0,
+              "inlinePosition": "",
+              "inlineTop": "",
+              "inlineLeft": "",
+              "positionSide": null,
+              "isDirectBodyChild": false,
+              "controllingListbox": "pui-select-9-content"
+            }
+          },
+          "focusAfter": {
+            "pageMs": 1356.2999999523163,
+            "scrollY": 2112,
+            "popup": {
+              "tag": "DIV",
+              "id": "pui-select-9-content",
+              "ref": "controlledContent",
+              "role": "listbox",
+              "x": 0,
+              "y": 812.34375,
+              "height": 188,
+              "scrollTop": 0,
+              "inlinePosition": "",
+              "inlineTop": "",
+              "inlineLeft": "",
+              "positionSide": null,
+              "isDirectBodyChild": true,
+              "controllingListbox": "pui-select-9-content"
+            },
+            "option": {
+              "tag": "DIV",
+              "id": "",
+              "ref": null,
+              "role": "option",
+              "x": 1,
+              "y": 844.34375,
+              "height": 26,
+              "scrollTop": 0,
+              "inlinePosition": "",
+              "inlineTop": "",
+              "inlineLeft": "",
+              "positionSide": null,
+              "isDirectBodyChild": false,
+              "controllingListbox": "pui-select-9-content"
+            }
+          },
+          "beforeBeta": {
+            "pageMs": 1370,
+            "scrollY": 1924,
+            "popup": {
+              "tag": "DIV",
+              "id": "pui-select-9-content",
+              "ref": "controlledContent",
+              "role": "listbox",
+              "x": 448,
+              "y": -1277,
+              "height": 428,
+              "scrollTop": 0,
+              "inlinePosition": "fixed",
+              "inlineTop": "-1277px",
+              "inlineLeft": "448px",
+              "positionSide": "bottom",
+              "isDirectBodyChild": true,
+              "controllingListbox": "pui-select-9-content"
+            },
+            "beta": {
+              "tag": "DIV",
+              "id": "",
+              "ref": null,
+              "role": "option",
+              "x": 449,
+              "y": -1219,
+              "height": 26,
+              "scrollTop": 0,
+              "inlinePosition": "",
+              "inlineTop": "",
+              "inlineLeft": "",
+              "positionSide": null,
+              "isDirectBodyChild": false,
+              "controllingListbox": "pui-select-9-content"
+            }
+          },
+          "dropped": 0,
+          "captureSHA256": "d516d0ea56b226e25e227092b2a7d283acb6a419e6bd08237d57abee6b7ce1d1"
+        },
+        "vue2": {
+          "focusBefore": {
+            "pageMs": 1367.5,
+            "scrollY": 0,
+            "popup": {
+              "tag": "DIV",
+              "id": "pui-select-9-content",
+              "ref": "controlledContent",
+              "role": "listbox",
+              "x": 0,
+              "y": 2924.34375,
+              "height": 188,
+              "scrollTop": 0,
+              "inlinePosition": "",
+              "inlineTop": "",
+              "inlineLeft": "",
+              "positionSide": null,
+              "isDirectBodyChild": true,
+              "controllingListbox": "pui-select-9-content"
+            },
+            "option": {
+              "tag": "DIV",
+              "id": "",
+              "ref": null,
+              "role": "option",
+              "x": 1,
+              "y": 2956.34375,
+              "height": 26,
+              "scrollTop": 0,
+              "inlinePosition": "",
+              "inlineTop": "",
+              "inlineLeft": "",
+              "positionSide": null,
+              "isDirectBodyChild": false,
+              "controllingListbox": "pui-select-9-content"
+            }
+          },
+          "focusAfter": {
+            "pageMs": 1368.5,
+            "scrollY": 2112,
+            "popup": {
+              "tag": "DIV",
+              "id": "pui-select-9-content",
+              "ref": "controlledContent",
+              "role": "listbox",
+              "x": 0,
+              "y": 812.34375,
+              "height": 188,
+              "scrollTop": 0,
+              "inlinePosition": "",
+              "inlineTop": "",
+              "inlineLeft": "",
+              "positionSide": null,
+              "isDirectBodyChild": true,
+              "controllingListbox": "pui-select-9-content"
+            },
+            "option": {
+              "tag": "DIV",
+              "id": "",
+              "ref": null,
+              "role": "option",
+              "x": 1,
+              "y": 844.34375,
+              "height": 26,
+              "scrollTop": 0,
+              "inlinePosition": "",
+              "inlineTop": "",
+              "inlineLeft": "",
+              "positionSide": null,
+              "isDirectBodyChild": false,
+              "controllingListbox": "pui-select-9-content"
+            }
+          },
+          "beforeBeta": {
+            "pageMs": 1384.1000001430511,
+            "scrollY": 1924,
+            "popup": {
+              "tag": "DIV",
+              "id": "pui-select-9-content",
+              "ref": "controlledContent",
+              "role": "listbox",
+              "x": 448,
+              "y": -1277,
+              "height": 428,
+              "scrollTop": 0,
+              "inlinePosition": "fixed",
+              "inlineTop": "-1277px",
+              "inlineLeft": "448px",
+              "positionSide": "bottom",
+              "isDirectBodyChild": true,
+              "controllingListbox": "pui-select-9-content"
+            },
+            "beta": {
+              "tag": "DIV",
+              "id": "",
+              "ref": null,
+              "role": "option",
+              "x": 449,
+              "y": -1219,
+              "height": 26,
+              "scrollTop": 0,
+              "inlinePosition": "",
+              "inlineTop": "",
+              "inlineLeft": "",
+              "positionSide": null,
+              "isDirectBodyChild": false,
+              "controllingListbox": "pui-select-9-content"
+            }
+          },
+          "dropped": 0,
+          "captureSHA256": "4ac7af3a14f031ab975063df89577a130acab0229b3b5ff542c5b5efa1646ca8"
+        },
+        "wc": {
+          "focusBefore": {
+            "pageMs": 1145,
+            "scrollY": 0,
+            "popup": {
+              "tag": "WC-BOOTSTRAP-2-3-2-SELECT-CONTENT",
+              "id": "pui-select-5-content",
+              "ref": "controlledContent",
+              "role": "listbox",
+              "x": 0,
+              "y": 2884.34375,
+              "height": 188,
+              "scrollTop": 0,
+              "inlinePosition": "",
+              "inlineTop": "",
+              "inlineLeft": "",
+              "positionSide": null,
+              "isDirectBodyChild": true,
+              "controllingListbox": "pui-select-5-content"
+            },
+            "option": {
+              "tag": "WC-BOOTSTRAP-2-3-2-SELECT-ITEM",
+              "id": "",
+              "ref": null,
+              "role": "option",
+              "x": 1,
+              "y": 2916.34375,
+              "height": 26,
+              "scrollTop": 0,
+              "inlinePosition": "",
+              "inlineTop": "",
+              "inlineLeft": "",
+              "positionSide": null,
+              "isDirectBodyChild": false,
+              "controllingListbox": "pui-select-5-content"
+            }
+          },
+          "focusAfter": {
+            "pageMs": 1147.2000000476837,
+            "scrollY": 2072,
+            "popup": {
+              "tag": "WC-BOOTSTRAP-2-3-2-SELECT-CONTENT",
+              "id": "pui-select-5-content",
+              "ref": "controlledContent",
+              "role": "listbox",
+              "x": 0,
+              "y": 812.34375,
+              "height": 188,
+              "scrollTop": 0,
+              "inlinePosition": "",
+              "inlineTop": "",
+              "inlineLeft": "",
+              "positionSide": null,
+              "isDirectBodyChild": true,
+              "controllingListbox": "pui-select-5-content"
+            },
+            "option": {
+              "tag": "WC-BOOTSTRAP-2-3-2-SELECT-ITEM",
+              "id": "",
+              "ref": null,
+              "role": "option",
+              "x": 1,
+              "y": 844.34375,
+              "height": 26,
+              "scrollTop": 0,
+              "inlinePosition": "",
+              "inlineTop": "",
+              "inlineLeft": "",
+              "positionSide": null,
+              "isDirectBodyChild": false,
+              "controllingListbox": "pui-select-5-content"
+            }
+          },
+          "beforeBeta": {
+            "pageMs": 1169.7000000476837,
+            "scrollY": 1884,
+            "popup": {
+              "tag": "WC-BOOTSTRAP-2-3-2-SELECT-CONTENT",
+              "id": "pui-select-5-content",
+              "ref": "controlledContent",
+              "role": "listbox",
+              "x": 448,
+              "y": -1237,
+              "height": 428,
+              "scrollTop": 0,
+              "inlinePosition": "fixed",
+              "inlineTop": "-1237px",
+              "inlineLeft": "448px",
+              "positionSide": "bottom",
+              "isDirectBodyChild": true,
+              "controllingListbox": "pui-select-5-content"
+            },
+            "beta": {
+              "tag": "WC-BOOTSTRAP-2-3-2-SELECT-ITEM",
+              "id": "",
+              "ref": null,
+              "role": "option",
+              "x": 449,
+              "y": -1179,
+              "height": 26,
+              "scrollTop": 0,
+              "inlinePosition": "",
+              "inlineTop": "",
+              "inlineLeft": "",
+              "positionSide": null,
+              "isDirectBodyChild": false,
+              "controllingListbox": "pui-select-5-content"
+            }
+          },
+          "dropped": 0,
+          "captureSHA256": "3fdefd0a54ccb95104af30ccc9ae4413de1094def5874217c9845757bfaa8f71"
+        }
+      }
+    },
+    "sourceFocused": [
+      {
+        "files": 1,
+        "passed": 34,
+        "exit": 0
+      },
+      {
+        "files": 3,
+        "passed": 58,
+        "exit": 0
+      }
+    ],
+    "nativeWithObservation": {
+      "numTotalTests": 24,
+      "numPassedTests": 4,
+      "numFailedTests": 0,
+      "numPendingTests": 20
+    },
+    "nativeOriginalUnmodified": {
+      "numTotalTests": 24,
+      "numPassedTests": 4,
+      "numFailedTests": 0,
+      "numPendingTests": 20
+    },
+    "fourOptionEntryTimelines": [
+      {
+        "runtime": "react",
+        "firstOptionFocus": {
+          "pageMs": 1517.5,
+          "popup": {
+            "tag": "DIV",
+            "id": "pui-select-9-content",
+            "ref": "controlledContent",
+            "role": "listbox",
+            "x": 448,
+            "y": 647,
+            "height": 341,
+            "scrollTop": 0,
+            "inlinePosition": "fixed",
+            "inlineTop": "647px",
+            "inlineLeft": "448px",
+            "positionSide": "bottom",
+            "isDirectBodyChild": false,
+            "controllingListbox": "pui-select-9-content"
+          },
+          "scrollY": 0,
+          "args": [
+            {
+              "preventScroll": false
+            }
+          ]
+        },
+        "beforeBeta": {
+          "pageMs": 1570.0999999046326,
+          "scrollY": 0,
+          "beta": {
+            "tag": "DIV",
+            "id": "",
+            "ref": null,
+            "role": "option",
+            "x": 449,
+            "y": 705,
+            "height": 26,
+            "scrollTop": 0,
+            "inlinePosition": "",
+            "inlineTop": "",
+            "inlineLeft": "",
+            "positionSide": null,
+            "isDirectBodyChild": false,
+            "controllingListbox": "pui-select-9-content"
+          }
+        },
+        "afterBeta": {
+          "pageMs": 1614.0999999046326,
+          "scrollY": 0
+        },
+        "traceSHA256": "95d928ebb1971ee44b3ebe13fc237f07a1f3ec47bd112260df76dc35263eb62c",
+        "dropped": 0
+      },
+      {
+        "runtime": "vue",
+        "firstOptionFocus": {
+          "pageMs": 1383.5,
+          "popup": {
+            "tag": "DIV",
+            "id": "pui-select-9-content",
+            "ref": "controlledContent",
+            "role": "listbox",
+            "x": 448,
+            "y": 647,
+            "height": 341,
+            "scrollTop": 0,
+            "inlinePosition": "fixed",
+            "inlineTop": "647px",
+            "inlineLeft": "448px",
+            "positionSide": "bottom",
+            "isDirectBodyChild": true,
+            "controllingListbox": "pui-select-9-content"
+          },
+          "scrollY": 0,
+          "args": [
+            {
+              "preventScroll": false
+            }
+          ]
+        },
+        "beforeBeta": {
+          "pageMs": 1390.2000000476837,
+          "scrollY": 0,
+          "beta": {
+            "tag": "DIV",
+            "id": "",
+            "ref": null,
+            "role": "option",
+            "x": 449,
+            "y": 705,
+            "height": 26,
+            "scrollTop": 0,
+            "inlinePosition": "",
+            "inlineTop": "",
+            "inlineLeft": "",
+            "positionSide": null,
+            "isDirectBodyChild": false,
+            "controllingListbox": "pui-select-9-content"
+          }
+        },
+        "afterBeta": {
+          "pageMs": 1436.5,
+          "scrollY": 0
+        },
+        "traceSHA256": "d6f8e79cea8e68cdd79197308a517282367497a89dfe2783ef63b2e54e6d0178",
+        "dropped": 0
+      },
+      {
+        "runtime": "vue2",
+        "firstOptionFocus": {
+          "pageMs": 1354.4000000953674,
+          "popup": {
+            "tag": "DIV",
+            "id": "pui-select-9-content",
+            "ref": "controlledContent",
+            "role": "listbox",
+            "x": 448,
+            "y": 647,
+            "height": 341,
+            "scrollTop": 0,
+            "inlinePosition": "fixed",
+            "inlineTop": "647px",
+            "inlineLeft": "448px",
+            "positionSide": "bottom",
+            "isDirectBodyChild": true,
+            "controllingListbox": "pui-select-9-content"
+          },
+          "scrollY": 0,
+          "args": [
+            {
+              "preventScroll": false
+            }
+          ]
+        },
+        "beforeBeta": {
+          "pageMs": 1363.9000000953674,
+          "scrollY": 0,
+          "beta": {
+            "tag": "DIV",
+            "id": "",
+            "ref": null,
+            "role": "option",
+            "x": 449,
+            "y": 705,
+            "height": 26,
+            "scrollTop": 0,
+            "inlinePosition": "",
+            "inlineTop": "",
+            "inlineLeft": "",
+            "positionSide": null,
+            "isDirectBodyChild": false,
+            "controllingListbox": "pui-select-9-content"
+          }
+        },
+        "afterBeta": {
+          "pageMs": 1410,
+          "scrollY": 0
+        },
+        "traceSHA256": "82382eb6737c110bc4a9cae68fb4358a0718a08b2034a7c6773a988f7be9a4bb",
+        "dropped": 0
+      },
+      {
+        "runtime": "wc",
+        "firstOptionFocus": {
+          "pageMs": 1216.5,
+          "popup": {
+            "tag": "WC-BOOTSTRAP-2-3-2-SELECT-CONTENT",
+            "id": "pui-select-5-content",
+            "ref": "controlledContent",
+            "role": "listbox",
+            "x": 448,
+            "y": 647,
+            "height": 341,
+            "scrollTop": 0,
+            "inlinePosition": "fixed",
+            "inlineTop": "647px",
+            "inlineLeft": "448px",
+            "positionSide": "bottom",
+            "isDirectBodyChild": true,
+            "controllingListbox": "pui-select-5-content"
+          },
+          "scrollY": 0,
+          "args": [
+            {
+              "preventScroll": false
+            }
+          ]
+        },
+        "beforeBeta": {
+          "pageMs": 1229.9000000953674,
+          "scrollY": 0,
+          "beta": {
+            "tag": "WC-BOOTSTRAP-2-3-2-SELECT-ITEM",
+            "id": "",
+            "ref": null,
+            "role": "option",
+            "x": 449,
+            "y": 705,
+            "height": 26,
+            "scrollTop": 0,
+            "inlinePosition": "",
+            "inlineTop": "",
+            "inlineLeft": "",
+            "positionSide": null,
+            "isDirectBodyChild": false,
+            "controllingListbox": "pui-select-5-content"
+          }
+        },
+        "afterBeta": {
+          "pageMs": 1281.2000000476837,
+          "scrollY": 0
+        },
+        "traceSHA256": "19500f3630b6e8d85d772e1c6762371db638ac05647a4ab45f055d40ed487887",
+        "dropped": 0
+      }
+    ]
+  },
+  "signedBuiltPreview": {
+    "head": "1349df60901838e9e7a524b1ade1f89181aaabc5",
+    "tree": "df7c8a700c1a899bbb832455f8055186eed4793c",
+    "distHashes": {
+      "zh-cn/index.html": "d29f8b7a70b0c39980267bd6ff28043a008c91457748ea82c2428eed0c6af005",
+      "zh-cn/ui-libraries/shadcn/button/index.html": "cd5b84f3dd694f3f51aa61fa25a1f363ffc9429fd0ab1232b3928c385a1c7ec1",
+      "zh-cn/ui-libraries/brutalist/components/button/index.html": "836b67d9b67e1269a56d251f661c9e45de5ba9c7d230937a4b905642d2d0ee47"
+    },
+    "sourceCodeExamples": 9,
+    "renderedCodeExamples": 9,
+    "packedHeaderExit": 0,
+    "previewBrowserExit": 0,
+    "codeGrammarExit": 0,
+    "copyCommandsExit": 0,
+    "scrollChainExit": 0,
+    "tableExit": 0,
+    "accordionExit": 0,
+    "fieldExit": 0,
+    "selectExit": 0,
+    "calendarConsumerExit": 0,
+    "selector": "uses real family Popover Triggers|uses the same mobile shell|retains (shadcn|brutalist) preference owners|compact (shadcn|brutalist)|live available region|keeps Runtime Tabs outside"
+  },
+  "signedPackedCounts": {
+    "preview-browser": {
+      "numPassedTests": 15,
+      "numFailedTests": 0,
+      "numPendingTests": 9
+    },
+    "code-grammar": {
+      "numPassedTests": 3,
+      "numFailedTests": 0,
+      "numPendingTests": 23
+    },
+    "copy-commands": {
+      "numPassedTests": 1,
+      "numFailedTests": 0,
+      "numPendingTests": 14
+    },
+    "scroll-chain": {
+      "numPassedTests": 2,
+      "numFailedTests": 0,
+      "numPendingTests": 4
+    },
+    "table": {
+      "numPassedTests": 5,
+      "numFailedTests": 0,
+      "numPendingTests": 0
+    },
+    "accordion": {
+      "numPassedTests": 4,
+      "numFailedTests": 0,
+      "numPendingTests": 29
+    },
+    "field": {
+      "numPassedTests": 4,
+      "numFailedTests": 0,
+      "numPendingTests": 21
+    },
+    "select": {
+      "numPassedTests": 4,
+      "numFailedTests": 0,
+      "numPendingTests": 20
+    }
+  },
+  "calendarConsumer": {
+    "browser": "156.0.8078.79",
+    "hostClock": "2026-10-10T12:00:00Z",
+    "initial": {
+      "focused": true,
+      "scrollTop": 3008,
+      "scrollHeight": 3232,
+      "clientHeight": 224,
+      "documentScrollY": 1717,
+      "currentVisible": true,
+      "viewport": {
+        "x": 626.890625,
+        "y": 640.5,
+        "width": 144,
+        "height": 224
+      }
+    },
+    "optionCount": 101,
+    "wheel": -560,
+    "afterWheel": {
+      "focused": false,
+      "scrollTop": 2448,
+      "scrollHeight": 3232,
+      "clientHeight": 224,
+      "documentScrollY": 1717,
+      "currentVisible": false,
+      "viewport": {
+        "x": 626.890625,
+        "y": 640.5,
+        "width": 144,
+        "height": 224
+      }
+    },
+    "result": "passed",
+    "pageErrors": []
+  },
+  "imagesSHA256": {
+    "bootstrap-wc-main-timeout.png": "5300ea28d0567ab7ac953d99eaddb499eb56d8524f71f2b58930799279fb500f",
+    "bootstrap-wc-candidate-accepted.png": "a89f419c3925e6675163db1e6948afe5b4b6b8004316f93c182920b879b34d00",
+    "react-calendar-year-wheel.png": "b84c3666872a23b33bbab53c11a7275ae2b9b9bc6fda1cfd2200f18e870c81f1"
+  },
+  "focused": {
+    "files": 4,
+    "passed": 92
+  },
+  "typesParentComparison": {
+    "base": "534caf4a241f7f7ef49b7b073662ad982e938c91",
+    "candidate": "1349df60901838e9e7a524b1ade1f89181aaabc5",
+    "exactSameSearchFixtureGitBlobVerified": true,
+    "baseDocsExit": 1,
+    "candidateCheckTypesExit": 1,
+    "candidateReachedDocsAfterWorkspaceTypeCheck": true,
+    "baseDiagnostics": [
+      {
+        "path": "src/components/site-search-commands.disposal.test.ts",
+        "line": 158,
+        "column": 49,
+        "typeScriptCode": 7006,
+        "message": "Parameter 'listener' implicitly has an 'any' type."
+      },
+      {
+        "path": "src/components/site-search-commands.disposal.test.ts",
+        "line": 158,
+        "column": 29,
+        "typeScriptCode": 2339,
+        "message": "Property 'mockImplementation' does not exist on type 'never'."
+      }
+    ],
+    "candidateDiagnostics": [
+      {
+        "path": "src/components/site-search-commands.disposal.test.ts",
+        "line": 158,
+        "column": 49,
+        "typeScriptCode": 7006,
+        "message": "Parameter 'listener' implicitly has an 'any' type."
+      },
+      {
+        "path": "src/components/site-search-commands.disposal.test.ts",
+        "line": 158,
+        "column": 29,
+        "typeScriptCode": 2339,
+        "message": "Property 'mockImplementation' does not exist on type 'never'."
+      }
+    ],
+    "sameDiagnostics": true,
+    "peerRepair": {
+      "number": 1534,
+      "head": "f03c6f8a170306a2c739765e465200cdcb059d39"
+    }
+  },
+  "finfBudgetMeasurements": [
+    "PASS lucide/icons/x: 2879 / 3000 gzip bytes; overBudget=0; minified=8695 sha256=da30ebe409a83a09d2569fe2a47880a133fcbe4d554d93ea305795356c4fccdb",
+    "PASS lucide root: 637306 / 700000 gzip bytes; overBudget=0; minified=4087403 sha256=eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c",
+    "ADVISORY core root: 11378 / 7600 gzip bytes; overBudget=3778; minified=35782 sha256=0e3c868d3ef719af46085b83881b15787a94acbaf893566ceae4047ceff72b44",
+    "ADVISORY runtime root: 100312 / 78500 gzip bytes; overBudget=21812; minified=387805 sha256=30748b5a07a248a2d6dd9828ed459061f7e05817023f0d6c0c162b4b19df90a0",
+    "ADVISORY adapter-react root: 162813 / 106000 gzip bytes; overBudget=56813; minified=574817 sha256=276757557d38434f5d286dba85fc1e279d4bf80b00e28c2338628d3d5c624977",
+    "ADVISORY adapter-vue root: 161520 / 106000 gzip bytes; overBudget=55520; minified=570046 sha256=2cdd9a4ff1a8c6ca17622345984e73e8b045e32adafd4be7d1b9cfb354ebc737",
+    "ADVISORY adapter-web-component root: 191462 / 132000 gzip bytes; overBudget=59462; minified=659649 sha256=81a893000c05c3aa57a81a6a83f715a174fe2899e3427f5c191e46ba3a293168",
+    "PASS prototypes-base/button: 5274 / 6000 gzip bytes; overBudget=0; minified=18158 sha256=6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67",
+    "ADVISORY prototypes-shadcn/button: 7812 / 7000 gzip bytes; overBudget=812; minified=34533 sha256=14c8420ae3b34a6371ad380a685153b92d89bcdc23fc1ab734581eeddd7ae301",
+    "DIAGNOSTIC consumer light-dom button: 197660 gzip bytes; minified=689702 sha256=c557b4a126e71087c1d8c144df6e311b392ff054253f987aaf501af81ff6a77d",
+    "DIAGNOSTIC consumer direct-shadow button: 197663 gzip bytes; minified=689713 sha256=4591b7df4d6cb2ce2a1245c9c324e2274af786425c99a687042200ed970d69fa"
+  ],
+  "workingPatchRun": {
+    "scrollCasesExecuted": 0,
+    "failure": "Original revision guard rejected the synthetic patch identifier before browser startup",
+    "signedScrollValidationExit": 0
+  }
+}
