@@ -1,0 +1,239 @@
+{
+  "head": "bfd7b4fcde8901f8b5927ff53f74e867a6d821d3",
+  "tree": "25095f36b478ddf6b1c44897e71dcfcb7097c5db",
+  "parent": "aad84982a165a5f57889edbb404db1a1791ea969",
+  "publicBuiltPackages": 47,
+  "websitePages": 685,
+  "evidenceOnlyStaticRouteOverlaySha256": "ae44b882e227090c5a1e09b4838c5cee97d9e01618c51209cc2ed0ac5df39a3f",
+  "siteMatrix": {
+    "zh-cn": {
+      "bytes": 1862506,
+      "sha256": "b7ea1deb8b8bbf759c387f0fb93d0e71b92e6b8ffa92d642bbd74a42cabb0db5",
+      "previews": 1268
+    },
+    "en": {
+      "bytes": 1914129,
+      "sha256": "4b9fb6423c06b7463d6dbb82b77c53a385eae4df35bc93ec45383de793aa7490",
+      "previews": 1268
+    }
+  },
+  "focusedTestFiles": 28,
+  "tests": {
+    "focused": {
+      "exit": 0,
+      "passed": 493,
+      "failed": 0,
+      "filtered": 0
+    },
+    "preview-browser": {
+      "exit": 0,
+      "passed": 15,
+      "failed": 0,
+      "filtered": 9
+    },
+    "code-grammar": {
+      "exit": 0,
+      "passed": 3,
+      "failed": 0,
+      "filtered": 23
+    },
+    "copy-commands": {
+      "exit": 0,
+      "passed": 1,
+      "failed": 0,
+      "filtered": 14
+    },
+    "scroll-chain": {
+      "exit": 0,
+      "passed": 2,
+      "failed": 0,
+      "filtered": 4
+    },
+    "wc-shadow": {
+      "exit": 0,
+      "passed": 165,
+      "failed": 0,
+      "filtered": 0
+    },
+    "s4": {
+      "exit": 1,
+      "passed": 0,
+      "failed": 2,
+      "filtered": 0
+    }
+  },
+  "typecheck": 0,
+  "manifests": 0,
+  "finfBudgets": 0,
+  "frameGapsPx": {
+    "320": [5, 5, 5],
+    "390": [5, 5, 5]
+  },
+  "originalS4ReadinessMs": 60000,
+  "originalS4OuterDeadlineMs": 150000,
+  "parentObserver": {
+    "outputAsset": "site-shadcn-controls.CrYX9VlB.js",
+    "stockSha256": "53d47552a8a9c94ca314cb05d632151adb6a5da131e0f5257fe7b93706049aad",
+    "observedSha256": "2c49d634f7550d26508610db22a95392ca31cdcf51b83ef9cd0d361f8a869f18",
+    "lastObservedPageMs": 71363.20000004768,
+    "successfulDomains": 4620288,
+    "sites": [
+      {
+        "identity": 0,
+        "owner": "subscribeParts",
+        "offset": 224615,
+        "foundDomains": 12535,
+        "memberReferences": 285713
+      },
+      {
+        "identity": 3,
+        "owner": "partsOf",
+        "offset": 225473,
+        "foundDomains": 12485,
+        "memberReferences": 145671
+      },
+      {
+        "identity": 6,
+        "owner": "tryOrderedPartsOf",
+        "offset": 226415,
+        "foundDomains": 196762,
+        "memberReferences": 1334250
+      },
+      {
+        "identity": 10,
+        "owner": "isCurrentPart",
+        "offset": 228143,
+        "foundDomains": 128538,
+        "memberReferences": 257076
+      },
+      {
+        "identity": 11,
+        "owner": "resolveAncestorInstance",
+        "offset": 228578,
+        "foundDomains": 208418,
+        "memberReferences": 2358029
+      },
+      {
+        "identity": 12,
+        "owner": "descendantsOf",
+        "offset": 228984,
+        "foundDomains": 2443,
+        "memberReferences": 12704
+      },
+      {
+        "identity": 20,
+        "owner": "getOrderedClaimsOf",
+        "offset": 233356,
+        "foundDomains": 2430,
+        "memberReferences": 14190
+      },
+      {
+        "identity": 21,
+        "owner": "orderedPartsInternal",
+        "offset": 233472,
+        "foundDomains": 15123,
+        "memberReferences": 219102
+      },
+      {
+        "identity": 22,
+        "owner": "computeOrderSignature",
+        "offset": 238700,
+        "foundDomains": 4041554,
+        "memberReferences": 227586145
+      }
+    ],
+    "actualZhFailed": 1,
+    "enFiltered": 1
+  },
+  "localNative": {
+    "head": "bfd7b4fcde8901f8b5927ff53f74e867a6d821d3",
+    "parent": "aad84982a165a5f57889edbb404db1a1791ea969",
+    "chrome": "156.0.8078.79",
+    "scopedInputs": {
+      "parent": {
+        "blob": "a34ce04171d7ad8cceaca951fced74ba71fc74875d92c1ec136cb13d2e64b586",
+        "bundle": "45ce1d3473cc609572c7c0cb9c6232d7bacd0b8026b24054172396cb49607a57",
+        "inputs": 57
+      },
+      "candidate": {
+        "blob": "66c94347080ef9e466ace031c7b0f12d8ae9ec695cb083f221eafbda7abfa701",
+        "bundle": "35146eccb8244a770b5ea198eb6c4fa7e9b07ee0ed9440058930caf55db57db7",
+        "inputs": 57
+      }
+    },
+    "rows": [
+      {
+        "kind": "parent",
+        "before": [true, "left-item"],
+        "initialParentReads": [
+          "left-item",
+          "right-item",
+          "label",
+          "left-item",
+          "left-item",
+          "right-item",
+          "label",
+          "left-item",
+          "label"
+        ],
+        "after": [
+          [false, null],
+          [true, "right-item"]
+        ],
+        "retired": [false, null],
+        "stillPhysicallyNested": true
+      },
+      {
+        "kind": "candidate",
+        "before": [true, "left-item"],
+        "initialParentReads": ["label", "left-item", "label", "left-item", "label"],
+        "after": [
+          [false, null],
+          [true, "right-item"]
+        ],
+        "retired": [false, null],
+        "stillPhysicallyNested": true
+      },
+      {
+        "kind": "candidate",
+        "before": [true, "left-item"],
+        "initialParentReads": ["label", "left-item", "label", "left-item", "label"],
+        "after": [
+          [false, null],
+          [true, "right-item"]
+        ],
+        "retired": [false, null],
+        "stillPhysicallyNested": true
+      },
+      {
+        "kind": "parent",
+        "before": [true, "left-item"],
+        "initialParentReads": [
+          "left-item",
+          "right-item",
+          "label",
+          "left-item",
+          "left-item",
+          "right-item",
+          "label",
+          "left-item",
+          "label"
+        ],
+        "after": [
+          [false, null],
+          [true, "right-item"]
+        ],
+        "retired": [false, null],
+        "stillPhysicallyNested": true
+      }
+    ]
+  },
+  "executedNativeProbeSha256": "68396e9cd31e7077133a40f447865943bce54456f3d551388a7252b0081a280a",
+  "baselineFocused": {
+    "passed": 4,
+    "failed": 1,
+    "reason": "The original queries read a child in an unrelated domain.",
+    "sourceHead": "aad84982a165a5f57889edbb404db1a1791ea969",
+    "rawLogSha256": "6b492c9de63324d781c416d2d377cfdf398f87f5f29033c3c536fa1e68f76cea"
+  }
+}

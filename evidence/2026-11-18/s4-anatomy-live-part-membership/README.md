@@ -1,0 +1,11 @@
+# Anatomy live part membership
+
+Exact contributor head `bfd7b4fcde8901f8b5927ff53f74e867a6d821d3` checks the registered claim and compares its current logical root with the caller's current root. The two internal queries can determine membership and find a requested ancestor without enumerating unrelated parts. The new source fixture fails on the parent when these queries read a child under another root. It passes after the two targeted changes.
+
+Pinned Chromium ran the old and new source in ABBA order. Among 57 bundle inputs, only the Anatomy implementation differed. The paired queries under the initial root made nine logical parent reads on the old source and five on the new source. Exactly two of the old reads visited the unrelated root's child, and all four observations agree on the nearest ancestor, native reparenting outcome and retirement while the leaf DOM is still attached. This is a focused host-capability witness using live DOM parent facts.
+
+The linked parent observation separated the exact emitted caller paths during the original Chinese Matrix case. Its last delivered prefix at 71.3632 seconds contains 4,620,288 successful resolutions. The two changed callsites accounted for 208,418 ancestor resolutions and 128,538 current-part resolutions. Order signatures accounted for 4,041,554; the new change leaves that path as it is. These are counts from the parent observation, with no whole-Matrix elapsed conclusion.
+
+The exact new combination passed 493 focused tests across 28 files, 47 public package builds, the 685-page site build, workspace types, manifests, the Finf budget command, 21 selected built-site browser cases and 165 native Shadow cases. The Header gap held at 5 px across the first two frames at 320 px and 390 px. All nine Shadcn Button CodeExamples are present. Both original S4 locale cases still fail the 60-second readiness assertion with 1,268 previews per locale and the original 150-second outer deadline. The evidence-only site build exposes the existing draft Matrix routes through a tracked-and-restored frontmatter overlay.
+
+This combination is published to the contributor fork with earlier pending prerequisites. Exact source, derived bundles and receipts are bound in the JSON.
