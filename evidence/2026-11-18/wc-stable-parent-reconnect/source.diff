@@ -1,0 +1,104 @@
+diff --git a/packages/adapters/base/src/platform/instance-tree.ts b/packages/adapters/base/src/platform/instance-tree.ts
+index 29736afa2..8e45060d4 100644
+--- a/packages/adapters/base/src/platform/instance-tree.ts
++++ b/packages/adapters/base/src/platform/instance-tree.ts
+@@ -621,7 +621,11 @@ export function createInstanceTreeMarkers(
+ 
+   const PROTO_PARENT_BY_INSTANCE = new WeakMap<HTMLElement, HTMLElement>();
+ 
+-  function setProtoParent(instance: HTMLElement, parent: HTMLElement | null): void {
++  function setProtoParent(
++    instance: HTMLElement,
++    parent: HTMLElement | null,
++    options?: { retainMatchingPhysicalParent: boolean }
++  ): void {
+     if (parent) {
+       PROTO_PARENT_BY_INSTANCE.set(instance, parent);
+       writeProtoParentMark(instance, parent);
+@@ -632,6 +636,12 @@ export function createInstanceTreeMarkers(
+ 
+     const token = TOKEN_BY_INSTANCE.get(instance);
+     if (!token || OWNER_PARENT_TOKENS.has(token)) return;
++    const previous = PARENT_BY_TOKEN.get(token);
++    if (!parent && options?.retainMatchingPhysicalParent && previous) {
++      // A reconnect may clear an old projection without changing the owner.
++      const physicalParent = getProtoParent(instance);
++      if (physicalParent && TOKEN_BY_INSTANCE.get(physicalParent) === previous) return;
++    }
+     const parentRoot = parent ? (isProtoInstance(parent) ? parent : getProtoParent(parent)) : null;
+     const parentToken = parentRoot ? TOKEN_BY_INSTANCE.get(parentRoot) : undefined;
+     setLogicalParentInternal(token, parentToken ?? null);
+diff --git a/packages/adapters/web-component/src/adapt.ts b/packages/adapters/web-component/src/adapt.ts
+index 5974b905b..3ed26e896 100644
+--- a/packages/adapters/web-component/src/adapt.ts
++++ b/packages/adapters/web-component/src/adapt.ts
+@@ -440,7 +440,8 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
+         const previousParent = getLogicalParent(this._instanceToken);
+         const previousRoot = previousParent ? getLogicalRoot(previousParent) : null;
+         try {
+-          if (!isWebComponentPortaled(this)) setProtoParent(this, null);
++          if (!isWebComponentPortaled(this))
++            setProtoParent(this, null, { retainMatchingPhysicalParent: true });
+           markProtoInstance(
+             this,
+             proto as Prototype<any>,
+diff --git a/packages/adapters/web-component/test/portal-conceal.test.ts b/packages/adapters/web-component/test/portal-conceal.test.ts
+index a90230a38..7ad583e4b 100644
+--- a/packages/adapters/web-component/test/portal-conceal.test.ts
++++ b/packages/adapters/web-component/test/portal-conceal.test.ts
+@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+ import { createPortalConcealBarrier } from '../src/portal-conceal';
+ import { createWebComponentPortalMount, isWebComponentPortaled } from '../src/portal-mount';
+ import { AdaptToWebComponent, setElementProps } from '../src';
+-import { getLogicalParent } from '../src/platform/instance-tree';
++import { getLogicalParent, subscribeLogicalTriggerSurface } from '../src/platform/instance-tree';
+ import { dialogRoot, dialogContent, dialogClose } from '../../../prototypes/base/src/dialog';
+ import type { TransitionControls } from '../../../prototypes/base/src/transition';
+ 
+@@ -162,6 +162,46 @@ describe('WC portal conceal rendering barrier', () => {
+     expect(getLogicalParent(childToken)).toBe((second as any)._instanceToken);
+   });
+ 
++  it('keeps the same logical parent visible during a same-owner reconnect', () => {
++    const Parent = AdaptToWebComponent(
++      { name: 'same-owner-reconnect-parent', setup: () => undefined },
++      { shadow: false }
++    );
++    const Child = AdaptToWebComponent(
++      { name: 'same-owner-reconnect-child', setup: () => undefined },
++      { shadow: false }
++    );
++    const owner = new Parent();
++    const next = new Parent();
++    const left = document.createElement('div');
++    const right = document.createElement('div');
++    const child = new Child();
++    left.append(child);
++    owner.append(left, right);
++    document.body.append(owner, next);
++    const childToken = (child as any)._instanceToken;
++    const ownerToken = (owner as any)._instanceToken;
++    const nextToken = (next as any)._instanceToken;
++    expect(getLogicalParent(childToken)).toBe(ownerToken);
++
++    const observed: unknown[] = [];
++    const off = subscribeLogicalTriggerSurface(childToken, () => {
++      observed.push(getLogicalParent(childToken));
++    });
++    try {
++      right.append(child);
++      expect(child.parentElement).toBe(right);
++      expect((child as any)._instanceToken).toBe(childToken);
++      expect(observed).toEqual([ownerToken]);
++      expect(getLogicalParent(childToken)).toBe(ownerToken);
++
++      next.append(child);
++      expect(getLogicalParent(childToken)).toBe(nextToken);
++    } finally {
++      off();
++    }
++  });
++
+   it('refreshes portaled ancestry when a plain origin wrapper moves between owners', async () => {
+     const Parent = AdaptToWebComponent(
+       { name: 'portal-reparent-owner', setup: () => undefined },

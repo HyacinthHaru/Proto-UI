@@ -1,0 +1,86 @@
+import {createRequire} from 'node:module';
+import {createHash} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
+import {readFile,writeFile} from 'node:fs/promises';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+const [q,repo,baseRef]=process.argv.slice(2);
+const {build}=createRequire(path.join(repo,'package.json'))('esbuild');
+const {chromium}=createRequire(path.join(repo,'apps/www/package.json'))('playwright-core');
+const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
+const base=execFileSync('git',['-C',repo,'rev-parse',baseRef??'HEAD'],{encoding:'utf8'}).trim();
+const paths=['packages/adapters/base/src/platform/instance-tree.ts','packages/adapters/web-component/src/adapt.ts'];
+const prior=new Map(paths.map(p=>[p,execFileSync('git',['-C',repo,'show',base+':'+p])]));
+const entry=String.raw`
+import { AdaptToWebComponent } from './packages/adapters/web-component/src/index';
+import { bindLogicalParent, getLogicalParent, subscribeLogicalTriggerSurface } from './packages/adapters/web-component/src/platform/instance-tree';
+globalThis.nativeReconnect = function() {
+  const Parent = AdaptToWebComponent({ name:'native-reconnect-owner', setup:()=>undefined }, {shadow:false});
+  const Child = AdaptToWebComponent({ name:'native-reconnect-child', setup:()=>undefined }, {shadow:false});
+  const owner = new Parent(), next = new Parent(), child = new Child();
+  const left=document.createElement('div'), right=document.createElement('div');
+  owner.append(left,right);
+  left.append(child);
+  document.body.append(owner,next);
+  const token=child._instanceToken, same=owner._instanceToken, other=next._instanceToken;
+  const role=value=>value===same?'owner':value===other?'next':value===null?'unset':'unexpected';
+  const before=role(getLogicalParent(token));
+  const observed=[];
+  const unsubscribe=subscribeLogicalTriggerSurface(token,()=>observed.push(role(getLogicalParent(token))));
+  right.append(child);
+  const reposition={observed:observed.splice(0),parent:role(getLogicalParent(token)),sameToken:child._instanceToken===token,moved:child.parentElement===right};
+  next.append(child);
+  const newOwner={observed:observed.splice(0),parent:role(getLogicalParent(token)),sameToken:child._instanceToken===token};
+  bindLogicalParent(token,same,{authority:'owner'});
+  owner.append(child);
+  const explicit={observed:observed.splice(0),parent:role(getLogicalParent(token))};
+  unsubscribe();
+  return {before,reposition,newOwner,explicit};
+};
+`;
+const bindings={};
+for(const label of ['parent','candidate']){
+  const outfile=path.join(q,label+'.js');
+  const result=await build({
+    stdin:{contents:entry,loader:'ts',sourcefile:'native-reconnect-fixture.ts',resolveDir:repo},
+    bundle:true,format:'iife',target:'es2022',tsconfigRaw:{compilerOptions:{}},metafile:true,
+    absWorkingDir:repo,outfile,
+    plugins:[{name:'exact-reconnect-source-pair',setup(builder){
+      builder.onResolve({filter:/^@proto\.ui\/adapter-base$/},()=>({path:path.join(repo,'packages/adapters/base/src/index.ts')}));
+      if(label==='parent') builder.onLoad({filter:/\/(adapt|instance-tree)\.ts$/},args=>{
+        const rel=path.relative(repo,args.path);
+        const bytes=prior.get(rel);
+        if(bytes) return {contents:bytes,loader:'ts',resolveDir:path.dirname(args.path)};
+      });
+    }}],
+  });
+  const inputHashes={};
+  for(const p of Object.keys(result.metafile.inputs).sort()) {
+    inputHashes[p]=hash(p==='native-reconnect-fixture.ts' ? entry : label==='parent'&&prior.has(p) ? prior.get(p) : await readFile(path.join(repo,p)));
+  }
+  for(const p of paths) assert.ok(inputHashes[p],p);
+  bindings[label]={inputs:inputHashes,bundleSHA256:hash(await readFile(outfile))};
+}
+const different=Object.keys(bindings.parent.inputs).filter(p=>bindings.parent.inputs[p]!==bindings.candidate.inputs[p]);
+assert.deepEqual(different.sort(),paths.slice().sort());
+const browser=await chromium.launch({executablePath:process.env.CHROME_PATH});
+const rows=[];
+try{
+  for(const name of ['parent','candidate','candidate','parent']){
+    const page=await browser.newPage();
+    try{
+      await page.setContent('<!doctype html><html><body></body></html>');
+      await page.addScriptTag({path:path.join(q,name+'.js')});
+      rows.push({name, ...await page.evaluate(()=>globalThis.nativeReconnect())});
+    }finally {await page.close();}
+  }
+}finally{await browser.close();}
+await writeFile(path.join(q,'native-source.json'),JSON.stringify({base,chrome:browser.version(),different,rows,
+  inputCount:Object.keys(bindings.parent.inputs).length, bindings},null,2)+'\n');
+console.log(JSON.stringify(rows));
+for(const row of rows){
+ assert.equal(row.before,'owner');
+ assert.deepEqual(row.reposition,{observed:[row.name==='parent'?'unset':'owner'],parent:'owner',sameToken:true,moved:true});
+ assert.deepEqual(row.newOwner,{observed:['unset'],parent:'next',sameToken:true});
+ assert.deepEqual(row.explicit,{observed:['owner'],parent:'owner'});
+}
