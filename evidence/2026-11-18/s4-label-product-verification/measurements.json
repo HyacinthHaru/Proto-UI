@@ -1,0 +1,350 @@
+{
+  "productSource": {
+    "head": "35d551636c86e53011da361d5e6a670c24507c24",
+    "parent": "2fe4f58a721ffe57e1483cc0334c82735a8638fe",
+    "tree": "596f9845842cb535a2e60eded167c68a0256d1b1",
+    "files": {
+      "packages/modules/control-label/src/web.ts": "d203f9590e12cc99e2531d5c0623f9cebca1a33a9541bc25fc3e1b70e8f52021",
+      "packages/modules/control-label/test/web-lifecycle.test.ts": "e407aca2de69181d8ecb5f23c833027743682b50a9655f0e9f3ee82daa0f8346"
+    },
+    "signature": "G"
+  },
+  "testOnlyFollowup": {
+    "head": "83c7dfc3277041dfeaf21a7db69afff51afb0ec6",
+    "parent": "35d551636c86e53011da361d5e6a670c24507c24",
+    "tree": "6a63dff5e8c939e8b7fd6ce05c98de8568e608fe",
+    "file": "apps/www/src/content/docs/zh-cn/demo-control-label.browser.test.ts",
+    "sha256": "aff1f64a5ab2fb0362538c1566a4b6403661e4ae6db021a10d6107e27d2c05a7",
+    "signature": "G",
+    "scope": "Test-only. Product 35d artifacts unchanged by this commit."
+  },
+  "cases": {
+    "label": {
+      "pass": 0,
+      "fail": 0,
+      "filtered": 12,
+      "sha256": "b8db53cbf3397d9eafea39760363a7f72a0a184bea63132cc6a44dac8bbc4651",
+      "results": [
+        {
+          "Independent Label public consumer journeys 'base' 'wc' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'base' 'react' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'base' 'vue' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'base' 'vue2' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'shadcn' 'wc' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'shadcn' 'react' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'shadcn' 'vue' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'shadcn' 'vue2' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'brutalist' 'wc' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'brutalist' 'react' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'brutalist' 'vue' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'brutalist' 'vue2' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          }
+        }
+      ]
+    },
+    "label-actual": {
+      "pass": 0,
+      "fail": 4,
+      "filtered": 8,
+      "sha256": "f1564ae20f9bac0d282e9b608249e8663f276ae4ff1fd5b7a36e55c97c194680",
+      "results": [
+        {
+          "Independent Label public consumer journeys 'base' 'wc' names five real target types and preserves their operation owners": {
+            "status": "failed",
+            "message": "Error: Matcher did not succeed in 1000ms"
+          },
+          "Independent Label public consumer journeys 'base' 'react' names five real target types and preserves their operation owners": {
+            "status": "failed",
+            "message": "Error: Matcher did not succeed in 1000ms"
+          },
+          "Independent Label public consumer journeys 'base' 'vue' names five real target types and preserves their operation owners": {
+            "status": "failed",
+            "message": "Error: Matcher did not succeed in 1000ms"
+          },
+          "Independent Label public consumer journeys 'base' 'vue2' names five real target types and preserves their operation owners": {
+            "status": "failed",
+            "message": "Error: Matcher did not succeed in 1000ms"
+          },
+          "Independent Label public consumer journeys 'shadcn' 'wc' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'shadcn' 'react' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'shadcn' 'vue' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'shadcn' 'vue2' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'brutalist' 'wc' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'brutalist' 'react' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'brutalist' 'vue' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'brutalist' 'vue2' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          }
+        }
+      ]
+    },
+    "label-observer-control": {
+      "pass": 0,
+      "fail": 4,
+      "filtered": 8,
+      "sha256": "05814dcdc4540dc6f7fe86d929b3a809ba16e1f1573f28095b4b9a0e2cf8e62f",
+      "results": [
+        {
+          "Independent Label public consumer journeys 'base' 'wc' names five real target types and preserves their operation owners": {
+            "status": "failed",
+            "message": "Error: Matcher did not succeed in 1000ms"
+          },
+          "Independent Label public consumer journeys 'base' 'react' names five real target types and preserves their operation owners": {
+            "status": "failed",
+            "message": "Error: Matcher did not succeed in 1000ms"
+          },
+          "Independent Label public consumer journeys 'base' 'vue' names five real target types and preserves their operation owners": {
+            "status": "failed",
+            "message": "Error: Matcher did not succeed in 1000ms"
+          },
+          "Independent Label public consumer journeys 'base' 'vue2' names five real target types and preserves their operation owners": {
+            "status": "failed",
+            "message": "Error: Matcher did not succeed in 1000ms"
+          },
+          "Independent Label public consumer journeys 'shadcn' 'wc' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'shadcn' 'react' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'shadcn' 'vue' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'shadcn' 'vue2' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'brutalist' 'wc' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'brutalist' 'react' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'brutalist' 'vue' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'brutalist' 'vue2' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          }
+        }
+      ]
+    },
+    "label-platform-keys": {
+      "pass": 4,
+      "fail": 0,
+      "filtered": 8,
+      "sha256": "bfa96652a721a85facd76d28c24a66f6635f2e6d4435d4d46114ae1344b74e42",
+      "results": [
+        {
+          "Independent Label public consumer journeys 'base' 'wc' names five real target types and preserves their operation owners": {
+            "status": "passed",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'base' 'react' names five real target types and preserves their operation owners": {
+            "status": "passed",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'base' 'vue' names five real target types and preserves their operation owners": {
+            "status": "passed",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'base' 'vue2' names five real target types and preserves their operation owners": {
+            "status": "passed",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'shadcn' 'wc' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'shadcn' 'react' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'shadcn' 'vue' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'shadcn' 'vue2' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'brutalist' 'wc' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'brutalist' 'react' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'brutalist' 'vue' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'brutalist' 'vue2' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          }
+        }
+      ]
+    },
+    "label-platform-keys-observer-control": {
+      "pass": 4,
+      "fail": 0,
+      "filtered": 8,
+      "sha256": "7f180ec523402f6aa23d45cc1757c3101f08436c51f39412104f88616617a141",
+      "results": [
+        {
+          "Independent Label public consumer journeys 'base' 'wc' names five real target types and preserves their operation owners": {
+            "status": "passed",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'base' 'react' names five real target types and preserves their operation owners": {
+            "status": "passed",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'base' 'vue' names five real target types and preserves their operation owners": {
+            "status": "passed",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'base' 'vue2' names five real target types and preserves their operation owners": {
+            "status": "passed",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'shadcn' 'wc' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'shadcn' 'react' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'shadcn' 'vue' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'shadcn' 'vue2' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'brutalist' 'wc' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'brutalist' 'react' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'brutalist' 'vue' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          },
+          "Independent Label public consumer journeys 'brutalist' 'vue2' names five real target types and preserves their operation owners": {
+            "status": "skipped",
+            "message": null
+          }
+        }
+      ]
+    },
+    "s4": {
+      "pass": 0,
+      "fail": 1,
+      "filtered": 1,
+      "sha256": "d94510ec5445d498fd660960e9777f22c99ebef75fa1ca4d3a35db671ad37dca",
+      "results": [
+        {
+          "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance": {
+            "status": "failed",
+            "message": "page.waitForFunction: Timeout 60000ms exceeded."
+          },
+          "S4 complete public Dialog settings en: native Light/split/mixed acceptance": {
+            "status": "skipped",
+            "message": null
+          }
+        }
+      ]
+    }
+  },
+  "assetControl": {
+    "asset": "site-shadcn-controls.DdRFjWo8.js",
+    "candidateSha256": "a0a0216b42a50ef3b79f21a52487a910bbb3a97d5c0db2c46f6e7631520be09a",
+    "controlSha256": "95316d19111fa08e0465b41ebcfd7b225fe691273bf10e5c31ce37db5f71caee",
+    "scope": "Only compiled observer handler is replaced with the previous implementation within the existing signed candidate site. Not a rebuild of the parent head."
+  },
+  "matrix": {
+    "zh-cn": {
+      "bytes": 1862472,
+      "sha256": "e64951ac6ebe62cd9f32b7b12440ba43b2d4507540069787218b211006f5e36a",
+      "previews": 1268
+    },
+    "en": {
+      "bytes": 1914125,
+      "sha256": "1cdc0e43aec03a0a13a53a80e9f09a1c64f4601abb55a581f8da4007a537fe75",
+      "previews": 1268
+    }
+  },
+  "scope": "Exact signed product combination builds 47 packages/685 pages, workspace types/manifests/budget checks pass. Both Matrix documents 1268 roots. S4 report is actual Chinese 60s readiness timeout; English filtered. The test-only key follow-up does not require new product JS."
+}

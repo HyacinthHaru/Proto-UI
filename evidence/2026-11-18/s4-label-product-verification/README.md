@@ -1,0 +1,9 @@
+# Control Label product verification
+
+The exact product source is `35d551636c86e53011da361d5e6a670c24507c24`, with 47 package builds, a 685-page Website, workspace types, manifest and budget checks passing. All 1,268 roots per Matrix locale remain in the actual compiled pages. The original Chinese test still fails its unchanged 60-second readiness gate before Dialog, with the 150-second case deadline retained. English is filtered.
+
+A first Label case selector excluded all parameterized cases because their names quote the family and runtime. That command ran zero tests. With the correct selector, all four selected Base runtime cases reached the input action and failed to append text in the expected order. Changing only the observer handler back to its prior implementation in the same built site reproduced all four failures at the same input assertion.
+
+On the pinned macOS Chrome, the original End key left the input caret at the front. The test-only follow-up `83c7dfc3277041dfeaf21a7db69afff51afb0ec6` uses native Apple editing commands for line end and document end. Other platforms keep the same keys. The original naming, ownership, focus, value, controlled/passive and selection assertions are unchanged. The four real public journeys pass with both the candidate observer and the observer-only counterfactual, using the same compiled site. The eight other family cases are filtered in both runs. The locally patched asset was byte-restored.
+
+The scoped observer CPU motivation and deterministic native mutation results are in the [census and observer packet](https://github.com/HyacinthHaru/Proto-UI/tree/361239937c8c0f6dc2e2a62259d3f566cdacfd9a/evidence/2026-11-18/s4-current-startup-and-label-observer). Neither the standalone fixture nor these scoped cases constitute a full S4 pass.

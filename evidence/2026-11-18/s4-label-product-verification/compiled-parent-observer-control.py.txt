@@ -1,0 +1,20 @@
+from pathlib import Path
+import hashlib,json,subprocess
+q=Path('../s4-control-label-scope-mutations').resolve()
+asset,=Path('apps/www/dist/_astro').glob('site-shadcn-controls.*.js')
+raw=asset.read_bytes();s=raw.decode()
+start='const c=new Set,l=new s(u=>{const d=new Set,f=new Set;'
+end='});l.observe(t,{childList:!0,subtree:!0,attributes:!0,attributeFilter:["aria-label","aria-labelledby"]})'
+i=s.index(start);j=s.index(end,i)
+previous='const c=new Set,l=new s(u=>{for(const d of[...c])u.some(p=>p.type==="attributes"?p.target===d.anchor:[...p.addedNodes,...p.removedNodes].some(m=>m===d.anchor||m.contains(d.anchor)))&&c.has(d)&&d.notify()'
+patched=s[:i]+previous+s[j:]
+assert patched.count('m.contains(d.anchor)')==1
+sha=lambda b:hashlib.sha256(b).hexdigest()
+(q/'platform-keys-baseline-observer-binding.json').write_text(json.dumps({'asset':asset.name,'candidateSha256':sha(raw),'controlSha256':sha(patched.encode()),'scope':'Only compiled observer handler is replaced with the previous implementation within the existing signed candidate site. Not a rebuild of the parent head.'},indent=2)+'\n')
+asset.write_text(patched)
+p=q/'verify-label-platform-keys.sh';s=p.read_text();assert s.count('run label-platform-keys ')==1
+config=q/'verify-label-platform-keys-observer-control.sh';config.write_text(s.replace('run label-platform-keys ','run label-platform-keys-observer-control '))
+try:
+ subprocess.run(['bash',str(config)],check=True)
+finally:asset.write_bytes(raw)
+assert sha(asset.read_bytes())==sha(raw)
