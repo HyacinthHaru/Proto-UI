@@ -1,0 +1,1207 @@
+{
+  "observedRed": {
+    "passed": 13,
+    "failed": 1,
+    "filtered": 0,
+    "files": 1,
+    "failures": [
+      "C-EVENT-0003-E: retargeted physical root events are not portal fallbacks routes descendant contextmenu only to its own root"
+    ]
+  },
+  "integrated": {
+    "headTree": [
+      "81f32ee8c3f6cac5e7735d1bede05d925c5c7aad",
+      "246852d0791cc1a66280202b5ffca52da92f5fa3"
+    ],
+    "environment": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+    "changedInputs": {
+      "packages/adapters/base/src/events/web-event-router.ts": "fe63fb8c31b30a695f270ae3b850c7f82b0b3b263b6188835380a1ec6703bfb1",
+      "packages/adapters/base/test/shadow-retarget-routing.test.ts": "7b957d986d4a8e59e359c13bcea2c8c4f5379e417f9b4d0fa8b92536abc8784e"
+    },
+    "focused": {
+      "passed": 67,
+      "failed": 0,
+      "filtered": 0,
+      "files": 13,
+      "failures": []
+    },
+    "nativeSource": {
+      "base": "7a376034698b5356bbc5f15ba035c4b33a21e938",
+      "chrome": "156.0.8078.79",
+      "different": ["packages/adapters/base/src/events/web-event-router.ts"],
+      "rows": [
+        {
+          "variant": "parent",
+          "target": "child",
+          "events": [
+            {
+              "label": "child",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            },
+            {
+              "label": "outer",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            }
+          ]
+        },
+        {
+          "variant": "parent",
+          "target": "outer-target",
+          "events": [
+            {
+              "label": "outer",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            }
+          ]
+        },
+        {
+          "variant": "parent",
+          "target": "portal",
+          "events": [
+            {
+              "label": "child",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            }
+          ]
+        },
+        {
+          "variant": "candidate",
+          "target": "child",
+          "events": [
+            {
+              "label": "child",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            }
+          ]
+        },
+        {
+          "variant": "candidate",
+          "target": "outer-target",
+          "events": [
+            {
+              "label": "outer",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            }
+          ]
+        },
+        {
+          "variant": "candidate",
+          "target": "portal",
+          "events": [
+            {
+              "label": "child",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            }
+          ]
+        },
+        {
+          "variant": "candidate",
+          "target": "child",
+          "events": [
+            {
+              "label": "child",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            }
+          ]
+        },
+        {
+          "variant": "candidate",
+          "target": "outer-target",
+          "events": [
+            {
+              "label": "outer",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            }
+          ]
+        },
+        {
+          "variant": "candidate",
+          "target": "portal",
+          "events": [
+            {
+              "label": "child",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            }
+          ]
+        },
+        {
+          "variant": "parent",
+          "target": "child",
+          "events": [
+            {
+              "label": "child",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            },
+            {
+              "label": "outer",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            }
+          ]
+        },
+        {
+          "variant": "parent",
+          "target": "outer-target",
+          "events": [
+            {
+              "label": "outer",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            }
+          ]
+        },
+        {
+          "variant": "parent",
+          "target": "portal",
+          "events": [
+            {
+              "label": "child",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            }
+          ]
+        }
+      ],
+      "bindings": {
+        "parent": {
+          "inputs": {
+            "native-context-owner-fixture.ts": "b5fbf4bb64e43573464a231be27a1b119c4edd0280c2491ab6c366c14aaea1a2",
+            "packages/adapters/base/src/events/pointer-contact.ts": "8979916b5ca021cf4770168292681c99b0816e46b2cd47caa4bd361543bc0f09",
+            "packages/adapters/base/src/events/pointer-sample.ts": "940874ff556c42ff318fb3f72879634692b8cf3ba2d06388b7c6610d390afccb",
+            "packages/adapters/base/src/events/web-event-router.ts": "f51df525e43ac92bc6c5faa040ca45fe22ac7314608ffb4ddcb2da47897066a1",
+            "packages/adapters/base/src/gestures/web-move-click-arbitration.ts": "8ca6d37f7a60c5eb8909b3026c12ea60eec93b1b642200845443bac7746bd8f7",
+            "packages/adapters/base/src/platform/instance-tree.ts": "6dfa1b70bafae00bc016e89e6a8235c82a420d9d9920d93618db4ff9bd600614"
+          },
+          "bundleSHA256": "1db0b5eb2057d5c4ac1086e181c8ac50661eaa96d76f699b4f8b273f4e9b95cb"
+        },
+        "candidate": {
+          "inputs": {
+            "native-context-owner-fixture.ts": "b5fbf4bb64e43573464a231be27a1b119c4edd0280c2491ab6c366c14aaea1a2",
+            "packages/adapters/base/src/events/pointer-contact.ts": "8979916b5ca021cf4770168292681c99b0816e46b2cd47caa4bd361543bc0f09",
+            "packages/adapters/base/src/events/pointer-sample.ts": "940874ff556c42ff318fb3f72879634692b8cf3ba2d06388b7c6610d390afccb",
+            "packages/adapters/base/src/events/web-event-router.ts": "fe63fb8c31b30a695f270ae3b850c7f82b0b3b263b6188835380a1ec6703bfb1",
+            "packages/adapters/base/src/gestures/web-move-click-arbitration.ts": "8ca6d37f7a60c5eb8909b3026c12ea60eec93b1b642200845443bac7746bd8f7",
+            "packages/adapters/base/src/platform/instance-tree.ts": "6dfa1b70bafae00bc016e89e6a8235c82a420d9d9920d93618db4ff9bd600614"
+          },
+          "bundleSHA256": "b9068ef25b18bfdafee9db034373891a4641f2cba28fbee5ffe58b8025278e65"
+        }
+      },
+      "inputCount": 6
+    },
+    "productBrowser": {
+      "passed": 15,
+      "failed": 0,
+      "filtered": 9,
+      "files": 3,
+      "failures": []
+    },
+    "productPreview": {
+      "head": "81f32ee8c3f6cac5e7735d1bede05d925c5c7aad",
+      "tree": "246852d0791cc1a66280202b5ffca52da92f5fa3",
+      "distHashes": {
+        "zh-cn/index.html": "e2765da2362db14cb091186c80384f0a749e576df706744accaf6594eece8f9c",
+        "zh-cn/ui-libraries/shadcn/button/index.html": "1ac621afd43ac177fbf446df21acf677fab30a71eac7d872685968acb121a211",
+        "zh-cn/ui-libraries/brutalist/components/button/index.html": "c2af8810c22e847b7cba1a7e160fde953b1725a75e0ac63f78f81a9cb90b061d"
+      },
+      "sourceCodeExamples": 9,
+      "renderedCodeExamples": 9,
+      "packedHeaderExit": 0,
+      "previewBrowserExit": 0,
+      "selector": "uses real family Popover Triggers|uses the same mobile shell|retains (shadcn|brutalist) preference owners|compact (shadcn|brutalist)|live available region|keeps Runtime Tabs outside"
+    },
+    "header": {
+      "head": "81f32ee8c3f6cac5e7735d1bede05d925c5c7aad",
+      "browser": "156.0.8078.79",
+      "scope": "First animation frame control on the exact static Astro preview. Geometry reads can force layout.",
+      "results": [
+        {
+          "width": 320,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1595.5,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1752,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1780.7000000476837,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        },
+        {
+          "width": 390,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1523.2999999523163,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1677.7999999523163,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1696,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        }
+      ]
+    },
+    "previews": {
+      "zh-cn": {
+        "bytes": 1862491,
+        "sha256": "0a732ff2a408dffd1bdcf777c05bca74909fd043ab2bc37cfa6a351190a3ae45",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914133,
+        "sha256": "fd6be29524c0220da669bf5012734fdc3be65f056a2144ed871f9f7c655c0822",
+        "previews": 1268
+      }
+    },
+    "packageBuilds": 47,
+    "sitePages": 685,
+    "statuses": {
+      "production-build": 0,
+      "types": 0,
+      "manifests": 0,
+      "budgets": 0,
+      "preview-browser": 0,
+      "packed-header-frames": 0,
+      "native-source": 0
+    }
+  },
+  "standalone": {
+    "headTree": [
+      "4ea0c3ad6d9dc7bc7d7cb05b4da90b03eba00a0b",
+      "425f9a0d3bb18efdd9dcdd3b55df592e8f638b90"
+    ],
+    "environment": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+    "changedInputs": {
+      "packages/adapters/base/src/events/web-event-router.ts": "fe63fb8c31b30a695f270ae3b850c7f82b0b3b263b6188835380a1ec6703bfb1",
+      "packages/adapters/base/test/shadow-retarget-routing.test.ts": "7b957d986d4a8e59e359c13bcea2c8c4f5379e417f9b4d0fa8b92536abc8784e"
+    },
+    "focused": {
+      "passed": 67,
+      "failed": 0,
+      "filtered": 0,
+      "files": 13,
+      "failures": []
+    },
+    "nativeSource": {
+      "base": "0f0955a9d624e0ef5e250f56a0eaa0fc52bbfb53",
+      "chrome": "156.0.8078.79",
+      "different": ["packages/adapters/base/src/events/web-event-router.ts"],
+      "rows": [
+        {
+          "variant": "parent",
+          "target": "child",
+          "events": [
+            {
+              "label": "child",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            },
+            {
+              "label": "outer",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            }
+          ]
+        },
+        {
+          "variant": "parent",
+          "target": "outer-target",
+          "events": [
+            {
+              "label": "outer",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            }
+          ]
+        },
+        {
+          "variant": "parent",
+          "target": "portal",
+          "events": [
+            {
+              "label": "child",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            }
+          ]
+        },
+        {
+          "variant": "candidate",
+          "target": "child",
+          "events": [
+            {
+              "label": "child",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            }
+          ]
+        },
+        {
+          "variant": "candidate",
+          "target": "outer-target",
+          "events": [
+            {
+              "label": "outer",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            }
+          ]
+        },
+        {
+          "variant": "candidate",
+          "target": "portal",
+          "events": [
+            {
+              "label": "child",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            }
+          ]
+        },
+        {
+          "variant": "candidate",
+          "target": "child",
+          "events": [
+            {
+              "label": "child",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            }
+          ]
+        },
+        {
+          "variant": "candidate",
+          "target": "outer-target",
+          "events": [
+            {
+              "label": "outer",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            }
+          ]
+        },
+        {
+          "variant": "candidate",
+          "target": "portal",
+          "events": [
+            {
+              "label": "child",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            }
+          ]
+        },
+        {
+          "variant": "parent",
+          "target": "child",
+          "events": [
+            {
+              "label": "child",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            },
+            {
+              "label": "outer",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            }
+          ]
+        },
+        {
+          "variant": "parent",
+          "target": "outer-target",
+          "events": [
+            {
+              "label": "outer",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            }
+          ]
+        },
+        {
+          "variant": "parent",
+          "target": "portal",
+          "events": [
+            {
+              "label": "child",
+              "trusted": true,
+              "button": 2,
+              "type": "contextmenu"
+            }
+          ]
+        }
+      ],
+      "bindings": {
+        "parent": {
+          "inputs": {
+            "native-context-owner-fixture.ts": "b5fbf4bb64e43573464a231be27a1b119c4edd0280c2491ab6c366c14aaea1a2",
+            "packages/adapters/base/src/events/pointer-contact.ts": "8979916b5ca021cf4770168292681c99b0816e46b2cd47caa4bd361543bc0f09",
+            "packages/adapters/base/src/events/pointer-sample.ts": "940874ff556c42ff318fb3f72879634692b8cf3ba2d06388b7c6610d390afccb",
+            "packages/adapters/base/src/events/web-event-router.ts": "f51df525e43ac92bc6c5faa040ca45fe22ac7314608ffb4ddcb2da47897066a1",
+            "packages/adapters/base/src/gestures/web-move-click-arbitration.ts": "8ca6d37f7a60c5eb8909b3026c12ea60eec93b1b642200845443bac7746bd8f7",
+            "packages/adapters/base/src/platform/instance-tree.ts": "6176f121214f9f4dd516e87942c12919458fdfa599bd7c4de5ee32c7de0c654b"
+          },
+          "bundleSHA256": "e4dfb411b19b415a55170b80ea12c230077445885b049b9b4fc69de213303bc0"
+        },
+        "candidate": {
+          "inputs": {
+            "native-context-owner-fixture.ts": "b5fbf4bb64e43573464a231be27a1b119c4edd0280c2491ab6c366c14aaea1a2",
+            "packages/adapters/base/src/events/pointer-contact.ts": "8979916b5ca021cf4770168292681c99b0816e46b2cd47caa4bd361543bc0f09",
+            "packages/adapters/base/src/events/pointer-sample.ts": "940874ff556c42ff318fb3f72879634692b8cf3ba2d06388b7c6610d390afccb",
+            "packages/adapters/base/src/events/web-event-router.ts": "fe63fb8c31b30a695f270ae3b850c7f82b0b3b263b6188835380a1ec6703bfb1",
+            "packages/adapters/base/src/gestures/web-move-click-arbitration.ts": "8ca6d37f7a60c5eb8909b3026c12ea60eec93b1b642200845443bac7746bd8f7",
+            "packages/adapters/base/src/platform/instance-tree.ts": "6176f121214f9f4dd516e87942c12919458fdfa599bd7c4de5ee32c7de0c654b"
+          },
+          "bundleSHA256": "368f35acc0266969541b1ac3be1d2a57e90d4ac642c419b463ccc762af93ce94"
+        }
+      },
+      "inputCount": 6
+    },
+    "productBrowser": {
+      "passed": 15,
+      "failed": 0,
+      "filtered": 9,
+      "files": 3,
+      "failures": []
+    },
+    "productPreview": {
+      "head": "4ea0c3ad6d9dc7bc7d7cb05b4da90b03eba00a0b",
+      "tree": "425f9a0d3bb18efdd9dcdd3b55df592e8f638b90",
+      "distHashes": {
+        "zh-cn/index.html": "5e12fc234798a3d1e9bb91697aed392e09288544f232919c156feb2fc908ff41",
+        "zh-cn/ui-libraries/shadcn/button/index.html": "4093cf8c8fdf96c2004de522e7bac3aa6d42cebc60a723df8f9687ba7f4d3512",
+        "zh-cn/ui-libraries/brutalist/components/button/index.html": "d0a9ef1ae4e27e8623bc26104255f5c1b1b43c90f0fe6860a2830db4c3988b5e"
+      },
+      "sourceCodeExamples": 9,
+      "renderedCodeExamples": 9,
+      "packedHeaderExit": 0,
+      "previewBrowserExit": 0,
+      "selector": "uses real family Popover Triggers|uses the same mobile shell|retains (shadcn|brutalist) preference owners|compact (shadcn|brutalist)|live available region|keeps Runtime Tabs outside"
+    },
+    "header": {
+      "head": "4ea0c3ad6d9dc7bc7d7cb05b4da90b03eba00a0b",
+      "browser": "156.0.8078.79",
+      "scope": "First animation frame control on the exact static Astro preview. Geometry reads can force layout.",
+      "results": [
+        {
+          "width": 320,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1594.8999998569489,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1725.2999999523163,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1748.5999999046326,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        },
+        {
+          "width": 390,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1567.5,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1695.5,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1715.2000000476837,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        }
+      ]
+    },
+    "previews": {
+      "zh-cn": {
+        "bytes": 1862372,
+        "sha256": "3bd2aca1add03a333b2ef90efd237866986350ae8956b194780d73a7fe81a6a9",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914036,
+        "sha256": "c4cfbfa8a8b79b6be331ecb09a14ccf98bbd0bfdef0732f20c94f0f9c93c0f9b",
+        "previews": 1268
+      }
+    },
+    "packageBuilds": 47,
+    "sitePages": 685,
+    "statuses": {
+      "production-build": 0,
+      "types": 0,
+      "manifests": 0,
+      "budgets": 0,
+      "preview-browser": 0,
+      "packed-header-frames": 0,
+      "native-source": 0
+    },
+    "budgetComparison": {
+      "baselineHeadTree": [
+        "ad63be6ec768e8aaab9c42ffe85fba2e81a6d108",
+        "8661880213e970df0555626e08045ef9a15e4891"
+      ],
+      "baselinePackageInputsEqual": true,
+      "table": {
+        "lucide/icons/x": {
+          "before": {
+            "status": "PASS",
+            "gzip": 2879,
+            "ceiling": 3000,
+            "overBudget": 0,
+            "minified": 8695,
+            "sha256": "02838c5b1d4db7b0d62eab9b1d502848e268dfea098798ee87665caa966772fb"
+          },
+          "after": {
+            "status": "PASS",
+            "gzip": 2879,
+            "ceiling": 3000,
+            "overBudget": 0,
+            "minified": 8695,
+            "sha256": "02838c5b1d4db7b0d62eab9b1d502848e268dfea098798ee87665caa966772fb"
+          },
+          "gzipDelta": 0
+        },
+        "lucide root": {
+          "before": {
+            "status": "PASS",
+            "gzip": 637306,
+            "ceiling": 700000,
+            "overBudget": 0,
+            "minified": 4087403,
+            "sha256": "eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c"
+          },
+          "after": {
+            "status": "PASS",
+            "gzip": 637306,
+            "ceiling": 700000,
+            "overBudget": 0,
+            "minified": 4087403,
+            "sha256": "eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c"
+          },
+          "gzipDelta": 0
+        },
+        "core root": {
+          "before": {
+            "status": "ADVISORY",
+            "gzip": 11373,
+            "ceiling": 7600,
+            "overBudget": 3773,
+            "minified": 35723,
+            "sha256": "bb0468537baccea449d0260ae56ac758902eb989dae84f699b6c27626212d913"
+          },
+          "after": {
+            "status": "ADVISORY",
+            "gzip": 11373,
+            "ceiling": 7600,
+            "overBudget": 3773,
+            "minified": 35723,
+            "sha256": "bb0468537baccea449d0260ae56ac758902eb989dae84f699b6c27626212d913"
+          },
+          "gzipDelta": 0
+        },
+        "runtime root": {
+          "before": {
+            "status": "ADVISORY",
+            "gzip": 100015,
+            "ceiling": 78500,
+            "overBudget": 21515,
+            "minified": 386804,
+            "sha256": "11347a17a9c7eda3575d4bf30a0a2954e770f801b4264c977ae838d6755f40e8"
+          },
+          "after": {
+            "status": "ADVISORY",
+            "gzip": 100015,
+            "ceiling": 78500,
+            "overBudget": 21515,
+            "minified": 386804,
+            "sha256": "11347a17a9c7eda3575d4bf30a0a2954e770f801b4264c977ae838d6755f40e8"
+          },
+          "gzipDelta": 0
+        },
+        "adapter-react root": {
+          "before": {
+            "status": "ADVISORY",
+            "gzip": 162083,
+            "ceiling": 106000,
+            "overBudget": 56083,
+            "minified": 572391,
+            "sha256": "9bcf583f0ac13f7143cc3d8668d1e882cdce5d227a37372b25db03ae372084f7"
+          },
+          "after": {
+            "status": "ADVISORY",
+            "gzip": 162091,
+            "ceiling": 106000,
+            "overBudget": 56091,
+            "minified": 572427,
+            "sha256": "e7dfa001b83c257f57628ae4d7290985252be43e63004fd8aaa1ac2deafe6c42"
+          },
+          "gzipDelta": 8
+        },
+        "adapter-vue root": {
+          "before": {
+            "status": "ADVISORY",
+            "gzip": 160763,
+            "ceiling": 106000,
+            "overBudget": 54763,
+            "minified": 567663,
+            "sha256": "ab86703c9c1fe57210b94967c163a39b9d323192c27613b4e19d4789be160298"
+          },
+          "after": {
+            "status": "ADVISORY",
+            "gzip": 160771,
+            "ceiling": 106000,
+            "overBudget": 54771,
+            "minified": 567699,
+            "sha256": "a0fa9c089fe30f1ffdac3a2996bf820569c9d1c5166214abfeda2bf0aa451707"
+          },
+          "gzipDelta": 8
+        },
+        "adapter-web-component root": {
+          "before": {
+            "status": "ADVISORY",
+            "gzip": 190375,
+            "ceiling": 132000,
+            "overBudget": 58375,
+            "minified": 656550,
+            "sha256": "d67b26dbeb71821f54b65dca1f0ade95eca22be1be793e79ec6790b47507732e"
+          },
+          "after": {
+            "status": "ADVISORY",
+            "gzip": 190379,
+            "ceiling": 132000,
+            "overBudget": 58379,
+            "minified": 656585,
+            "sha256": "a353312dbacbde07ee290629e06036639d039ceae7d2f469ade8ca01a1eaf748"
+          },
+          "gzipDelta": 4
+        },
+        "prototypes-base/button": {
+          "before": {
+            "status": "PASS",
+            "gzip": 5274,
+            "ceiling": 6000,
+            "overBudget": 0,
+            "minified": 18158,
+            "sha256": "6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67"
+          },
+          "after": {
+            "status": "PASS",
+            "gzip": 5274,
+            "ceiling": 6000,
+            "overBudget": 0,
+            "minified": 18158,
+            "sha256": "6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67"
+          },
+          "gzipDelta": 0
+        },
+        "prototypes-shadcn/button": {
+          "before": {
+            "status": "ADVISORY",
+            "gzip": 7803,
+            "ceiling": 7000,
+            "overBudget": 803,
+            "minified": 34485,
+            "sha256": "60b4ff9277e59fba01c34162ec9418282ce82c6b43e24f223a05c9e1df19db57"
+          },
+          "after": {
+            "status": "ADVISORY",
+            "gzip": 7803,
+            "ceiling": 7000,
+            "overBudget": 803,
+            "minified": 34485,
+            "sha256": "60b4ff9277e59fba01c34162ec9418282ce82c6b43e24f223a05c9e1df19db57"
+          },
+          "gzipDelta": 0
+        }
+      }
+    }
+  },
+  "nativeOrderControl": {
+    "chrome": "156.0.8078.79",
+    "bundleSHA256": "2f32ec91b8656f1eed91f727aad8820581ea5e814b8f15ffc9e08b55cb710421",
+    "inputs": {
+      "native-order-control.ts": "f70a98cd21f90337ad31c33c7dd82c8979658bb436124263681c5e6f994635ed",
+      "packages/adapters/base/src/events/pointer-contact.ts": "8979916b5ca021cf4770168292681c99b0816e46b2cd47caa4bd361543bc0f09",
+      "packages/adapters/base/src/events/pointer-sample.ts": "940874ff556c42ff318fb3f72879634692b8cf3ba2d06388b7c6610d390afccb",
+      "packages/adapters/base/src/events/web-event-router.ts": "fe63fb8c31b30a695f270ae3b850c7f82b0b3b263b6188835380a1ec6703bfb1",
+      "packages/adapters/base/src/gestures/web-move-click-arbitration.ts": "8ca6d37f7a60c5eb8909b3026c12ea60eec93b1b642200845443bac7746bd8f7",
+      "packages/adapters/base/src/platform/instance-tree.ts": "6dfa1b70bafae00bc016e89e6a8235c82a420d9d9920d93618db4ff9bd600614"
+    },
+    "rows": [
+      {
+        "target": "physical",
+        "deferred": false,
+        "trapped": 0,
+        "trace": [
+          ["semantic", true],
+          ["native-stop", true]
+        ]
+      },
+      {
+        "target": "physical",
+        "deferred": true,
+        "trapped": 1,
+        "trace": [["native-stop", true]]
+      },
+      {
+        "target": "portal",
+        "deferred": false,
+        "trapped": 0,
+        "trace": [
+          ["semantic", true],
+          ["native-stop", true]
+        ]
+      },
+      {
+        "target": "portal",
+        "deferred": true,
+        "trapped": 1,
+        "trace": [["native-stop", true]]
+      }
+    ]
+  },
+  "routerCensus": {
+    "sourceHead": "7a376034698b5356bbc5f15ba035c4b33a21e938",
+    "asset": {
+      "asset": "site-shadcn-controls.DrSrHXZe.js",
+      "original": "23af6e262156f090ecbd404cbf3846b73f68565b92b11e392d49f9ca0106e0dc",
+      "observed": "f06b90ac9050cb7460cac8d3feab5b8c6740a80678c77d81a5109511c34fcfbe",
+      "scope": "Emitted router listen and bridge native registration census with separate admitted subscription counts. Nested times may overlap. No binding selection or delivery changes."
+    },
+    "restored": true,
+    "sample": {
+      "routers": 12288,
+      "listen": {
+        "element:pointerdown": {
+          "count": 12288,
+          "ms": 12.400002002716064
+        },
+        "element:pointermove": {
+          "count": 12288,
+          "ms": 2.6000001430511475
+        },
+        "element:pointerup": {
+          "count": 12288,
+          "ms": 4.300001382827759
+        },
+        "element:pointercancel": {
+          "count": 12288,
+          "ms": 2.200000762939453
+        },
+        "element:pointerenter": {
+          "count": 12288,
+          "ms": 3.1999993324279785
+        },
+        "element:pointerleave": {
+          "count": 12288,
+          "ms": 3.1000003814697266
+        },
+        "element:lostpointercapture": {
+          "count": 12288,
+          "ms": 2.3000004291534424
+        },
+        "bridge:blur": {
+          "count": 3907,
+          "ms": 246.0999994277954
+        },
+        "bridge:pointerdown": {
+          "count": 3907,
+          "ms": 137.5999948978424
+        },
+        "bridge:pointermove": {
+          "count": 3907,
+          "ms": 135.10000205039978
+        },
+        "bridge:pointerup": {
+          "count": 3907,
+          "ms": 125.7999997138977
+        },
+        "bridge:pointercancel": {
+          "count": 3907,
+          "ms": 130.90000414848328
+        },
+        "bridge:keydown": {
+          "count": 3907,
+          "ms": 139.50000095367432
+        },
+        "element:keydown": {
+          "count": 12288,
+          "ms": 4.799999713897705
+        },
+        "bridge:keyup": {
+          "count": 3907,
+          "ms": 144.80000162124634
+        },
+        "element:click": {
+          "count": 12288,
+          "ms": 6.100000619888306
+        },
+        "bridge:click": {
+          "count": 3907,
+          "ms": 161.50000429153442
+        },
+        "element:contextmenu": {
+          "count": 12288,
+          "ms": 3.599998712539673
+        },
+        "bridge:contextmenu": {
+          "count": 3907,
+          "ms": 162.9000051021576
+        },
+        "window-direct:blur": {
+          "count": 8381,
+          "ms": 566.4000024795532
+        },
+        "window-direct:pointerdown": {
+          "count": 8381,
+          "ms": 338.9999887943268
+        },
+        "window-direct:pointermove": {
+          "count": 8381,
+          "ms": 328.89999651908875
+        },
+        "window-direct:pointerup": {
+          "count": 8381,
+          "ms": 305.300009727478
+        },
+        "window-direct:pointercancel": {
+          "count": 8381,
+          "ms": 319.3000009059906
+        },
+        "window-direct:keydown": {
+          "count": 8381,
+          "ms": 368.59999895095825
+        },
+        "window-direct:keyup": {
+          "count": 8381,
+          "ms": 357.80000257492065
+        },
+        "window-direct:click": {
+          "count": 8381,
+          "ms": 379.1999955177307
+        },
+        "window-direct:contextmenu": {
+          "count": 8381,
+          "ms": 392.9999957084656
+        }
+      },
+      "nativeBridge": {
+        "window:blur": {
+          "count": 3913,
+          "ms": 243.89999866485596
+        },
+        "window:pointerdown": {
+          "count": 3913,
+          "ms": 136.89999508857727
+        },
+        "window:pointermove": {
+          "count": 3907,
+          "ms": 133.90000247955322
+        },
+        "window:pointerup": {
+          "count": 3913,
+          "ms": 124.20000076293945
+        },
+        "window:pointercancel": {
+          "count": 3913,
+          "ms": 129.90000414848328
+        },
+        "window:keydown:capture": {
+          "count": 3907,
+          "ms": 278.5999901294708
+        },
+        "window:keydown": {
+          "count": 3913,
+          "ms": 137.90000104904175
+        },
+        "window:keyup": {
+          "count": 3907,
+          "ms": 143.00000071525574
+        },
+        "window:click": {
+          "count": 3907,
+          "ms": 159.80000400543213
+        },
+        "window:contextmenu": {
+          "count": 3907,
+          "ms": 161.4000051021576
+        },
+        "other:pointer.down": {
+          "count": 8172,
+          "ms": 4.8999998569488525
+        },
+        "other:pointer.enter": {
+          "count": 4038,
+          "ms": 2.000000476837158
+        },
+        "other:pointer.leave": {
+          "count": 4640,
+          "ms": 3.299999952316284
+        },
+        "other:pointer.cancel": {
+          "count": 3810,
+          "ms": 1.9999992847442627
+        },
+        "other:pointer.up": {
+          "count": 3758,
+          "ms": 3.2000010013580322
+        },
+        "other:press.commit": {
+          "count": 6294,
+          "ms": 4.500000476837158
+        },
+        "other:press.cancel": {
+          "count": 3044,
+          "ms": 1.1999995708465576
+        },
+        "other:key.down": {
+          "count": 3243,
+          "ms": 1.8000004291534424
+        },
+        "other:pointer.move": {
+          "count": 1134,
+          "ms": 0.6999998092651367
+        },
+        "window:focusin": {
+          "count": 6,
+          "ms": 0.10000014305114746
+        }
+      },
+      "protoDemand": {
+        "global:key.down": {
+          "count": 7034,
+          "ms": 0
+        },
+        "root:pointer.down": {
+          "count": 8784,
+          "ms": 0
+        },
+        "root:pointer.enter": {
+          "count": 4192,
+          "ms": 0
+        },
+        "root:pointer.leave": {
+          "count": 4802,
+          "ms": 0
+        },
+        "root:pointer.cancel": {
+          "count": 3888,
+          "ms": 0
+        },
+        "root:pointer.up": {
+          "count": 3808,
+          "ms": 0
+        },
+        "root:press.commit": {
+          "count": 6298,
+          "ms": 0
+        },
+        "root:press.cancel": {
+          "count": 3088,
+          "ms": 0
+        },
+        "root:key.down": {
+          "count": 3307,
+          "ms": 0
+        },
+        "root:pointer.move": {
+          "count": 1134,
+          "ms": 0
+        }
+      },
+      "reset": {},
+      "pageMs": 58720.700000047684,
+      "timeOrigin": 1794978728624.6,
+      "receivedNodeMs": 60132.867958
+    }
+  },
+  "fullChineseS4": {
+    "report": {
+      "passed": 0,
+      "failed": 1,
+      "filtered": 1,
+      "files": 1,
+      "failures": ["S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance"]
+    },
+    "readinessMs": 60000,
+    "caseMs": 150000
+  }
+}

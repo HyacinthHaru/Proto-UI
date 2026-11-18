@@ -1,0 +1,85 @@
+import assert from 'node:assert/strict';
+import {createRequire} from 'node:module';
+import {createHash} from 'node:crypto';
+import {readFile,writeFile} from 'node:fs/promises';
+import path from 'node:path';
+
+const [q,repo]=process.argv.slice(2);
+const {build}=createRequire(path.join(repo,'package.json'))('esbuild');
+const {chromium}=createRequire(path.join(repo,'apps/www/package.json'))('playwright-core');
+const entry=String.raw`
+import {createWebProtoEventRouter} from './packages/adapters/base/src/events/web-event-router';
+import {createInstanceTreeMarkers} from './packages/adapters/base/src/platform/instance-tree';
+globalThis.armContextControl = function(targetKind,deferred) {
+  const tree=createInstanceTreeMarkers('@proto.ui/adapter-web-component/__proto_instance');
+  const root=document.createElement('div');
+  const physical=document.createElement('button'); physical.id='physical';physical.textContent='Physical target';
+  const portal=document.createElement('button'); portal.id='portal';portal.textContent='Portal target';
+  root.append(physical);
+  document.body.append(root,portal);
+  const token=tree.markProtoInstance(root,{name:'context-order-control',setup:()=>undefined});
+  tree.setProtoParent(portal,root);
+  const host=targetKind==='physical'?root:window;
+  const add=host.addEventListener;
+  const own=Object.getOwnPropertyDescriptor(host,'addEventListener');
+  const held=[];
+  if(deferred) host.addEventListener=function(type,...args){
+    if(type==='contextmenu') held.push([type,...args]);
+    else Reflect.apply(add,this,[type,...args]);
+  };
+  const router=createWebProtoEventRouter({
+    rootEl:root,instanceToken:token,isEnabled:()=>true,
+    resolveSemanticEventRoute:tree.resolveLogicalTriggerEventRouteForTarget,
+    isSemanticEventRouteCandidate:tree.isLogicalEventRouteCandidate,
+  });
+  if(deferred) {
+    if(own) Object.defineProperty(host,'addEventListener',own);
+    else delete host.addEventListener;
+  }
+  globalThis.order=[];
+  host.addEventListener('contextmenu',event=>{
+    event.preventDefault();event.stopImmediatePropagation();
+    order.push(['native-stop',event.isTrusted]);
+  });
+  router.rootTarget.addEventListener('context.menu',event=>{
+    order.push(['semantic',event.detail.nativeEvent.isTrusted]);
+  });
+  for(const args of held) Reflect.apply(add,host,args);
+  return held.length;
+};
+`;
+const bundle=path.join(q,'native-order-control.js');
+const result=await build({
+  stdin:{contents:entry,loader:'ts',sourcefile:'native-order-control.ts',resolveDir:repo},
+  absWorkingDir:repo,bundle:true,format:'iife',target:'es2022',outfile:bundle,metafile:true,
+  tsconfigRaw:{compilerOptions:{}},
+});
+const hash=b=>createHash('sha256').update(b).digest('hex');
+const inputs={};
+for(const file of Object.keys(result.metafile.inputs).sort()){
+  inputs[file]=hash(file==='native-order-control.ts'?entry:await readFile(path.join(repo,file)));
+}
+const browser=await chromium.launch({executablePath:process.env.CHROME_PATH});
+const rows=[];
+try{
+  for(const target of ['physical','portal']) {
+    for(const deferred of [false,true]){
+      const page=await browser.newPage();
+      try{
+        await page.setContent('<!doctype html><html><body></body></html>');
+        await page.addScriptTag({path:bundle});
+        const trapped=await page.evaluate(({target,deferred})=>globalThis.armContextControl(target,deferred),{target,deferred});
+        await page.locator('#'+target).click({button:'right'});
+        rows.push({target,deferred,trapped,trace:await page.evaluate(()=>globalThis.order)});
+      }finally{await page.close()}
+    }
+  }
+}finally{await browser.close();}
+await writeFile(path.join(q,'native-order-control.json'),JSON.stringify({
+  chrome:browser.version(),bundleSHA256:hash(await readFile(bundle)),inputs,rows,
+},null,2)+'\n');
+console.log(JSON.stringify(rows));
+for(const row of rows){
+  assert.equal(row.trapped,row.deferred?1:0);
+  assert.deepEqual(row.trace,row.deferred?[['native-stop',true]]:[['semantic',true],['native-stop',true]]);
+}

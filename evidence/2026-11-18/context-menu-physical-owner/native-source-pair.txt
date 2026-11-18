@@ -1,0 +1,95 @@
+import assert from 'node:assert/strict';
+import {createRequire} from 'node:module';
+import {createHash} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
+import {readFile,writeFile} from 'node:fs/promises';
+import path from 'node:path';
+
+const [q,repo,baseRef='HEAD']=process.argv.slice(2);
+const {build}=createRequire(path.join(repo,'package.json'))('esbuild');
+const {chromium}=createRequire(path.join(repo,'apps/www/package.json'))('playwright-core');
+const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
+const base=execFileSync('git',['-C',repo,'rev-parse',baseRef],{encoding:'utf8'}).trim();
+const implementation='packages/adapters/base/src/events/web-event-router.ts';
+const old=execFileSync('git',['-C',repo,'show',base+':'+implementation]);
+const fixture=String.raw`
+import { createWebProtoEventRouter } from './packages/adapters/base/src/events/web-event-router';
+import { createInstanceTreeMarkers } from './packages/adapters/base/src/platform/instance-tree';
+const tree=createInstanceTreeMarkers('@proto.ui/adapter-web-component/__proto_instance');
+const proto={name:'native-context-owner',setup:()=>undefined};
+const shell=document.createElement('section');
+const shadow=shell.attachShadow({mode:'open'});
+const outer=document.createElement('div');
+outer.style='display:block;min-height:160px;padding:16px;background:#eee';
+const outerTarget=document.createElement('button');
+const child=document.createElement('button');
+const portal=document.createElement('button');
+outerTarget.id='outer-target';outerTarget.textContent='Outer menu trigger';
+child.id='child';child.textContent='Nested menu trigger';
+portal.id='portal';portal.textContent='Portal menu trigger';
+outer.append(outerTarget,child);
+shadow.append(outer);
+document.body.append(shell,portal);
+const outerToken=tree.markProtoInstance(outer,proto);
+const childToken=tree.markProtoInstance(child,proto);
+tree.setProtoParent(portal,child);
+globalThis.receipts=[];
+for(const [label,rootEl,instanceToken] of [['outer',outer,outerToken],['child',child,childToken]]){
+ const router=createWebProtoEventRouter({
+  rootEl,instanceToken,isEnabled:()=>true,
+  resolveSemanticEventRoute:tree.resolveLogicalTriggerEventRouteForTarget,
+  isSemanticEventRouteCandidate:tree.isLogicalEventRouteCandidate,
+ });
+ router.rootTarget.addEventListener('context.menu', event=>{
+   const native=event.detail.nativeEvent;
+   receipts.push({label,trusted:native.isTrusted,button:native.button,type:native.type});
+ });
+}
+window.addEventListener('contextmenu',event=>event.preventDefault());
+`;
+const bindings={};
+for(const label of ['parent','candidate']){
+ const outfile=path.join(q,label+'.js');
+ const result=await build({
+  stdin:{contents:fixture,loader:'ts',sourcefile:'native-context-owner-fixture.ts',resolveDir:repo},
+  bundle:true,format:'iife',target:'es2022',tsconfigRaw:{compilerOptions:{}},metafile:true,
+  absWorkingDir:repo,outfile,
+  plugins:label==='parent'?[{name:'exact-parent-router',setup(builder){
+    builder.onLoad({filter:/\/web-event-router\.ts$/},args=>{
+      if(path.relative(repo,args.path)===implementation)
+        return {contents:old,loader:'ts',resolveDir:path.dirname(args.path)};
+    });
+  }}]:[],
+ });
+ const hashes={};
+ for(const input of Object.keys(result.metafile.inputs).sort()) {
+   hashes[input]=sha(input==='native-context-owner-fixture.ts'?fixture:label==='parent'&&input===implementation?old:await readFile(path.join(repo,input)));
+ }
+ bindings[label]={inputs:hashes,bundleSHA256:sha(await readFile(outfile))};
+}
+const different=Object.keys(bindings.parent.inputs).filter(k=>bindings.parent.inputs[k]!==bindings.candidate.inputs[k]);
+assert.deepEqual(different,[implementation]);
+assert.deepEqual(Object.keys(bindings.parent.inputs),Object.keys(bindings.candidate.inputs));
+const browser=await chromium.launch({executablePath:process.env.CHROME_PATH});
+const rows=[];
+try{
+ for(const variant of ['parent','candidate','candidate','parent']){
+   const page=await browser.newPage();
+   try{
+     await page.setContent('<!doctype html><html><body></body></html>');
+     await page.addScriptTag({path:path.join(q,variant+'.js')});
+     for(const target of ['child','outer-target','portal']){
+       await page.locator('#'+target).click({button:'right'});
+       rows.push({variant,target,events:await page.evaluate(()=>globalThis.receipts.splice(0))});
+     }
+   }finally{await page.close()}
+ }
+}finally{await browser.close()}
+await writeFile(path.join(q,'native-source.json'),JSON.stringify({base,chrome:browser.version(),different,rows,bindings,
+  inputCount:Object.keys(bindings.parent.inputs).length},null,2)+'\n');
+console.log(JSON.stringify(rows));
+for(const row of rows){
+ assert.ok(row.events.every(e=>e.trusted&&e.button===2&&e.type==='contextmenu'));
+ const expected=row.target==='child'?(row.variant==='parent'?['child','outer']:['child']):row.target==='portal'?['child']:['outer'];
+ assert.deepEqual(row.events.map(e=>e.label),expected);
+}

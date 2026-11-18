@@ -1,0 +1,42 @@
+diff --git a/packages/adapters/base/src/events/web-event-router.ts b/packages/adapters/base/src/events/web-event-router.ts
+index 723de0ca1..6c19d716e 100644
+--- a/packages/adapters/base/src/events/web-event-router.ts
++++ b/packages/adapters/base/src/events/web-event-router.ts
+@@ -696,7 +696,7 @@ export function createWebProtoEventRouter(opt: {
+   // contextmenu -> context.menu
+   unsubs.push(
+     listen(rootEl, 'contextmenu', (e) => {
+-      if (!isEnabled()) return;
++      if (!isEnabled() || !shouldRouteToCurrentRoot(e, { includeActiveFallback: false })) return;
+       emitFromPhysicalRoot('context.menu', e);
+     })
+   );
+diff --git a/packages/adapters/base/test/shadow-retarget-routing.test.ts b/packages/adapters/base/test/shadow-retarget-routing.test.ts
+index 887b6ec96..6ee2ecbc6 100644
+--- a/packages/adapters/base/test/shadow-retarget-routing.test.ts
++++ b/packages/adapters/base/test/shadow-retarget-routing.test.ts
+@@ -75,7 +75,10 @@ describe('C-EVENT-0003-E: retargeted physical root events are not portal fallbac
+       expect(calls).toBe(i + 1);
+     }
+   });
+-  it('routes a descendant owner only to its own root', () => {
++  it.each([
++    ['click', 'press.commit'],
++    ['contextmenu', 'context.menu'],
++  ])('routes descendant %s only to its own root', (native, semantic) => {
+     const f = fixture(2);
+     const child = document.createElement('button');
+     f.root.append(child);
+@@ -84,9 +87,9 @@ describe('C-EVENT-0003-E: retargeted physical root events are not portal fallbac
+       childRouter = f.routerFor(child);
+     let parentCalls = 0,
+       childCalls = 0;
+-    parentRouter.rootTarget.addEventListener('press.commit', () => parentCalls++);
+-    childRouter.rootTarget.addEventListener('press.commit', () => childCalls++);
+-    dispatch(child, 'click');
++    parentRouter.rootTarget.addEventListener(semantic, () => parentCalls++);
++    childRouter.rootTarget.addEventListener(semantic, () => childCalls++);
++    dispatch(child, native);
+     expect(childCalls).toBe(1);
+     expect(parentCalls).toBe(0);
+   });
