@@ -1,0 +1,210 @@
+{
+  "exact": {
+    "head": "d90a02709b93144ec8b9c36e6aebd7d365f81cd7",
+    "tree": "81d3acb010688f047edc4badfd5f6a85280415ff",
+    "parent": "bcc9dd4b75e410cf858886a7058f4ec21c9cae1b"
+  },
+  "focused": {
+    "passed": 429
+  },
+  "browser": "156.0.8078.79",
+  "builtPages": 683,
+  "parentFallbacks": [
+    {
+      "theme": "light",
+      "runtimes": [
+        {
+          "runtime": "wc",
+          "host": {
+            "connected": true,
+            "geometry": {
+              "x": 172,
+              "y": 408.65625,
+              "width": 137.015625,
+              "height": 38
+            },
+            "quality": "opaque-fallback",
+            "reason": "source-overlapping-content",
+            "source": null,
+            "frame": null,
+            "sourceRevision": null,
+            "backend": null,
+            "profile": null,
+            "contact": null,
+            "contactSession": null,
+            "carrier": null
+          }
+        },
+        {
+          "runtime": "react",
+          "host": {
+            "connected": true,
+            "geometry": {
+              "x": 784,
+              "y": 408.65625,
+              "width": 137.015625,
+              "height": 38
+            },
+            "quality": "opaque-fallback",
+            "reason": "source-overlapping-content",
+            "source": null,
+            "frame": null,
+            "sourceRevision": null,
+            "backend": null,
+            "profile": null,
+            "contact": null,
+            "contactSession": null,
+            "carrier": null
+          }
+        },
+        {
+          "runtime": "vue",
+          "host": {
+            "connected": true,
+            "geometry": {
+              "x": 172,
+              "y": 775.65625,
+              "width": 137.015625,
+              "height": 38
+            },
+            "quality": "opaque-fallback",
+            "reason": "source-overlapping-content",
+            "source": null,
+            "frame": null,
+            "sourceRevision": null,
+            "backend": null,
+            "profile": null,
+            "contact": null,
+            "contactSession": null,
+            "carrier": null
+          }
+        },
+        {
+          "runtime": "vue2",
+          "host": {
+            "connected": true,
+            "geometry": {
+              "x": 784,
+              "y": 775.65625,
+              "width": 137.015625,
+              "height": 38
+            },
+            "quality": "opaque-fallback",
+            "reason": "source-overlapping-content",
+            "source": null,
+            "frame": null,
+            "sourceRevision": null,
+            "backend": null,
+            "profile": null,
+            "contact": null,
+            "contactSession": null,
+            "carrier": null
+          }
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "runtimes": [
+        {
+          "runtime": "wc",
+          "host": {
+            "connected": true,
+            "geometry": {
+              "x": 172,
+              "y": 408.65625,
+              "width": 137.015625,
+              "height": 38
+            },
+            "quality": "opaque-fallback",
+            "reason": "source-overlapping-content",
+            "source": null,
+            "frame": null,
+            "sourceRevision": null,
+            "backend": null,
+            "profile": null,
+            "contact": null,
+            "contactSession": null,
+            "carrier": null
+          }
+        },
+        {
+          "runtime": "react",
+          "host": {
+            "connected": true,
+            "geometry": {
+              "x": 784,
+              "y": 408.65625,
+              "width": 137.015625,
+              "height": 38
+            },
+            "quality": "opaque-fallback",
+            "reason": "source-overlapping-content",
+            "source": null,
+            "frame": null,
+            "sourceRevision": null,
+            "backend": null,
+            "profile": null,
+            "contact": null,
+            "contactSession": null,
+            "carrier": null
+          }
+        },
+        {
+          "runtime": "vue",
+          "host": {
+            "connected": true,
+            "geometry": {
+              "x": 172,
+              "y": 775.65625,
+              "width": 137.015625,
+              "height": 38
+            },
+            "quality": "opaque-fallback",
+            "reason": "source-overlapping-content",
+            "source": null,
+            "frame": null,
+            "sourceRevision": null,
+            "backend": null,
+            "profile": null,
+            "contact": null,
+            "contactSession": null,
+            "carrier": null
+          }
+        },
+        {
+          "runtime": "vue2",
+          "host": {
+            "connected": true,
+            "geometry": {
+              "x": 784,
+              "y": 775.65625,
+              "width": 137.015625,
+              "height": 38
+            },
+            "quality": "opaque-fallback",
+            "reason": "source-overlapping-content",
+            "source": null,
+            "frame": null,
+            "sourceRevision": null,
+            "backend": null,
+            "profile": null,
+            "contact": null,
+            "contactSession": null,
+            "carrier": null
+          }
+        }
+      ]
+    }
+  ],
+  "candidate": {
+    "opticsPassed": 3,
+    "opticsFiltered": 1,
+    "portalPassed": 5,
+    "portalFiltered": 50
+  },
+  "captureSha256": {
+    "light-four-web-optics.png": "27c598f7ffeb10e52353065141b01b615f41ed45ed53709679d3fec1f085755a",
+    "dark-four-web-optics.png": "71f35536eb88d30c8dd0ae6417c70bcf8088038f91ab6ddd3731cb563b94a3ec"
+  }
+}
