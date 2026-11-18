@@ -1,0 +1,262 @@
+{
+  "head": "854ebc65b79f2df1af5cb37e7cb3da706d58d690",
+  "tree": "3958543d4b181e03308dc378e81c8ae4a4ea8830",
+  "parent": "4616cd99807b28b6dcb5ca4512a9ffa612700e39",
+  "product": {
+    "packages": 47,
+    "pages": 685,
+    "bothMatrixPages": {
+      "zh-cn": {
+        "bytes": 1862517,
+        "sha256": "4b10f382a1f6d03187cbf1bec82ad2a76f36292d13d7736a8ca5dcf94a1889e0",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914147,
+        "sha256": "95b7c31d565b3aef73b9918c1f353f5c3b8c6f95f013321169d6af819ae3a179",
+        "previews": 1268
+      }
+    },
+    "tests": {
+      "preview-browser": {
+        "passed": 15,
+        "failed": 0,
+        "filtered": 9,
+        "exit": 0,
+        "sha256": "5d6ed19855152b0b2ff8f41535d2eb77f30767581cd344ebb366c42cecf9cf10"
+      },
+      "code-grammar": {
+        "passed": 3,
+        "failed": 0,
+        "filtered": 23,
+        "exit": 0,
+        "sha256": "6d52b58b2b763366bd0ef4628ab3384e9d26054bf5d790fd7ad79dafb8debf3b"
+      },
+      "copy-commands": {
+        "passed": 1,
+        "failed": 0,
+        "filtered": 14,
+        "exit": 0,
+        "sha256": "438c393a08953f03bf1b84391a8e8e747595537b44e4a1a949b1202070dd810d"
+      },
+      "scroll-chain": {
+        "passed": 2,
+        "failed": 0,
+        "filtered": 4,
+        "exit": 0,
+        "sha256": "9ac447e8c2568e3aaa5848c37b06e2bd13894a00fad898dabc9761a89cad7328"
+      },
+      "wc-shadow": {
+        "passed": 165,
+        "failed": 0,
+        "filtered": 0,
+        "exit": 0,
+        "sha256": "40d280ff1905b5e9e53b768f56cb87f784bf916ac39a7abe5dbea3b63f396ea7"
+      },
+      "projection-scope": {
+        "passed": 5,
+        "failed": 0,
+        "filtered": 0,
+        "exit": 0,
+        "sha256": "cc75460127d0951f0d0be332edc38b98270d535c12162fd8754ec327554faa94"
+      },
+      "s4": {
+        "passed": 0,
+        "failed": 2,
+        "filtered": 0,
+        "exit": 1,
+        "sha256": "bcf16a19197822fcd0e1162da345cf0fb883cb6e82b6bf21ff7fbd80ea62621d"
+      }
+    },
+    "focused": {
+      "passed": 535,
+      "failed": 0,
+      "sha256": "a01a04e3de8fd7c516f02d9268b372695bb4522cc8fa38279d98aa98379c5105"
+    },
+    "s4ReadinessMs": 60000,
+    "s4CaseMs": 150000
+  },
+  "nativeABBA": {
+    "head": "854ebc65b79f2df1af5cb37e7cb3da706d58d690",
+    "parent": "4616cd99807b28b6dcb5ca4512a9ffa612700e39",
+    "chrome": "156.0.8078.79",
+    "scopedInputs": {
+      "parent": {
+        "blob": "b588b0a59ae16dc97dbc6b2d96b8097268508167fe0723ec3829a144ee6ff846",
+        "bundle": "e985ab9c8cd74c6cabef5b95ce4779f38cd7ef442530f4d4bf56b855510b0d4d",
+        "inputs": 57
+      },
+      "candidate": {
+        "blob": "a2e08d96e99c8e634d11de927d5d0a5aee2f1ac09594dcfe76e3f8579e6e0190",
+        "bundle": "f1c8365a609ba5fe807613f74cd113f7247dc2e33e40daa8463a5bbeed529871",
+        "inputs": 57
+      }
+    },
+    "rows": [
+      {
+        "kind": "parent",
+        "before": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        "steady": {
+          "callbacks": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          "signatureScans": 12,
+          "targetReads": 156,
+          "versions": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        },
+        "changed": {
+          "callbacks": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          "versions": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          "firstPhysicalChild": "part-11"
+        }
+      },
+      {
+        "kind": "candidate",
+        "before": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        "steady": {
+          "callbacks": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          "signatureScans": 1,
+          "targetReads": 156,
+          "versions": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        },
+        "changed": {
+          "callbacks": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          "versions": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          "firstPhysicalChild": "part-11"
+        }
+      },
+      {
+        "kind": "candidate",
+        "before": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        "steady": {
+          "callbacks": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          "signatureScans": 1,
+          "targetReads": 156,
+          "versions": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        },
+        "changed": {
+          "callbacks": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          "versions": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          "firstPhysicalChild": "part-11"
+        }
+      },
+      {
+        "kind": "parent",
+        "before": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        "steady": {
+          "callbacks": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          "signatureScans": 12,
+          "targetReads": 156,
+          "versions": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        },
+        "changed": {
+          "callbacks": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          "versions": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          "firstPhysicalChild": "part-11"
+        }
+      }
+    ]
+  },
+  "originalNumericScansPerSteadyNotification": 12,
+  "numericScansAfterSharing": 1,
+  "observedSingleEmittedBundle": {
+    "binding": {
+      "asset": "site-shadcn-controls.CDXWRcWa.js",
+      "stock": "a72fcd69e2fa0ea258a67294230156b371b27e12fb967fd440d82e7c08595fdc",
+      "observed": "aec97b17802b825157b7c39054b09c8dcb71c942aa03827086806aa40eb144d2",
+      "methodOffset": 238561,
+      "guardOffset": 238765,
+      "bindings": {
+        "previous": "n",
+        "claims": "a",
+        "shared": "c",
+        "ordered": "o"
+      }
+    },
+    "lastDelivered": {
+      "receivedNodeMs": 70801.761708,
+      "orders": 3899392,
+      "scopeSnapshots": 3450419,
+      "pointerHits": 3444766,
+      "numericScans": 442716,
+      "pageMs": 70052.09999990463,
+      "timeOrigin": 1795000786683.4
+    },
+    "englishSelection": "filtered",
+    "originalChineseExit": 1,
+    "overlaySha": "130ca113ed58fbf31c46add4bb4cad5dae05da2a0598b170856e36b0e1bd5f1f",
+    "rawRowsSha": "262b88c14ce5f9726179263e8df4080f6d158ef2e56ab40f583f9e9d31117153"
+  },
+  "finfMeasured": {
+    "lucide/icons/x": {
+      "status": "PASS",
+      "gzip": 2879,
+      "limit": 3000,
+      "minified": 8695,
+      "sha256": "da30ebe409a83a09d2569fe2a47880a133fcbe4d554d93ea305795356c4fccdb",
+      "gzipDelta": 0
+    },
+    "lucide root": {
+      "status": "PASS",
+      "gzip": 637306,
+      "limit": 700000,
+      "minified": 4087403,
+      "sha256": "eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c",
+      "gzipDelta": 0
+    },
+    "core root": {
+      "status": "ADVISORY",
+      "gzip": 11378,
+      "limit": 7600,
+      "minified": 35782,
+      "sha256": "0e3c868d3ef719af46085b83881b15787a94acbaf893566ceae4047ceff72b44",
+      "gzipDelta": 0
+    },
+    "runtime root": {
+      "status": "ADVISORY",
+      "gzip": 101393,
+      "limit": 78500,
+      "minified": 390876,
+      "sha256": "77891c72ebcc55cf7ccc922d974a4f5db5e9b3aa3a9deaabef30d0e612c7e9dd",
+      "gzipDelta": 64
+    },
+    "adapter-react root": {
+      "status": "ADVISORY",
+      "gzip": 164314,
+      "limit": 106000,
+      "minified": 578975,
+      "sha256": "3bcf46c451520cb7675bd4b04cf485214fbbe3e73c4d9d724c170b9a159b9994",
+      "gzipDelta": 58
+    },
+    "adapter-vue root": {
+      "status": "ADVISORY",
+      "gzip": 163105,
+      "limit": 106000,
+      "minified": 574228,
+      "sha256": "e164ba91e874067b173c42d94b3b16470341f9479451ea34bdef2258f7391b2b",
+      "gzipDelta": 56
+    },
+    "adapter-web-component root": {
+      "status": "ADVISORY",
+      "gzip": 196262,
+      "limit": 132000,
+      "minified": 673413,
+      "sha256": "debef7ca7a8a5266f79b34cdbf3b78fa96ad6caa7c1f53346b7caf8506f293f9",
+      "gzipDelta": 58
+    },
+    "prototypes-base/button": {
+      "status": "PASS",
+      "gzip": 5274,
+      "limit": 6000,
+      "minified": 18158,
+      "sha256": "6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67",
+      "gzipDelta": 0
+    },
+    "prototypes-shadcn/button": {
+      "status": "ADVISORY",
+      "gzip": 7803,
+      "limit": 7000,
+      "minified": 34485,
+      "sha256": "60b4ff9277e59fba01c34162ec9418282ce82c6b43e24f223a05c9e1df19db57",
+      "gzipDelta": 0
+    }
+  }
+}
