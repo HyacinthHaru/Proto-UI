@@ -1,0 +1,77 @@
+{
+  "officialMainControl": "cbca317199e8e5f4d33cc2b4451486b7fc48a98f",
+  "integration": {
+    "head": "e22bf83c112a4c5b73387c33908bf19e8a751ad1",
+    "tree": "70e1697224629c74c38985a2962be4ab1d47cf5e",
+    "parents": "4787a0793e2d3cbab50417c465450af46db55dd2 cbca317199e8e5f4d33cc2b4451486b7fc48a98f"
+  },
+  "identicalTreeAfter1517": {
+    "head": "f3a62cbe85253aa84dad5059ef07c8881af41419",
+    "tree": "70e1697224629c74c38985a2962be4ab1d47cf5e",
+    "parents": "e22bf83c112a4c5b73387c33908bf19e8a751ad1 b1d970fb8d6be6f012222bc2d86d756f16603cbb"
+  },
+  "delta": {
+    "main": 1153,
+    "integrated": 1169,
+    "common": 1144,
+    "mainOnly": [
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `@proto.ui/prototypes-base/calendar` in `apps/www/src/components/PrototypePreviewer/finf-prototype-modules.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `@proto.ui/prototypes-base/calendar` in `apps/www/src/components/PrototypePreviewer/finf-prototype-modules.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `@proto.ui/prototypes-base/calendar` in `apps/www/src/components/PrototypePreviewer/finf-prototype-modules.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `@proto.ui/prototypes-base/calendar` in `apps/www/src/components/PrototypePreviewer/finf-prototype-modules.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `@proto.ui/prototypes-base/calendar` in `apps/www/src/components/PrototypePreviewer/finf-prototype-modules.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `@proto.ui/prototypes-base/calendar` in `apps/www/src/components/PrototypePreviewer/finf-prototype-modules.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `@proto.ui/prototypes-base/calendar` in `apps/www/src/components/PrototypePreviewer/finf-prototype-modules.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `@proto.ui/prototypes-base/calendar` in `apps/www/src/components/PrototypePreviewer/finf-prototype-modules.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `@proto.ui/prototypes-base/calendar` in `apps/www/src/components/PrototypePreviewer/finf-prototype-modules.ts` escapes the website consumer-wall allowlist"
+    ],
+    "integrationOnly": [
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `@proto.ui/core` in `packages/modules/feedback/src/types.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `@proto.ui/core` in `packages/modules/feedback/src/types.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `./presence/controller` in `packages/modules/feedback/src/create.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `./style/owned-decoration-registry` in `packages/modules/feedback/src/create.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `./style/owned-decoration-cap` in `packages/modules/feedback/src/create.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `@proto.ui/core` in `packages/modules/feedback/src/create.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `@proto.ui/core` in `packages/modules/feedback/src/create.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `@proto.ui/core` in `packages/modules/feedback/src/create.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `@proto.ui/core` in `packages/modules/feedback/src/create.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `@proto.ui/core` in `packages/modules/feedback/src/create.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `./presence/sink` in `packages/modules/feedback/src/create.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `@proto.ui/module-state` in `packages/modules/feedback/src/create.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `./motion/sink` in `packages/modules/feedback/src/create.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `@proto.ui/module-base` in `packages/modules/feedback/src/create.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `@proto.ui/module-base` in `packages/modules/feedback/src/create.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `./types` in `packages/modules/feedback/src/create.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `./caps` in `packages/modules/feedback/src/create.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `./material/shared-sink` in `packages/modules/feedback/src/create.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `./material/declaration-id` in `packages/modules/feedback/src/create.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `./material/runtime-cap` in `packages/modules/feedback/src/create.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `./material/final-style-sink` in `packages/modules/feedback/src/create.ts` escapes the website consumer-wall allowlist",
+      "- internal/website/self-hosting-coverage-matrix.md:216: source fingerprint for `apps/www/src/components/PrototypePreviewer/previewer-bootstrap.ts` does not match its reviewed SHA-256",
+      "- internal/website/self-hosting-coverage-matrix.md:217: source fingerprint for `apps/www/src/components/PrototypePreviewer/previewer-client.ts` does not match its reviewed SHA-256",
+      "- internal/website/self-hosting-coverage-matrix.md: interactive website source `apps/www/src/components/PrototypePreviewer/previewer-removal.ts` is missing a reviewed Source-scan binding and fingerprint",
+      "- internal/website/self-hosting-coverage-matrix.md: interactive website source `apps/www/src/components/PrototypePreviewer/previewer-removal.ts` is not bound to a matrix row"
+    ]
+  },
+  "officialCheckExit": 1,
+  "integratedCheckExit": 1,
+  "integratedCheckerUnit": {
+    "passed": 2102,
+    "failed": 187,
+    "sha256": "d3c3ac6e929ebd31e68dd8d551fa27a0d8954913beae24e492f6bb37defc8f9e"
+  },
+  "matchedOfficialCheckerUnit": {
+    "passed": 0,
+    "failed": 3,
+    "names": [
+      "script asset closure: font bytes remains a resource-only edge",
+      "audit resolver profile: exact audited helper is mandatory evidence metadata",
+      "Shadcn Card sidebar profile reverses exactly to the preceding reviewed resolver bytes"
+    ],
+    "sha256": "9bd644c3b0178573e8b34f89985204cb2d347a6fc322106b4ad20f5dbacd67c8"
+  },
+  "fullReportSha": {
+    "official": "62e4b7b0447fd132e462169d9de4d8ff0b421143231da8912e295c335cf315d4",
+    "integrated": "6afcbf6f1c3517144b0bc4f0261a94dc2932d5215989515cbdd1888bbd567ab0"
+  }
+}
