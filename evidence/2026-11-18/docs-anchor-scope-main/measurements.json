@@ -1,0 +1,167 @@
+{
+  "source": {
+    "head": "6a5a94a5d2f004b15d1ec6d87d55a2344a8354c8",
+    "tree": "ff770c4213fb021aaf9776d07b7470291f5b8e35",
+    "base": "0f0955a9d624e0ef5e250f56a0eaa0fc52bbfb53",
+    "source": "2fe4f58a721ffe57e1483cc0334c82735a8638fe",
+    "files": {
+      "apps/www/src/components/override/PageFrame.astro": "524c76e5862dff692454ef3f6f3d1676011fd0c59658f084e8b1de725ac927ee",
+      "apps/www/src/components/site-header-layout.test.ts": "4ffce98c05bea8d211c1289d55a2d553e51df4984e338bf9c9c0bfda0c188c87"
+    },
+    "signature": "G"
+  },
+  "stats": {
+    "focused": {
+      "files": 3,
+      "pass": 45,
+      "filtered": 0,
+      "reportSha256": "d1da89e41dd1d0b953d46f9fe2c0c5abb39f29f84a4ced696b42a2da01af10cf",
+      "cases": [
+        {
+          "Contents single native tree/public Popover composition boundary composes one real Header trigger with Content and preserves its public Content relationship": "passed",
+          "Contents single native tree/public Popover composition boundary reads clearance for the open and leaving lease and refreshes it before reopening": "passed",
+          "Contents single native tree/public Popover composition boundary opens a lazy slot, moves exactly the original nav, and restores its original sibling and disclosure identity": "passed",
+          "Contents single native tree/public Popover composition boundary delegates Escape and outside policy exclusively while a public view is published": "passed",
+          "Contents single native tree/public Popover composition boundary keeps only one tree through replacement and ignores retired-generation cleanup": "passed",
+          "Contents single native tree/public Popover composition boundary retains the in-flow tree after preparation failure and restores a live prior view on publication rollback": "passed",
+          "Contents single native tree/public Popover composition boundary preserves modified native links, closes same-page history changes, and returns the desktop scroll state": "passed",
+          "Contents single native tree/public Popover composition boundary retains the native lease until public leave completion and returns it before renderer detach": "passed",
+          "Contents single native tree/public Popover composition boundary retains the same marked lease when reopened before the previous leave completes": "passed",
+          "Contents single native tree/public Popover composition boundary fails preparation without public facts without hiding or borrowing the only native tree": "passed",
+          "Contents single native tree/public Popover composition boundary returns a stranded lease after public instance retirement and rejects disposal instead of hanging": "passed",
+          "Contents single native tree/public Popover composition boundary waits for actual asynchronous renderer disposal before fatal native-tree handback": "passed",
+          "Contents single native tree/public Popover composition boundary keeps shared header SSR recipe, no-JS reachability and no legacy footer/body-lock paint": "passed"
+        },
+        {
+          "documentation shell composition contract keeps the right rail alongside prose or hidden, with one emitted cascade": "passed",
+          "documentation shell composition contract rejects a broken rail visibility cascade: separate style tags": "passed",
+          "documentation shell composition contract rejects a broken rail visibility cascade: reversed media blocks": "passed",
+          "documentation shell composition contract rejects a broken rail visibility cascade: changed viewport gate": "passed",
+          "documentation shell composition contract rejects a broken rail visibility cascade: TOC lifted above prose": "passed",
+          "documentation shell composition contract rejects a broken rail visibility cascade: narrow canvas keeps an empty right track": "passed",
+          "documentation shell composition contract rejects a broken rail visibility cascade: lost visible wide rail": "passed",
+          "documentation shell composition contract separates full-width safe gutters from rail width and bounded reading measure": "passed",
+          "documentation shell composition contract retains a single native rail slot and independent narrow navigation": "passed",
+          "documentation shell composition contract assigns sticky offset and scrolling to the outer TOC rail only": "passed"
+        },
+        {
+          "keeps reading navigation lateral or hidden and preserves the Header and single native-tree owners": "passed",
+          "reading rail visibility query boundaries (source arithmetic, not browser paint) keeps the ordinary desktop TOC lateral through the padded overlap and its neighbours": "passed",
+          "reading rail visibility query boundaries (source arithmetic, not browser paint) keeps ordinary1440/root20 lateral and hides enlarged rails without an above-article mode": "passed",
+          "Docs header offset targets the actual MarkdownContent wrapper matches the real heading with the owned scroll-margin selector": "passed",
+          "Docs header offset targets the actual MarkdownContent wrapper derives anchor clearance from the real Header, even with a matching marker inside the content": "passed",
+          "Docs header offset targets the actual MarkdownContent wrapper removes the upstream root offset only when our measured docs Header owns clearance": "passed",
+          "Docs header offset targets the actual MarkdownContent wrapper preserves native clearance for the actual PageTitle and non-heading bookmarks": "passed",
+          "Docs header offset targets the actual MarkdownContent wrapper uses a browser heading locator that exists in the real wrapper": "passed",
+          "covers an authored shadcn section heading on the actual browser route": "passed",
+          "covers an authored brutalist section heading on the actual browser route": "passed",
+          "shared compact Header ownership and layout Homepage/HomepageRuntime.astro provides one movable preference owner with an explicit native startup location": "passed",
+          "shared compact Header ownership and layout override/Header.astro provides one movable preference owner with an explicit native startup location": "passed",
+          "shared compact Header ownership and layout fills only the direct Header surface projection and never assigns its layout to nested controls": "passed",
+          "reserves the existing public focus ring inside only the native popup scroll slot": "passed",
+          "lets enhanced social anchors enclose the Prototype motion extent without fixed 44px clipping": "passed",
+          "keeps one Header close toggle and lets short compact menus shrink to their content": "passed",
+          "spaces unframed text separately from framed controls without changing compact navigation": "passed",
+          "keeps SSR and enhanced compact Header branches with and without Contents and the 3.5rem offset contract": "passed",
+          "rejects compact Header rule loss, wrong scope, missing Contents, extra rows and incorrect offsets": "passed",
+          "keeps the page-top anchor at the initial reading inset when deferred modules finish loading": "passed",
+          "separates full-width Header chrome and edge rails from the bounded reading measure": "passed",
+          "bounds the Header panel by the Header box so one measured viewport cannot place it outside": "passed"
+        }
+      ]
+    },
+    "docs-anchor": {
+      "files": 1,
+      "pass": 3,
+      "filtered": 7,
+      "reportSha256": "883f9373d6d05b6b5ece49ac46d4072f2d0761e4f22d9898b7533d26ee600a03",
+      "cases": [
+        {
+          "shadcn/light keeps the TOC on the right or hidden, never above readable prose": "skipped",
+          "shadcn/dark keeps the TOC on the right or hidden, never above readable prose": "skipped",
+          "brutalist/light keeps the TOC on the right or hidden, never above readable prose": "skipped",
+          "brutalist/dark keeps the TOC on the right or hidden, never above readable prose": "skipped",
+          "en keeps actual long-TOC and left-rail wheel scrolling independent from the document": "skipped",
+          "zh-cn keeps actual long-TOC and left-rail wheel scrolling independent from the document": "skipped",
+          "keeps library overview and long-prose routes bounded in both locales without JavaScript": "skipped",
+          "keeps the real reading and splash content edges at narrow and medium widths": "passed",
+          "keeps the en no-TOC splash measure and page-title clearance": "passed",
+          "keeps the zh-cn no-TOC splash measure and page-title clearance": "passed"
+        }
+      ]
+    }
+  },
+  "siteCSS": [
+    {
+      "file": "liquid-library-card.dVvik-9D.css",
+      "selector": ".site-page-frame>:where(header):has([data-docs-site-header])+:where(div) main [id]",
+      "sha256": "45dd030a4806c93ff9344b23807048238d750e2f9878820dfb6c55d531d2c641"
+    },
+    {
+      "file": "liquid-library-card.dVvik-9D.css",
+      "selector": ".site-page-frame>:where(header):has([data-docs-site-header])+:where(div) main h1[data-site-typography=h1]",
+      "sha256": "45dd030a4806c93ff9344b23807048238d750e2f9878820dfb6c55d531d2c641"
+    }
+  ],
+  "Matrix": {
+    "zh-cn": {
+      "bytes": 1862392,
+      "sha256": "a6f5a846b0c098ae5794bef5f39baf73c15feb714cfa91083bd3875908469d8a",
+      "previews": 1268
+    },
+    "en": {
+      "bytes": 1914025,
+      "sha256": "40bb38bb6da8b44f11583190184c21df444907683248d5f1730faabc8762bb2e",
+      "previews": 1268
+    }
+  },
+  "nativeFacts": {
+    "en": {
+      "capture": {
+        "fragment": "#_top",
+        "headerScrollReserve": 72,
+        "titleTop": 88,
+        "headerBottom": 48,
+        "fragmentScrollClearance": 88,
+        "rootFontSize": 16,
+        "layout": "splash",
+        "tocCount": 0,
+        "maxWidth": "1408px",
+        "width": 1408,
+        "overflow": 0
+      },
+      "rawSha256": "a02000e80f1a8d2be36fd73a234629ca11669b992f529e8d4ac6f821c898cbdf"
+    },
+    "zh-cn": {
+      "capture": {
+        "fragment": "#_top",
+        "headerScrollReserve": 72,
+        "titleTop": 88,
+        "headerBottom": 48,
+        "fragmentScrollClearance": 88,
+        "rootFontSize": 16,
+        "layout": "splash",
+        "tocCount": 0,
+        "maxWidth": "1408px",
+        "width": 1408,
+        "overflow": 0
+      },
+      "rawSha256": "a4a1f5f922611cdc0560fcf1321341333c55401ee92b3942557717d7357d043f"
+    }
+  },
+  "rawBuildHashes": {
+    "packages.log": "36c00dc2a79a30113bb2ed6d419bd8bb9ea7b599a472f11f09b6ac01e02880ac",
+    "site-build.log": "921b4fcc4c1839b7f9840ac33b33a7bb92ecde49bc213386437da249165bbac8",
+    "types.log": "7eb12baf016e377dd1cb49cfbd7af3008ff63807484af7fc5d326acf3b89efb3",
+    "manifests.log": "10873724fcf0120d24024936416c84326b7fcc3c2bc947a876fda1640d42babc",
+    "budgets.log": "a6e59c634c2435d7fcede70549df8ea3ddb8fd6501c454882238ff22cae5cdc0"
+  },
+  "builds": {
+    "packages": 47,
+    "pages": 685,
+    "types": 0,
+    "manifests": 0,
+    "budgets": 0
+  },
+  "scope": "Exact main worktree, only two Website source/test paths. Draft Matrix route flags restored. Chinese whole S4 not run on this main candidate; see separately scoped S4 combination. Browser captures from main retained locally by original commands, public verified screenshots from separate matching scoped source packet."
+}

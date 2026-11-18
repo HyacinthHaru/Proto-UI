@@ -1,0 +1,9 @@
+# Verify Header-local document anchor rules on main
+
+Exact signed candidate `6a5a94a5d2f004b15d1ec6d87d55a2344a8354c8` on `0f0955a9d624e0ef5e250f56a0eaa0fc52bbfb53`. Only the two previously verified source/test blobs are transplanted, with both parent and result hashes matched. No release or CSS architecture changes.
+
+The current Header condition now lives on the Header, and the rules only style headings and bookmarks in the adjacent frame content. The `:where()` type constraints preserve original specificity. The no-JavaScript document offset, section margin and page-title inset formulas remain.
+
+The clean main worktree built all 47 public packages and 685 Website pages. Workspace types, manifests and budgets passed. There are 45 focused passes across three files, including the unchanged real-heading, non-heading bookmark and PageTitle guards and the new nested-header-marker test. The actual compiled Website passes all three selected original native tests, with seven neighboring cases filtered. Both locale title fragment tests and the real reading/splash geometry test pass. The underlying fixture retains all 1,268 Matrix roots per locale, and the two draft-route overlays were restored.
+
+[Original trace and stylesheet controls](https://github.com/HyacinthHaru/Proto-UI/tree/3e1172833fdf22463368ad8531320360b6b2d885/evidence/2026-11-18/s4-docs-anchor-style-invalidation) identify repeated anchor-related invalidation in the larger S4 combination. [Exact S4 source verification](https://github.com/HyacinthHaru/Proto-UI/tree/ff28bccf45fc93433a57672cb0fa9b70d4086d29/evidence/2026-11-18/s4-docs-anchor-source-verification) verifies the corresponding combination and holds the inspected locale images. Its original Chinese readiness test still times out. The main candidate's focused checks are independent of that remaining whole-Matrix issue.
