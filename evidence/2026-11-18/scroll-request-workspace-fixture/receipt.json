@@ -1,0 +1,35 @@
+{
+  "head": "0ff1bd2f7d67db5dfd725be49e92b753cceda0f0",
+  "tree": "0b9501d62bbe4552b97250b1e9a3bf603aa1aa62",
+  "parent": "ad8a678cda3624ef969c1440fd4907216bb92d78",
+  "changedFile": "packages/compiler/test/scroll-request-outcomes.test.ts",
+  "preparedBaseline": {
+    "head": "e4ea8d02d4a8befb746fa2c3730c052a3f8d0542",
+    "errors": 1,
+    "code": "TS2352",
+    "logSha": "6681b7e3ab97c8029d1ec8dfb070538aa9d700a29084be2a8a2f6a1f6a6a1717"
+  },
+  "exactCandidate": {
+    "workspaceTypeExit": 0,
+    "testsPassed": 19,
+    "testsFailed": 0,
+    "typesLogSha": "09b897a7ec9b8f05bae479ff2c5f69a0a8f2be115401f35a101d848c33559cc9",
+    "testReportSha": "6158f9e97efc8050b6a8d6ba0f42199379f7cba95222e50950ac8c27c2b5f6dd"
+  },
+  "earlierPreparedCompilerShape": {
+    "emittedTest": {
+      "baseline": "946b79f0495c6de221eb912b58c5bc5cde24f6d4",
+      "head": "c87ecceb770f79bf414d94d3bbce8da2a69a28b7",
+      "file": "packages/compiler/test/scroll-request-outcomes.test.ts",
+      "parentSha256": "a1546671b5922d33d30fd2a136b3e83807e2882990ef5c3b60aa94af38cb0406",
+      "candidateSha256": "66caebdd1f19a569fd3b93cf7d3f7e2a3bb9b4a3e6add61ea64c973017bcee72",
+      "differingExpression": {
+        "parent": "[node]",
+        "candidate": "[value]",
+        "alias": "const node = value"
+      }
+    },
+    "actualBaselineTests": 19,
+    "actualCorrectedTests": 19
+  }
+}
