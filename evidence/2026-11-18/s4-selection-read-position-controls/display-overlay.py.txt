@@ -1,0 +1,83 @@
+from hashlib import sha256
+import json,sys
+from pathlib import Path
+out,dist=map(Path,sys.argv[1:])
+known=json.loads((out.parent/'s4-nested-portal-integration/built-js-inputs.json').read_text())
+lease,=dist.glob('native-content-lease.*.js')
+surface,=dist.glob('runtime-preview-surface.*.js')
+original={f.name:f.read_bytes() for f in [lease,surface]}
+assert all(sha256(v).hexdigest()==known[k] for k,v in original.items())
+def once(source,old,new):
+    assert source.count(old)==1,old
+    return source.replace(old,new)
+prefix=r"""
+const __s4PassiveObserver=(()=>{
+  let active=null,count=0;
+  const sequence=['ordinary','beforeDisplay','beforeAppearance','beforeAppearance','beforeDisplay','ordinary'];
+  const ordinals=new Map();
+  const totals={}, firstSlow=[];
+  const windowNow=()=>performance.now();
+  const measure=(phase,operation)=>{
+    const row=active;
+    if(!row) return operation();
+    const begin=windowNow();
+    try {return operation();}
+    finally {(row.phases[phase] ??= []).push(windowNow()-begin);}
+  };
+  const publication=(generation,runtime,operation)=>{
+    const previous=active;
+    const ordinal=ordinals.get(runtime) ?? 0;
+    if(generation===1) ordinals.set(runtime,ordinal+1);
+    const arm=generation===1 ? sequence[ordinal % sequence.length] : 'later';
+    const row={generation,runtime,arm,begin:windowNow(),phases:{},earlyAnchor:null,hadEarlyRead:false};
+    active=row;
+    try {return operation();}
+    finally {
+      active=previous;
+      const end=windowNow();
+      const group=(totals[runtime] ??= {})[arm] ??= {calls:0,elapsed:0,phases:{},nonemptyEarly:0,nonemptyOriginal:0,anchorChanged:0};
+      if(row.earlyAnchor) group.nonemptyEarly++;
+      if(row.originalAnchor) group.nonemptyOriginal++;
+      if(row.hadEarlyRead && row.earlyAnchor!==row.originalAnchor) group.anchorChanged++;
+      delete row.earlyAnchor;
+      delete row.originalAnchor;
+      group.calls++;group.elapsed+=end-row.begin;
+      for(const [phase,times] of Object.entries(row.phases)){
+        const data=group.phases[phase] ??= {calls:0,ms:0,max:0};
+        for(const time of times){data.calls++;data.ms+=time;data.max=Math.max(time,data.max);}
+      }
+      if(end-row.begin>=50 && firstSlow.length<10) firstSlow.push({...row,end});
+      count++;
+      if((count & (count-1))===0 || count%64===0){
+        console.info('[S4 passive preflight]',JSON.stringify({count,pageMs:end,totals,firstSlow}));
+      }
+    }
+  };
+  const probe=(phase,doc)=>{
+    if(active?.arm!==phase) return;
+    active.earlyAnchor=measure('extraAnchor',()=>doc.getSelection()?.anchorNode);
+    active.hadEarlyRead=true;
+  };
+  const original=(operation)=>{
+    const value=measure('anchorNode',operation);
+    if(active) active.originalAnchor=value;
+    return value;
+  };
+  return {measure,publication,probe,original};
+})();
+globalThis.__puiS4PassiveObserver=__s4PassiveObserver;
+"""
+s=original[lease.name].decode()
+s=once(s,'r=o.getSelection(),E=r?.anchorNode,x=r?.focusNode',
+       'r=__s4PassiveObserver.measure("getSelection",()=>o.getSelection()),E=__s4PassiveObserver.original(()=>r?.anchorNode),x=__s4PassiveObserver.measure("focusNode",()=>r?.focusNode)')
+s=once(s,'try{n(),p(),!i&&l', 'try{__s4PassiveObserver.measure("physicalMove",n),p(),!i&&l')
+lease.write_text(prefix+s)
+s=original[surface.name].decode()
+head='return{publish(){if(!p)throw new Error("Passive shell composition disposed");'
+tail='P(l)},rollback(){try{B(()=>w?.rollback())}'
+s=once(s,head,head[:-len('if(!p)throw new Error("Passive shell composition disposed");')]+'return globalThis.__puiS4PassiveObserver.publication(t.generation,n.runtime,()=>{if(!p)throw new Error("Passive shell composition disposed");')
+s=once(s,'o.style.setProperty("display","contents"),B(()=>w?.publish()),!p)',
+       'globalThis.__puiS4PassiveObserver.probe("beforeDisplay",o.ownerDocument),globalThis.__puiS4PassiveObserver.measure("displayWrite",()=>o.style.setProperty("display","contents")),globalThis.__puiS4PassiveObserver.probe("beforeAppearance",o.ownerDocument),globalThis.__puiS4PassiveObserver.measure("appearancePublish",()=>B(()=>w?.publish())),!p)')
+s=once(s,tail,'P(l)})},rollback(){try{B(()=>w?.rollback())}')
+surface.write_text(s)
+(out/'asset-binding.json').write_text(json.dumps({'scope':'Two diagnostic arms add one live Selection anchor read before display or between display and appearance. Ordinary arm adds no read. All preserve the original fresh read and write/callback/move order. Arms interleave by runtime with balanced six-slot ordering. Compare full read cost with both getters counted, not the shifted read alone. Earlier reads can perturb renderer scheduling. No deadline totals.','files':{f.name:{'original':sha256(original[f.name]).hexdigest(),'observed':sha256(f.read_bytes()).hexdigest()} for f in [lease,surface]}},indent=2)+'\n')
