@@ -1,0 +1,270 @@
+{
+  "exact": {
+    "head": "1d4f591dbf00fa9f3649b2150b60a9240c9c2560",
+    "tree": "b3d773b73d0bbe56237a0bd1ee08321367f8fa2b",
+    "parent": "bcc9dd4b75e410cf858886a7058f4ec21c9cae1b"
+  },
+  "focused": {
+    "passed": 21
+  },
+  "selectedPackedPassed": {
+    "preview-browser": 15,
+    "code-grammar": 3,
+    "copy-commands": 1,
+    "scroll-chain": 2
+  },
+  "headerFirstFrames": [320, 390],
+  "geometry": {
+    "parent": {
+      "shadcn-wc-320-unbroken-font200-action-1": {
+        "text": "UnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabel",
+        "closeIcon": false,
+        "scrollWidth": 158,
+        "clientWidth": 158,
+        "whiteSpace": "normal",
+        "overflowWrap": "anywhere",
+        "rootFontSize": "32px",
+        "semanticParent": {
+          "style": null,
+          "role": null,
+          "tabIndex": -1
+        },
+        "layout": {
+          "prototype": false,
+          "role": null,
+          "tabIndex": -1,
+          "minWidth": "0px",
+          "maxWidth": "100%",
+          "left": 80,
+          "right": 240
+        },
+        "left": 80,
+        "right": 240,
+        "contentLeft": 32,
+        "contentRight": 288,
+        "width": 160,
+        "height": 1338,
+        "hit": false
+      },
+      "shadcn-react-320-unbroken-font200-action-1": {
+        "text": "UnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabel",
+        "closeIcon": false,
+        "scrollWidth": 158,
+        "clientWidth": 158,
+        "whiteSpace": "normal",
+        "overflowWrap": "anywhere",
+        "rootFontSize": "32px",
+        "semanticParent": {
+          "style": null,
+          "role": null,
+          "tabIndex": -1
+        },
+        "layout": {
+          "prototype": false,
+          "role": null,
+          "tabIndex": -1,
+          "minWidth": "0px",
+          "maxWidth": "100%",
+          "left": 80,
+          "right": 240
+        },
+        "left": 80,
+        "right": 240,
+        "contentLeft": 32,
+        "contentRight": 288,
+        "width": 160,
+        "height": 1338,
+        "hit": false
+      },
+      "shadcn-vue-320-unbroken-font200-action-1": {
+        "text": "UnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabel",
+        "closeIcon": false,
+        "scrollWidth": 158,
+        "clientWidth": 158,
+        "whiteSpace": "normal",
+        "overflowWrap": "anywhere",
+        "rootFontSize": "32px",
+        "semanticParent": {
+          "style": null,
+          "role": null,
+          "tabIndex": -1
+        },
+        "layout": {
+          "prototype": false,
+          "role": null,
+          "tabIndex": -1,
+          "minWidth": "0px",
+          "maxWidth": "100%",
+          "left": 80,
+          "right": 240
+        },
+        "left": 80,
+        "right": 240,
+        "contentLeft": 32,
+        "contentRight": 288,
+        "width": 160,
+        "height": 1338,
+        "hit": false
+      },
+      "shadcn-vue2-320-unbroken-font200-action-1": {
+        "text": "UnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabel",
+        "closeIcon": false,
+        "scrollWidth": 158,
+        "clientWidth": 158,
+        "whiteSpace": "normal",
+        "overflowWrap": "anywhere",
+        "rootFontSize": "32px",
+        "semanticParent": {
+          "style": null,
+          "role": null,
+          "tabIndex": -1
+        },
+        "layout": {
+          "prototype": false,
+          "role": null,
+          "tabIndex": -1,
+          "minWidth": "0px",
+          "maxWidth": "100%",
+          "left": 80,
+          "right": 240
+        },
+        "left": 80,
+        "right": 240,
+        "contentLeft": 32,
+        "contentRight": 288,
+        "width": 160,
+        "height": 1338,
+        "hit": false
+      }
+    },
+    "candidate": {
+      "shadcn-wc-320-unbroken-font200-action-1": {
+        "text": "UnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabel",
+        "closeIcon": false,
+        "scrollWidth": 158,
+        "clientWidth": 158,
+        "whiteSpace": "normal",
+        "overflowWrap": "anywhere",
+        "rootFontSize": "32px",
+        "semanticParent": {
+          "style": null,
+          "role": null,
+          "tabIndex": -1
+        },
+        "layout": {
+          "prototype": false,
+          "role": null,
+          "tabIndex": -1,
+          "minWidth": "0px",
+          "maxWidth": "100%",
+          "left": 80,
+          "right": 240
+        },
+        "left": 80,
+        "right": 240,
+        "contentLeft": 32,
+        "contentRight": 288,
+        "width": 160,
+        "height": 1338,
+        "hit": true
+      },
+      "shadcn-react-320-unbroken-font200-action-1": {
+        "text": "UnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabel",
+        "closeIcon": false,
+        "scrollWidth": 158,
+        "clientWidth": 158,
+        "whiteSpace": "normal",
+        "overflowWrap": "anywhere",
+        "rootFontSize": "32px",
+        "semanticParent": {
+          "style": null,
+          "role": null,
+          "tabIndex": -1
+        },
+        "layout": {
+          "prototype": false,
+          "role": null,
+          "tabIndex": -1,
+          "minWidth": "0px",
+          "maxWidth": "100%",
+          "left": 80,
+          "right": 240
+        },
+        "left": 80,
+        "right": 240,
+        "contentLeft": 32,
+        "contentRight": 288,
+        "width": 160,
+        "height": 1338,
+        "hit": true
+      },
+      "shadcn-vue-320-unbroken-font200-action-1": {
+        "text": "UnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabel",
+        "closeIcon": false,
+        "scrollWidth": 158,
+        "clientWidth": 158,
+        "whiteSpace": "normal",
+        "overflowWrap": "anywhere",
+        "rootFontSize": "32px",
+        "semanticParent": {
+          "style": null,
+          "role": null,
+          "tabIndex": -1
+        },
+        "layout": {
+          "prototype": false,
+          "role": null,
+          "tabIndex": -1,
+          "minWidth": "0px",
+          "maxWidth": "100%",
+          "left": 80,
+          "right": 240
+        },
+        "left": 80,
+        "right": 240,
+        "contentLeft": 32,
+        "contentRight": 288,
+        "width": 160,
+        "height": 1338,
+        "hit": true
+      },
+      "shadcn-vue2-320-unbroken-font200-action-1": {
+        "text": "UnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabel",
+        "closeIcon": false,
+        "scrollWidth": 158,
+        "clientWidth": 158,
+        "whiteSpace": "normal",
+        "overflowWrap": "anywhere",
+        "rootFontSize": "32px",
+        "semanticParent": {
+          "style": null,
+          "role": null,
+          "tabIndex": -1
+        },
+        "layout": {
+          "prototype": false,
+          "role": null,
+          "tabIndex": -1,
+          "minWidth": "0px",
+          "maxWidth": "100%",
+          "left": 80,
+          "right": 240
+        },
+        "left": 80,
+        "right": 240,
+        "contentLeft": 32,
+        "contentRight": 288,
+        "width": 160,
+        "height": 1338,
+        "hit": true
+      }
+    }
+  },
+  "captureSha256": {
+    "parent-failure": "36bf0385813a48e7bf0e05d1d6013681eb438a81d71a874c601c5e5db4ed6586",
+    "candidate-fixture-before-alignment": "2ad898e87f8f271c51984c67097ed14e92f0cc7969172601405beeefac5fae63"
+  },
+  "chromium": "156.0.8078.79",
+  "viewport": [320, 360],
+  "font": "200%"
+}
