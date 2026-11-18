@@ -1,0 +1,877 @@
+{
+  "source": "a8e6d058e8a556dced7bd2465e9c100456e6580e",
+  "exactTests": {
+    "stock": {
+      "exit": 1,
+      "browserTests": 0,
+      "filtered": 1
+    },
+    "observed": {
+      "exit": 1,
+      "browserTests": 0,
+      "filtered": 1
+    }
+  },
+  "responseClock": "Network finish wall times are request wallTime plus the same-request CDP monotonic timestamp delta. Browser markers use page timeOrigin + performance.now. Node delivery means callback delivery on the automation side.",
+  "packages": {
+    "react": {
+      "scope": [
+        "/_astro/index.BVKZFYvx.js",
+        "/_astro/index.C47PDzzu.js",
+        "/_astro/index.J7E9Px8p.js"
+      ],
+      "requested": [
+        "/_astro/index.BVKZFYvx.js",
+        "/_astro/index.C47PDzzu.js",
+        "/_astro/index.J7E9Px8p.js"
+      ],
+      "finished": [
+        "/_astro/index.BVKZFYvx.js",
+        "/_astro/index.C47PDzzu.js",
+        "/_astro/index.J7E9Px8p.js"
+      ],
+      "status": {
+        "/_astro/index.J7E9Px8p.js": 200,
+        "/_astro/index.BVKZFYvx.js": 200,
+        "/_astro/index.C47PDzzu.js": 200
+      },
+      "unmatchedFinish": [],
+      "duplicateRequests": [],
+      "phase": [
+        {
+          "label": "react",
+          "phase": "preload-enter",
+          "pageMs": 6120.799999952316,
+          "nodeMs": 7101.607583
+        },
+        {
+          "label": "react",
+          "phase": "native-import-dispatched",
+          "pageMs": 6122.299999952316,
+          "nodeMs": 7103.113208
+        },
+        {
+          "label": "index.BVKZFYvx.js",
+          "phase": "module-body-enter",
+          "pageMs": 9015.900000095367,
+          "nodeMs": 9996.977916
+        },
+        {
+          "label": "index.BVKZFYvx.js",
+          "phase": "module-body-leave",
+          "pageMs": 9016.100000143051,
+          "nodeMs": 9997.002291
+        },
+        {
+          "label": "index.C47PDzzu.js",
+          "phase": "module-body-enter",
+          "pageMs": 9016.100000143051,
+          "nodeMs": 9997.012625
+        },
+        {
+          "label": "index.C47PDzzu.js",
+          "phase": "module-body-leave",
+          "pageMs": 9016.299999952316,
+          "nodeMs": 9997.053833
+        },
+        {
+          "label": "index.J7E9Px8p.js",
+          "phase": "module-body-enter",
+          "pageMs": 9016.299999952316,
+          "nodeMs": 9997.143583
+        },
+        {
+          "label": "index.J7E9Px8p.js",
+          "phase": "module-body-leave",
+          "pageMs": 9016.400000095367,
+          "nodeMs": 9997.182458
+        },
+        {
+          "label": "react",
+          "phase": "native-import-fulfilled",
+          "pageMs": 9016.400000095367,
+          "nodeMs": 9997.19775
+        },
+        {
+          "label": "react",
+          "phase": "preloaded-import-fulfilled",
+          "pageMs": 9016.5,
+          "nodeMs": 9997.207875
+        }
+      ],
+      "lastFinishedFile": "/_astro/index.BVKZFYvx.js",
+      "lastNetworkFinishWallMs": 1794984907846.95,
+      "finishEventDeliveredNodeMs": 7182.931916,
+      "lastFinishToNativeFulfillmentBrowserWallMs": 2879.75,
+      "lastFinishDeliveryToFulfillmentDeliveryNodeMs": 2814.265869140625
+    },
+    "react-dom": {
+      "scope": [
+        "/_astro/index.BVKZFYvx.js",
+        "/_astro/index.CDDwQV5v.js",
+        "/_astro/index.CWLepCMo.js",
+        "/_astro/index.D5ahegtX.js"
+      ],
+      "requested": [
+        "/_astro/index.BVKZFYvx.js",
+        "/_astro/index.CDDwQV5v.js",
+        "/_astro/index.CWLepCMo.js",
+        "/_astro/index.D5ahegtX.js"
+      ],
+      "finished": [
+        "/_astro/index.BVKZFYvx.js",
+        "/_astro/index.CDDwQV5v.js",
+        "/_astro/index.CWLepCMo.js",
+        "/_astro/index.D5ahegtX.js"
+      ],
+      "status": {
+        "/_astro/index.BVKZFYvx.js": 200,
+        "/_astro/index.CWLepCMo.js": 200,
+        "/_astro/index.D5ahegtX.js": 200,
+        "/_astro/index.CDDwQV5v.js": 200
+      },
+      "unmatchedFinish": [],
+      "duplicateRequests": [],
+      "phase": [
+        {
+          "label": "react-dom",
+          "phase": "preload-enter",
+          "pageMs": 6121.5,
+          "nodeMs": 7102.368625
+        },
+        {
+          "label": "react-dom",
+          "phase": "native-import-dispatched",
+          "pageMs": 6122.400000095367,
+          "nodeMs": 7103.1245
+        },
+        {
+          "label": "index.BVKZFYvx.js",
+          "phase": "module-body-enter",
+          "pageMs": 9015.900000095367,
+          "nodeMs": 9996.977916
+        },
+        {
+          "label": "index.BVKZFYvx.js",
+          "phase": "module-body-leave",
+          "pageMs": 9016.100000143051,
+          "nodeMs": 9997.002291
+        },
+        {
+          "label": "index.D5ahegtX.js",
+          "phase": "module-body-enter",
+          "pageMs": 9206.299999952316,
+          "nodeMs": 10188.590458
+        },
+        {
+          "label": "index.D5ahegtX.js",
+          "phase": "module-body-leave",
+          "pageMs": 9207.799999952316,
+          "nodeMs": 10188.607583
+        },
+        {
+          "label": "index.CDDwQV5v.js",
+          "phase": "module-body-enter",
+          "pageMs": 9207.799999952316,
+          "nodeMs": 10188.653208
+        },
+        {
+          "label": "index.CDDwQV5v.js",
+          "phase": "module-body-leave",
+          "pageMs": 9209.100000143051,
+          "nodeMs": 10189.738458
+        },
+        {
+          "label": "index.CWLepCMo.js",
+          "phase": "module-body-enter",
+          "pageMs": 9209.100000143051,
+          "nodeMs": 10189.829958
+        },
+        {
+          "label": "index.CWLepCMo.js",
+          "phase": "module-body-leave",
+          "pageMs": 9209.200000047684,
+          "nodeMs": 10189.841041
+        },
+        {
+          "label": "react-dom",
+          "phase": "native-import-fulfilled",
+          "pageMs": 9209.200000047684,
+          "nodeMs": 10189.849041
+        },
+        {
+          "label": "react-dom",
+          "phase": "preloaded-import-fulfilled",
+          "pageMs": 9209.200000047684,
+          "nodeMs": 10189.857375
+        }
+      ],
+      "lastFinishedFile": "/_astro/index.D5ahegtX.js",
+      "lastNetworkFinishWallMs": 1794984907866.897,
+      "finishEventDeliveredNodeMs": 7242.88275,
+      "lastFinishToNativeFulfillmentBrowserWallMs": 3052.60302734375,
+      "lastFinishDeliveryToFulfillmentDeliveryNodeMs": 2946.96630859375
+    },
+    "react-dom-client": {
+      "scope": [
+        "/_astro/client.CwoxijIM.js",
+        "/_astro/client.nHzutAOZ.js",
+        "/_astro/index.BVKZFYvx.js",
+        "/_astro/index.D5ahegtX.js"
+      ],
+      "requested": [
+        "/_astro/client.CwoxijIM.js",
+        "/_astro/client.nHzutAOZ.js",
+        "/_astro/index.BVKZFYvx.js",
+        "/_astro/index.D5ahegtX.js"
+      ],
+      "finished": [
+        "/_astro/client.CwoxijIM.js",
+        "/_astro/client.nHzutAOZ.js",
+        "/_astro/index.BVKZFYvx.js",
+        "/_astro/index.D5ahegtX.js"
+      ],
+      "status": {
+        "/_astro/index.BVKZFYvx.js": 200,
+        "/_astro/index.D5ahegtX.js": 200,
+        "/_astro/client.CwoxijIM.js": 200,
+        "/_astro/client.nHzutAOZ.js": 200
+      },
+      "unmatchedFinish": [],
+      "duplicateRequests": [],
+      "phase": [
+        {
+          "label": "react-dom-client",
+          "phase": "preload-enter",
+          "pageMs": 6122,
+          "nodeMs": 7102.697333
+        },
+        {
+          "label": "react-dom-client",
+          "phase": "native-import-dispatched",
+          "pageMs": 6122.400000095367,
+          "nodeMs": 7103.132416
+        },
+        {
+          "label": "index.BVKZFYvx.js",
+          "phase": "module-body-enter",
+          "pageMs": 9015.900000095367,
+          "nodeMs": 9996.977916
+        },
+        {
+          "label": "index.BVKZFYvx.js",
+          "phase": "module-body-leave",
+          "pageMs": 9016.100000143051,
+          "nodeMs": 9997.002291
+        },
+        {
+          "label": "index.D5ahegtX.js",
+          "phase": "module-body-enter",
+          "pageMs": 9206.299999952316,
+          "nodeMs": 10188.590458
+        },
+        {
+          "label": "index.D5ahegtX.js",
+          "phase": "module-body-leave",
+          "pageMs": 9207.799999952316,
+          "nodeMs": 10188.607583
+        },
+        {
+          "label": "client.nHzutAOZ.js",
+          "phase": "module-body-enter",
+          "pageMs": 9209.299999952316,
+          "nodeMs": 10189.890291
+        },
+        {
+          "label": "client.nHzutAOZ.js",
+          "phase": "module-body-leave",
+          "pageMs": 9209.299999952316,
+          "nodeMs": 10189.9275
+        },
+        {
+          "label": "client.CwoxijIM.js",
+          "phase": "module-body-enter",
+          "pageMs": 9209.299999952316,
+          "nodeMs": 10189.93575
+        },
+        {
+          "label": "client.CwoxijIM.js",
+          "phase": "module-body-leave",
+          "pageMs": 9209.299999952316,
+          "nodeMs": 10189.973041
+        },
+        {
+          "label": "react-dom-client",
+          "phase": "native-import-fulfilled",
+          "pageMs": 9209.400000095367,
+          "nodeMs": 10189.981208
+        },
+        {
+          "label": "react-dom-client",
+          "phase": "preloaded-import-fulfilled",
+          "pageMs": 9209.400000095367,
+          "nodeMs": 10190.015541
+        }
+      ],
+      "lastFinishedFile": "/_astro/index.D5ahegtX.js",
+      "lastNetworkFinishWallMs": 1794984907866.897,
+      "finishEventDeliveredNodeMs": 7242.88275,
+      "lastFinishToNativeFulfillmentBrowserWallMs": 3052.802978515625,
+      "lastFinishDeliveryToFulfillmentDeliveryNodeMs": 2947.098388671875
+    }
+  },
+  "trace": {
+    "meta": {
+      "categories": "devtools.timeline,blink.user_timing,v8,disabled-by-default-v8.compile",
+      "startNodeMs": 6826.8465,
+      "endNodeMs": 13228.751208,
+      "bytes": 99152672,
+      "eof": true,
+      "dataLoss": false,
+      "errors": [],
+      "result": {
+        "complete": true,
+        "outcomes": [
+          {
+            "status": "fulfilled"
+          }
+        ]
+      }
+    },
+    "count": 423426,
+    "sha256": "57032b04d2a135d0b470cc604d5b36a03e0a7137cfd675e5cb8072b4cead512f",
+    "markers": [
+      {
+        "name": "pui.s4.react.react.preload-enter",
+        "ts": 1355626164640,
+        "pid": 33784,
+        "tid": 30541768,
+        "ph": "I"
+      },
+      {
+        "name": "pui.s4.react.react-dom.preload-enter",
+        "ts": 1355626165248,
+        "pid": 33784,
+        "tid": 30541768,
+        "ph": "I"
+      },
+      {
+        "name": "pui.s4.react.react-dom-client.preload-enter",
+        "ts": 1355626165742,
+        "pid": 33784,
+        "tid": 30541768,
+        "ph": "I"
+      },
+      {
+        "name": "pui.s4.react.react.native-import-dispatched",
+        "ts": 1355626166141,
+        "pid": 33784,
+        "tid": 30541768,
+        "ph": "I"
+      },
+      {
+        "name": "pui.s4.react.react-dom.native-import-dispatched",
+        "ts": 1355626166182,
+        "pid": 33784,
+        "tid": 30541768,
+        "ph": "I"
+      },
+      {
+        "name": "pui.s4.react.react-dom-client.native-import-dispatched",
+        "ts": 1355626166208,
+        "pid": 33784,
+        "tid": 30541768,
+        "ph": "I"
+      },
+      {
+        "name": "pui.s4.react.react.native-import-fulfilled",
+        "ts": 1355629060201,
+        "pid": 33784,
+        "tid": 30541768,
+        "ph": "I"
+      },
+      {
+        "name": "pui.s4.react.react.preloaded-import-fulfilled",
+        "ts": 1355629060240,
+        "pid": 33784,
+        "tid": 30541768,
+        "ph": "I"
+      },
+      {
+        "name": "pui.s4.react.react-dom.native-import-fulfilled",
+        "ts": 1355629252939,
+        "pid": 33784,
+        "tid": 30541768,
+        "ph": "I"
+      },
+      {
+        "name": "pui.s4.react.react-dom.preloaded-import-fulfilled",
+        "ts": 1355629252976,
+        "pid": 33784,
+        "tid": 30541768,
+        "ph": "I"
+      },
+      {
+        "name": "pui.s4.react.react-dom-client.native-import-fulfilled",
+        "ts": 1355629253182,
+        "pid": 33784,
+        "tid": 30541768,
+        "ph": "I"
+      },
+      {
+        "name": "pui.s4.react.react-dom-client.preloaded-import-fulfilled",
+        "ts": 1355629253198,
+        "pid": 33784,
+        "tid": 30541768,
+        "ph": "I"
+      }
+    ],
+    "moduleEventCounts": {
+      "ResourceSendRequest": 8,
+      "v8.compileModule": 8
+    },
+    "events": [
+      {
+        "event": "ResourceSendRequest",
+        "clockUs": 1355626164965,
+        "durUs": null,
+        "pid": 33784,
+        "tid": 30541768,
+        "modules": ["index.J7E9Px8p.js"]
+      },
+      {
+        "event": "ResourceSendRequest",
+        "clockUs": 1355626165094,
+        "durUs": null,
+        "pid": 33784,
+        "tid": 30541768,
+        "modules": ["index.BVKZFYvx.js"]
+      },
+      {
+        "event": "ResourceSendRequest",
+        "clockUs": 1355626165211,
+        "durUs": null,
+        "pid": 33784,
+        "tid": 30541768,
+        "modules": ["index.C47PDzzu.js"]
+      },
+      {
+        "event": "ResourceSendRequest",
+        "clockUs": 1355626165478,
+        "durUs": null,
+        "pid": 33784,
+        "tid": 30541768,
+        "modules": ["index.CWLepCMo.js"]
+      },
+      {
+        "event": "ResourceSendRequest",
+        "clockUs": 1355626165594,
+        "durUs": null,
+        "pid": 33784,
+        "tid": 30541768,
+        "modules": ["index.D5ahegtX.js"]
+      },
+      {
+        "event": "ResourceSendRequest",
+        "clockUs": 1355626165710,
+        "durUs": null,
+        "pid": 33784,
+        "tid": 30541768,
+        "modules": ["index.CDDwQV5v.js"]
+      },
+      {
+        "event": "ResourceSendRequest",
+        "clockUs": 1355626165962,
+        "durUs": null,
+        "pid": 33784,
+        "tid": 30541768,
+        "modules": ["client.CwoxijIM.js"]
+      },
+      {
+        "event": "ResourceSendRequest",
+        "clockUs": 1355626166079,
+        "durUs": null,
+        "pid": 33784,
+        "tid": 30541768,
+        "modules": ["client.nHzutAOZ.js"]
+      },
+      {
+        "event": "v8.compileModule",
+        "clockUs": 1355626243690,
+        "durUs": 10,
+        "pid": 33784,
+        "tid": 30541768,
+        "modules": ["index.J7E9Px8p.js"]
+      },
+      {
+        "event": "v8.compileModule",
+        "clockUs": 1355626243768,
+        "durUs": 5,
+        "pid": 33784,
+        "tid": 30541768,
+        "modules": ["index.C47PDzzu.js"]
+      },
+      {
+        "event": "v8.compileModule",
+        "clockUs": 1355626245938,
+        "durUs": 7,
+        "pid": 33784,
+        "tid": 30541768,
+        "modules": ["index.BVKZFYvx.js"]
+      },
+      {
+        "event": "v8.compileModule",
+        "clockUs": 1355626247052,
+        "durUs": 6,
+        "pid": 33784,
+        "tid": 30541768,
+        "modules": ["index.CWLepCMo.js"]
+      },
+      {
+        "event": "v8.compileModule",
+        "clockUs": 1355626247162,
+        "durUs": 4,
+        "pid": 33784,
+        "tid": 30541768,
+        "modules": ["index.CDDwQV5v.js"]
+      },
+      {
+        "event": "v8.compileModule",
+        "clockUs": 1355626247240,
+        "durUs": 4,
+        "pid": 33784,
+        "tid": 30541768,
+        "modules": ["client.CwoxijIM.js"]
+      },
+      {
+        "event": "v8.compileModule",
+        "clockUs": 1355626305141,
+        "durUs": 11,
+        "pid": 33784,
+        "tid": 30541768,
+        "modules": ["client.nHzutAOZ.js"]
+      },
+      {
+        "event": "v8.compileModule",
+        "clockUs": 1355626305655,
+        "durUs": 5,
+        "pid": 33784,
+        "tid": 30541768,
+        "modules": ["index.D5ahegtX.js"]
+      }
+    ]
+  },
+  "staticGraph": [
+    {
+      "package": "react",
+      "entry": "_astro/index.J7E9Px8p.js",
+      "staticFiles": [
+        "_astro/index.BVKZFYvx.js",
+        "_astro/index.C47PDzzu.js",
+        "_astro/index.J7E9Px8p.js"
+      ],
+      "edges": [
+        ["_astro/index.J7E9Px8p.js", "_astro/index.BVKZFYvx.js"],
+        ["_astro/index.J7E9Px8p.js", "_astro/index.C47PDzzu.js"],
+        ["_astro/index.C47PDzzu.js", "_astro/index.BVKZFYvx.js"]
+      ],
+      "extraStaticFiles": [],
+      "extraPreloads": []
+    },
+    {
+      "package": "react-dom",
+      "entry": "_astro/index.CWLepCMo.js",
+      "staticFiles": [
+        "_astro/index.BVKZFYvx.js",
+        "_astro/index.CDDwQV5v.js",
+        "_astro/index.CWLepCMo.js",
+        "_astro/index.D5ahegtX.js"
+      ],
+      "edges": [
+        ["_astro/index.CWLepCMo.js", "_astro/index.BVKZFYvx.js"],
+        ["_astro/index.CWLepCMo.js", "_astro/index.D5ahegtX.js"],
+        ["_astro/index.CWLepCMo.js", "_astro/index.CDDwQV5v.js"],
+        ["_astro/index.D5ahegtX.js", "_astro/index.BVKZFYvx.js"],
+        ["_astro/index.CDDwQV5v.js", "_astro/index.BVKZFYvx.js"],
+        ["_astro/index.CDDwQV5v.js", "_astro/index.D5ahegtX.js"]
+      ],
+      "extraStaticFiles": [],
+      "extraPreloads": []
+    },
+    {
+      "package": "react-dom-client",
+      "entry": "_astro/client.CwoxijIM.js",
+      "staticFiles": [
+        "_astro/client.CwoxijIM.js",
+        "_astro/client.nHzutAOZ.js",
+        "_astro/index.BVKZFYvx.js",
+        "_astro/index.D5ahegtX.js"
+      ],
+      "edges": [
+        ["_astro/client.CwoxijIM.js", "_astro/index.BVKZFYvx.js"],
+        ["_astro/client.CwoxijIM.js", "_astro/client.nHzutAOZ.js"],
+        ["_astro/client.CwoxijIM.js", "_astro/index.D5ahegtX.js"],
+        ["_astro/client.nHzutAOZ.js", "_astro/index.BVKZFYvx.js"],
+        ["_astro/client.nHzutAOZ.js", "_astro/index.D5ahegtX.js"],
+        ["_astro/index.D5ahegtX.js", "_astro/index.BVKZFYvx.js"]
+      ],
+      "extraStaticFiles": [],
+      "extraPreloads": []
+    }
+  ],
+  "rendererInterval": {
+    "approximateLastNetworkCompletionToLastNativeFulfillmentMs": 3052.744125,
+    "sameThread": {
+      "pid": 33784,
+      "tid": 30541768
+    },
+    "groups": {
+      "function": {
+        "count": 90835,
+        "unionMs": 1622.993,
+        "largestMs": 58.608
+      },
+      "animation": {
+        "count": 1560,
+        "unionMs": 557.476,
+        "largestMs": 21.745
+      },
+      "layout": {
+        "count": 488,
+        "unionMs": 489.694,
+        "largestMs": 41.578
+      },
+      "gc": {
+        "count": 49,
+        "unionMs": 116.243,
+        "largestMs": 11.189
+      }
+    },
+    "functions": [
+      {
+        "file": "/_astro/site-shadcn-controls.C4W-PFsp.js",
+        "count": 33072,
+        "unionMs": 1005.685,
+        "sampleFunction": "disconnectedCallback"
+      },
+      {
+        "file": "/_astro/DocumentationImagePreview.astro_astro_type_script_index_0_lang.hFg87Bw1.js",
+        "count": 1696,
+        "unionMs": 39.544,
+        "sampleFunction": ""
+      },
+      {
+        "file": "/_astro/demo-renderer.CPNOKpkF.js",
+        "count": 1727,
+        "unionMs": 37.319,
+        "sampleFunction": "j"
+      },
+      {
+        "file": "/_astro/site-typography-client.Dz0g1PW9.js",
+        "count": 637,
+        "unionMs": 36.506,
+        "sampleFunction": ""
+      },
+      {
+        "file": "/_astro/previewer-client.BjG23ier.js",
+        "count": 628,
+        "unionMs": 17.368,
+        "sampleFunction": ""
+      },
+      {
+        "file": "/_astro/projection-materializer.Cya3Phkp.js",
+        "count": 1368,
+        "unionMs": 16.139,
+        "sampleFunction": ""
+      },
+      {
+        "file": "/_astro/PrototypePreviewer.astro_astro_type_script_index_0_lang.D7NFDtWM.js",
+        "count": 595,
+        "unionMs": 6.865,
+        "sampleFunction": ""
+      },
+      {
+        "file": "/_astro/SiteCopyBootstrap.astro_astro_type_script_index_0_lang.Ccg2CWU6.js",
+        "count": 1249,
+        "unionMs": 6.442,
+        "sampleFunction": ""
+      },
+      {
+        "file": "/_astro/projection-theme.DmjJLKPq.js",
+        "count": 3,
+        "unionMs": 5.953,
+        "sampleFunction": "i"
+      },
+      {
+        "file": "(unspecified)",
+        "count": 230,
+        "unionMs": 5.87,
+        "sampleFunction": "next"
+      },
+      {
+        "file": "/_astro/ec.g1fg5.js",
+        "count": 625,
+        "unionMs": 2.95,
+        "sampleFunction": ""
+      },
+      {
+        "file": "/_astro/slider-values-demo.shared.C69EHpBx.js",
+        "count": 3,
+        "unionMs": 1.012,
+        "sampleFunction": "n"
+      },
+      {
+        "file": "/_astro/demo-base-textarea.demo.c_I17ryb.js",
+        "count": 3,
+        "unionMs": 0.973,
+        "sampleFunction": "w"
+      },
+      {
+        "file": "/_astro/site-header-surface.DYSTHZqU.js",
+        "count": 576,
+        "unionMs": 0.881,
+        "sampleFunction": ""
+      },
+      {
+        "file": "/_astro/demo-base-image.demo.C87ec46k.js",
+        "count": 3,
+        "unionMs": 0.292,
+        "sampleFunction": "c"
+      },
+      {
+        "file": "/_astro/demo-base-radio-group.demo.CaDWyYAw.js",
+        "count": 4,
+        "unionMs": 0.227,
+        "sampleFunction": "t"
+      },
+      {
+        "file": "/_astro/calendar-demo.shared.C639z_7l.js",
+        "count": 8,
+        "unionMs": 0.055,
+        "sampleFunction": ""
+      },
+      {
+        "file": "/_astro/site-header-disclosure.BYc0pXlE.js",
+        "count": 3,
+        "unionMs": 0.02,
+        "sampleFunction": "y"
+      }
+    ],
+    "eightModuleCompileSumUs": 52,
+    "compilerNote": "Shown records are URL-bound v8.compileModule slices. Categories can overlap. Timing is for this sampled main thread interval."
+  },
+  "scopedFunctionRows": [
+    {
+      "function": "connectedCallback",
+      "line": 18,
+      "column": 32968,
+      "count": 949,
+      "inclusiveMs": 448.686,
+      "maxMs": 6.67
+    },
+    {
+      "function": "",
+      "line": 15,
+      "column": 43426,
+      "count": 58,
+      "inclusiveMs": 249.234,
+      "maxMs": 43.45
+    },
+    {
+      "function": "",
+      "line": 9,
+      "column": 433644,
+      "count": 1806,
+      "inclusiveMs": 101.747,
+      "maxMs": 3.049
+    },
+    {
+      "function": "",
+      "line": 9,
+      "column": 169783,
+      "count": 663,
+      "inclusiveMs": 88.411,
+      "maxMs": 11.944
+    },
+    {
+      "function": "Cl",
+      "line": 15,
+      "column": 48341,
+      "count": 20773,
+      "inclusiveMs": 36.145,
+      "maxMs": 0.099
+    },
+    {
+      "function": "",
+      "line": 9,
+      "column": 417786,
+      "count": 610,
+      "inclusiveMs": 22.127,
+      "maxMs": 0.386
+    },
+    {
+      "function": "w",
+      "line": 18,
+      "column": 30556,
+      "count": 503,
+      "inclusiveMs": 7.2,
+      "maxMs": 0.139
+    },
+    {
+      "function": "",
+      "line": 18,
+      "column": 37203,
+      "count": 473,
+      "inclusiveMs": 6.809,
+      "maxMs": 1.134
+    },
+    {
+      "function": "Ve",
+      "line": 9,
+      "column": 395443,
+      "count": 3,
+      "inclusiveMs": 6.793,
+      "maxMs": 6.736
+    },
+    {
+      "function": "",
+      "line": 13,
+      "column": 25800,
+      "count": 771,
+      "inclusiveMs": 6.432,
+      "maxMs": 0.113
+    },
+    {
+      "function": "",
+      "line": 13,
+      "column": 25775,
+      "count": 771,
+      "inclusiveMs": 6.313,
+      "maxMs": 0.087
+    },
+    {
+      "function": "Oe",
+      "line": 9,
+      "column": 396925,
+      "count": 19,
+      "inclusiveMs": 6.193,
+      "maxMs": 2.008
+    },
+    {
+      "function": "disconnectedCallback",
+      "line": 18,
+      "column": 46170,
+      "count": 446,
+      "inclusiveMs": 5.54,
+      "maxMs": 0.06
+    },
+    {
+      "function": "",
+      "line": 18,
+      "column": 34294,
+      "count": 444,
+      "inclusiveMs": 4.2410000000000005,
+      "maxMs": 1.122
+    }
+  ]
+}

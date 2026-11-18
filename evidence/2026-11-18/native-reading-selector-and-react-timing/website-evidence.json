@@ -1,0 +1,113 @@
+{
+  "readHead": "d0095a8cd79103561f017ea48e8cfff1a6991029",
+  "integratedHead": "a8e6d058e8a556dced7bd2465e9c100456e6580e",
+  "productionBuild": {
+    "head": "d0095a8cd79103561f017ea48e8cfff1a6991029",
+    "tree": "b319bf92ec8b1dcae05432dd36a16afc11bc14f6",
+    "distHashes": {
+      "zh-cn/index.html": "67bd24f21c84a07fb03538d2ef1a37c4aa2155f01574278cb3be84120df13178",
+      "zh-cn/ui-libraries/shadcn/button/index.html": "76102b48e41a9560238892ea8e6c37f7fed0126f8ad5b8588f8aa573ca66aeaf",
+      "zh-cn/ui-libraries/brutalist/components/button/index.html": "8a3cc5d006c2887e617b4d3a6b06eb676ebcdc37aadfdb930a5d7c5a3a5cbeda"
+    },
+    "sourceCodeExamples": 9,
+    "renderedCodeExamples": 9,
+    "packedHeaderExit": 0,
+    "previewBrowserExit": 0,
+    "codeGrammarExit": 0,
+    "copyCommandsExit": 0,
+    "scrollChainExit": 0,
+    "selector": "uses real family Popover Triggers|uses the same mobile shell|retains (shadcn|brutalist) preference owners|compact (shadcn|brutalist)|live available region|keeps Runtime Tabs outside"
+  },
+  "receipts": {
+    "focused": {
+      "passCount": 50,
+      "filtered": 0,
+      "files": 5,
+      "digest": "cd80ef8e4d8590d59bcf295c8f66769f36f3aee4d71d69822bee6616bb0b8bdb"
+    },
+    "preview-browser": {
+      "passCount": 15,
+      "filtered": 9,
+      "files": 3,
+      "digest": "d99678e49fa5d878d9169fac9cbbd08b615b2e134f58db0dd5abd3c42ead024c"
+    },
+    "code-grammar": {
+      "passCount": 3,
+      "filtered": 23,
+      "files": 1,
+      "digest": "d437578debe46852c6ac98ad9a89f814fe41e25a1fe3de68ecfdd9061760f894"
+    },
+    "copy-commands": {
+      "passCount": 1,
+      "filtered": 14,
+      "files": 1,
+      "digest": "9bb8590483253a19c735aec7ddf37b090f50a84862f2084662e0549c8b6332f7"
+    },
+    "scroll-chain": {
+      "passCount": 2,
+      "filtered": 4,
+      "files": 1,
+      "digest": "27979f1aab787c51f428cdd8ac1705770120a4a5029ba073468e3a1694989460"
+    },
+    "exact-main-sibling": {
+      "passCount": 3,
+      "filtered": 30,
+      "files": 1,
+      "digest": "5429eeb394eb20f6e1564ecfa55dff4ccc9096f8959ede05a6a4e95c3310e222"
+    }
+  },
+  "native": [
+    {
+      "id": "reading-fallback-shadcn",
+      "outcome": "passed",
+      "headingPaint": {
+        "size": "30px",
+        "leading": "37.5px",
+        "text": "\u5feb\u901f\u5f00\u59cb"
+      },
+      "descriptionPaint": {
+        "size": "16px",
+        "leading": "26px"
+      },
+      "originalScreenshotSha256": "d568bd554d1284ddb050118eb7bde65d893651285bcae9b21caf410af85848ee"
+    },
+    {
+      "id": "reading-fallback-brutalist",
+      "outcome": "passed",
+      "headingPaint": {
+        "size": "36px",
+        "leading": "44px",
+        "text": "Brutalist Button"
+      }
+    },
+    {
+      "id": "reading-fallback-homepage",
+      "outcome": "passed",
+      "headingPaint": {
+        "size": "30px",
+        "leading": "37.5px",
+        "text": "\u7ec4\u4ef6\u53ef\u4ee5\u72ec\u7acb\u4e8e\u6846\u67b6\u6216\u8bbe\u8ba1\u4f53\u7cfb"
+      },
+      "descriptionPaint": {
+        "size": "18px",
+        "leading": "28px"
+      },
+      "originalScreenshotSha256": "8be461468db773bb2682a1ae754ed3b1cf8bf3b9ebdb6ae748b7ec699fa40e7a"
+    }
+  ],
+  "shippedSelectorEquivalence": {
+    "pages": 703,
+    "counts": {
+      "headings": 454,
+      "taglines": 448,
+      "homeExcluded": 2
+    },
+    "homePages": ["en/index.html", "zh-cn/index.html"],
+    "differences": []
+  },
+  "originalTypographyCompiledControls": {
+    "original": 3,
+    "guard-removed": 3,
+    "guard-neutral-specificity": 3
+  }
+}
