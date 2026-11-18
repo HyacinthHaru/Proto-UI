@@ -7,7 +7,8 @@ import type { RuntimeCheckpoint } from '../kernel/timeline';
 import type { RuntimeLifecycleEvent } from '../kernel/lifecycle-events';
 
 export type CommitSignal = {
-  done(): void;
+  /** Finalize mount projection after module effects and before publishing the mounted phase. */
+  done(finalizeProjection?: () => void): void;
 };
 
 export type ScheduledDelayTask = {

@@ -669,8 +669,7 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
         this._exposes = record;
       };
 
-      // Admit split effects before forwarding Runtime's mounted task to the host.
-      // Keep delivery inside the original scheduler call, including sync failures.
+      // Admit split effects before Runtime publishes the mounted phase.
       let admitViewProjection: (() => void) | null = null;
       let focusIngressReady = false;
       let currentEventGate: ReturnType<typeof createEventGate> | null = null;
@@ -760,10 +759,10 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
           host: thisEl,
           root: nativeLinkTarget ?? thisRoot,
           shadowViewTarget: splitResources?.surface,
-          schedule: (task) => {
-            admitViewProjection?.();
-            schedule(task);
-          },
+          schedule,
+          captureProjectionAdmission: splitResources
+            ? () => admitViewProjection ?? undefined
+            : undefined,
           rawPropsSource,
           getInstanceAssociations: () => getElementAssociations(thisEl),
           viewOperations: { capture: () => owner.captureViewOperation() },
@@ -1116,7 +1115,12 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
               deferredVisualSink!.commit(frame);
             }
           };
-          admitViewProjection = splitResources ? admitProjection : null;
+          if (splitResources) {
+            const admit = () => {
+              if (admitViewProjection === admit) admitProjection();
+            };
+            admitViewProjection = admit;
+          }
           owner.attachView({
             modules: createWebComponentModules({
               el: thisEl,
@@ -1236,9 +1240,8 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
               !thisEl.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
             createSession: createHostSession,
           });
-          // Presence may defer scheduling; admit the completed acquisition now.
-          // Non-split views retain their existing post-attach admission boundary.
-          admitProjection();
+          // Preserve post-attach admission when no split commit finalized it.
+          if (acquiringProjection) admitProjection();
         } catch (error) {
           admitViewProjection = null;
           // Initial failure is retired by the guarded connection transaction,

@@ -455,6 +455,7 @@ export function createWebComponentHostSession<Props extends PropsBaseType>(args:
   root: Element | ShadowRoot;
   shadowViewTarget?: ShadowInnerSurface;
   schedule: (task: () => void) => void;
+  captureProjectionAdmission?: () => (() => void) | undefined;
   rawPropsSource: RawPropsSource<Props>;
   getInstanceAssociations?: () => InstanceAssociations;
   viewOperations?: RuntimeHost<Props>['viewOperations'];
@@ -835,9 +836,10 @@ export function createWebComponentHostSession<Props extends PropsBaseType>(args:
       onLifecycleCheckpoint,
       onLifecycleEvent,
       commit: (children, signal) => {
+        const admitProjection = args.captureProjectionAdmission?.();
         commitWebComponentChildren(children);
         eventGate.enable();
-        signal?.done();
+        signal?.done(admitProjection);
       },
     },
     {

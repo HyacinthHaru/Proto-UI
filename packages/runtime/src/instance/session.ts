@@ -216,7 +216,7 @@ export function createRuntimeSession<P extends PropsBaseType>(
     kind: 'mount' | 'update',
     epoch: number,
     updateRevision: number,
-    onCommitted: () => void
+    onCommitted: (finalizeProjection?: () => void) => void
   ) => {
     propsPort.syncFromHost();
     children = inst.renderOnce();
@@ -230,7 +230,7 @@ export function createRuntimeSession<P extends PropsBaseType>(
 
     let commitDone = false;
     host.commit(children, {
-      done() {
+      done(finalizeProjection) {
         if (commitDone) return;
         commitDone = true;
 
@@ -252,7 +252,7 @@ export function createRuntimeSession<P extends PropsBaseType>(
           moduleHub.afterRenderCommit();
         }
 
-        onCommitted();
+        onCommitted(kind === 'mount' && activeCommit ? finalizeProjection : undefined);
       },
     });
   };
@@ -389,7 +389,7 @@ export function createRuntimeSession<P extends PropsBaseType>(
     };
 
     try {
-      renderCommit('mount', epoch, 0, () => {
+      renderCommit('mount', epoch, 0, (finalizeProjection) => {
         const presence = moduleHub.getPort<PresencePort>('presence')?.awaitMount();
         const scheduleFinish = () => {
           if (transitionVersion !== version) {
@@ -400,6 +400,13 @@ export function createRuntimeSession<P extends PropsBaseType>(
           // The author callback remains host-scheduled and can still be
           // invalidated by an intervening unmount.
           moduleHub.setProtoPhase('mounted');
+          if (finalizeProjection) {
+            finalizeProjection();
+            if (transitionVersion !== version) {
+              resolveMount();
+              return;
+            }
+          }
           setMountPhase('mounted', epoch);
           let scheduleReturned = false;
           host.schedule(() => {
