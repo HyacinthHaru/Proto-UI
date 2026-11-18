@@ -84,8 +84,8 @@ type OrderComparisons = Map<
 >;
 type DomainClaims = Map<AnatomyInstanceToken, ClaimRecord[]>;
 type OrderSnapshot = {
-  targets: (AnatomyRootTarget | null)[];
-  comparators: AnatomyRootTarget['compareDocumentPosition'][];
+  targets: readonly (AnatomyRootTarget | null)[];
+  comparators: readonly AnatomyRootTarget['compareDocumentPosition'][];
   ordered: ClaimRecord[];
   signatureClaims?: readonly number[];
 };
@@ -94,6 +94,21 @@ type OrderNotificationReads = {
   domains: Map<AnatomyParentGetter, DomainClaims>;
   orders: Map<ClaimRecord[], OrderSnapshot>;
 };
+
+function readOrderInputs<Item, Value>(
+  items: readonly Item[],
+  read: (item: Item) => Value,
+  previous?: readonly Value[]
+): readonly Value[] {
+  if (previous?.length !== items.length) return items.map(read);
+  let next: Value[] | undefined;
+  for (let index = 0; index < items.length; index++) {
+    const value = read(items[index]!);
+    if (!next && value !== previous[index]) next = previous.slice(0, index);
+    next?.push(value);
+  }
+  return next ?? previous;
+}
 
 const CLAIM_BY_PART_VIEW = new WeakMap<AnatomyPartView, ClaimRecord>();
 
@@ -1178,19 +1193,18 @@ export class AnatomyModuleImpl extends ModuleBase {
 
   private sortClaims(claims: ClaimRecord[], reads?: OrderNotificationReads): ClaimRecord[] {
     if (claims.length < 2) return claims.slice();
-    // Every reader resolves its current targets. Only the ordering work can
-    // be shared when this notification still sees the same inputs.
-    const targets = claims.map((claim) => claim.getRootTarget(claim.instance));
-    const comparators = reads && targets.map((target) => target?.compareDocumentPosition);
     const cached = reads?.orders.get(claims);
-    if (
-      cached &&
-      comparators &&
-      targets.every(
-        (target, index) =>
-          target === cached.targets[index] && comparators[index] === cached.comparators[index]
-      )
-    )
+    // Read all targets before their comparators. Unchanged inputs retain the
+    // previous arrays and sorted order within this notification.
+    const targets = readOrderInputs(
+      claims,
+      (claim) => claim.getRootTarget(claim.instance),
+      cached?.targets
+    );
+    const comparators =
+      reads &&
+      readOrderInputs(targets, (target) => target?.compareDocumentPosition, cached?.comparators);
+    if (cached && targets === cached.targets && comparators === cached.comparators)
       return cached.ordered;
 
     const ordered = claims

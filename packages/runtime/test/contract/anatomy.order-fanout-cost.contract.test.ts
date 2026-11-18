@@ -205,16 +205,35 @@ describe('Runtime Anatomy synchronous order fanout cost', () => {
     it(`${source}: sorts a stable shared domain once per notification`, () => {
       const domain = createDomain(12, 12, true);
       const sort = vi.spyOn(Array.prototype, 'sort');
+      const map = vi.spyOn(Array.prototype, 'map');
       let domainSorts: number;
+      let claimMappings: number;
+      let targetMappings: number;
       try {
         domain[source]();
         domainSorts = sort.mock.contexts.filter(
           (receiver) => Array.isArray(receiver) && receiver.length === domain.items.length + 1
         ).length;
+        claimMappings = map.mock.contexts.filter(
+          (receiver) =>
+            Array.isArray(receiver) &&
+            receiver.length === domain.items.length + 1 &&
+            typeof receiver[0]?.orderId === 'number'
+        ).length;
+        targetMappings = map.mock.contexts.filter(
+          (receiver) =>
+            Array.isArray(receiver) &&
+            receiver.length === domain.items.length + 1 &&
+            receiver[0] === domain.element
+        ).length;
       } finally {
+        map.mockRestore();
         sort.mockRestore();
       }
       expect(domainSorts).toBe(1);
+      // The first reader maps the claims for both target reads and sort indices,
+      // and the targets for comparator reads. Later readers reuse those inputs.
+      expect([claimMappings, targetMappings]).toEqual([2, 1]);
       expect([...domain.notifications.values()].flat()).toEqual([]);
       expect(Math.max(...domain.targetReads.values())).toBe(domain.items.length);
     });
