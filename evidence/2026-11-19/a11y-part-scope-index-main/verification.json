@@ -1,0 +1,154 @@
+{
+  "source": {
+    "head": "0d189d3f25bc6dd81cfd777e0633f4df553ec199",
+    "tree": "697264e1614951085755b8a7e3b8a8611ae35425",
+    "main": "534caf4a241f7f7ef49b7b073662ad982e938c91"
+  },
+  "sameFixtureWithOriginalSource": {
+    "numPassedTests": 14,
+    "numFailedTests": 1,
+    "numPendingTests": 0
+  },
+  "focused": {
+    "numPassedTests": 210,
+    "numFailedTests": 0,
+    "numPendingTests": 0
+  },
+  "packed": {
+    "preview-browser": {
+      "numPassedTests": 15,
+      "numFailedTests": 0,
+      "numPendingTests": 9
+    },
+    "code-grammar": {
+      "numPassedTests": 3,
+      "numFailedTests": 0,
+      "numPendingTests": 23
+    },
+    "copy-commands": {
+      "numPassedTests": 1,
+      "numFailedTests": 0,
+      "numPendingTests": 14
+    },
+    "scroll-chain": {
+      "numPassedTests": 2,
+      "numFailedTests": 0,
+      "numPendingTests": 4
+    },
+    "table": {
+      "numPassedTests": 5,
+      "numFailedTests": 0,
+      "numPendingTests": 0
+    },
+    "accordion": {
+      "numPassedTests": 4,
+      "numFailedTests": 0,
+      "numPendingTests": 29
+    },
+    "field": {
+      "numPassedTests": 4,
+      "numFailedTests": 0,
+      "numPendingTests": 21
+    }
+  },
+  "headerWidths": [320, 390],
+  "originalCombinedMatrix": {
+    "previewsByLocale": {
+      "zh-cn": 1268,
+      "en": 1268
+    },
+    "cases": [
+      {
+        "name": "zh-cn: native Light/split/mixed acceptance",
+        "status": "failed",
+        "error": "page.waitForFunction: Timeout 60000ms exceeded."
+      },
+      {
+        "name": "en: native Light/split/mixed acceptance",
+        "status": "failed",
+        "error": "page.waitForFunction: Timeout 60000ms exceeded."
+      }
+    ]
+  },
+  "independentEnglishRendererProfile": {
+    "before": {
+      "source": [
+        "6e006a197af47ebdca9608d58d9554bfcaf24fd5",
+        "62820d5bfe2c75e4ff7e680942bb13290b1cc3c3"
+      ],
+      "asset": "site-shadcn-controls.Bf5VlP6E.js",
+      "assetSha256": "f9b12027ae571a0bf2a3c152b782ef15e97dc60004c31f46f51286ab41a40f03",
+      "region": {
+        "start": {
+          "line": 8,
+          "character": 151081
+        },
+        "end": {
+          "line": 8,
+          "character": 151710
+        }
+      },
+      "receipt": {
+        "beginRequestedNodeMs": 20327.946084,
+        "beginDeliveredNodeMs": 21503.910459,
+        "stopRequestedNodeMs": 44330.757625,
+        "stopDeliveredNodeMs": 53438.785625,
+        "nodeTimeOrigin": 1795034695928.477,
+        "startIndex": 384,
+        "startPageMs": 19193.60000014305,
+        "stopIndex": null,
+        "stopPageMs": null,
+        "samples": 11061,
+        "error": null
+      },
+      "capturedMs": 32918.904,
+      "selfMs": 8207.423999999954,
+      "inclusiveMs": 8207.423999999954,
+      "selfSamples": 2759,
+      "inclusiveSamples": 2759,
+      "registrySelfMs": 8537.524999999952,
+      "registrySelfSamples": 2870,
+      "frameWeights": [["(anonymous):9:151082", 8207.423999999954]]
+    },
+    "after": {
+      "source": [
+        "9904ceb0fb48451ced9be34741dae07bf88b5239",
+        "421a7c86937c78c7fc2f2f85d7f727ee4e29d5c5"
+      ],
+      "asset": "site-shadcn-controls.BbNkbh9A.js",
+      "assetSha256": "4ea8650f2ac37ac1657a73e2f8c0f9ce089e45d8198b8ce12bf0ef8ce5466b0a",
+      "region": {
+        "start": {
+          "line": 8,
+          "character": 151085
+        },
+        "end": {
+          "line": 8,
+          "character": 151694
+        }
+      },
+      "receipt": {
+        "beginRequestedNodeMs": 19867.7305,
+        "beginDeliveredNodeMs": 21161.865333,
+        "stopRequestedNodeMs": 43872.541375,
+        "stopDeliveredNodeMs": 45074.24325,
+        "nodeTimeOrigin": 1795035509091.317,
+        "startIndex": 384,
+        "startPageMs": 18978.39999985695,
+        "stopIndex": null,
+        "stopPageMs": null,
+        "samples": 8465,
+        "error": null
+      },
+      "capturedMs": 24938.67,
+      "selfMs": 69.06700000000002,
+      "inclusiveMs": 69.06700000000002,
+      "selfSamples": 23,
+      "inclusiveSamples": 23,
+      "registrySelfMs": 422.80999999999995,
+      "registrySelfSamples": 148,
+      "frameWeights": [["(anonymous):9:151086", 69.06700000000002]]
+    },
+    "scope": "Independent English renderer profiles, each requested at the delivered preview-384 milestone. Resolver and registry-factory self weights use their emitted source regions. These are not whole-page timing measurements."
+  }
+}
