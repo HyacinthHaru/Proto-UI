@@ -1,0 +1,71 @@
+import { createRequire } from 'node:module';
+import { readFile, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { resolve } from 'node:path';
+import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+const [directory, variant, resolution] = process.argv.slice(2);
+const root = process.cwd();
+const out = resolve(directory);
+const { build } = createRequire(resolve(root, 'package.json'))('esbuild');
+const { chromium } = createRequire(resolve(root, 'apps/www/package.json'))('playwright-core');
+const { renderProtoShadowSplitStyleArtifact } = await import(resolve(root, 'packages/cli/src/services/proto-style-css.ts'));
+const { rewriteSplitBaseDeclarations } = await import(resolve(root, 'packages/adapters/web-component/test/shadow-split-test-utils.ts'));
+const script = await readFile(resolve(out, 'native-entry.txt'), 'utf8');
+const bundle = await build({
+  stdin: { contents: script, resolveDir: resolve(root, 'apps/www'), sourcefile: 'native-mask-admission.ts', loader: 'ts' },
+  platform: 'browser',
+  format: 'iife',
+  bundle: true,
+  write: false,
+  metafile: true,
+  ...(resolution === 'dist' ? { tsconfigRaw: { compilerOptions: {} } } : { tsconfig: resolve(root, 'tsconfig.json') }),
+});
+const hash = value => createHash('sha256').update(value).digest('hex');
+const inputs = {};
+for (const path of Object.keys(bundle.metafile.inputs)) {
+  inputs[path] = path.endsWith('native-mask-admission.ts') ? hash(script) : hash(await readFile(path));
+}
+const wcFiles = Object.keys(inputs).filter(p => p.includes('adapters/web-component/'));
+assert(wcFiles.length > 0 && wcFiles.every(p => p.includes('/'+resolution+'/')));
+if (resolution === 'dist') assert(!Object.keys(inputs).some(p => /packages\/.+\/src\//.test(p)));
+const artifact = renderProtoShadowSplitStyleArtifact([
+  'fixed','inset-0','bg-background','bg-black/50','backdrop-blur-xs','hidden',
+  'animate-in','fade-in-0','animate-out','fade-out-0','duration-100',
+]);
+const old = { ...artifact, cssText: rewriteSplitBaseDeclarations(artifact.cssText, css =>
+  css.replace('--pui-split-participation-coordinate-recipe: i1;', ''),
+)};
+const browser = await chromium.launch({ headless: true, executablePath: process.env.CHROME_PATH });
+try {
+  const page = await browser.newPage({ colorScheme: 'light' });
+  await page.addScriptTag({ content: bundle.outputFiles[0].text });
+  const invalid = await page.evaluate(a => window.runMaskAdmission(a,'invalid'), old);
+  const valid = await page.evaluate(a => window.runMaskAdmission(a,'valid'), artifact);
+  const mounted = row => row.throughAppend.some(event => event.type === 'mount.mounted');
+  const mountedPhase = row => row.throughAppend.some(event => event.type === 'mount.phase' && event.phase === 'mounted');
+  const head = execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
+  const tree = execFileSync('git',['rev-parse','HEAD^{tree}'],{encoding:'utf8'}).trim();
+  const result = { variant, resolution, head, tree, version: browser.version(), inputs, bundle: hash(bundle.outputFiles[0].contents), artifacts: { current: hash(artifact.cssText), old: hash(old.cssText) }, invalid, valid };
+  await writeFile(resolve(out, variant+'.json'), JSON.stringify(result,null,2)+'\n');
+  assert.equal(invalid.open,true);
+  assert.equal(invalid.errors.length,1);
+  assert.match(invalid.errors[0],/hidden.*I1 recipe/);
+  assert.equal(invalid.cleaned.listeners,0);
+  assert.equal(invalid.cleaned.shadowChildren,0);
+  assert.equal(invalid.cleaned.colorScheme,null);
+  assert.equal(invalid.cleaned.rootProjection,null);
+  assert.deepEqual(invalid.cleaned.exposes,[]);
+  assert(invalid.throughAppend.some(event => event.type === 'mount.commit.done'));
+  assert.equal(invalid.visualSinkCalls,1);
+  assert.equal(valid.visualSinkCalls,1);
+  assert.equal(valid.open,true);
+  assert.deepEqual(valid.errors,[]);
+  assert.equal(mounted(valid),true);
+  assert.equal(mountedPhase(valid),true);
+  assert.equal(valid.afterAppend.listeners,1);
+  assert.equal(valid.cleaned.listeners,0);
+  assert.equal(valid.cleaned.shadowChildren,0);
+  assert.equal(mountedPhase(invalid),false);
+  assert.equal(mounted(invalid),false);
+} finally { await browser.close(); }

@@ -16,3 +16,5 @@ The local candidate carries the active split admission callback through the exis
 The same added test bytes fail the two old-companion rows on the maintainer branch and pass both on the local candidate. The broader selected suites record 854 pass and 3 fail before, then 856 pass and 1 fail. The same decoration Rule cleanup assertion fails on both revisions. The candidate also retains the valid-companion observation. The prior earlier-effects experiment was red and is excluded from the candidate results.
 
 The candidate patch starts at the maintainer branch above. It is supplied for reconciliation and review. No integration or deployment is implied. The subject is lifecycle and error ordering, with no paint or accessibility claim.
+
+The exact executed probe is stored as `native-mask.mjs.txt` to keep the repository formatter from changing its bytes. Copy it to `native-mask.mjs` when replaying the probe alongside `native-entry.txt`.
