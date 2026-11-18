@@ -1369,10 +1369,20 @@ export class AnatomyModuleImpl extends ModuleBase {
       let byRoot = domains.get(getParent);
       if (!byRoot) {
         byRoot = new Map();
+        const roots = new Map<AnatomyInstanceToken, AnatomyInstanceToken | null>();
+        const path: AnatomyInstanceToken[] = [];
+        const parentWithinScan: AnatomyParentGetter = (instance) => {
+          const known = roots.get(instance);
+          if (known !== undefined) return known;
+          path.push(instance);
+          return getParent(instance);
+        };
         // This cache belongs to this family notification only. Preserve the
         // registration order inside each root, including stable host fallback.
         for (const claim of CENTER.listClaims(family)) {
-          const root = this.findDomainRoot(claim.instance, family, getParent);
+          const root = this.findDomainRoot(claim.instance, family, parentWithinScan);
+          for (const instance of path) roots.set(instance, root);
+          path.length = 0;
           if (!root) continue;
           let members = byRoot.get(root);
           if (!members) byRoot.set(root, (members = []));

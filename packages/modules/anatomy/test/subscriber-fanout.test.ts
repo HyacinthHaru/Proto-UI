@@ -50,8 +50,8 @@ function domainFixture() {
   const make = (role: 'root' | 'item', parent: object | null) => {
     const token = {};
     parents.set(token, parent);
-    const logicalParent = (instance: unknown) => parents.get(instance) ?? null;
-    let liveParentGetter = logicalParent;
+    const logicalParent = vi.fn((instance: unknown) => parents.get(instance) ?? null);
+    let liveParentGetter: (instance: unknown) => object | null = logicalParent;
     let logicalCapsPresent = true;
     const backing = makeCaps({
       instance: token,
@@ -83,6 +83,7 @@ function domainFixture() {
     return {
       token,
       owner,
+      logicalParent,
       notify: () => owner.onMountPhase('mounted', 1),
       bumpCaps: () => backing.__bumpEpoch(),
       setLogicalCapsPresent: (present: boolean) => {
@@ -227,6 +228,29 @@ describe('Anatomy current-domain target notifications', () => {
 });
 
 describe('Anatomy family subscriber notification', () => {
+  it('shares ancestry reads while collecting one order notification', () => {
+    const f = domainFixture();
+    const branch = f.item(f.first.token);
+    for (let index = 0; index < 16; index++) f.item(branch.token);
+    const firstOrder = vi.fn();
+    const secondOrder = vi.fn();
+    f.first.owner.port.subscribeOrder(f.family, firstOrder);
+    f.second.owner.port.subscribeOrder(f.family, secondOrder);
+
+    f.first.logicalParent.mockClear();
+    f.first.owner.port.syncStructure();
+    expect(
+      f.first.logicalParent.mock.calls.filter(([instance]) => instance === branch.token)
+    ).toHaveLength(1);
+    expect(firstOrder).not.toHaveBeenCalled();
+    expect(secondOrder).not.toHaveBeenCalled();
+
+    branch.move(f.second.token);
+    f.first.owner.port.syncStructure();
+    expect(firstOrder).toHaveBeenCalledTimes(1);
+    expect(secondOrder).toHaveBeenCalledTimes(1);
+  });
+
   it('does not inspect unrelated owners when one family publishes a structural change', () => {
     const f = fixture();
     const listener = f.make('item');
