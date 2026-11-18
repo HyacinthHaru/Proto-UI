@@ -1,0 +1,479 @@
+{
+  "source": {
+    "parent": "6c7ef003845056873bdf8433226b33048e60fdb1",
+    "head": "9ed1270c88dcd55a93b9e06eadbbc117695f2ee3",
+    "tree": "5f085b904d1902fb8f5b7783d61864c6119ba6d4",
+    "source": "b68869ee223fb643fd28d841b4756633c459a33b",
+    "sourcePaths": {
+      "packages/adapters/web-component/src/portal-mount.ts": "47293b2c48cea7ec0ab1ea6fd7b73ca468128441",
+      "packages/adapters/web-component/test/focus-entry-motion-origin.test.ts": "eaac61b0b162013217375e2f6cd79fed193a51da"
+    },
+    "scope": "Provisional S4 integration. Exact nested Portal patch, independently maintained main PR #1496 is still open."
+  },
+  "runnerOverlay": {
+    "scope": "CDP CPU profiler only, no page or original predicate/deadline change. English case intentionally filtered. Both internal draft routes enabled only in disposable site build and restored.",
+    "sha256": "1ed1c9bee69fac88ee029a30a7292cbd9e1df7d8b16ae58d4c8035b6791c27ec",
+    "sourceRestored": true,
+    "restoreExitMatchesOriginalFailure": true
+  },
+  "build": {
+    "packages": 47,
+    "pages": 685,
+    "packageSizeChange": "Local whole-entry WC gzip +1 byte versus 6c, ceilings unchanged",
+    "exit": {
+      "production-build": 0,
+      "types": 0,
+      "manifests": 0,
+      "budgets": 0
+    }
+  },
+  "matrix": {
+    "zh-cn": {
+      "bytes": 1862557,
+      "sha256": "301af7e314d2351e731a92904dc2a52a6ced369e8be9ae5c23dfe863967d3d97",
+      "previews": 1268
+    },
+    "en": {
+      "bytes": 1914131,
+      "sha256": "00b12fffc46f68f99e05fc55fc467fb54ae6fd15ba3b0b5a84a128361b6308bf",
+      "previews": 1268
+    }
+  },
+  "focused": {
+    "head": "9ed1270c88dcd55a93b9e06eadbbc117695f2ee3",
+    "command": [
+      "corepack",
+      "pnpm@10.32.1",
+      "exec",
+      "vitest",
+      "run",
+      "--maxWorkers",
+      "2",
+      "--minWorkers",
+      "1",
+      "packages/adapters/web-component/test/dialog-portal-owner.test.ts",
+      "packages/adapters/web-component/test/focus-catalog.integration.test.ts",
+      "packages/adapters/web-component/test/focus-entry-motion-origin.test.ts",
+      "packages/adapters/web-component/test/focus-entry-observer.test.ts",
+      "packages/adapters/web-component/test/focus-entry-refresh-coalescing.test.ts",
+      "packages/adapters/web-component/test/focus-initialization-cleanup.integration.test.ts",
+      "packages/adapters/web-component/test/focus-intent-retries.integration.test.ts",
+      "packages/adapters/web-component/test/focus-portal-parent-release.integration.test.ts",
+      "packages/adapters/web-component/test/focus-readiness-fanout.integration.test.ts",
+      "packages/adapters/web-component/test/focus-sampled-request-kind.test.ts",
+      "packages/adapters/web-component/test/focus-scope-targets.test.ts",
+      "packages/adapters/web-component/test/focus-shadow-acquisition.integration.test.ts",
+      "packages/adapters/web-component/test/focus-teardown-readiness.integration.test.ts",
+      "packages/adapters/web-component/test/focus-terminal-cleanup.integration.test.ts",
+      "packages/adapters/web-component/test/focus-terminal-reconnect.integration.test.ts",
+      "packages/adapters/web-component/test/focus.test.ts",
+      "packages/adapters/web-component/test/material-release-reentry.test.ts",
+      "packages/adapters/web-component/test/overlay-focus.integration.test.ts",
+      "packages/adapters/web-component/test/portal-adoption-review.test.ts",
+      "packages/adapters/web-component/test/portal-body-destination.test.ts",
+      "packages/adapters/web-component/test/portal-conceal.test.ts",
+      "packages/adapters/web-component/test/portal-destination-lifetimes.integration.test.ts",
+      "packages/adapters/web-component/test/portal-destination-reentry.test.ts",
+      "packages/adapters/web-component/test/portal-mount-ownership.test.ts",
+      "packages/adapters/web-component/test/portal-owned-relocation.test.ts",
+      "--reporter=json",
+      "--outputFile=$TASK_STATE/focused.json"
+    ],
+    "exit": 0,
+    "files": 25,
+    "passed": 340,
+    "failed": 0
+  },
+  "preview": {
+    "head": "9ed1270c88dcd55a93b9e06eadbbc117695f2ee3",
+    "tree": "5f085b904d1902fb8f5b7783d61864c6119ba6d4",
+    "distHashes": {
+      "zh-cn/index.html": "ae52fdf01eace549a5633586921eefefccd8e069fccac126b25e9a2eb59d628a",
+      "zh-cn/ui-libraries/shadcn/button/index.html": "21302e18c12d9da5ededd50e1035aa12612a98eb564c1e40e46098e5872e6e16",
+      "zh-cn/ui-libraries/brutalist/components/button/index.html": "75b2b974eb28c2a7f37722a1b1f28b8864ac55259f5ec8b12d5bbe9ff686d0d6"
+    },
+    "sourceCodeExamples": 9,
+    "renderedCodeExamples": 9,
+    "packedHeaderExit": 0,
+    "previewBrowserExit": 0,
+    "selector": "uses real family Popover Triggers|uses the same mobile shell|live available region|keeps Runtime Tabs outside"
+  },
+  "previewResults": {
+    "sha256": "057396bf651e61b95616350ce01b663d4aec641794818287b6f756fa633e56a8",
+    "files": 3,
+    "pass": 11,
+    "fail": 0,
+    "skipped": 13,
+    "failure": []
+  },
+  "s4": {
+    "sha256": "fc23aca5dbd8425bfb028ca1e5c13a3d59616876030348b91a1ba8fb6ad89069",
+    "files": 1,
+    "pass": 0,
+    "fail": 1,
+    "skipped": 1,
+    "failure": ["page.waitForFunction: Timeout 60000ms exceeded."]
+  },
+  "lastDeliveredPredicateChange": {
+    "timeOrigin": 1794964366025.2,
+    "pageMs": 69500.59999990463,
+    "dateNow": 1794964435525,
+    "count": 1268,
+    "ready": false,
+    "firstMissing": {
+      "previewerId": "pp-vw9m8ftszhl",
+      "index": 608,
+      "inited": "1",
+      "hostChildren": 0
+    },
+    "firstMissingOwner": {
+      "demoId": "demo-bootstrap-2-3-2-checkbox-group",
+      "prototypeId": "",
+      "declaredRuntime": "wc",
+      "projectionMode": null,
+      "projectionState": null,
+      "mounting": null,
+      "hostTag": "DIV",
+      "hostOwner": "pp-vw9m8ftszhl",
+      "startupPending": true,
+      "hostOwnInert": true,
+      "hostText": ""
+    }
+  },
+  "cpu": {
+    "profileSha256": "ca54a30cde0eec952e1f0edac013a83c2a46a830f27fd9aa22ffc1435c1cd24b",
+    "sampledDurationMs": 34317.497,
+    "samples": 3628,
+    "nodes": 9307,
+    "top": [
+      {
+        "id": 1932,
+        "function": "D",
+        "asset": "native-content-lease.BX94nT5e.js",
+        "line": 0,
+        "column": 651,
+        "ownMs": 5393.994,
+        "inclusiveMs": 6603.240999999999,
+        "samples": 451,
+        "binding": "3c047e467106bc44336a02afac991d246adeba97da83322a8d1bbd4f130dbaa0"
+      },
+      {
+        "id": 2,
+        "function": "(program)",
+        "asset": "",
+        "line": -1,
+        "column": -1,
+        "ownMs": 2066.12,
+        "inclusiveMs": 2066.12,
+        "samples": 167,
+        "binding": null
+      },
+      {
+        "id": 101,
+        "function": "(garbage collector)",
+        "asset": "",
+        "line": -1,
+        "column": -1,
+        "ownMs": 837.76,
+        "inclusiveMs": 837.76,
+        "samples": 72,
+        "binding": null
+      },
+      {
+        "id": 6021,
+        "function": "",
+        "asset": "projection-theme.DmjJLKPq.js",
+        "line": 0,
+        "column": 2490,
+        "ownMs": 609.0590000000002,
+        "inclusiveMs": 609.0590000000002,
+        "samples": 46,
+        "binding": "2f89096f31d7b6f6cefe08c9881908c5d6d6e1a8437b347e33e4d463c73a4536"
+      },
+      {
+        "id": 2898,
+        "function": "",
+        "asset": "site-shadcn-controls.DYxU8jWt.js",
+        "line": 8,
+        "column": 417817,
+        "ownMs": 476.202,
+        "inclusiveMs": 616.12,
+        "samples": 37,
+        "binding": "95316d19111fa08e0465b41ebcfd7b225fe691273bf10e5c31ce37db5f71caee"
+      },
+      {
+        "id": 4000,
+        "function": "O",
+        "asset": "demo-renderer.CKQHX-Jt.js",
+        "line": 3,
+        "column": 959,
+        "ownMs": 338.01600000000013,
+        "inclusiveMs": 629.1650000000002,
+        "samples": 51,
+        "binding": "6f8495840e2c0f9707218189d3ed4792877baf6c41decdfea61eaa5b59c19a03"
+      },
+      {
+        "id": 8131,
+        "function": "H",
+        "asset": "sink.C22g3ah7.js",
+        "line": 10,
+        "column": 22054,
+        "ownMs": 326.486,
+        "inclusiveMs": 326.486,
+        "samples": 23,
+        "binding": "4794d8383d4c31fedbc7a6bf15d769da81a551ef0429a72f7b72f8a095f93dd4"
+      },
+      {
+        "id": 2689,
+        "function": "te",
+        "asset": "site-shadcn-controls.DYxU8jWt.js",
+        "line": 8,
+        "column": 389724,
+        "ownMs": 271.71900000000005,
+        "inclusiveMs": 271.71900000000005,
+        "samples": 20,
+        "binding": "95316d19111fa08e0465b41ebcfd7b225fe691273bf10e5c31ce37db5f71caee"
+      },
+      {
+        "id": 5124,
+        "function": "addEventListener",
+        "asset": "",
+        "line": -1,
+        "column": -1,
+        "ownMs": 247.28200000000004,
+        "inclusiveMs": 247.28200000000004,
+        "samples": 24,
+        "binding": null
+      },
+      {
+        "id": 3814,
+        "function": "compareDocumentPosition",
+        "asset": "",
+        "line": -1,
+        "column": -1,
+        "ownMs": 244.66899999999998,
+        "inclusiveMs": 244.66899999999998,
+        "samples": 18,
+        "binding": null
+      },
+      {
+        "id": 1889,
+        "function": "",
+        "asset": "projection-theme.DmjJLKPq.js",
+        "line": 0,
+        "column": 2490,
+        "ownMs": 203.924,
+        "inclusiveMs": 203.924,
+        "samples": 21,
+        "binding": "2f89096f31d7b6f6cefe08c9881908c5d6d6e1a8437b347e33e4d463c73a4536"
+      },
+      {
+        "id": 3541,
+        "function": "addEventListener",
+        "asset": "",
+        "line": -1,
+        "column": -1,
+        "ownMs": 203.22700000000003,
+        "inclusiveMs": 203.22700000000003,
+        "samples": 17,
+        "binding": null
+      },
+      {
+        "id": 4594,
+        "function": "sortClaims",
+        "asset": "site-shadcn-controls.DYxU8jWt.js",
+        "line": 8,
+        "column": 104767,
+        "ownMs": 188.00500000000002,
+        "inclusiveMs": 532.5690000000001,
+        "samples": 13,
+        "binding": "95316d19111fa08e0465b41ebcfd7b225fe691273bf10e5c31ce37db5f71caee"
+      },
+      {
+        "id": 2271,
+        "function": "compareDocumentPosition",
+        "asset": "",
+        "line": -1,
+        "column": -1,
+        "ownMs": 183.84900000000005,
+        "inclusiveMs": 183.84900000000005,
+        "samples": 13,
+        "binding": null
+      },
+      {
+        "id": 4704,
+        "function": "querySelectorAll",
+        "asset": "",
+        "line": -1,
+        "column": -1,
+        "ownMs": 176.886,
+        "inclusiveMs": 176.886,
+        "samples": 16,
+        "binding": null
+      },
+      {
+        "id": 7880,
+        "function": "w",
+        "asset": "preview-material-scene.BlbWV9wP.js",
+        "line": 0,
+        "column": 3248,
+        "ownMs": 171.72700000000003,
+        "inclusiveMs": 171.72700000000003,
+        "samples": 13,
+        "binding": "65c27c5c6e91c7ea126edbd036bd38c0b9a126b74ad50c882f36d62531d5ede9"
+      },
+      {
+        "id": 832,
+        "function": "y",
+        "asset": "site-shadcn-controls.DYxU8jWt.js",
+        "line": 14,
+        "column": 32815,
+        "ownMs": 169.89399999999995,
+        "inclusiveMs": 215.62,
+        "samples": 13,
+        "binding": "95316d19111fa08e0465b41ebcfd7b225fe691273bf10e5c31ce37db5f71caee"
+      },
+      {
+        "id": 4436,
+        "function": "querySelectorAll",
+        "asset": "",
+        "line": -1,
+        "column": -1,
+        "ownMs": 162.358,
+        "inclusiveMs": 162.358,
+        "samples": 14,
+        "binding": null
+      },
+      {
+        "id": 5585,
+        "function": "querySelectorAll",
+        "asset": "",
+        "line": -1,
+        "column": -1,
+        "ownMs": 156.715,
+        "inclusiveMs": 156.715,
+        "samples": 15,
+        "binding": null
+      },
+      {
+        "id": 827,
+        "function": "C.Object.defineProperty.get",
+        "asset": "site-shadcn-controls.DYxU8jWt.js",
+        "line": 14,
+        "column": 36208,
+        "ownMs": 154.134,
+        "inclusiveMs": 154.134,
+        "samples": 13,
+        "binding": "95316d19111fa08e0465b41ebcfd7b225fe691273bf10e5c31ce37db5f71caee"
+      },
+      {
+        "id": 5826,
+        "function": "addEventListener",
+        "asset": "",
+        "line": -1,
+        "column": -1,
+        "ownMs": 150.30099999999996,
+        "inclusiveMs": 150.30099999999996,
+        "samples": 11,
+        "binding": null
+      },
+      {
+        "id": 4002,
+        "function": "A",
+        "asset": "demo-renderer.CKQHX-Jt.js",
+        "line": 3,
+        "column": 741,
+        "ownMs": 149.81199999999998,
+        "inclusiveMs": 149.81199999999998,
+        "samples": 14,
+        "binding": "6f8495840e2c0f9707218189d3ed4792877baf6c41decdfea61eaa5b59c19a03"
+      },
+      {
+        "id": 6625,
+        "function": "l",
+        "asset": "DocumentationImagePreview.astro_astro_type_script_index_0_lang.BcX0wyhg.js",
+        "line": 0,
+        "column": 5330,
+        "ownMs": 134.81900000000002,
+        "inclusiveMs": 149.81599999999997,
+        "samples": 10,
+        "binding": "4ba381ea30df804fe20832a3bcd8ffb463550e309956a0307633f4144d616cdd"
+      },
+      {
+        "id": 1592,
+        "function": "ve",
+        "asset": "site-typography.q7GnIjZ-.js",
+        "line": 0,
+        "column": 1606,
+        "ownMs": 132.28699999999998,
+        "inclusiveMs": 177.54799999999994,
+        "samples": 12,
+        "binding": "b658e25c98decd8b11014fa4d30cf242cef7fbea34412909aee90dad8e279d1c"
+      }
+    ],
+    "firstChain": [
+      {
+        "id": 1932,
+        "function": "D",
+        "asset": "native-content-lease.BX94nT5e.js",
+        "line": 0,
+        "column": 651,
+        "ownMs": 5393.994,
+        "inclusiveMs": 6603.240999999999,
+        "samples": 451,
+        "binding": "3c047e467106bc44336a02afac991d246adeba97da83322a8d1bbd4f130dbaa0"
+      },
+      {
+        "id": 1931,
+        "function": "P",
+        "asset": "runtime-preview-surface.B593Aqpp.js",
+        "line": 0,
+        "column": 1665,
+        "ownMs": 0,
+        "inclusiveMs": 6603.240999999999,
+        "samples": 0,
+        "binding": "986c528b16179f7a49ec396a1e9fb8e758f170d971adbe05d49f869e3dbd6b5a"
+      },
+      {
+        "id": 1930,
+        "function": "publish",
+        "asset": "runtime-preview-surface.B593Aqpp.js",
+        "line": 0,
+        "column": 3563,
+        "ownMs": 0,
+        "inclusiveMs": 6603.240999999999,
+        "samples": 0,
+        "binding": "986c528b16179f7a49ec396a1e9fb8e758f170d971adbe05d49f869e3dbd6b5a"
+      },
+      {
+        "id": 1539,
+        "function": "B",
+        "asset": "projection-scope.C38VOVYm.js",
+        "line": 0,
+        "column": 3744,
+        "ownMs": 0,
+        "inclusiveMs": 7438.522,
+        "samples": 0,
+        "binding": "abee8889296ec58f03c4d9c288b9fe00f670fae10b9e48698667e5ae458c9327"
+      },
+      {
+        "id": 1,
+        "function": "(root)",
+        "asset": "",
+        "line": -1,
+        "column": -1,
+        "ownMs": 0,
+        "inclusiveMs": 34317.496999999865,
+        "samples": 0,
+        "binding": null
+      }
+    ],
+    "log": [
+      "[S4 CPU setup] {\"startRequestMs\":1914.910375,\"returnMs\":1919.124}",
+      "[S4 CPU stop] {\"requestMs\":31921.54925}",
+      "[S4 CPU finished] {\"nodes\":9307,\"samples\":3628,\"start\":1335084349820,\"end\":1335118673374,\"nodeMs\":36282.250959}",
+      "[S4 CPU collection] {\"complete\":true}"
+    ]
+  },
+  "comparison": "Older b6 sampled native-lease frame was 6066.12ms across separately captured 36.29s. Current run is a new sample, not a matched end-to-end speed comparison."
+}

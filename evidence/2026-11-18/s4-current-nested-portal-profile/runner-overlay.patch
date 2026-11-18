@@ -1,0 +1,43 @@
+diff --git a/apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts b/apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts
+index 2953f8254..34ff4b12a 100644
+--- a/apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts
++++ b/apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts
+@@ -45,6 +45,27 @@ describe.sequential('S4 complete public Dialog settings', () => {
+         }
+       });
+       const page = await context.newPage();
++      const cpu = await context.newCDPSession(page);
++      await cpu.send('Profiler.enable');
++      await cpu.send('Profiler.setSamplingInterval', { interval: 10000 });
++      const profileStarted = performance.now();
++      await cpu.send('Profiler.start');
++      console.info('[S4 CPU setup]', JSON.stringify({ startRequestMs: profileStarted, returnMs: performance.now() }));
++      let stopCpu: Promise<void> | undefined;
++      const stop = () => (stopCpu ??= (async () => {
++        console.info('[S4 CPU stop]', JSON.stringify({ requestMs: performance.now() }));
++        const data = await cpu.send('Profiler.stop');
++        await writeFile(process.env.PUI_S4_CPU_OUT! + '/startup.cpuprofile', JSON.stringify(data.profile));
++        console.info('[S4 CPU finished]', JSON.stringify({
++          nodes: data.profile.nodes.length, samples: data.profile.samples?.length,
++          start: data.profile.startTime, end: data.profile.endTime,
++          nodeMs: performance.now(),
++        }));
++      })());
++      const profilerTimer = setTimeout(() => {
++        void stop().catch(error => console.info('[S4 CPU capture failed]', String(error).slice(0, 200)));
++      }, 30000);
++
+       const errors: string[] = [];
+       page.on('pageerror', (e) => errors.push(e.message));
+       let phase = 'created';
+@@ -229,6 +250,10 @@ describe.sequential('S4 complete public Dialog settings', () => {
+         }
+         expect(errors).toEqual([]);
+       } finally {
++        clearTimeout(profilerTimer);
++        const stopped = await settleFamilyQueryBatch([stop()], 10000);
++        console.info('[S4 CPU collection]', JSON.stringify({ complete: stopped.complete }));
++        await cpu.detach().catch(() => {});
+         note('context-close', 'begin');
+         try {
+           await closeContext();
