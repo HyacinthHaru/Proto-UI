@@ -1,0 +1,56 @@
+diff --git a/apps/www/src/components/override/PageFrame.astro b/apps/www/src/components/override/PageFrame.astro
+index fb4c07e61..c62d3c926 100644
+--- a/apps/www/src/components/override/PageFrame.astro
++++ b/apps/www/src/components/override/PageFrame.astro
+@@ -142,7 +142,7 @@ const { hasSidebar } = Astro.locals.starlightRoute;
+   /* Our measured Header margin owns anchor clearance for every native main
+      target, including PageTitle and legacy anchors outside MarkdownContent.
+      Starlight root padding would otherwise add a second header offset. */
+-  :global(html:has(.site-page-frame [data-docs-site-header])) {
++  :global(html:has(.site-page-frame > header [data-docs-site-header])) {
+     scroll-padding-top: 0;
+   }
+   /* Keep the Header condition local so content mutations cannot invalidate
+diff --git a/apps/www/src/components/site-header-layout.test.ts b/apps/www/src/components/site-header-layout.test.ts
+index d3356bb17..55a69c072 100644
+--- a/apps/www/src/components/site-header-layout.test.ts
++++ b/apps/www/src/components/site-header-layout.test.ts
+@@ -138,7 +138,7 @@ describe('Docs header offset targets the actual MarkdownContent wrapper', () =>
+ 
+   it('removes the upstream root offset only when our measured docs Header owns clearance', () => {
+     expect(frame).toMatch(
+-      /:global\(html:has\(\.site-page-frame \[data-docs-site-header\]\)\)\s*\{\s*scroll-padding-top: 0;/
++      /:global\(html:has\(\.site-page-frame > header \[data-docs-site-header\]\)\)\s*\{\s*scroll-padding-top: 0;/
+     );
+     expect(frame).toContain('scroll-margin-top: calc(var(--header-height) + 1rem)');
+   });
+diff --git a/apps/www/src/content/docs/zh-cn/site-docs-columns.browser.test.ts b/apps/www/src/content/docs/zh-cn/site-docs-columns.browser.test.ts
+index b9e15ae2a..36e4c36fc 100644
+--- a/apps/www/src/content/docs/zh-cn/site-docs-columns.browser.test.ts
++++ b/apps/www/src/content/docs/zh-cn/site-docs-columns.browser.test.ts
+@@ -579,6 +579,25 @@ it.each(['en', 'zh-cn'])(
+       expect(parseFloat(facts.maxWidth)).toBe(88 * 16);
+       expect(facts.width).toBeGreaterThan(0);
+       expect(facts.overflow).toBeLessThanOrEqual(1);
++
++      const fallback = await page.evaluate(() => {
++        const header = document.querySelector('[data-docs-site-header]')!;
++        const marker = document.createElement('span');
++        marker.setAttribute('data-docs-site-header', '');
++        const readPadding = () =>
++          parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop);
++        header.removeAttribute('data-docs-site-header');
++        try {
++          const withoutHeaderMarker = readPadding();
++          document.querySelector('main')!.append(marker);
++          return { withoutHeaderMarker, withContentMarker: readPadding() };
++        } finally {
++          marker.remove();
++          header.setAttribute('data-docs-site-header', '');
++        }
++      });
++      expect(fallback.withoutHeaderMarker).toBeGreaterThan(0);
++      expect(fallback.withContentMarker).toBe(fallback.withoutHeaderMarker);
+     } catch (error) {
+       await page.screenshot({ path: path.join(evidence, `${id}-failure.png`) }).catch(() => {});
+       throw error;

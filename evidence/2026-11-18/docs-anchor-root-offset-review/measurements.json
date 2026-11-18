@@ -1,0 +1,74 @@
+{
+  "source": {
+    "head": "44c6b0123e7699298e513ad728b76c6891f56ce0",
+    "parent": "6a5a94a5d2f004b15d1ec6d87d55a2344a8354c8",
+    "base": "0f0955a9d624e0ef5e250f56a0eaa0fc52bbfb53",
+    "tree": "ad2e4f290410a85c173d4d78b9175c2644f97bd2",
+    "files": {
+      "apps/www/src/components/override/PageFrame.astro": "753f40ce6c26eafd0ea860450c60c277a7bbff6adddc83cb65c753211fad8d57",
+      "apps/www/src/components/site-header-layout.test.ts": "03bbb8a71c2cb8b5b4088561f7f3026472b48f385f418451acc72c3e965686bc",
+      "apps/www/src/content/docs/zh-cn/site-docs-columns.browser.test.ts": "858a9c7a853a206d91551f8d96f75ce214ab15f72057f4101ebfcce44361e79b"
+    },
+    "signature": "G"
+  },
+  "review": "https://github.com/Proto-UI/Proto-UI/pull/1499#discussion_r4608369486",
+  "reports": {
+    "red-native": {
+      "pass": 1,
+      "fail": 2,
+      "filtered": 7,
+      "sha256": "0c0e4082df69d603b56588bf60384f94f216aa16587b2eff6759359f4d0318ae",
+      "failures": [
+        {
+          "test": "keeps the en no-TOC splash measure and page-title clearance",
+          "first": "AssertionError: expected +0 to be 88 // Object.is equality"
+        },
+        {
+          "test": "keeps the zh-cn no-TOC splash measure and page-title clearance",
+          "first": "AssertionError: expected +0 to be 88 // Object.is equality"
+        }
+      ]
+    },
+    "docs-anchor": {
+      "pass": 3,
+      "fail": 0,
+      "filtered": 7,
+      "sha256": "712bfe15554d86e71fc6de52b68896442c4d58890ef61dda1ae0329d4d127290",
+      "failures": []
+    },
+    "final": {
+      "pass": 45,
+      "fail": 0,
+      "filtered": 0,
+      "sha256": "cd5ed1fb86ed03de012b87a9a192e2fed0e9d77a7b9d99b17dd75f64142a56c3",
+      "failures": []
+    }
+  },
+  "freshWebsitePages": 685,
+  "types": 0,
+  "css": [
+    {
+      "file": "liquid-library-card.BodGLhv-.css",
+      "selector": ".site-page-frame>:where(header):has([data-docs-site-header])+:where(div) main [id]",
+      "sha256": "336d638a306166b363c013c3ed8809781b618c21a7658f639661242965dcb830"
+    },
+    {
+      "file": "liquid-library-card.BodGLhv-.css",
+      "selector": ".site-page-frame>:where(header):has([data-docs-site-header])+:where(div) main h1[data-site-typography=h1]",
+      "sha256": "336d638a306166b363c013c3ed8809781b618c21a7658f639661242965dcb830"
+    }
+  ],
+  "Matrix": {
+    "zh-cn": {
+      "bytes": 1862424,
+      "sha256": "5699c5767db7c55b24573bb60dddda1702b46f08aa714d573d266dd4cf88aff3",
+      "previews": 1268
+    },
+    "en": {
+      "bytes": 1914068,
+      "sha256": "8bde952f71dfbcc109cafbb5614cc35ea2daf8504af58a78b09236e01991bd5b",
+      "previews": 1268
+    }
+  },
+  "testBinding": "Both native runs use the same strengthened browser test. Parent retained 88px without marker and falsely reset to 0px after content marker. Candidate retains original nonzero fallback with content marker in both locales. Other original clearance assertions retained."
+}
