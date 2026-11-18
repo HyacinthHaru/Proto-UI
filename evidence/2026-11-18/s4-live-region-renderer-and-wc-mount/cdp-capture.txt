@@ -1,0 +1,64 @@
+import { createWriteStream } from 'node:fs';
+import { writeFile } from 'node:fs/promises';
+import { once } from 'node:events';
+import path from 'node:path';
+import type { Browser } from 'playwright-core';
+
+export function observeLateTasks(browser: Browser) {
+  const dir = process.env.PROTO_UI_RUNTIME_EVIDENCE_DIR!;
+  const file = (name: string) => path.join(dir, name);
+  const categories = 'toplevel,devtools.timeline,v8,blink.user_timing,disabled-by-default-v8.compile';
+  const requestedAt = performance.now();
+  let recording: ReturnType<typeof start> | undefined;
+  const receipt = { categories, requestedAt, beginNodeMs: 0, activeNodeMs: 0, endNodeMs: 0,
+    traceBytes: 0, eof: false, dataLoss: null as boolean | null };
+  const begin = setTimeout(() => {
+    recording = start();
+    void recording.catch(() => {});
+  }, 23_000);
+  async function start() {
+    receipt.beginNodeMs = performance.now();
+    const tracer = await browser.newBrowserCDPSession();
+    const complete = new Promise<{stream?: string; dataLossOccurred?: boolean}>(
+      (resolve) => tracer.once('Tracing.tracingComplete', resolve)
+    );
+    await tracer.send('Tracing.start', { categories, transferMode: 'ReturnAsStream', streamFormat: 'json' });
+    receipt.activeNodeMs = performance.now();
+    return { tracer, complete };
+  }
+  return async () => {
+    clearTimeout(begin);
+    if (!recording) return;
+    try {
+      const { tracer, complete } = await recording;
+      receipt.endNodeMs = performance.now();
+      const result = await Promise.allSettled([
+        (async () => {
+          await tracer.send('Tracing.end');
+          const {stream,dataLossOccurred} = await complete;
+          receipt.dataLoss = dataLossOccurred ?? null;
+          if (!stream) return;
+          const handle = createWriteStream(file('chromium-trace.json'));
+          try {
+            while (!receipt.eof && receipt.traceBytes < 256 * 1024 * 1024) {
+              const chunk = await tracer.send('IO.read', {handle:stream,size:1048576});
+              const bytes = Buffer.from(chunk.data,chunk.base64Encoded?'base64':'utf8');
+              if (!handle.write(bytes)) await once(handle,'drain');
+              receipt.traceBytes += bytes.length;
+              receipt.eof = chunk.eof;
+            }
+          } finally {
+            handle.end();
+            await once(handle,'finish');
+            await tracer.send('IO.close',{handle:stream});
+          }
+        })(),
+      ]);
+      console.info('[S4 late capture]', JSON.stringify(result.map((outcome) =>
+        outcome.status === 'fulfilled' ? 'fulfilled' : String(outcome.reason)
+      )));
+    } finally {
+      await writeFile(file('trace-receipt.json'), JSON.stringify(receipt,null,2)+'\n');
+    }
+  };
+}

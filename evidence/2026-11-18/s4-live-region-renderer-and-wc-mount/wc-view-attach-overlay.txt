@@ -1,0 +1,136 @@
+from hashlib import sha256
+from pathlib import Path
+import json,re,sys
+q,dist=map(Path,sys.argv[1:])
+client,=dist.glob('previewer-client.*.js')
+registry,=dist.glob('projection-materializer.*.js')
+recipe,=dist.glob('demo-bootstrap-2-3-2-live-region.demo.*.js')
+shared,=dist.glob('live-region-demo.shared.*.js')
+assets={}
+protoMap=json.loads((q/'prototype-map.json').read_text())
+protoModule,=dist.glob('prototype-modules.*.js')
+renderer_prefix=r"""const liveRegionWatch=new Set(REPLACE_ASSETS);
+const liveRegionMark=(stage,data={})=>console.info("[S4 Live Region] "+JSON.stringify({
+ stage,pageMs:performance.now(),timeOrigin:performance.timeOrigin,...data
+}));
+new PerformanceObserver((list)=>{
+  for(const entry of list.getEntries()){
+    const asset=entry.name.split("/").pop();
+    if(liveRegionWatch.has(asset))liveRegionMark("resource-observed",{
+      asset,requestStart:entry.requestStart,responseEnd:entry.responseEnd,transferSize:entry.transferSize,
+    });
+  }
+}).observe({type:"resource",buffered:true});
+""".replace('REPLACE_ASSETS',json.dumps(sorted(set([recipe.name,shared.name]+[entry for meta in protoMap.values() for entry in meta['modules']]))))
+
+def edit(p, transform):
+    before=p.read_text()
+    after=transform(before)
+    assert after!=before
+    p.write_text(after)
+    assets[p.name]=dict(original=sha256(before.encode()).hexdigest(),observed=sha256(after.encode()).hexdigest())
+
+def replace(source,old,new):
+    assert source.count(old)==1,(old,source.count(old))
+    return source.replace(old,new,1)
+
+def client_transform(s):
+    def r(old,new):
+        nonlocal s
+        s=replace(s,old,new)
+    r('B=O;let q=!1;z=s;const a=++y;we(b),Q(!0);',
+      '''B=O;let q=!1;z=s;const a=++y;const mark=(stage,detail={})=>{
+        if(g==="demo-bootstrap-2-3-2-live-region")
+          liveRegionMark(stage,{runtime:s,owner:e.dataset.previewerId,hostChildren:b.childElementCount,...detail});
+      };mark("begin");we(b),Q(!0);''')
+    r('if(g)K=await Pe(g);else',
+      'if(g){mark("recipe-begin");K=await Pe(g);mark("recipe-return");}else')
+    r('if(Be(te.demo.root,le),!g&&h&&le.delete(h),await Ne(Array.from(le)),C||a!==y)return;',
+      'Be(te.demo.root,le);if(!g&&h)le.delete(h);mark("prototypes-begin",{ids:[...le]});await Ne(Array.from(le));mark("prototypes-return");if(C||a!==y)return;')
+    r('const ce=await Ue({runtime:s,demo:te.demo,host:b,isCurrent:()=>!C&&a===y});',
+      'mark("render-begin");const ce=await Ue({runtime:s,demo:te.demo,host:b,isCurrent:()=>!C&&a===y});mark("render-return");')
+    r('try{if(await te.ready,!C&&a===y){const x=await be(e,()=>{',
+      'try{await te.ready;mark("surface-ready");if(!C&&a===y){const x=await be(e,()=>{')
+    r('m(),V={id:r,destroy:ce.destroy},D=te,k=oe,ae&&he(ae);',
+      'm();mark("publish");V={id:r,destroy:ce.destroy},D=te,k=oe,ae&&he(ae);')
+    return renderer_prefix+s
+
+edit(client,client_transform)
+quoted='../../content/docs/demo-bootstrap-2-3-2-live-region.demo.ts'
+needle=re.escape('"'+quoted+'":()=>t(()=>import("./'+recipe.name+'"),')
+def registry_transform(s):
+    matches=list(re.finditer(needle,s))
+    assert len(matches)==1
+    old=matches[0].group(0)
+    new=old.replace('()=>import(', '()=>(console.info("[S4 Live Region] "+JSON.stringify({stage:"native-import-begin",pageMs:performance.now(),timeOrigin:performance.timeOrigin})),import(').replace('"),','")),')
+    return replace(s,old,new)
+edit(registry,registry_transform)
+
+def mark(stage):
+    return f'console.info("[S4 Live Region] "+JSON.stringify({{stage:"{stage}",pageMs:performance.now(),timeOrigin:performance.timeOrigin}}));'
+for p,label in [(recipe,'recipe-module'),(shared,'shared-module')]:
+    edit(p,lambda s,label=label:mark(label+'-enter')+s+mark(label+'-exit'))
+def mk(stage,proto,entry):
+    return f'console.info("[S4 Live Region] "+JSON.stringify({{stage:"{stage}",proto:"{proto}",asset:"{entry}",pageMs:performance.now(),timeOrigin:performance.timeOrigin}}));'
+def proto_transform(text):
+    for proto, confined in protoMap.items():
+        entry=confined['entry']
+        start=f'"{proto}":async()=>{{const t=await o(()=>import("./{entry}"),'
+        dest=f'"{proto}":async()=>{{'+mk('prototype-loader-begin',proto,entry)+'const t=await o(()=>('+mk('prototype-native-import-begin',proto,entry)[:-1]+f',import("./{entry}")),'
+        text=replace(text,start,dest)
+        fn,value=confined['fn'],confined['export']
+        text=replace(text, f';{fn}("{proto}",t.{value})}}', ';'+mk('prototype-loader-return',proto,entry)+f'{fn}("{proto}",t.{value})}}')
+    return text
+edit(protoModule,proto_transform)
+for proto, confined in protoMap.items():
+    entry=confined['entry']
+    edit(dist/entry,lambda text,proto=proto,entry=entry:mk('prototype-module-enter',proto,entry)+text+mk('prototype-module-exit',proto,entry))
+
+wc_asset=dist/'site-shadcn-controls.DZNAQyYW.js'
+data=r"""const puiConnectLedger={count:0,timing:{},tags:{},slow:[]};
+const puiPhaseMark=(key,start)=>{const duration=performance.now()-start;
+ const data=puiConnectLedger.timing[key]??={count:0,totalMs:0,maxMs:0};
+ data.count++; data.totalMs+=duration; data.maxMs=Math.max(data.maxMs,duration);
+};
+const puiConnectDone=(kind,t,el,relocation)=>{
+  const time=performance.now(); puiPhaseMark(kind,t);
+  const k=kind+":"+el.localName, duration=time-t;
+  const tag=puiConnectLedger.tags[k]??={count:0,totalMs:0};
+  tag.count++; tag.totalMs+=duration;
+  if (duration>=35 && puiConnectLedger.slow.length<40)
+    puiConnectLedger.slow.push({pageMs:t,duration,kind,tag:el.localName,relocation:!!relocation});
+  if(++puiConnectLedger.count%128===0)
+    console.info("[S4 WC connect] "+JSON.stringify({count:puiConnectLedger.count,pageMs:time,
+      timing:puiConnectLedger.timing,topTags:Object.entries(puiConnectLedger.tags).sort((a,b)=>b[1].totalMs-a[1].totalMs).slice(0,18),
+      slow:puiConnectLedger.slow.splice(0)}));
+};
+"""
+
+def wc_transform(text):
+    def r(old,new):
+        nonlocal text
+        text=replace(text,old,new)
+    r('connectedCallback(){const y=FP(this),S=this._instanceToken;',
+      'connectedCallback(){const puiOpened=performance.now(),puiKind=this._mountedOnce?"reconnect":"initial";const y=FP(this),S=this._instanceToken;try{')
+    r('throw b&&this.retireOwner().catch(()=>{}),P}}_releaseSplitResources',
+      'throw b&&this.retireOwner().catch(()=>{}),P}}finally{puiConnectDone(puiKind,puiOpened,this,y)}}_releaseSplitResources')
+    r('_connectOwner(y){if(this._globalEventTarget.setTarget(this.ownerDocument.defaultView),this._mountedOnce){',
+      '_connectOwner(y){let puiStep=performance.now();if(this._globalEventTarget.setTarget(this.ownerDocument.defaultView),this._mountedOnce){')
+    r('throw Te}this._pendingOwnedTokens?.length&&this._applier?.apply(this._pendingOwnedTokens),this._hostDisplay?.sync(),this._pendingOwnedTokens=null,y()||this._controller?.update();const we=this._instanceToken;',
+      'throw Te}puiPhaseMark("reconnect-topology",puiStep);puiStep=performance.now();this._pendingOwnedTokens?.length&&this._applier?.apply(this._pendingOwnedTokens),this._hostDisplay?.sync(),this._pendingOwnedTokens=null;puiPhaseMark("reconnect-style",puiStep);puiStep=performance.now();y()||this._controller?.update();puiPhaseMark("reconnect-controller",puiStep);const we=this._instanceToken;')
+    r('}),pe=O.initialize({modules:ue,createSession:Q,onViewIntent:ee});L=!1,_=pe.invokeInCallbackScope,this._anatomyPort=pe.caps.getPort("anatomy")??null,$?oe(!0):j(!0);',
+      '});puiPhaseMark("initial-construction",puiStep);puiStep=performance.now();const pe=O.initialize({modules:ue,createSession:Q,onViewIntent:ee});puiPhaseMark("initial-owner",puiStep);puiStep=performance.now();L=!1,_=pe.invokeInCallbackScope,this._anatomyPort=pe.caps.getPort("anatomy")??null,$?oe(!0):j(!0);puiPhaseMark("initial-view",puiStep);')
+    r('oe=(ae=!1)=>{if(V||this._terminalDisposing)return;if(O.hasView){j(!1);return}let ke,we=!1,Te=0;',
+      'oe=(ae=!1)=>{if(V||this._terminalDisposing)return;if(O.hasView){j(!1);return}let puiViewStep=performance.now();const puiViewKind=ae?"first-view-":"retained-view-";let ke,we=!1,Te=0;')
+    r('if(O.attachView({modules:Kx({el:b,splitSurface:!!R,',
+      'puiPhaseMark(puiViewKind+"prepare",puiViewStep);puiViewStep=performance.now();if(O.attachView({modules:Kx({el:b,splitSurface:!!R,')
+    r('createSession:Q}),mt=!1,Re)throw st;if(fe){const me=fe;fe=null,re.commit(me)}}catch(ze){',
+      'createSession:Q}),puiPhaseMark(puiViewKind+"runtime",puiViewStep),puiViewStep=performance.now(),mt=!1,Re)throw st;if(fe){const me=fe;fe=null,re.commit(me)}puiPhaseMark(puiViewKind+"visual-flush",puiViewStep)}catch(ze){')
+    r('j(!1),be.nativeReadiness.publish()};let se=0,ie=Promise.resolve(),L=!0,$=!0;',
+      'puiViewStep=performance.now();j(!1),be.nativeReadiness.publish();puiPhaseMark(puiViewKind+"publish",puiViewStep)};let se=0,ie=Promise.resolve(),L=!0,$=!0;')
+    return data+text
+edit(wc_asset,wc_transform)
+(q/'asset-binding.json').write_text(json.dumps(dict(
+ assets=assets,
+ scope='Exact emitted observer taps around the four Live Region runtime phases, the two exact Prototype loader and native module boundaries, mapped asset responses, and the original recipe registry import boundary. Adds inclusive first-connect, reconnect and view-attachment stage timings from the compiled WC adapter. Original promises, action order, readiness predicate, search scope and deadlines remain.',
+),indent=2)+'\n')

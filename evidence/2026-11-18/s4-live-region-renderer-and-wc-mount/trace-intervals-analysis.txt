@@ -1,0 +1,130 @@
+from collections import defaultdict, Counter
+from pathlib import Path
+from hashlib import file_digest
+import json,re,sys
+q=Path(sys.argv[1])
+receipt=json.loads((q/'trace-receipt.json').read_text())
+assert receipt['eof'] and receipt['dataLoss'] is False,receipt
+events=json.loads((q/'chromium-trace.json').read_text())['traceEvents']
+marks=[e for e in events if e['name'].startswith('s4-live-region:') and 'startTime' in e.get('args',{}).get('data',{})]
+assert marks,'No trace clock marks with native start times'
+anchors=[p for p in marks if p['name'].endswith(':wc')]
+anchor=anchors[0] if anchors else marks[0]
+origin=anchor['ts']-anchor['args']['data']['startTime']*1000
+renderer=(anchor['pid'],anchor['tid'])
+matches=[m for m in marks if (m['pid'],m['tid'])==renderer]
+assert len(matches)>=2
+for m in matches:
+    assert abs((m['ts']-origin)/1000-m['args']['data']['startTime'])<1,m['name']
+ms=lambda stamp:round((stamp-origin)/1000,3)
+main=[e for e in events if (e.get('pid'),e.get('tid'))==renderer and e.get('ph')=='X' and e.get('dur',0)>0]
+trace_lo=min(e['ts'] for e in main)
+trace_hi=max(e['ts']+e['dur'] for e in main)
+del events
+
+def union(intervals):
+    end=0
+    total=0
+    for a,b in sorted(intervals):
+        if b>end:
+            total+=b-max(a,end)
+            end=b
+    return round(total/1000,3)
+
+def find_one(rows,match):
+    hits=[r for r in rows if match(r)]
+    assert len(hits)<=1,hits
+    return hits[0] if hits else None
+
+rows=[]
+last_predicate=None
+for line in (q/'native.log').read_text().splitlines():
+    if not line.startswith('[S4 browser stream] '): continue
+    envelope=json.loads(line.split('] ',1)[1])
+    content=envelope['text']
+    if content.startswith('[S4 Live Region] '):
+        rows.append(dict(json.loads(content.split('] ',1)[1]),receivedNodeMs=envelope['receivedNodeMs']))
+    if content.startswith('[S4 startup change] '):
+        last_predicate=json.loads(content.split('] ',1)[1])
+proto_map=json.loads((q/'prototype-map.json').read_text())
+root_id='bootstrap-2-3-2-live-region-root'
+root_asset=proto_map[root_id]['entry']
+loader_begin=find_one(rows,lambda r:r.get('proto')==root_id and r.get('stage')=='prototype-loader-begin')
+loader_entry=find_one(rows,lambda r:r.get('proto')==root_id and r.get('stage')=='prototype-module-enter')
+loader_exit=find_one(rows,lambda r:r.get('proto')==root_id and r.get('stage')=='prototype-module-exit')
+wc_publish=find_one(rows,lambda r:r.get('runtime')=='wc' and r.get('stage')=='publish')
+resources={r['asset']:r for r in rows if r['stage']=='resource-observed'}
+recipe=[name for name in resources if name.startswith('demo-bootstrap-2-3-2-live-region.demo.')]
+assert len(recipe)<=1
+recipe_entry=find_one(rows,lambda r:r.get('stage')=='recipe-module-enter')
+trace_tasks=['ThreadControllerImpl::RunTask','RunTask']
+trace_micro=['RunMicrotasks','BlinkScheduler_PerformMicrotaskCheckpoint']
+named=['FunctionCall','EvaluateScript','TimerFire','UpdateLayoutTree','Layout','ParseHTML']
+
+def interval(first,last,focus_asset):
+    requested=(int(origin+first*1000),int(origin+last*1000))
+    lo=max(trace_lo,requested[0]); hi=min(trace_hi,requested[1])
+    assert lo<hi,(first,last,ms(trace_lo),ms(trace_hi))
+    buckets=defaultdict(list)
+    function_sites=defaultdict(list)
+    totals=Counter()
+    long_tasks=[]
+    relevant=[]
+    for e in main:
+        x=e['ts']; y=x+e['dur']
+        left=max(lo,x); right=min(hi,y)
+        if right<=left:
+            continue
+        name=e['name']; dur=right-left
+        totals[name]+=dur
+        buckets[name].append((left,right))
+        if name in trace_tasks and dur>=50_000:
+            long_tasks.append(dict(startMs=ms(x),endMs=ms(y),overlapMs=round(dur/1000,3)))
+        if name=='FunctionCall':
+            d=e.get('args',{}).get('data',{})
+            url=d.get('url','')
+            match=re.search(r'(/_astro/[^?# ]+?\.js)(?:[?#]|$)',url)
+            if match:
+                function_sites[(match[1],d.get('lineNumber'),d.get('columnNumber'),d.get('functionName'))].append((left,right))
+        if focus_asset and focus_asset in json.dumps(e.get('args',{})):
+            relevant.append(dict(name=name,startMs=ms(x),endMs=ms(y),includedMs=round(dur/1000,3)))
+    task=union([x for name in trace_tasks for x in buckets[name]])
+    micro=union([x for name in trace_micro for x in buckets[name]])
+    task_and_micro=union([x for name in trace_tasks+trace_micro for x in buckets[name]])
+    sorted_sites=sorted([
+        dict(asset=k[0],line=k[1],column=k[2],function=k[3],unionMs=union(v),eventCount=len(v))
+        for k,v in function_sites.items()
+    ],key=lambda item:item['unionMs'],reverse=True)
+    return dict(requestedStartMs=first,requestedEndMs=last,traceStartMs=ms(lo),traceEndMs=ms(hi),
+        fullyCovered=lo==requested[0] and hi==requested[1],durationMs=round((hi-lo)/1000,3),
+        taskUnionMs=task,microtaskUnionMs=micro,taskOrMicrotaskUnionMs=task_and_micro,
+        topTasks=sorted(long_tasks,key=lambda item:item['overlapMs'],reverse=True)[:10],
+        eventTypeUnionMs={k:union(buckets[k]) for k in set(named+trace_tasks+trace_micro)},
+        topFunctionSites=sorted_sites[:15],targetNamedEvents=relevant[:80],
+        mostFrequentEventWallMs=[dict(name=k,intervalUnionMs=union(buckets[k]),nestedSumMs=round(v/1000,3)) for k,v in totals.most_common(12)])
+
+windows={}
+if recipe and recipe_entry:
+    windows['recipe']=interval(resources[recipe[0]]['responseEnd'],recipe_entry['pageMs'],recipe[0])
+if root_asset in resources and loader_entry:
+    windows['prototype']=interval(resources[root_asset]['responseEnd'],loader_entry['pageMs'],root_asset)
+elif root_asset in resources:
+    first=resources[root_asset]['responseEnd']
+    anchors_after_resource=[r['pageMs'] for r in rows if r['pageMs']>first]
+    if anchors_after_resource:
+        windows['prototypeObservedPrefix']=interval(first,max(anchors_after_resource),root_asset)
+report=dict(
+    sourceHead=(q/'source.txt').read_text().splitlines()[0],traceReceipt=receipt,
+    rawTraceSHA256=file_digest((q/'chromium-trace.json').open('rb'),'sha256').hexdigest(),
+    renderer=dict(pid=renderer[0],tid=renderer[1],clockMarks=len(matches),earliestMs=ms(trace_lo),latestMs=ms(trace_hi)),
+    nativeExit=int((q/'native.exit').read_text().strip()),
+    runContext=(q/'load-context.txt').read_text().strip(),assetBinding=json.loads((q/'asset-binding.json').read_text()),
+    lastPredicate=last_predicate,resources=resources,events=rows,prototypeLoaderStart=loader_begin,
+    prototypeBodyEntered=loader_entry,prototypeExited=loader_exit,wcPublished=wc_publish,windows=windows,
+    interpretation='Trace intervals use same-renderer wall-time unions. Script attribution reports event entry sites. Unattributed intervals and target events do not establish exclusive scheduling causality.',
+)
+(q/'renderer-task-summary.json').write_text(json.dumps(report,indent=2)+'\n')
+print(report['renderer'],report['traceReceipt'])
+for k,w in windows.items():
+    print(k, {name:w[name] for name in ['requestedStartMs','requestedEndMs','fullyCovered','durationMs','taskUnionMs','microtaskUnionMs','taskOrMicrotaskUnionMs']})
+    print('task',w['topTasks'][:3]); print('callsites',w['topFunctionSites'][:4]); print('named',w['targetNamedEvents'][:5])

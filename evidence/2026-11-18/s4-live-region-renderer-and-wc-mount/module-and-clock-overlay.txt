@@ -1,0 +1,94 @@
+from hashlib import sha256
+from pathlib import Path
+import json,re,sys
+q,dist=map(Path,sys.argv[1:])
+client,=dist.glob('previewer-client.*.js')
+registry,=dist.glob('projection-materializer.*.js')
+recipe,=dist.glob('demo-bootstrap-2-3-2-live-region.demo.*.js')
+shared,=dist.glob('live-region-demo.shared.*.js')
+assets={}
+protoMap=json.loads((q/'prototype-map.json').read_text())
+protoModule,=dist.glob('prototype-modules.*.js')
+renderer_prefix=r"""const liveRegionWatch=new Set(REPLACE_ASSETS);
+const liveRegionMark=(stage,data={})=>{
+ performance.mark("s4-live-region:"+stage+":"+(data.runtime??data.asset??"page"));
+ console.info("[S4 Live Region] "+JSON.stringify({
+ stage,pageMs:performance.now(),timeOrigin:performance.timeOrigin,...data
+}));
+};
+new PerformanceObserver((list)=>{
+  for(const entry of list.getEntries()){
+    const asset=entry.name.split("/").pop();
+    if(liveRegionWatch.has(asset))liveRegionMark("resource-observed",{
+      asset,requestStart:entry.requestStart,responseEnd:entry.responseEnd,transferSize:entry.transferSize,
+    });
+  }
+}).observe({type:"resource",buffered:true});
+""".replace('REPLACE_ASSETS',json.dumps(sorted(set([recipe.name,shared.name]+[entry for meta in protoMap.values() for entry in meta['modules']]))))
+
+def edit(p, transform):
+    before=p.read_text()
+    after=transform(before)
+    assert after!=before
+    p.write_text(after)
+    assets[p.name]=dict(original=sha256(before.encode()).hexdigest(),observed=sha256(after.encode()).hexdigest())
+
+def replace(source,old,new):
+    assert source.count(old)==1,(old,source.count(old))
+    return source.replace(old,new,1)
+
+def client_transform(s):
+    def r(old,new):
+        nonlocal s
+        s=replace(s,old,new)
+    r('B=O;let q=!1;z=s;const a=++y;we(b),Q(!0);',
+      '''B=O;let q=!1;z=s;const a=++y;const mark=(stage,detail={})=>{
+        if(g==="demo-bootstrap-2-3-2-live-region")
+          liveRegionMark(stage,{runtime:s,owner:e.dataset.previewerId,hostChildren:b.childElementCount,...detail});
+      };mark("begin");we(b),Q(!0);''')
+    r('if(g)K=await Pe(g);else',
+      'if(g){mark("recipe-begin");K=await Pe(g);mark("recipe-return");}else')
+    r('if(Be(te.demo.root,le),!g&&h&&le.delete(h),await Ne(Array.from(le)),C||a!==y)return;',
+      'Be(te.demo.root,le);if(!g&&h)le.delete(h);mark("prototypes-begin",{ids:[...le]});await Ne(Array.from(le));mark("prototypes-return");if(C||a!==y)return;')
+    r('const ce=await Ue({runtime:s,demo:te.demo,host:b,isCurrent:()=>!C&&a===y});',
+      'mark("render-begin");const ce=await Ue({runtime:s,demo:te.demo,host:b,isCurrent:()=>!C&&a===y});mark("render-return");')
+    r('try{if(await te.ready,!C&&a===y){const x=await be(e,()=>{',
+      'try{await te.ready;mark("surface-ready");if(!C&&a===y){const x=await be(e,()=>{')
+    r('m(),V={id:r,destroy:ce.destroy},D=te,k=oe,ae&&he(ae);',
+      'm();mark("publish");V={id:r,destroy:ce.destroy},D=te,k=oe,ae&&he(ae);')
+    return renderer_prefix+s
+
+edit(client,client_transform)
+quoted='../../content/docs/demo-bootstrap-2-3-2-live-region.demo.ts'
+needle=re.escape('"'+quoted+'":()=>t(()=>import("./'+recipe.name+'"),')
+def registry_transform(s):
+    matches=list(re.finditer(needle,s))
+    assert len(matches)==1
+    old=matches[0].group(0)
+    new=old.replace('()=>import(', '()=>(console.info("[S4 Live Region] "+JSON.stringify({stage:"native-import-begin",pageMs:performance.now(),timeOrigin:performance.timeOrigin})),import(').replace('"),','")),')
+    return replace(s,old,new)
+edit(registry,registry_transform)
+
+def mark(stage):
+    return f'console.info("[S4 Live Region] "+JSON.stringify({{stage:"{stage}",pageMs:performance.now(),timeOrigin:performance.timeOrigin}}));'
+for p,label in [(recipe,'recipe-module'),(shared,'shared-module')]:
+    edit(p,lambda s,label=label:mark(label+'-enter')+s+mark(label+'-exit'))
+def mk(stage,proto,entry):
+    return f'(performance.mark("s4-live-region:{stage}:{proto}"),console.info("[S4 Live Region] "+JSON.stringify({{stage:"{stage}",proto:"{proto}",asset:"{entry}",pageMs:performance.now(),timeOrigin:performance.timeOrigin}})));'
+def proto_transform(text):
+    for proto, confined in protoMap.items():
+        entry=confined['entry']
+        start=f'"{proto}":async()=>{{const t=await o(()=>import("./{entry}"),'
+        dest=f'"{proto}":async()=>{{'+mk('prototype-loader-begin',proto,entry)+'const t=await o(()=>('+mk('prototype-native-import-begin',proto,entry)[:-1]+f',import("./{entry}")),'
+        text=replace(text,start,dest)
+        fn,value=confined['fn'],confined['export']
+        text=replace(text, f';{fn}("{proto}",t.{value})}}', ';'+mk('prototype-loader-return',proto,entry)+f'{fn}("{proto}",t.{value})}}')
+    return text
+edit(protoModule,proto_transform)
+for proto, confined in protoMap.items():
+    entry=confined['entry']
+    edit(dist/entry,lambda text,proto=proto,entry=entry:mk('prototype-module-enter',proto,entry)+text+mk('prototype-module-exit',proto,entry))
+(q/'asset-binding.json').write_text(json.dumps(dict(
+ assets=assets,
+ scope='Exact emitted observer taps around the four Live Region runtime phases, the two exact Prototype loader and native module boundaries, mapped asset responses, and the original recipe registry import boundary. Original promises, action order, readiness predicate, search scope and deadlines remain.',
+),indent=2)+'\n')

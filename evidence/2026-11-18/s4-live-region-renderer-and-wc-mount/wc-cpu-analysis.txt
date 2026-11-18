@@ -1,0 +1,53 @@
+from collections import Counter, defaultdict
+from pathlib import Path
+from hashlib import file_digest
+import json,sys
+q=Path(sys.argv[1])
+profile_path=q/'startup.cpuprofile'
+p=json.loads(profile_path.read_text())
+nodes={n['id']:n for n in p['nodes']}
+parents={c:n['id'] for n in p['nodes'] for c in n.get('children',[])}
+site='site-shadcn-controls.DZNAQyYW.js'
+assert len(p['samples'])==len(p['timeDeltas'])
+assert p['endTime']>=p['startTime']
+def frame(n):
+    f=nodes[n]['callFrame']
+    return (f['functionName'],f['url'].split('/')[-1],f['lineNumber']+1,f['columnNumber']+1)
+def path(n):
+    while n in nodes:
+        yield frame(n)
+        n=parents.get(n)
+def head_rows(values):
+    return [dict(stack=[dict(function=r[0],asset=r[1],line=r[2],column=r[3]) for r in t],
+                 weightedMs=round(d/1000,3)) for t,d in values.most_common(30)]
+scopes=defaultdict(Counter)
+samples=Counter()
+for n,d in zip(p['samples'],p['timeDeltas']):
+    f=list(path(n))
+    scopes['all'][tuple(f[:4])]+=d
+    samples['all']+=1
+    for i,r in enumerate(f):
+        if r[0]=='connectedCallback' and r[1]==site:
+            scopes['connectedCallback'][tuple(f[:4])]+=d
+            samples['connectedCallback']+=1
+            if any(call[0]=='oe' and call[1]==site and call[2]==18 for call in f[:i]):
+                scopes['initialAttachView'][tuple(f[:5])]+=d
+                samples['initialAttachView']+=1
+            break
+    else:
+        if any(r[0]=='oe' and r[1]==site and r[2]==18 for r in f):
+            scopes['otherAttachViewNamedScopes'][tuple(f[:5])]+=d
+            samples['otherAttachViewNamedScopes']+=1
+out=dict(source=(q/'source.txt').read_text().splitlines(),
+         assetSHA256=(q/'assets.sha256').read_text().splitlines(),
+         nativeExit=int((q/'native.exit').read_text()),
+         profileSHA256=file_digest(profile_path.open('rb'),'sha256').hexdigest(),
+         deltaRecordCount=len(p['samples']),profileElapsedMs=round((p['endTime']-p['startTime'])/1000,3),
+         stageCounts={name:dict(sampled=samples[name],weightedMs=round(sum(counter.values())/1000,3),
+                                topLeafPaths=head_rows(counter)) for name,counter in scopes.items()})
+(q/'wc-mount-cpu-summary.json').write_text(json.dumps(out,indent=2)+'\n')
+for name in out['stageCounts']:
+    values=out['stageCounts'][name]
+    print(name,values['sampled'],values['weightedMs'])
+    for t in values['topLeafPaths'][:10]:
+        print(t['weightedMs'],tuple((r['function'],r['asset'],r['line'],r['column']) for r in t['stack']))
