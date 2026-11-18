@@ -1,0 +1,347 @@
+{
+  "standalone": {
+    "head": "8b644e2d1a08b05149e64be20e3a95c5bf52a5ea",
+    "tree": "fa1ed3bc40112cc84c20062b731cbeb6797aa38f",
+    "main": "b5e41dd601d67ba48cb5d030811f93394893116d",
+    "red": {
+      "passed": 92,
+      "failed": 1,
+      "skipped": 0,
+      "reportSha256": "af7bf4984616a6a1b325f08875ffda63b5ce15524495d1eab9e574a6c4a40dfa"
+    },
+    "focused": {
+      "passed": 214,
+      "failed": 0,
+      "skipped": 0,
+      "reportSha256": "eb59e5fac8dc688f8f82a74d0d1a7f3dd41ff4baf5aad421bed670571b5c94e1"
+    },
+    "packagesBuilt": 47,
+    "pagesBuilt": 685,
+    "workspaceTypes": "pass",
+    "manifests": "pass",
+    "finfBudgetCommand": "pass"
+  },
+  "originalTypographyOnMac": {
+    "parent": {
+      "wc/shadcn": {
+        "status": "failed",
+        "notoCjkAssertion": true
+      },
+      "wc/brutalist": {
+        "status": "passed",
+        "notoCjkAssertion": false
+      },
+      "react/shadcn": {
+        "status": "failed",
+        "notoCjkAssertion": true
+      },
+      "react/brutalist": {
+        "status": "passed",
+        "notoCjkAssertion": false
+      },
+      "vue/shadcn": {
+        "status": "failed",
+        "notoCjkAssertion": true
+      },
+      "vue/brutalist": {
+        "status": "passed",
+        "notoCjkAssertion": false
+      },
+      "vue2/shadcn": {
+        "status": "failed",
+        "notoCjkAssertion": true
+      },
+      "vue2/brutalist": {
+        "status": "passed",
+        "notoCjkAssertion": false
+      }
+    },
+    "candidate": {
+      "wc/shadcn": {
+        "status": "failed",
+        "notoCjkAssertion": true
+      },
+      "wc/brutalist": {
+        "status": "passed",
+        "notoCjkAssertion": false
+      },
+      "react/shadcn": {
+        "status": "failed",
+        "notoCjkAssertion": true
+      },
+      "react/brutalist": {
+        "status": "passed",
+        "notoCjkAssertion": false
+      },
+      "vue/shadcn": {
+        "status": "failed",
+        "notoCjkAssertion": true
+      },
+      "vue/brutalist": {
+        "status": "passed",
+        "notoCjkAssertion": false
+      },
+      "vue2/shadcn": {
+        "status": "failed",
+        "notoCjkAssertion": true
+      },
+      "vue2/brutalist": {
+        "status": "passed",
+        "notoCjkAssertion": false
+      }
+    },
+    "platformFonts": {
+      "native-wc-shadcn": {
+        "latin": [
+          {
+            "familyName": "Geist",
+            "postScriptName": "Geist-Regular",
+            "isCustomFont": true,
+            "glyphCount": 25
+          }
+        ],
+        "cjk": [
+          {
+            "familyName": "PingFang SC",
+            "postScriptName": "PingFangSC-Regular",
+            "isCustomFont": false,
+            "glyphCount": 9
+          }
+        ]
+      },
+      "native-wc-brutalist": {
+        "latin": [
+          {
+            "familyName": "DM Sans 9pt",
+            "postScriptName": "DMSans-9ptRegular_opsz100000_wght1F40000",
+            "isCustomFont": true,
+            "glyphCount": 25
+          }
+        ],
+        "cjk": [
+          {
+            "familyName": "PingFang SC",
+            "postScriptName": "PingFangSC-Medium",
+            "isCustomFont": false,
+            "glyphCount": 9
+          }
+        ]
+      },
+      "native-react-shadcn": {
+        "latin": [
+          {
+            "familyName": "Geist",
+            "postScriptName": "Geist-Regular",
+            "isCustomFont": true,
+            "glyphCount": 25
+          }
+        ],
+        "cjk": [
+          {
+            "familyName": "PingFang SC",
+            "postScriptName": "PingFangSC-Regular",
+            "isCustomFont": false,
+            "glyphCount": 9
+          }
+        ]
+      },
+      "native-react-brutalist": {
+        "latin": [
+          {
+            "familyName": "DM Sans 9pt",
+            "postScriptName": "DMSans-9ptRegular_opsz100000_wght1F40000",
+            "isCustomFont": true,
+            "glyphCount": 25
+          }
+        ],
+        "cjk": [
+          {
+            "familyName": "PingFang SC",
+            "postScriptName": "PingFangSC-Medium",
+            "isCustomFont": false,
+            "glyphCount": 9
+          }
+        ]
+      },
+      "native-vue-shadcn": {
+        "latin": [
+          {
+            "familyName": "Geist",
+            "postScriptName": "Geist-Regular",
+            "isCustomFont": true,
+            "glyphCount": 25
+          }
+        ],
+        "cjk": [
+          {
+            "familyName": "PingFang SC",
+            "postScriptName": "PingFangSC-Regular",
+            "isCustomFont": false,
+            "glyphCount": 9
+          }
+        ]
+      },
+      "native-vue-brutalist": {
+        "latin": [
+          {
+            "familyName": "DM Sans 9pt",
+            "postScriptName": "DMSans-9ptRegular_opsz100000_wght1F40000",
+            "isCustomFont": true,
+            "glyphCount": 25
+          }
+        ],
+        "cjk": [
+          {
+            "familyName": "PingFang SC",
+            "postScriptName": "PingFangSC-Medium",
+            "isCustomFont": false,
+            "glyphCount": 9
+          }
+        ]
+      },
+      "native-vue2-shadcn": {
+        "latin": [
+          {
+            "familyName": "Geist",
+            "postScriptName": "Geist-Regular",
+            "isCustomFont": true,
+            "glyphCount": 25
+          }
+        ],
+        "cjk": [
+          {
+            "familyName": "PingFang SC",
+            "postScriptName": "PingFangSC-Regular",
+            "isCustomFont": false,
+            "glyphCount": 9
+          }
+        ]
+      },
+      "native-vue2-brutalist": {
+        "latin": [
+          {
+            "familyName": "DM Sans 9pt",
+            "postScriptName": "DMSans-9ptRegular_opsz100000_wght1F40000",
+            "isCustomFont": true,
+            "glyphCount": 25
+          }
+        ],
+        "cjk": [
+          {
+            "familyName": "PingFang SC",
+            "postScriptName": "PingFangSC-Medium",
+            "isCustomFont": false,
+            "glyphCount": 9
+          }
+        ]
+      }
+    },
+    "parentReport": {
+      "passed": 4,
+      "failed": 4,
+      "skipped": 25,
+      "reportSha256": "faf986a642b48efc6891de05868c2a400b4e48907a8dbe3a53de4424ade32467"
+    },
+    "candidateReport": {
+      "passed": 4,
+      "failed": 4,
+      "skipped": 25,
+      "reportSha256": "a1cfd1fa2c43d1e82bef218cb0ef0ca64f231d8deea798b9603350fd91aedb10"
+    }
+  },
+  "combined": {
+    "head": "bc763ddf8dba6cfde13f2158a1f3672373d8d82f",
+    "tree": "937b271888f96bfff79950605861edcb03cdc73a",
+    "packagesBuilt": 47,
+    "pagesBuilt": 685,
+    "selected": {
+      "focused": {
+        "passed": 899,
+        "failed": 0,
+        "skipped": 0,
+        "reportSha256": "45c5ac418b41d918f0e25b258f4e12499a21f365a9f9639c75b6aec4c68afce2"
+      },
+      "preview-browser": {
+        "passed": 15,
+        "failed": 0,
+        "skipped": 9,
+        "reportSha256": "337b31518370987fd81e5597dface7a8e17cef9131d893aaa993fe22837f6802"
+      },
+      "code-grammar": {
+        "passed": 3,
+        "failed": 0,
+        "skipped": 23,
+        "reportSha256": "9d4064d845ffd4233b79be4f4734b06d1cfe03859f508087d6539bcc4c380cd1"
+      },
+      "copy-commands": {
+        "passed": 1,
+        "failed": 0,
+        "skipped": 14,
+        "reportSha256": "2c1667172633d8a3b606d8e8121096a2911abc1c15f23b151feaeecd0cfa27e9"
+      },
+      "scroll-chain": {
+        "passed": 2,
+        "failed": 0,
+        "skipped": 4,
+        "reportSha256": "2dcd4ca2d0b3de9f4c75e9031c80fe6c8151349473ed31210860d41ca6641f43"
+      },
+      "wc-shadow": {
+        "passed": 165,
+        "failed": 0,
+        "skipped": 0,
+        "reportSha256": "0a0b7c02ac481ea055c13153ae8e02b6aee39a9efdb0f32f94a91c8ba7d18715"
+      },
+      "projection-scope": {
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0,
+        "reportSha256": "1828bd548db124b3ace3939f5357c1f70e3aeb00d79c37cb30c44836822a7718"
+      },
+      "codeexample": {
+        "passed": 12,
+        "failed": 0,
+        "skipped": 14,
+        "reportSha256": "2c31c1ae8e0644ccd8963a9b971dd84e6c17b8d362aeff22645d274ec03ec529"
+      },
+      "docs-columns": {
+        "passed": 10,
+        "failed": 0,
+        "skipped": 0,
+        "reportSha256": "5fb0fe5eee99a885cdf71bf7dcbea77cf1bef86858ca863e02fcaff9227985c9"
+      },
+      "liquid-optics": {
+        "passed": 3,
+        "failed": 0,
+        "skipped": 1,
+        "reportSha256": "9e0f65f94ef6e16ae0edf1a0c8758bd519a5b51fc8db7f97964abb97fd4167bb"
+      }
+    },
+    "originalMatrix": {
+      "zh-cn": {
+        "bytes": 1862465,
+        "sha256": "497be8bbdb7f2813ab2e6701e93f628ed08c35dfdf51456ebf7cd2051e646dce",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914197,
+        "sha256": "4060b75ed8692f85c67d6bf33c2c723f2262600a8e4a4e3d43bbb93264132826",
+        "previews": 1268
+      }
+    },
+    "shadcnButtonDocumentationCodeExamples": 9,
+    "originalS4": {
+      "readinessMs": 60000,
+      "caseMs": 150000,
+      "outcomes": {
+        "zh-cn": "original readiness timeout before Dialog",
+        "en": "original readiness timeout before Dialog"
+      },
+      "report": {
+        "passed": 0,
+        "failed": 2,
+        "skipped": 0,
+        "reportSha256": "83c6e04453cc24a31547c7e9643c7463dbb22f9a5d0a965affc7a1980f1d4fc0"
+      }
+    }
+  }
+}

@@ -1,0 +1,318 @@
+{
+  "selectedLocale": "zh-cn",
+  "originalReadinessMs": 60000,
+  "originalCaseMs": 150000,
+  "siteAssetsFrom": "9d10b95c274e6ef6257de58a2b729ceccc4caafd",
+  "description": "Independently instrumented emitted runs. The candidate overlay changes only when Typography reads the source inventory. Totals are observed within the original attempt.",
+  "runs": {
+    "stock": {
+      "binding": {
+        "head": "9d10b95c274e6ef6257de58a2b729ceccc4caafd",
+        "asset": "site-typography.C3k9Dnnc.js",
+        "stockSha256": "9afb886b44d27d83cdb0a0f7232e289f345240f9bcdd34a10b22de9cd64033e7",
+        "observedSha256": "6b73d9a66f4948b9c778a3d1a2624e0b2f83059d98f173363d48e6a81bb68a79",
+        "runnerStockSha256": "e6590db342bddc56b37fa367ce6b1cc519130cdb201e06e8d14061569d5e0317",
+        "runnerObservedSha256": "04f08341ca4a749bedde4f1c40fd8e1d2b70ca07c7333975511f7ed0146643ea"
+      },
+      "observedTypography": [
+        {
+          "owner": "documentation-typography",
+          "generation": 1,
+          "runtime": "wc",
+          "family": "shadcn",
+          "targets": 405,
+          "activated": false,
+          "stage": "materialize",
+          "pageMs": 511.10000014305115,
+          "timeOrigin": 1795013481132.6,
+          "inventory": null
+        },
+        {
+          "owner": "documentation-typography",
+          "generation": 1,
+          "runtime": "wc",
+          "family": "shadcn",
+          "targets": 405,
+          "activated": false,
+          "stage": "render-start",
+          "pageMs": 5024,
+          "timeOrigin": 1795013481132.6,
+          "inventory": {
+            "liveTargets": 428,
+            "added": 23,
+            "absent": 0,
+            "revised": 0,
+            "addedHeader": 0,
+            "addedDocumentFlow": 23,
+            "addedTags": {
+              "label": 2,
+              "h3": 9,
+              "p": 12
+            },
+            "captureMs": 3.200000047683716
+          }
+        },
+        {
+          "owner": "documentation-typography",
+          "generation": 1,
+          "runtime": "wc",
+          "family": "shadcn",
+          "targets": 405,
+          "activated": false,
+          "stage": "render-end",
+          "pageMs": 5191,
+          "timeOrigin": 1795013481132.6,
+          "inventory": {
+            "liveTargets": 428,
+            "added": 23,
+            "absent": 0,
+            "revised": 0,
+            "addedHeader": 0,
+            "addedDocumentFlow": 23,
+            "addedTags": {
+              "label": 2,
+              "h3": 9,
+              "p": 12
+            },
+            "captureMs": 3.4000000953674316
+          }
+        },
+        {
+          "owner": "documentation-typography",
+          "generation": 1,
+          "runtime": "wc",
+          "family": "shadcn",
+          "targets": 405,
+          "activated": true,
+          "stage": "activate",
+          "pageMs": 5204.800000190735,
+          "timeOrigin": 1795013481132.6,
+          "inventory": {
+            "liveTargets": 428,
+            "added": 23,
+            "absent": 0,
+            "revised": 0,
+            "addedHeader": 0,
+            "addedDocumentFlow": 23,
+            "addedTags": {
+              "label": 2,
+              "h3": 9,
+              "p": 12
+            },
+            "captureMs": 3.0999999046325684
+          }
+        },
+        {
+          "owner": "documentation-typography",
+          "generation": 2,
+          "runtime": "wc",
+          "family": "shadcn",
+          "targets": 428,
+          "activated": false,
+          "stage": "materialize",
+          "pageMs": 5276,
+          "timeOrigin": 1795013481132.6,
+          "inventory": null
+        },
+        {
+          "owner": "documentation-typography",
+          "generation": 2,
+          "runtime": "wc",
+          "family": "shadcn",
+          "targets": 428,
+          "activated": false,
+          "stage": "render-start",
+          "pageMs": 5311.800000190735,
+          "timeOrigin": 1795013481132.6,
+          "inventory": {
+            "liveTargets": 428,
+            "added": 0,
+            "absent": 0,
+            "revised": 0,
+            "addedHeader": 0,
+            "addedDocumentFlow": 0,
+            "addedTags": {},
+            "captureMs": 3.5
+          }
+        },
+        {
+          "owner": "documentation-typography",
+          "generation": 2,
+          "runtime": "wc",
+          "family": "shadcn",
+          "targets": 428,
+          "activated": false,
+          "stage": "render-end",
+          "pageMs": 5465.600000143051,
+          "timeOrigin": 1795013481132.6,
+          "inventory": {
+            "liveTargets": 428,
+            "added": 0,
+            "absent": 0,
+            "revised": 0,
+            "addedHeader": 0,
+            "addedDocumentFlow": 0,
+            "addedTags": {},
+            "captureMs": 3.5999999046325684
+          }
+        },
+        {
+          "owner": "documentation-typography",
+          "generation": 2,
+          "runtime": "wc",
+          "family": "shadcn",
+          "targets": 428,
+          "activated": true,
+          "stage": "activate",
+          "pageMs": 5477.5,
+          "timeOrigin": 1795013481132.6,
+          "inventory": {
+            "liveTargets": 428,
+            "added": 0,
+            "absent": 0,
+            "revised": 0,
+            "addedHeader": 0,
+            "addedDocumentFlow": 0,
+            "addedTags": {},
+            "captureMs": 3.200000047683716
+          }
+        },
+        {
+          "owner": "documentation-typography",
+          "generation": 1,
+          "runtime": "wc",
+          "family": "shadcn",
+          "targets": 405,
+          "activated": true,
+          "stage": "dispose",
+          "pageMs": 5590.5,
+          "timeOrigin": 1795013481132.6,
+          "inventory": null
+        }
+      ],
+      "startupPhases": [
+        {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "outcome": "begin",
+          "nodeMs": 6084.621125,
+          "nodeTimeOrigin": 1795013479980.358,
+          "dateNow": 1795013486064
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "outcome": "error",
+          "nodeMs": 67971.437292,
+          "nodeTimeOrigin": 1795013479980.358,
+          "dateNow": 1795013547951
+        }
+      ]
+    },
+    "candidateOverlay": {
+      "binding": {
+        "head": "9d10b95c274e6ef6257de58a2b729ceccc4caafd",
+        "asset": "site-typography.C3k9Dnnc.js",
+        "stockSha256": "9afb886b44d27d83cdb0a0f7232e289f345240f9bcdd34a10b22de9cd64033e7",
+        "observedSha256": "d5a225014bfd4d7ef7335c716bd60f63262795f17ce8e8b1fa1d9d695959a276",
+        "runnerStockSha256": "e6590db342bddc56b37fa367ce6b1cc519130cdb201e06e8d14061569d5e0317",
+        "runnerObservedSha256": "04f08341ca4a749bedde4f1c40fd8e1d2b70ca07c7333975511f7ed0146643ea"
+      },
+      "observedTypography": [
+        {
+          "owner": "documentation-typography",
+          "generation": 1,
+          "runtime": "wc",
+          "family": "shadcn",
+          "targets": 405,
+          "activated": false,
+          "stage": "materialize",
+          "pageMs": 519.5999999046326,
+          "timeOrigin": 1795013694232.2,
+          "inventory": null
+        },
+        {
+          "owner": "documentation-typography",
+          "generation": 1,
+          "runtime": "wc",
+          "family": "shadcn",
+          "targets": 428,
+          "activated": false,
+          "stage": "render-start",
+          "pageMs": 5002.5,
+          "timeOrigin": 1795013694232.2,
+          "inventory": {
+            "liveTargets": 428,
+            "added": 0,
+            "absent": 0,
+            "revised": 0,
+            "addedHeader": 0,
+            "addedDocumentFlow": 0,
+            "addedTags": {},
+            "captureMs": 3.0999999046325684
+          }
+        },
+        {
+          "owner": "documentation-typography",
+          "generation": 1,
+          "runtime": "wc",
+          "family": "shadcn",
+          "targets": 428,
+          "activated": false,
+          "stage": "render-end",
+          "pageMs": 5169.700000047684,
+          "timeOrigin": 1795013694232.2,
+          "inventory": {
+            "liveTargets": 428,
+            "added": 0,
+            "absent": 0,
+            "revised": 0,
+            "addedHeader": 0,
+            "addedDocumentFlow": 0,
+            "addedTags": {},
+            "captureMs": 3.299999952316284
+          }
+        },
+        {
+          "owner": "documentation-typography",
+          "generation": 1,
+          "runtime": "wc",
+          "family": "shadcn",
+          "targets": 428,
+          "activated": true,
+          "stage": "activate",
+          "pageMs": 5184.099999904633,
+          "timeOrigin": 1795013694232.2,
+          "inventory": {
+            "liveTargets": 428,
+            "added": 0,
+            "absent": 0,
+            "revised": 0,
+            "addedHeader": 0,
+            "addedDocumentFlow": 0,
+            "addedTags": {},
+            "captureMs": 2.799999952316284
+          }
+        }
+      ],
+      "startupPhases": [
+        {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "outcome": "begin",
+          "nodeMs": 6506.485084,
+          "nodeTimeOrigin": 1795013692631.047,
+          "dateNow": 1795013699137
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "outcome": "error",
+          "nodeMs": 69153.562334,
+          "nodeTimeOrigin": 1795013692631.047,
+          "dateNow": 1795013761784
+        }
+      ]
+    }
+  }
+}
