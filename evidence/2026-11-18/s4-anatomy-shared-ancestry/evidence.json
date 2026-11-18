@@ -1,0 +1,668 @@
+{
+  "native": {
+    "head": "3d53afa4f21521b60dc4eaed509e10ca410d1caa",
+    "parent": "5a9e24a982eb452eaba6babcc7920b5165e81ce1",
+    "chrome": "156.0.8078.79",
+    "scopedInputs": {
+      "parent": {
+        "blob": "61cf026029e0c7f11ddb916376f66a70a2db2945e28746b3065b752a450657ff",
+        "bundle": "0b0d03c1714a1bcff68551936324c63a635e343f1b8e307f3d31f8ab441f3e99",
+        "inputs": 57
+      },
+      "candidate": {
+        "blob": "52a9ba72e6c6a9bd63998953232054ddc7389748d46cbfc2efd47c47ab3a25cb",
+        "bundle": "29b42d850241e465b67e08458eace983021be2b456423afd9d629d99254d7511",
+        "inputs": 57
+      }
+    },
+    "rows": [
+      {
+        "kind": "parent",
+        "steady": {
+          "branchReads": 17,
+          "events": [0, 0]
+        },
+        "before": {
+          "left": [
+            "branch",
+            "item-0",
+            "item-1",
+            "item-2",
+            "item-3",
+            "item-4",
+            "item-5",
+            "item-6",
+            "item-7",
+            "item-8",
+            "item-9",
+            "item-10",
+            "item-11",
+            "item-12",
+            "item-13",
+            "item-14",
+            "item-15"
+          ],
+          "right": []
+        },
+        "after": {
+          "left": [],
+          "right": [
+            "branch",
+            "item-0",
+            "item-1",
+            "item-2",
+            "item-3",
+            "item-4",
+            "item-5",
+            "item-6",
+            "item-7",
+            "item-8",
+            "item-9",
+            "item-10",
+            "item-11",
+            "item-12",
+            "item-13",
+            "item-14",
+            "item-15"
+          ],
+          "events": [1, 1]
+        },
+        "positionBefore": 20,
+        "positionAfter": 20
+      },
+      {
+        "kind": "candidate",
+        "steady": {
+          "branchReads": 1,
+          "events": [0, 0]
+        },
+        "before": {
+          "left": [
+            "branch",
+            "item-0",
+            "item-1",
+            "item-2",
+            "item-3",
+            "item-4",
+            "item-5",
+            "item-6",
+            "item-7",
+            "item-8",
+            "item-9",
+            "item-10",
+            "item-11",
+            "item-12",
+            "item-13",
+            "item-14",
+            "item-15"
+          ],
+          "right": []
+        },
+        "after": {
+          "left": [],
+          "right": [
+            "branch",
+            "item-0",
+            "item-1",
+            "item-2",
+            "item-3",
+            "item-4",
+            "item-5",
+            "item-6",
+            "item-7",
+            "item-8",
+            "item-9",
+            "item-10",
+            "item-11",
+            "item-12",
+            "item-13",
+            "item-14",
+            "item-15"
+          ],
+          "events": [1, 1]
+        },
+        "positionBefore": 20,
+        "positionAfter": 20
+      },
+      {
+        "kind": "candidate",
+        "steady": {
+          "branchReads": 1,
+          "events": [0, 0]
+        },
+        "before": {
+          "left": [
+            "branch",
+            "item-0",
+            "item-1",
+            "item-2",
+            "item-3",
+            "item-4",
+            "item-5",
+            "item-6",
+            "item-7",
+            "item-8",
+            "item-9",
+            "item-10",
+            "item-11",
+            "item-12",
+            "item-13",
+            "item-14",
+            "item-15"
+          ],
+          "right": []
+        },
+        "after": {
+          "left": [],
+          "right": [
+            "branch",
+            "item-0",
+            "item-1",
+            "item-2",
+            "item-3",
+            "item-4",
+            "item-5",
+            "item-6",
+            "item-7",
+            "item-8",
+            "item-9",
+            "item-10",
+            "item-11",
+            "item-12",
+            "item-13",
+            "item-14",
+            "item-15"
+          ],
+          "events": [1, 1]
+        },
+        "positionBefore": 20,
+        "positionAfter": 20
+      },
+      {
+        "kind": "parent",
+        "steady": {
+          "branchReads": 17,
+          "events": [0, 0]
+        },
+        "before": {
+          "left": [
+            "branch",
+            "item-0",
+            "item-1",
+            "item-2",
+            "item-3",
+            "item-4",
+            "item-5",
+            "item-6",
+            "item-7",
+            "item-8",
+            "item-9",
+            "item-10",
+            "item-11",
+            "item-12",
+            "item-13",
+            "item-14",
+            "item-15"
+          ],
+          "right": []
+        },
+        "after": {
+          "left": [],
+          "right": [
+            "branch",
+            "item-0",
+            "item-1",
+            "item-2",
+            "item-3",
+            "item-4",
+            "item-5",
+            "item-6",
+            "item-7",
+            "item-8",
+            "item-9",
+            "item-10",
+            "item-11",
+            "item-12",
+            "item-13",
+            "item-14",
+            "item-15"
+          ],
+          "events": [1, 1]
+        },
+        "positionBefore": 20,
+        "positionAfter": 20
+      }
+    ]
+  },
+  "tests": {
+    "focused": {
+      "passed": 65,
+      "filtered": 0,
+      "files": 10,
+      "sha256": "f9401ee754cd1b3d2697b4971f475ed1dad3b2f84695badc800d1c0aab635599"
+    },
+    "preview-browser": {
+      "passed": 15,
+      "filtered": 9,
+      "files": 3,
+      "sha256": "435feadde3ae18934545124c5ec910ea74e31d5a68b2c838940e05ef5fb4e87f"
+    },
+    "code-grammar": {
+      "passed": 3,
+      "filtered": 23,
+      "files": 1,
+      "sha256": "2d1a60b8aefeca5947321824d35244b4f9289e3171bb39e776ab00a0a0e4e9b1"
+    },
+    "copy-commands": {
+      "passed": 1,
+      "filtered": 14,
+      "files": 1,
+      "sha256": "e83a913f70455d7ed7b76b67cf47c0dee43d2ee66851023bc60950211ebaff21"
+    },
+    "scroll-chain": {
+      "passed": 2,
+      "filtered": 4,
+      "files": 1,
+      "sha256": "d52e9dce5ea18bbb81a11060e704bb726adb670192b855efe53703d0b3073bb2"
+    },
+    "wc-shadow": {
+      "passed": 165,
+      "filtered": 0,
+      "files": 1,
+      "sha256": "fb6582283646567f0bdbd1460f415e55fa122b4b9aab59f2d4eecb1030153a51"
+    }
+  },
+  "closure": {
+    "head": "3d53afa4f21521b60dc4eaed509e10ca410d1caa",
+    "tree": "a848bd80ae8f945a87852ad5e84949a54ccb140c",
+    "distHashes": {
+      "zh-cn/index.html": "d7fa4e0bdcd25bb6c3c249e637f96268df99b9860b6e33dbcffe7b5ad6ad54be",
+      "zh-cn/ui-libraries/shadcn/button/index.html": "4fd15616ebf0300598b8803c0ae00bb5647cf182cfcb21ca283924e3cee8ad81",
+      "zh-cn/ui-libraries/brutalist/components/button/index.html": "810dc597833fcde73e7296b1d4e1d41a9fbf7a832c033356dcb31a206c588fab"
+    },
+    "sourceCodeExamples": 9,
+    "renderedCodeExamples": 9,
+    "packedHeaderExit": 0,
+    "previewBrowserExit": 0,
+    "codeGrammarExit": 0,
+    "copyCommandsExit": 0,
+    "scrollChainExit": 0,
+    "selector": "uses real family Popover Triggers|uses the same mobile shell|retains (shadcn|brutalist) preference owners|compact (shadcn|brutalist)|live available region|keeps Runtime Tabs outside"
+  },
+  "reconnectBefore": {
+    "pageMs": 68828.59999990463,
+    "marks": 59904,
+    "groups": {
+      "anatomy-reconnect-prune": {
+        "count": 2951,
+        "sumMs": 0.5,
+        "maxMs": 0.10000014305114746
+      },
+      "anatomy-reconnect-order": {
+        "count": 2951,
+        "sumMs": 2328.4999997615814,
+        "maxMs": 14.5
+      },
+      "anatomy-reconnect-target": {
+        "count": 2951,
+        "sumMs": 1213.7999997138977,
+        "maxMs": 10.099999904632568
+      }
+    },
+    "top": [
+      {
+        "scope": "anatomy-reconnect-order|base-select",
+        "count": 571,
+        "sumMs": 1198.3999979496002,
+        "maxMs": 14.5
+      },
+      {
+        "scope": "anatomy-reconnect-order|base-calendar",
+        "count": 452,
+        "sumMs": 774.8000023365021,
+        "maxMs": 7.099999904632568
+      },
+      {
+        "scope": "anatomy-reconnect-target|base-field",
+        "count": 246,
+        "sumMs": 529.5999987125397,
+        "maxMs": 6.200000047683716
+      },
+      {
+        "scope": "anatomy-reconnect-target|base-table",
+        "count": 106,
+        "sumMs": 349.8999991416931,
+        "maxMs": 10.099999904632568
+      },
+      {
+        "scope": "anatomy-reconnect-order|base-field",
+        "count": 246,
+        "sumMs": 127.10000205039978,
+        "maxMs": 6.299999952316284
+      },
+      {
+        "scope": "anatomy-reconnect-target|base-accordion-item",
+        "count": 176,
+        "sumMs": 111.29999995231628,
+        "maxMs": 2.3999998569488525
+      },
+      {
+        "scope": "anatomy-reconnect-target|base-drawer",
+        "count": 102,
+        "sumMs": 71.40000009536743,
+        "maxMs": 1.9000000953674316
+      },
+      {
+        "scope": "anatomy-reconnect-order|base-accordion-item",
+        "count": 176,
+        "sumMs": 56.79999899864197,
+        "maxMs": 5.800000190734863
+      },
+      {
+        "scope": "anatomy-reconnect-target|base-switch",
+        "count": 47,
+        "sumMs": 52.400001764297485,
+        "maxMs": 2.9000000953674316
+      },
+      {
+        "scope": "anatomy-reconnect-order|base-dropdown",
+        "count": 118,
+        "sumMs": 31.999998569488525,
+        "maxMs": 3.5999999046325684
+      },
+      {
+        "scope": "anatomy-reconnect-target|base-scroll-area",
+        "count": 30,
+        "sumMs": 28.00000023841858,
+        "maxMs": 2.9000000953674316
+      },
+      {
+        "scope": "anatomy-reconnect-target|base-tabs",
+        "count": 54,
+        "sumMs": 27.999998092651367,
+        "maxMs": 1.2000000476837158
+      }
+    ]
+  },
+  "observedCandidate": {
+    "receivedNodeMs": 73370.5965,
+    "scans": 52480,
+    "mappedClaims": 28664490,
+    "reads": 26619670,
+    "hits": 5206151,
+    "families": {
+      "base-dialog": {
+        "scans": 620,
+        "mappedClaims": 77620,
+        "reads": 69459,
+        "hits": 11832
+      },
+      "base-select": {
+        "scans": 10109,
+        "mappedClaims": 11600308,
+        "reads": 11285291,
+        "hits": 2699958
+      },
+      "base-switch": {
+        "scans": 1030,
+        "mappedClaims": 123999,
+        "reads": 59842,
+        "hits": 0
+      },
+      "base-tabs": {
+        "scans": 1225,
+        "mappedClaims": 228748,
+        "reads": 202802,
+        "hits": 24234
+      },
+      "base-accordion": {
+        "scans": 2121,
+        "mappedClaims": 537360,
+        "reads": 492781,
+        "hits": 55656
+      },
+      "base-accordion-item": {
+        "scans": 3252,
+        "mappedClaims": 1351191,
+        "reads": 1011838,
+        "hits": 86319
+      },
+      "base-calendar": {
+        "scans": 7667,
+        "mappedClaims": 8307797,
+        "reads": 8178002,
+        "hits": 1988835
+      },
+      "base-alert-dialog": {
+        "scans": 551,
+        "mappedClaims": 49458,
+        "reads": 43916,
+        "hits": 6917
+      },
+      "base-autocomplete": {
+        "scans": 592,
+        "mappedClaims": 51378,
+        "reads": 45605,
+        "hits": 7230
+      },
+      "base-carousel": {
+        "scans": 548,
+        "mappedClaims": 36315,
+        "reads": 31059,
+        "hits": 3987
+      },
+      "base-combobox": {
+        "scans": 592,
+        "mappedClaims": 51378,
+        "reads": 45605,
+        "hits": 7230
+      },
+      "base-context-menu": {
+        "scans": 372,
+        "mappedClaims": 21609,
+        "reads": 17966,
+        "hits": 2733
+      },
+      "base-command": {
+        "scans": 579,
+        "mappedClaims": 44416,
+        "reads": 38788,
+        "hits": 7025
+      },
+      "base-collapsible": {
+        "scans": 902,
+        "mappedClaims": 101909,
+        "reads": 67608,
+        "hits": 0
+      },
+      "base-table": {
+        "scans": 1894,
+        "mappedClaims": 467980,
+        "reads": 436304,
+        "hits": 72766
+      },
+      "base-data-table": {
+        "scans": 276,
+        "mappedClaims": 11060,
+        "reads": 8271,
+        "hits": 0
+      },
+      "base-drawer": {
+        "scans": 1593,
+        "mappedClaims": 383865,
+        "reads": 339119,
+        "hits": 52587
+      },
+      "base-checkbox-group": {
+        "scans": 546,
+        "mappedClaims": 37454,
+        "reads": 28325,
+        "hits": 0
+      },
+      "base-popover": {
+        "scans": 482,
+        "mappedClaims": 38563,
+        "reads": 29492,
+        "hits": 2919
+      },
+      "base-field": {
+        "scans": 5917,
+        "mappedClaims": 3784992,
+        "reads": 3065737,
+        "hits": 0
+      },
+      "base-dropdown-group": {
+        "scans": 399,
+        "mappedClaims": 18985,
+        "reads": 5976,
+        "hits": 0
+      },
+      "base-dropdown": {
+        "scans": 1967,
+        "mappedClaims": 566472,
+        "reads": 535601,
+        "hits": 119422
+      },
+      "base-number-field": {
+        "scans": 485,
+        "mappedClaims": 31793,
+        "reads": 24612,
+        "hits": 0
+      },
+      "base-form": {
+        "scans": 436,
+        "mappedClaims": 26802,
+        "reads": 23406,
+        "hits": 0
+      },
+      "base-slider": {
+        "scans": 1094,
+        "mappedClaims": 132390,
+        "reads": 103475,
+        "hits": 14656
+      },
+      "base-fieldset": {
+        "scans": 260,
+        "mappedClaims": 7362,
+        "reads": 4883,
+        "hits": 0
+      },
+      "base-menubar": {
+        "scans": 530,
+        "mappedClaims": 46267,
+        "reads": 41068,
+        "hits": 5204
+      },
+      "base-scroll-area": {
+        "scans": 557,
+        "mappedClaims": 38924,
+        "reads": 25312,
+        "hits": 1484
+      },
+      "base-radio-group": {
+        "scans": 1232,
+        "mappedClaims": 184486,
+        "reads": 153940,
+        "hits": 18176
+      },
+      "base-navigation-menu": {
+        "scans": 434,
+        "mappedClaims": 33022,
+        "reads": 29676,
+        "hits": 4244
+      },
+      "base-resizable": {
+        "scans": 203,
+        "mappedClaims": 6219,
+        "reads": 4649,
+        "hits": 0
+      },
+      "base-slider-values": {
+        "scans": 1033,
+        "mappedClaims": 101829,
+        "reads": 87043,
+        "hits": 11625
+      },
+      "base-meter": {
+        "scans": 293,
+        "mappedClaims": 10822,
+        "reads": 8625,
+        "hits": 556
+      },
+      "base-progress": {
+        "scans": 293,
+        "mappedClaims": 10822,
+        "reads": 8625,
+        "hits": 556
+      },
+      "base-toggle-group": {
+        "scans": 255,
+        "mappedClaims": 7672,
+        "reads": 5728,
+        "hits": 0
+      },
+      "base-toolbar": {
+        "scans": 298,
+        "mappedClaims": 10929,
+        "reads": 8713,
+        "hits": 0
+      },
+      "base-toast": {
+        "scans": 448,
+        "mappedClaims": 10429,
+        "reads": 6934,
+        "hits": 0
+      },
+      "base-tooltip": {
+        "scans": 253,
+        "mappedClaims": 11435,
+        "reads": 7598,
+        "hits": 0
+      },
+      "base-tree": {
+        "scans": 335,
+        "mappedClaims": 14918,
+        "reads": 12400,
+        "hits": 0
+      },
+      "base-select-group-scope": {
+        "scans": 807,
+        "mappedClaims": 85512,
+        "reads": 23596,
+        "hits": 0
+      }
+    },
+    "pageMs": 72617.40000009537,
+    "timeOrigin": 1794992695082.6
+  },
+  "oldGzip": {
+    "lucide/icons/x": 2879,
+    "lucide root": 637306,
+    "core root": 11378,
+    "runtime root": 101217,
+    "adapter-react root": 164125,
+    "adapter-vue root": 162941,
+    "adapter-web-component root": 196089,
+    "prototypes-base/button": 5274,
+    "prototypes-shadcn/button": 7803
+  },
+  "newGzip": {
+    "lucide/icons/x": 2879,
+    "lucide root": 637306,
+    "core root": 11378,
+    "runtime root": 101290,
+    "adapter-react root": 164198,
+    "adapter-vue root": 162998,
+    "adapter-web-component root": 196149,
+    "prototypes-base/button": 5274,
+    "prototypes-shadcn/button": 7803
+  },
+  "originalS4": {
+    "languageCases": 2,
+    "failed": 2,
+    "previewRootsEach": 1268,
+    "readinessMs": 60000,
+    "caseMs": 150000
+  },
+  "typeCheckRecovery": "Reused the paired 47-package and Website build from the preceding local commit. The sole difference is a test mock type annotation. Workspace types were executed again on the corrected bytes."
+}
