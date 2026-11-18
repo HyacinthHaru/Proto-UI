@@ -1,0 +1,36 @@
+{
+  "exact": {
+    "head": "707c070a54f04f3bf40fa7ab3c50a4ba2d62563c",
+    "tree": "5fbf86b94a69cda7b50a7486848ea8bf778f8baf",
+    "parent": "009612b25e3ba425fc2f5016ae28a7309092f808"
+  },
+  "focused": {
+    "passed": 79,
+    "failed": 0
+  },
+  "matrix": {
+    "before": 1191,
+    "after": 1183,
+    "removed": [
+      "internal/website/self-hosting-coverage-matrix.md: raw Proto UI import `@proto.ui/core` in `apps/www/src/components/site-contents-panel.ts` escapes the website consumer-wall allowlist",
+      "internal/website/self-hosting-coverage-matrix.md: interactive website source `apps/www/src/components/override/Sidebar.astro` is missing a reviewed Source-scan binding and fingerprint",
+      "internal/website/self-hosting-coverage-matrix.md: interactive website source `apps/www/src/components/site-contents-panel.ts` is missing a reviewed Source-scan binding and fingerprint",
+      "internal/website/self-hosting-coverage-matrix.md: interactive website source `apps/www/src/components/site-sidebar-disclosure-bootstrap.js` is missing a reviewed Source-scan binding and fingerprint",
+      "internal/website/self-hosting-coverage-matrix.md: website component source `apps/www/src/components/override/Sidebar.astro` is not classified by a matrix row",
+      "internal/website/self-hosting-coverage-matrix.md: interactive website source `apps/www/src/components/override/Sidebar.astro` is not bound to a matrix row",
+      "internal/website/self-hosting-coverage-matrix.md: interactive website source `apps/www/src/components/site-contents-panel.ts` is not bound to a matrix row",
+      "internal/website/self-hosting-coverage-matrix.md: interactive website source `apps/www/src/components/site-sidebar-disclosure-bootstrap.js` is not bound to a matrix row"
+    ],
+    "added": [],
+    "parentExit": 1,
+    "candidateExit": 1
+  },
+  "runtimeOutputParity": "TypeScript output identical before and after",
+  "docsTypes": {
+    "exit": 1,
+    "errors": [
+      "src/components/site-search-commands.disposal.test.ts:158:49 - error ts(7006): Parameter 'listener' implicitly has an 'any' type.",
+      "src/components/site-search-commands.disposal.test.ts:158:29 - error ts(2339): Property 'mockImplementation' does not exist on type 'never'."
+    ]
+  }
+}
