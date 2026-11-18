@@ -1,0 +1,767 @@
+{
+  "companionCssSha256": {
+    "current": "1fcd7a9a423614d3bfaf1a3c067f74857cb8e566a1038de3cd67aee2903fed1e",
+    "old": "4a86e5a414dd856728e50ded534e29d5a9aaa0e0da7127e8463070c8ba055be6"
+  },
+  "observations": [
+    {
+      "arm": "pr1498",
+      "revision": "ab2afce5e22d083ae1913ffdab49c748599d1230",
+      "tree": "240260df6e1bb3a9a8cfbd0babe4b9875df57213",
+      "resolution": "src",
+      "rawSha256": "41e9edd0f0924f158c5af9b29aee1c2fd7b4eefd69e912454a05c26800f20b5b",
+      "browser": "156.0.8078.79",
+      "exit": 1,
+      "inputCount": 425,
+      "bundleSha256": "43da402d3c0428ce75d359a4ab7faa592500df9beac319976832b7da19736a57",
+      "invalid": {
+        "lifecycle": [
+          "instance.setup.exit",
+          "instance.phase",
+          "instance.created",
+          "mounting",
+          "mount.render",
+          "mount.commit.start",
+          "mount.commit.done",
+          "mounted",
+          "mount.mounted"
+        ],
+        "errors": [],
+        "afterAppend": {
+          "listeners": 1,
+          "shadowChildren": 2,
+          "colorScheme": "light",
+          "rootProjection": "fixed inset-0 bg-black/50 backdrop-blur-xs animate-in fade-in-0",
+          "exposes": [
+            "bindInitialOpen",
+            "getPresentationOwner",
+            "configurePresentation",
+            "transitionState",
+            "isPresent",
+            "enter",
+            "leave",
+            "complete",
+            "capturePreparation",
+            "controls"
+          ],
+          "parentTag": "BODY"
+        },
+        "cleaned": {
+          "listeners": 0,
+          "shadowChildren": 0,
+          "colorScheme": null,
+          "rootProjection": null,
+          "exposes": [],
+          "parentTag": null
+        }
+      },
+      "valid": {
+        "lifecycle": [
+          "instance.setup.exit",
+          "instance.phase",
+          "instance.created",
+          "mounting",
+          "mount.render",
+          "mount.commit.start",
+          "mount.commit.done",
+          "mounted",
+          "mount.mounted"
+        ],
+        "errors": [],
+        "afterAppend": {
+          "listeners": 1,
+          "shadowChildren": 2,
+          "colorScheme": "light",
+          "rootProjection": "fixed inset-0 bg-black/50 backdrop-blur-xs animate-in fade-in-0",
+          "exposes": [
+            "bindInitialOpen",
+            "getPresentationOwner",
+            "configurePresentation",
+            "transitionState",
+            "isPresent",
+            "enter",
+            "leave",
+            "complete",
+            "capturePreparation",
+            "controls"
+          ],
+          "parentTag": "BODY"
+        },
+        "cleaned": {
+          "listeners": 0,
+          "shadowChildren": 0,
+          "colorScheme": null,
+          "rootProjection": null,
+          "exposes": [],
+          "parentTag": null
+        }
+      }
+    },
+    {
+      "arm": "pr1498",
+      "revision": "ab2afce5e22d083ae1913ffdab49c748599d1230",
+      "tree": "240260df6e1bb3a9a8cfbd0babe4b9875df57213",
+      "resolution": "dist",
+      "rawSha256": "237a152d6c9778688d3854c2b6c4d8df1eced400982f6d9c1420e121993f5cb8",
+      "browser": "156.0.8078.79",
+      "exit": 1,
+      "inputCount": 425,
+      "bundleSha256": "49bfb733ddc0c224a868de9bb0a07bdabefaf65f2bba6a97f7bf93eeef103b3f",
+      "invalid": {
+        "lifecycle": [
+          "instance.setup.exit",
+          "instance.phase",
+          "instance.created",
+          "mounting",
+          "mount.render",
+          "mount.commit.start",
+          "mount.commit.done",
+          "mounted",
+          "mount.mounted"
+        ],
+        "errors": [],
+        "afterAppend": {
+          "listeners": 1,
+          "shadowChildren": 2,
+          "colorScheme": "light",
+          "rootProjection": "fixed inset-0 bg-black/50 backdrop-blur-xs animate-in fade-in-0",
+          "exposes": [
+            "bindInitialOpen",
+            "getPresentationOwner",
+            "configurePresentation",
+            "transitionState",
+            "isPresent",
+            "enter",
+            "leave",
+            "complete",
+            "capturePreparation",
+            "controls"
+          ],
+          "parentTag": "BODY"
+        },
+        "cleaned": {
+          "listeners": 0,
+          "shadowChildren": 0,
+          "colorScheme": null,
+          "rootProjection": null,
+          "exposes": [],
+          "parentTag": null
+        }
+      },
+      "valid": {
+        "lifecycle": [
+          "instance.setup.exit",
+          "instance.phase",
+          "instance.created",
+          "mounting",
+          "mount.render",
+          "mount.commit.start",
+          "mount.commit.done",
+          "mounted",
+          "mount.mounted"
+        ],
+        "errors": [],
+        "afterAppend": {
+          "listeners": 1,
+          "shadowChildren": 2,
+          "colorScheme": "light",
+          "rootProjection": "fixed inset-0 bg-black/50 backdrop-blur-xs animate-in fade-in-0",
+          "exposes": [
+            "bindInitialOpen",
+            "getPresentationOwner",
+            "configurePresentation",
+            "transitionState",
+            "isPresent",
+            "enter",
+            "leave",
+            "complete",
+            "capturePreparation",
+            "controls"
+          ],
+          "parentTag": "BODY"
+        },
+        "cleaned": {
+          "listeners": 0,
+          "shadowChildren": 0,
+          "colorScheme": null,
+          "rootProjection": null,
+          "exposes": [],
+          "parentTag": null
+        }
+      }
+    },
+    {
+      "arm": "main",
+      "revision": "b5e41dd601d67ba48cb5d030811f93394893116d",
+      "tree": "aa273f021d9610fc364edeefa4e64f91d6a18e3f",
+      "resolution": "src",
+      "rawSha256": "8e740f494ef312adcce6f4d51fb3c1fba234d2bcb10b279acf550c9246a2c71f",
+      "browser": "156.0.8078.79",
+      "exit": 1,
+      "inputCount": 426,
+      "bundleSha256": "e16ae199397ab8096f441ce211561d810d2d69f52667e5c56dd2856f7b2243d0",
+      "invalid": {
+        "lifecycle": [
+          "instance.setup.exit",
+          "instance.phase",
+          "instance.created",
+          "mounting",
+          "mount.render",
+          "mount.commit.start",
+          "mount.commit.done",
+          "mounted",
+          "mount.mounted"
+        ],
+        "errors": [],
+        "afterAppend": {
+          "listeners": 1,
+          "shadowChildren": 2,
+          "colorScheme": "light",
+          "rootProjection": "fixed inset-0 bg-black/50 backdrop-blur-xs animate-in fade-in-0",
+          "exposes": [
+            "bindInitialOpen",
+            "getPresentationOwner",
+            "configurePresentation",
+            "transitionState",
+            "isPresent",
+            "enter",
+            "leave",
+            "complete",
+            "capturePreparation",
+            "controls"
+          ],
+          "parentTag": "BODY"
+        },
+        "cleaned": {
+          "listeners": 0,
+          "shadowChildren": 0,
+          "colorScheme": null,
+          "rootProjection": null,
+          "exposes": [],
+          "parentTag": null
+        }
+      },
+      "valid": {
+        "lifecycle": [
+          "instance.setup.exit",
+          "instance.phase",
+          "instance.created",
+          "mounting",
+          "mount.render",
+          "mount.commit.start",
+          "mount.commit.done",
+          "mounted",
+          "mount.mounted"
+        ],
+        "errors": [],
+        "afterAppend": {
+          "listeners": 1,
+          "shadowChildren": 2,
+          "colorScheme": "light",
+          "rootProjection": "fixed inset-0 bg-black/50 backdrop-blur-xs animate-in fade-in-0",
+          "exposes": [
+            "bindInitialOpen",
+            "getPresentationOwner",
+            "configurePresentation",
+            "transitionState",
+            "isPresent",
+            "enter",
+            "leave",
+            "complete",
+            "capturePreparation",
+            "controls"
+          ],
+          "parentTag": "BODY"
+        },
+        "cleaned": {
+          "listeners": 0,
+          "shadowChildren": 0,
+          "colorScheme": null,
+          "rootProjection": null,
+          "exposes": [],
+          "parentTag": null
+        }
+      }
+    },
+    {
+      "arm": "main",
+      "revision": "b5e41dd601d67ba48cb5d030811f93394893116d",
+      "tree": "aa273f021d9610fc364edeefa4e64f91d6a18e3f",
+      "resolution": "dist",
+      "rawSha256": "7f973220b6507f9c6dc7b69b551bb72d6e3aca4c4b7f3321a547b44d37a5c4cb",
+      "browser": "156.0.8078.79",
+      "exit": 1,
+      "inputCount": 426,
+      "bundleSha256": "76b28a90cd6eaaae09147827b926a5e516cf9d7a4383d1c26a536606d630b6df",
+      "invalid": {
+        "lifecycle": [
+          "instance.setup.exit",
+          "instance.phase",
+          "instance.created",
+          "mounting",
+          "mount.render",
+          "mount.commit.start",
+          "mount.commit.done",
+          "mounted",
+          "mount.mounted"
+        ],
+        "errors": [],
+        "afterAppend": {
+          "listeners": 1,
+          "shadowChildren": 2,
+          "colorScheme": "light",
+          "rootProjection": "fixed inset-0 bg-black/50 backdrop-blur-xs animate-in fade-in-0",
+          "exposes": [
+            "bindInitialOpen",
+            "getPresentationOwner",
+            "configurePresentation",
+            "transitionState",
+            "isPresent",
+            "enter",
+            "leave",
+            "complete",
+            "capturePreparation",
+            "controls"
+          ],
+          "parentTag": "BODY"
+        },
+        "cleaned": {
+          "listeners": 0,
+          "shadowChildren": 0,
+          "colorScheme": null,
+          "rootProjection": null,
+          "exposes": [],
+          "parentTag": null
+        }
+      },
+      "valid": {
+        "lifecycle": [
+          "instance.setup.exit",
+          "instance.phase",
+          "instance.created",
+          "mounting",
+          "mount.render",
+          "mount.commit.start",
+          "mount.commit.done",
+          "mounted",
+          "mount.mounted"
+        ],
+        "errors": [],
+        "afterAppend": {
+          "listeners": 1,
+          "shadowChildren": 2,
+          "colorScheme": "light",
+          "rootProjection": "fixed inset-0 bg-black/50 backdrop-blur-xs animate-in fade-in-0",
+          "exposes": [
+            "bindInitialOpen",
+            "getPresentationOwner",
+            "configurePresentation",
+            "transitionState",
+            "isPresent",
+            "enter",
+            "leave",
+            "complete",
+            "capturePreparation",
+            "controls"
+          ],
+          "parentTag": "BODY"
+        },
+        "cleaned": {
+          "listeners": 0,
+          "shadowChildren": 0,
+          "colorScheme": null,
+          "rootProjection": null,
+          "exposes": [],
+          "parentTag": null
+        }
+      }
+    },
+    {
+      "arm": "union",
+      "revision": "bc97737cafd789b404438cc9b9a236e7fca01e2c",
+      "tree": "ae4648331449ff92bec335ea42c5ad190c257638",
+      "resolution": "src",
+      "rawSha256": "3ff7b29485162c9a66f9a4d204477f3fcd04d99e17d055910a07fd308f734751",
+      "browser": "156.0.8078.79",
+      "exit": 1,
+      "inputCount": 425,
+      "bundleSha256": "c4358f6ae3db2d0acb8664f88ad1f61f74d3cf3618e5a2b8874ef4f414065d96",
+      "invalid": {
+        "lifecycle": [
+          "instance.setup.exit",
+          "instance.phase",
+          "instance.created",
+          "mounting",
+          "mount.render",
+          "mount.commit.start",
+          "mount.commit.done",
+          "mounted",
+          "detached",
+          "instance.phase",
+          "instance.dispose.begin",
+          "instance.phase",
+          "instance.dispose.done"
+        ],
+        "errors": [
+          "[shadcn-dialog-mask]rule token \"hidden\":I1 recipe; fix: companion or change/remove token"
+        ],
+        "afterAppend": {
+          "listeners": 0,
+          "shadowChildren": 0,
+          "colorScheme": null,
+          "rootProjection": null,
+          "exposes": [],
+          "parentTag": "PUI-ADMISSION-PARENT-INVALID"
+        },
+        "cleaned": {
+          "listeners": 0,
+          "shadowChildren": 0,
+          "colorScheme": null,
+          "rootProjection": null,
+          "exposes": [],
+          "parentTag": null
+        }
+      },
+      "valid": {
+        "lifecycle": [
+          "instance.setup.exit",
+          "instance.phase",
+          "instance.created",
+          "mounting",
+          "mount.render",
+          "mount.commit.start",
+          "mount.commit.done",
+          "mounted",
+          "mount.mounted"
+        ],
+        "errors": [],
+        "afterAppend": {
+          "listeners": 1,
+          "shadowChildren": 2,
+          "colorScheme": "light",
+          "rootProjection": "fixed inset-0 bg-black/50 backdrop-blur-xs animate-in fade-in-0",
+          "exposes": [
+            "bindInitialOpen",
+            "getPresentationOwner",
+            "configurePresentation",
+            "transitionState",
+            "isPresent",
+            "enter",
+            "leave",
+            "complete",
+            "capturePreparation",
+            "controls"
+          ],
+          "parentTag": "BODY"
+        },
+        "cleaned": {
+          "listeners": 0,
+          "shadowChildren": 0,
+          "colorScheme": null,
+          "rootProjection": null,
+          "exposes": [],
+          "parentTag": null
+        }
+      }
+    },
+    {
+      "arm": "union",
+      "revision": "bc97737cafd789b404438cc9b9a236e7fca01e2c",
+      "tree": "ae4648331449ff92bec335ea42c5ad190c257638",
+      "resolution": "dist",
+      "rawSha256": "356efdfd50a69f524605ab0daeca3fca90c8c87192fe03e7bf9874d5d321a3f9",
+      "browser": "156.0.8078.79",
+      "exit": 1,
+      "inputCount": 425,
+      "bundleSha256": "e958ee95457528f7f142cb75065a50c8b0c89133e72631879dd1ddb308f11a02",
+      "invalid": {
+        "lifecycle": [
+          "instance.setup.exit",
+          "instance.phase",
+          "instance.created",
+          "mounting",
+          "mount.render",
+          "mount.commit.start",
+          "mount.commit.done",
+          "mounted",
+          "detached",
+          "instance.phase",
+          "instance.dispose.begin",
+          "instance.phase",
+          "instance.dispose.done"
+        ],
+        "errors": [
+          "[shadcn-dialog-mask]rule token \"hidden\":I1 recipe; fix: companion or change/remove token"
+        ],
+        "afterAppend": {
+          "listeners": 0,
+          "shadowChildren": 0,
+          "colorScheme": null,
+          "rootProjection": null,
+          "exposes": [],
+          "parentTag": "PUI-ADMISSION-PARENT-INVALID"
+        },
+        "cleaned": {
+          "listeners": 0,
+          "shadowChildren": 0,
+          "colorScheme": null,
+          "rootProjection": null,
+          "exposes": [],
+          "parentTag": null
+        }
+      },
+      "valid": {
+        "lifecycle": [
+          "instance.setup.exit",
+          "instance.phase",
+          "instance.created",
+          "mounting",
+          "mount.render",
+          "mount.commit.start",
+          "mount.commit.done",
+          "mounted",
+          "mount.mounted"
+        ],
+        "errors": [],
+        "afterAppend": {
+          "listeners": 1,
+          "shadowChildren": 2,
+          "colorScheme": "light",
+          "rootProjection": "fixed inset-0 bg-black/50 backdrop-blur-xs animate-in fade-in-0",
+          "exposes": [
+            "bindInitialOpen",
+            "getPresentationOwner",
+            "configurePresentation",
+            "transitionState",
+            "isPresent",
+            "enter",
+            "leave",
+            "complete",
+            "capturePreparation",
+            "controls"
+          ],
+          "parentTag": "BODY"
+        },
+        "cleaned": {
+          "listeners": 0,
+          "shadowChildren": 0,
+          "colorScheme": null,
+          "rootProjection": null,
+          "exposes": [],
+          "parentTag": null
+        }
+      }
+    },
+    {
+      "arm": "candidate",
+      "revision": "8e4da4dfcfd0a64e67fa873edc339e979161884e",
+      "tree": "c2dc7de4a36eea75787cc6e263de762657fd6633",
+      "resolution": "src",
+      "rawSha256": "cd0aa87d8c1cc0b9a56708801f115b5736ff052e2b483ec45599bb0f5abdd041",
+      "browser": "156.0.8078.79",
+      "exit": 0,
+      "inputCount": 425,
+      "bundleSha256": "ae9167689fbdd5baeceec1fc45035fde45e5c52629a69a24dbcb2e2e435bb74e",
+      "invalid": {
+        "lifecycle": [
+          "instance.setup.exit",
+          "instance.phase",
+          "instance.created",
+          "mounting",
+          "mount.render",
+          "mount.commit.start",
+          "mount.commit.done",
+          "detached",
+          "instance.phase",
+          "instance.dispose.begin",
+          "instance.phase",
+          "instance.dispose.done"
+        ],
+        "errors": [
+          "[shadcn-dialog-mask]rule token \"hidden\":I1 recipe; fix: companion or change/remove token"
+        ],
+        "afterAppend": {
+          "listeners": 0,
+          "shadowChildren": 0,
+          "colorScheme": null,
+          "rootProjection": null,
+          "exposes": [],
+          "parentTag": "PUI-ADMISSION-PARENT-INVALID"
+        },
+        "cleaned": {
+          "listeners": 0,
+          "shadowChildren": 0,
+          "colorScheme": null,
+          "rootProjection": null,
+          "exposes": [],
+          "parentTag": null
+        }
+      },
+      "valid": {
+        "lifecycle": [
+          "instance.setup.exit",
+          "instance.phase",
+          "instance.created",
+          "mounting",
+          "mount.render",
+          "mount.commit.start",
+          "mount.commit.done",
+          "mounted",
+          "mount.mounted"
+        ],
+        "errors": [],
+        "afterAppend": {
+          "listeners": 1,
+          "shadowChildren": 2,
+          "colorScheme": "light",
+          "rootProjection": "fixed inset-0 bg-black/50 backdrop-blur-xs animate-in fade-in-0",
+          "exposes": [
+            "bindInitialOpen",
+            "getPresentationOwner",
+            "configurePresentation",
+            "transitionState",
+            "isPresent",
+            "enter",
+            "leave",
+            "complete",
+            "capturePreparation",
+            "controls"
+          ],
+          "parentTag": "BODY"
+        },
+        "cleaned": {
+          "listeners": 0,
+          "shadowChildren": 0,
+          "colorScheme": null,
+          "rootProjection": null,
+          "exposes": [],
+          "parentTag": null
+        }
+      }
+    },
+    {
+      "arm": "candidate",
+      "revision": "8e4da4dfcfd0a64e67fa873edc339e979161884e",
+      "tree": "c2dc7de4a36eea75787cc6e263de762657fd6633",
+      "resolution": "dist",
+      "rawSha256": "4d604fdf06c7c5a2d69e4fb10b8e46cdc6fa0abe249fa50148dad7320ea3a8f0",
+      "browser": "156.0.8078.79",
+      "exit": 0,
+      "inputCount": 425,
+      "bundleSha256": "593b5becb96107b0ee31acde393a18447f6e66da63bf31582a274e9dc8772787",
+      "invalid": {
+        "lifecycle": [
+          "instance.setup.exit",
+          "instance.phase",
+          "instance.created",
+          "mounting",
+          "mount.render",
+          "mount.commit.start",
+          "mount.commit.done",
+          "detached",
+          "instance.phase",
+          "instance.dispose.begin",
+          "instance.phase",
+          "instance.dispose.done"
+        ],
+        "errors": [
+          "[shadcn-dialog-mask]rule token \"hidden\":I1 recipe; fix: companion or change/remove token"
+        ],
+        "afterAppend": {
+          "listeners": 0,
+          "shadowChildren": 0,
+          "colorScheme": null,
+          "rootProjection": null,
+          "exposes": [],
+          "parentTag": "PUI-ADMISSION-PARENT-INVALID"
+        },
+        "cleaned": {
+          "listeners": 0,
+          "shadowChildren": 0,
+          "colorScheme": null,
+          "rootProjection": null,
+          "exposes": [],
+          "parentTag": null
+        }
+      },
+      "valid": {
+        "lifecycle": [
+          "instance.setup.exit",
+          "instance.phase",
+          "instance.created",
+          "mounting",
+          "mount.render",
+          "mount.commit.start",
+          "mount.commit.done",
+          "mounted",
+          "mount.mounted"
+        ],
+        "errors": [],
+        "afterAppend": {
+          "listeners": 1,
+          "shadowChildren": 2,
+          "colorScheme": "light",
+          "rootProjection": "fixed inset-0 bg-black/50 backdrop-blur-xs animate-in fade-in-0",
+          "exposes": [
+            "bindInitialOpen",
+            "getPresentationOwner",
+            "configurePresentation",
+            "transitionState",
+            "isPresent",
+            "enter",
+            "leave",
+            "complete",
+            "capturePreparation",
+            "controls"
+          ],
+          "parentTag": "BODY"
+        },
+        "cleaned": {
+          "listeners": 0,
+          "shadowChildren": 0,
+          "colorScheme": null,
+          "rootProjection": null,
+          "exposes": [],
+          "parentTag": null
+        }
+      }
+    }
+  ],
+  "productCombination": {
+    "builtPages": 683,
+    "selectedPassed": {
+      "preview-browser": 15,
+      "code-grammar": 3,
+      "copy-commands": 1,
+      "scroll-chain": 2
+    },
+    "headerWidths": [320, 390]
+  },
+  "selectedTests": {
+    "before": {
+      "passed": 854,
+      "failed": 3
+    },
+    "after": {
+      "passed": 856,
+      "failed": 1
+    },
+    "fixed": [
+      "composed Shadow prototype admission admits the Dialog Mask ('deferred-invalid')",
+      "composed Shadow prototype admission admits the Dialog Mask ('ordinary')"
+    ],
+    "shared": {
+      "Rule Runtime catalog retires decoration Rules before unmounted callbacks clear their active State": "AssertionError: expected [ { kind: 'tw', \u2026(2) } ] to deeply equal []"
+    }
+  },
+  "standalonePackages": 47,
+  "validCandidateSha": "8e4da4dfcfd0a64e67fa873edc339e979161884e",
+  "packageBudget": {
+    "summary": "Finf package-budget check executed",
+    "command": "corepack pnpm@10.32.1 check:package-budgets"
+  },
+  "initialCandidate": {
+    "result": "failed",
+    "reason": "An admission callback after afterRenderCommit ran before the final module phase completed. It did not stop premature mounted delivery."
+  }
+}

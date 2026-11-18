@@ -1,0 +1,236 @@
+From 8e4da4dfcfd0a64e67fa873edc339e979161884e Mon Sep 17 00:00:00 2001
+From: HyacinthHaru <hyacinth@haru.ac>
+Date: Thu, 19 Nov 2026 00:38:42 +0800
+Subject: [PATCH] fix(wc): admit split projection before mount publication
+
+Signed-off-by: HyacinthHaru <hyacinth@haru.ac>
+
+diff --git a/packages/adapters/web-component/src/adapt.ts b/packages/adapters/web-component/src/adapt.ts
+index 0c9743af2..5ede562dd 100644
+--- a/packages/adapters/web-component/src/adapt.ts
++++ b/packages/adapters/web-component/src/adapt.ts
+@@ -669,8 +669,7 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
+         this._exposes = record;
+       };
+ 
+-      // Admit split effects before forwarding Runtime's mounted task to the host.
+-      // Keep delivery inside the original scheduler call, including sync failures.
++      // Admit split effects before Runtime publishes the mounted phase.
+       let admitViewProjection: (() => void) | null = null;
+       let focusIngressReady = false;
+       let currentEventGate: ReturnType<typeof createEventGate> | null = null;
+@@ -760,10 +759,10 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
+           host: thisEl,
+           root: nativeLinkTarget ?? thisRoot,
+           shadowViewTarget: splitResources?.surface,
+-          schedule: (task) => {
+-            admitViewProjection?.();
+-            schedule(task);
+-          },
++          schedule,
++          captureProjectionAdmission: splitResources
++            ? () => admitViewProjection ?? undefined
++            : undefined,
+           rawPropsSource,
+           getInstanceAssociations: () => getElementAssociations(thisEl),
+           viewOperations: { capture: () => owner.captureViewOperation() },
+@@ -1116,7 +1115,12 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
+               deferredVisualSink!.commit(frame);
+             }
+           };
+-          admitViewProjection = splitResources ? admitProjection : null;
++          if (splitResources) {
++            const admit = () => {
++              if (admitViewProjection === admit) admitProjection();
++            };
++            admitViewProjection = admit;
++          }
+           owner.attachView({
+             modules: createWebComponentModules({
+               el: thisEl,
+@@ -1236,9 +1240,8 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
+               !thisEl.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
+             createSession: createHostSession,
+           });
+-          // Presence may defer scheduling; admit the completed acquisition now.
+-          // Non-split views retain their existing post-attach admission boundary.
+-          admitProjection();
++          // Preserve post-attach admission when no split commit finalized it.
++          if (acquiringProjection) admitProjection();
+         } catch (error) {
+           admitViewProjection = null;
+           // Initial failure is retired by the guarded connection transaction,
+diff --git a/packages/adapters/web-component/src/runtime/session.ts b/packages/adapters/web-component/src/runtime/session.ts
+index 64c738bd2..6fdfcf67d 100644
+--- a/packages/adapters/web-component/src/runtime/session.ts
++++ b/packages/adapters/web-component/src/runtime/session.ts
+@@ -455,6 +455,7 @@ export function createWebComponentHostSession<Props extends PropsBaseType>(args:
+   root: Element | ShadowRoot;
+   shadowViewTarget?: ShadowInnerSurface;
+   schedule: (task: () => void) => void;
++  captureProjectionAdmission?: () => (() => void) | undefined;
+   rawPropsSource: RawPropsSource<Props>;
+   getInstanceAssociations?: () => InstanceAssociations;
+   viewOperations?: RuntimeHost<Props>['viewOperations'];
+@@ -835,9 +836,10 @@ export function createWebComponentHostSession<Props extends PropsBaseType>(args:
+       onLifecycleCheckpoint,
+       onLifecycleEvent,
+       commit: (children, signal) => {
++        const admitProjection = args.captureProjectionAdmission?.();
+         commitWebComponentChildren(children);
+         eventGate.enable();
+-        signal?.done();
++        signal?.done(admitProjection);
+       },
+     },
+     {
+diff --git a/packages/adapters/web-component/test/shadow-split-prototype-admission.test.ts b/packages/adapters/web-component/test/shadow-split-prototype-admission.test.ts
+index 46c8545c7..e64ba69df 100644
+--- a/packages/adapters/web-component/test/shadow-split-prototype-admission.test.ts
++++ b/packages/adapters/web-component/test/shadow-split-prototype-admission.test.ts
+@@ -5,11 +5,17 @@ import { AdaptToWebComponent, setElementProps } from '../src';
+ import { renderProtoShadowSplitStyleArtifact } from '../../../cli/src/services/proto-style-css';
+ import { rewriteSplitBaseDeclarations } from './shadow-split-test-utils';
+ 
++const cases = [
++  { mode: 'ordinary', invalid: true, sink: false },
++  { mode: 'deferred-invalid', invalid: true, sink: true },
++  { mode: 'deferred-valid', invalid: false, sink: true },
++];
++
+ // D1 pilot boundary + D-FEEDBACK-STYLE-ROLE-RESOLUTION-0001 C/K:
+ // the actual asDialogMask -> asTransition closure requires an I1 hidden recipe.
+ describe('composed Shadow prototype admission', () => {
+-  it('rejects an old companion for the full Dialog Mask without claiming current full Mask support', async () => {
+-    const Parent = AdaptToWebComponent(dialogRoot, { registerAs: 'x-split-mask-parent' });
++  it.each(cases)('admits the Dialog Mask ($mode)', async ({ mode, invalid, sink }) => {
++    const Parent = AdaptToWebComponent(dialogRoot, { registerAs: `x-split-mask-parent-${mode}` });
+     const parent = new Parent();
+     setElementProps(parent, { open: true });
+     document.body.append(parent);
+@@ -38,11 +44,12 @@ describe('composed Shadow prototype admission', () => {
+       finishDisposal = resolve;
+     });
+     const Mask = AdaptToWebComponent(dialogMask, {
+-      registerAs: 'x-split-mask-admission',
++      registerAs: `x-split-mask-admission-${mode}`,
++      createVisualSink: sink ? () => null : undefined,
+       shadow: {
+         mode: 'open',
+         presentation: 'split',
+-        styleArtifact: oldArtifact,
++        styleArtifact: invalid ? oldArtifact : artifact,
+         colorSchemeSource: {
+           get: () => 'light',
+           subscribe(listener) {
+@@ -56,6 +63,7 @@ describe('composed Shadow prototype admission', () => {
+       diagnostics: {
+         onLifecycleEvent(event) {
+           lifecycleEvents.push(event.type);
++          if (event.type === 'mount.phase') lifecycleEvents.push(event.phase);
+           if (event.type === 'instance.dispose.done') finishDisposal();
+         },
+       },
+@@ -77,18 +85,29 @@ describe('composed Shadow prototype admission', () => {
+       } catch (error) {
+         errors.push(error);
+       }
+-      expect(errors).toHaveLength(1);
+-      expect(errors[0]).toBeInstanceOf(Error);
+-      await disposed;
+       expect(lifecycleEvents).toContain('mount.commit.done');
+-      expect(lifecycleEvents).not.toContain('mount.mounted');
++      if (invalid) {
++        expect(errors).toHaveLength(1);
++        expect(errors[0]).toBeInstanceOf(Error);
++        expect(String(errors[0])).toMatch(/hidden.*I1 recipe/);
++        expect(lifecycleEvents).not.toContain('mounted');
++        expect(lifecycleEvents).not.toContain('mount.mounted');
++      } else {
++        expect(errors).toHaveLength(0);
++        expect(lifecycleEvents).toContain('mounted');
++        expect(lifecycleEvents).toContain('mount.mounted');
++        expect(environmentListeners.size).toBe(1);
++        host.remove();
++      }
++      await disposed;
+       expect(environmentListeners.size).toBe(0);
+       expect(host.getExposes?.() ?? {}).toEqual({});
+       expect(host.hasAttribute('data-pui-color-scheme')).toBe(false);
+       expect(host.hasAttribute('data-pui-split-root-style')).toBe(false);
+       expect(host.shadowRoot?.childNodes.length).toBe(0);
+-      expect(errors).toHaveLength(1);
++      expect(errors).toHaveLength(invalid ? 1 : 0);
+     } finally {
++      host.remove();
+       parent.remove();
+       await Promise.resolve();
+       window.removeEventListener('error', capture);
+diff --git a/packages/runtime/src/instance/host.ts b/packages/runtime/src/instance/host.ts
+index b404065d2..1ec2ab96c 100644
+--- a/packages/runtime/src/instance/host.ts
++++ b/packages/runtime/src/instance/host.ts
+@@ -7,7 +7,8 @@ import type { RuntimeCheckpoint } from '../kernel/timeline';
+ import type { RuntimeLifecycleEvent } from '../kernel/lifecycle-events';
+ 
+ export type CommitSignal = {
+-  done(): void;
++  /** Finalize mount projection after module effects and before publishing the mounted phase. */
++  done(finalizeProjection?: () => void): void;
+ };
+ 
+ export type ScheduledDelayTask = {
+diff --git a/packages/runtime/src/instance/session.ts b/packages/runtime/src/instance/session.ts
+index b2a393395..a7b8bbee4 100644
+--- a/packages/runtime/src/instance/session.ts
++++ b/packages/runtime/src/instance/session.ts
+@@ -216,7 +216,7 @@ export function createRuntimeSession<P extends PropsBaseType>(
+     kind: 'mount' | 'update',
+     epoch: number,
+     updateRevision: number,
+-    onCommitted: () => void
++    onCommitted: (finalizeProjection?: () => void) => void
+   ) => {
+     propsPort.syncFromHost();
+     children = inst.renderOnce();
+@@ -230,7 +230,7 @@ export function createRuntimeSession<P extends PropsBaseType>(
+ 
+     let commitDone = false;
+     host.commit(children, {
+-      done() {
++      done(finalizeProjection) {
+         if (commitDone) return;
+         commitDone = true;
+ 
+@@ -252,7 +252,7 @@ export function createRuntimeSession<P extends PropsBaseType>(
+           moduleHub.afterRenderCommit();
+         }
+ 
+-        onCommitted();
++        onCommitted(kind === 'mount' && activeCommit ? finalizeProjection : undefined);
+       },
+     });
+   };
+@@ -389,7 +389,7 @@ export function createRuntimeSession<P extends PropsBaseType>(
+     };
+ 
+     try {
+-      renderCommit('mount', epoch, 0, () => {
++      renderCommit('mount', epoch, 0, (finalizeProjection) => {
+         const presence = moduleHub.getPort<PresencePort>('presence')?.awaitMount();
+         const scheduleFinish = () => {
+           if (transitionVersion !== version) {
+@@ -400,6 +400,13 @@ export function createRuntimeSession<P extends PropsBaseType>(
+           // The author callback remains host-scheduled and can still be
+           // invalidated by an intervening unmount.
+           moduleHub.setProtoPhase('mounted');
++          if (finalizeProjection) {
++            finalizeProjection();
++            if (transitionVersion !== version) {
++              resolveMount();
++              return;
++            }
++          }
+           setMountPhase('mounted', epoch);
+           let scheduleReturned = false;
+           host.schedule(() => {

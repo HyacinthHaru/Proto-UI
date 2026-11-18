@@ -1,0 +1,64 @@
+import { AdaptToWebComponent, setElementProps } from '@proto.ui/adapter-web-component';
+import { dialogMask, dialogRoot } from '@proto.ui/prototypes-shadcn/dialog';
+window.runMaskAdmission = async (artifact, id) => {
+  const errors = [];
+  const catchError = event => {
+    errors.push(event.error?.message ?? event.message);
+    event.preventDefault();
+  };
+  window.addEventListener('error', catchError);
+  const events = [];
+  const listeners = new Set();
+  let disposedResolve;
+  const disposed = new Promise(resolve => { disposedResolve = resolve; });
+  const Parent = AdaptToWebComponent(dialogRoot, { registerAs: 'pui-admission-parent-'+id });
+  const parent = new Parent();
+  setElementProps(parent, { open: true });
+  document.body.append(parent);
+  let visualSinkCalls = 0;
+  const Mask = AdaptToWebComponent(dialogMask, {
+    registerAs: 'pui-admission-mask-'+id,
+    schedule: task => task(),
+    createVisualSink: () => {
+      visualSinkCalls++;
+      return null;
+    },
+    shadow: {
+      mode: 'open', presentation: 'split', styleArtifact: artifact,
+      colorSchemeSource: {
+        get: () => 'light',
+        subscribe(callback) {
+          listeners.add(callback);
+          return () => listeners.delete(callback);
+        },
+      },
+    },
+    diagnostics: {
+      onLifecycleEvent(event) {
+        events.push(event);
+        if (event.type === 'instance.dispose.done') disposedResolve();
+      }
+    },
+  });
+  const host = new Mask();
+  const snapshot = () => ({
+    listeners: listeners.size,
+    shadowChildren: host.shadowRoot.childNodes.length,
+    colorScheme: host.getAttribute('data-pui-color-scheme'),
+    rootProjection: host.getAttribute('data-pui-split-root-style'),
+    exposes: Object.keys(host.getExposes?.() ?? {}),
+    parentTag: host.parentElement?.tagName ?? null,
+  });
+  try {
+    const open = parent.getExposes().open.get();
+    parent.append(host);
+    const afterAppend = snapshot();
+    const throughAppend = events.slice();
+    host.remove();
+    await disposed;
+    return {open, visualSinkCalls, errors, events, throughAppend, afterAppend, cleaned:snapshot()};
+  } finally {
+    parent.remove();
+    window.removeEventListener('error', catchError);
+  }
+};
