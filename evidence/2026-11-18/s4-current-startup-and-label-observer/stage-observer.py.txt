@@ -1,0 +1,62 @@
+from pathlib import Path
+import hashlib,json,sys
+q,dist=map(Path,sys.argv[1:])
+p,=dist.glob('previewer-client.*.js')
+s=p.read_text()
+def one(a,b):
+ global s
+ assert s.count(a)==1,(a,s.count(a))
+ s=s.replace(a,b)
+prefix="""
+const __s4CurrentStages = (() => {
+  const owners = new Map();
+  let ordinal = 0, last = 0, themeReads = 0, themeReadMs = 0;
+  const frames = [];
+  if (globalThis.PerformanceObserver?.supportedEntryTypes?.includes('long-animation-frame')) {
+    new PerformanceObserver(list => {
+      for (const frame of list.getEntries()) {
+        if (frame.duration < 180 || frames.length >= 40) continue;
+        const scripts = [...frame.scripts].sort((a,b)=>b.duration-a.duration).slice(0,4)
+          .map(({duration,forcedStyleAndLayoutDuration,sourceURL,sourceCharPosition,invoker})=>({duration,forcedStyleAndLayoutDuration,sourceURL,sourceCharPosition,invoker}));
+        frames.push({start:frame.startTime,duration:frame.duration,scripts});
+      }
+    }).observe({type:'long-animation-frame',buffered:true});
+  }
+  const emit=()=>{
+    const now=performance.now();
+    if(now-last<3750) return;
+    last=now;
+    const counts={}, oldest={}; let visibleHosts=0;
+    for(const row of owners.values()){
+      const phase=counts[row.runtime]??={};
+      phase[row.phase]=(phase[row.phase]??0)+1;
+      if(row.host.childElementCount) visibleHosts++;
+      if(row.phase!=='publish'){
+        const group=oldest[row.phase]??=[];
+        if(group.length<4) group.push({index:row.index,demo:row.demo,runtime:row.runtime,enterMs:row.enterMs,phaseMs:row.phaseMs,childCount:row.host.childElementCount});
+      }
+    }
+    console.info('[S4 current stages]',JSON.stringify({pageMs:now,started:owners.size,visibleHosts,counts,oldest,themeReads,themeReadMs,frames:frames.splice(0,frames.length)}));
+  };
+  const timer=setInterval(emit,3750);
+  setTimeout(()=>clearInterval(timer),100000);
+  return {
+    mark(root, host, runtime, demo, phase) {
+      const prev=owners.get(root);
+      if(!prev) owners.set(root,{host,runtime,demo,index:ordinal++,enterMs:performance.now(),phase,phaseMs:performance.now()});
+      else {prev.phase=phase;prev.phaseMs=performance.now();}
+    },
+    theme(get) {const time=performance.now();try {return get();} finally{themeReads++;themeReadMs+=performance.now()-time;}}
+  };
+})();
+"""
+one('const a=++y;we(b),Q(!0);try{', 'const a=++y;const __phase=(stage)=>{if(a===1)__s4CurrentStages.mark(e,b,s,g,stage)};__phase("initial");we(b),Q(!0);try{')
+one('let K;if(g)K=await Pe(g);','let K;__phase("demo-wait");if(g)K=await Pe(g);')
+one('if(C||a!==y)return;let ee=ie(e);const te=Re(K,ee,se(ee,e),s),le=new Set;', 'if(C||a!==y)return;__phase("compose");let ee=ie(e);const te=Re(K,ee,a===1?__s4CurrentStages.theme(()=>se(ee,e)):se(ee,e),s),le=new Set;')
+one('!g&&h&&le.delete(h),await Ne(Array.from(le)),C||a!==y','!g&&h&&le.delete(h),__phase("prototype-wait"),await Ne(Array.from(le)),C||a!==y')
+one('const ce=await Ue({runtime:s,demo:te.demo,host:b,isCurrent:()=>!C&&a===y});','__phase("render-wait");const ce=await Ue({runtime:s,demo:te.demo,host:b,isCurrent:()=>!C&&a===y});__phase("surface-wait");')
+one('try{if(await te.ready,!C&&a===y){','try{if(await te.ready,!C&&a===y){__phase("appearance-wait");')
+one('m(),V={id:r,destroy:ce.destroy}', '__phase("publish"),m(),V={id:r,destroy:ce.destroy}')
+digest=lambda x:hashlib.sha256(x).hexdigest()
+orig=digest(p.read_bytes());p.write_text(prefix+s)
+(q/'binding.json').write_text(json.dumps({'file':p.name,'original':orig,'observed':digest(p.read_bytes()),'scope':'Generic Previewer clients only. Host counts are DOM child presence, not original whole-matrix readiness. Initial theme reads timed; balanced diagnostic sampler reads no layout and preserves operation order.'},indent=2)+'\n')

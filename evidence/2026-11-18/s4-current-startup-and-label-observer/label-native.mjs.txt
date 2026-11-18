@@ -1,0 +1,83 @@
+import { createRequire } from 'node:module';
+import { writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+const dir=path.resolve(process.argv[2]);
+const root=process.cwd();
+const { build }=createRequire(path.join(root,'package.json'))('esbuild');
+const { chromium }=createRequire(path.join(root,'apps/www/package.json'))('playwright-core');
+const file='packages/modules/control-label/src/web.ts';
+const sha=buf=>createHash('sha256').update(buf).digest('hex');
+const head=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
+const sources={};
+for(const [name,ref] of [['parent','HEAD^'],['candidate','HEAD']]){
+ const bytes=execFileSync('git',['show',ref+':'+file]);
+ const bundle=await build({stdin:{contents:bytes.toString(),loader:'ts',resolveDir:root,sourcefile:'bound-label-host.ts'},platform:'browser',bundle:true,write:false,format:'iife',globalName:'LabelHost'});
+ sources[name]={sourceHash:sha(bytes),bundleHash:sha(bundle.outputFiles[0].contents),code:bundle.outputFiles[0].text};
+}
+const browser=await chromium.launch({executablePath:process.env.CHROME_PATH,headless:true});
+const results=[];
+try{
+ for(const variant of ['parent','candidate','candidate','parent']){
+  const page=await browser.newPage();
+  await page.addScriptTag({content:sources[variant].code});
+  const result=await page.evaluate(async()=>{
+   const waits=()=>new Promise(resolve=>setTimeout(resolve,0));
+   const observer=window.MutationObserver;
+   const contains=Node.prototype.contains;
+   const callbacks=[];
+   let branchChecks=0;
+   const unrelated=new WeakSet();
+   window.MutationObserver=class extends observer{
+     constructor(callback){super((records,self)=>{
+       const start=performance.now();
+       callback(records,self);
+       callbacks.push({count:records.length,ms:performance.now()-start});
+     });}
+   };
+   Node.prototype.contains=function(node){if(unrelated.has(this))branchChecks++;return contains.call(this,node)};
+   const roots=Array.from({length:400},()=>{
+     const holder=document.createElement('div'),anchor=document.createElement('span');
+     holder.append(anchor);document.body.append(holder);return anchor;
+   });
+   const changes=roots.map(()=>0);
+   const leases=roots.map((el,i)=>LabelHost.createWebControlLabelHost(()=>el).attach({
+     kind:'label',activation:false,onActivate(){},onViewChange(){changes[i]++}
+   }));
+   try{
+     await waits();callbacks.length=0;changes.fill(0);
+     for(let round=0;round<12;round++){
+       const fragment=document.createDocumentFragment();
+       for(let i=0;i<48;i++){
+         const section=document.createElement('section');unrelated.add(section);fragment.append(section);
+       }
+       document.body.append(fragment);
+       await waits();
+     }
+     const ignoredChanges=changes.reduce((a,b)=>a+b,0);
+     const measured={branchChecks,ignoredChanges,callbackBatches:callbacks.length,records:callbacks.reduce((a,b)=>a+b.count,0),callbackMs:callbacks.reduce((a,b)=>a+b.ms,0)};
+     const destination=document.createElement('section');
+     destination.append(roots[0]);document.body.append(destination);await waits();
+     measured.moved=changes[0];measured.afterMoveOther=changes.slice(1).reduce((a,b)=>a+b,0);
+     roots[1].setAttribute('aria-label','changed label');await waits();
+     measured.attr=changes[1];measured.afterAttrOther=changes.slice(2).reduce((a,b)=>a+b,0);
+     return measured;
+   }finally{leases.forEach(v=>v.dispose());window.MutationObserver=observer;Node.prototype.contains=contains;}
+  });
+  await page.close();
+  results.push({variant,...result});
+ }
+ const bindings=Object.fromEntries(Object.entries(sources).map(([k,{sourceHash,bundleHash}])=>[k,{sourceHash,bundleHash}]));
+ await writeFile(path.join(dir,'native.json'),JSON.stringify({head,version:browser.version(),bindings,results,scope:'Standalone Chrome real MutationObserver with fixed 400 scopes and 12 batches. Timing includes lightweight instrumentation. Behavior checks use own move and ARIA change; no OS AT, package or whole-S4 inference.'},null,2)+'\n');
+ for(const r of results){
+  assert.equal(r.records,12); // Each fragment yields one childList record.
+  assert.equal(r.callbackBatches,12);
+  assert.equal(r.ignoredChanges,0);
+  assert.equal(r.moved,1);assert.equal(r.attr,1);
+  assert.equal(r.afterMoveOther,0);assert.equal(r.afterAttrOther,0);
+  assert.equal(r.branchChecks,r.variant==='parent'?400*576:0);
+  console.log(r.variant,r.records,r.branchChecks,r.callbackMs);
+ }
+}finally{await browser.close();}

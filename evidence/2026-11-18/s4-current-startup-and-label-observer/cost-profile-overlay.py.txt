@@ -1,0 +1,39 @@
+from pathlib import Path
+import json,sys
+file,out=map(Path,sys.argv[1:])
+s=file.read_text()
+a="      const page = await context.newPage();"
+b=a+"""
+      const cpu = await context.newCDPSession(page);
+      await cpu.send('Profiler.enable');
+      await cpu.send('Profiler.setSamplingInterval', { interval: 10000 });
+      const profileStarted = performance.now();
+      await cpu.send('Profiler.start');
+      console.info('[S4 CPU setup]', JSON.stringify({ startRequestMs: profileStarted, returnMs: performance.now() }));
+      let stopCpu: Promise<void> | undefined;
+      const stop = () => (stopCpu ??= (async () => {
+        console.info('[S4 CPU stop]', JSON.stringify({ requestMs: performance.now() }));
+        const data = await cpu.send('Profiler.stop');
+        await writeFile(CPU_OUT + '/startup.cpuprofile', JSON.stringify(data.profile));
+        console.info('[S4 CPU finished]', JSON.stringify({
+          nodes: data.profile.nodes.length, samples: data.profile.samples?.length,
+          start: data.profile.startTime, end: data.profile.endTime,
+          nodeMs: performance.now(),
+        }));
+      })());
+      const profilerTimer = setTimeout(() => {
+        void stop().catch(error => console.info('[S4 CPU capture failed]', String(error).slice(0, 200)));
+      }, 30000);
+""".replace('CPU_OUT','process.env.PUI_S4_CPU_OUT!')
+assert s.count(a)==1
+s=s.replace(a,b)
+a="""      } finally {
+        note('context-close', 'begin');"""
+b="""      } finally {
+        clearTimeout(profilerTimer);
+        const stopped = await settleFamilyQueryBatch([stop()], 10000);
+        console.info('[S4 CPU collection]', JSON.stringify({ complete: stopped.complete }));
+        await cpu.detach().catch(() => {});
+        note('context-close', 'begin');"""
+assert s.count(a)==1
+file.write_text(s.replace(a,b))
