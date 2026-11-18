@@ -1,0 +1,237 @@
+{
+  "source": {
+    "head": "34ea3c64c713d367118d077383c1df3e226e4b6f",
+    "tree": "6dea5f562650a139256512ccd900d5baa467142a",
+    "main": "534caf4a241f7f7ef49b7b073662ad982e938c91"
+  },
+  "sameFixtureWithOriginalSource": {
+    "counts": {
+      "numPassedTests": 12,
+      "numFailedTests": 3,
+      "numPendingTests": 0
+    },
+    "failed": [
+      {
+        "title": "sync: reads shared logical ancestors once in a stable notification",
+        "failure": "AssertionError: expected 24 to be 1 // Object.is equality"
+      },
+      {
+        "title": "notify: reads shared logical ancestors once in a stable notification",
+        "failure": "AssertionError: expected 24 to be 1 // Object.is equality"
+      },
+      {
+        "title": "rebuilds domain reads when attaching a host observer moves a later subscriber",
+        "failure": "AssertionError: expected 2 to be 1 // Object.is equality"
+      }
+    ]
+  },
+  "focused": {
+    "numPassedTests": 487,
+    "numFailedTests": 0,
+    "numPendingTests": 0
+  },
+  "packed": {
+    "preview-browser": {
+      "numPassedTests": 15,
+      "numFailedTests": 0,
+      "numPendingTests": 9
+    },
+    "code-grammar": {
+      "numPassedTests": 3,
+      "numFailedTests": 0,
+      "numPendingTests": 23
+    },
+    "copy-commands": {
+      "numPassedTests": 1,
+      "numFailedTests": 0,
+      "numPendingTests": 14
+    },
+    "scroll-chain": {
+      "numPassedTests": 2,
+      "numFailedTests": 0,
+      "numPendingTests": 4
+    },
+    "table": {
+      "numPassedTests": 5,
+      "numFailedTests": 0,
+      "numPendingTests": 0
+    },
+    "accordion": {
+      "numPassedTests": 4,
+      "numFailedTests": 0,
+      "numPendingTests": 29
+    },
+    "field": {
+      "numPassedTests": 4,
+      "numFailedTests": 0,
+      "numPendingTests": 21
+    }
+  },
+  "headerWidths": [320, 390],
+  "combinedSingleBoundaryNegativeControl": {
+    "numPassedTests": 0,
+    "numFailedTests": 1,
+    "numPendingTests": 16
+  },
+  "combinedNativeChromeABBA": {
+    "head": "6431fa3af888b727aec758a072909c56b0848328",
+    "parent": "9904ceb0fb48451ced9be34741dae07bf88b5239",
+    "chrome": "156.0.8078.79",
+    "scopedInputs": {
+      "parent": {
+        "blob": "e448e8238adfe04f200746bc2f76cf9fd917c06e73d73db886eaee3584f1bc5a",
+        "bundle": "e9c8879b6c2a9feb9ff2a5ef02d47b37f892d9ad3ac7d41a7d0ff78b5af6cd8d",
+        "inputs": 57
+      },
+      "candidate": {
+        "blob": "b847483c72e38140e68efd74940d033e74d6559dfc362cdcd1cf9be4b4379761",
+        "bundle": "51bc575ad182a616eb44a19a49bb2667bb203f54632c0757bd553c1b86518e35",
+        "inputs": 57
+      }
+    },
+    "rows": [
+      {
+        "kind": "parent",
+        "before": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        "steady": {
+          "callbacks": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          "orderSorts": 1,
+          "targetReads": 156,
+          "bridgeReads": 24,
+          "versions": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        },
+        "changed": {
+          "callbacks": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          "versions": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          "firstPhysicalChild": "part-11"
+        }
+      },
+      {
+        "kind": "candidate",
+        "before": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        "steady": {
+          "callbacks": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          "orderSorts": 1,
+          "targetReads": 156,
+          "bridgeReads": 1,
+          "versions": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        },
+        "changed": {
+          "callbacks": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          "versions": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          "firstPhysicalChild": "part-11"
+        }
+      },
+      {
+        "kind": "candidate",
+        "before": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        "steady": {
+          "callbacks": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          "orderSorts": 1,
+          "targetReads": 156,
+          "bridgeReads": 1,
+          "versions": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        },
+        "changed": {
+          "callbacks": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          "versions": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          "firstPhysicalChild": "part-11"
+        }
+      },
+      {
+        "kind": "parent",
+        "before": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        "steady": {
+          "callbacks": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          "orderSorts": 1,
+          "targetReads": 156,
+          "bridgeReads": 24,
+          "versions": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        },
+        "changed": {
+          "callbacks": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          "versions": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          "firstPhysicalChild": "part-11"
+        }
+      }
+    ]
+  },
+  "originalCombinedMatrix": {
+    "source": "6431fa3af888b727aec758a072909c56b0848328",
+    "previewsByLocale": {
+      "zh-cn": 1268,
+      "en": 1268
+    },
+    "cases": [
+      {
+        "name": "zh-cn: native Light/split/mixed acceptance",
+        "status": "failed",
+        "error": "page.waitForFunction: Timeout 60000ms exceeded."
+      },
+      {
+        "name": "en: native Light/split/mixed acceptance",
+        "status": "failed",
+        "error": "page.waitForFunction: Timeout 60000ms exceeded."
+      }
+    ]
+  },
+  "independentEnglishRendererProfiles": {
+    "before": {
+      "source": [
+        "9904ceb0fb48451ced9be34741dae07bf88b5239",
+        "421a7c86937c78c7fc2f2f85d7f727ee4e29d5c5"
+      ],
+      "captureMs": 24938.67,
+      "samples": 8465,
+      "profileReceipt": {
+        "beginRequestedNodeMs": 19867.7305,
+        "beginDeliveredNodeMs": 21161.865333,
+        "stopRequestedNodeMs": 43872.541375,
+        "stopDeliveredNodeMs": 45074.24325,
+        "nodeTimeOrigin": 1795035509091.317,
+        "startIndex": 384,
+        "startPageMs": 18978.39999985695,
+        "stopIndex": null,
+        "stopPageMs": null,
+        "samples": 8465,
+        "error": null
+      },
+      "weightedSamples": {
+        "orderDispatchInclusiveMs": 3245.036,
+        "orderDomainInclusiveMs": 826.99,
+        "orderRootInclusiveMs": 570.738,
+        "allRootInclusiveMs": 1463.187,
+        "orderRootSelfMs": 567.732
+      }
+    },
+    "after": {
+      "source": [
+        "6431fa3af888b727aec758a072909c56b0848328",
+        "7f7c9d1c7108ad828794f27a770eb054e13c24d1"
+      ],
+      "captureMs": 22700.622,
+      "samples": 7575,
+      "profileReceipt": {
+        "beginRequestedNodeMs": 19728.796625,
+        "beginDeliveredNodeMs": 23670.846834,
+        "stopRequestedNodeMs": 43733.33,
+        "stopDeliveredNodeMs": 45266.623334,
+        "nodeTimeOrigin": 1795036622161.041,
+        "startIndex": 384,
+        "startPageMs": 18909.900000095367,
+        "stopIndex": null,
+        "stopPageMs": null,
+        "samples": 7575,
+        "error": null
+      },
+      "weightedSamples": {
+        "orderDispatchInclusiveMs": 3027.903,
+        "orderDomainInclusiveMs": 834.477,
+        "orderRootInclusiveMs": 559.908,
+        "allRootInclusiveMs": 1380.952,
+        "orderRootSelfMs": 559.908
+      }
+    },
+    "scope": "Bounded independent English profiles triggered by preview 384. Inclusive weights overlap. No whole startup timing claim."
+  }
+}
