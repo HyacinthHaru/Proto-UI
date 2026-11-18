@@ -1,0 +1,24 @@
+{
+  "source": {
+    "head": "4a1e06dab2fb8a10f398198e1d41e85f1b2eece2",
+    "tree": "48cfbdce1f6b6a518ed95fa80543d398819593d1",
+    "previousPRHead": "34ea3c64c713d367118d077383c1df3e226e4b6f"
+  },
+  "reviewComment": "https://github.com/Proto-UI/Proto-UI/pull/1549#discussion_r4621120421",
+  "sameFixtureOnPreviousPRHead": {
+    "title": "keeps shared order reads while the root target is unavailable",
+    "failure": "AssertionError: expected 12 to be 1 // Object.is equality"
+  },
+  "fixturePassed": 16,
+  "focusedPassed": 488,
+  "packedPassed": {
+    "preview-browser": 15,
+    "code-grammar": 3,
+    "copy-commands": 1,
+    "scroll-chain": 2,
+    "table": 5,
+    "accordion": 4,
+    "field": 4
+  },
+  "headerWidths": [320, 390]
+}
