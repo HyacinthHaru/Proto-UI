@@ -1,0 +1,81 @@
+{
+  "candidate": "6c32b50347caaaa2194fc02b8b1c535927810762",
+  "hostedJob": 134632266042,
+  "hostedBase": "0f0955a9d624e0ef5e250f56a0eaa0fc52bbfb53",
+  "earlierNative": {
+    "pass": 1,
+    "fail": 1,
+    "filtered": 24
+  },
+  "selectedCandidate": {
+    "pass": 12,
+    "fail": 0,
+    "filtered": 14,
+    "caseMs": 120000
+  },
+  "focused": 38,
+  "types": "pass",
+  "witness": {
+    "browser": "156.0.8078.79",
+    "receipts": [
+      {
+        "theme": "light",
+        "before": {
+          "time": 896.7999999523163,
+          "visible": false,
+          "tabSelected": "false",
+          "rawFileTabs": 2,
+          "treeCount": 0
+        },
+        "click": {
+          "time": 1024.1000001430511,
+          "trusted": true
+        },
+        "sameTurn": {
+          "time": 1024.1000001430511,
+          "visible": true,
+          "tabSelected": "true",
+          "rawFileTabs": 2,
+          "treeCount": 0
+        },
+        "publish": {
+          "time": 1079.6000001430511,
+          "visible": true,
+          "tabSelected": "true",
+          "rawFileTabs": 2,
+          "treeCount": 1
+        }
+      },
+      {
+        "theme": "dark",
+        "before": {
+          "time": 948,
+          "visible": false,
+          "tabSelected": "false",
+          "rawFileTabs": 2,
+          "treeCount": 0
+        },
+        "click": {
+          "time": 1078.5,
+          "trusted": true
+        },
+        "sameTurn": {
+          "time": 1078.5,
+          "visible": true,
+          "tabSelected": "true",
+          "rawFileTabs": 2,
+          "treeCount": 0
+        },
+        "publish": {
+          "time": 1133.2999999523163,
+          "visible": true,
+          "tabSelected": "true",
+          "rawFileTabs": 2,
+          "treeCount": 1
+        }
+      }
+    ]
+  },
+  "candidatePageSha256": "5c098df882abb16566b03f0c67c7fc829ae905071716f6448f6f63190a27d7ed",
+  "screenshotSha256": "e8f58076565e177625e8aa3e93d7575af136e3cd9352fa5fd1211245f3569477"
+}
