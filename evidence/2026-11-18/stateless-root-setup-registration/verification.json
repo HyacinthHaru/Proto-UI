@@ -1,0 +1,256 @@
+{
+  "standalone": {
+    "head": "2221f307a521f04c2f82d73e51e4b5445f466e1d",
+    "tree": "68cab22ed3dd2bcfd171d4f9fd101e31b57f8ca9",
+    "testedMain": "b5e41dd601d67ba48cb5d030811f93394893116d",
+    "contextCommit": "3b4c03761febb6b2d927521aced1cf35caed80b8",
+    "contextFocused": {
+      "passed": 165,
+      "failed": 0,
+      "skipped": 0,
+      "reportSha256": "f54b32106e2228e6f46397bf5e5ac6a31b5d107a90501bab35aa40a03314c923"
+    },
+    "combinedFocused": {
+      "passed": 557,
+      "failed": 0,
+      "skipped": 0,
+      "reportSha256": "40c282f4d233478e03d0d479b61de1a6813a0d94f3acb71818ac8bb5a09c1948"
+    },
+    "combinedTrigger": {
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "reportSha256": "ad7afe6dfef7b4f2cd91fcbed7f44da3bd889bd8d6527e7108067084b57c8be9"
+    },
+    "packagesBuilt": 47,
+    "workspaceTypes": "pass",
+    "manifests": "pass",
+    "finfBudgetCommand": "pass"
+  },
+  "integration": {
+    "head": "70c96f0d5833a7e4ebb1a9571db422f9b1844cbc",
+    "tree": "7e060ccce5d61a8d170d1684132f2643c9ac1524",
+    "packagesBuilt": 47,
+    "pagesBuilt": 685,
+    "scope": {
+      "focused": {
+        "passed": 1343,
+        "failed": 0,
+        "skipped": 0,
+        "reportSha256": "a9ec5b61809f59d76fb3adc44a813a85e2639e1ab2f92cb5564d0f6055ce62ae"
+      },
+      "preview-browser": {
+        "passed": 15,
+        "failed": 0,
+        "skipped": 9,
+        "reportSha256": "b487a34fbd111af22103383e5d6f182ce0427240db02d9cd0b1f5267b48d887e"
+      },
+      "code-grammar": {
+        "passed": 3,
+        "failed": 0,
+        "skipped": 23,
+        "reportSha256": "0e7c7d62829f78d0f4ed7c813b741d65855d30ac372e43480fd7e5def31876f1"
+      },
+      "copy-commands": {
+        "passed": 1,
+        "failed": 0,
+        "skipped": 14,
+        "reportSha256": "5897459f3bd133bcd818b52901f353a7717a22cabd8cae462380359a29092560"
+      },
+      "scroll-chain": {
+        "passed": 2,
+        "failed": 0,
+        "skipped": 4,
+        "reportSha256": "2c6c7a356cecc8c4c2da4556782863e123dfc991f6f4fee21838ccc788d8dd9d"
+      },
+      "wc-shadow": {
+        "passed": 165,
+        "failed": 0,
+        "skipped": 0,
+        "reportSha256": "66ec99ac7b551a747afa54e1889fbca9c503fd299bc8bd78557fdd7867abe9a2"
+      },
+      "projection-scope": {
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0,
+        "reportSha256": "0655d0c80c7e0c403afd5394d119af488b4023339fc20354be3f05fb093e68d7"
+      },
+      "codeexample": {
+        "passed": 12,
+        "failed": 0,
+        "skipped": 14,
+        "reportSha256": "bac0a77443e02a510d3df8b95fdd4c0a30068f7d029d9df23c4859163eff044c"
+      },
+      "docs-columns": {
+        "passed": 10,
+        "failed": 0,
+        "skipped": 0,
+        "reportSha256": "c09f4286a395a76c7db9aba712eccfe3ec295f96a3216641234016bc26d23c7d"
+      },
+      "liquid-optics": {
+        "passed": 3,
+        "failed": 0,
+        "skipped": 1,
+        "reportSha256": "a397579d6fe6aac0fce8ffc430d176f171983d2a866b35c38d13b237ed1a1b9b"
+      }
+    },
+    "originalMatrix": {
+      "zh-cn": {
+        "bytes": 1862449,
+        "sha256": "5cccbb113c3dc200bf57b924c77731010ca2a829f3c2078285d9f730c7b1936d",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914196,
+        "sha256": "479fc70a09423b4e67f535d29d48b1690b783bb0b746b12db2069013f74a9836",
+        "previews": 1268
+      }
+    },
+    "shadcnButtonDocumentationCodeExamples": 9,
+    "originalS4": {
+      "outcomes": {
+        "zh-cn": "original readiness timeout before Dialog",
+        "en": "original readiness timeout before Dialog"
+      },
+      "readinessMs": 60000,
+      "caseMs": 150000,
+      "report": {
+        "passed": 0,
+        "failed": 2,
+        "skipped": 0,
+        "reportSha256": "6d7af383451a4070246e7314f23983c46d4ab75cbed8bfea74ffbf6f18ff79e5"
+      }
+    }
+  },
+  "registrationControl": {
+    "observedPrefixes": {
+      "stock": {
+        "head": "bc763ddf8dba6cfde13f2158a1f3672373d8d82f",
+        "count": 225280,
+        "pageMs": 69561.60000014305,
+        "groups": {
+          "Element": {
+            "pointerdown": 11857,
+            "contextmenu": 11856,
+            "pointerenter": 11857,
+            "pointerleave": 11857,
+            "perPointerdown": {
+              "contextmenu": 0.999916,
+              "pointerenter": 1.0,
+              "pointerleave": 1.0
+            }
+          },
+          "Window": {
+            "pointerdown": 8387,
+            "contextmenu": 8387,
+            "pointerenter": 0,
+            "pointerleave": 0,
+            "perPointerdown": {
+              "contextmenu": 1.0,
+              "pointerenter": 0.0,
+              "pointerleave": 0.0
+            }
+          },
+          "OtherEventTarget": {
+            "pointerdown": 3470,
+            "contextmenu": 3469,
+            "pointerenter": 0,
+            "pointerleave": 0,
+            "perPointerdown": {
+              "contextmenu": 0.999712,
+              "pointerenter": 0.0,
+              "pointerleave": 0.0
+            }
+          }
+        },
+        "profileSpanMs": 62953.307,
+        "profileSamples": 6431
+      },
+      "contextOnly": {
+        "head": "c662bbfe91574712861e62c794514494d7f6fc05",
+        "count": 237568,
+        "pageMs": 76730.70000004768,
+        "groups": {
+          "Element": {
+            "pointerdown": 13214,
+            "contextmenu": 6466,
+            "pointerenter": 13214,
+            "pointerleave": 13214,
+            "perPointerdown": {
+              "contextmenu": 0.489329,
+              "pointerenter": 1.0,
+              "pointerleave": 1.0
+            }
+          },
+          "Window": {
+            "pointerdown": 9405,
+            "contextmenu": 4742,
+            "pointerenter": 0,
+            "pointerleave": 0,
+            "perPointerdown": {
+              "contextmenu": 0.5042,
+              "pointerenter": 0.0,
+              "pointerleave": 0.0
+            }
+          },
+          "OtherEventTarget": {
+            "pointerdown": 3809,
+            "contextmenu": 1724,
+            "pointerenter": 0,
+            "pointerleave": 0,
+            "perPointerdown": {
+              "contextmenu": 0.452612,
+              "pointerenter": 0.0,
+              "pointerleave": 0.0
+            }
+          }
+        },
+        "profileSpanMs": 57748.839,
+        "profileSamples": 5982
+      },
+      "combined": {
+        "head": "70c96f0d5833a7e4ebb1a9571db422f9b1844cbc",
+        "count": 225280,
+        "pageMs": 70216.90000009537,
+        "groups": {
+          "Element": {
+            "pointerdown": 13270,
+            "contextmenu": 6483,
+            "pointerenter": 6639,
+            "pointerleave": 6639,
+            "perPointerdown": {
+              "contextmenu": 0.488546,
+              "pointerenter": 0.500301,
+              "pointerleave": 0.500301
+            }
+          },
+          "Window": {
+            "pointerdown": 9424,
+            "contextmenu": 4754,
+            "pointerenter": 0,
+            "pointerleave": 0,
+            "perPointerdown": {
+              "contextmenu": 0.504457,
+              "pointerenter": 0.0,
+              "pointerleave": 0.0
+            }
+          },
+          "OtherEventTarget": {
+            "pointerdown": 3845,
+            "contextmenu": 1729,
+            "pointerenter": 0,
+            "pointerleave": 0,
+            "perPointerdown": {
+              "contextmenu": 0.449675,
+              "pointerenter": 0.0,
+              "pointerleave": 0.0
+            }
+          }
+        },
+        "profileSpanMs": 55403.439,
+        "profileSamples": 5788
+      }
+    },
+    "limits": "Separated instrumented Chromium runs. Pointerdown is an always-bound Router registration reference. Ratios are not a startup time comparison or exact deadline state."
+  }
+}

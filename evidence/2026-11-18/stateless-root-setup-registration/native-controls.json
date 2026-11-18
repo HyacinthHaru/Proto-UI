@@ -1,0 +1,1440 @@
+{
+  "lateBindingControl": {
+    "head": "bc763ddf8dba6cfde13f2158a1f3672373d8d82f",
+    "browser": "156.0.8078.79",
+    "sourcePath": "packages/adapters/base/src/events/web-event-router.ts",
+    "graphInputs": 6,
+    "variants": {
+      "stock": {
+        "routerSourceSha256": "bcc6f78ec736d77a2ab0f003a7bef732f0232dcb0ea3410b9da4fa353642e404",
+        "bundleSha256": "d74bb8ab7c0dc6e4d9c6bab51dbb19e44cf7e8597b053c2b178e25f5c50bb75e"
+      },
+      "demand": {
+        "routerSourceSha256": "24d973c3c954ce191bdd8736d95b28d7c679ef3942e32ed3819cb642625f05a6",
+        "bundleSha256": "d9cfb382f9270b204bc6bb14a3ec70f1a5b2012ba386a8fd18c175568f52252b"
+      }
+    },
+    "rows": [
+      {
+        "arm": "stock",
+        "location": "root",
+        "ordering": "normal",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-final",
+            "trusted": true,
+            "defaultPrevented": true
+          }
+        ],
+        "afterDispose": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-final",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ]
+      },
+      {
+        "arm": "stock",
+        "location": "root",
+        "ordering": "before-router",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ],
+        "afterDispose": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ]
+      },
+      {
+        "arm": "stock",
+        "location": "root",
+        "ordering": "between-router-and-subscription",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": true
+          }
+        ],
+        "afterDispose": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ]
+      },
+      {
+        "arm": "stock",
+        "location": "portal",
+        "ordering": "normal",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-final",
+            "trusted": true,
+            "defaultPrevented": true
+          }
+        ],
+        "afterDispose": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-final",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ]
+      },
+      {
+        "arm": "stock",
+        "location": "portal",
+        "ordering": "before-router",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ],
+        "afterDispose": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ]
+      },
+      {
+        "arm": "stock",
+        "location": "portal",
+        "ordering": "between-router-and-subscription",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": true
+          }
+        ],
+        "afterDispose": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ]
+      },
+      {
+        "arm": "demand",
+        "location": "root",
+        "ordering": "normal",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-final",
+            "trusted": true,
+            "defaultPrevented": true
+          }
+        ],
+        "afterDispose": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-final",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ]
+      },
+      {
+        "arm": "demand",
+        "location": "root",
+        "ordering": "before-router",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ],
+        "afterDispose": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ]
+      },
+      {
+        "arm": "demand",
+        "location": "root",
+        "ordering": "between-router-and-subscription",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ],
+        "afterDispose": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ]
+      },
+      {
+        "arm": "demand",
+        "location": "portal",
+        "ordering": "normal",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-final",
+            "trusted": true,
+            "defaultPrevented": true
+          }
+        ],
+        "afterDispose": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-final",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ]
+      },
+      {
+        "arm": "demand",
+        "location": "portal",
+        "ordering": "before-router",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ],
+        "afterDispose": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ]
+      },
+      {
+        "arm": "demand",
+        "location": "portal",
+        "ordering": "between-router-and-subscription",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ],
+        "afterDispose": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ]
+      },
+      {
+        "arm": "demand",
+        "location": "root",
+        "ordering": "normal",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-final",
+            "trusted": true,
+            "defaultPrevented": true
+          }
+        ],
+        "afterDispose": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-final",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ]
+      },
+      {
+        "arm": "demand",
+        "location": "root",
+        "ordering": "before-router",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ],
+        "afterDispose": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ]
+      },
+      {
+        "arm": "demand",
+        "location": "root",
+        "ordering": "between-router-and-subscription",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ],
+        "afterDispose": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ]
+      },
+      {
+        "arm": "demand",
+        "location": "portal",
+        "ordering": "normal",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-final",
+            "trusted": true,
+            "defaultPrevented": true
+          }
+        ],
+        "afterDispose": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-final",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ]
+      },
+      {
+        "arm": "demand",
+        "location": "portal",
+        "ordering": "before-router",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ],
+        "afterDispose": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ]
+      },
+      {
+        "arm": "demand",
+        "location": "portal",
+        "ordering": "between-router-and-subscription",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ],
+        "afterDispose": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ]
+      },
+      {
+        "arm": "stock",
+        "location": "root",
+        "ordering": "normal",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-final",
+            "trusted": true,
+            "defaultPrevented": true
+          }
+        ],
+        "afterDispose": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-final",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ]
+      },
+      {
+        "arm": "stock",
+        "location": "root",
+        "ordering": "before-router",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ],
+        "afterDispose": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ]
+      },
+      {
+        "arm": "stock",
+        "location": "root",
+        "ordering": "between-router-and-subscription",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": true
+          }
+        ],
+        "afterDispose": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ]
+      },
+      {
+        "arm": "stock",
+        "location": "portal",
+        "ordering": "normal",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-final",
+            "trusted": true,
+            "defaultPrevented": true
+          }
+        ],
+        "afterDispose": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-final",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ]
+      },
+      {
+        "arm": "stock",
+        "location": "portal",
+        "ordering": "before-router",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ],
+        "afterDispose": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ]
+      },
+      {
+        "arm": "stock",
+        "location": "portal",
+        "ordering": "between-router-and-subscription",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": true
+          }
+        ],
+        "afterDispose": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ]
+      }
+    ]
+  },
+  "combinedContextMenu": {
+    "parent": "b5e41dd601d67ba48cb5d030811f93394893116d",
+    "head": "2221f307a521f04c2f82d73e51e4b5445f466e1d",
+    "browser": "156.0.8078.79",
+    "overriddenSourceInputs": [
+      "packages/adapters/base/src/events/web-event-router.ts",
+      "packages/adapters/web-component/src/adapt.ts",
+      "packages/modules/event/src/create.ts",
+      "packages/modules/event/src/impl.ts",
+      "packages/modules/event/src/kernel.ts",
+      "packages/modules/event/src/types.ts"
+    ],
+    "stockBundleSha256": "a264488412c8cfb337b8f4ba2b49c7e607cbcec11b8b4226deeed62253dc6f21",
+    "candidateBundleSha256": "44e263c9f535a7387b8b1e4c26b6c829c7a0bc86ea4f1a5dacc2cc6ec4e74c41",
+    "graphInputs": 389,
+    "rows": [
+      {
+        "arm": "stock",
+        "kind": "host-only",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "host",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ],
+        "registrations": {
+          "root": 2,
+          "inner": 0,
+          "window": 1
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "declared",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "preventedBefore": null
+          },
+          {
+            "phase": "host",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ],
+        "registrations": {
+          "root": 2,
+          "inner": 0,
+          "window": 1
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "interleaved",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "preventedBefore": null
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ],
+        "registrations": {
+          "root": 2,
+          "inner": 0,
+          "window": 1
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "portal",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "preventedBefore": null
+          }
+        ],
+        "registrations": {
+          "root": 2,
+          "inner": 0,
+          "window": 1
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "trigger",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "preventedBefore": null
+          }
+        ],
+        "registrations": {
+          "root": 1,
+          "inner": 1,
+          "window": 2
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "host-only",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "host",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ],
+        "registrations": {
+          "root": 1,
+          "inner": 0,
+          "window": 0
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "declared",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "preventedBefore": null
+          },
+          {
+            "phase": "host",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ],
+        "registrations": {
+          "root": 2,
+          "inner": 0,
+          "window": 1
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "interleaved",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "preventedBefore": null
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ],
+        "registrations": {
+          "root": 2,
+          "inner": 0,
+          "window": 1
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "portal",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "preventedBefore": null
+          }
+        ],
+        "registrations": {
+          "root": 2,
+          "inner": 0,
+          "window": 1
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "trigger",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "preventedBefore": null
+          }
+        ],
+        "registrations": {
+          "root": 1,
+          "inner": 1,
+          "window": 2
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "host-only",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "host",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ],
+        "registrations": {
+          "root": 1,
+          "inner": 0,
+          "window": 0
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "declared",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "preventedBefore": null
+          },
+          {
+            "phase": "host",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ],
+        "registrations": {
+          "root": 2,
+          "inner": 0,
+          "window": 1
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "interleaved",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "preventedBefore": null
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ],
+        "registrations": {
+          "root": 2,
+          "inner": 0,
+          "window": 1
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "portal",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "preventedBefore": null
+          }
+        ],
+        "registrations": {
+          "root": 2,
+          "inner": 0,
+          "window": 1
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "trigger",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "preventedBefore": null
+          }
+        ],
+        "registrations": {
+          "root": 1,
+          "inner": 1,
+          "window": 2
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "host-only",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "host",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ],
+        "registrations": {
+          "root": 2,
+          "inner": 0,
+          "window": 1
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "declared",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "preventedBefore": null
+          },
+          {
+            "phase": "host",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ],
+        "registrations": {
+          "root": 2,
+          "inner": 0,
+          "window": 1
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "interleaved",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "preventedBefore": null
+          },
+          {
+            "phase": "native-stop",
+            "trusted": true,
+            "defaultPrevented": false
+          }
+        ],
+        "registrations": {
+          "root": 2,
+          "inner": 0,
+          "window": 1
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "portal",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "preventedBefore": null
+          }
+        ],
+        "registrations": {
+          "root": 2,
+          "inner": 0,
+          "window": 1
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "trigger",
+        "seen": [
+          {
+            "phase": "native-capture",
+            "trusted": true,
+            "defaultPrevented": false
+          },
+          {
+            "phase": "proto",
+            "preventedBefore": null
+          }
+        ],
+        "registrations": {
+          "root": 1,
+          "inner": 1,
+          "window": 2
+        }
+      }
+    ]
+  },
+  "pointerBoundary": {
+    "parent": "3b4c03761febb6b2d927521aced1cf35caed80b8",
+    "head": "3b4c03761febb6b2d927521aced1cf35caed80b8",
+    "browser": "156.0.8078.79",
+    "overriddenSourceInputs": [
+      "packages/adapters/base/src/events/web-event-router.ts",
+      "packages/adapters/web-component/src/adapt.ts"
+    ],
+    "stockBundleSha256": "fc6801a547b18429f5813c483232acac2083f6a078063b0f6f452a9a824961cf",
+    "candidateBundleSha256": "44e263c9f535a7387b8b1e4c26b6c829c7a0bc86ea4f1a5dacc2cc6ec4e74c41",
+    "graphInputs": 389,
+    "rows": [
+      {
+        "arm": "stock",
+        "kind": "enter",
+        "events": [
+          ["proto", "mouse"],
+          ["host enter", true],
+          ["host leave", true]
+        ],
+        "nativeReceipts": [
+          ["pointerenter", true],
+          ["pointerleave", true]
+        ],
+        "registrations": {
+          "enter": 2,
+          "leave": 2
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "leave",
+        "events": [
+          ["host enter", true],
+          ["proto", "mouse"],
+          ["host leave", true]
+        ],
+        "nativeReceipts": [
+          ["pointerenter", true],
+          ["pointerleave", true]
+        ],
+        "registrations": {
+          "enter": 2,
+          "leave": 2
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "trigger",
+        "events": [["proto", "mouse"]],
+        "nativeReceipts": [
+          ["pointerenter", true],
+          ["pointerleave", true]
+        ],
+        "registrations": {
+          "enter": 1,
+          "leave": 1
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "enter",
+        "events": [
+          ["proto", "mouse"],
+          ["host enter", true],
+          ["host leave", true]
+        ],
+        "nativeReceipts": [
+          ["pointerenter", true],
+          ["pointerleave", true]
+        ],
+        "registrations": {
+          "enter": 2,
+          "leave": 1
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "leave",
+        "events": [
+          ["host enter", true],
+          ["proto", "mouse"],
+          ["host leave", true]
+        ],
+        "nativeReceipts": [
+          ["pointerenter", true],
+          ["pointerleave", true]
+        ],
+        "registrations": {
+          "enter": 1,
+          "leave": 2
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "trigger",
+        "events": [["proto", "mouse"]],
+        "nativeReceipts": [
+          ["pointerenter", true],
+          ["pointerleave", true]
+        ],
+        "registrations": {
+          "enter": 1,
+          "leave": 1
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "enter",
+        "events": [
+          ["proto", "mouse"],
+          ["host enter", true],
+          ["host leave", true]
+        ],
+        "nativeReceipts": [
+          ["pointerenter", true],
+          ["pointerleave", true]
+        ],
+        "registrations": {
+          "enter": 2,
+          "leave": 1
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "leave",
+        "events": [
+          ["host enter", true],
+          ["proto", "mouse"],
+          ["host leave", true]
+        ],
+        "nativeReceipts": [
+          ["pointerenter", true],
+          ["pointerleave", true]
+        ],
+        "registrations": {
+          "enter": 1,
+          "leave": 2
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "trigger",
+        "events": [["proto", "mouse"]],
+        "nativeReceipts": [
+          ["pointerenter", true],
+          ["pointerleave", true]
+        ],
+        "registrations": {
+          "enter": 1,
+          "leave": 1
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "enter",
+        "events": [
+          ["proto", "mouse"],
+          ["host enter", true],
+          ["host leave", true]
+        ],
+        "nativeReceipts": [
+          ["pointerenter", true],
+          ["pointerleave", true]
+        ],
+        "registrations": {
+          "enter": 2,
+          "leave": 2
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "leave",
+        "events": [
+          ["host enter", true],
+          ["proto", "mouse"],
+          ["host leave", true]
+        ],
+        "nativeReceipts": [
+          ["pointerenter", true],
+          ["pointerleave", true]
+        ],
+        "registrations": {
+          "enter": 2,
+          "leave": 2
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "trigger",
+        "events": [["proto", "mouse"]],
+        "nativeReceipts": [
+          ["pointerenter", true],
+          ["pointerleave", true]
+        ],
+        "registrations": {
+          "enter": 1,
+          "leave": 1
+        }
+      }
+    ]
+  }
+}
