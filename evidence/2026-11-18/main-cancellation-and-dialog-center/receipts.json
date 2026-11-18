@@ -1,0 +1,902 @@
+{
+  "product": {
+    "head": "bd6ff9d34aa040b847e36c7cb81715387878814e",
+    "tree": "64e252fa0a4499a0431048851ed9f8f1d99d4ae6",
+    "parents": "69952b533424f60272d0805081da9522997f8722 e4ea8d02d4a8befb746fa2c3730c052a3f8d0542"
+  },
+  "final": {
+    "head": "566d2b68484f5214f89f2ff41b6a76f573387554",
+    "tree": "78cdd7a37a38367557593c23080a046aa0a219a0",
+    "parents": "915a82e196f82c3a34869588f089381c795b2777"
+  },
+  "packages": 47,
+  "sitePages": 685,
+  "authorFixturePR": {
+    "number": 1517,
+    "head": "0ff1bd2f7d67db5dfd725be49e92b753cceda0f0",
+    "tree": "0b9501d62bbe4552b97250b1e9a3bf603aa1aa62",
+    "validatedParent": "ad8a678cda3624ef969c1440fd4907216bb92d78",
+    "base": "d98c4da25040cf049377d44666c96f2b9353d1fb",
+    "proposedTree": "2125ae0163686b5a6e2dd69e788e98382fee5d16",
+    "bodySha256": "7728cd3e219c111de451340477d05a5f69cccf7a2d8c3f1a452280d8cbcd4109",
+    "url": "https://github.com/Proto-UI/Proto-UI/pull/1517",
+    "publisherExit": 0
+  },
+  "cancellation": {
+    "initialFocused": {
+      "passed": 107,
+      "failed": 11,
+      "filtered": 0,
+      "reportSha": "5884997148bee764bfd72251f4ab68c8c36f51271a9abf22f7dd9e913fc25aa9"
+    },
+    "acceptedMain": {
+      "passed": 15,
+      "failed": 0,
+      "filtered": 0,
+      "reportSha": "ba354ba6f2180255365b6224f3ccd8a764f06ec442f3bf5da67ce6ea7a73de41"
+    },
+    "reconciledFocused": {
+      "passed": 158,
+      "failed": 0,
+      "filtered": 0,
+      "reportSha": "9ece5bc37bdaad5db99b4d0b11382c56bc3dea89e89b2d9a621be22ad35d0535"
+    }
+  },
+  "mergeFocused": {
+    "passed": 100,
+    "failed": 0,
+    "filtered": 0,
+    "reportSha": "6aa1f93b9c238a8fe7f6728c8bd6b1302049a5e7687dcb9a46548475fa20e568"
+  },
+  "completeFocused": {
+    "passed": 247,
+    "failed": 0,
+    "filtered": 0,
+    "reportSha": "8fd405856847257b2f984de2a657e134f34ec2191901bfb46e6b23deac903ba0"
+  },
+  "firstPreview": {
+    "passed": 11,
+    "failed": 4,
+    "filtered": 9,
+    "reportSha": "e10541d559fc962bbeab316189db893ed02ce67da7758d27233bdd3e3daf2ff4"
+  },
+  "correctedDialog": {
+    "passed": 8,
+    "failed": 0,
+    "filtered": 0,
+    "reportSha": "482584251f9b87a06a486552b87fc8662174c7de13c0c55cbf103a9f99f1ca4b"
+  },
+  "originalHead320x360": {
+    "id": "shadcn-wc-320-unbroken-font200-action-1",
+    "sourceSha": "915a82e196f82c3a34869588f089381c795b2777",
+    "viewport": {
+      "width": 320,
+      "height": 360
+    },
+    "fact": {
+      "text": "UnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabel",
+      "closeIcon": false,
+      "scrollWidth": 158,
+      "clientWidth": 158,
+      "whiteSpace": "normal",
+      "overflowWrap": "anywhere",
+      "rootFontSize": "32px",
+      "semanticParent": {
+        "style": null,
+        "role": null,
+        "tabIndex": -1
+      },
+      "layout": {
+        "prototype": false,
+        "role": null,
+        "tabIndex": -1,
+        "minWidth": "0px",
+        "maxWidth": "100%",
+        "left": 80,
+        "right": 240
+      },
+      "left": 80,
+      "right": 240,
+      "contentLeft": 32,
+      "contentRight": 288,
+      "width": 160,
+      "height": 1338,
+      "targetTop": -1010,
+      "targetBottom": 328,
+      "point": {
+        "x": 160,
+        "y": -341
+      },
+      "viewport": {
+        "width": 320,
+        "height": 360
+      },
+      "dialogClip": {
+        "top": 32,
+        "bottom": 328,
+        "scrollTop": 1454,
+        "scrollHeight": 33926,
+        "clientHeight": 296
+      },
+      "hitTarget": null,
+      "hit": false
+    }
+  },
+  "correctedUnbrokenActions": [
+    {
+      "id": "shadcn-wc-320-unbroken-font200-action-1",
+      "sourceSha": "566d2b68484f5214f89f2ff41b6a76f573387554",
+      "viewport": {
+        "width": 320,
+        "height": 360
+      },
+      "fact": {
+        "text": "UnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabel",
+        "closeIcon": false,
+        "scrollWidth": 158,
+        "clientWidth": 158,
+        "whiteSpace": "normal",
+        "overflowWrap": "anywhere",
+        "rootFontSize": "32px",
+        "semanticParent": {
+          "style": null,
+          "role": null,
+          "tabIndex": -1
+        },
+        "layout": {
+          "prototype": false,
+          "role": null,
+          "tabIndex": -1,
+          "minWidth": "0px",
+          "maxWidth": "100%",
+          "left": 80,
+          "right": 240
+        },
+        "left": 80,
+        "right": 240,
+        "contentLeft": 32,
+        "contentRight": 288,
+        "width": 160,
+        "height": 1338,
+        "hit": true
+      }
+    },
+    {
+      "id": "shadcn-react-320-unbroken-font200-action-1",
+      "sourceSha": "566d2b68484f5214f89f2ff41b6a76f573387554",
+      "viewport": {
+        "width": 320,
+        "height": 360
+      },
+      "fact": {
+        "text": "UnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabel",
+        "closeIcon": false,
+        "scrollWidth": 158,
+        "clientWidth": 158,
+        "whiteSpace": "normal",
+        "overflowWrap": "anywhere",
+        "rootFontSize": "32px",
+        "semanticParent": {
+          "style": null,
+          "role": null,
+          "tabIndex": -1
+        },
+        "layout": {
+          "prototype": false,
+          "role": null,
+          "tabIndex": -1,
+          "minWidth": "0px",
+          "maxWidth": "100%",
+          "left": 80,
+          "right": 240
+        },
+        "left": 80,
+        "right": 240,
+        "contentLeft": 32,
+        "contentRight": 288,
+        "width": 160,
+        "height": 1338,
+        "hit": true
+      }
+    },
+    {
+      "id": "shadcn-vue-320-unbroken-font200-action-1",
+      "sourceSha": "566d2b68484f5214f89f2ff41b6a76f573387554",
+      "viewport": {
+        "width": 320,
+        "height": 360
+      },
+      "fact": {
+        "text": "UnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabel",
+        "closeIcon": false,
+        "scrollWidth": 158,
+        "clientWidth": 158,
+        "whiteSpace": "normal",
+        "overflowWrap": "anywhere",
+        "rootFontSize": "32px",
+        "semanticParent": {
+          "style": null,
+          "role": null,
+          "tabIndex": -1
+        },
+        "layout": {
+          "prototype": false,
+          "role": null,
+          "tabIndex": -1,
+          "minWidth": "0px",
+          "maxWidth": "100%",
+          "left": 80,
+          "right": 240
+        },
+        "left": 80,
+        "right": 240,
+        "contentLeft": 32,
+        "contentRight": 288,
+        "width": 160,
+        "height": 1338,
+        "hit": true
+      }
+    },
+    {
+      "id": "shadcn-vue2-320-unbroken-font200-action-1",
+      "sourceSha": "566d2b68484f5214f89f2ff41b6a76f573387554",
+      "viewport": {
+        "width": 320,
+        "height": 360
+      },
+      "fact": {
+        "text": "UnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabelUnbrokenActionLabel",
+        "closeIcon": false,
+        "scrollWidth": 158,
+        "clientWidth": 158,
+        "whiteSpace": "normal",
+        "overflowWrap": "anywhere",
+        "rootFontSize": "32px",
+        "semanticParent": {
+          "style": null,
+          "role": null,
+          "tabIndex": -1
+        },
+        "layout": {
+          "prototype": false,
+          "role": null,
+          "tabIndex": -1,
+          "minWidth": "0px",
+          "maxWidth": "100%",
+          "left": 80,
+          "right": 240
+        },
+        "left": 80,
+        "right": 240,
+        "contentLeft": 32,
+        "contentRight": 288,
+        "width": 160,
+        "height": 1338,
+        "hit": true
+      }
+    }
+  ],
+  "screenshotSha": "36bf0385813a48e7bf0e05d1d6013681eb438a81d71a874c601c5e5db4ed6586",
+  "native": {
+    "headerExit": 0,
+    "shadow": {
+      "passed": 165,
+      "failed": 0,
+      "filtered": 0,
+      "reportSha": "c80fb90049e591221168cdb3b04dcad003560fb3aeb008f3a3796280678f52b6"
+    },
+    "projection": {
+      "passed": 5,
+      "failed": 0,
+      "filtered": 0,
+      "reportSha": "bf10e71039085a83e03f3b831c30818df12a2683860445fbc5efbf19a762cc8a"
+    },
+    "codeExample": {
+      "passed": 12,
+      "failed": 0,
+      "filtered": 14,
+      "reportSha": "cbcbac3d393dfab75648f3d9ea7dcf3ccd71ad40350d8dfa2e4022756cd3311e"
+    },
+    "drawerDensity": {
+      "passed": 0,
+      "failed": 0,
+      "filtered": 112,
+      "reportSha": "6289dfafe32bab6f5dea2fd5428249cdadaf2b1904ccceed73d83c8d6752938d"
+    },
+    "densityLocalLaunch": "denied by existing official-actions-only gate"
+  },
+  "s4": {
+    "matrix": {
+      "zh-cn": {
+        "bytes": 1862528,
+        "sha256": "0e6de9df7b29cd7b48e65b62a561ba7e26414893a301964a42a50f664de54aa9",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914089,
+        "sha256": "ca08dfc54bc65685366c7b1fed8ec803ad57bf36f827d2265741f9a852c0188e",
+        "previews": 1268
+      }
+    },
+    "stock": {
+      "passed": 0,
+      "failed": 2,
+      "filtered": 0,
+      "reportSha": "6faf697090751fa92da7b66c028532338fc3cfb51fbebc545415b837b9f7f402"
+    },
+    "readinessMs": 60000,
+    "caseMs": 150000,
+    "oneObservedChineseRun": {
+      "binding": {
+        "asset": "site-shadcn-controls.5KF-CIbz.js",
+        "stock": "dc3f97fbc9e4bbe5d7cfe7e31e58be78cb7ad0e792754dc970dd13361c8e1981",
+        "observed": "a208c77d3ff7698bad348af883445a5d1caab381d9248a76b547ba6de4105dc5",
+        "offsets": [235882, 238810, 238334],
+        "bindings": {
+          "scopeVar": "n",
+          "domainVar": "s",
+          "prevVar": "r",
+          "nextVar": "s",
+          "notifyFamily": "e",
+          "computeReads": "r",
+          "emitReads": "n"
+        }
+      },
+      "lastDelivered": {
+        "receivedNodeMs": 72040.881958,
+        "visited": 4030464,
+        "unchanged": 4024892,
+        "equalValue": 0,
+        "changed": 5572,
+        "nativeVisited": 5559,
+        "families": [
+          {
+            "name": "base-dialog",
+            "publications": 191,
+            "startMembers": 2206,
+            "visits": 2206,
+            "unchanged": 2141,
+            "equalValue": 0,
+            "changed": 65,
+            "missingRoot": 0,
+            "distinctRoots": 2206,
+            "changedRoots": 65
+          },
+          {
+            "name": "base-select",
+            "publications": 2497,
+            "startMembers": 1279981,
+            "visits": 1279981,
+            "unchanged": 1278845,
+            "equalValue": 0,
+            "changed": 1136,
+            "missingRoot": 0,
+            "distinctRoots": 73342,
+            "changedRoots": 589
+          },
+          {
+            "name": "base-select-group-scope",
+            "publications": 209,
+            "startMembers": 10379,
+            "visits": 10379,
+            "unchanged": 10331,
+            "equalValue": 0,
+            "changed": 48,
+            "missingRoot": 0,
+            "distinctRoots": 5210,
+            "changedRoots": 48
+          },
+          {
+            "name": "base-checkbox",
+            "publications": 372,
+            "startMembers": 0,
+            "visits": 0,
+            "unchanged": 0,
+            "equalValue": 0,
+            "changed": 0,
+            "missingRoot": 0,
+            "distinctRoots": 0,
+            "changedRoots": 0
+          },
+          {
+            "name": "base-switch",
+            "publications": 253,
+            "startMembers": 26030,
+            "visits": 26030,
+            "unchanged": 25929,
+            "equalValue": 0,
+            "changed": 101,
+            "missingRoot": 0,
+            "distinctRoots": 14688,
+            "changedRoots": 101
+          },
+          {
+            "name": "base-tabs",
+            "publications": 279,
+            "startMembers": 38779,
+            "visits": 38779,
+            "unchanged": 38432,
+            "equalValue": 0,
+            "changed": 347,
+            "missingRoot": 0,
+            "distinctRoots": 5482,
+            "changedRoots": 98
+          },
+          {
+            "name": "base-accordion",
+            "publications": 540,
+            "startMembers": 69615,
+            "visits": 69615,
+            "unchanged": 69379,
+            "equalValue": 0,
+            "changed": 236,
+            "missingRoot": 0,
+            "distinctRoots": 23460,
+            "changedRoots": 168
+          },
+          {
+            "name": "base-accordion-item",
+            "publications": 752,
+            "startMembers": 215100,
+            "visits": 215100,
+            "unchanged": 214560,
+            "equalValue": 0,
+            "changed": 540,
+            "missingRoot": 0,
+            "distinctRoots": 72048,
+            "changedRoots": 318
+          },
+          {
+            "name": "base-calendar",
+            "publications": 2260,
+            "startMembers": 1467554,
+            "visits": 1467554,
+            "unchanged": 1467554,
+            "equalValue": 0,
+            "changed": 0,
+            "missingRoot": 0,
+            "distinctRoots": 34346,
+            "changedRoots": 0
+          },
+          {
+            "name": "base-alert-dialog",
+            "publications": 153,
+            "startMembers": 1395,
+            "visits": 1395,
+            "unchanged": 1355,
+            "equalValue": 0,
+            "changed": 40,
+            "missingRoot": 0,
+            "distinctRoots": 1395,
+            "changedRoots": 40
+          },
+          {
+            "name": "base-autocomplete",
+            "publications": 164,
+            "startMembers": 6305,
+            "visits": 6305,
+            "unchanged": 6261,
+            "equalValue": 0,
+            "changed": 44,
+            "missingRoot": 0,
+            "distinctRoots": 1445,
+            "changedRoots": 44
+          },
+          {
+            "name": "base-carousel",
+            "publications": 140,
+            "startMembers": 5566,
+            "visits": 5566,
+            "unchanged": 5482,
+            "equalValue": 0,
+            "changed": 84,
+            "missingRoot": 0,
+            "distinctRoots": 1232,
+            "changedRoots": 44
+          },
+          {
+            "name": "base-combobox",
+            "publications": 164,
+            "startMembers": 6305,
+            "visits": 6305,
+            "unchanged": 6261,
+            "equalValue": 0,
+            "changed": 44,
+            "missingRoot": 0,
+            "distinctRoots": 1445,
+            "changedRoots": 44
+          },
+          {
+            "name": "base-command",
+            "publications": 160,
+            "startMembers": 6144,
+            "visits": 6144,
+            "unchanged": 6100,
+            "equalValue": 0,
+            "changed": 44,
+            "missingRoot": 0,
+            "distinctRoots": 1408,
+            "changedRoots": 44
+          },
+          {
+            "name": "base-context-menu",
+            "publications": 104,
+            "startMembers": 4003,
+            "visits": 4003,
+            "unchanged": 3975,
+            "equalValue": 0,
+            "changed": 28,
+            "missingRoot": 0,
+            "distinctRoots": 911,
+            "changedRoots": 28
+          },
+          {
+            "name": "base-collapsible",
+            "publications": 208,
+            "startMembers": 21668,
+            "visits": 21668,
+            "unchanged": 21524,
+            "equalValue": 0,
+            "changed": 144,
+            "missingRoot": 0,
+            "distinctRoots": 7276,
+            "changedRoots": 80
+          },
+          {
+            "name": "base-table",
+            "publications": 530,
+            "startMembers": 7984,
+            "visits": 7984,
+            "unchanged": 7830,
+            "equalValue": 0,
+            "changed": 154,
+            "missingRoot": 0,
+            "distinctRoots": 7984,
+            "changedRoots": 154
+          },
+          {
+            "name": "base-data-table",
+            "publications": 80,
+            "startMembers": 2374,
+            "visits": 2374,
+            "unchanged": 2374,
+            "equalValue": 0,
+            "changed": 0,
+            "missingRoot": 0,
+            "distinctRoots": 598,
+            "changedRoots": 0
+          },
+          {
+            "name": "base-popover",
+            "publications": 138,
+            "startMembers": 2288,
+            "visits": 2288,
+            "unchanged": 2266,
+            "equalValue": 0,
+            "changed": 22,
+            "missingRoot": 0,
+            "distinctRoots": 2288,
+            "changedRoots": 22
+          },
+          {
+            "name": "base-field",
+            "publications": 1287,
+            "startMembers": 691804,
+            "visits": 691505,
+            "unchanged": 690354,
+            "equalValue": 0,
+            "changed": 1151,
+            "missingRoot": 11580,
+            "distinctRoots": 159439,
+            "changedRoots": 382
+          },
+          {
+            "name": "base-checkbox-group",
+            "publications": 145,
+            "startMembers": 2156,
+            "visits": 2156,
+            "unchanged": 2113,
+            "equalValue": 0,
+            "changed": 43,
+            "missingRoot": 0,
+            "distinctRoots": 2156,
+            "changedRoots": 43
+          },
+          {
+            "name": "base-drawer",
+            "publications": 414,
+            "startMembers": 21192,
+            "visits": 21192,
+            "unchanged": 21006,
+            "equalValue": 0,
+            "changed": 186,
+            "missingRoot": 0,
+            "distinctRoots": 10602,
+            "changedRoots": 99
+          },
+          {
+            "name": "base-fieldset",
+            "publications": 60,
+            "startMembers": 1568,
+            "visits": 1568,
+            "unchanged": 1532,
+            "equalValue": 0,
+            "changed": 36,
+            "missingRoot": 0,
+            "distinctRoots": 528,
+            "changedRoots": 20
+          },
+          {
+            "name": "base-number-field",
+            "publications": 135,
+            "startMembers": 1564,
+            "visits": 1564,
+            "unchanged": 1534,
+            "equalValue": 0,
+            "changed": 30,
+            "missingRoot": 0,
+            "distinctRoots": 785,
+            "changedRoots": 18
+          },
+          {
+            "name": "base-input-otp",
+            "publications": 190,
+            "startMembers": 0,
+            "visits": 0,
+            "unchanged": 0,
+            "equalValue": 0,
+            "changed": 0,
+            "missingRoot": 0,
+            "distinctRoots": 0,
+            "changedRoots": 0
+          },
+          {
+            "name": "base-form",
+            "publications": 123,
+            "startMembers": 847,
+            "visits": 847,
+            "unchanged": 815,
+            "equalValue": 0,
+            "changed": 32,
+            "missingRoot": 0,
+            "distinctRoots": 847,
+            "changedRoots": 32
+          },
+          {
+            "name": "base-slider",
+            "publications": 255,
+            "startMembers": 17392,
+            "visits": 17392,
+            "unchanged": 17214,
+            "equalValue": 0,
+            "changed": 178,
+            "missingRoot": 0,
+            "distinctRoots": 6326,
+            "changedRoots": 82
+          },
+          {
+            "name": "base-dropdown",
+            "publications": 566,
+            "startMembers": 55370,
+            "visits": 55370,
+            "unchanged": 55370,
+            "equalValue": 0,
+            "changed": 0,
+            "missingRoot": 0,
+            "distinctRoots": 6959,
+            "changedRoots": 0
+          },
+          {
+            "name": "base-dropdown-group",
+            "publications": 100,
+            "startMembers": 2930,
+            "visits": 2930,
+            "unchanged": 2906,
+            "equalValue": 0,
+            "changed": 24,
+            "missingRoot": 0,
+            "distinctRoots": 2930,
+            "changedRoots": 24
+          },
+          {
+            "name": "base-menubar",
+            "publications": 148,
+            "startMembers": 3502,
+            "visits": 3502,
+            "unchanged": 3458,
+            "equalValue": 0,
+            "changed": 44,
+            "missingRoot": 0,
+            "distinctRoots": 1306,
+            "changedRoots": 44
+          },
+          {
+            "name": "base-hover-card",
+            "publications": 44,
+            "startMembers": 0,
+            "visits": 0,
+            "unchanged": 0,
+            "equalValue": 0,
+            "changed": 0,
+            "missingRoot": 0,
+            "distinctRoots": 0,
+            "changedRoots": 0
+          },
+          {
+            "name": "base-scroll-area",
+            "publications": 150,
+            "startMembers": 3283,
+            "visits": 3283,
+            "unchanged": 3257,
+            "equalValue": 0,
+            "changed": 26,
+            "missingRoot": 0,
+            "distinctRoots": 3283,
+            "changedRoots": 26
+          },
+          {
+            "name": "base-message-scroller",
+            "publications": 45,
+            "startMembers": 0,
+            "visits": 0,
+            "unchanged": 0,
+            "equalValue": 0,
+            "changed": 0,
+            "missingRoot": 0,
+            "distinctRoots": 0,
+            "changedRoots": 0
+          },
+          {
+            "name": "base-navigation-menu",
+            "publications": 126,
+            "startMembers": 2214,
+            "visits": 2214,
+            "unchanged": 2178,
+            "equalValue": 0,
+            "changed": 36,
+            "missingRoot": 0,
+            "distinctRoots": 850,
+            "changedRoots": 36
+          },
+          {
+            "name": "base-radio-group",
+            "publications": 310,
+            "startMembers": 22747,
+            "visits": 22747,
+            "unchanged": 22631,
+            "equalValue": 0,
+            "changed": 116,
+            "missingRoot": 0,
+            "distinctRoots": 7182,
+            "changedRoots": 116
+          },
+          {
+            "name": "base-resizable",
+            "publications": 60,
+            "startMembers": 397,
+            "visits": 397,
+            "unchanged": 385,
+            "equalValue": 0,
+            "changed": 12,
+            "missingRoot": 0,
+            "distinctRoots": 397,
+            "changedRoots": 12
+          },
+          {
+            "name": "base-meter",
+            "publications": 75,
+            "startMembers": 1016,
+            "visits": 1016,
+            "unchanged": 965,
+            "equalValue": 0,
+            "changed": 51,
+            "missingRoot": 0,
+            "distinctRoots": 510,
+            "changedRoots": 27
+          },
+          {
+            "name": "base-progress",
+            "publications": 75,
+            "startMembers": 1016,
+            "visits": 1016,
+            "unchanged": 965,
+            "equalValue": 0,
+            "changed": 51,
+            "missingRoot": 0,
+            "distinctRoots": 510,
+            "changedRoots": 27
+          },
+          {
+            "name": "base-slider-values",
+            "publications": 210,
+            "startMembers": 19955,
+            "visits": 19955,
+            "unchanged": 19653,
+            "equalValue": 0,
+            "changed": 302,
+            "missingRoot": 0,
+            "distinctRoots": 2891,
+            "changedRoots": 64
+          },
+          {
+            "name": "base-toggle-group",
+            "publications": 60,
+            "startMembers": 1569,
+            "visits": 1569,
+            "unchanged": 1533,
+            "equalValue": 0,
+            "changed": 36,
+            "missingRoot": 0,
+            "distinctRoots": 420,
+            "changedRoots": 18
+          },
+          {
+            "name": "base-toast",
+            "publications": 111,
+            "startMembers": 813,
+            "visits": 813,
+            "unchanged": 756,
+            "equalValue": 0,
+            "changed": 57,
+            "missingRoot": 0,
+            "distinctRoots": 813,
+            "changedRoots": 57
+          },
+          {
+            "name": "base-toolbar",
+            "publications": 75,
+            "startMembers": 2257,
+            "visits": 2257,
+            "unchanged": 2221,
+            "equalValue": 0,
+            "changed": 36,
+            "missingRoot": 0,
+            "distinctRoots": 525,
+            "changedRoots": 21
+          },
+          {
+            "name": "base-tooltip",
+            "publications": 66,
+            "startMembers": 921,
+            "visits": 921,
+            "unchanged": 897,
+            "equalValue": 0,
+            "changed": 24,
+            "missingRoot": 0,
+            "distinctRoots": 921,
+            "changedRoots": 24
+          },
+          {
+            "name": "base-tree",
+            "publications": 90,
+            "startMembers": 2574,
+            "visits": 2574,
+            "unchanged": 2550,
+            "equalValue": 0,
+            "changed": 24,
+            "missingRoot": 0,
+            "distinctRoots": 630,
+            "changedRoots": 24
+          },
+          {
+            "name": "base-virtual-list",
+            "publications": 45,
+            "startMembers": 0,
+            "visits": 0,
+            "unchanged": 0,
+            "equalValue": 0,
+            "changed": 0,
+            "missingRoot": 0,
+            "distinctRoots": 0,
+            "changedRoots": 0
+          }
+        ],
+        "pageMs": 71192.40000009537,
+        "timeOrigin": 1795003725598.8
+      },
+      "overlaySha": "130ca113ed58fbf31c46add4bb4cad5dae05da2a0598b170856e36b0e1bd5f1f",
+      "rawRowsSha": "ee7d8d180d73439e344508ad8ba312f65feda965ccb86afbfc08bcdca6838e99",
+      "originalExit": 1
+    }
+  }
+}
