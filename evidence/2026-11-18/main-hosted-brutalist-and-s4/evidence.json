@@ -1,0 +1,47 @@
+{
+  "cycle": 44254293045,
+  "mainHead": "0f0955a9d624e0ef5e250f56a0eaa0fc52bbfb53",
+  "brutalist": {
+    "source": {
+      "sha": "0f0955a9d624e0ef5e250f56a0eaa0fc52bbfb53",
+      "dirty": false,
+      "expectedSha": "0f0955a9d624e0ef5e250f56a0eaa0fc52bbfb53",
+      "eventSha": "0f0955a9d624e0ef5e250f56a0eaa0fc52bbfb53"
+    },
+    "nominalAssertionMs": 1000,
+    "lastQueryStartNodeMs": 163502.230405,
+    "verdictNodeMs": 164243.712937,
+    "writerFinishMappedNodeMs": 164153.89521484374,
+    "mutationDeliveryMappedNodeMs": 164362.69521484373,
+    "utilityGetterReturnMappedNodeMs": 164744.09521484375,
+    "nodeQueryReturnMs": 164745.48332,
+    "writerBeforeVerdictMs": 89.81772215626552,
+    "writerToObserverMs": 208.79999999998836,
+    "writerToGetterMs": 590.2000000000116,
+    "getterAfterVerdictMs": 500.3822778437461,
+    "getterToNodeReturnMs": 1.3881051562493667
+  },
+  "hostedS4": {
+    "zh-cn": {
+      "startupWaitNodeMs": 12995.595681,
+      "startupErrorObservedNodeMs": 128618.189659,
+      "observedWindowMs": 115622.59397799999,
+      "actualFailure": "readiness 60000ms"
+    },
+    "en": {
+      "startupWaitNodeMs": 146221.752746,
+      "startupErrorObservedNodeMs": 281673.030194,
+      "observedWindowMs": 135451.27744799998,
+      "actualFailure": "outer case 150000ms"
+    }
+  },
+  "directDialogPassed": 8,
+  "packageBuild": "success",
+  "generalFailure": "Coverage matrix validation reported 1197 issues before general test assertions",
+  "jobLogs": {
+    "browser-3": "1ab1fa49d89496301de2cf1dd972125d68db70ff00388b5430b705a4114c86c9",
+    "browser-8": "c21f202e049a14ca0594c728dfa250e54ef0557314285896b9364ec45d3d9b6d",
+    "browser-9": "3008c6fe5eaa17967e0ea959eff1846e25ed0cf20e0a71fcd565f737bf6829ec",
+    "general": "e33927cdc2f0add0187f5654523a5f11c3254de2a8ba522c39606a551baa4e75"
+  }
+}
