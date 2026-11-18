@@ -1,0 +1,378 @@
+{
+  "head": "bfd7b4fcde8901f8b5927ff53f74e867a6d821d3",
+  "tree": "25095f36b478ddf6b1c44897e71dcfcb7097c5db",
+  "parent": "aad84982a165a5f57889edbb404db1a1791ea969",
+  "locale": "en",
+  "chrome": "156.0.8078.79",
+  "count": 1268,
+  "originalReadinessMs": 60000,
+  "outerCaseDeadlineMs": 150000,
+  "originalCaseStatus": "failed-readiness",
+  "otherLocale": "filtered",
+  "traceMeta": {
+    "categories": "toplevel,devtools.timeline,blink.user_timing",
+    "trigger": {
+      "pageMs": null,
+      "nodeMs": 19865.273417
+    },
+    "startNodeMs": 27342.326167,
+    "stopNodeMs": 43916.074625,
+    "stopReason": "prototype-return",
+    "eof": true,
+    "dataLoss": false,
+    "bytes": 96824049,
+    "errors": [],
+    "outcome": {
+      "complete": true,
+      "outcomes": [
+        {
+          "status": "fulfilled"
+        }
+      ]
+    }
+  },
+  "traceAnalysis": {
+    "source": "bfd7b4fcde8901f8b5927ff53f74e867a6d821d3",
+    "traceSha": "e03da8549a0973b9f399221d02de4d6eff28a2fa07ebc878ad954c39ee5df55a",
+    "traceEvents": 277609,
+    "rendererTid": 32601451,
+    "rendererPid": 50141,
+    "boundary": "Earliest trace thread event precedes prototype request mark. Last mapped static finish is approximated in trace time from the matching page fulfillment mark and same-run Network timestamps.",
+    "lastMappedFinishToReturnMs": 11999.634033203125,
+    "groups": {
+      "rendererTask": {
+        "events": 1209,
+        "unionMs": 1973.151,
+        "maxMs": 232.691
+      },
+      "microtasks": {
+        "events": 545,
+        "unionMs": 10022.488033203124,
+        "maxMs": 3196.975
+      },
+      "layout": {
+        "events": 460,
+        "unionMs": 894.685,
+        "maxMs": 73.114
+      },
+      "function": {
+        "events": 46355,
+        "unionMs": 4642.055,
+        "maxMs": 31.872
+      },
+      "animation": {
+        "events": 1961,
+        "unionMs": 1511.006,
+        "maxMs": 44.6
+      },
+      "v8": {
+        "events": 121,
+        "unionMs": 1.83,
+        "maxMs": 0.157
+      }
+    },
+    "largestTasks": [
+      {
+        "kind": "ThreadControllerImpl::RunTask",
+        "startMs": 3688.703033203125,
+        "durationMs": 232.691,
+        "nestedUnionMs": {
+          "microtasks": 0.0,
+          "layout": 81.743,
+          "function": 46.309,
+          "animation": 197.498,
+          "v8": 0.0
+        }
+      },
+      {
+        "kind": "ThreadControllerImpl::RunTask",
+        "startMs": 1346.416033203125,
+        "durationMs": 175.422,
+        "nestedUnionMs": {
+          "microtasks": 0.0,
+          "layout": 46.035,
+          "function": 73.915,
+          "animation": 120.361,
+          "v8": 0.0
+        }
+      },
+      {
+        "kind": "ThreadControllerImpl::RunTask",
+        "startMs": 4190.586033203125,
+        "durationMs": 164.76,
+        "nestedUnionMs": {
+          "microtasks": 0.0,
+          "layout": 61.302,
+          "function": 51.822,
+          "animation": 134.532,
+          "v8": 0.0
+        }
+      },
+      {
+        "kind": "ThreadControllerImpl::RunTask",
+        "startMs": 381.802033203125,
+        "durationMs": 162.97,
+        "nestedUnionMs": {
+          "microtasks": 0.0,
+          "layout": 31.091,
+          "function": 89.95,
+          "animation": 107.756,
+          "v8": 0.0
+        }
+      },
+      {
+        "kind": "ThreadControllerImpl::RunTask",
+        "startMs": 11099.012033203126,
+        "durationMs": 151.56,
+        "nestedUnionMs": {
+          "microtasks": 0.0,
+          "layout": 45.234,
+          "function": 39.945,
+          "animation": 122.633,
+          "v8": 0.0
+        }
+      },
+      {
+        "kind": "ThreadControllerImpl::RunTask",
+        "startMs": 11562.535033203125,
+        "durationMs": 116.841,
+        "nestedUnionMs": {
+          "microtasks": 0.0,
+          "layout": 36.693,
+          "function": 44.16,
+          "animation": 101.631,
+          "v8": 0.0
+        }
+      }
+    ],
+    "byFunctionLocation": [
+      {
+        "file": "/_astro/site-shadcn-controls.jaXnmgPq.js",
+        "name": "connectedCallback",
+        "line": 18,
+        "column": 32968,
+        "count": 899,
+        "unionMs": 3088.038
+      },
+      {
+        "file": "/_astro/site-shadcn-controls.jaXnmgPq.js",
+        "name": "",
+        "line": 9,
+        "column": 433812,
+        "count": 1710,
+        "unionMs": 294.653
+      },
+      {
+        "file": "/_astro/site-shadcn-controls.jaXnmgPq.js",
+        "name": "",
+        "line": 9,
+        "column": 169951,
+        "count": 444,
+        "unionMs": 256.668
+      },
+      {
+        "file": "/_astro/demo-renderer.DsYUcOxw.js",
+        "name": "O",
+        "line": 4,
+        "column": 950,
+        "count": 427,
+        "unionMs": 196.328
+      },
+      {
+        "file": "/_astro/sink.DJsRxkUr.js",
+        "name": "",
+        "line": 11,
+        "column": 5404,
+        "count": 16,
+        "unionMs": 158.385
+      },
+      {
+        "file": "/_astro/site-shadcn-controls.jaXnmgPq.js",
+        "name": "",
+        "line": 9,
+        "column": 417954,
+        "count": 446,
+        "unionMs": 126.303
+      },
+      {
+        "file": "/_astro/site-shadcn-controls.jaXnmgPq.js",
+        "name": "Cl",
+        "line": 15,
+        "column": 48537,
+        "count": 24757,
+        "unionMs": 61.948
+      },
+      {
+        "file": "/_astro/DocumentationImagePreview.astro_astro_type_script_index_0_lang.DMzRJvhZ.js",
+        "name": "",
+        "line": 1,
+        "column": 15934,
+        "count": 1640,
+        "unionMs": 51.4
+      },
+      {
+        "file": "/_astro/site-typography-client.CkQOKXUt.js",
+        "name": "",
+        "line": 1,
+        "column": 1921,
+        "count": 427,
+        "unionMs": 40.242
+      },
+      {
+        "file": "/_astro/projection-materializer.sDWbnLhF.js",
+        "name": "",
+        "line": 5,
+        "column": 80709,
+        "count": 503,
+        "unionMs": 38.345
+      },
+      {
+        "file": "/_astro/projection-materializer.sDWbnLhF.js",
+        "name": "",
+        "line": 5,
+        "column": 59727,
+        "count": 416,
+        "unionMs": 34.018
+      },
+      {
+        "file": "/_astro/web.B0-M0T9X.js",
+        "name": "K.S",
+        "line": 1,
+        "column": 2781,
+        "count": 7,
+        "unionMs": 27.156
+      },
+      {
+        "file": "/_astro/index.D5ahegtX.js",
+        "name": "Mn",
+        "line": 9,
+        "column": 1984,
+        "count": 3,
+        "unionMs": 26.253
+      },
+      {
+        "file": "/_astro/site-shadcn-controls.jaXnmgPq.js",
+        "name": "disconnectedCallback",
+        "line": 18,
+        "column": 46170,
+        "count": 438,
+        "unionMs": 25.223
+      },
+      {
+        "file": "/_astro/web.B0-M0T9X.js",
+        "name": "",
+        "line": 1,
+        "column": 690,
+        "count": 4,
+        "unionMs": 24.614
+      },
+      {
+        "file": "/_astro/previewer-client.uw4APAeQ.js",
+        "name": "",
+        "line": 1,
+        "column": 1777,
+        "count": 413,
+        "unionMs": 23.102
+      },
+      {
+        "file": "(unspecified)",
+        "name": "next",
+        "line": 25,
+        "column": 22,
+        "count": 16,
+        "unionMs": 18.091
+      },
+      {
+        "file": "/_astro/index.BGcWVaE_.js",
+        "name": "",
+        "line": 1,
+        "column": 25541,
+        "count": 1748,
+        "unionMs": 15.573
+      }
+    ],
+    "note": "Group spans overlap, task durations are clipped to the observed interval."
+  },
+  "traceFiles": {
+    "/_astro/site-shadcn-controls.jaXnmgPq.js": "cacaf660dd9635f1fab47ad4779a87dbeae91de4a7ee144431b7437338011659",
+    "/_astro/demo-renderer.DsYUcOxw.js": "aa38d8a846dc0b7f241db76af4a4a75d34e4d7ae4c63924eba98772139409f46",
+    "/_astro/sink.DJsRxkUr.js": "4e275da2362a8dc618120a8f91f430d321b0485b46475f59da83ba19f3efb536",
+    "/_astro/DocumentationImagePreview.astro_astro_type_script_index_0_lang.DMzRJvhZ.js": "aac7cc63c99f2705fca41f896431d99bc05a3cbb9fa126dc0fbb05666162913c",
+    "/_astro/site-typography-client.CkQOKXUt.js": "42ebf005c376d6d9540d520c214144fccb9f23a48c2deb3f1f95736232ab0624",
+    "/_astro/projection-materializer.sDWbnLhF.js": "62cbaf4f2a070167ccf8443568ce73d2a068ef9e6220bce6538266a904d85bf0",
+    "/_astro/web.B0-M0T9X.js": "7d344fd3e9e3a6c87a497b910aed0033b8a2d151497fdcfc32e648b5cf4aedb8",
+    "/_astro/index.D5ahegtX.js": "b9437fefaf0c02a15ddf84508c79a0c6f26afc7ffe79966c7b921d991c001b95",
+    "/_astro/previewer-client.uw4APAeQ.js": "994f2876d1108d5899fc88a60d8eb490f34a42fe07275daa1440b3cb26a36732",
+    "/_astro/index.BGcWVaE_.js": "bac36ab0442672d06718d8396c89b7f3724fb6cb4350b859ea0d224331d6ad61"
+  },
+  "form": {
+    "loadedTags": [
+      "demo-load-enter",
+      "demo-load-return",
+      "first-theme-enter",
+      "first-theme-return",
+      "prototype-load-enter",
+      "prototype-load-return",
+      "publish",
+      "render-enter",
+      "render-return",
+      "surface-ready-enter",
+      "surface-ready-return",
+      "theme-activation-enter",
+      "theme-activation-return"
+    ],
+    "demoStartPageMs": 27941.60000014305,
+    "demoStaticFiles": 2,
+    "demoStaticNotObserved": [],
+    "demoLastStaticFinishFile": "demo-bootstrap-2-3-2-form.demo.UFKJ0jRE.js",
+    "demoLastStaticFinishRelativeMs": 9.075927734375,
+    "demoBodyStartPageMs": 31040.300000190735,
+    "demoBodyReturnPageMs": 31040.400000095367,
+    "lastStaticFinishToEntryBodyMs": 3089.6240234375,
+    "demoAwaitMs": 3098.899999856949,
+    "prototypeIds": 20,
+    "prototypeMappedIds": 20,
+    "prototypeUnmappedIds": [],
+    "prototypeMappedStaticFiles": 28,
+    "prototypeMappedNotObserved": [],
+    "prototypeLastMappedStaticFinishFile": "index.Kay94bVq.js",
+    "prototypeLastMappedStaticRelativeMs": 8.365966796875,
+    "prototypeAwaitMs": 12008.0,
+    "prototypeLastMappedStaticToReturnMs": 11999.634033203125,
+    "ownerStagesPageMs": {
+      "demo-load-enter": 27941.60000014305,
+      "demo-load-return": 31040.5,
+      "first-theme-enter": 31040.60000014305,
+      "first-theme-return": 31042.200000047684,
+      "prototype-load-enter": 31042.300000190735,
+      "prototype-load-return": 43050.300000190735,
+      "render-enter": 43050.300000190735,
+      "render-return": 43458.40000009537,
+      "surface-ready-enter": 43458.5,
+      "surface-ready-return": 44665.700000047684,
+      "theme-activation-enter": 44665.800000190735,
+      "theme-activation-return": 48216.5,
+      "publish": 48216.700000047684
+    },
+    "childObservedPageMs": 43458.40000009537
+  },
+  "wireStatusCounts": {
+    "200": 37
+  },
+  "exactRestore": true,
+  "independentlyPreservedFirstCapture": {
+    "eof": false,
+    "bytes": 150994944,
+    "dataLossReportedByChrome": false,
+    "localRun": "original-readiness-failed"
+  },
+  "rawSourceHashes": {
+    "native.log": "c9e51e0f1ed15c579ffa6d295c919510ea545af343fd16dfb48a83e6bb7c9752",
+    "wire-rows.json": "b2d8633d2dacfe8f4bea3ee558b9b35ac09414c961f423e2c82affaf98fdf6ee",
+    "static-closure.json": "04b4df53a6da7ffb9d156c60459176e01d6fa2fa08c37e9eae020c0f56b92a3d",
+    "renderer-trace-meta.json": "6564ae7ad26ddafa6dc3f6848e224741eb189517945c18d822fe82f6abd5ea99",
+    "observation-overlay.patch": "8f1953531ec7ddca24d0f0ea786e464ad69afa8882e7ccd7a3778a2d4c9d8f4d",
+    "postrestore.log": "53da4e768ac9c36ec10e99fff2a768457cd9cca3198d60ad629b9990285e7176",
+    "network-capture.ts": "a0bbd7403c98cf0bc1488c55390140b98ff98d446128eb994b24976fb99b16f2"
+  }
+}
