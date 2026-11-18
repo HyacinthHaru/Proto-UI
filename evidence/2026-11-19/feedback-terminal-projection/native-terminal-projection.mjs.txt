@@ -1,0 +1,117 @@
+import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
+import { createRequire } from 'node:module';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { execFileSync } from 'node:child_process';
+
+const [output, arm, resolution] = process.argv.slice(2);
+const cwd = process.cwd();
+const { build } = createRequire(resolve(cwd, 'package.json'))('esbuild');
+const { chromium } = createRequire(resolve(cwd, 'apps/www/package.json'))('playwright-core');
+const digest = (data) => createHash('sha256').update(data).digest('hex');
+
+const fixture = `
+import { tw } from '@proto.ui/core';
+import { EFFECTS_CAP, OWNED_DECORATION_CAP } from '@proto.ui/module-feedback';
+import { createRuntimeSession } from '@proto.ui/runtime';
+
+window.runTerminalProjection = async () => {
+  let state, target, unmounted = false;
+  const styles = [];
+  const decoration = document.createElement('span');
+  document.body.append(decoration);
+  const session = createRuntimeSession({
+    name: 'terminal-projection-phone',
+    setup(def) {
+      state = def.state.bool('active', false);
+      target = def.feedback.style.declareDecoration();
+      def.feedback.style.to(target).use(tw('bg-red-500'));
+      def.feedback.style.use(tw('text-white'));
+      def.rule({
+        when: (w) => w.state(state).eq(true),
+        intent: (i) => i.feedback.style.to(target).use(tw('opacity-50')),
+      });
+      def.lifecycle.onUnmounted(() => {
+        unmounted = true;
+        state.set(false);
+      });
+      return (r) => r.decoration(target);
+    },
+  }, {
+    prototypeName: 'terminal-projection-phone',
+    getRawProps: () => ({}),
+    schedule: (task) => task(),
+    commit: (_children, signal) => {
+      const feedback = session.caps.getPort('feedback');
+      feedback.bindDecorations([
+        { target, sink: (style) => { decoration.className = style.tokens.join(' '); } },
+      ], feedback.captureDecorationLease());
+      signal?.done();
+    },
+    onRuntimeReady: (wiring) => wiring.attach('feedback', [
+      [OWNED_DECORATION_CAP, true],
+      [EFFECTS_CAP, { queueStyle: (style) => styles.push(style.tokens), requestFlush: () => {} }],
+    ]),
+  });
+  await session.mount();
+  session.invokeInCallbackScope(() => state.set(true));
+  const beforeDispose = decoration.className;
+  const existingWrites = styles.slice();
+  styles.length = 0;
+  await session.dispose();
+  let stateError = null;
+  try { state.get(); } catch (error) { stateError = String(error); }
+  return { beforeDispose, existingWrites, terminalWrites: styles, instancePhase: session.instancePhase,
+    unmounted, stateError, connected: decoration.isConnected };
+};
+`;
+const publicPackages = {
+  '@proto.ui/core': 'packages/core',
+  '@proto.ui/runtime': 'packages/runtime',
+  '@proto.ui/module-feedback': 'packages/modules/feedback',
+};
+const publicEntry = {
+  name: 'root-public-exports',
+  setup(plugin) {
+    plugin.onResolve({ filter: /^@proto[.]ui\/(?:core|runtime|module-feedback)$/ }, (args) => {
+      if (args.importer !== '<stdin>') return;
+      const folder = resolve(cwd, publicPackages[args.path]);
+      const manifest = JSON.parse(readFileSync(resolve(folder, 'package.json'), 'utf8'));
+      return { path: resolve(folder, manifest.exports['.'].import) };
+    });
+  },
+};
+const artifact = await build({
+  stdin: { contents: fixture, resolveDir: resolve(cwd, 'apps/www'), loader: 'ts' },
+  metafile: true, bundle: true, write: false, platform: 'browser', format: 'iife',
+  ...(resolution === 'dist'
+    ? { tsconfigRaw: { compilerOptions: {} }, plugins: [publicEntry] }
+    : { tsconfig: resolve(cwd, 'tsconfig.json') }),
+});
+const inputs = Object.fromEntries(Object.keys(artifact.metafile.inputs)
+  .filter((name) => name !== '<stdin>').sort()
+  .map((name) => [name, digest(readFileSync(name))]));
+assert(Object.keys(inputs).some((name) => name.includes(`/feedback/${resolution}/`)));
+if (resolution === 'dist') assert(!Object.keys(inputs).some((name) => /packages\/.+\/src\//.test(name)));
+const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH });
+try {
+  const page = await browser.newPage();
+  await page.addScriptTag({ content: artifact.outputFiles[0].text });
+  const observed = await page.evaluate(() => window.runTerminalProjection());
+  writeFileSync(output, JSON.stringify({
+    arm, resolution, browser: browser.version(),
+    head: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+    fixtureSha256: digest(fixture), bundleSha256: digest(artifact.outputFiles[0].contents),
+    inputs, observed,
+  }, null, 2) + '\n');
+  assert.equal(observed.beforeDispose, 'bg-red-500 opacity-50');
+  assert(observed.existingWrites.some((tokens) => tokens.includes('text-white')));
+  assert.equal(observed.instancePhase, 'disposed');
+  assert.equal(observed.unmounted, true);
+  assert.match(observed.stateError, /disposed/i);
+  assert.equal(observed.connected, true);
+  assert.deepEqual(observed.terminalWrites, arm === 'baseline' ? [['text-white']] : []);
+} finally {
+  await browser.close();
+}
