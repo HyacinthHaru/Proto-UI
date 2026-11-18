@@ -1,0 +1,295 @@
+{
+  "standalone": {
+    "head": "ae72dc6087c72f3f842536ac8067e6bd4501b94a",
+    "tree": "cc99a98b47b02ba0eda36a3053dcf5f00212da43",
+    "main": "534caf4a241f7f7ef49b7b073662ad982e938c91",
+    "modifiedFiles": [
+      "apps/www/src/components/site-typography.ts",
+      "apps/www/src/components/site-typography-discovery.test.ts"
+    ]
+  },
+  "sameDiscoveryTestsWithOriginalSource": {
+    "numPassedTests": 15,
+    "numFailedTests": 1,
+    "numPendingTests": 0
+  },
+  "focused": {
+    "numPassedTests": 152,
+    "numFailedTests": 0,
+    "numPendingTests": 0
+  },
+  "native": {
+    "numPassedTests": 6,
+    "numFailedTests": 4,
+    "numPendingTests": 23
+  },
+  "nativeCases": [
+    {
+      "title": "wc/shadcn: native labels, accessibility, original nodes, genuine copy and cross-generation selection",
+      "status": "failed"
+    },
+    {
+      "title": "wc/brutalist: native labels, accessibility, original nodes, genuine copy and cross-generation selection",
+      "status": "passed"
+    },
+    {
+      "title": "react/shadcn: native labels, accessibility, original nodes, genuine copy and cross-generation selection",
+      "status": "failed"
+    },
+    {
+      "title": "react/brutalist: native labels, accessibility, original nodes, genuine copy and cross-generation selection",
+      "status": "passed"
+    },
+    {
+      "title": "vue/shadcn: native labels, accessibility, original nodes, genuine copy and cross-generation selection",
+      "status": "failed"
+    },
+    {
+      "title": "vue/brutalist: native labels, accessibility, original nodes, genuine copy and cross-generation selection",
+      "status": "passed"
+    },
+    {
+      "title": "vue2/shadcn: native labels, accessibility, original nodes, genuine copy and cross-generation selection",
+      "status": "failed"
+    },
+    {
+      "title": "vue2/brutalist: native labels, accessibility, original nodes, genuine copy and cross-generation selection",
+      "status": "passed"
+    },
+    {
+      "title": "shadcn: real documentation follows shared runtime preferences with separate scope ownership",
+      "status": "passed"
+    },
+    {
+      "title": "brutalist: real documentation follows shared runtime preferences with separate scope ownership",
+      "status": "passed"
+    }
+  ],
+  "shadcnCjkFonts": [
+    {
+      "id": "native-wc-shadcn",
+      "outcome": "failed",
+      "cjkFonts": [
+        {
+          "familyName": "PingFang SC",
+          "postScriptName": "PingFangSC-Regular",
+          "isCustomFont": false,
+          "glyphCount": 9
+        }
+      ]
+    },
+    {
+      "id": "native-react-shadcn",
+      "outcome": "failed",
+      "cjkFonts": [
+        {
+          "familyName": "PingFang SC",
+          "postScriptName": "PingFangSC-Regular",
+          "isCustomFont": false,
+          "glyphCount": 9
+        }
+      ]
+    },
+    {
+      "id": "native-vue-shadcn",
+      "outcome": "failed",
+      "cjkFonts": [
+        {
+          "familyName": "PingFang SC",
+          "postScriptName": "PingFangSC-Regular",
+          "isCustomFont": false,
+          "glyphCount": 9
+        }
+      ]
+    },
+    {
+      "id": "native-vue2-shadcn",
+      "outcome": "failed",
+      "cjkFonts": [
+        {
+          "familyName": "PingFang SC",
+          "postScriptName": "PingFangSC-Regular",
+          "isCustomFont": false,
+          "glyphCount": 9
+        }
+      ]
+    },
+    {
+      "id": "docs-shadcn",
+      "outcome": "passed",
+      "cjkFonts": null
+    }
+  ],
+  "comparison": {
+    "baseline": {
+      "head": "bdf1ccb85f4538078cd4c23bd6cbe4c7d7e881c4",
+      "tree": "83e05cccbfcd8564dc3dc021bfd361e6a2ba9321",
+      "triggerCheckpoints": [
+        {
+          "pageMs": 585.3000001907349,
+          "accepted": 1
+        },
+        {
+          "pageMs": 3398.9000000953674,
+          "accepted": 128
+        },
+        {
+          "pageMs": 4976.800000190735,
+          "accepted": 256
+        },
+        {
+          "pageMs": 5653.400000095367,
+          "accepted": 384
+        },
+        {
+          "pageMs": 6854.800000190735,
+          "accepted": 512
+        },
+        {
+          "pageMs": 8822,
+          "accepted": 640
+        },
+        {
+          "pageMs": 10790.700000047684,
+          "accepted": 768
+        },
+        {
+          "pageMs": 11596.800000190735,
+          "accepted": 896
+        },
+        {
+          "pageMs": 12618.700000047684,
+          "accepted": 1024
+        },
+        {
+          "pageMs": 13715.200000047684,
+          "accepted": 1152
+        },
+        {
+          "pageMs": 16642.5,
+          "accepted": 1280
+        },
+        {
+          "pageMs": 17669.400000095367,
+          "accepted": 1408
+        },
+        {
+          "pageMs": 18706.200000047684,
+          "accepted": 1536
+        },
+        {
+          "pageMs": 19685,
+          "accepted": 1664
+        },
+        {
+          "pageMs": 20870,
+          "accepted": 1792
+        },
+        {
+          "pageMs": 22194.60000014305,
+          "accepted": 1920
+        },
+        {
+          "pageMs": 23685.300000190735,
+          "accepted": 2048
+        },
+        {
+          "pageMs": 29239.900000095367,
+          "accepted": 2162
+        },
+        {
+          "pageMs": 34979.5,
+          "accepted": 2164
+        },
+        {
+          "pageMs": 35188.5,
+          "accepted": 2176
+        },
+        {
+          "pageMs": 38184.5,
+          "accepted": 2304
+        },
+        {
+          "pageMs": 43189.800000190735,
+          "accepted": 2406
+        },
+        {
+          "pageMs": 45131.300000190735,
+          "accepted": 2432
+        },
+        {
+          "pageMs": 52072.60000014305,
+          "accepted": 2518
+        },
+        {
+          "pageMs": 53910.300000190735,
+          "accepted": 2560
+        },
+        {
+          "pageMs": 56607.300000190735,
+          "accepted": 2688
+        },
+        {
+          "pageMs": 61615.60000014305,
+          "accepted": 2815
+        },
+        {
+          "pageMs": 61745.40000009537,
+          "accepted": 2816
+        },
+        {
+          "pageMs": 65106.300000190735,
+          "accepted": 2944
+        },
+        {
+          "pageMs": 70424.40000009537,
+          "accepted": 3000
+        },
+        {
+          "pageMs": 76696.20000004768,
+          "accepted": 3010
+        },
+        {
+          "pageMs": 77691.60000014305,
+          "accepted": 3072
+        }
+      ],
+      "lastDeliveredOriginalPredicateSampleMs": 78978.90000009537,
+      "result": "page.waitForFunction: Timeout 60000ms exceeded."
+    },
+    "candidate": {
+      "head": "8bde676a16b5a6ff52209da824dd8cc88a80a12e",
+      "tree": "439d8074ef6337c00258c36b0ce67596fb202508",
+      "triggerCheckpoints": [
+        {
+          "pageMs": 605.2999999523163,
+          "accepted": 1
+        },
+        {
+          "pageMs": 3552.7000000476837,
+          "accepted": 128
+        }
+      ],
+      "lastDeliveredOriginalPredicateSampleMs": 66290.70000004768,
+      "result": "page.waitForFunction: Timeout 60000ms exceeded."
+    }
+  },
+  "images": {
+    "docs-shadcn.png": {
+      "bytes": 69160,
+      "sha256": "0bf7f3ba6ec3c8450e8ce3e5ca55470b84e3e2b671fafa9df67015ebf77dc587"
+    },
+    "docs-brutalist.png": {
+      "bytes": 63565,
+      "sha256": "71e9d5fec120aa150d28c38416946eea1bc2f55a63215b3977d66f468a67e049"
+    }
+  },
+  "profileContext": {
+    "chrome": "156.0.8078.79",
+    "localizedMatrix": "zh-cn",
+    "previewCount": 1268,
+    "readinessMs": 60000,
+    "caseMs": 150000,
+    "englishArm": "unselected"
+  }
+}
