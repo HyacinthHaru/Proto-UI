@@ -1,0 +1,162 @@
+{
+  "source": {
+    "head": "875e3393c3cf9fba96260e275d0c3f31c6ea0e83",
+    "parent": "51f30191d259ed7843119045f69188f3d8b5ce4b",
+    "base": "0f0955a9d624e0ef5e250f56a0eaa0fc52bbfb53",
+    "tree": "e9fbf6823fd8f2fd5d29f28eef1cec4c9f906dda",
+    "source": "83c7dfc3277041dfeaf21a7db69afff51afb0ec6",
+    "files": {
+      "packages/modules/control-label/src/web.ts": "d203f9590e12cc99e2531d5c0623f9cebca1a33a9541bc25fc3e1b70e8f52021",
+      "packages/modules/control-label/test/web-lifecycle.test.ts": "e407aca2de69181d8ecb5f23c833027743682b50a9655f0e9f3ee82daa0f8346",
+      "apps/www/src/content/docs/zh-cn/demo-control-label.browser.test.ts": "aff1f64a5ab2fb0362538c1566a4b6403661e4ae6db021a10d6107e27d2c05a7"
+    },
+    "signatures": [
+      "G HyacinthHaru <hyacinth@haru.ac> / HyacinthHaru <hyacinth@haru.ac>",
+      "G HyacinthHaru <hyacinth@haru.ac> / HyacinthHaru <hyacinth@haru.ac>"
+    ]
+  },
+  "stats": {
+    "focused": {
+      "files": 6,
+      "pass": 78,
+      "filtered": 0,
+      "sha256": "7b9924e9cbe2950f4790dd436224703a84d2bd8507e6b4edd6345961f49bb07e",
+      "cases": [
+        {
+          "Control Label Module owns host action projection mounts with declared activation false, toggles, and retires the old view lease": "passed",
+          "Control Label Module owns host action projection mounts with declared activation true, toggles, and retires the old view lease": "passed",
+          "Control Label Module owns host action projection old host-lease cleanup cannot revoke a reentrantly installed association": "passed",
+          "Control Label Module owns host action projection a target participant never acquires a Label action even if its options change": "passed"
+        },
+        {
+          "ControlLabel module-only anatomy pair bridge reuses the actual host input guard and exact opaque nearest-root scope": "passed",
+          "ControlLabel module-only anatomy pair bridge rejects synthetic click-only, drag, cancel, modified and nested interactive input": "passed",
+          "ControlLabel module-only anatomy pair bridge honors defaultPrevented before the host listener without clearing selection": "passed",
+          "ControlLabel module-only anatomy pair bridge does not pick a winner among zero or two targets and resumes only the current singleton": "passed",
+          "ControlLabel module-only anatomy pair bridge moves logical parent membership and rejects the old pointer turn": "passed",
+          "ControlLabel module-only anatomy pair bridge reentrant disabling after the owned activation prevents later focus": "passed",
+          "ControlLabel module-only anatomy pair bridge rejects explicit association input for anatomy-paired participants": "passed"
+        },
+        {
+          "Control Label failed association acquisition retries the same reference after host attach throws": "passed",
+          "Control Label failed association acquisition withdraws a failed name contribution and partial host, then retries the same pair": "passed",
+          "Control Label failed association acquisition keeps a newer association installed by failed-lease cleanup and preserves the first error": "passed",
+          "Control Label failed association acquisition does not clear a newer reference installed inside a failing attach callback": "passed",
+          "Control Label failed association acquisition keeps the original error when clearing the failed naming projection also throws": "passed",
+          "withdrawn diagnostic negative controls preserves a successor association installed reentrantly during withdrawal": "passed",
+          "withdrawn diagnostic negative controls diagnoses a previously healthy participant withdrawn by view presence": "passed",
+          "withdrawn diagnostic negative controls clears a stale foreign scope error when association intent is removed": "passed",
+          "stale registry diagnostic callback a successor installed by naming cleanup keeps its own diagnostic": "passed"
+        },
+        {
+          "explicit Control Label pairing brands references without accepting lookalikes or silent JSON": "passed",
+          "explicit Control Label pairing names the real Label and routes one request to the target owner": "passed",
+          "explicit Control Label pairing shares pairing and duplicate arbitration across separately loaded implementations": "passed",
+          "explicit Control Label pairing keeps naming independent from activation": "passed",
+          "explicit Control Label pairing fails closed for duplicate live targets and restores the unique pair after disposal": "passed",
+          "explicit Control Label pairing does not join an unrelated reference or a foreign host tree scope": "passed",
+          "explicit Control Label pairing withdraws on detach and invalidates a retained request guard": "passed",
+          "explicit Control Label pairing an old same-owner lease cannot revoke its newer replacement": "passed",
+          "explicit Control Label pairing rechecks physical identity at request time even without a change notification": "passed",
+          "explicit Control Label pairing allows explicit activation during a naming conflict without fabricating a name": "passed"
+        },
+        {
+          "ignores unrelated child-list changes without probing each anchor against the subtree": "passed",
+          "Control Label detached view discovery finds delayed reinsertion into another open ShadowRoot and rebinds its observer": "passed",
+          "Control Label detached view discovery finds delayed reinsertion into another closed ShadowRoot and rebinds its observer": "passed",
+          "Control Label detached view discovery shares one frame across 30 live detached participants and stops after reconnection": "passed",
+          "Control Label detached view discovery does not poll a never-connected view or a connected replacement": "passed",
+          "Control Label detached view discovery stops when the live target disappears or is replaced by a never-connected node": "passed",
+          "Control Label detached view discovery releases a disposed participant without cancelling another detached owner": "passed",
+          "Control Label detached view discovery a retired late frame cannot delete or run a newer tracker": "passed",
+          "Control Label detached view discovery keeps exactly one new frame when a reconnection callback detaches again": "passed",
+          "Control Label detached view discovery does not strand another participant when a reconnection notification throws": "passed"
+        },
+        {
+          "Control Label Web intent bridge accepts only the current Module-declared activation and cannot revive a retired lease": "passed",
+          "Control Label Web intent bridge forwards one primary pointer sequence and exposes only host-private scope facts": "passed",
+          "Control Label Web intent bridge rejects cancelled/modified/dragged gesture {\"move\":true}": "passed",
+          "Control Label Web intent bridge rejects cancelled/modified/dragged gesture {\"cancel\":true}": "passed",
+          "Control Label Web intent bridge rejects cancelled/modified/dragged gesture {\"ctrlKey\":true}": "passed",
+          "Control Label Web intent bridge does not turn a nested button into control activation": "passed",
+          "Control Label Web intent bridge does not turn a nested a into control activation": "passed",
+          "Control Label Web intent bridge does not turn a nested input into control activation": "passed",
+          "Control Label Web intent bridge keeps nested control input owned by its descendant: <audio controls></audio>": "passed",
+          "Control Label Web intent bridge keeps nested control input owned by its descendant: <video controls></video>": "passed",
+          "Control Label Web intent bridge keeps nested control input owned by its descendant: <span role=\"slider\" aria-readonly=\"true\"><b>value</b></span>": "passed",
+          "Control Label Web intent bridge keeps nested control input owned by its descendant: <span role=\"spinbutton\" tabindex=\"-1\"><b>value</b></span>": "passed",
+          "Control Label Web intent bridge keeps nested control input owned by its descendant: <span role=\"option\"><b>choice</b></span>": "passed",
+          "Control Label Web intent bridge keeps nested control input owned by its descendant: <span role=\"menuitemcheckbox\" aria-disabled=\"true\"><b>choice</b></span>": "passed",
+          "Control Label Web intent bridge keeps nested control input owned by its descendant: <span role=\"menuitemradio\"><b>choice</b></span>": "passed",
+          "Control Label Web intent bridge keeps nested control input owned by its descendant: <span role=\"searchbox\"><b>query</b></span>": "passed",
+          "Control Label Web intent bridge keeps nested control input owned by its descendant: <span role=\"treeitem\"><b>entry</b></span>": "passed",
+          "Control Label Web intent bridge keeps nested control input owned by its descendant: <span role=\"scrollbar\"><b>thumb</b></span>": "passed",
+          "Control Label Web intent bridge retains label activation through passive content: <span><b>ordinary caption</b></span>": "passed",
+          "Control Label Web intent bridge retains label activation through passive content: <span role=\"progressbar\"><b>progress</b></span>": "passed",
+          "Control Label Web intent bridge retains label activation through passive content: <span role=\"meter\"><b>value</b></span>": "passed",
+          "Control Label Web intent bridge retains label activation through passive content: <span role=\"separator\"><b>decoration</b></span>": "passed",
+          "Control Label Web intent bridge retains label activation through passive content: <span role=\"tabpanel\"><b>description</b></span>": "passed",
+          "Control Label Web intent bridge retains label activation through passive content: <video></video>": "passed",
+          "Control Label Web intent bridge retains label activation through passive content: <audio></audio>": "passed",
+          "Control Label Web intent bridge cannot lend a released gesture to a later synthetic click after an intercepted click": "passed",
+          "Control Label Web intent bridge consumes the exact click receipt even when a later capture listener stops bubbling": "passed",
+          "Control Label Web intent bridge does not invent keyboard or untrusted click-only activation": "passed",
+          "Control Label Web intent bridge distinguishes trusted accessibility-style click facts from synthetic click-only facts": "passed",
+          "Control Label Web intent bridge honors click cancellation already observed at the host listener": "passed",
+          "Control Label Web intent bridge does not treat a cancelled pointerup as cancellation of the subsequent click": "passed",
+          "Control Label Web intent bridge commits within the originating click turn; a later listener cannot roll back the operation": "passed",
+          "Control Label Web intent bridge keeps a released gesture borrowable when a compliant click arrives in a later task": "passed",
+          "Control Label Web intent bridge retired and detached views cannot send retained gestures": "passed",
+          "Control Label Web intent bridge leaves pointerdown defaults and selection alone": "passed",
+          "Control Label Web intent bridge observes open ShadowRoot removal and reinsertion without a document scan": "passed",
+          "Control Label Web intent bridge observes closed ShadowRoot removal and reinsertion without a document scan": "passed",
+          "Control Label Web intent bridge shares a scope observer across many labels and ignores unrelated mutations": "passed"
+        }
+      ]
+    },
+    "label-actual": {
+      "files": 1,
+      "pass": 4,
+      "filtered": 8,
+      "sha256": "cc101bca432690626b22b6c3154f889f56b3d2386c541a096bcbfbc08ca850a1",
+      "cases": [
+        {
+          "Independent Label public consumer journeys 'base' 'wc' names five real target types and preserves their operation owners": "passed",
+          "Independent Label public consumer journeys 'base' 'react' names five real target types and preserves their operation owners": "passed",
+          "Independent Label public consumer journeys 'base' 'vue' names five real target types and preserves their operation owners": "passed",
+          "Independent Label public consumer journeys 'base' 'vue2' names five real target types and preserves their operation owners": "passed",
+          "Independent Label public consumer journeys 'shadcn' 'wc' names five real target types and preserves their operation owners": "skipped",
+          "Independent Label public consumer journeys 'shadcn' 'react' names five real target types and preserves their operation owners": "skipped",
+          "Independent Label public consumer journeys 'shadcn' 'vue' names five real target types and preserves their operation owners": "skipped",
+          "Independent Label public consumer journeys 'shadcn' 'vue2' names five real target types and preserves their operation owners": "skipped",
+          "Independent Label public consumer journeys 'brutalist' 'wc' names five real target types and preserves their operation owners": "skipped",
+          "Independent Label public consumer journeys 'brutalist' 'react' names five real target types and preserves their operation owners": "skipped",
+          "Independent Label public consumer journeys 'brutalist' 'vue' names five real target types and preserves their operation owners": "skipped",
+          "Independent Label public consumer journeys 'brutalist' 'vue2' names five real target types and preserves their operation owners": "skipped"
+        }
+      ]
+    }
+  },
+  "packages": 47,
+  "pages": 685,
+  "matrix": {
+    "zh-cn": {
+      "bytes": 1862384,
+      "sha256": "28e2a7da24eea735a4477603379a8a1be2ba1f05eab39d1a2012a72b90162b08",
+      "previews": 1268
+    },
+    "en": {
+      "bytes": 1914064,
+      "sha256": "052ed95eea42b694c256e7759d9a63a114bf7511365c0357971d7f8e95238784",
+      "previews": 1268
+    }
+  },
+  "rawBuildHashes": {
+    "packages.log": "1051830fcbe291122790df470274b0315b483096762b64fdc21ca733dc5882ba",
+    "site-build.log": "e036d92a2d875e5426ad72caa2c8e209b86269b96b3af9efc63476d63c3c5392",
+    "types.log": "b0fd7800c3db258ada09643bb607aa07c47532e08cfda55ebb5e4157f31018bd",
+    "manifests.log": "8fa17f9cdfb0ec6b30c408991c631bb4ed65ca28c5eb697c529ad67567dbeee8",
+    "budgets.log": "82ef60b2e3cd101720cfb1cdd1d243c8763a0a9740a5851c5f123a35db4aa475"
+  },
+  "scope": "Exact main-based worktree, only three source/test blobs from the verified S4 changes. Unmodified product publication and native Base Label cases all four runtimes. Separate S4 diagnostics do not prove this whole-build readiness."
+}
