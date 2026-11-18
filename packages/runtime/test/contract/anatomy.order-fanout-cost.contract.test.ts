@@ -225,8 +225,13 @@ describe('Runtime Anatomy synchronous order fanout cost', () => {
       const domain = createDomain(12, 12, true);
       const versions = domain.items.map(domain.version);
       const beforeChange = domain.query();
+      domain[source]();
+      expect([...domain.notifications.values()].flat()).toEqual([]);
+      domain.reset();
       const join = vi.spyOn(Array.prototype, 'join');
+      const every = vi.spyOn(Array.prototype, 'every');
       let signatures: number;
+      let matchedOrders: number;
       try {
         domain[source]();
         signatures = join.mock.contexts.filter(
@@ -237,10 +242,18 @@ describe('Runtime Anatomy synchronous order fanout cost', () => {
               (value: unknown) => typeof value === 'string' && /^(?:root|item):[0-9]+$/.test(value)
             )
         ).length;
+        matchedOrders = every.mock.contexts.filter(
+          (receiver) =>
+            Array.isArray(receiver) &&
+            receiver.length === domain.items.length + 1 &&
+            typeof receiver[0]?.orderId === 'number'
+        ).length;
       } finally {
         join.mockRestore();
+        every.mockRestore();
       }
       expect(signatures).toBe(0);
+      expect(matchedOrders).toBe(1);
       expect(domain.items.map(domain.version)).toEqual(versions);
       expect([...domain.notifications.values()].flat()).toEqual([]);
       expect(Math.min(...domain.targetReads.values())).toBe(domain.items.length);

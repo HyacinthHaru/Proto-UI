@@ -87,6 +87,7 @@ type OrderSnapshot = {
   targets: (AnatomyRootTarget | null)[];
   comparators: AnatomyRootTarget['compareDocumentPosition'][];
   ordered: ClaimRecord[];
+  signatureClaims?: readonly number[];
 };
 type OrderNotificationReads = {
   comparisons: OrderComparisons;
@@ -1129,20 +1130,31 @@ export class AnatomyModuleImpl extends ModuleBase {
     const domain = this.resolveCurrentDomain(family, false, reads?.domains);
     if (!domain.rootInstance) return MISSING_ORDER_SIGNATURE;
     const ordered = this.sortClaims(domain.claims, reads);
+    const snapshot = reads?.orders.get(domain.claims);
     const claims = previous?.claims;
-    // A claim's role and instance stay fixed. Store its numeric ID so reading a
-    // signature cannot keep retired claims or their host targets alive.
+    const sharedClaims = snapshot?.signatureClaims;
+    // Readers of the same sorted snapshot can retain the same numeric IDs.
+    // A reader's signature still owns its own instance identity values.
     if (
       previous &&
-      claims?.length === ordered.length &&
-      ordered.every((claim, index) => claim.orderId === claims[index])
-    )
+      claims &&
+      (claims === sharedClaims ||
+        (claims.length === ordered.length &&
+          ordered.every((claim, index) => claim.orderId === claims[index])))
+    ) {
+      if (snapshot) {
+        snapshot.signatureClaims ??= claims;
+        previous.claims = snapshot.signatureClaims;
+      }
       return previous;
+    }
+    const currentClaims = sharedClaims ?? ordered.map((claim) => claim.orderId);
+    if (snapshot) snapshot.signatureClaims = currentClaims;
     return {
       value: ordered
         .map((claim) => `${claim.role}:${this.getIdentityId(claim.instance)}`)
         .join('|'),
-      claims: ordered.map((claim) => claim.orderId),
+      claims: currentClaims,
     };
   }
 
