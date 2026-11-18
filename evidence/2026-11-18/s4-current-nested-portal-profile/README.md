@@ -1,6 +1,6 @@
 # S4 current combination after nested Portal repair
 
-The S4 integration branch now contains the exact nested Portal ownership helper and test blobs from main PR #1496. The signed combination is `9ed1270c88dcd55a93b9e06eadbbc117695f2ee3`, tree `5f085b904d1902fb8f5b7783d61864c6119ba6d4`. Its 25 Focus/Portal files pass 340 assertions.
+The S4 integration branch now contains the exact nested Portal ownership helper and test blobs from main PR #1496. The signed combination is `9ed1270c88dcd55a93b9e06eadbbc117695f2ee3`, tree `5f085b904d1902fb8f5b7783d61864c6119ba6d4`. Its 25 Focus/Portal files pass 340 tests.
 
 Fresh local build produced all 47 packages and 685 pages. Workspace types, manifests and budgets ran to completion. The original draft Matrix routes were opened for this build and their source was restored. Both Matrix documents contain all 1,268 previews per locale.
 
