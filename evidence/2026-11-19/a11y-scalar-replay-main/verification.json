@@ -1,0 +1,126 @@
+{
+  "source": {
+    "head": "649b6a3bfe31e32de3458925b3665bb9375b5cc4",
+    "tree": "38f9f39cb8d49c0ce93ec6e48e3047f82b9438d7",
+    "main": "534caf4a241f7f7ef49b7b073662ad982e938c91"
+  },
+  "redFixtureWithOriginalSource": {
+    "numPassedTests": 64,
+    "numFailedTests": 3,
+    "numPendingTests": 0
+  },
+  "focused": {
+    "numPassedTests": 212,
+    "numFailedTests": 0,
+    "numPendingTests": 0
+  },
+  "nativeChromeABBA": {
+    "chrome": "156.0.8078.79",
+    "beforeSHA256": "a2681b6e92d432c9c5972d6ddcc0518541a102c0c609b8b0903a5ca4bbc4fd76",
+    "afterSHA256": "ffd66c880637c05107b2526010773746aa3987fc9c236d12142605b732ffa6af",
+    "rows": [
+      {
+        "arm": "before",
+        "matchingWrites": [
+          "role",
+          "aria-rowcount",
+          "aria-colcount",
+          "role",
+          "aria-rowcount",
+          "aria-colcount"
+        ],
+        "initial": ["table", "2", "5", "caption-one"],
+        "replay": ["table", "2", "5", "caption-two"],
+        "replaced": {
+          "previous": ["region", "7", null, null],
+          "current": ["table", "2", "5", "caption-two"]
+        },
+        "recovered": ["table", "2", "5", "caption-two"],
+        "released": ["article", null, "9", null]
+      },
+      {
+        "arm": "after",
+        "matchingWrites": [],
+        "initial": ["table", "2", "5", "caption-one"],
+        "replay": ["table", "2", "5", "caption-two"],
+        "replaced": {
+          "previous": ["region", "7", null, null],
+          "current": ["table", "2", "5", "caption-two"]
+        },
+        "recovered": ["table", "2", "5", "caption-two"],
+        "released": ["article", null, "9", null]
+      },
+      {
+        "arm": "after",
+        "matchingWrites": [],
+        "initial": ["table", "2", "5", "caption-one"],
+        "replay": ["table", "2", "5", "caption-two"],
+        "replaced": {
+          "previous": ["region", "7", null, null],
+          "current": ["table", "2", "5", "caption-two"]
+        },
+        "recovered": ["table", "2", "5", "caption-two"],
+        "released": ["article", null, "9", null]
+      },
+      {
+        "arm": "before",
+        "matchingWrites": [
+          "role",
+          "aria-rowcount",
+          "aria-colcount",
+          "role",
+          "aria-rowcount",
+          "aria-colcount"
+        ],
+        "initial": ["table", "2", "5", "caption-one"],
+        "replay": ["table", "2", "5", "caption-two"],
+        "replaced": {
+          "previous": ["region", "7", null, null],
+          "current": ["table", "2", "5", "caption-two"]
+        },
+        "recovered": ["table", "2", "5", "caption-two"],
+        "released": ["article", null, "9", null]
+      }
+    ]
+  },
+  "packed": {
+    "preview-browser": {
+      "numPassedTests": 15,
+      "numFailedTests": 0,
+      "numPendingTests": 9
+    },
+    "code-grammar": {
+      "numPassedTests": 3,
+      "numFailedTests": 0,
+      "numPendingTests": 23
+    },
+    "copy-commands": {
+      "numPassedTests": 1,
+      "numFailedTests": 0,
+      "numPendingTests": 14
+    },
+    "scroll-chain": {
+      "numPassedTests": 2,
+      "numFailedTests": 0,
+      "numPendingTests": 4
+    },
+    "table": {
+      "numPassedTests": 5,
+      "numFailedTests": 0,
+      "numPendingTests": 0
+    },
+    "accordion": {
+      "numPassedTests": 4,
+      "numFailedTests": 0,
+      "numPendingTests": 29
+    },
+    "field": {
+      "numPassedTests": 4,
+      "numFailedTests": 0,
+      "numPendingTests": 21
+    }
+  },
+  "headerWidths": [320, 390],
+  "sourceCodeExamples": 9,
+  "renderedCodeExamples": 9
+}
