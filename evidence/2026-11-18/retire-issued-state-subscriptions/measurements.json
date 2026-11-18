@@ -1,0 +1,1522 @@
+{
+  "head": "784a58b529152c7b9c52a6d4b71f6d77d10961b7",
+  "tree": "3ba345fca913e73333b771718c4b9f6c82cad38b",
+  "base": "0f0955a9d624e0ef5e250f56a0eaa0fc52bbfb53",
+  "signature": "G",
+  "candidateFiles": {
+    "packages/adapters/base/src/host/exposes.ts": "8d96ad22d01f8fa45e843c8ea6f813fa81a8e70c349684eab8d1a4a0a99cbd3c",
+    "packages/adapters/base/test/contract/expose-record.v0.contract.test.ts": "14687a476721acdf0d73e7ba6574cb4d6cb07202df2a5e0ed741ee0e36bbc7fd"
+  },
+  "versions": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+  "parentControl": {
+    "passed": 68,
+    "failed": 2,
+    "filtered": 0,
+    "files": [
+      {
+        "name": "packages/adapters/base/test/contract/expose-record.v0.contract.test.ts",
+        "cases": [
+          {
+            "name": "adapter-base contract: expose record (v0) preserves arbitrary keys and invokes nested methods in callback scope",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-base contract: expose record (v0) keeps collection coordination entries on the internal channel",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-base contract: expose record (v0) preserves the owning receiver when projecting nested methods",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-base contract: expose record (v0) preserves opaque host values and projected data graph aliases",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-base contract: expose record (v0) retains the raw identity of immutable inert graphs, including cycles",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-base contract: expose record (v0) projects array callables in callback scope while preserving cycles",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-base contract: expose record (v0) invalidates held callables at terminal disposal instead of bypassing callback scope",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-base contract: expose record (v0) fails explicitly when a callable has no live callback scope",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-base contract: expose record (v0) preserves a finalized external state handle across record replacement",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-base contract: expose record (v0) allows an already-issued State unsubscribe during terminal notification",
+            "status": "failed"
+          },
+          {
+            "name": "adapter-base contract: expose record (v0) omits branded signal declarations from the public record without removing author values",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary keeps known registry entries private when returned through a direct public result",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary keeps known registry entries private when returned through a nested public result",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary keeps old registry identities classified after replacement",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary retains the registry role when its projected object returns again",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary retains the public registry copy role when a caller sends it back",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary preserves nested symbol and nonenumerable data without applying registry key filters",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary preserves a frozen iterable and guards its symbol method after disposal",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary replaces and removes hidden callables on explicit refresh",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary replaces and removes symbol callables on explicit refresh",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary preserves custom array keys while refreshing holes, length and hidden methods",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary contains callables installed after the first data-only record snapshot",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary contains callables installed after the first data-only array snapshot",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary contains callables installed after the first data-only frozen-parent snapshot",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary snapshots frozen accessors before their later value becomes callable",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary wraps returned functions once and preserves their identity across factory aliases",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary preserves cyclic callable-record identity through values and results",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary refreshes a cached projection without rerunning accessors during discovery",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary does not wrap an already projected returned callable or record again",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary keeps owner caches separate even for a shared author object",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary keeps returned registry snapshots detached and propagates thrown values unchanged",
+            "status": "passed"
+          },
+          {
+            "name": "replacement expose snapshot callable identity retains root callables with current receiver while distinguishing nested receivers",
+            "status": "passed"
+          }
+        ]
+      },
+      {
+        "name": "apps/www/src/components/documentation-image-zoom.test.ts",
+        "cases": [
+          {
+            "name": "borderless image presentation / maintainer request #796 prevents mask pointer defaults while Content remains the outside-close owner",
+            "status": "passed"
+          },
+          {
+            "name": "borderless image presentation / maintainer request #796 composes public Base Dialog and Surface without an original-size toolbar",
+            "status": "passed"
+          },
+          {
+            "name": "borderless image presentation / maintainer request #796 keeps the source in place but suppresses its duplicate while present, then restores it",
+            "status": "passed"
+          },
+          {
+            "name": "borderless image presentation / maintainer request #796 retains the current source through interrupted close/reopen and restores it on route cleanup",
+            "status": "passed"
+          },
+          {
+            "name": "borderless image presentation / maintainer request #796 uses the safe fade fallback when the source is removed before closing",
+            "status": "failed"
+          },
+          {
+            "name": "borderless image presentation / maintainer request #796 does not recover an invalid return rectangle merely because focus scrolls the source back",
+            "status": "passed"
+          }
+        ]
+      },
+      {
+        "name": "apps/www/src/components/PrototypePreviewer/demo-renderer.public-instance.test.ts",
+        "cases": [
+          {
+            "name": "actual public prototype instance lookup wc: initial synchronous listener can destroy its own render without resurrecting subscriptions",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup wc: subscription follows actual closed Dialog portal identities and owner bindings",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup wc: subscriptions publish keyed replacement, removal and host generation retirement",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup wc: returns stable real handles, excluding missing and authored box refs",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup wc: keyed same-type update preserves identity and type/removal replace it",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup wc: a retired API cannot return a later host generation's instance",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup wc: real InputShell binding detects duplicate identity and releases it on disposal",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup wc: owner disposes the old binding before a real control type replacement and rebinds current facts",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup react: initial synchronous listener can destroy its own render without resurrecting subscriptions",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup react: subscription follows actual closed Dialog portal identities and owner bindings",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup react: subscriptions publish keyed replacement, removal and host generation retirement",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup react: returns stable real handles, excluding missing and authored box refs",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup react: keyed same-type update preserves identity and type/removal replace it",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup react: a retired API cannot return a later host generation's instance",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup react: real InputShell binding detects duplicate identity and releases it on disposal",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup react: owner disposes the old binding before a real control type replacement and rebinds current facts",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue: initial synchronous listener can destroy its own render without resurrecting subscriptions",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue: subscription follows actual closed Dialog portal identities and owner bindings",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue: subscriptions publish keyed replacement, removal and host generation retirement",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue: returns stable real handles, excluding missing and authored box refs",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue: keyed same-type update preserves identity and type/removal replace it",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue: a retired API cannot return a later host generation's instance",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue: real InputShell binding detects duplicate identity and releases it on disposal",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue: owner disposes the old binding before a real control type replacement and rebinds current facts",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue2: initial synchronous listener can destroy its own render without resurrecting subscriptions",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue2: subscription follows actual closed Dialog portal identities and owner bindings",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue2: subscriptions publish keyed replacement, removal and host generation retirement",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue2: returns stable real handles, excluding missing and authored box refs",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue2: keyed same-type update preserves identity and type/removal replace it",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue2: a retired API cannot return a later host generation's instance",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue2: real InputShell binding detects duplicate identity and releases it on disposal",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue2: owner disposes the old binding before a real control type replacement and rebinds current facts",
+            "status": "passed"
+          }
+        ]
+      }
+    ],
+    "exit": 1
+  },
+  "candidate": {
+    "passed": 147,
+    "failed": 0,
+    "filtered": 0,
+    "files": [
+      {
+        "name": "packages/adapters/react/test/expose-returned-callables.integration.test.ts",
+        "cases": [
+          {
+            "name": "real Runtime React public callable result boundary preserves returned controls across repeatable view detach and remount",
+            "status": "passed"
+          },
+          {
+            "name": "real Runtime React public callable result boundary enters the owner callback window for a returned State-writing closure",
+            "status": "passed"
+          },
+          {
+            "name": "real Runtime React public callable result boundary invalidates nested returned lexical closures after terminal unmount",
+            "status": "passed"
+          },
+          {
+            "name": "real Runtime React public callable result boundary preserves one callable record across exposures and method results and refreshes its fields",
+            "status": "passed"
+          },
+          {
+            "name": "real Runtime React public callable result boundary preserves nominal non-callable identities inside exposed and returned records",
+            "status": "passed"
+          }
+        ]
+      },
+      {
+        "name": "packages/adapters/react/test/expose-state-web.integration.test.ts",
+        "cases": [
+          {
+            "name": "T-EXPOSE-STATE-WEB-0001-CASE-ADAPTER: default projection follows live State without structural rendering",
+            "status": "passed"
+          },
+          {
+            "name": "T-EXPOSE-STATE-WEB-0001-CASE-ADAPTER: overridden projection follows live State without structural rendering",
+            "status": "passed"
+          }
+        ]
+      },
+      {
+        "name": "packages/adapters/react/test/expose.test.ts",
+        "cases": [
+          {
+            "name": "adapter-react: expose exposes update and getExposes on forwarded ref handle",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-react: expose consumes undeclared React props as adapter raw props instead of host attrs",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-react: expose automatically invokes exposed control methods within callback scope",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-react: expose invalidates an App Maker-held expose method after terminal unmount",
+            "status": "passed"
+          }
+        ]
+      },
+      {
+        "name": "packages/adapters/vue/test/expose-state-web.integration.test.ts",
+        "cases": [
+          {
+            "name": "T-EXPOSE-STATE-WEB-0001-CASE-ADAPTER: default projection follows live State without structural rendering",
+            "status": "passed"
+          },
+          {
+            "name": "T-EXPOSE-STATE-WEB-0001-CASE-ADAPTER: overridden projection follows live State without structural rendering",
+            "status": "passed"
+          }
+        ]
+      },
+      {
+        "name": "packages/adapters/vue/test/expose.test.ts",
+        "cases": [
+          {
+            "name": "adapter-vue: expose exposes update and getExposes on component public instance",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-vue: expose consumes undeclared Vue attrs as adapter raw props instead of falling through to DOM",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-vue: expose automatically invokes exposed control methods within callback scope",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-vue: expose invalidates an App Maker-held expose method after terminal unmount",
+            "status": "passed"
+          }
+        ]
+      },
+      {
+        "name": "packages/adapters/vue2/test/expose-state-web.integration.test.ts",
+        "cases": [
+          {
+            "name": "T-EXPOSE-STATE-WEB-0001-CASE-ADAPTER: default projection follows live State without structural rendering",
+            "status": "passed"
+          },
+          {
+            "name": "T-EXPOSE-STATE-WEB-0001-CASE-ADAPTER: overridden projection follows live State without structural rendering",
+            "status": "passed"
+          }
+        ]
+      },
+      {
+        "name": "packages/adapters/vue2/test/expose.test.ts",
+        "cases": [
+          {
+            "name": "adapter-vue2: expose renders Proto template children into the Vue 2 host root",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-vue2: expose exposes update and getExposes on the Vue 2 component instance",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-vue2: expose consumes undeclared Vue 2 attrs as Proto props instead of falling through to DOM",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-vue2: expose invokes exposed control methods in callback scope",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-vue2: expose keeps exposed callables stable and invalidates held callables after destroy",
+            "status": "passed"
+          }
+        ]
+      },
+      {
+        "name": "packages/adapters/web-component/test/expose-state-web.integration.test.ts",
+        "cases": [
+          {
+            "name": "T-EXPOSE-STATE-WEB-0001-CASE-ADAPTER: default projection follows live State without structural rendering",
+            "status": "passed"
+          },
+          {
+            "name": "T-EXPOSE-STATE-WEB-0001-CASE-ADAPTER: overridden projection follows live State without structural rendering",
+            "status": "passed"
+          },
+          {
+            "name": "T-EXPOSE-STATE-WEB-0001-CASE-SURFACE: mirrors current state to a physical textarea without copying boundary identity",
+            "status": "passed"
+          }
+        ]
+      },
+      {
+        "name": "packages/adapters/web-component/test/expose.test.ts",
+        "cases": [
+          {
+            "name": "adapter-web-component expose wiring provides getExposes() for App Maker and wires expose sink",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-web-component expose wiring maps outward signals to CustomEvent without leaking declaration metadata",
+            "status": "passed"
+          }
+        ]
+      },
+      {
+        "name": "packages/prototypes/shadcn/test/input-shell-binding.test.ts",
+        "cases": [
+          {
+            "name": "single-control input shell composition lifecycle retires terminal facts without reading the disconnected source and releases both identities",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle attempts every unsubscribe and preserves a terminal cleanup failure",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle does not let an old generation disconnect retire its replacement",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle cleans subscriptions returned after synchronous terminal notification before writing",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle reads current public facts and detaches all subscriptions exactly once",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle replaces the actual control and never responds to the retired one",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle rejects duplicate target wrappers and duplicate real control instances",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle fails closed for missing focusVisible expose and retires a replaced binding",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle fails closed for missing disabled expose and retires a replaced binding",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle rejects invalid runtime facts and cleans up before surfacing the failure",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle allows synchronous subscription notifications without writing half-attached facts",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle cleans a subscription returned after synchronous owner destruction",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle makes no writes when onDispose retires synchronously",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle flushes a reentrant factual change instead of losing it",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle checks generation even if a stale subscription callback arrives after replacement",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle attempts every cleanup and prevents writes even if an unsubscribe throws",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle dispose cleanup failure retains the first undefined throw while retiring every resource",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle dispose cleanup failure retains the first null throw while retiring every resource",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle dispose cleanup failure retains the first false throw while retiring every resource",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle dispose cleanup failure retains the first zero throw while retiring every resource",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle dispose cleanup failure retains the first empty string throw while retiring every resource",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle dispose cleanup failure retains the first Error throw while retiring every resource",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle replace cleanup failure retains the first undefined throw while retiring every resource",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle replace cleanup failure retains the first null throw while retiring every resource",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle replace cleanup failure retains the first false throw while retiring every resource",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle replace cleanup failure retains the first zero throw while retiring every resource",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle replace cleanup failure retains the first empty string throw while retiring every resource",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle replace cleanup failure retains the first Error throw while retiring every resource",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle owner cleanup failure surfaces the owner cleanup undefined when every control unsubscribe succeeds",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle owner cleanup failure surfaces the owner cleanup null when every control unsubscribe succeeds",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle owner cleanup failure surfaces the owner cleanup false when every control unsubscribe succeeds",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle owner cleanup failure surfaces the owner cleanup zero when every control unsubscribe succeeds",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle owner cleanup failure surfaces the owner cleanup empty string when every control unsubscribe succeeds",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle owner cleanup failure surfaces the owner cleanup Error when every control unsubscribe succeeds",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle owner cleanup failure keeps the first undefined control unsubscribe failure when owner cleanup also fails",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle owner cleanup failure keeps the first null control unsubscribe failure when owner cleanup also fails",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle owner cleanup failure keeps the first false control unsubscribe failure when owner cleanup also fails",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle owner cleanup failure keeps the first zero control unsubscribe failure when owner cleanup also fails",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle owner cleanup failure keeps the first empty string control unsubscribe failure when owner cleanup also fails",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle owner cleanup failure keeps the first Error control unsubscribe failure when owner cleanup also fails",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle owner cleanup failure keeps a later control unsubscribe failure when owner cleanup also fails",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle owner cleanup failure keeps the first control unsubscribe failure when both controls and the owner fail",
+            "status": "passed"
+          },
+          {
+            "name": "single-control input shell composition lifecycle owner cleanup failure keeps the original replacement failure and attaches no new control when owner cleanup also fails",
+            "status": "passed"
+          },
+          {
+            "name": "never publishes an old snapshot when a fact getter replaces its source",
+            "status": "passed"
+          },
+          {
+            "name": "does not reserve a replacement when an old unsubscribe retires the owner",
+            "status": "passed"
+          },
+          {
+            "name": "rechecks owner retirement after attachment validation getters without reserving a dead source",
+            "status": "passed"
+          }
+        ]
+      },
+      {
+        "name": "packages/runtime/test/contract/expose-lifecycle.v1.contract.test.ts",
+        "cases": [
+          {
+            "name": "runtime contract: expose instance lifecycle (v1) preserves registry entries across view epochs and invalidates the port on disposal",
+            "status": "passed"
+          }
+        ]
+      },
+      {
+        "name": "packages/runtime/test/contract/expose-state.v0.contract.test.ts",
+        "cases": [
+          {
+            "name": "runtime contract: expose-state (v0) projects state handle to external handle with spec + subscribe",
+            "status": "passed"
+          }
+        ]
+      },
+      {
+        "name": "packages/adapters/base/test/contract/expose-record.v0.contract.test.ts",
+        "cases": [
+          {
+            "name": "adapter-base contract: expose record (v0) preserves arbitrary keys and invokes nested methods in callback scope",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-base contract: expose record (v0) keeps collection coordination entries on the internal channel",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-base contract: expose record (v0) preserves the owning receiver when projecting nested methods",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-base contract: expose record (v0) preserves opaque host values and projected data graph aliases",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-base contract: expose record (v0) retains the raw identity of immutable inert graphs, including cycles",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-base contract: expose record (v0) projects array callables in callback scope while preserving cycles",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-base contract: expose record (v0) invalidates held callables at terminal disposal instead of bypassing callback scope",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-base contract: expose record (v0) fails explicitly when a callable has no live callback scope",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-base contract: expose record (v0) preserves a finalized external state handle across record replacement",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-base contract: expose record (v0) allows an already-issued State unsubscribe during terminal notification",
+            "status": "passed"
+          },
+          {
+            "name": "adapter-base contract: expose record (v0) omits branded signal declarations from the public record without removing author values",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary keeps known registry entries private when returned through a direct public result",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary keeps known registry entries private when returned through a nested public result",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary keeps old registry identities classified after replacement",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary retains the registry role when its projected object returns again",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary retains the public registry copy role when a caller sends it back",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary preserves nested symbol and nonenumerable data without applying registry key filters",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary preserves a frozen iterable and guards its symbol method after disposal",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary replaces and removes hidden callables on explicit refresh",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary replaces and removes symbol callables on explicit refresh",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary preserves custom array keys while refreshing holes, length and hidden methods",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary contains callables installed after the first data-only record snapshot",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary contains callables installed after the first data-only array snapshot",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary contains callables installed after the first data-only frozen-parent snapshot",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary snapshots frozen accessors before their later value becomes callable",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary wraps returned functions once and preserves their identity across factory aliases",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary preserves cyclic callable-record identity through values and results",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary refreshes a cached projection without rerunning accessors during discovery",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary does not wrap an already projected returned callable or record again",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary keeps owner caches separate even for a shared author object",
+            "status": "passed"
+          },
+          {
+            "name": "returned expose values share the owner boundary keeps returned registry snapshots detached and propagates thrown values unchanged",
+            "status": "passed"
+          },
+          {
+            "name": "replacement expose snapshot callable identity retains root callables with current receiver while distinguishing nested receivers",
+            "status": "passed"
+          }
+        ]
+      },
+      {
+        "name": "apps/www/src/components/documentation-image-zoom.test.ts",
+        "cases": [
+          {
+            "name": "borderless image presentation / maintainer request #796 prevents mask pointer defaults while Content remains the outside-close owner",
+            "status": "passed"
+          },
+          {
+            "name": "borderless image presentation / maintainer request #796 composes public Base Dialog and Surface without an original-size toolbar",
+            "status": "passed"
+          },
+          {
+            "name": "borderless image presentation / maintainer request #796 keeps the source in place but suppresses its duplicate while present, then restores it",
+            "status": "passed"
+          },
+          {
+            "name": "borderless image presentation / maintainer request #796 retains the current source through interrupted close/reopen and restores it on route cleanup",
+            "status": "passed"
+          },
+          {
+            "name": "borderless image presentation / maintainer request #796 uses the safe fade fallback when the source is removed before closing",
+            "status": "passed"
+          },
+          {
+            "name": "borderless image presentation / maintainer request #796 does not recover an invalid return rectangle merely because focus scrolls the source back",
+            "status": "passed"
+          }
+        ]
+      },
+      {
+        "name": "apps/www/src/components/PrototypePreviewer/demo-renderer.public-instance.test.ts",
+        "cases": [
+          {
+            "name": "actual public prototype instance lookup wc: initial synchronous listener can destroy its own render without resurrecting subscriptions",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup wc: subscription follows actual closed Dialog portal identities and owner bindings",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup wc: subscriptions publish keyed replacement, removal and host generation retirement",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup wc: returns stable real handles, excluding missing and authored box refs",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup wc: keyed same-type update preserves identity and type/removal replace it",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup wc: a retired API cannot return a later host generation's instance",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup wc: real InputShell binding detects duplicate identity and releases it on disposal",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup wc: owner disposes the old binding before a real control type replacement and rebinds current facts",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup react: initial synchronous listener can destroy its own render without resurrecting subscriptions",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup react: subscription follows actual closed Dialog portal identities and owner bindings",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup react: subscriptions publish keyed replacement, removal and host generation retirement",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup react: returns stable real handles, excluding missing and authored box refs",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup react: keyed same-type update preserves identity and type/removal replace it",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup react: a retired API cannot return a later host generation's instance",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup react: real InputShell binding detects duplicate identity and releases it on disposal",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup react: owner disposes the old binding before a real control type replacement and rebinds current facts",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue: initial synchronous listener can destroy its own render without resurrecting subscriptions",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue: subscription follows actual closed Dialog portal identities and owner bindings",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue: subscriptions publish keyed replacement, removal and host generation retirement",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue: returns stable real handles, excluding missing and authored box refs",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue: keyed same-type update preserves identity and type/removal replace it",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue: a retired API cannot return a later host generation's instance",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue: real InputShell binding detects duplicate identity and releases it on disposal",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue: owner disposes the old binding before a real control type replacement and rebinds current facts",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue2: initial synchronous listener can destroy its own render without resurrecting subscriptions",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue2: subscription follows actual closed Dialog portal identities and owner bindings",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue2: subscriptions publish keyed replacement, removal and host generation retirement",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue2: returns stable real handles, excluding missing and authored box refs",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue2: keyed same-type update preserves identity and type/removal replace it",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue2: a retired API cannot return a later host generation's instance",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue2: real InputShell binding detects duplicate identity and releases it on disposal",
+            "status": "passed"
+          },
+          {
+            "name": "actual public prototype instance lookup vue2: owner disposes the old binding before a real control type replacement and rebinds current facts",
+            "status": "passed"
+          }
+        ]
+      }
+    ],
+    "exit": 0
+  },
+  "terminalRejections": {
+    "before": 3,
+    "after": 0
+  },
+  "sourceScope": "Parent control replaces only the observer implementation of Expose callables with the exact main blob. The candidate contract test and other test bytes remain identical. Candidate expands the run to all four Web adapter representations.",
+  "product": {
+    "packageBuilds": 47,
+    "sitePages": 685,
+    "workspaceTypes": 0,
+    "manifests": 0,
+    "budgets": 0,
+    "baselinePackages": {
+      "head": "ad63be6ec768e8aaab9c42ffe85fba2e81a6d108",
+      "tree": "8661880213e970df0555626e08045ef9a15e4891",
+      "buildInputsEqual": true,
+      "versions": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "]
+    },
+    "budgetDelta": {
+      "lucide/icons/x": {
+        "before": {
+          "status": "PASS",
+          "gzip": 2879,
+          "ceiling": 3000,
+          "overBudget": 0,
+          "min": 8695,
+          "sha256": "02838c5b1d4db7b0d62eab9b1d502848e268dfea098798ee87665caa966772fb"
+        },
+        "after": {
+          "status": "PASS",
+          "gzip": 2879,
+          "ceiling": 3000,
+          "overBudget": 0,
+          "min": 8695,
+          "sha256": "02838c5b1d4db7b0d62eab9b1d502848e268dfea098798ee87665caa966772fb"
+        },
+        "gzipDelta": 0
+      },
+      "lucide root": {
+        "before": {
+          "status": "PASS",
+          "gzip": 637306,
+          "ceiling": 700000,
+          "overBudget": 0,
+          "min": 4087403,
+          "sha256": "eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c"
+        },
+        "after": {
+          "status": "PASS",
+          "gzip": 637306,
+          "ceiling": 700000,
+          "overBudget": 0,
+          "min": 4087403,
+          "sha256": "eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c"
+        },
+        "gzipDelta": 0
+      },
+      "core root": {
+        "before": {
+          "status": "ADVISORY",
+          "gzip": 11373,
+          "ceiling": 7600,
+          "overBudget": 3773,
+          "min": 35723,
+          "sha256": "bb0468537baccea449d0260ae56ac758902eb989dae84f699b6c27626212d913"
+        },
+        "after": {
+          "status": "ADVISORY",
+          "gzip": 11373,
+          "ceiling": 7600,
+          "overBudget": 3773,
+          "min": 35723,
+          "sha256": "bb0468537baccea449d0260ae56ac758902eb989dae84f699b6c27626212d913"
+        },
+        "gzipDelta": 0
+      },
+      "runtime root": {
+        "before": {
+          "status": "ADVISORY",
+          "gzip": 100015,
+          "ceiling": 78500,
+          "overBudget": 21515,
+          "min": 386804,
+          "sha256": "11347a17a9c7eda3575d4bf30a0a2954e770f801b4264c977ae838d6755f40e8"
+        },
+        "after": {
+          "status": "ADVISORY",
+          "gzip": 100015,
+          "ceiling": 78500,
+          "overBudget": 21515,
+          "min": 386804,
+          "sha256": "11347a17a9c7eda3575d4bf30a0a2954e770f801b4264c977ae838d6755f40e8"
+        },
+        "gzipDelta": 0
+      },
+      "adapter-react root": {
+        "before": {
+          "status": "ADVISORY",
+          "gzip": 162083,
+          "ceiling": 106000,
+          "overBudget": 56083,
+          "min": 572391,
+          "sha256": "9bcf583f0ac13f7143cc3d8668d1e882cdce5d227a37372b25db03ae372084f7"
+        },
+        "after": {
+          "status": "ADVISORY",
+          "gzip": 162110,
+          "ceiling": 106000,
+          "overBudget": 56110,
+          "min": 572478,
+          "sha256": "04137209cb386ae7b78179c7327e0e554d5e7ef66d071653573d0c18cecb0a2e"
+        },
+        "gzipDelta": 27
+      },
+      "adapter-vue root": {
+        "before": {
+          "status": "ADVISORY",
+          "gzip": 160763,
+          "ceiling": 106000,
+          "overBudget": 54763,
+          "min": 567663,
+          "sha256": "ab86703c9c1fe57210b94967c163a39b9d323192c27613b4e19d4789be160298"
+        },
+        "after": {
+          "status": "ADVISORY",
+          "gzip": 160804,
+          "ceiling": 106000,
+          "overBudget": 54804,
+          "min": 567750,
+          "sha256": "7a6dfcb41061214409dec1036eda2fe9e9cfa0a1413865d677ba214cb02ff3fd"
+        },
+        "gzipDelta": 41
+      },
+      "adapter-web-component root": {
+        "before": {
+          "status": "ADVISORY",
+          "gzip": 190375,
+          "ceiling": 132000,
+          "overBudget": 58375,
+          "min": 656550,
+          "sha256": "d67b26dbeb71821f54b65dca1f0ade95eca22be1be793e79ec6790b47507732e"
+        },
+        "after": {
+          "status": "ADVISORY",
+          "gzip": 190412,
+          "ceiling": 132000,
+          "overBudget": 58412,
+          "min": 656637,
+          "sha256": "705bf3baf85879af35d8ccc62f94408a7c42c18d213115005a72890c87f85abc"
+        },
+        "gzipDelta": 37
+      },
+      "prototypes-base/button": {
+        "before": {
+          "status": "PASS",
+          "gzip": 5274,
+          "ceiling": 6000,
+          "overBudget": 0,
+          "min": 18158,
+          "sha256": "6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67"
+        },
+        "after": {
+          "status": "PASS",
+          "gzip": 5274,
+          "ceiling": 6000,
+          "overBudget": 0,
+          "min": 18158,
+          "sha256": "6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67"
+        },
+        "gzipDelta": 0
+      },
+      "prototypes-shadcn/button": {
+        "before": {
+          "status": "ADVISORY",
+          "gzip": 7803,
+          "ceiling": 7000,
+          "overBudget": 803,
+          "min": 34485,
+          "sha256": "60b4ff9277e59fba01c34162ec9418282ce82c6b43e24f223a05c9e1df19db57"
+        },
+        "after": {
+          "status": "ADVISORY",
+          "gzip": 7803,
+          "ceiling": 7000,
+          "overBudget": 803,
+          "min": 34485,
+          "sha256": "60b4ff9277e59fba01c34162ec9418282ce82c6b43e24f223a05c9e1df19db57"
+        },
+        "gzipDelta": 0
+      }
+    },
+    "preview": {
+      "head": "784a58b529152c7b9c52a6d4b71f6d77d10961b7",
+      "tree": "3ba345fca913e73333b771718c4b9f6c82cad38b",
+      "distHashes": {
+        "zh-cn/index.html": "55cfb6c7e6449bbbfbcf808b213bb8cd6d3bf075eafff7ca44c6f0086d078cfc",
+        "zh-cn/ui-libraries/shadcn/button/index.html": "ba8fe6cf88ee0e88485e128cd2f41b52cf31875514a44a3446ee9880706b1231",
+        "zh-cn/ui-libraries/brutalist/components/button/index.html": "caa570a37f5d64afcab586c20598d05bdc8546548d17f64ddaace9edcd233fcc"
+      },
+      "sourceCodeExamples": 9,
+      "renderedCodeExamples": 9,
+      "packedHeaderExit": 0,
+      "previewBrowserExit": 0,
+      "selector": "uses real family Popover Triggers|uses the same mobile shell|retains (shadcn|brutalist) preference owners|compact (shadcn|brutalist)|live available region|keeps Runtime Tabs outside"
+    },
+    "header": {
+      "head": "784a58b529152c7b9c52a6d4b71f6d77d10961b7",
+      "browser": "156.0.8078.79",
+      "scope": "First animation frame control on the exact static Astro preview. Geometry reads can force layout.",
+      "results": [
+        {
+          "width": 320,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1564.8000001907349,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1691.9000000953674,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1719.1000001430511,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        },
+        {
+          "width": 390,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1520.5,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1650,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1668.2000000476837,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        }
+      ]
+    },
+    "browser": {
+      "passed": 15,
+      "failed": 0,
+      "filtered": 9,
+      "files": [
+        {
+          "name": "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+          "cases": [
+            {
+              "name": "shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+              "status": "passed"
+            },
+            {
+              "name": "shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+              "status": "passed"
+            },
+            {
+              "name": "shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+              "status": "passed"
+            },
+            {
+              "name": "shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+              "status": "passed"
+            },
+            {
+              "name": "brutalist/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+              "status": "passed"
+            },
+            {
+              "name": "brutalist/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+              "status": "passed"
+            },
+            {
+              "name": "brutalist/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+              "status": "passed"
+            },
+            {
+              "name": "brutalist/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+              "status": "passed"
+            }
+          ]
+        },
+        {
+          "name": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+          "cases": [
+            {
+              "name": "Homepage end-to-end dogfood boundary switches every registered homepage group through real adapters, preserving native anchors and theme",
+              "status": "skipped"
+            },
+            {
+              "name": "Homepage end-to-end dogfood boundary keeps native navigation available without JavaScript and does not overflow mobile",
+              "status": "skipped"
+            },
+            {
+              "name": "Homepage end-to-end dogfood boundary retains saved React across cold library routes and exercises actual family chrome",
+              "status": "skipped"
+            },
+            {
+              "name": "Homepage end-to-end dogfood boundary reveals current articles through native shadow slots and preserves viewport handback",
+              "status": "skipped"
+            },
+            {
+              "name": "Homepage end-to-end dogfood boundary uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence",
+              "status": "passed"
+            },
+            {
+              "name": "Homepage end-to-end dogfood boundary uses the same mobile shell on documentation with independent global navigation and contents",
+              "status": "passed"
+            },
+            {
+              "name": "compact shadcn preferences stay usable at 200% text, RTL and breakpoint moves",
+              "status": "passed"
+            },
+            {
+              "name": "compact brutalist preferences stay usable at 200% text, RTL and breakpoint moves",
+              "status": "passed"
+            },
+            {
+              "name": "retains shadcn preference owners and portals through real breakpoint reconnects",
+              "status": "passed"
+            },
+            {
+              "name": "retains brutalist preference owners and portals through real breakpoint reconnects",
+              "status": "passed"
+            }
+          ]
+        },
+        {
+          "name": "apps/www/src/content/docs/zh-cn/runtime-preview-surface.browser.test.ts",
+          "cases": [
+            {
+              "name": "RuntimeBox single actual Prototype surface keeps Runtime Tabs outside the canvas and the demonstrated Select popup usable at 390px",
+              "status": "passed"
+            },
+            {
+              "name": "RuntimeBox single actual Prototype surface covers the generic Base path and keeps its demonstrated command operable",
+              "status": "skipped"
+            },
+            {
+              "name": "RuntimeBox single actual Prototype surface wc: preserves forward/backward generated shell and slot Selection endpoints",
+              "status": "skipped"
+            },
+            {
+              "name": "RuntimeBox single actual Prototype surface react: preserves forward/backward generated shell and slot Selection endpoints",
+              "status": "skipped"
+            },
+            {
+              "name": "RuntimeBox single actual Prototype surface vue: preserves forward/backward generated shell and slot Selection endpoints",
+              "status": "skipped"
+            },
+            {
+              "name": "RuntimeBox single actual Prototype surface vue2: preserves forward/backward generated shell and slot Selection endpoints",
+              "status": "skipped"
+            }
+          ]
+        }
+      ],
+      "exit": 0
+    },
+    "removedSource": {
+      "passed": 1,
+      "failed": 0,
+      "filtered": 23,
+      "files": [
+        {
+          "name": "apps/www/src/components/documentation-image-preview.browser.test.ts",
+          "cases": [
+            {
+              "name": "automatic documentation image preview in real Chromium 320px light shadcn: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "name": "automatic documentation image preview in real Chromium 320px light brutalist: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "name": "automatic documentation image preview in real Chromium 320px dark shadcn: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "name": "automatic documentation image preview in real Chromium 320px dark brutalist: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "name": "automatic documentation image preview in real Chromium 390px light shadcn: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "name": "automatic documentation image preview in real Chromium 390px light brutalist: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "name": "automatic documentation image preview in real Chromium 390px dark shadcn: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "name": "automatic documentation image preview in real Chromium 390px dark brutalist: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "name": "automatic documentation image preview in real Chromium 1280px light shadcn: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "name": "automatic documentation image preview in real Chromium 1280px light brutalist: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "name": "automatic documentation image preview in real Chromium 1280px dark shadcn: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "name": "automatic documentation image preview in real Chromium 1280px dark brutalist: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "name": "automatic documentation image preview in real Chromium 390px real intermediate frames follow linear forward/reverse motion",
+              "status": "skipped"
+            },
+            {
+              "name": "automatic documentation image preview in real Chromium 1280px real intermediate frames follow linear forward/reverse motion",
+              "status": "skipped"
+            },
+            {
+              "name": "automatic documentation image preview in real Chromium reverses a native interrupted close and safely handles resized, offscreen or removed sources",
+              "status": "passed"
+            },
+            {
+              "name": "automatic documentation image preview in real Chromium preserves source alt and action name while open, leaving and restored without background input leakage",
+              "status": "skipped"
+            },
+            {
+              "name": "automatic documentation image preview in real Chromium preserves authored MDX picture/alt/caption, safe SVG, links and error recovery",
+              "status": "skipped"
+            },
+            {
+              "name": "automatic documentation image preview in real Chromium migrates the actual zh-cn whitepaper viewer at 1280px light",
+              "status": "skipped"
+            },
+            {
+              "name": "automatic documentation image preview in real Chromium migrates the actual zh-cn whitepaper viewer at 390px dark",
+              "status": "skipped"
+            },
+            {
+              "name": "automatic documentation image preview in real Chromium migrates the actual en whitepaper viewer at 1280px dark",
+              "status": "skipped"
+            },
+            {
+              "name": "automatic documentation image preview in real Chromium migrates the actual en whitepaper viewer at 390px light",
+              "status": "skipped"
+            },
+            {
+              "name": "automatic documentation image preview in real Chromium preserves actual cross-origin image referrer and credential requests",
+              "status": "skipped"
+            },
+            {
+              "name": "automatic documentation image preview in real Chromium keeps keyboard focus visible without adding an image frame in forced colors",
+              "status": "skipped"
+            },
+            {
+              "name": "automatic documentation image preview in real Chromium honors reduced motion and preserves no-JavaScript media/link content",
+              "status": "skipped"
+            }
+          ]
+        }
+      ],
+      "exit": 0
+    },
+    "removedSourcePageErrors": []
+  }
+}
