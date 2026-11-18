@@ -1,0 +1,218 @@
+{
+  "source": {
+    "head": "f6aa76415cd9bf13e74140dbf7ed71518ac3cb1b",
+    "tree": "76beca5ed4c0c1a04f784d8a4644d3318f8c5d0d",
+    "previous": "1349df60901838e9e7a524b1ade1f89181aaabc5"
+  },
+  "testedReviewReport": 4621828058,
+  "focusedPreviousSource": {
+    "files": 1,
+    "passed": 0,
+    "failed": 12,
+    "filtered": 27
+  },
+  "focusedFollowup": {
+    "files": 5,
+    "passed": 109,
+    "failed": 0,
+    "filtered": 0
+  },
+  "packed": {
+    "preview-browser": {
+      "files": 3,
+      "passed": 15,
+      "failed": 0,
+      "filtered": 9
+    },
+    "code-grammar": {
+      "files": 1,
+      "passed": 3,
+      "failed": 0,
+      "filtered": 23
+    },
+    "copy-commands": {
+      "files": 1,
+      "passed": 1,
+      "failed": 0,
+      "filtered": 14
+    },
+    "scroll-chain": {
+      "files": 1,
+      "passed": 2,
+      "failed": 0,
+      "filtered": 4
+    },
+    "table": {
+      "files": 1,
+      "passed": 5,
+      "failed": 0,
+      "filtered": 0
+    },
+    "accordion": {
+      "files": 1,
+      "passed": 4,
+      "failed": 0,
+      "filtered": 29
+    },
+    "field": {
+      "files": 1,
+      "passed": 4,
+      "failed": 0,
+      "filtered": 21
+    },
+    "select": {
+      "files": 1,
+      "passed": 4,
+      "failed": 0,
+      "filtered": 20
+    }
+  },
+  "nativeChrome": {
+    "previous": {
+      "product": "1349df60901838e9e7a524b1ade1f89181aaabc5",
+      "chrome": "156.0.8078.79",
+      "entries": [
+        {
+          "kind": "focusin",
+          "elapsed": 588.9000000953674,
+          "target": "",
+          "role": "combobox",
+          "label": "Alpha"
+        },
+        {
+          "kind": "input",
+          "trusted": true
+        },
+        {
+          "kind": "focusin",
+          "elapsed": 594.2999999523163,
+          "target": "focus-handoff-control",
+          "role": null,
+          "label": "Outside focus owner"
+        },
+        {
+          "kind": "handoff",
+          "elapsed": 594.5,
+          "actual": true,
+          "scrollY": 0
+        },
+        {
+          "kind": "focusin",
+          "elapsed": 639.7000000476837,
+          "target": "",
+          "role": "option",
+          "label": "Alpha"
+        }
+      ],
+      "final": {
+        "activeId": "",
+        "activeRole": "option",
+        "open": "true",
+        "value": "Alpha",
+        "scrollY": 0
+      },
+      "result": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ ''\n- 'focus-handoff-control'\n"
+    },
+    "followup": {
+      "product": "f6aa76415cd9bf13e74140dbf7ed71518ac3cb1b",
+      "chrome": "156.0.8078.79",
+      "entries": [
+        {
+          "kind": "focusin",
+          "elapsed": 583.7999999523163,
+          "target": "",
+          "role": "combobox",
+          "label": "Alpha"
+        },
+        {
+          "kind": "input",
+          "trusted": true
+        },
+        {
+          "kind": "focusin",
+          "elapsed": 589.2999999523163,
+          "target": "focus-handoff-control",
+          "role": null,
+          "label": "Outside focus owner"
+        },
+        {
+          "kind": "handoff",
+          "elapsed": 589.7000000476837,
+          "actual": true,
+          "scrollY": 0
+        }
+      ],
+      "final": {
+        "activeId": "focus-handoff-control",
+        "activeRole": null,
+        "open": "true",
+        "value": "Alpha",
+        "scrollY": 0
+      },
+      "result": "passed"
+    }
+  },
+  "sameOriginalPreview": {
+    "head": "f6aa76415cd9bf13e74140dbf7ed71518ac3cb1b",
+    "tree": "76beca5ed4c0c1a04f784d8a4644d3318f8c5d0d",
+    "distHashes": {
+      "zh-cn/index.html": "c2be628a294d72779edecab9358ac5ace75be6b2281af2be891c10c92191b014",
+      "zh-cn/ui-libraries/shadcn/button/index.html": "0e1e2850d3a5adac02c994b972465537751d6a210c5a8da20acc5769015fba12",
+      "zh-cn/ui-libraries/brutalist/components/button/index.html": "a4e5f0c11ad4e57a2b8945d1252c5d127ef53a4414e8c22aa8e396e49084c7bf"
+    },
+    "sourceCodeExamples": 9,
+    "renderedCodeExamples": 9,
+    "packedHeaderExit": 0,
+    "previewBrowserExit": 0,
+    "codeGrammarExit": 0,
+    "copyCommandsExit": 0,
+    "scrollChainExit": 0,
+    "tableExit": 0,
+    "accordionExit": 0,
+    "fieldExit": 0,
+    "selectExit": 0,
+    "calendarConsumerExit": 0,
+    "selector": "uses real family Popover Triggers|uses the same mobile shell|retains (shadcn|brutalist) preference owners|compact (shadcn|brutalist)|live available region|keeps Runtime Tabs outside"
+  },
+  "calendar": {
+    "browser": "156.0.8078.79",
+    "hostClock": "2026-10-10T12:00:00Z",
+    "initial": {
+      "focused": true,
+      "scrollTop": 3008,
+      "scrollHeight": 3232,
+      "clientHeight": 224,
+      "documentScrollY": 1717,
+      "currentVisible": true,
+      "viewport": {
+        "x": 626.890625,
+        "y": 640.5,
+        "width": 144,
+        "height": 224
+      }
+    },
+    "optionCount": 101,
+    "wheel": -560,
+    "afterWheel": {
+      "focused": false,
+      "scrollTop": 2448,
+      "scrollHeight": 3232,
+      "clientHeight": 224,
+      "documentScrollY": 1717,
+      "currentVisible": false,
+      "viewport": {
+        "x": 626.890625,
+        "y": 640.5,
+        "width": 144,
+        "height": 224
+      }
+    },
+    "result": "passed",
+    "pageErrors": []
+  },
+  "pngSHA256": {
+    "bootstrap-wc-old-focus-reclaim.png": "bc354078868a460554aa67db325a0aee727c71fdb9623ba6ccd43294693b9d43",
+    "bootstrap-wc-new-owner-retained.png": "bc354078868a460554aa67db325a0aee727c71fdb9623ba6ccd43294693b9d43"
+  }
+}
