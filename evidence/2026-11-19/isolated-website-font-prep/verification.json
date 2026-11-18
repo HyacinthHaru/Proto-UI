@@ -1,0 +1,51 @@
+{
+  "exact": {
+    "head": "7202738fbd0e0d32b2ff41d39a073bad32b6ccd7",
+    "tree": "9c8b253a35b414834df88ed011af869d90da965c",
+    "parent": "009612b25e3ba425fc2f5016ae28a7309092f808"
+  },
+  "scheduled": {
+    "run": 44354089920,
+    "revision": "bcc9dd4b75e410cf858886a7058f4ec21c9cae1b",
+    "failedPreparation": [
+      {
+        "scope": "copy-commands",
+        "job": 135021631770,
+        "preparation": "timed out",
+        "browser": "skipped"
+      },
+      {
+        "scope": "runtime-box",
+        "job": 135021631857,
+        "preparation": "timed out",
+        "browser": "skipped"
+      },
+      {
+        "scope": "homepage-button-contract",
+        "job": 135021631925,
+        "preparation": "timed out",
+        "browser": "skipped"
+      },
+      {
+        "scope": "search-commands",
+        "job": 135021631955,
+        "preparation": "timed out",
+        "browser": "skipped"
+      }
+    ],
+    "positiveExistingHelper": {
+      "job": 135021631896,
+      "scope": "homepage-composition"
+    }
+  },
+  "focused": {
+    "passed": 23,
+    "failed": 0
+  },
+  "ciGovernanceTests": 42,
+  "localFontFixture": "macOS exact file-size adapter for GNU stat -c %s; mock package and glyph controls",
+  "unchangedPreparationJobMinutes": 5,
+  "unchangedBrowserStepMinutes": 12,
+  "unchangedBrowserSeconds": 600,
+  "hostedCandidateStatus": "pending"
+}
