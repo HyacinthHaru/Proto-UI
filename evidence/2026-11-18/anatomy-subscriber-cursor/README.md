@@ -1,0 +1,9 @@
+# Stable Anatomy subscriber cursor
+
+A family publication still reads its current subscriber list after each callback. The cursor advances directly while the last visited owner is still at its expected index. When that owner moves or disappears, the existing ownership-order search resumes from its stable creation ordinal.
+
+Both exact parent controls read ownership ranks 398 times for 32 steady order and target subscribers. Both candidates read none. Pinned Chromium reproduced the result in parent, candidate, candidate and parent order on the contributor combination and the standalone main patch. During a reentrant target callback the fixture cancels the current and an earlier subscription and appends a new owner. Every arm delivers 33 recipients in order. A real subsequent DOM move publishes one order change to each of the original 32 order subscribers. There is no public ordering or input capability change.
+
+The separate integrated steady timing fixture with 56 claims, 28 readers and 384 notifications per batch has per-arm medians of 11.7, 11.4, 11.5, 11.7 ms. It retains all seven samples per arm. The actual S4 observed prefix at page time 71.835 seconds shows 4,038,384 order visits, 2,613,520 target visits and 0 cursor repairs in one emitted asset. The observed run retains the Chinese original S4 predicate and restores the emitted file, original test and Matrix HTML bytes.
+
+Standalone exact `0d415bcaf03d49ec26495bf7e7ec62f583d0f260` passes 501 focused checks, the Anatomy package and four dependencies build, and the manifest check passes. The contributor site at `4787a0793e2d3cbab50417c465450af46db55dd2` builds all 47 packages and 685 pages. The product coverage and original bilingual Matrix results are recorded individually in the receipt, including the original 60-second readiness and 150-second case bounds.
