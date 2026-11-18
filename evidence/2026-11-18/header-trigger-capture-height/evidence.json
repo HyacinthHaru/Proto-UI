@@ -1,0 +1,271 @@
+{
+  "candidate": "2db37bcf09a5892f730926c1c26048b176f5d793",
+  "geometryAuthorCommit": "162389b460bf9de8d506c0e6c1315a91d9c3bacc",
+  "parentFalseCaptures": [
+    {
+      "source": "0f0955a9d624e0ef5e250f56a0eaa0fc52bbfb53",
+      "sourceDirty": false,
+      "colorScheme": "dark",
+      "width": 1440,
+      "expectedTriggerHeight": 36,
+      "geometry": {
+        "border": "0px",
+        "shadow": "none",
+        "columns": 4,
+        "triggerHeight": 44,
+        "triggerConnected": true,
+        "triggerGeneration": "active",
+        "compact": false,
+        "menuOpen": "false",
+        "preferencesDock": "desktop",
+        "triggerAncestors": [
+          {
+            "tag": "WC-SHADCN-SELECT-TRIGGER",
+            "hidden": false,
+            "inert": false,
+            "display": "flex",
+            "visibility": "visible",
+            "opacity": "1",
+            "height": 44
+          },
+          {
+            "tag": "WC-SHADCN-SELECT-ROOT",
+            "hidden": false,
+            "inert": false,
+            "display": "block",
+            "visibility": "visible",
+            "opacity": "1",
+            "height": 44
+          },
+          {
+            "tag": "DIV",
+            "hidden": false,
+            "inert": false,
+            "display": "flex",
+            "visibility": "visible",
+            "opacity": "1",
+            "height": 44
+          },
+          {
+            "tag": "DIV",
+            "hidden": false,
+            "inert": false,
+            "display": "grid",
+            "visibility": "visible",
+            "opacity": "1",
+            "height": 44
+          },
+          {
+            "tag": "DIV",
+            "hidden": false,
+            "inert": false,
+            "display": "flex",
+            "visibility": "visible",
+            "opacity": "1",
+            "height": 44
+          },
+          {
+            "tag": "DIV",
+            "hidden": false,
+            "inert": false,
+            "display": "block",
+            "visibility": "visible",
+            "opacity": "1",
+            "height": 44
+          },
+          {
+            "tag": "DIV",
+            "hidden": false,
+            "inert": false,
+            "display": "block",
+            "visibility": "visible",
+            "opacity": "1",
+            "height": 44
+          },
+          {
+            "tag": "DIV",
+            "hidden": false,
+            "inert": false,
+            "display": "block",
+            "visibility": "visible",
+            "opacity": "1",
+            "height": 44
+          },
+          {
+            "tag": "DIV",
+            "hidden": false,
+            "inert": false,
+            "display": "flex",
+            "visibility": "visible",
+            "opacity": "1",
+            "height": 44
+          },
+          {
+            "tag": "DIV",
+            "hidden": false,
+            "inert": false,
+            "display": "block",
+            "visibility": "visible",
+            "opacity": "1",
+            "height": 44
+          },
+          {
+            "tag": "DIV",
+            "hidden": false,
+            "inert": false,
+            "display": "grid",
+            "visibility": "visible",
+            "opacity": "1",
+            "height": 72
+          },
+          {
+            "tag": "HEADER",
+            "hidden": false,
+            "inert": false,
+            "display": "block",
+            "visibility": "visible",
+            "opacity": "1",
+            "height": 72
+          }
+        ],
+        "fits": true
+      }
+    },
+    {
+      "source": "0f0955a9d624e0ef5e250f56a0eaa0fc52bbfb53",
+      "sourceDirty": false,
+      "colorScheme": "light",
+      "width": 1440,
+      "expectedTriggerHeight": 36,
+      "geometry": {
+        "border": "0px",
+        "shadow": "none",
+        "columns": 4,
+        "triggerHeight": 44,
+        "triggerConnected": true,
+        "triggerGeneration": "active",
+        "compact": false,
+        "menuOpen": "false",
+        "preferencesDock": "desktop",
+        "triggerAncestors": [
+          {
+            "tag": "WC-SHADCN-SELECT-TRIGGER",
+            "hidden": false,
+            "inert": false,
+            "display": "flex",
+            "visibility": "visible",
+            "opacity": "1",
+            "height": 44
+          },
+          {
+            "tag": "WC-SHADCN-SELECT-ROOT",
+            "hidden": false,
+            "inert": false,
+            "display": "block",
+            "visibility": "visible",
+            "opacity": "1",
+            "height": 44
+          },
+          {
+            "tag": "DIV",
+            "hidden": false,
+            "inert": false,
+            "display": "flex",
+            "visibility": "visible",
+            "opacity": "1",
+            "height": 44
+          },
+          {
+            "tag": "DIV",
+            "hidden": false,
+            "inert": false,
+            "display": "grid",
+            "visibility": "visible",
+            "opacity": "1",
+            "height": 44
+          },
+          {
+            "tag": "DIV",
+            "hidden": false,
+            "inert": false,
+            "display": "flex",
+            "visibility": "visible",
+            "opacity": "1",
+            "height": 44
+          },
+          {
+            "tag": "DIV",
+            "hidden": false,
+            "inert": false,
+            "display": "block",
+            "visibility": "visible",
+            "opacity": "1",
+            "height": 44
+          },
+          {
+            "tag": "DIV",
+            "hidden": false,
+            "inert": false,
+            "display": "block",
+            "visibility": "visible",
+            "opacity": "1",
+            "height": 44
+          },
+          {
+            "tag": "DIV",
+            "hidden": false,
+            "inert": false,
+            "display": "block",
+            "visibility": "visible",
+            "opacity": "1",
+            "height": 44
+          },
+          {
+            "tag": "DIV",
+            "hidden": false,
+            "inert": false,
+            "display": "flex",
+            "visibility": "visible",
+            "opacity": "1",
+            "height": 44
+          },
+          {
+            "tag": "DIV",
+            "hidden": false,
+            "inert": false,
+            "display": "block",
+            "visibility": "visible",
+            "opacity": "1",
+            "height": 44
+          },
+          {
+            "tag": "DIV",
+            "hidden": false,
+            "inert": false,
+            "display": "grid",
+            "visibility": "visible",
+            "opacity": "1",
+            "height": 72
+          },
+          {
+            "tag": "HEADER",
+            "hidden": false,
+            "inert": false,
+            "display": "block",
+            "visibility": "visible",
+            "opacity": "1",
+            "height": 72
+          }
+        ],
+        "fits": true
+      }
+    }
+  ],
+  "candidateFalseCaptures": 0,
+  "nativeParentPassed": 1,
+  "nativeCandidatePassed": 1,
+  "focusedPassed": 17,
+  "nativeFilteredEach": 10,
+  "servedArticleSha256": "8f6eef163bc93c16c620b59ba6baeff5ea5831066948bdde2362ffb52c0529c5",
+  "screenshotSha256": "d9f8a310823b4214a0684ab7164d54a5114fbbb3883f8ee83d8c899904870ef8"
+}
