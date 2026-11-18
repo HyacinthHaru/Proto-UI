@@ -1,0 +1,57 @@
+from hashlib import sha256
+from pathlib import Path
+import json,sys
+q, dist=map(Path,sys.argv[1:])
+asset,=dist.glob('demo-renderer.*.js')
+before=asset.read_text()
+old='function me(e,t){const r=yt(t),o=new Set([...e.querySelectorAll(r),...e.ownerDocument.querySelectorAll(r)]);'
+assert before.count(old)==1
+probe=r"""let refCompareCalls=0;
+const refCompareRuns={
+    grouped:{calls:0,totalMs:0,nodes:0},
+    rightmost:{calls:0,totalMs:0,nodes:0},
+    is:{calls:0,totalMs:0,nodes:0},
+    split:{calls:0,totalMs:0,nodes:0},
+};
+let refCompareMismatches=0;
+function refCompare(doc,t,r,known,call){
+  const data='[data-demo-owner="'+t+'"]';
+  const ownerClass='pui-owner-'+t;
+  const query={
+    grouped:()=>Array.from(doc.querySelectorAll(r)),
+    rightmost:()=>Array.from(doc.querySelectorAll('[data-demo-ref]'+data+', [data-demo-ref].'+ownerClass)),
+    is:()=>Array.from(doc.querySelectorAll('[data-demo-ref]:is('+data+', .'+ownerClass+')')),
+    split:()=>{
+      const nodes=new Set(doc.querySelectorAll(data+'[data-demo-ref]'));
+      for (const node of doc.getElementsByClassName(ownerClass)){
+        if(node.hasAttribute('data-demo-ref'))nodes.add(node);
+      }
+      return [...nodes].sort((a,b)=>a.compareDocumentPosition(b)&4?-1:1);
+    }
+  };
+  const forms=Object.keys(query);
+  const offset=(call/32)%forms.length;
+  for(let i=0;i<forms.length;i++){
+    const form=forms[(offset+i)%forms.length];
+    const at=performance.now();
+    const entries=query[form]();
+    const row=refCompareRuns[form];
+    row.totalMs+=performance.now()-at;
+    row.calls++;
+    row.nodes+=entries.length;
+    if(entries.length!==known.length||entries.some((node,k)=>node!==known[k]))refCompareMismatches++;
+  }
+  if(call%256===0) console.info('[S4 demo refs] '+JSON.stringify({calls:call,refCompareMismatches,refCompareRuns}));
+}
+function me(e,t){
+  const r=yt(t),local=e.querySelectorAll(r),doc=e.ownerDocument,wide=doc.querySelectorAll(r);
+  const call=++refCompareCalls;
+  if(call%32===0) refCompare(doc,t,r,wide,call);
+  const o=new Set([...local,...wide]);
+"""
+after=before.replace(old,probe)
+asset.write_text(after)
+(q/'asset-binding.json').write_text(json.dumps(dict(
+    asset=asset.name,original=sha256(before.encode()).hexdigest(),observed=sha256(after.encode()).hexdigest(),
+    scope='Samples four equivalent selector shapes on every 32nd live initial read, rotating their order and verifying exact native node identity and order; authoritative original host/document results still drive publication.'
+),indent=2)+'\n')

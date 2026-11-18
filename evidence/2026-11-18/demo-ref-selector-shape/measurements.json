@@ -1,0 +1,677 @@
+{
+  "siteSelectorSampling": {
+    "identity": [
+      "831b5cf4947fb364382f07a90cdb644bb415dd8b",
+      "f28d602b5f2818c835933aa559b97cfa3390e4e9"
+    ],
+    "asset": {
+      "asset": "demo-renderer.DO-EUA7X.js",
+      "original": "c035ec24c7ad059f1c5e58871f4ee8a3c2b1edad866f4b32a1beba8f924cd915",
+      "observed": "a657ab788390797caf0e407009e37069883aacadb16a27cd07f226a0ded0cc25",
+      "scope": "Samples four equivalent selector shapes on every 32nd live initial read, rotating their order and verifying exact native node identity and order; authoritative original host/document results still drive publication."
+    },
+    "s4": {
+      "passed": 0,
+      "failed": 1,
+      "filtered": 1,
+      "files": 1,
+      "failures": ["S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance"]
+    },
+    "series": [
+      {
+        "calls": 256,
+        "refCompareMismatches": 0,
+        "refCompareRuns": {
+          "grouped": {
+            "calls": 8,
+            "totalMs": 2.6999998092651367,
+            "nodes": 27
+          },
+          "rightmost": {
+            "calls": 8,
+            "totalMs": 2.8000001907348633,
+            "nodes": 27
+          },
+          "is": {
+            "calls": 8,
+            "totalMs": 1.2000000476837158,
+            "nodes": 27
+          },
+          "split": {
+            "calls": 8,
+            "totalMs": 2.0999996662139893,
+            "nodes": 27
+          }
+        }
+      },
+      {
+        "calls": 512,
+        "refCompareMismatches": 0,
+        "refCompareRuns": {
+          "grouped": {
+            "calls": 16,
+            "totalMs": 5.8999998569488525,
+            "nodes": 43
+          },
+          "rightmost": {
+            "calls": 16,
+            "totalMs": 6.09999942779541,
+            "nodes": 43
+          },
+          "is": {
+            "calls": 16,
+            "totalMs": 2.9000003337860107,
+            "nodes": 43
+          },
+          "split": {
+            "calls": 16,
+            "totalMs": 4.499999761581421,
+            "nodes": 43
+          }
+        }
+      },
+      {
+        "calls": 768,
+        "refCompareMismatches": 0,
+        "refCompareRuns": {
+          "grouped": {
+            "calls": 24,
+            "totalMs": 9.5,
+            "nodes": 63
+          },
+          "rightmost": {
+            "calls": 24,
+            "totalMs": 10.09999942779541,
+            "nodes": 63
+          },
+          "is": {
+            "calls": 24,
+            "totalMs": 4.900000333786011,
+            "nodes": 63
+          },
+          "split": {
+            "calls": 24,
+            "totalMs": 7.399999618530273,
+            "nodes": 63
+          }
+        }
+      },
+      {
+        "calls": 1024,
+        "refCompareMismatches": 0,
+        "refCompareRuns": {
+          "grouped": {
+            "calls": 32,
+            "totalMs": 14.500000715255737,
+            "nodes": 111
+          },
+          "rightmost": {
+            "calls": 32,
+            "totalMs": 15.699999332427979,
+            "nodes": 111
+          },
+          "is": {
+            "calls": 32,
+            "totalMs": 8.099999904632568,
+            "nodes": 111
+          },
+          "split": {
+            "calls": 32,
+            "totalMs": 11.59999942779541,
+            "nodes": 111
+          }
+        }
+      },
+      {
+        "calls": 1280,
+        "refCompareMismatches": 0,
+        "refCompareRuns": {
+          "grouped": {
+            "calls": 40,
+            "totalMs": 20.100000619888306,
+            "nodes": 142
+          },
+          "rightmost": {
+            "calls": 40,
+            "totalMs": 22.299999713897705,
+            "nodes": 142
+          },
+          "is": {
+            "calls": 40,
+            "totalMs": 11.899999618530273,
+            "nodes": 142
+          },
+          "split": {
+            "calls": 40,
+            "totalMs": 16.899999380111694,
+            "nodes": 142
+          }
+        }
+      },
+      {
+        "calls": 1536,
+        "refCompareMismatches": 0,
+        "refCompareRuns": {
+          "grouped": {
+            "calls": 48,
+            "totalMs": 27.500000715255737,
+            "nodes": 175
+          },
+          "rightmost": {
+            "calls": 48,
+            "totalMs": 30.899999856948853,
+            "nodes": 175
+          },
+          "is": {
+            "calls": 48,
+            "totalMs": 17.09999966621399,
+            "nodes": 175
+          },
+          "split": {
+            "calls": 48,
+            "totalMs": 23.399999141693115,
+            "nodes": 175
+          }
+        }
+      }
+    ]
+  },
+  "exactSourceNativeComparison": {
+    "chrome": "156.0.8078.79",
+    "source": {
+      "parent": "2deffc4b66094720739a7983d8d87e517d16e3f4b697e15ea28099bee40818cf",
+      "candidate": "55edb01c6a7ac78a0ff8676d95a22b92cf72a599e487a53f7478f963448d0eee"
+    },
+    "results": [
+      {
+        "implementation": "parent",
+        "attached": {
+          "ordered": ["local-data", "local-both", "before-host", "host", "after-host"],
+          "selected": {
+            "item": "before-host",
+            "unique": "local-both",
+            "root": "host",
+            "other": "after-host"
+          }
+        },
+        "detached": {
+          "ordered": ["local-data", "local-both", "before-host", "after-host", "host"],
+          "selected": {
+            "item": "before-host",
+            "unique": "local-both",
+            "other": "after-host",
+            "root": "host"
+          }
+        },
+        "mutated": {
+          "ordered": ["local-data", "local-both", "after-host", "host"],
+          "selected": {
+            "item": "local-data",
+            "unique": "local-both",
+            "other": "after-host",
+            "root": "host"
+          }
+        },
+        "checks": 400,
+        "portal": 27,
+        "durationMs": 94.40000009536743
+      },
+      {
+        "implementation": "candidate",
+        "attached": {
+          "ordered": ["local-data", "local-both", "before-host", "host", "after-host"],
+          "selected": {
+            "item": "before-host",
+            "unique": "local-both",
+            "root": "host",
+            "other": "after-host"
+          }
+        },
+        "detached": {
+          "ordered": ["local-data", "local-both", "before-host", "after-host", "host"],
+          "selected": {
+            "item": "before-host",
+            "unique": "local-both",
+            "other": "after-host",
+            "root": "host"
+          }
+        },
+        "mutated": {
+          "ordered": ["local-data", "local-both", "after-host", "host"],
+          "selected": {
+            "item": "local-data",
+            "unique": "local-both",
+            "other": "after-host",
+            "root": "host"
+          }
+        },
+        "checks": 400,
+        "portal": 27,
+        "durationMs": 18.200000047683716
+      },
+      {
+        "implementation": "candidate",
+        "attached": {
+          "ordered": ["local-data", "local-both", "before-host", "host", "after-host"],
+          "selected": {
+            "item": "before-host",
+            "unique": "local-both",
+            "root": "host",
+            "other": "after-host"
+          }
+        },
+        "detached": {
+          "ordered": ["local-data", "local-both", "before-host", "after-host", "host"],
+          "selected": {
+            "item": "before-host",
+            "unique": "local-both",
+            "other": "after-host",
+            "root": "host"
+          }
+        },
+        "mutated": {
+          "ordered": ["local-data", "local-both", "after-host", "host"],
+          "selected": {
+            "item": "local-data",
+            "unique": "local-both",
+            "other": "after-host",
+            "root": "host"
+          }
+        },
+        "checks": 400,
+        "portal": 27,
+        "durationMs": 18.09999990463257
+      },
+      {
+        "implementation": "parent",
+        "attached": {
+          "ordered": ["local-data", "local-both", "before-host", "host", "after-host"],
+          "selected": {
+            "item": "before-host",
+            "unique": "local-both",
+            "root": "host",
+            "other": "after-host"
+          }
+        },
+        "detached": {
+          "ordered": ["local-data", "local-both", "before-host", "after-host", "host"],
+          "selected": {
+            "item": "before-host",
+            "unique": "local-both",
+            "other": "after-host",
+            "root": "host"
+          }
+        },
+        "mutated": {
+          "ordered": ["local-data", "local-both", "after-host", "host"],
+          "selected": {
+            "item": "local-data",
+            "unique": "local-both",
+            "other": "after-host",
+            "root": "host"
+          }
+        },
+        "checks": 400,
+        "portal": 27,
+        "durationMs": 95.20000004768372
+      }
+    ]
+  },
+  "mainCandidate": {
+    "headTree": [
+      "315c0a0d611a3a2f142081c6bad150e9ab54a34a",
+      "c8cb556bc7ed8b6e4ed7b58bc20628356835c49a"
+    ],
+    "preview": {
+      "head": "315c0a0d611a3a2f142081c6bad150e9ab54a34a",
+      "tree": "c8cb556bc7ed8b6e4ed7b58bc20628356835c49a",
+      "distHashes": {
+        "zh-cn/index.html": "a1cb7c65869a8cd58f6925ecec2705a4042ffea1a713d0804b59db45121c64c4",
+        "zh-cn/ui-libraries/shadcn/button/index.html": "cc863c80e854ebd99a843bdf78661cf55414b780bd2d96d79567602857881550",
+        "zh-cn/ui-libraries/brutalist/components/button/index.html": "b919804d991109b11f92ad3049045f6534b75dcd99fb82d128d29cd8e02d8cb0"
+      },
+      "sourceCodeExamples": 9,
+      "renderedCodeExamples": 9,
+      "packedHeaderExit": 0,
+      "previewBrowserExit": 0,
+      "selector": "uses real family Popover Triggers|uses the same mobile shell|retains (shadcn|brutalist) preference owners|compact (shadcn|brutalist)|live available region|keeps Runtime Tabs outside"
+    },
+    "matrix": {
+      "zh-cn": {
+        "bytes": 1862410,
+        "sha256": "74b5a770d35b6fa5140372b55fc0b041d4dd7ef0601963ac88ba7e0d8c1ab839",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914101,
+        "sha256": "a0019c67ce9ebaba368ad1bdc1dd2b1f0da27a1cd23c28cec63ab21b9ece998c",
+        "previews": 1268
+      }
+    },
+    "header": {
+      "head": "315c0a0d611a3a2f142081c6bad150e9ab54a34a",
+      "browser": "156.0.8078.79",
+      "scope": "First animation frame control on the exact static Astro preview. Geometry reads can force layout.",
+      "results": [
+        {
+          "width": 320,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1586.2000000476837,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1742.7999999523163,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1762.3999998569489,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        },
+        {
+          "width": 390,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1518.7000000476837,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1646.2000000476837,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1664.2000000476837,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        }
+      ]
+    },
+    "browser": {
+      "passed": 15,
+      "failed": 0,
+      "filtered": 9,
+      "files": 3,
+      "failures": []
+    },
+    "focused": {
+      "passed": 294,
+      "failed": 1,
+      "filtered": 0,
+      "files": 13,
+      "failures": [
+        "WC DemoRuntimeApi callback projection maps onX to payload callbacks while preserving the original raw props snapshot"
+      ]
+    },
+    "productionBuildExit": 0,
+    "workspaceTypesExit": 0,
+    "packageBuildEvidence": "Package outputs reused and tracked package inputs unchanged from the prior exact main-based PR #1502 build.",
+    "sameScopeBaseline": {
+      "focused": {
+        "passed": 294,
+        "failed": 1,
+        "filtered": 0,
+        "files": 13,
+        "failures": [
+          "WC DemoRuntimeApi callback projection maps onX to payload callbacks while preserving the original raw props snapshot"
+        ]
+      },
+      "candidateTerminalRejections": 3,
+      "parentTerminalRejections": 3
+    }
+  },
+  "integratedCandidate": {
+    "headTree": [
+      "8f0025d11481cc0b1269ed41972abf33382cdb74",
+      "00c197f87f897b20a66a03b7dd09a6786d66361d"
+    ],
+    "preview": {
+      "head": "8f0025d11481cc0b1269ed41972abf33382cdb74",
+      "tree": "00c197f87f897b20a66a03b7dd09a6786d66361d",
+      "distHashes": {
+        "zh-cn/index.html": "025830828967c6d3671c155c464271b99430bd0bf4c4fce793ab19211b857462",
+        "zh-cn/ui-libraries/shadcn/button/index.html": "edae16c261a7b16d32a3e0047409f45b6a0da2ffb13cb52fdcecbe60d072b623",
+        "zh-cn/ui-libraries/brutalist/components/button/index.html": "5f1eb1bcd738a70a1db26554e548e7568687c52cb273f12cbbceb0afd3ba7914"
+      },
+      "sourceCodeExamples": 9,
+      "renderedCodeExamples": 9,
+      "packedHeaderExit": 0,
+      "previewBrowserExit": 0,
+      "selector": "uses real family Popover Triggers|uses the same mobile shell|retains (shadcn|brutalist) preference owners|compact (shadcn|brutalist)|live available region|keeps Runtime Tabs outside"
+    },
+    "matrix": {
+      "zh-cn": {
+        "bytes": 1862537,
+        "sha256": "fa9a42bcf9b190905913c1b475aa74e75973fd7a580ac35caf3196427bd5cee8",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914097,
+        "sha256": "e54ace5d358b74a6a2d9d73825c48f3dbac5908323e1b67258e49d9e80821b92",
+        "previews": 1268
+      }
+    },
+    "header": {
+      "head": "8f0025d11481cc0b1269ed41972abf33382cdb74",
+      "browser": "156.0.8078.79",
+      "scope": "First animation frame control on the exact static Astro preview. Geometry reads can force layout.",
+      "results": [
+        {
+          "width": 320,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1569,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1727.6999998092651,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1746,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        },
+        {
+          "width": 390,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1504.5999999046326,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1675.7999999523163,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1699.3999998569489,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        }
+      ]
+    },
+    "browser": {
+      "passed": 15,
+      "failed": 0,
+      "filtered": 9,
+      "files": 3,
+      "failures": []
+    },
+    "focused": {
+      "passed": 295,
+      "failed": 0,
+      "filtered": 0,
+      "files": 13,
+      "failures": []
+    },
+    "productionBuildExit": 0,
+    "workspaceTypesExit": 0,
+    "packageBuildEvidence": "Package outputs reused from the unchanged 35d workspace package inputs.",
+    "fullChineseS4": {
+      "passed": 0,
+      "failed": 1,
+      "filtered": 1,
+      "files": 1,
+      "failures": ["S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance"]
+    }
+  },
+  "s4Scope": {
+    "lastDeliveredStartupChange": {
+      "timeOrigin": 1794973892780.2,
+      "pageMs": 50964.40000009537,
+      "dateNow": 1794973943744,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-dhlabowj4rd",
+        "index": 688,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-bootstrap-2-3-2-live-region",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-dhlabowj4rd",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      }
+    },
+    "readinessMs": 60000,
+    "caseMs": 150000,
+    "preferredScope": "Separate same-page query timing and isolated source fixtures. No end-to-end resolution inferred."
+  }
+}

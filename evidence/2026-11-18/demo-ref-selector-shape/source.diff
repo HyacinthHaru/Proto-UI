@@ -1,0 +1,11 @@
+diff --git a/apps/www/src/components/PrototypePreviewer/demo-ref-observer.ts b/apps/www/src/components/PrototypePreviewer/demo-ref-observer.ts
+index 964b23205..69d6e94fc 100644
+--- a/apps/www/src/components/PrototypePreviewer/demo-ref-observer.ts
++++ b/apps/www/src/components/PrototypePreviewer/demo-ref-observer.ts
+@@ -1,5 +1,5 @@
+ function demoOwnedRefSelector(owner: string): string {
+-  return `[data-demo-owner="${owner}"][data-demo-ref], .pui-owner-${owner}[data-demo-ref]`;
++  return `[data-demo-ref]:is([data-demo-owner="${owner}"], .pui-owner-${owner})`;
+ }
+ export function collectOwnedDemoRefs(host: HTMLElement, owner: string) {
+   const selector = demoOwnedRefSelector(owner);
