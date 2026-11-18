@@ -1,0 +1,293 @@
+{
+  "integrated": "7a48352ffc5b799bb34202847f7befb97c448cc2",
+  "mainBased": {
+    "head": "80f7455f4b270e0c0ad6a30eb1b24dfdd3007a96",
+    "tree": "1a4d54d21f93d6afbcd0b07e0878b81d4093525f",
+    "distHashes": {
+      "zh-cn/index.html": "3b912dc11fddea7f5e9fd65fc3054ff1a5c7e2ac405d10da020603142d6ee236",
+      "zh-cn/ui-libraries/shadcn/button/index.html": "51d69662a332a543d0afe5cac8e31e65bf3481060446d821c119397ab90ed358",
+      "zh-cn/ui-libraries/brutalist/components/button/index.html": "aab501786c6f7e5276921814db339ff6be8e92f763ce552a7f7ddab397dac15c"
+    },
+    "sourceCodeExamples": 9,
+    "renderedCodeExamples": 9,
+    "packedHeaderExit": 0,
+    "previewBrowserExit": 0,
+    "codeGrammarExit": 0,
+    "copyCommandsExit": 0,
+    "scrollChainExit": 0,
+    "selector": "uses real family Popover Triggers|uses the same mobile shell|retains (shadcn|brutalist) preference owners|compact (shadcn|brutalist)|live available region|keeps Runtime Tabs outside"
+  },
+  "mainSuites": {
+    "focused": {
+      "passed": 50,
+      "filtered": 0,
+      "testFiles": 5,
+      "originalReportSha256": "ddd1674e0b450060ed5f2658ce39968c7329f6a989374eeae4f05ba204c0b3c7"
+    },
+    "preview-browser": {
+      "passed": 15,
+      "filtered": 9,
+      "testFiles": 3,
+      "originalReportSha256": "ecdf7f95b16b7448da68f702572ec420c2fdf9f62d92030afd1f2ae28ac0f709"
+    },
+    "code-grammar": {
+      "passed": 3,
+      "filtered": 23,
+      "testFiles": 1,
+      "originalReportSha256": "a381419ba664e7c3d4f4e6c48a7c565360bc6355fcf04ada612b41edd190f074"
+    },
+    "copy-commands": {
+      "passed": 1,
+      "filtered": 14,
+      "testFiles": 1,
+      "originalReportSha256": "e465659e8b591fe6760602a314a38ef3cfc5df0209c59a71b29651da0e734539"
+    },
+    "scroll-chain": {
+      "passed": 2,
+      "filtered": 4,
+      "testFiles": 1,
+      "originalReportSha256": "90db1d2b7ce12b4227a02cec7cba528043103ddcc6a83840f49b4e3b1da82685"
+    }
+  },
+  "mainCorpus": {
+    "pages": 703,
+    "counts": {
+      "frames": 324,
+      "withToolbar": 70,
+      "withoutToolbar": 254,
+      "corners": 0
+    },
+    "problems": []
+  },
+  "markerVariant": {
+    "head": "eeb21401bf2df3fdb7b3a246fa992c2edfeb91d0",
+    "framesMissingMarker": 54,
+    "cachedPlainCorner": [
+      {
+        "width": 390,
+        "frames": [
+          {
+            "toolbar": false,
+            "marker": false,
+            "paddingInlineEnd": "12px",
+            "width": 358
+          }
+        ]
+      },
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "toolbar": false,
+            "marker": false,
+            "paddingInlineEnd": "12px",
+            "width": 672
+          }
+        ]
+      }
+    ]
+  },
+  "cachedPlainCornerAfter": [
+    {
+      "width": 390,
+      "frames": [
+        {
+          "toolbar": false,
+          "marker": false,
+          "paddingInlineEnd": "56px",
+          "width": 358
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "frames": [
+        {
+          "toolbar": false,
+          "marker": false,
+          "paddingInlineEnd": "56px",
+          "width": 672
+        }
+      ]
+    }
+  ],
+  "baselineNativePadding": [
+    {
+      "width": 390,
+      "frames": [
+        {
+          "labels": "frame is-terminal not-content",
+          "toolbar": true,
+          "marker": false,
+          "paddingInlineEnd": "12px",
+          "width": 358
+        },
+        {
+          "labels": "frame not-content",
+          "toolbar": false,
+          "marker": false,
+          "paddingInlineEnd": "56px",
+          "width": 358
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "frames": [
+        {
+          "labels": "frame is-terminal not-content",
+          "toolbar": true,
+          "marker": false,
+          "paddingInlineEnd": "12px",
+          "width": 672
+        },
+        {
+          "labels": "frame not-content",
+          "toolbar": false,
+          "marker": false,
+          "paddingInlineEnd": "56px",
+          "width": 672
+        }
+      ]
+    }
+  ],
+  "integratedNativePadding": [
+    {
+      "width": 390,
+      "frames": [
+        {
+          "labels": "frame is-terminal not-content",
+          "toolbar": true,
+          "marker": false,
+          "paddingInlineEnd": "12px",
+          "width": 358
+        },
+        {
+          "labels": "frame not-content",
+          "toolbar": false,
+          "marker": false,
+          "paddingInlineEnd": "56px",
+          "width": 358
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "frames": [
+        {
+          "labels": "frame is-terminal not-content",
+          "toolbar": true,
+          "marker": false,
+          "paddingInlineEnd": "12px",
+          "width": 672
+        },
+        {
+          "labels": "frame not-content",
+          "toolbar": false,
+          "marker": false,
+          "paddingInlineEnd": "56px",
+          "width": 672
+        }
+      ]
+    }
+  ],
+  "nativeScrollCaseNames": ["short-code-product-chain", "long-code-320"],
+  "integrationChineseS4": {
+    "passed": 0,
+    "readinessMs": 60000,
+    "overallMs": 150000,
+    "renderedPreviewRoots": 1268,
+    "englishFiltered": true,
+    "originalReportSha256": "c572ff3b96a50283ee6c8302f510c619699c742afd13a1b8619b35c2bd311940"
+  },
+  "traceSamples": {
+    "baseline": {
+      "source": "ba5328fd8854ad39c495deed910f5ed0d86bcbe0",
+      "sameThreadAnchorPairs": 12,
+      "traceBytes": 24960164,
+      "records": 31719,
+      "collectionComplete": true,
+      "dataLoss": false,
+      "oldSelectorRows": 54,
+      "rawTraceSha256": "30921922edc433e0dc2f27750a2c96805be6b99a1c07b1ed6330dda01953edfa",
+      "originalChineseReadinessExit": 1
+    },
+    "candidate": {
+      "source": "7a48352ffc5b799bb34202847f7befb97c448cc2",
+      "sameThreadAnchorPairs": 14,
+      "traceBytes": 23050848,
+      "records": 31361,
+      "collectionComplete": true,
+      "dataLoss": false,
+      "oldSelectorRows": 0,
+      "rawTraceSha256": "708727016bdf8046be4ee6ab309dd3137a390dc24b83e6413d6e77f7746fbe20",
+      "originalChineseReadinessExit": 1
+    }
+  },
+  "screenshots": {
+    "wc-shadcn-light-terminal.png": {
+      "sha256": "27ffbf95219fb598cf19f6918b8c5b107fe962c896d0ac2a379a7d1748234353",
+      "facts": {
+        "familyInputFixture": true,
+        "facts": {
+          "tokens": "rounded-xl border border-border bg-muted text-foreground",
+          "background": "lab(96.52 -0.0000298023 0.0000119209)",
+          "border": "1px",
+          "radius": "14px",
+          "expectedRadius": "14px",
+          "role": null,
+          "tabIndex": null,
+          "pointerEvents": "none",
+          "ownerBorder": "0px",
+          "boundsDelta": [0, 0, 0, 0],
+          "surfaceCount": 1,
+          "sourceSelectable": true
+        },
+        "row": {
+          "height": 44,
+          "before": "none",
+          "after": "none",
+          "label": "\u7ec8\u7aef",
+          "copyY": 3516.5
+        }
+      },
+      "source": "80f7455f4b270e0c0ad6a30eb1b24dfdd3007a96",
+      "viewport": {
+        "width": 390,
+        "height": 1000
+      }
+    },
+    "react-brutalist-dark-terminal.png": {
+      "sha256": "5f552d3215f2f5808646cb2ad4de4d5b294297a932d8a96e165036b08fe55c26",
+      "facts": {
+        "familyInputFixture": true,
+        "facts": {
+          "tokens": "rounded-base border-2 border-black bg-background text-foreground",
+          "background": "rgb(23, 23, 23)",
+          "border": "2px",
+          "radius": "5px",
+          "expectedRadius": "5px",
+          "role": null,
+          "tabIndex": null,
+          "pointerEvents": "none",
+          "ownerBorder": "0px",
+          "boundsDelta": [0, 0, 0, 0],
+          "surfaceCount": 1,
+          "sourceSelectable": true
+        },
+        "row": {
+          "height": 44,
+          "before": "none",
+          "after": "none",
+          "label": "\u7ec8\u7aef",
+          "copyY": 444
+        }
+      },
+      "source": "80f7455f4b270e0c0ad6a30eb1b24dfdd3007a96",
+      "viewport": {
+        "width": 390,
+        "height": 1000
+      }
+    }
+  }
+}
