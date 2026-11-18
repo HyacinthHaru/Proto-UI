@@ -1,0 +1,17 @@
+from pathlib import Path
+import subprocess,json,os
+b=Path('$TASK_STATE_ROOT');q=b/'wc-entry-transition-main/nested-portal-review';w=b/'wc-entry-transition-main-worktree';steps=[]
+def run(label,cmd,required=True):
+ with (q/(label+'-sequence.log')).open('w') as f:r=subprocess.run(cmd,cwd=w,stdout=f,stderr=subprocess.STDOUT)
+ steps.append(dict(label=label,command=cmd,exit=r.returncode));(q/'validation-sequence.json').write_text(json.dumps(dict(head='b68869ee223fb643fd28d841b4756633c459a33b',steps=steps),indent=2)+'\n');print(label,r.returncode,flush=True)
+ if required and r.returncode:raise RuntimeError(label+' failed')
+ return r.returncode
+run('production-build',['bash',str(q/'run-product.sh')]);run('candidate-pack',['node',str(q/'pack-focus-consumer.mjs'),str(q),'candidate-tarballs'])
+consumer=q/'candidate-tarballs/consumer';run('nested-installed-build',['node',str(q/'build-native.mjs'),str(q),'candidate-installed','installed',str(consumer)])
+run('nested-installed-native',['node',str(q/'native-control.mjs'),str(q),'baseline-installed','candidate-installed'])
+for label,mode in [('public-source-candidate','source'),('public-installed-candidate','installed')]:
+ cmd=['node',str(q.parent/'build-native.mjs'),str(q),label,mode]+([str(consumer)] if mode=='installed' else []);run(label+'-build',cmd)
+ j=json.loads((q/(label+'-binding.json')).read_text());paths=[v['path'] for v in j['inputs']];assert sum('/web-component/src/' in p for p in paths)>0 if mode=='source' else all('/src/' not in p for p in paths)
+ run(label+'-native',['node',str(q.parent/'native-control.mjs'),str(q),label])
+files=sorted(str(p.relative_to(w)) for p in (w/'packages/adapters/web-component/test').rglob('*test.ts') if '.browser.' not in p.name);run('whole-adapter-nonbrowser',['corepack','pnpm@10.32.1','exec','vitest','run','--maxWorkers','2','--minWorkers','1',*files,'--reporter=json','--outputFile='+str(q/'adapter-nonbrowser.json')],False)
+(q/'product.txt').write_text('b68869ee223fb643fd28d841b4756633c459a33b '+subprocess.check_output(['git','rev-parse','HEAD^{tree}'],cwd=w,text=True).strip()+'\n');run('preview-combination',['python3',str(q/'run-preview-combination.py')]);print('nested review validation terminal',flush=True)

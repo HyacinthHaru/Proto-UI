@@ -1,0 +1,65 @@
+import { createRequire } from 'node:module';
+import { writeFile } from 'node:fs/promises';
+import assert from 'node:assert/strict';
+const require = createRequire(process.env.PUI_WWW_PACKAGE);
+const { chromium } = require('playwright-core');
+const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH });
+const results = [];
+try {
+  for (const width of [320,390]) {
+    const page = await browser.newPage({viewport:{width,height:844}});
+    try {
+      const response = await page.goto(process.env.PROTO_UI_BROWSER_BASE_URL+'/zh-cn/', {waitUntil:'networkidle'});
+      assert.equal(response?.status(),200);
+      await page.waitForFunction(() => document.querySelector('[data-homepage-runtime]')?.dataset.runtimeState==='ready');
+      const menu = page.locator('.site-header-menu [data-projection-generation-state="active"] [data-demo-ref="home-menu"]');
+      await menu.click();
+      const panel = page.locator('[data-site-header-panel]');
+      await panel.waitFor({state:'visible'});
+      const trigger=page.locator('#home-preferences [data-projection-control="family"] [role="combobox"]');
+      await trigger.click();
+      const popup=await trigger.getAttribute('aria-controls');
+      const option=page.locator('[id='+JSON.stringify(popup)+']').getByRole('option',{name:'Brutalist',exact:true});
+      await option.evaluate(node=>{
+        const root=document.querySelector('[data-homepage-runtime]');
+        const panel=root.querySelector('[data-site-header-panel]');
+        const state=window.__puiHeaderFirstFrame={samples:[],trusted:false};
+        const measure=(phase)=>{
+          const box=panel.getBoundingClientRect();
+          const header=root.getBoundingClientRect();
+          state.samples.push({phase,at:performance.now(),family:root.dataset.family,generation:root.dataset.runtimeGeneration,
+            top:box.top,bottom:box.bottom,left:box.left,right:box.right,width:box.width,headerBottom:header.bottom,
+            hidden:panel.hidden,position:panel.style.getPropertyValue('--site-header-panel-top')});
+        };
+        const observer=new MutationObserver(()=>{
+          if (root.dataset.family!=='brutalist') return;
+          observer.disconnect();
+          measure('family mutation delivery');
+          requestAnimationFrame(()=>{
+            measure('first animation frame');
+            requestAnimationFrame(()=>measure('second animation frame'));
+          });
+        });
+        node.addEventListener('click',event=>{
+          state.trusted=event.isTrusted;
+          observer.observe(root,{attributes:true,attributeFilter:['data-family']});
+        },{once:true,capture:true});
+      });
+      await option.click();
+      await page.waitForFunction(()=>window.__puiHeaderFirstFrame?.samples.length===3,undefined,{timeout:30000});
+      const state=await page.evaluate(()=>window.__puiHeaderFirstFrame);
+      assert.equal(state.trusted,true);
+      for (const row of state.samples) {
+        assert.equal(row.family,'brutalist');
+        assert.equal(row.hidden,false);
+        assert(row.width>0 && row.left>=-1 && row.right<=width+1);
+        assert(Math.abs(row.top-row.headerBottom-5)<=1);
+        assert(row.bottom<=845);
+      }
+      results.push({width,...state});
+    } finally { await page.close(); }
+  }
+  await writeFile(process.env.PUI_OUTPUT,JSON.stringify({head:process.env.PUI_PRODUCT_SHA,browser:browser.version(),
+    scope:'First animation frame control on the exact static Astro preview. Geometry reads can force layout.',
+    results},null,2)+'\n');
+} finally { await browser.close(); }

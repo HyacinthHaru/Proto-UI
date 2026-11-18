@@ -1,0 +1,19 @@
+import {createRequire} from 'node:module';
+import {pathToFileURL} from 'node:url';
+import {readFileSync,writeFileSync,mkdirSync,lstatSync,realpathSync} from 'node:fs';
+import {join,relative} from 'node:path';
+import {spawnSync} from 'node:child_process';
+import {createHash} from 'node:crypto';
+const root=process.cwd(),[out,label]=process.argv.slice(2),dest=join(out,label);
+const {getAllPackages,stagePackage}=await import(pathToFileURL(join(root,'scripts/release/lib.mjs')));
+const externals=new Map();const all=getAllPackages(),byName=new Map(all.map(p=>[p.name,p])),selected=new Map(),queue=['@proto.ui/adapter-web-component','@proto.ui/core','@proto.ui/hooks'];
+for(let i=0;i<queue.length;i++){const name=queue[i];if(selected.has(name))continue;const p=byName.get(name);if(!p)throw new Error('Missing local '+name);selected.set(name,p);for(const field of ['dependencies','peerDependencies','optionalDependencies'])for(const dep of Object.keys(p.manifest[field]??{})){if(!dep.startsWith('@proto.ui/')){const required=createRequire(p.manifestPath);const manifest=required.resolve(dep+'/package.json');const data=JSON.parse(readFileSync(manifest,'utf8'));externals.set(dep,data.version);continue;}queue.push(dep);}}
+for(const [dep] of externals){const pkg=JSON.parse(readFileSync(createRequire(join(byName.get('@proto.ui/module-positioning').dir,'package.json')).resolve(dep+'/package.json'),'utf8'));console.log('external',dep,pkg.version);}
+mkdirSync(dest,{recursive:true});const versions=new Map(all.map(p=>[p.name,p.version])),results=[];
+for(const p of selected.values()){const r=stagePackage(p,{outDir:join(dest,'stage'),version:p.version,pack:true,packageVersions:versions});results.push(r);console.log('packed',r.name);}
+const consumer=join(dest,'consumer');mkdirSync(consumer);const manifest={name:'isolated-motion-entry-consumer',version:'0.0.0',private:true,type:'module',dependencies:Object.fromEntries(results.map(r=>[r.name,'file:'+relative(consumer,r.packResult.path)]))};writeFileSync(join(consumer,'package.json'),JSON.stringify(manifest,null,2));
+manifest.overrides=Object.fromEntries(externals);writeFileSync(join(consumer,'package.json'),JSON.stringify(manifest,null,2));
+const install=spawnSync('npm',['install','--ignore-scripts','--no-audit','--no-fund','--cache',join(dest,'install-cache')],{cwd:consumer,encoding:'utf8'});writeFileSync(join(dest,'install.log'),install.stdout+install.stderr);if(install.status!==0)throw new Error('local tarballs plus pinned third-party install failed');
+const hash=x=>createHash('sha256').update(readFileSync(x)).digest('hex');
+for(const p of selected.values()){const installed=join(consumer,'node_modules',p.name);if(lstatSync(installed).isSymbolicLink()||realpathSync(installed)!==installed)throw new Error('linked consumer '+p.name);}
+writeFileSync(join(dest,'pack-install-receipt.json'),JSON.stringify({label,packages:results.map(r=>({name:r.name,tarball:r.packResult.path,sha256:hash(r.packResult.path),manifestSha256:hash(join(r.stageDir,'package.json'))})),consumer,installExit:install.status,externals:Object.fromEntries(externals),offline:false,ignoreScripts:true,lockSha256:hash(join(consumer,'package-lock.json'))},null,2)+'\n');

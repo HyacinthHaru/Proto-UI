@@ -1,0 +1,69 @@
+#!/bin/bash
+set -euo pipefail
+d=$TASK_STATE_ROOT
+q="$d/wc-entry-transition-main/nested-portal-review"
+w="$d/wc-entry-transition-main-worktree"
+export PATH="$d/../proto-ui-pr822/toolchain/node-v24.21.0-darwin-arm64/bin:/opt/homebrew/bin:$PATH"
+export CHROME_PATH='$USER_HOME/.codex/task-state/proto-ui-20261111-window/chrome-156.0.8078.79/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing'
+export PROTO_UI_RUNTIME_EVIDENCE_DIR="$q"
+export RUNNER_TEMP="$q/runner-temp"
+cd "$w"
+test "$(git rev-parse HEAD)" = "$(head -1 "$q/source.txt")"
+test -z "$(git status --porcelain)"
+mkdir -p "$RUNNER_TEMP"
+node --version > "$q/versions.txt"
+corepack pnpm@10.32.1 --version >> "$q/versions.txt"
+"$CHROME_PATH" --version >> "$q/versions.txt"
+date -u +%FT%TZ > "$q/build-started.txt"
+corepack pnpm@10.32.1 install --offline --frozen-lockfile > "$q/install.log" 2>&1
+shasum -a 256 -c "$q/changed-inputs.sha256"
+corepack pnpm@10.32.1 build:packages > "$q/packages.log" 2>&1
+rg 'complete: 47/47 public packages' "$q/packages.log"
+routes=(apps/www/src/content/docs/zh-cn/internal/demo-matrix.mdx apps/www/src/content/docs/en/internal/demo-matrix.mdx)
+trap 'git restore --worktree -- "${routes[@]}"' EXIT
+python3 - "${routes[@]}" <<'DRAFT'
+from pathlib import Path
+import sys
+for file in sys.argv[1:]:
+    p=Path(file)
+    source=p.read_text()
+    assert source.count('\ndraft: true\n')==1
+    p.write_text(source.replace('\ndraft: true\n','\ndraft: false\n',1))
+DRAFT
+git diff -- "${routes[@]}" > "$q/static-preview-route-overlay.patch"
+cmp "$q/static-preview-route-overlay.patch" "$d/s4-assembled-product-c37/static-preview-route-overlay.patch"
+corepack pnpm@10.32.1 --filter apps-www build > "$q/site-build.log" 2>&1
+git restore --worktree -- "${routes[@]}"
+trap - EXIT
+corepack pnpm@10.32.1 check:types > "$q/types.log" 2>&1
+printf '0\n' > "$q/types.exit"
+corepack pnpm@10.32.1 check:package-manifests > "$q/manifests.log" 2>&1
+printf '0\n' > "$q/manifests.exit"
+corepack pnpm@10.32.1 check:package-budgets > "$q/budgets.log" 2>&1
+printf '0\n' > "$q/budgets.exit"
+date -u +%FT%TZ > "$q/build-finished.txt"
+printf "0\n" > "$q/production-build.exit"
+test -z "$(git status --porcelain)"
+suite=apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts
+shasum -a 256 "$suite" apps/www/dist/{zh-cn,en}/internal/demo-matrix/index.html > "$q/inputs.sha256"
+python3 - "$q/page-matrix.json" <<'PY'
+from pathlib import Path
+from html.parser import HTMLParser
+import hashlib,json,sys
+class PreviewCounter(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.previews=0
+    def handle_starttag(self, tag, attrs):
+        if any(name=='data-previewer-id' for name,value in attrs):
+            self.previews+=1
+rows={}
+for locale in ('zh-cn','en'):
+    p=Path(f'apps/www/dist/{locale}/internal/demo-matrix/index.html')
+    b=p.read_bytes()
+    sink=PreviewCounter()
+    sink.feed(b.decode())
+    assert sink.previews==1268,(locale,sink.previews)
+    rows[locale]={'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest(),'previews':sink.previews}
+Path(sys.argv[1]).write_text(json.dumps(rows,indent=2)+'\n')
+PY

@@ -1,0 +1,76 @@
+import {createRequire} from 'node:module';
+import {writeFile} from 'node:fs/promises';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+const {chromium}=createRequire(process.env.PUI_WWW_PACKAGE)('playwright-core');
+const browser=await chromium.launch({executablePath:process.env.CHROME_PATH});
+const out=process.argv[2],candidate=process.argv[3],rows=[],failures=[];
+const modes=['unrelated-light','descendant-light','ancestor-light','descendant-shadow','slot-ancestor-light','external-radio-light'];
+try {
+ for(const mode of modes)for(const variant of ['packed-control',candidate]){
+  const context=await browser.newContext();
+  try{
+   const page=await context.newPage();await page.setContent('<main></main>');
+   await page.addScriptTag({path:path.join(out,variant+'.js')});
+   const result=await page.evaluate(async mode=>{
+    const pause=()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+    const source=document.createElement('div');source.style.transition='visibility 80ms linear';source.style.visibility='visible';source.textContent='Motion source';
+    const wrapper=document.createElement('div');let captureRoot=document,mount=wrapper;
+    if(mode==='slot-ancestor-light'){
+      const carrier=document.createElement('div'),root=carrier.attachShadow({mode:'open'}),slot=document.createElement('slot');source.textContent='';source.append(slot);root.append(source);document.body.append(carrier);mount=carrier;captureRoot=root;
+    }else document.body.append(wrapper);
+    if(mode==='ancestor-light'){
+      source.textContent='';wrapper.append(source);
+    }else if(mode!=='slot-ancestor-light')document.body.append(source);
+    const host=window.makeMotionEntry(mode==='descendant-shadow'?'shadow':'light');
+    if(mode==='ancestor-light')source.append(host);else mount.append(host);
+    for(let i=0;i<120&&host.tabIndex!==0;i++)await new Promise(resolve=>requestAnimationFrame(resolve));
+    if(host.tabIndex!==0)throw new Error('Entry policy was not installed');
+    const inside=document.createElement(mode==='external-radio-light'?'input':'button');if(inside.localName==='button')inside.textContent='Owned control';
+    let peer;
+    if(mode==='external-radio-light'){
+      inside.type='radio';inside.name='native-entry-motion';peer=document.createElement('input');peer.type='radio';peer.name=inside.name;peer.checked=true;source.append(peer);
+    }
+    host.append(inside);await pause();
+    if(mode!=='external-radio-light'&&host.hasAttribute('tabindex'))throw new Error('Native descendant is not active');
+    if(mode==='external-radio-light'){
+      peer.disabled=true;
+      for(let i=0;i<120&&host.hasAttribute('tabindex');i++)await new Promise(resolve=>requestAnimationFrame(resolve));
+      if(host.hasAttribute('tabindex'))throw new Error('External radio input was not observed');
+      peer.disabled=false;
+      for(let i=0;i<120&&host.tabIndex!==0;i++)await new Promise(resolve=>requestAnimationFrame(resolve));
+      if(host.tabIndex!==0)throw new Error('External checked peer ownership not restored');
+    }
+    let origin=source;
+    if(mode.startsWith('descendant-')){origin=inside;origin.style.transition='visibility 80ms linear';origin.style.visibility='visible';}
+    await pause();
+    const nativeGet=getComputedStyle.bind(window);let armed=false,reads=0;
+    window.getComputedStyle=(node,...args)=>{if(armed&&node===host)reads++;return nativeGet(node,...args);};
+    const before={tabindex:host.getAttribute('tabindex'),visibility:nativeGet(inside).visibility};
+    const observed=await new Promise((resolve,reject)=>{
+      const timer=setTimeout(()=>reject(new Error('Native visibility transition was not delivered')),5000);
+      const begin=event=>{if(event.composedPath()[0]===origin&&event.propertyName==='visibility'){armed=true;reads=0;}};
+      captureRoot.addEventListener('transitionend',begin,true);
+      origin.addEventListener('transitionend',event=>{
+        if(event.propertyName!=='visibility')return;
+        armed=false;clearTimeout(timer);captureRoot.removeEventListener('transitionend',begin,true);
+        resolve({trusted:event.isTrusted,composed:event.composed,path:event.composedPath().map(n=>n.nodeName??'Window'),reads,tabindex:host.getAttribute('tabindex'),visibility:nativeGet(inside).visibility});
+      },{once:true});
+      origin.style.visibility='hidden';
+    });
+    await pause();
+    window.getComputedStyle=nativeGet;
+    return {before,observed,settled:{tabindex:host.getAttribute('tabindex'),visibility:nativeGet(inside).visibility},shadow:!!host.shadowRoot};
+   },mode);
+   rows.push({mode,variant,...result});
+   try{
+    assert(result.observed.trusted);
+    if(mode==='unrelated-light'){assert.equal(result.observed.reads,0);assert.equal(result.settled.tabindex,null);}
+    else {assert(result.observed.reads>0);assert.equal(result.observed.tabindex,mode==='external-radio-light'?null:'0');}
+   }catch(error){failures.push({mode,variant,message:error.message});}
+   console.info(JSON.stringify({mode,variant,...result}));
+  }finally{await context.close();}
+ }
+ await writeFile(path.join(out,'native-'+candidate+'.json'),JSON.stringify({browser:browser.version(),scope:'Actual public definePrototype/asFocusEntry/AdaptToWebComponent fixture. CSS style changes generate real trusted transitionend; no isTrusted injection. Computed-style reads counted only during that dispatch, then eligibility checked.',rows,failures},null,2)+'\n');
+ if(failures.some(r=>r.variant===candidate))process.exitCode=1;
+}finally{await browser.close();}
