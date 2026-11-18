@@ -1,0 +1,1418 @@
+{
+  "integrated": {
+    "headTree": [
+      "ba5328fd8854ad39c495deed910f5ed0d86bcbe0",
+      "3a38b656bb4347a40f9a94290bbb054cc324aa90"
+    ],
+    "environment": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+    "changedInputs": {
+      "packages/adapters/base/src/events/keyboard-press-owner.ts": "a70e36a04f4dc38acc62b7c25623a63f3346e4dcf96786c486f6679df2f65ce4",
+      "packages/adapters/base/src/events/web-event-router.ts": "bcc6f78ec736d77a2ab0f003a7bef732f0232dcb0ea3410b9da4fa353642e404",
+      "packages/adapters/base/src/platform/instance-tree.ts": "e5a69b7eada9dd689cc69640539cb73db0c5825ed3fd79033c2015f882f67d75"
+    },
+    "focused": {
+      "passed": 139,
+      "failed": 0,
+      "filtered": 0,
+      "files": 17,
+      "failures": []
+    },
+    "nativeSource": {
+      "parent": {
+        "base": "56aae189b749238ccff68150ceced3219a96ab1e",
+        "chrome": "156.0.8078.79",
+        "phases": [
+          [3, 0],
+          [2, 1],
+          [1, 1],
+          [0, 1],
+          [0, 0]
+        ],
+        "events": [
+          {
+            "index": 0,
+            "trusted": true
+          },
+          {
+            "index": 0,
+            "trusted": false
+          },
+          {
+            "index": 0,
+            "trusted": true
+          },
+          {
+            "index": 1,
+            "trusted": false
+          },
+          {
+            "index": 1,
+            "trusted": true
+          }
+        ],
+        "bundleSHA256": "a9ba067c106bccaff1d5b15dfc1d819bee611ababd48527cffa32e0cc256723b",
+        "inputs": {
+          "native-bridge-adoption.ts": "441b189868afa3862b8779e014bffa34adce42216f9707f0e36984d736b68626",
+          "packages/adapters/base/src/events/pointer-contact.ts": "8979916b5ca021cf4770168292681c99b0816e46b2cd47caa4bd361543bc0f09",
+          "packages/adapters/base/src/events/pointer-sample.ts": "940874ff556c42ff318fb3f72879634692b8cf3ba2d06388b7c6610d390afccb",
+          "packages/adapters/base/src/events/web-event-router.ts": "7f123669606125eb0ebb42d603c96ddb592502860322e9d5bfeec9a00edbf648",
+          "packages/adapters/base/src/gestures/web-move-click-arbitration.ts": "8ca6d37f7a60c5eb8909b3026c12ea60eec93b1b642200845443bac7746bd8f7",
+          "packages/adapters/base/src/platform/instance-tree.ts": "6dfa1b70bafae00bc016e89e6a8235c82a420d9d9920d93618db4ff9bd600614"
+        }
+      },
+      "candidate": {
+        "base": "56aae189b749238ccff68150ceced3219a96ab1e",
+        "chrome": "156.0.8078.79",
+        "phases": [
+          [1, 0],
+          [1, 1],
+          [1, 1],
+          [0, 1],
+          [0, 0]
+        ],
+        "events": [
+          {
+            "index": 0,
+            "trusted": true
+          },
+          {
+            "index": 0,
+            "trusted": false
+          },
+          {
+            "index": 0,
+            "trusted": true
+          },
+          {
+            "index": 1,
+            "trusted": false
+          },
+          {
+            "index": 1,
+            "trusted": true
+          }
+        ],
+        "bundleSHA256": "55775c786642f510ffc6182c9a20724c671e02048ec9f3d525fdadb50db18607",
+        "inputs": {
+          "native-bridge-adoption.ts": "441b189868afa3862b8779e014bffa34adce42216f9707f0e36984d736b68626",
+          "packages/adapters/base/src/events/keyboard-press-owner.ts": "a70e36a04f4dc38acc62b7c25623a63f3346e4dcf96786c486f6679df2f65ce4",
+          "packages/adapters/base/src/events/pointer-contact.ts": "8979916b5ca021cf4770168292681c99b0816e46b2cd47caa4bd361543bc0f09",
+          "packages/adapters/base/src/events/pointer-sample.ts": "940874ff556c42ff318fb3f72879634692b8cf3ba2d06388b7c6610d390afccb",
+          "packages/adapters/base/src/events/web-event-router.ts": "bcc6f78ec736d77a2ab0f003a7bef732f0232dcb0ea3410b9da4fa353642e404",
+          "packages/adapters/base/src/gestures/web-move-click-arbitration.ts": "8ca6d37f7a60c5eb8909b3026c12ea60eec93b1b642200845443bac7746bd8f7",
+          "packages/adapters/base/src/platform/instance-tree.ts": "e5a69b7eada9dd689cc69640539cb73db0c5825ed3fd79033c2015f882f67d75"
+        }
+      }
+    },
+    "productBrowser": {
+      "passed": 15,
+      "failed": 0,
+      "filtered": 9,
+      "files": 3,
+      "failures": []
+    },
+    "productPreview": {
+      "head": "ba5328fd8854ad39c495deed910f5ed0d86bcbe0",
+      "tree": "3a38b656bb4347a40f9a94290bbb054cc324aa90",
+      "distHashes": {
+        "zh-cn/index.html": "67c9f6cdf4e4d66a8dedfd637ef0246b6f8a3cabc2476cb8d93e80d69afad6b5",
+        "zh-cn/ui-libraries/shadcn/button/index.html": "903f2c43429d0e1a9db654eda8bed11536cc222ab5f8d055048e1c9474d875cf",
+        "zh-cn/ui-libraries/brutalist/components/button/index.html": "cfae40d76c05674e430c6433d362b746a2b4413c3f2b4778cac0241b9912d772"
+      },
+      "sourceCodeExamples": 9,
+      "renderedCodeExamples": 9,
+      "packedHeaderExit": 0,
+      "previewBrowserExit": 0,
+      "selector": "uses real family Popover Triggers|uses the same mobile shell|retains (shadcn|brutalist) preference owners|compact (shadcn|brutalist)|live available region|keeps Runtime Tabs outside"
+    },
+    "header": {
+      "head": "ba5328fd8854ad39c495deed910f5ed0d86bcbe0",
+      "browser": "156.0.8078.79",
+      "scope": "First animation frame control on the exact static Astro preview. Geometry reads can force layout.",
+      "results": [
+        {
+          "width": 320,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1901.6000001430511,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 2057.9000000953674,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 2091.2000000476837,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        },
+        {
+          "width": 390,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1510.2999999523163,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1662.2000000476837,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1682.3999998569489,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        }
+      ]
+    },
+    "previews": {
+      "zh-cn": {
+        "bytes": 1862518,
+        "sha256": "370ed184376a1cb88b28084e1f56475e7f4ad9f20dddcf06acee0ab541043ae2",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914137,
+        "sha256": "6fdaf4d6264906c6f6d3aa85df6972954544a9e9ea870a6efa58d1f18bd659ed",
+        "previews": 1268
+      }
+    },
+    "packageBuilds": 47,
+    "sitePages": 685,
+    "statuses": {
+      "production-build": 0,
+      "types": 0,
+      "manifests": 0,
+      "budgets": 0,
+      "preview-browser": 0,
+      "packed-header-frames": 0,
+      "extended-native": 0
+    }
+  },
+  "standalone": {
+    "headTree": [
+      "ff2a37bfd896bb2850bdce95c654c80216eb0e21",
+      "67b549dc1860457056d5a5323f4e9553e5c7521b"
+    ],
+    "environment": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+    "changedInputs": {
+      "packages/adapters/base/src/events/keyboard-press-owner.ts": "a70e36a04f4dc38acc62b7c25623a63f3346e4dcf96786c486f6679df2f65ce4",
+      "packages/adapters/base/src/events/web-event-router.ts": "31466de55197853c094fe40bb6839487eea151854cc8a6c76417a9ab0a502a4c",
+      "packages/adapters/base/src/platform/instance-tree.ts": "8a9bcb8942c96adb6c0edde8f2436989c9cf7b18ba2b2e3ca614f6658f11d06d"
+    },
+    "focused": {
+      "passed": 138,
+      "failed": 0,
+      "filtered": 0,
+      "files": 17,
+      "failures": []
+    },
+    "nativeSource": {
+      "parent": {
+        "base": "4d6e04533500b71d458c4a192a5b3d78bb0ed75a",
+        "chrome": "156.0.8078.79",
+        "phases": [
+          [3, 0],
+          [2, 1],
+          [1, 1],
+          [0, 1],
+          [0, 0]
+        ],
+        "events": [
+          {
+            "index": 0,
+            "trusted": true
+          },
+          {
+            "index": 0,
+            "trusted": false
+          },
+          {
+            "index": 0,
+            "trusted": true
+          },
+          {
+            "index": 1,
+            "trusted": false
+          },
+          {
+            "index": 1,
+            "trusted": true
+          }
+        ],
+        "bundleSHA256": "8bbd35e044f7cd303886ebfeca795ccb089a7cae271a46b8614fffa66084cc5a",
+        "inputs": {
+          "native-bridge-adoption.ts": "441b189868afa3862b8779e014bffa34adce42216f9707f0e36984d736b68626",
+          "packages/adapters/base/src/events/pointer-contact.ts": "8979916b5ca021cf4770168292681c99b0816e46b2cd47caa4bd361543bc0f09",
+          "packages/adapters/base/src/events/pointer-sample.ts": "940874ff556c42ff318fb3f72879634692b8cf3ba2d06388b7c6610d390afccb",
+          "packages/adapters/base/src/events/web-event-router.ts": "29db43e2dea5fdf12e5738f96520f12766f512f37a928baa9dfdf7d39c490434",
+          "packages/adapters/base/src/gestures/web-move-click-arbitration.ts": "8ca6d37f7a60c5eb8909b3026c12ea60eec93b1b642200845443bac7746bd8f7",
+          "packages/adapters/base/src/platform/instance-tree.ts": "6176f121214f9f4dd516e87942c12919458fdfa599bd7c4de5ee32c7de0c654b"
+        }
+      },
+      "candidate": {
+        "base": "4d6e04533500b71d458c4a192a5b3d78bb0ed75a",
+        "chrome": "156.0.8078.79",
+        "phases": [
+          [1, 0],
+          [1, 1],
+          [1, 1],
+          [0, 1],
+          [0, 0]
+        ],
+        "events": [
+          {
+            "index": 0,
+            "trusted": true
+          },
+          {
+            "index": 0,
+            "trusted": false
+          },
+          {
+            "index": 0,
+            "trusted": true
+          },
+          {
+            "index": 1,
+            "trusted": false
+          },
+          {
+            "index": 1,
+            "trusted": true
+          }
+        ],
+        "bundleSHA256": "f672e9e8c08f3ae319817fe48f1703ef000880b9e841f6f5fc180e84e3cc0aa3",
+        "inputs": {
+          "native-bridge-adoption.ts": "441b189868afa3862b8779e014bffa34adce42216f9707f0e36984d736b68626",
+          "packages/adapters/base/src/events/keyboard-press-owner.ts": "a70e36a04f4dc38acc62b7c25623a63f3346e4dcf96786c486f6679df2f65ce4",
+          "packages/adapters/base/src/events/pointer-contact.ts": "8979916b5ca021cf4770168292681c99b0816e46b2cd47caa4bd361543bc0f09",
+          "packages/adapters/base/src/events/pointer-sample.ts": "940874ff556c42ff318fb3f72879634692b8cf3ba2d06388b7c6610d390afccb",
+          "packages/adapters/base/src/events/web-event-router.ts": "31466de55197853c094fe40bb6839487eea151854cc8a6c76417a9ab0a502a4c",
+          "packages/adapters/base/src/gestures/web-move-click-arbitration.ts": "8ca6d37f7a60c5eb8909b3026c12ea60eec93b1b642200845443bac7746bd8f7",
+          "packages/adapters/base/src/platform/instance-tree.ts": "8a9bcb8942c96adb6c0edde8f2436989c9cf7b18ba2b2e3ca614f6658f11d06d"
+        }
+      }
+    },
+    "productBrowser": {
+      "passed": 15,
+      "failed": 0,
+      "filtered": 9,
+      "files": 3,
+      "failures": []
+    },
+    "productPreview": {
+      "head": "ff2a37bfd896bb2850bdce95c654c80216eb0e21",
+      "tree": "67b549dc1860457056d5a5323f4e9553e5c7521b",
+      "distHashes": {
+        "zh-cn/index.html": "fe3f1ff872129c4085c7bebfdae37b3b056078ce5870dfa80b33832ff6d3edc7",
+        "zh-cn/ui-libraries/shadcn/button/index.html": "a53998c1343778b5967cee09b9d18e69663df1f7ae6f2bdae46e9612927db727",
+        "zh-cn/ui-libraries/brutalist/components/button/index.html": "97a584966a9bb473d906d9e8d7371e994fd59d412c8372ba9831ce627a9caa79"
+      },
+      "sourceCodeExamples": 9,
+      "renderedCodeExamples": 9,
+      "packedHeaderExit": 0,
+      "previewBrowserExit": 0,
+      "selector": "uses real family Popover Triggers|uses the same mobile shell|retains (shadcn|brutalist) preference owners|compact (shadcn|brutalist)|live available region|keeps Runtime Tabs outside"
+    },
+    "header": {
+      "head": "ff2a37bfd896bb2850bdce95c654c80216eb0e21",
+      "browser": "156.0.8078.79",
+      "scope": "First animation frame control on the exact static Astro preview. Geometry reads can force layout.",
+      "results": [
+        {
+          "width": 320,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1585.6000001430511,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1712.6000001430511,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1730.8000001907349,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 312,
+              "width": 304,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        },
+        {
+          "width": 390,
+          "samples": [
+            {
+              "phase": "family mutation delivery",
+              "at": 1541.5,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "first animation frame",
+              "at": 1669.8000001907349,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            },
+            {
+              "phase": "second animation frame",
+              "at": 1697.2000000476837,
+              "family": "brutalist",
+              "generation": "2",
+              "top": 61,
+              "bottom": 545,
+              "left": 8,
+              "right": 382,
+              "width": 374,
+              "headerBottom": 56,
+              "hidden": false,
+              "position": "61px"
+            }
+          ],
+          "trusted": true
+        }
+      ]
+    },
+    "previews": {
+      "zh-cn": {
+        "bytes": 1862370,
+        "sha256": "e3c1642b663db8d3d1e366c22f9051dc6a324e38770c3086527746b18e3a7108",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914091,
+        "sha256": "e21c398c8ec0fa162aa0e2bb4a80af7993e7581e2914f1ae707948803b229858",
+        "previews": 1268
+      }
+    },
+    "packageBuilds": 47,
+    "sitePages": 685,
+    "statuses": {
+      "production-build": 0,
+      "types": 0,
+      "manifests": 0,
+      "budgets": 0,
+      "preview-browser": 0,
+      "packed-header-frames": 0,
+      "extended-native": 0
+    },
+    "budgetComparison": {
+      "baselineHeadTree": [
+        "4d6e04533500b71d458c4a192a5b3d78bb0ed75a",
+        "8da4251422b8de78fa6ac1b4e2b7e7df69a829a7"
+      ],
+      "table": {
+        "lucide/icons/x": {
+          "before": {
+            "status": "PASS",
+            "gzip": 2879,
+            "ceiling": 3000,
+            "overBudget": 0,
+            "minified": 8695,
+            "sha256": "02838c5b1d4db7b0d62eab9b1d502848e268dfea098798ee87665caa966772fb"
+          },
+          "after": {
+            "status": "PASS",
+            "gzip": 2879,
+            "ceiling": 3000,
+            "overBudget": 0,
+            "minified": 8695,
+            "sha256": "02838c5b1d4db7b0d62eab9b1d502848e268dfea098798ee87665caa966772fb"
+          },
+          "gzipDelta": 0
+        },
+        "lucide root": {
+          "before": {
+            "status": "PASS",
+            "gzip": 637306,
+            "ceiling": 700000,
+            "overBudget": 0,
+            "minified": 4087403,
+            "sha256": "eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c"
+          },
+          "after": {
+            "status": "PASS",
+            "gzip": 637306,
+            "ceiling": 700000,
+            "overBudget": 0,
+            "minified": 4087403,
+            "sha256": "eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c"
+          },
+          "gzipDelta": 0
+        },
+        "core root": {
+          "before": {
+            "status": "ADVISORY",
+            "gzip": 11373,
+            "ceiling": 7600,
+            "overBudget": 3773,
+            "minified": 35723,
+            "sha256": "bb0468537baccea449d0260ae56ac758902eb989dae84f699b6c27626212d913"
+          },
+          "after": {
+            "status": "ADVISORY",
+            "gzip": 11373,
+            "ceiling": 7600,
+            "overBudget": 3773,
+            "minified": 35723,
+            "sha256": "bb0468537baccea449d0260ae56ac758902eb989dae84f699b6c27626212d913"
+          },
+          "gzipDelta": 0
+        },
+        "runtime root": {
+          "before": {
+            "status": "ADVISORY",
+            "gzip": 100015,
+            "ceiling": 78500,
+            "overBudget": 21515,
+            "minified": 386804,
+            "sha256": "11347a17a9c7eda3575d4bf30a0a2954e770f801b4264c977ae838d6755f40e8"
+          },
+          "after": {
+            "status": "ADVISORY",
+            "gzip": 100015,
+            "ceiling": 78500,
+            "overBudget": 21515,
+            "minified": 386804,
+            "sha256": "11347a17a9c7eda3575d4bf30a0a2954e770f801b4264c977ae838d6755f40e8"
+          },
+          "gzipDelta": 0
+        },
+        "adapter-react root": {
+          "before": {
+            "status": "ADVISORY",
+            "gzip": 162242,
+            "ceiling": 106000,
+            "overBudget": 56242,
+            "minified": 572819,
+            "sha256": "b8abe20dabc352666d88cfe16142fdf7ea8651aeba70d5d306793696dd97dbb1"
+          },
+          "after": {
+            "status": "ADVISORY",
+            "gzip": 162251,
+            "ceiling": 106000,
+            "overBudget": 56251,
+            "minified": 573014,
+            "sha256": "091356d8e6d8ff0d7ab41cb1d1baccdab26fa9a5ee848415c1ba9115d2ad34d2"
+          },
+          "gzipDelta": 9
+        },
+        "adapter-vue root": {
+          "before": {
+            "status": "ADVISORY",
+            "gzip": 160907,
+            "ceiling": 106000,
+            "overBudget": 54907,
+            "minified": 568091,
+            "sha256": "24709a3a7120a493a8e1de3b9715b0d87430ca14f8290768bfc1aeabe102008f"
+          },
+          "after": {
+            "status": "ADVISORY",
+            "gzip": 160980,
+            "ceiling": 106000,
+            "overBudget": 54980,
+            "minified": 568286,
+            "sha256": "78dbdfdf55f342389fd74d1b6258488d4ea7965b39e616096d7706d8ded0b00e"
+          },
+          "gzipDelta": 73
+        },
+        "adapter-web-component root": {
+          "before": {
+            "status": "ADVISORY",
+            "gzip": 190496,
+            "ceiling": 132000,
+            "overBudget": 58496,
+            "minified": 656978,
+            "sha256": "619ed0b1e1d0073f48044d38af48c55fff16ed491e1a606624e1657fc6b1233e"
+          },
+          "after": {
+            "status": "ADVISORY",
+            "gzip": 190599,
+            "ceiling": 132000,
+            "overBudget": 58599,
+            "minified": 657173,
+            "sha256": "f0194b41cb4e9b06426b08f99931c47800814957d15ebb8f928ec731b857b071"
+          },
+          "gzipDelta": 103
+        },
+        "prototypes-base/button": {
+          "before": {
+            "status": "PASS",
+            "gzip": 5274,
+            "ceiling": 6000,
+            "overBudget": 0,
+            "minified": 18158,
+            "sha256": "6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67"
+          },
+          "after": {
+            "status": "PASS",
+            "gzip": 5274,
+            "ceiling": 6000,
+            "overBudget": 0,
+            "minified": 18158,
+            "sha256": "6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67"
+          },
+          "gzipDelta": 0
+        },
+        "prototypes-shadcn/button": {
+          "before": {
+            "status": "ADVISORY",
+            "gzip": 7803,
+            "ceiling": 7000,
+            "overBudget": 803,
+            "minified": 34485,
+            "sha256": "60b4ff9277e59fba01c34162ec9418282ce82c6b43e24f223a05c9e1df19db57"
+          },
+          "after": {
+            "status": "ADVISORY",
+            "gzip": 7803,
+            "ceiling": 7000,
+            "overBudget": 803,
+            "minified": 34485,
+            "sha256": "60b4ff9277e59fba01c34162ec9418282ce82c6b43e24f223a05c9e1df19db57"
+          },
+          "gzipDelta": 0
+        }
+      }
+    }
+  },
+  "poolCensus": {
+    "head": "ba5328fd8854ad39c495deed910f5ed0d86bcbe0",
+    "asset": {
+      "asset": "site-shadcn-controls.C4W-PFsp.js",
+      "original": "7c817a21de0364072ea5e60aba8afb734fab4cad19e4fac421598c0ae68eac98",
+      "observed": "1dfb8f1f3607b8ec10fd8742a5c1689c27854b91cabf5939594425c79215bf91",
+      "scope": "Counts the existing native keyboard-reset acquisitions by effective direct or bridge path and physical Window installs. Preserves branch eligibility and application assertions."
+    },
+    "restored": true,
+    "readinessMs": 60000,
+    "caseMs": 150000,
+    "previews": 1268,
+    "selectedChineseFailed": 1,
+    "englishFiltered": 1,
+    "beforePage60": {
+      "acquires": 12800,
+      "bridge": 4015,
+      "direct": 8785,
+      "releases": 437,
+      "maxReferences": 12363,
+      "nativeAdds": 1,
+      "nativeRemoves": 0,
+      "windows": 1,
+      "pageMs": 59869.799999952316,
+      "timeOrigin": 1794981473293.3,
+      "receivedNodeMs": 60667.018583
+    },
+    "lastDelivered": {
+      "acquires": 13312,
+      "bridge": 4165,
+      "direct": 9147,
+      "releases": 437,
+      "maxReferences": 12875,
+      "nativeAdds": 1,
+      "nativeRemoves": 0,
+      "windows": 1,
+      "pageMs": 67094.90000009537,
+      "timeOrigin": 1794981473293.3,
+      "receivedNodeMs": 67892.192
+    },
+    "series": [
+      {
+        "acquires": 256,
+        "bridge": 256,
+        "direct": 0,
+        "releases": 0,
+        "maxReferences": 256,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 4792.299999952316,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 5591.0565
+      },
+      {
+        "acquires": 512,
+        "bridge": 512,
+        "direct": 0,
+        "releases": 0,
+        "maxReferences": 512,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 4876.700000047684,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 5674.068333
+      },
+      {
+        "acquires": 768,
+        "bridge": 768,
+        "direct": 0,
+        "releases": 0,
+        "maxReferences": 768,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 5082.5,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 5879.769
+      },
+      {
+        "acquires": 1024,
+        "bridge": 1024,
+        "direct": 0,
+        "releases": 0,
+        "maxReferences": 1024,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 5150.299999952316,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 5947.385291
+      },
+      {
+        "acquires": 1280,
+        "bridge": 1280,
+        "direct": 0,
+        "releases": 405,
+        "maxReferences": 1074,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 5817.400000095367,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 6614.484041
+      },
+      {
+        "acquires": 1536,
+        "bridge": 1536,
+        "direct": 0,
+        "releases": 405,
+        "maxReferences": 1131,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 6252.5,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 7049.647208
+      },
+      {
+        "acquires": 1792,
+        "bridge": 1574,
+        "direct": 218,
+        "releases": 405,
+        "maxReferences": 1387,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 6459,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 7256.279541
+      },
+      {
+        "acquires": 2048,
+        "bridge": 1574,
+        "direct": 474,
+        "releases": 405,
+        "maxReferences": 1643,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 6830.400000095367,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 7627.666
+      },
+      {
+        "acquires": 2304,
+        "bridge": 1693,
+        "direct": 611,
+        "releases": 405,
+        "maxReferences": 1899,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 7255.799999952316,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 8052.925375
+      },
+      {
+        "acquires": 2560,
+        "bridge": 1693,
+        "direct": 867,
+        "releases": 405,
+        "maxReferences": 2155,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 7408.100000143051,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 8205.521583
+      },
+      {
+        "acquires": 2816,
+        "bridge": 1693,
+        "direct": 1123,
+        "releases": 405,
+        "maxReferences": 2411,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 7566.200000047684,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 8363.706166
+      },
+      {
+        "acquires": 3072,
+        "bridge": 1740,
+        "direct": 1332,
+        "releases": 405,
+        "maxReferences": 2667,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 8586.700000047684,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 9384.069625
+      },
+      {
+        "acquires": 3328,
+        "bridge": 1747,
+        "direct": 1581,
+        "releases": 405,
+        "maxReferences": 2923,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 8853.5,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 9651.050208
+      },
+      {
+        "acquires": 3584,
+        "bridge": 1747,
+        "direct": 1837,
+        "releases": 405,
+        "maxReferences": 3179,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 9232.900000095367,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 10030.082875
+      },
+      {
+        "acquires": 3840,
+        "bridge": 1789,
+        "direct": 2051,
+        "releases": 405,
+        "maxReferences": 3435,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 9587.799999952316,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 10384.87825
+      },
+      {
+        "acquires": 4096,
+        "bridge": 1831,
+        "direct": 2265,
+        "releases": 405,
+        "maxReferences": 3691,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 10495.200000047684,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 11292.343916
+      },
+      {
+        "acquires": 4352,
+        "bridge": 1896,
+        "direct": 2456,
+        "releases": 405,
+        "maxReferences": 3947,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 11523.100000143051,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 12320.315291
+      },
+      {
+        "acquires": 4608,
+        "bridge": 2065,
+        "direct": 2543,
+        "releases": 405,
+        "maxReferences": 4203,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 11946.400000095367,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 12743.886833
+      },
+      {
+        "acquires": 4864,
+        "bridge": 2226,
+        "direct": 2638,
+        "releases": 405,
+        "maxReferences": 4459,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 12432.700000047684,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 13229.864291
+      },
+      {
+        "acquires": 5120,
+        "bridge": 2226,
+        "direct": 2894,
+        "releases": 405,
+        "maxReferences": 4715,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 12883.799999952316,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 13681.015666
+      },
+      {
+        "acquires": 5376,
+        "bridge": 2226,
+        "direct": 3150,
+        "releases": 405,
+        "maxReferences": 4971,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 12995.400000095367,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 13792.444541
+      },
+      {
+        "acquires": 5632,
+        "bridge": 2226,
+        "direct": 3406,
+        "releases": 405,
+        "maxReferences": 5227,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 13096.5,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 13893.708291
+      },
+      {
+        "acquires": 5888,
+        "bridge": 2282,
+        "direct": 3606,
+        "releases": 405,
+        "maxReferences": 5483,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 15914.5,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 16711.615166
+      },
+      {
+        "acquires": 6144,
+        "bridge": 2371,
+        "direct": 3773,
+        "releases": 405,
+        "maxReferences": 5739,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 16868.10000014305,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 17665.295125
+      },
+      {
+        "acquires": 6400,
+        "bridge": 2421,
+        "direct": 3979,
+        "releases": 405,
+        "maxReferences": 5995,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 18276.60000014305,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 19073.749916
+      },
+      {
+        "acquires": 6656,
+        "bridge": 2478,
+        "direct": 4178,
+        "releases": 405,
+        "maxReferences": 6251,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 18704.10000014305,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 19501.24075
+      },
+      {
+        "acquires": 6912,
+        "bridge": 2549,
+        "direct": 4363,
+        "releases": 405,
+        "maxReferences": 6507,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 19790.900000095367,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 20588.122916
+      },
+      {
+        "acquires": 7168,
+        "bridge": 2615,
+        "direct": 4553,
+        "releases": 405,
+        "maxReferences": 6763,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 21582,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 22379.111458
+      },
+      {
+        "acquires": 7424,
+        "bridge": 2686,
+        "direct": 4738,
+        "releases": 405,
+        "maxReferences": 7019,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 22600.5,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 23397.714041
+      },
+      {
+        "acquires": 7680,
+        "bridge": 2728,
+        "direct": 4952,
+        "releases": 416,
+        "maxReferences": 7264,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 23726.299999952316,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 24523.425708
+      },
+      {
+        "acquires": 7936,
+        "bridge": 2793,
+        "direct": 5143,
+        "releases": 421,
+        "maxReferences": 7515,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 26962.299999952316,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 27759.530083
+      },
+      {
+        "acquires": 8192,
+        "bridge": 2861,
+        "direct": 5331,
+        "releases": 421,
+        "maxReferences": 7771,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 28168.700000047684,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 28965.858833
+      },
+      {
+        "acquires": 8448,
+        "bridge": 2926,
+        "direct": 5522,
+        "releases": 421,
+        "maxReferences": 8027,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 29977.700000047684,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 30774.892875
+      },
+      {
+        "acquires": 8704,
+        "bridge": 2983,
+        "direct": 5721,
+        "releases": 421,
+        "maxReferences": 8283,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 31592.400000095367,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 32389.950291
+      },
+      {
+        "acquires": 8960,
+        "bridge": 3049,
+        "direct": 5911,
+        "releases": 421,
+        "maxReferences": 8539,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 32635.200000047684,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 33432.230041
+      },
+      {
+        "acquires": 9216,
+        "bridge": 3125,
+        "direct": 6091,
+        "releases": 421,
+        "maxReferences": 8795,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 34236,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 35033.218208
+      },
+      {
+        "acquires": 9472,
+        "bridge": 3209,
+        "direct": 6263,
+        "releases": 421,
+        "maxReferences": 9051,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 35088.200000047684,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 35885.53625
+      },
+      {
+        "acquires": 9728,
+        "bridge": 3245,
+        "direct": 6483,
+        "releases": 421,
+        "maxReferences": 9307,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 37158.799999952316,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 37956.041291
+      },
+      {
+        "acquires": 9984,
+        "bridge": 3314,
+        "direct": 6670,
+        "releases": 421,
+        "maxReferences": 9563,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 38441.700000047684,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 39238.929416
+      },
+      {
+        "acquires": 10240,
+        "bridge": 3376,
+        "direct": 6864,
+        "releases": 421,
+        "maxReferences": 9819,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 40248.5,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 41045.71225
+      },
+      {
+        "acquires": 10496,
+        "bridge": 3438,
+        "direct": 7058,
+        "releases": 421,
+        "maxReferences": 10075,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 42559,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 43356.246833
+      },
+      {
+        "acquires": 10752,
+        "bridge": 3497,
+        "direct": 7255,
+        "releases": 421,
+        "maxReferences": 10331,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 46441.10000014305,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 47238.251416
+      },
+      {
+        "acquires": 11008,
+        "bridge": 3579,
+        "direct": 7429,
+        "releases": 421,
+        "maxReferences": 10587,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 47704.10000014305,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 48501.326166
+      },
+      {
+        "acquires": 11264,
+        "bridge": 3624,
+        "direct": 7640,
+        "releases": 432,
+        "maxReferences": 10832,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 49974.40000009537,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 50771.606583
+      },
+      {
+        "acquires": 11520,
+        "bridge": 3690,
+        "direct": 7830,
+        "releases": 432,
+        "maxReferences": 11088,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 50784,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 51581.319666
+      },
+      {
+        "acquires": 11776,
+        "bridge": 3752,
+        "direct": 8024,
+        "releases": 437,
+        "maxReferences": 11339,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 52657.10000014305,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 53454.399958
+      },
+      {
+        "acquires": 12032,
+        "bridge": 3814,
+        "direct": 8218,
+        "releases": 437,
+        "maxReferences": 11595,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 55418.799999952316,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 56215.992
+      },
+      {
+        "acquires": 12288,
+        "bridge": 3907,
+        "direct": 8381,
+        "releases": 437,
+        "maxReferences": 11851,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 57338.200000047684,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 58135.774541
+      },
+      {
+        "acquires": 12544,
+        "bridge": 4015,
+        "direct": 8529,
+        "releases": 437,
+        "maxReferences": 12107,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 59219.5,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 60016.831708
+      },
+      {
+        "acquires": 12800,
+        "bridge": 4015,
+        "direct": 8785,
+        "releases": 437,
+        "maxReferences": 12363,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 59869.799999952316,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 60667.018583
+      },
+      {
+        "acquires": 13056,
+        "bridge": 4072,
+        "direct": 8984,
+        "releases": 437,
+        "maxReferences": 12619,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 64697.90000009537,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 65496.160166
+      },
+      {
+        "acquires": 13312,
+        "bridge": 4165,
+        "direct": 9147,
+        "releases": 437,
+        "maxReferences": 12875,
+        "nativeAdds": 1,
+        "nativeRemoves": 0,
+        "windows": 1,
+        "pageMs": 67094.90000009537,
+        "timeOrigin": 1794981473293.3,
+        "receivedNodeMs": 67892.192
+      }
+    ]
+  },
+  "normalizedPatchId": "b0eeb0d010b416529f1f9b51f5b94963ce452f81",
+  "fullChineseS4": {
+    "report": {
+      "passed": 0,
+      "failed": 1,
+      "filtered": 1,
+      "files": 1,
+      "failures": ["S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance"]
+    },
+    "readinessMs": 60000,
+    "caseMs": 150000
+  }
+}

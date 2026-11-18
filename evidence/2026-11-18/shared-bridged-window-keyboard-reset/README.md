@@ -1,0 +1,9 @@
+# Shared keyboard reset for rebindable Window targets
+
+Direct routers and verified rebindable bridges use the same private keyboard-owner capture reset on the current physical Window. Bridge adoption releases the old Window lease and acquires the new Window lease. The final router releases its Window listener. The bridge matches the listener's exact root document and native event methods before pooling.
+
+The pinned Chrome control builds the exact parent and candidate implementations and queries listener counts in each document's own CDP execution context. Two rebindable routers and one direct router start with capture counts of 3/0 on the previous head and 1/0 on the current head. Adoption into an iframe reports 2/1 and 1/1 respectively. Each remaining Window's listener is retired in order. Both source pairs deliver the same trusted Enter sequence and both dispatches of the same programmatic Event to their correct Portal owners.
+
+At the integrated S4 delivered page checkpoint of 59.8698 seconds, the pool records 4,015 bridge and 8,785 direct acquisitions with one physical listener installation on one Window. The current Chinese S4 case reaches the 60-second readiness timeout with all 1,268 previews and the original 150-second case limit. The English case is filtered. The emitted asset and runner are restored and the receipt preserves page and Node delivery times.
+
+Signed integrated ba5328fd passes 139 tests and main-based ff2a37bf passes 138, across 17 files. The integration includes the separate #1506 contextmenu regression. Both products build 47 packages and 685 Website pages, pass workspace types and manifests, and complete the package-budget command with the existing ceilings. Both pass 15 selected original browser cases with nine filtered, the Header first-frame checks at 320px and 390px, and all nine checked CodeExample blocks.

@@ -1,0 +1,32 @@
+from pathlib import Path
+from hashlib import sha256
+import json,sys
+q,dist=map(Path,sys.argv[1:])
+asset=dist/'site-shadcn-controls.C4W-PFsp.js'
+s=asset.read_text()
+before=s
+def replace(old,new):
+    global s
+    assert s.count(old)==1,(old,s.count(old))
+    s=s.replace(old,new,1)
+replace('function FE(t,e){const n=lh.get(e);return n?uh(t,n):void 0}function uh(t,e){',
+        'function FE(t,e){const n=lh.get(e);return n?uh(t,n,true):void 0}function uh(t,e,puiViaBridge=false){')
+replace('const r=Nr.get(n)??0;return r===0&&n.addEventListener("keydown",gc,!0),Nr.set(n,r+1),()=>{const s=Nr.get(n)??0;s>1?Nr.set(n,s-1):s===1&&(Nr.delete(n),n.removeEventListener("keydown",gc,!0))}',
+        'const r=Nr.get(n)??0;return r===0&&(n.addEventListener("keydown",gc,!0),puiPool.nativeAdds++),Nr.set(n,r+1),puiPoolObserve(n,r+1,puiViaBridge),()=>{const s=Nr.get(n)??0;puiPool.releases++;s>1?Nr.set(n,s-1):s===1&&(Nr.delete(n),n.removeEventListener("keydown",gc,!0),puiPool.nativeRemoves++)}')
+prefix=r"""const puiPool={acquires:0,bridge:0,direct:0,releases:0,maxReferences:0,nativeAdds:0,nativeRemoves:0};
+const puiPoolWindows=new WeakSet();
+let puiPoolWindowCount=0;
+function puiPoolObserve(target,refs,viaBridge){
+ if(!puiPoolWindows.has(target)){puiPoolWindows.add(target);puiPoolWindowCount++}
+ if(viaBridge)puiPool.bridge++;else puiPool.direct++;
+ puiPool.maxReferences=Math.max(refs,puiPool.maxReferences);
+ if(++puiPool.acquires%256===0){
+  console.info("[S4 keyboard reset pool]",JSON.stringify({
+   ...puiPool,windows:puiPoolWindowCount,pageMs:performance.now(),timeOrigin:performance.timeOrigin
+  }));
+ }
+}
+"""
+after=prefix+s
+asset.write_text(after)
+(q/'asset-binding.json').write_text(json.dumps(dict(asset=asset.name,original=sha256(before.encode()).hexdigest(),observed=sha256(after.encode()).hexdigest(),scope='Counts the existing native keyboard-reset acquisitions by effective direct or bridge path and physical Window installs. Preserves branch eligibility and application assertions.'),indent=2)+'\n')
