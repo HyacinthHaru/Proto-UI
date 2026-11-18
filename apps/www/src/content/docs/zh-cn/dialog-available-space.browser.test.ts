@@ -333,8 +333,16 @@ async function reachableActions(
     await action.scrollIntoViewIfNeeded();
     const fact = await action.evaluate((e) => {
       const dialog = e.closest('[role="dialog"]')!;
-      const r = e.getBoundingClientRect(),
-        d = dialog.getBoundingClientRect();
+      let r = e.getBoundingClientRect();
+      const d = dialog.getBoundingClientRect();
+      if (r.height > dialog.clientHeight) {
+        // A partially visible tall Button can have its center outside the
+        // scrollport after scrollIntoViewIfNeeded. Put that same point in view.
+        const center = r.top + r.height / 2;
+        const scrollportCenter = d.top + dialog.clientTop + dialog.clientHeight / 2;
+        dialog.scrollBy({ top: center - scrollportCenter, behavior: 'instant' });
+        r = e.getBoundingClientRect();
+      }
       const hit = document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2);
       const close = e.parentElement?.closest<HTMLElement>('[data-pui-root]');
       const layout = close?.parentElement;
