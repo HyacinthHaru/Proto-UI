@@ -1,0 +1,187 @@
+{
+  "head": "aad84982a165a5f57889edbb404db1a1791ea969",
+  "tree": "e2b0ece44c1a03e5a102f71a9d7a3df5e150c873",
+  "parent": "3d53afa4f21521b60dc4eaed509e10ca410d1caa",
+  "publicBuiltPackages": 47,
+  "websitePages": 685,
+  "siteMatrix": {
+    "zh-cn": {
+      "bytes": 1862553,
+      "sha256": "5e6bf8f62c5a700aa5e1423124ec3b07326360288534ca6c370ac0ed479d515b",
+      "previews": 1268
+    },
+    "en": {
+      "bytes": 1914109,
+      "sha256": "b96cb0e512f06d9aca3010a1c05792bb9516dfef12699dde8600059237fb10a3",
+      "previews": 1268
+    }
+  },
+  "outcomes": {
+    "focused": {
+      "exit": 0,
+      "passed": 65,
+      "failed": 0,
+      "filtered": 0,
+      "reportSha256": "1efead20c47f69e4a0b14841fc26ee980ca192e4a310c431280149934c765179"
+    },
+    "preview-browser": {
+      "exit": 0,
+      "passed": 15,
+      "failed": 0,
+      "filtered": 9,
+      "reportSha256": "46dc994ed5f5cc9aa2ba7979def880b90db94a67cee56e0f6fc12bf619e7dc86"
+    },
+    "code-grammar": {
+      "exit": 0,
+      "passed": 3,
+      "failed": 0,
+      "filtered": 23,
+      "reportSha256": "47d2a496751a72ba0bcef09ec8404239db12f2263cf25b0bb18ac701a4901243"
+    },
+    "copy-commands": {
+      "exit": 0,
+      "passed": 1,
+      "failed": 0,
+      "filtered": 14,
+      "reportSha256": "db0af233de863d4f1d5b055a732584cf07ddc55020d50db89fabc6802ff49d2e"
+    },
+    "scroll-chain": {
+      "exit": 0,
+      "passed": 2,
+      "failed": 0,
+      "filtered": 4,
+      "reportSha256": "1ba2c3877f2ef0e685d5d5618d3849d4604bd594aaed5d1fab06dd131fb7c004"
+    },
+    "wc-shadow": {
+      "exit": 0,
+      "passed": 165,
+      "failed": 0,
+      "filtered": 0,
+      "reportSha256": "06ad0d90063b4e8cb3ae5385dcdb92a6629869792e25bd197a177b7cd91e5b03"
+    },
+    "s4": {
+      "exit": 1,
+      "passed": 0,
+      "failed": 2,
+      "filtered": 0,
+      "reportSha256": "621ecab472ede27e4984a917dec7541183bf09491e155124434ee7c3fe93a7bd"
+    }
+  },
+  "typecheckExit": 0,
+  "manifestExit": 0,
+  "packageBudgetExit": 0,
+  "packageBudgets": {
+    "lucide/icons/x": {
+      "status": "PASS",
+      "gzip": 2879,
+      "limit": 3000,
+      "minified": 8695,
+      "sha256": "da30ebe409a83a09d2569fe2a47880a133fcbe4d554d93ea305795356c4fccdb",
+      "gzipDeltaFromDirectParent": 0
+    },
+    "lucide root": {
+      "status": "PASS",
+      "gzip": 637306,
+      "limit": 700000,
+      "minified": 4087403,
+      "sha256": "eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c",
+      "gzipDeltaFromDirectParent": 0
+    },
+    "core root": {
+      "status": "ADVISORY",
+      "gzip": 11378,
+      "limit": 7600,
+      "minified": 35782,
+      "sha256": "0e3c868d3ef719af46085b83881b15787a94acbaf893566ceae4047ceff72b44",
+      "gzipDeltaFromDirectParent": 0
+    },
+    "runtime root": {
+      "status": "ADVISORY",
+      "gzip": 101260,
+      "limit": 78500,
+      "minified": 390543,
+      "sha256": "2ae69f179c6185b5c0dd5467527442d17b7d96e0b6e4436409b2238f28342ae9",
+      "gzipDeltaFromDirectParent": -30
+    },
+    "adapter-react root": {
+      "status": "ADVISORY",
+      "gzip": 164167,
+      "limit": 106000,
+      "minified": 578642,
+      "sha256": "e5581b7cb09e800b2b63cb448de721359d84291678b10c71fd3d592fd7dc67d9",
+      "gzipDeltaFromDirectParent": -31
+    },
+    "adapter-vue root": {
+      "status": "ADVISORY",
+      "gzip": 162969,
+      "limit": 106000,
+      "minified": 573895,
+      "sha256": "9d58f1528f9a9fb83c3a724b334e8f3ba9180699f9b775b93180ea24d44f9a8a",
+      "gzipDeltaFromDirectParent": -29
+    },
+    "adapter-web-component root": {
+      "status": "ADVISORY",
+      "gzip": 196122,
+      "limit": 132000,
+      "minified": 673080,
+      "sha256": "bf14d31e573cae81ebc2a7427349a50fc1daf36312f649a57aa9de1ec662481d",
+      "gzipDeltaFromDirectParent": -27
+    },
+    "prototypes-base/button": {
+      "status": "PASS",
+      "gzip": 5274,
+      "limit": 6000,
+      "minified": 18158,
+      "sha256": "6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67",
+      "gzipDeltaFromDirectParent": 0
+    },
+    "prototypes-shadcn/button": {
+      "status": "ADVISORY",
+      "gzip": 7803,
+      "limit": 7000,
+      "minified": 34485,
+      "sha256": "60b4ff9277e59fba01c34162ec9418282ce82c6b43e24f223a05c9e1df19db57",
+      "gzipDeltaFromDirectParent": 0
+    }
+  },
+  "header": {
+    "browser": "156.0.8078.79",
+    "widths": [
+      {
+        "width": 320,
+        "gapsPx": [5, 5, 5]
+      },
+      {
+        "width": 390,
+        "gapsPx": [5, 5, 5]
+      }
+    ]
+  },
+  "statedAndRenderedShadcnButtonCodeExamples": [9, 9],
+  "originalMatrixReadinessMs": 60000,
+  "originalMatrixOuterDeadlineMs": 150000,
+  "diagnostic": {
+    "binding": {
+      "asset": "site-shadcn-controls.CrYX9VlB.js",
+      "stock": "53d47552a8a9c94ca314cb05d632151adb6a5da131e0f5257fe7b93706049aad",
+      "observed": "0c49f4413f3ea46f709f445f2e8465bccd2705437e737c7bede7421b7fefe274"
+    },
+    "records": 136,
+    "lastSample": {
+      "domains": 4456448,
+      "diagnostics": 0,
+      "pageMs": 68961.5
+    },
+    "samplingEverySuccessfulResolutions": 32768,
+    "observedOnlyLocale": "zh-cn",
+    "failed": 1,
+    "filtered": 1,
+    "exactRestorationConfirmed": true,
+    "rawHashes": {
+      "profile-reads.json": "e21eb939a3c111e09373a2d9348d24c8217a3ac48da25f6e78ffe33995ea8f2f",
+      "runner-overlay.patch": "130ca113ed58fbf31c46add4bb4cad5dae05da2a0598b170856e36b0e1bd5f1f",
+      "postrestore.log": "53da4e768ac9c36ec10e99fff2a768457cd9cca3198d60ad629b9990285e7176",
+      "native.json": "1e3a88c8fdb80b8bcc0323d710f2c7ac243bcc42496a596087a92e7c6eaa2efb"
+    }
+  }
+}
