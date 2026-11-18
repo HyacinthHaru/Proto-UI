@@ -1,0 +1,22 @@
+from hashlib import sha256
+from pathlib import Path
+import json,sys
+q,dist=map(Path,sys.argv[1:])
+asset=dist/'site-shadcn-controls.DrSrHXZe.js'
+before=asset.read_text()
+marker='const le=s.get(L);if(!le||c.has(le))return;const he=a.get(le);if(!$&&ee?.retainMatchingPhysicalParent&&he){const ae=j(L);if(ae&&s.get(ae)===he)return}const me=$?ie($)?$:j($):null,pe=me?s.get(me):void 0;_(le,pe??null)'
+new='const le=s.get(L);if(!le||c.has(le)){if(ee?.retainMatchingPhysicalParent)recordParentRetention("authority-or-untracked");return}const he=a.get(le);if(!$&&ee?.retainMatchingPhysicalParent&&he){const ae=j(L);if(ae&&s.get(ae)===he){recordParentRetention("matching");return}recordParentRetention("changed")}else if(ee?.retainMatchingPhysicalParent)recordParentRetention("missing-prior");const me=$?ie($)?$:j($):null,pe=me?s.get(me):void 0;_(le,pe??null)'
+assert before.count(marker)==1
+prefix=r"""const puiParentRetention={total:0,kinds:{}};
+function recordParentRetention(kind){
+  puiParentRetention.kinds[kind]=(puiParentRetention.kinds[kind]??0)+1;
+  if(++puiParentRetention.total%128===0){
+    console.info("[S4 owner retention] "+JSON.stringify({
+      ...puiParentRetention,pageMs:performance.now(),timeOrigin:performance.timeOrigin
+    }));
+  }
+}
+"""
+after=prefix+before.replace(marker,new)
+asset.write_text(after)
+(q/'asset-binding.json').write_text(json.dumps(dict(asset=asset.name,original=sha256(before.encode()).hexdigest(),observed=sha256(after.encode()).hexdigest(),scope='Counts observed WC reconnect opt-in dispositions without changing branch outcome.'),indent=2)+'\n')

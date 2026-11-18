@@ -1,0 +1,443 @@
+{
+  "head": "7a376034698b5356bbc5f15ba035c4b33a21e938",
+  "binding": {
+    "asset": "site-shadcn-controls.DrSrHXZe.js",
+    "original": "23af6e262156f090ecbd404cbf3846b73f68565b92b11e392d49f9ca0106e0dc",
+    "observed": "302ac17a59d249d8b24740e7971158c0310676f7c1eabaf537c6f88179ef3e63",
+    "scope": "Counts observed WC reconnect opt-in dispositions without changing branch outcome."
+  },
+  "restored": true,
+  "originalChineseFailed": 1,
+  "englishFiltered": 1,
+  "previewRoots": 1268,
+  "readinessMs": 60000,
+  "caseMs": 150000,
+  "lastDelivered": {
+    "total": 4736,
+    "kinds": {
+      "matching": 2628,
+      "missing-prior": 2106,
+      "changed": 2
+    },
+    "pageMs": 68065.59999990463,
+    "timeOrigin": 1794978258409,
+    "receivedNodeMs": 68903.978042
+  },
+  "lastAtOrBeforePage60s": {
+    "total": 4480,
+    "kinds": {
+      "matching": 2401,
+      "missing-prior": 2077,
+      "changed": 2
+    },
+    "pageMs": 59920.89999985695,
+    "timeOrigin": 1794978258409,
+    "receivedNodeMs": 60759.221959
+  },
+  "series": [
+    {
+      "total": 128,
+      "kinds": {
+        "matching": 70,
+        "missing-prior": 58
+      },
+      "pageMs": 4939.399999856949,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 5778.445417
+    },
+    {
+      "total": 256,
+      "kinds": {
+        "matching": 70,
+        "missing-prior": 186
+      },
+      "pageMs": 4951.5,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 5789.559917
+    },
+    {
+      "total": 384,
+      "kinds": {
+        "matching": 70,
+        "missing-prior": 314
+      },
+      "pageMs": 4961.699999809265,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 5799.765834
+    },
+    {
+      "total": 512,
+      "kinds": {
+        "matching": 72,
+        "missing-prior": 438,
+        "changed": 2
+      },
+      "pageMs": 5187.5,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 6025.563667
+    },
+    {
+      "total": 640,
+      "kinds": {
+        "matching": 72,
+        "missing-prior": 566,
+        "changed": 2
+      },
+      "pageMs": 5197.5,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 6035.460709
+    },
+    {
+      "total": 768,
+      "kinds": {
+        "matching": 72,
+        "missing-prior": 694,
+        "changed": 2
+      },
+      "pageMs": 5207.699999809265,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 6045.51175
+    },
+    {
+      "total": 896,
+      "kinds": {
+        "matching": 72,
+        "missing-prior": 822,
+        "changed": 2
+      },
+      "pageMs": 5218.799999952316,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 6056.821334
+    },
+    {
+      "total": 1024,
+      "kinds": {
+        "matching": 72,
+        "missing-prior": 950,
+        "changed": 2
+      },
+      "pageMs": 5228.799999952316,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 6066.875167
+    },
+    {
+      "total": 1152,
+      "kinds": {
+        "matching": 72,
+        "missing-prior": 1078,
+        "changed": 2
+      },
+      "pageMs": 5238.799999952316,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 6076.820792
+    },
+    {
+      "total": 1280,
+      "kinds": {
+        "matching": 72,
+        "missing-prior": 1206,
+        "changed": 2
+      },
+      "pageMs": 5248,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 6085.884542
+    },
+    {
+      "total": 1408,
+      "kinds": {
+        "matching": 72,
+        "missing-prior": 1334,
+        "changed": 2
+      },
+      "pageMs": 5280.199999809265,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 6118.337542
+    },
+    {
+      "total": 1536,
+      "kinds": {
+        "matching": 72,
+        "missing-prior": 1462,
+        "changed": 2
+      },
+      "pageMs": 5288.199999809265,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 6126.187292
+    },
+    {
+      "total": 1664,
+      "kinds": {
+        "matching": 72,
+        "missing-prior": 1590,
+        "changed": 2
+      },
+      "pageMs": 5296,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 6134.01575
+    },
+    {
+      "total": 1792,
+      "kinds": {
+        "matching": 126,
+        "missing-prior": 1664,
+        "changed": 2
+      },
+      "pageMs": 5638.799999952316,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 6476.936459
+    },
+    {
+      "total": 1920,
+      "kinds": {
+        "matching": 246,
+        "missing-prior": 1672,
+        "changed": 2
+      },
+      "pageMs": 5858.699999809265,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 6696.700584
+    },
+    {
+      "total": 2048,
+      "kinds": {
+        "matching": 358,
+        "missing-prior": 1688,
+        "changed": 2
+      },
+      "pageMs": 6131.099999904633,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 6969.19425
+    },
+    {
+      "total": 2176,
+      "kinds": {
+        "matching": 463,
+        "missing-prior": 1711,
+        "changed": 2
+      },
+      "pageMs": 6273.5,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 7111.752
+    },
+    {
+      "total": 2304,
+      "kinds": {
+        "matching": 540,
+        "missing-prior": 1762,
+        "changed": 2
+      },
+      "pageMs": 6565.099999904633,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 7403.195584
+    },
+    {
+      "total": 2432,
+      "kinds": {
+        "matching": 618,
+        "missing-prior": 1812,
+        "changed": 2
+      },
+      "pageMs": 10207.199999809265,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 11045.403084
+    },
+    {
+      "total": 2560,
+      "kinds": {
+        "matching": 730,
+        "missing-prior": 1828,
+        "changed": 2
+      },
+      "pageMs": 13393.799999952316,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 14232.025875
+    },
+    {
+      "total": 2688,
+      "kinds": {
+        "matching": 858,
+        "missing-prior": 1828,
+        "changed": 2
+      },
+      "pageMs": 13633.699999809265,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 14471.686334
+    },
+    {
+      "total": 2816,
+      "kinds": {
+        "matching": 986,
+        "missing-prior": 1828,
+        "changed": 2
+      },
+      "pageMs": 13844.299999952316,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 14682.311959
+    },
+    {
+      "total": 2944,
+      "kinds": {
+        "matching": 1090,
+        "missing-prior": 1852,
+        "changed": 2
+      },
+      "pageMs": 16866.89999985695,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 17704.923292
+    },
+    {
+      "total": 3072,
+      "kinds": {
+        "matching": 1211,
+        "missing-prior": 1859,
+        "changed": 2
+      },
+      "pageMs": 18830.89999985695,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 19669.155792
+    },
+    {
+      "total": 3200,
+      "kinds": {
+        "matching": 1333,
+        "missing-prior": 1865,
+        "changed": 2
+      },
+      "pageMs": 21906.5,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 22744.741709
+    },
+    {
+      "total": 3328,
+      "kinds": {
+        "matching": 1450,
+        "missing-prior": 1876,
+        "changed": 2
+      },
+      "pageMs": 23862.89999985695,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 24701.133334
+    },
+    {
+      "total": 3456,
+      "kinds": {
+        "matching": 1565,
+        "missing-prior": 1889,
+        "changed": 2
+      },
+      "pageMs": 28853.5,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 29691.541375
+    },
+    {
+      "total": 3584,
+      "kinds": {
+        "matching": 1676,
+        "missing-prior": 1906,
+        "changed": 2
+      },
+      "pageMs": 32091.39999985695,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 32929.513167
+    },
+    {
+      "total": 3712,
+      "kinds": {
+        "matching": 1784,
+        "missing-prior": 1926,
+        "changed": 2
+      },
+      "pageMs": 35039.09999990463,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 35877.166042
+    },
+    {
+      "total": 3840,
+      "kinds": {
+        "matching": 1902,
+        "missing-prior": 1936,
+        "changed": 2
+      },
+      "pageMs": 38370.59999990463,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 39209.215792
+    },
+    {
+      "total": 3968,
+      "kinds": {
+        "matching": 2021,
+        "missing-prior": 1945,
+        "changed": 2
+      },
+      "pageMs": 41262.699999809265,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 42100.695917
+    },
+    {
+      "total": 4096,
+      "kinds": {
+        "matching": 2129,
+        "missing-prior": 1965,
+        "changed": 2
+      },
+      "pageMs": 47399.5,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 48237.582209
+    },
+    {
+      "total": 4224,
+      "kinds": {
+        "matching": 2233,
+        "missing-prior": 1989,
+        "changed": 2
+      },
+      "pageMs": 51006.09999990463,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 51844.164417
+    },
+    {
+      "total": 4352,
+      "kinds": {
+        "matching": 2308,
+        "missing-prior": 2042,
+        "changed": 2
+      },
+      "pageMs": 54107.699999809265,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 54945.912917
+    },
+    {
+      "total": 4480,
+      "kinds": {
+        "matching": 2401,
+        "missing-prior": 2077,
+        "changed": 2
+      },
+      "pageMs": 59920.89999985695,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 60759.221959
+    },
+    {
+      "total": 4608,
+      "kinds": {
+        "matching": 2521,
+        "missing-prior": 2085,
+        "changed": 2
+      },
+      "pageMs": 62396.699999809265,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 63235.822209
+    },
+    {
+      "total": 4736,
+      "kinds": {
+        "matching": 2628,
+        "missing-prior": 2106,
+        "changed": 2
+      },
+      "pageMs": 68065.59999990463,
+      "timeOrigin": 1794978258409,
+      "receivedNodeMs": 68903.978042
+    }
+  ]
+}
