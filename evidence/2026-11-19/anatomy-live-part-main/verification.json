@@ -1,0 +1,18 @@
+{
+  "exact": {
+    "head": "b3a865e962644cc0611a5d9c056b1766a9e060c0",
+    "tree": "d82f9bfb971d55d1877652b76bb9ea334518154e",
+    "parent": "e14b3c6adc02f4d614295f2648dee89c1bfbf2fd"
+  },
+  "focused": {
+    "passed": 385,
+    "failed": 0
+  },
+  "parentMatchedFixture": {
+    "passed": 4,
+    "failed": 1
+  },
+  "packageBuildCount": 47,
+  "nativeRows": 4,
+  "browser": "156.0.8078.79"
+}

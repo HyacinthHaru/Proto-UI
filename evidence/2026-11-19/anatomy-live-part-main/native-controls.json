@@ -1,0 +1,83 @@
+{
+  "head": "b3a865e962644cc0611a5d9c056b1766a9e060c0",
+  "parent": "e14b3c6adc02f4d614295f2648dee89c1bfbf2fd",
+  "chrome": "156.0.8078.79",
+  "scopedInputs": {
+    "parent": {
+      "blob": "b005f978d90d2f01a196e04192d1fe2e471df1043725af67d32e08be9bcf0ab9",
+      "bundle": "6092f9b2f89907485d2b4dc9c04ad74cc519e20c6c881b4ea2e848e294a93200",
+      "inputs": 57
+    },
+    "candidate": {
+      "blob": "a1402d73abd38638377ab4c5f91d2a72099bc8c349314e00ef060edd043f6b47",
+      "bundle": "85661470311e794182bf219a8ea0747ade4dff7033bc436cf15bba00aa8197a2",
+      "inputs": 57
+    }
+  },
+  "rows": [
+    {
+      "kind": "parent",
+      "before": [true, "left-item"],
+      "initialParentReads": [
+        "left-item",
+        "right-item",
+        "label",
+        "left-item",
+        "left-item",
+        "right-item",
+        "label",
+        "left-item",
+        "label"
+      ],
+      "after": [
+        [false, null],
+        [true, "right-item"]
+      ],
+      "retired": [false, null],
+      "stillPhysicallyNested": true
+    },
+    {
+      "kind": "candidate",
+      "before": [true, "left-item"],
+      "initialParentReads": ["label", "left-item", "label", "left-item", "label"],
+      "after": [
+        [false, null],
+        [true, "right-item"]
+      ],
+      "retired": [false, null],
+      "stillPhysicallyNested": true
+    },
+    {
+      "kind": "candidate",
+      "before": [true, "left-item"],
+      "initialParentReads": ["label", "left-item", "label", "left-item", "label"],
+      "after": [
+        [false, null],
+        [true, "right-item"]
+      ],
+      "retired": [false, null],
+      "stillPhysicallyNested": true
+    },
+    {
+      "kind": "parent",
+      "before": [true, "left-item"],
+      "initialParentReads": [
+        "left-item",
+        "right-item",
+        "label",
+        "left-item",
+        "left-item",
+        "right-item",
+        "label",
+        "left-item",
+        "label"
+      ],
+      "after": [
+        [false, null],
+        [true, "right-item"]
+      ],
+      "retired": [false, null],
+      "stillPhysicallyNested": true
+    }
+  ]
+}
