@@ -1,0 +1,349 @@
+{
+  "run": "44254293045",
+  "attempt": 1,
+  "job": "134632266062",
+  "artifact": "14406032665",
+  "head": "0f0955a9d624e0ef5e250f56a0eaa0fc52bbfb53",
+  "sourceSha256": "1fe15a844af36434c168de9ac2e041ccc56cc9333c06dd59da69bc1e10e17456",
+  "artifacts": {
+    "receipt.json": "58829a2cb3a77a5b493b565541ac719a15fd41ef1a534b1c27a4c2a4ff426bcf",
+    "header-breakpoint/brutalist-sdk-timing.json": "8b38cb449c4ebbac65e08e72c2e2505bf71fe7f4189cf5285da433c0dcb079be",
+    "contents-command/shadcn-react-transition.json": "60d3e077b8f764dbd98e9de4a30c6f8ea6fb8e164b3e99e8b20cdf7ee671c6a5",
+    "contents-command/shadcn-wc-transition.json": "cd073e15a5c31c6f38c372dce3eac1b6fb3792356a56fe3fc796ff64b1bc8f36",
+    "contents-command/normal-close-mutations.json": "ea85d44dc375e876f6feb389cf7ed9af17ccaa90e47edc3dd6f848d74db16a3c",
+    "header-breakpoint/brutalist-query-observation.json": "8dadd9c4dc10d2ccef5862c67eabf08dba29029a742e6cae5fa778fb1fcfb6a8"
+  },
+  "contents": {
+    "predicate": "await expect.poll(() => root.getAttribute('data-contents-runtime')).toBe(runtime);",
+    "line": 1003,
+    "originalDeadlineMs": 1000,
+    "originalError": "Error: Matcher did not succeed in 1000ms",
+    "wcRuntimeCheck": "passed",
+    "wcCloseActions": ["click", "Enter", "Space"],
+    "clickStartedMsFromVerdict": -1980,
+    "clickReturnedMsFromVerdict": -1001,
+    "preferenceEvents": [
+      {
+        "adapter": "react",
+        "estimatedMsFromVerdict": -1773.3999
+      }
+    ],
+    "longTasks": [
+      {
+        "estimatedStartMsFromVerdict": -1861.3,
+        "durationMs": 838
+      },
+      {
+        "estimatedStartMsFromVerdict": -924.2,
+        "durationMs": 77
+      },
+      {
+        "estimatedStartMsFromVerdict": -815.3,
+        "durationMs": 218
+      },
+      {
+        "estimatedStartMsFromVerdict": -562.7,
+        "durationMs": 198
+      },
+      {
+        "estimatedStartMsFromVerdict": -360.2,
+        "durationMs": 99
+      },
+      {
+        "estimatedStartMsFromVerdict": -260.8,
+        "durationMs": 244
+      },
+      {
+        "estimatedStartMsFromVerdict": -16.5999,
+        "durationMs": 236
+      }
+    ],
+    "firstSnapshotEstimatedMsFromVerdict": 224.5,
+    "firstRuntime": "react",
+    "firstGenerations": [
+      {
+        "id": "2",
+        "state": "active",
+        "inert": false
+      },
+      {
+        "id": "2",
+        "state": "active",
+        "inert": false
+      },
+      {
+        "id": "2",
+        "state": "active",
+        "inert": false
+      }
+    ],
+    "laterSnapshotEstimatedMsFromVerdict": 519.4001,
+    "sameOriginResourceEntriesStartedDuringTransition": 0,
+    "pageErrorCount": 1,
+    "sourceBindings": {
+      "components/SiteContentsCommand.astro": "250ea15a4d6f238397dda64dba8df8d60eabb42ddb02979b0ad0895ee3c29a0f",
+      "components/site-contents-command.ts": "cd558589c0000aa7f48d0a49a29129ac53ec159c28091ea0af4d388150f37c9a",
+      "components/site-contents-panel.ts": "a5c3a0d2e62762990718f91f703e4bb9656f4814e722dcff1833deed7834e8e4",
+      "components/site-header-surface.ts": "7d6f1107d4761555fbfd8373da0704da4be96b0b1ef5d3288ac00a46603f2864",
+      "components/site-header-disclosure.ts": "4fb52b5b1708fb65a2e329205a9ba74bfcb528989e7b203eeef5fbb26ee72017",
+      "components/override/Sidebar.astro": "9cf7486a4a86e8512c9f75215cff83f0ffb0b1a3f3753c802782c08f0fb0ece5",
+      "components/override/PageFrame.astro": "358a4bfa563b98cc3ca3e8935a047b54adf94a7429d550688c3fe785ba72920d",
+      "styles/site-contents-command.css": "70807ef33ce6f3212fcb68735f30196dd5cf96cdf82d17d7b7c5cc4e97ba1748"
+    }
+  },
+  "brutalist": {
+    "cdpId": 10648,
+    "originalQueryOrdinal": 3,
+    "method": "Runtime.callFunctionOn",
+    "stages": [
+      {
+        "stage": "node.original-query",
+        "msFromSdkVerdict": -741.8251
+      },
+      {
+        "stage": "node.frame.getAttribute.enter",
+        "msFromSdkVerdict": -741.766
+      },
+      {
+        "stage": "node.protocol.send",
+        "msFromSdkVerdict": -741.2322
+      },
+      {
+        "stage": "driver.receive",
+        "msFromSdkVerdict": -741.1794
+      },
+      {
+        "stage": "driver.getAttribute.enter",
+        "msFromSdkVerdict": -741.0609
+      },
+      {
+        "stage": "driver.selector.resolve.enter",
+        "msFromSdkVerdict": -740.892
+      },
+      {
+        "stage": "driver.selector.frame.enter",
+        "msFromSdkVerdict": -740.8827
+      },
+      {
+        "stage": "driver.selector.parse.enter",
+        "msFromSdkVerdict": -740.8194
+      },
+      {
+        "stage": "driver.selector.parse.exit",
+        "msFromSdkVerdict": -740.8068
+      },
+      {
+        "stage": "driver.selector.frame.fulfilled",
+        "msFromSdkVerdict": -740.7816
+      },
+      {
+        "stage": "driver.context.enter",
+        "msFromSdkVerdict": -740.7735
+      },
+      {
+        "stage": "driver.context.fulfilled",
+        "msFromSdkVerdict": -740.7604
+      },
+      {
+        "stage": "driver.context.observer.enter",
+        "msFromSdkVerdict": -740.7542
+      },
+      {
+        "stage": "driver.context.observer.exit",
+        "msFromSdkVerdict": -740.7482
+      },
+      {
+        "stage": "driver.context.injected-script.enter",
+        "msFromSdkVerdict": -740.7402
+      },
+      {
+        "stage": "driver.context.injected-script.fulfilled",
+        "msFromSdkVerdict": -740.7355
+      },
+      {
+        "stage": "driver.selector.resolve.fulfilled",
+        "msFromSdkVerdict": -740.7292
+      },
+      {
+        "stage": "driver.selector.patch-handle.enter",
+        "msFromSdkVerdict": -740.7259
+      },
+      {
+        "stage": "driver.selector.patch-handle.exit",
+        "msFromSdkVerdict": -740.7212
+      },
+      {
+        "stage": "driver.selector.resolve.exit",
+        "msFromSdkVerdict": -740.7157
+      },
+      {
+        "stage": "utility.evaluate.dispatch",
+        "msFromSdkVerdict": -740.5809
+      },
+      {
+        "stage": "driver.context.utility-script.enter",
+        "msFromSdkVerdict": -740.3628
+      },
+      {
+        "stage": "driver.context.utility-script.fulfilled",
+        "msFromSdkVerdict": -740.3558
+      },
+      {
+        "stage": "driver.delegate.evaluate-with-arguments.enter",
+        "msFromSdkVerdict": -740.3517
+      },
+      {
+        "stage": "cdp.session.send.enter",
+        "msFromSdkVerdict": -740.3332
+      },
+      {
+        "stage": "cdp.transport.send.before",
+        "msFromSdkVerdict": -740.3028
+      },
+      {
+        "stage": "cdp.pipe.write.return",
+        "ordinal": 1,
+        "returned": true,
+        "writableLength": 0,
+        "writableNeedDrain": false,
+        "msFromSdkVerdict": -740.189
+      },
+      {
+        "stage": "cdp.pipe.write.return",
+        "ordinal": 2,
+        "returned": true,
+        "writableLength": 0,
+        "writableNeedDrain": false,
+        "msFromSdkVerdict": -740.1577
+      },
+      {
+        "stage": "cdp.transport.send.return",
+        "msFromSdkVerdict": -740.1523
+      },
+      {
+        "stage": "cdp.pipe.read-dispatch.enter",
+        "ordinal": 43,
+        "msFromSdkVerdict": 500.4734
+      },
+      {
+        "stage": "cdp.pipe.frame.queued",
+        "msFromSdkVerdict": 500.5652
+      },
+      {
+        "stage": "cdp.pipe.frame.callback.enter",
+        "msFromSdkVerdict": 501.0228
+      },
+      {
+        "stage": "cdp.response.received",
+        "msFromSdkVerdict": 501.0783
+      },
+      {
+        "stage": "cdp.session.send.fulfilled",
+        "msFromSdkVerdict": 501.0932
+      },
+      {
+        "stage": "driver.delegate.evaluate-with-arguments.fulfilled",
+        "msFromSdkVerdict": 501.111
+      },
+      {
+        "stage": "utility.evaluate.return",
+        "msFromSdkVerdict": 501.1279
+      },
+      {
+        "stage": "driver.getAttribute.return",
+        "msFromSdkVerdict": 501.1521
+      },
+      {
+        "stage": "driver.response.send",
+        "msFromSdkVerdict": 501.2009
+      },
+      {
+        "stage": "node.protocol.response",
+        "msFromSdkVerdict": 501.369
+      },
+      {
+        "stage": "node.frame.getAttribute.return",
+        "msFromSdkVerdict": 501.4014
+      }
+    ],
+    "browserStages": [
+      {
+        "stage": "selector.enter",
+        "estimatedMsFromSdkVerdict": 498.8215,
+        "pageMs": 4907.8
+      },
+      {
+        "stage": "selector.exit",
+        "estimatedMsFromSdkVerdict": 500.0215,
+        "pageMs": 4909
+      },
+      {
+        "stage": "getter.enter",
+        "estimatedMsFromSdkVerdict": 500.0215,
+        "pageMs": 4909
+      },
+      {
+        "stage": "getter.exit",
+        "estimatedMsFromSdkVerdict": 500.0215,
+        "pageMs": 4909,
+        "value": "brutalist"
+      }
+    ],
+    "arrivalCount": 0,
+    "transportComplete": false,
+    "transportSendReturnToNodePipeReadMs": 1240.6257,
+    "nodePipeReadToGetterReturnMs": 0.928,
+    "sdkSourceBindings": [
+      {
+        "path": "lib/inProcessFactory.js",
+        "sha256": "406a2ce0e50bf6c695a0fa018ac3dec505b60836710bbab797e11730c51917cc",
+        "stockInstalledSha256": "406a2ce0e50bf6c695a0fa018ac3dec505b60836710bbab797e11730c51917cc"
+      },
+      {
+        "path": "lib/client/connection.js",
+        "sha256": "e063a23c7fb0ed81e7a09baa0844851c660b3cba1c39176963f17b10a1bf1526",
+        "stockInstalledSha256": "e063a23c7fb0ed81e7a09baa0844851c660b3cba1c39176963f17b10a1bf1526"
+      },
+      {
+        "path": "lib/server/dispatchers/dispatcher.js",
+        "sha256": "628c39de7799325c589a6f62e642324cb61b8d6fdaeec6bc29b40b0f0a76dc58",
+        "stockInstalledSha256": "628c39de7799325c589a6f62e642324cb61b8d6fdaeec6bc29b40b0f0a76dc58"
+      },
+      {
+        "path": "lib/server/frames.js",
+        "sha256": "fa67e7a3755a79cf0e0ac96b6930987ec2bcc643f60735c6ec748066f7c3e16b",
+        "stockInstalledSha256": "fa67e7a3755a79cf0e0ac96b6930987ec2bcc643f60735c6ec748066f7c3e16b"
+      },
+      {
+        "path": "lib/server/frameSelectors.js",
+        "sha256": "e78a076ee10ebd6127e092229b70201603ded190322e4d76e6f0cdcbb2517723",
+        "stockInstalledSha256": "e78a076ee10ebd6127e092229b70201603ded190322e4d76e6f0cdcbb2517723"
+      },
+      {
+        "path": "lib/server/javascript.js",
+        "sha256": "134f2aae953ca802c3d8c4da2ddb0857129ae3044f8958cdb857993341aec257",
+        "stockInstalledSha256": "134f2aae953ca802c3d8c4da2ddb0857129ae3044f8958cdb857993341aec257"
+      },
+      {
+        "path": "lib/server/dom.js",
+        "sha256": "33f502d6319a4e2539a4020c4983045f30d3d1cbed5d7610a32d9f89cbf8823d",
+        "stockInstalledSha256": "33f502d6319a4e2539a4020c4983045f30d3d1cbed5d7610a32d9f89cbf8823d"
+      },
+      {
+        "path": "lib/server/chromium/crExecutionContext.js",
+        "sha256": "4b4da27c16c2ec7094dcc3cc78313eb9ac8f15a9ed3b7589118a883d6d339b7f",
+        "stockInstalledSha256": "4b4da27c16c2ec7094dcc3cc78313eb9ac8f15a9ed3b7589118a883d6d339b7f"
+      },
+      {
+        "path": "lib/server/chromium/crConnection.js",
+        "sha256": "0d41a058ad1f5c897329a9c821c52b952e0e709ab38c3e6e355224b167922f13",
+        "stockInstalledSha256": "0d41a058ad1f5c897329a9c821c52b952e0e709ab38c3e6e355224b167922f13"
+      },
+      {
+        "path": "lib/server/pipeTransport.js",
+        "sha256": "9ab01b72ead31eb7a07a439bc983d6e1738dd876dac7ec7a4e205d23563293c4",
+        "stockInstalledSha256": "9ab01b72ead31eb7a07a439bc983d6e1738dd876dac7ec7a4e205d23563293c4"
+      }
+    ]
+  }
+}
