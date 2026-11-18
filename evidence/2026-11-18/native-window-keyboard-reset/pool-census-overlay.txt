@@ -1,0 +1,25 @@
+from hashlib import sha256
+from pathlib import Path
+import json,sys
+q,dist=map(Path,sys.argv[1:])
+asset=dist/'site-shadcn-controls.BYCsrgZB.js'
+before=asset.read_text()
+a='function VE(t){const e=Nr.get(t)??0;return e===0&&t.addEventListener("keydown",mc,!0),Nr.set(t,e+1),()=>{const n=Nr.get(t)??0;n>1?Nr.set(t,n-1):n===1&&(Nr.delete(t),t.removeEventListener("keydown",mc,!0))}}'
+b='function VE(t){const e=Nr.get(t)??0;return e===0&&(t.addEventListener("keydown",mc,!0),puiKeyboardPool.nativeAdds++),Nr.set(t,e+1),puiKeyboardPoolObserve(t,e+1),()=>{const n=Nr.get(t)??0;puiKeyboardPool.releases++;n>1?Nr.set(t,n-1):n===1&&(Nr.delete(t),t.removeEventListener("keydown",mc,!0),puiKeyboardPool.nativeRemoves++)}}'
+assert before.count(a)==1
+prefix=r"""const puiKeyboardPool={acquires:0,releases:0,maxReferences:0,nativeAdds:0,nativeRemoves:0};
+const puiKeyboardWindows=new WeakSet();
+let puiKeyboardWindowCount=0;
+function puiKeyboardPoolObserve(target,references){
+ if(!puiKeyboardWindows.has(target)){puiKeyboardWindows.add(target);puiKeyboardWindowCount++}
+ puiKeyboardPool.maxReferences=Math.max(references,puiKeyboardPool.maxReferences);
+ if (++puiKeyboardPool.acquires%256===0)
+  console.info("[S4 keyboard reset pool]",JSON.stringify({
+    ...puiKeyboardPool,windows:puiKeyboardWindowCount,pageMs:performance.now(),timeOrigin:performance.timeOrigin
+  }));
+}
+"""
+after=prefix+before.replace(a,b)
+asset.write_text(after)
+(q/'asset-binding.json').write_text(json.dumps(dict(asset=asset.name,original=sha256(before.encode()).hexdigest(),
+   observed=sha256(after.encode()).hexdigest(),scope='Counts exact emitted native Window keyboard reset lease acquisitions and physical capture add/remove operations.'),indent=2)+'\n')

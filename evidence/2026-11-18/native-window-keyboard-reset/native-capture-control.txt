@@ -1,0 +1,109 @@
+import assert from 'node:assert/strict';
+import {createRequire} from 'node:module';
+import {createHash} from 'node:crypto';
+import {readFile,writeFile} from 'node:fs/promises';
+import path from 'node:path';
+
+const [q,repo]=process.argv.slice(2);
+const {build}=createRequire(path.join(repo,'package.json'))('esbuild');
+const {chromium}=createRequire(path.join(repo,'apps/www/package.json'))('playwright-core');
+const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
+const implementation='packages/adapters/base/src/events/web-event-router.ts';
+const entry=String.raw`
+import {createWebProtoEventRouter} from './packages/adapters/base/src/events/web-event-router';
+import {createInstanceTreeMarkers} from './packages/adapters/base/src/platform/instance-tree';
+const tree=createInstanceTreeMarkers('@proto.ui/adapter-web-component/__proto_instance');
+const proto={name:'keyboard-owner-control',setup:()=>undefined};
+const portal=document.createElement('button');
+portal.id='portal'; portal.textContent='Portal';
+const roots=[document.createElement('div'),document.createElement('div')];
+document.body.append(...roots,portal);
+globalThis.captureAndPress=[];
+window.addEventListener('keydown',e=>captureAndPress.push(['before',e.isTrusted]),true);
+const routers=roots.map((root,index)=>{
+ const instanceToken=tree.markProtoInstance(root,proto);
+ tree.mergeLogicalTriggerGroup(instanceToken,instanceToken);
+ const router=createWebProtoEventRouter({
+  rootEl:root,instanceToken,isEnabled:()=>true,
+  resolveSemanticEventRoute:tree.resolveLogicalTriggerEventRouteForTarget,
+  isSemanticEventRouteCandidate:tree.isLogicalEventRouteCandidate,
+ });
+ router.rootTarget.addEventListener('press.commit',event=>{
+   if(event.detail.nativeEvent.type==='keydown')
+     captureAndPress.push([index===0?'first':'second',event.detail.nativeEvent.isTrusted]);
+ });
+ return router;
+});
+window.addEventListener('keydown',e=>captureAndPress.push(['after',e.isTrusted]),true);
+tree.setProtoParent(portal,roots[0]);
+const reused=new KeyboardEvent('keydown',{key:'Enter',bubbles:true,composed:true,cancelable:true});
+globalThis.reuseBefore=()=>portal.dispatchEvent(reused);
+globalThis.moveToNext=()=>{
+ routers[0].dispose();
+ tree.setProtoParent(portal,roots[1]);
+};
+globalThis.reuseAfter=()=>portal.dispatchEvent(reused);
+globalThis.disposeLast=()=>routers[1].dispose();
+`;
+const bindings=[];
+for(const variant of ['parent','candidate']){
+ const text=await readFile(path.join(q,variant+'.ts'));
+ const bundle=path.join(q,variant+'.js');
+ const result=await build({
+   stdin:{contents:entry,loader:'ts',sourcefile:'native-keyboard-reset.ts',resolveDir:repo},
+   absWorkingDir:repo,bundle:true,format:'iife',target:'es2022',outfile:bundle,metafile:true,
+   tsconfigRaw:{compilerOptions:{}},
+   plugins:[{name:'exact-router-variant',setup(builder){
+    builder.onLoad({filter:/\/web-event-router\.ts$/},args=>{
+      if(path.relative(repo,args.path)===implementation)
+        return {contents:text,loader:'ts',resolveDir:path.dirname(args.path)};
+    });
+   }}],
+ });
+ const inputs={};
+ for(const filename of Object.keys(result.metafile.inputs).sort()){
+   inputs[filename]=sha(filename===implementation?text:filename==='native-keyboard-reset.ts'?entry:await readFile(path.join(repo,filename)));
+ }
+ bindings.push({variant,inputs,bundleSHA256:sha(await readFile(bundle))});
+}
+assert.deepEqual(Object.keys(bindings[0].inputs).filter(k=>bindings[0].inputs[k]!==bindings[1].inputs[k]),[implementation]);
+const browser=await chromium.launch({executablePath:process.env.CHROME_PATH});
+const rows=[];
+try{
+ for(const variant of ['parent','candidate','candidate','parent']){
+   const page=await browser.newPage();
+   try{
+     await page.setContent('<!doctype html><html><body></body></html>');
+     await page.addScriptTag({path:path.join(q,variant+'.js')});
+     const session=await page.context().newCDPSession(page);
+     const remote=await session.send('Runtime.evaluate',{expression:'window'});
+     const count=async()=>(await session.send('DOMDebugger.getEventListeners',{objectId:remote.result.objectId})).listeners.filter(l=>l.type==='keydown'&&l.useCapture).length;
+     const installed=await count();
+     await page.locator('#portal').focus();
+     await page.keyboard.press('Enter');
+     const trustedBefore=await page.evaluate(()=>globalThis.captureAndPress.splice(0));
+     await page.evaluate(()=>globalThis.reuseBefore());
+     const programmaticBefore=await page.evaluate(()=>globalThis.captureAndPress.splice(0));
+     await page.evaluate(()=>globalThis.moveToNext());
+     const afterFirstDisposal=await count();
+     await page.evaluate(()=>globalThis.reuseAfter());
+     const programmaticAfter=await page.evaluate(()=>globalThis.captureAndPress.splice(0));
+     await page.keyboard.press('Enter');
+     const trustedAfter=await page.evaluate(()=>globalThis.captureAndPress.splice(0));
+     await page.evaluate(()=>globalThis.disposeLast());
+     const afterDispose=await count();
+     rows.push({variant,installed,afterFirstDisposal,afterDispose,trustedBefore,programmaticBefore,programmaticAfter,trustedAfter});
+   } finally {await page.close();}
+ }
+}finally{await browser.close();}
+await writeFile(path.join(q,'native-compare.json'),JSON.stringify({chrome:browser.version(),bindings,rows},null,2)+'\n');
+console.log(JSON.stringify(rows));
+for(const row of rows){
+ assert.equal(row.installed,row.variant==='parent'?4:3);
+ assert.equal(row.afterFirstDisposal,3);
+ assert.equal(row.afterDispose,2);
+ for(const [name,owner,isTrusted] of [
+  ['trustedBefore','first',true],['programmaticBefore','first',false],
+  ['programmaticAfter','second',false],['trustedAfter','second',true],
+ ]) assert.deepEqual(row[name],[['before',isTrusted],['after',isTrusted],[owner,isTrusted]]);
+}

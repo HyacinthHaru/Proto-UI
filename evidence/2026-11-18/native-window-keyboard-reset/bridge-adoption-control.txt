@@ -1,0 +1,100 @@
+import assert from 'node:assert/strict';
+import {createRequire} from 'node:module';
+import {createHash} from 'node:crypto';
+import {readFile,writeFile} from 'node:fs/promises';
+import path from 'node:path';
+
+const [q,repo]=process.argv.slice(2);
+const {build}=createRequire(path.join(repo,'package.json'))('esbuild');
+const {chromium}=createRequire(path.join(repo,'apps/www/package.json'))('playwright-core');
+const entry=String.raw`
+import {createWebProtoEventRouter} from './packages/adapters/base/src/events/web-event-router';
+import {createInstanceTreeMarkers,createRebindableEventTarget} from './packages/adapters/base/src/platform/instance-tree';
+globalThis.initBridgeAdoption = function(){
+ const tree=createInstanceTreeMarkers('@proto.ui/adapter-web-component/__proto_instance');
+ const proto={name:'bridge-window-adoption',setup:()=>undefined};
+ const roots=[document.createElement('div'),document.createElement('div')];
+ document.body.append(...roots);
+ const iframe=document.querySelector('#destination');
+ const other=iframe.contentWindow;
+ const outside=document.querySelector('#outside');
+ const inside=other.document.querySelector('#inside');
+ globalThis.bridgeEvents=[];
+ const bridges=roots.map(()=>createRebindableEventTarget());
+ const routers=roots.map((root,index)=>{
+   const token=tree.markProtoInstance(root,proto);
+   tree.mergeLogicalTriggerGroup(token,token);
+   const bridge=bridges[index]; bridge.setTarget(window);
+   const router=createWebProtoEventRouter({
+    rootEl:root,instanceToken:token,globalEl:bridge,isEnabled:()=>true,
+    resolveSemanticEventRoute:tree.resolveLogicalTriggerEventRouteForTarget,
+    isSemanticEventRouteCandidate:tree.isLogicalEventRouteCandidate,
+   });
+   router.rootTarget.addEventListener('press.commit',event=>{
+      if(event.detail.nativeEvent.type==='keydown')
+        bridgeEvents.push({index, trusted:event.detail.nativeEvent.isTrusted});
+   });
+   return router;
+ });
+ tree.setProtoParent(outside,roots[0]);
+ globalThis.rebindBridge=()=>{
+   other.document.body.append(roots[0]);
+   bridges[0].setTarget(roots[0].ownerDocument.defaultView);
+   tree.setProtoParent(outside,roots[1]);
+   tree.setProtoParent(inside,roots[0]);
+ };
+ globalThis.disposeSource=()=>routers[1].dispose();
+ globalThis.disposeDestination=()=>routers[0].dispose();
+};
+`;
+const bundle=path.join(q,'native-adoption.js');
+const result=await build({
+ stdin:{contents:entry,loader:'ts',sourcefile:'native-bridge-adoption.ts',resolveDir:repo},
+ absWorkingDir:repo,format:'iife',target:'es2022',bundle:true,metafile:true,outfile:bundle,
+ tsconfigRaw:{compilerOptions:{}},
+});
+const hash=b=>createHash('sha256').update(b).digest('hex');
+const inputs={};
+for(const p of Object.keys(result.metafile.inputs).sort()){
+ inputs[p]=hash(p==='native-bridge-adoption.ts'?entry:await readFile(path.join(repo,p)));
+}
+const browser=await chromium.launch({executablePath:process.env.CHROME_PATH});
+let receipt;
+try{
+ const page=await browser.newPage();
+ await page.setContent('<button id="outside">Outside portal</button><iframe id="destination" srcdoc="<button id=inside>Inside portal</button>"></iframe>');
+ await page.frameLocator('#destination').locator('#inside').waitFor();
+ await page.addScriptTag({path:bundle});
+ await page.evaluate(()=>globalThis.initBridgeAdoption());
+ const cdp=await page.context().newCDPSession(page);
+ const contexts=new Map();
+ cdp.on('Runtime.executionContextCreated',({context})=>{
+   if(context.auxData?.isDefault) contexts.set(context.auxData.frameId,context.id);
+ });
+ await cdp.send('Runtime.enable');
+ const {frameTree}=await cdp.send('Page.getFrameTree');
+ const outerContext=contexts.get(frameTree.frame.id);
+ const innerContext=contexts.get(frameTree.childFrames[0].frame.id);
+ assert.ok(outerContext && innerContext && outerContext!==innerContext);
+ const count=async(contextId)=>{
+   const remote=await cdp.send('Runtime.evaluate',{expression:'window',contextId});
+   const {listeners}=await cdp.send('DOMDebugger.getEventListeners',{objectId:remote.result.objectId});
+   return listeners.filter(l=>l.type==='keydown'&&l.useCapture).length;
+ };
+ const windowCounts=async()=>[await count(outerContext),await count(innerContext)];
+ const phases=[await windowCounts()];
+ await page.locator('#outside').press('Enter');
+ await page.evaluate(()=>globalThis.rebindBridge());
+ phases.push(await windowCounts());
+ await page.frameLocator('#destination').locator('#inside').press('Enter');
+ await page.locator('#outside').press('Enter');
+ await page.evaluate(()=>globalThis.disposeSource());
+ phases.push(await windowCounts());
+ await page.evaluate(()=>globalThis.disposeDestination());
+ phases.push(await windowCounts());
+ receipt={chrome:browser.version(),phases,events:await page.evaluate(()=>globalThis.bridgeEvents.splice(0)),bundleSHA256:hash(await readFile(bundle)),inputs};
+}finally{await browser.close();}
+await writeFile(path.join(q,'native-adoption.json'),JSON.stringify(receipt,null,2)+'\n');
+console.log(JSON.stringify({phases:receipt.phases,events:receipt.events}));
+assert.deepEqual(receipt.phases, [[2,0],[1,1],[0,1],[0,0]]);
+assert.deepEqual(receipt.events,[{index:0,trusted:true},{index:0,trusted:true},{index:1,trusted:true}]);

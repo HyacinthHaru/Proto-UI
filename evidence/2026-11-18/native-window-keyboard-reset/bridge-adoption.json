@@ -1,0 +1,32 @@
+{
+  "chrome": "156.0.8078.79",
+  "phases": [
+    [2, 0],
+    [1, 1],
+    [0, 1],
+    [0, 0]
+  ],
+  "events": [
+    {
+      "index": 0,
+      "trusted": true
+    },
+    {
+      "index": 0,
+      "trusted": true
+    },
+    {
+      "index": 1,
+      "trusted": true
+    }
+  ],
+  "bundleSHA256": "f6cbaafc176bd4a57863038d9b3b53579e38b5ec464a514e83f0bf769e32d15c",
+  "inputs": {
+    "native-bridge-adoption.ts": "b331e92306fd8b0fcbdfeacfffddf98895fab6d08e883bdc2a96c5ece6d8bfa6",
+    "packages/adapters/base/src/events/pointer-contact.ts": "8979916b5ca021cf4770168292681c99b0816e46b2cd47caa4bd361543bc0f09",
+    "packages/adapters/base/src/events/pointer-sample.ts": "940874ff556c42ff318fb3f72879634692b8cf3ba2d06388b7c6610d390afccb",
+    "packages/adapters/base/src/events/web-event-router.ts": "7f123669606125eb0ebb42d603c96ddb592502860322e9d5bfeec9a00edbf648",
+    "packages/adapters/base/src/gestures/web-move-click-arbitration.ts": "8ca6d37f7a60c5eb8909b3026c12ea60eec93b1b642200845443bac7746bd8f7",
+    "packages/adapters/base/src/platform/instance-tree.ts": "6dfa1b70bafae00bc016e89e6a8235c82a420d9d9920d93618db4ff9bd600614"
+  }
+}
