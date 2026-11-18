@@ -1214,6 +1214,9 @@ export class AnatomyModuleImpl extends ModuleBase {
 
     const domain = this.resolveCurrentDomain(family, false);
     const claims = domain.claims;
+    const profileName = claims.find(
+      (claim) => claim.role === 'root' && claim.instance === domain.rootInstance
+    )?.profile;
     const diagnostics: AnatomyDiagnostic[] = [];
     const counts = new Map<string, number>();
     for (const claim of claims) counts.set(claim.role, (counts.get(claim.role) ?? 0) + 1);
@@ -1273,7 +1276,6 @@ export class AnatomyModuleImpl extends ModuleBase {
       }
     }
 
-    const profileName = domain.profile;
     if (!profileName) return diagnostics;
     const profile = familyDef.profiles[profileName];
     if (!profile) return diagnostics;
@@ -1351,13 +1353,12 @@ export class AnatomyModuleImpl extends ModuleBase {
   ): {
     rootInstance: AnatomyInstanceToken | null;
     claims: ClaimRecord[];
-    profile: string | null;
   } {
     const instance = this.getSelfToken();
     const getParent = this.getParentGetter();
     const rootInstance = this.findDomainRoot(instance, family, getParent);
     if (!rootInstance) {
-      if (!strict) return { rootInstance: null, claims: [], profile: null };
+      if (!strict) return { rootInstance: null, claims: [] };
       throw anatomyError(
         ANATOMY_ERROR.CLAIM_INVALID,
         `[Anatomy] current instance is not part of a valid domain for '${family.debugName}'`
@@ -1397,13 +1398,7 @@ export class AnatomyModuleImpl extends ModuleBase {
         (claim) => this.findDomainRoot(claim.instance, family, getParent) === rootInstance
       );
     }
-    const rootClaim =
-      claims.find((claim) => claim.role === 'root' && claim.instance === rootInstance) ?? null;
-    return {
-      rootInstance,
-      claims,
-      profile: rootClaim?.profile ?? null,
-    };
+    return { rootInstance, claims };
   }
 
   private findDomainRoot(
