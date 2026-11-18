@@ -1,0 +1,119 @@
+{
+  "candidate": "0d3409ba8c2fe0a1e98f7b636d06cb324d994b32",
+  "parent": "d0095a8cd79103561f017ea48e8cfff1a6991029",
+  "tests": {
+    "red": {
+      "passed": 36,
+      "failed": 1,
+      "pending": 0,
+      "files": 1,
+      "reportSha256": "d372b3a84bed287432df3a40945876ab732c1f87f53d953a9ac53fbd0d141cf3"
+    },
+    "focused": {
+      "passed": 218,
+      "failed": 0,
+      "pending": 0,
+      "files": 8,
+      "reportSha256": "94686d1396abfea630860fa20628ae60b0cca7ea4094280209210f939da68d90"
+    },
+    "website-inventory": {
+      "passed": 4882,
+      "failed": 59,
+      "pending": 3,
+      "files": 353,
+      "reportSha256": "7ce4f862e5a6313e9f22f25725cbdffc0ae2951baffa04104b1dbb35eec3443d"
+    },
+    "website-baseline": {
+      "passed": 4881,
+      "failed": 60,
+      "pending": 3,
+      "files": 353,
+      "reportSha256": "0671c84bd2de402a7c6ed2e5c71efae6742fb62989ad5a881acc25410f4e2361"
+    },
+    "website-upstream-main": {
+      "passed": 4881,
+      "failed": 60,
+      "pending": 3,
+      "files": 353,
+      "reportSha256": "c7315d06d8a37eab980e82391ef76a4c3546248a7cc806ff09ada1f2c0422ac9"
+    },
+    "exact-p1-review": {
+      "passed": 3,
+      "failed": 0,
+      "pending": 30,
+      "files": 1,
+      "reportSha256": "fccb63b68d3d4545ee35586f58ff0cc1c581c2670d3fbd874b5b88ee7afa129f"
+    }
+  },
+  "parentComparison": {
+    "commonFailures": 59,
+    "parentOnly": [
+      [
+        "src/components/site-text-recipes.test.ts",
+        "compiles scoped native document fallback declarations without targeting Text paint"
+      ]
+    ],
+    "candidateOnly": []
+  },
+  "mainComparison": {
+    "upstreamMain": {
+      "numPassedTests": 4881,
+      "numFailedTests": 60,
+      "numPendingTests": 3,
+      "numTotalTests": 4944
+    },
+    "localCandidate": {
+      "numPassedTests": 4882,
+      "numFailedTests": 59,
+      "numPendingTests": 3,
+      "numTotalTests": 4944
+    },
+    "common": 59,
+    "mainOnly": [
+      [
+        "src/content/docs/zh-cn/code-scroll-chain.test.ts",
+        "keeps the original reverse input and independently asserts internal, boundary and horizontal native scrolling"
+      ]
+    ],
+    "candidateOnly": [],
+    "upstreamMainUnhandled": 12,
+    "localCandidateUnhandled": 12
+  },
+  "native": [
+    {
+      "id": "reading-fallback-shadcn",
+      "outcome": "passed",
+      "headingPaint": {
+        "size": "30px",
+        "leading": "37.5px",
+        "text": "\u5feb\u901f\u5f00\u59cb"
+      },
+      "descriptionPaint": {
+        "size": "16px",
+        "leading": "26px"
+      }
+    },
+    {
+      "id": "reading-fallback-brutalist",
+      "outcome": "passed",
+      "headingPaint": {
+        "size": "36px",
+        "leading": "44px",
+        "text": "Brutalist Button"
+      }
+    },
+    {
+      "id": "reading-fallback-homepage",
+      "outcome": "passed",
+      "headingPaint": {
+        "size": "30px",
+        "leading": "37.5px",
+        "text": "\u7ec4\u4ef6\u53ef\u4ee5\u72ec\u7acb\u4e8e\u6846\u67b6\u6216\u8bbe\u8ba1\u4f53\u7cfb"
+      },
+      "descriptionPaint": {
+        "size": "18px",
+        "leading": "28px"
+      }
+    }
+  ]
+}
