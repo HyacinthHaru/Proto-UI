@@ -1,0 +1,57 @@
+from pathlib import Path
+import hashlib,json,sys
+out,dist=map(Path,sys.argv[1:])
+known=json.loads((out.parent/'s4-nested-portal-integration/built-js-inputs.json').read_text())
+lease,=dist.glob('native-content-lease.*.js')
+surface,=dist.glob('runtime-preview-surface.*.js')
+original={f.name:f.read_bytes() for f in (lease,surface)}
+digest=lambda data:hashlib.sha256(data).hexdigest()
+assert all(digest(value)==known[key] for key,value in original.items())
+def once(text,old,new):
+    assert text.count(old)==1,old
+    return text.replace(old,new)
+s=original[lease.name].decode()
+s=once(s,'r=o.getSelection(),E=r?.anchorNode,x=r?.focusNode','r=o.getSelection(),E=globalThis.__s4LeaseLayout.read(()=>r?.anchorNode),x=r?.focusNode')
+prefix="""
+globalThis.__s4LeaseLayout=(()=>{
+  let ordinal=0, active;
+  const mark=(id,phase)=>{if(id) performance.mark('s4-lease:'+id+':'+phase);};
+  return {
+    allocate(runtime) {
+      if (ordinal>=192) return;
+      if (ordinal===0) console.info('[S4 lease trace start]');
+      return ++ordinal+':'+runtime;
+    },
+    mark,
+    publish(id,run) {
+      const previous=active;
+      active=id;
+      mark(id,'publish-enter');
+      try {return run();}
+      finally {mark(id,'publish-return');active=previous;}
+    },
+    read(run) {
+      const id=active;
+      mark(id,'anchor-enter');
+      try {return run();}
+      finally {mark(id,'anchor-return');}
+    },
+  };
+})();
+"""
+lease.write_text(prefix+s)
+s=original[surface.name].decode()
+s=once(s,'let b=null;const $=','let b=null;const __s4Versions=new Map();const $=')
+s=once(s,'d.style.minWidth="0",i.append(d);let E;',"""
+d.style.minWidth="0";const trace=t.generation===1 ? globalThis.__s4LeaseLayout.allocate(n.runtime) : undefined;
+if(trace) __s4Versions.set(t.generation,trace);
+globalThis.__s4LeaseLayout.mark(trace,'append-enter');
+i.append(d);
+globalThis.__s4LeaseLayout.mark(trace,'append-return');
+let E;""".strip())
+s=once(s,'activate(){d.hidden=!1}',"activate(){globalThis.__s4LeaseLayout.mark(trace,'activate-enter');d.hidden=!1;globalThis.__s4LeaseLayout.mark(trace,'activate-return')}")
+s=once(s,'return{publish(){if(!p)throw new Error("Passive shell composition disposed");',"""
+return{publish(){const trace=__s4Versions.get(t.generation);__s4Versions.delete(t.generation);return globalThis.__s4LeaseLayout.publish(trace,()=>{if(!p)throw new Error("Passive shell composition disposed");""".strip())
+s=once(s,'P(l)},rollback(){try{B(()=>w?.rollback())}','P(l)})},rollback(){try{B(()=>w?.rollback())}')
+surface.write_text(s)
+(out/'asset-binding.json').write_text(json.dumps({'scope':'First 192 generation-1 materializations receive passive user timing marks. Marks before/after insertion, activation, publication and original anchor read. No additional DOM or Selection read.','files':{f.name:{'original':digest(original[f.name]),'observed':digest(f.read_bytes())} for f in (lease,surface)}},indent=2)+'\n')

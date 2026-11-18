@@ -1,0 +1,59 @@
+from collections import Counter,defaultdict
+from pathlib import Path
+import bisect,hashlib,json,re,sys
+q=Path(sys.argv[1])
+trace=q/'layout-trace.json'
+data=trace.read_text(errors='replace')
+start=data.index('[',data.index('"traceEvents"'))+1
+decoder=json.JSONDecoder()
+space=re.compile(r'[\s,]*')
+marks=defaultdict(dict)
+activity=defaultdict(list)
+counts=Counter()
+invalExample={}
+i=start
+parsed=0
+while i<len(data):
+ i=space.match(data,i).end()
+ if i>=len(data) or data[i]==']':break
+ try:event,j=decoder.raw_decode(data,i)
+ except json.JSONDecodeError:break
+ i=j;parsed+=1
+ name=event.get('name','')
+ if name.startswith('s4-lease:'):
+  _,ident,runtime,phase=name.split(':')
+  marks[(event['pid'],event['tid'],ident,runtime)][phase]=event['ts']
+  continue
+ if name not in ('Layout','UpdateLayoutTree','ScheduleStyleRecalculation','InvalidateLayout') and not name.endswith('InvalidationTracking'):continue
+ if 'ts' not in event:continue
+ counts[name]+=1
+ args=event.get('args',{})
+ inner=args.get('data',{}) or {}
+ if name not in invalExample:invalExample[name]={'phase':event.get('ph'),'duration':event.get('dur'),'data':args}
+ activity[(event['pid'],event['tid'])].append((event['ts'],event.get('dur',0),name,inner.get('reason'),inner.get('nodeId')))
+rows=[]
+for key,times in marks.items():
+ pid,tid,ident,runtime=key
+ if not {'anchor-enter','anchor-return'}<=times.keys():continue
+ events=sorted(activity.get((pid,tid),[]),key=lambda e:e[0])
+ stamps=[e[0] for e in events]
+ def rangeinfo(a,b):
+  if a not in times or b not in times: return None
+  view=events[bisect.bisect_left(stamps,times[a]):bisect.bisect_right(stamps,times[b])]
+  return {'counts':dict(Counter(e[2] for e in view)),
+          'durationsUs':{k:sum(e[1] for e in view if e[2]==k) for k in ('UpdateLayoutTree','Layout')},
+          'intervalUs':times[b]-times[a],
+          'first':view[:12]}
+ rows.append({'ordinal':int(ident),'runtime':runtime,'pid':pid,'tid':tid,'marks':times,
+  'append':rangeinfo('append-enter','append-return'),'materializeToActivation':rangeinfo('append-return','activate-enter'),
+  'anchor':rangeinfo('anchor-enter','anchor-return')})
+out={'traceReceipt':json.loads((q/'trace-receipt.json').read_text()),'traceSha256':hashlib.sha256(trace.read_bytes()).hexdigest(),
+ 'parsedEventsFromPrefix':parsed,'bytesOrCharactersConsumed':i,'eventCounts':counts,'marks':len(marks),
+ 'markNames':dict(Counter(n for times in marks.values() for n in times)),
+ 'completeRows':sorted(rows,key=lambda r:r['ordinal']),'examples':invalExample,
+ 'limit':'Rows pair surviving marks on the same renderer thread. Check the raw trace receipt for any capture loss or truncation. Invalidations inside each interval may belong to other interleaved owners and do not by themselves prove causation.'}
+(q/'prefix-analysis.json').write_text(json.dumps(out,indent=2)+'\n')
+print('events',parsed,'marks',len(marks),'complete',len(rows))
+print('counts',counts)
+for r in sorted(rows,key=lambda r:r['anchor']['intervalUs'],reverse=True)[:8]:
+ print(r['ordinal'],r['runtime'],r['anchor']['intervalUs'],r['anchor']['counts'],r['anchor']['durationsUs'],(r['materializeToActivation'] or {}).get('counts'))

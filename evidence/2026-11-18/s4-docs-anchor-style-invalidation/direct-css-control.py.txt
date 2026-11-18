@@ -1,0 +1,92 @@
+from hashlib import sha256
+import json,sys
+from pathlib import Path
+out,dist=map(Path,sys.argv[1:])
+known=json.loads((out.parent/'s4-nested-portal-integration/built-js-inputs.json').read_text())
+lease,=dist.glob('native-content-lease.*.js')
+surface,=dist.glob('runtime-preview-surface.*.js')
+original={f.name:f.read_bytes() for f in [lease,surface]}
+assert all(sha256(v).hexdigest()==known[k] for k,v in original.items())
+def once(source,old,new):
+    assert source.count(old)==1,old
+    return source.replace(old,new)
+prefix=r"""
+const __s4PassiveObserver=(()=>{
+  let active=null,count=0;
+  const totals={}, firstSlow=[];
+  const windowNow=()=>performance.now();
+  const measure=(phase,operation)=>{
+    const row=active;
+    if(!row) return operation();
+    const begin=windowNow();
+    try {return operation();}
+    finally {(row.phases[phase] ??= []).push(windowNow()-begin);}
+  };
+  const publication=(generation,operation)=>{
+    const previous=active;
+    const row={generation,begin:windowNow(),phases:{}};
+    active=row;
+    try {return operation();}
+    finally {
+      active=previous;
+      const end=windowNow();
+      const group=totals[generation===1 ? 'generation1' : 'later'] ??= {calls:0,elapsed:0,phases:{}};
+      group.calls++;group.elapsed+=end-row.begin;
+      for(const [phase,times] of Object.entries(row.phases)){
+        const data=group.phases[phase] ??= {calls:0,ms:0,max:0};
+        for(const time of times){data.calls++;data.ms+=time;data.max=Math.max(time,data.max);}
+      }
+      if(end-row.begin>=50 && firstSlow.length<10) firstSlow.push({...row,end});
+      count++;
+      if((count & (count-1))===0 || count%64===0){
+        console.info('[S4 passive phase]',JSON.stringify({count,pageMs:end,totals,firstSlow}));
+      }
+    }
+  };
+  return {measure,publication};
+})();
+globalThis.__puiS4PassiveObserver=__s4PassiveObserver;
+"""
+s=original[lease.name].decode()
+s=once(s,'r=o.getSelection(),E=r?.anchorNode,x=r?.focusNode',
+       'r=__s4PassiveObserver.measure("getSelection",()=>o.getSelection()),E=__s4PassiveObserver.measure("anchorNode",()=>r?.anchorNode),x=__s4PassiveObserver.measure("focusNode",()=>r?.focusNode)')
+s=once(s,'try{n(),p(),!i&&l', 'try{__s4PassiveObserver.measure("physicalMove",n),p(),!i&&l')
+lease.write_text(prefix+s)
+s=original[surface.name].decode()
+head='return{publish(){if(!p)throw new Error("Passive shell composition disposed");'
+tail='P(l)},rollback(){try{B(()=>w?.rollback())}'
+s=once(s,head,head[:-len('if(!p)throw new Error("Passive shell composition disposed");')]+'return globalThis.__puiS4PassiveObserver.publication(t.generation,()=>{if(!p)throw new Error("Passive shell composition disposed");')
+s=once(s,'o.style.setProperty("display","contents"),B(()=>w?.publish()),!p)',
+       'globalThis.__puiS4PassiveObserver.measure("displayWrite",()=>o.style.setProperty("display","contents")),globalThis.__puiS4PassiveObserver.measure("appearancePublish",()=>B(()=>w?.publish())),!p)')
+s=once(s,tail,'P(l)})},rollback(){try{B(()=>w?.rollback())}')
+surface.write_text(s)
+(out/'asset-binding.json').write_text(json.dumps({'scope':'Only timed wrappers; callbacks and physical move stay in original order. First slow rows capped at ten, periodic delivered checkpoints, no deadline totals. Getter can include native layout caused by preceding work.','files':{f.name:{'original':sha256(original[f.name]).hexdigest(),'observed':sha256(f.read_bytes()).hexdigest()} for f in [lease,surface]}},indent=2)+'\n')
+
+from html.parser import HTMLParser
+asset=dist/'liquid-library-card.DyhCTi_m.css'
+raw=asset.read_bytes()
+text=raw.decode()
+old='.site-page-frame:has([data-docs-site-header]) main'
+new='.site-page-frame:has(>header>[data-docs-site-header]) main'
+assert text.count(old)==2
+asset.write_text(text.replace(old,new))
+class HeaderShape(HTMLParser):
+    void={'img','input','meta','link','br','hr','source','base','col','wbr','embed','area','param','track'}
+    def __init__(self):super().__init__();self.open=[];self.matches=[]
+    def handle_starttag(self,name,pairs):
+        attrs=dict(pairs)
+        if 'data-docs-site-header' in attrs:
+            self.matches.append(len(self.open)>1 and self.open[-1][0]=='header' and 'site-page-frame' in self.open[-2][1].get('class','').split())
+        if name not in self.void:self.open.append((name,attrs))
+    def handle_endtag(self,name):
+        for i in range(len(self.open)-1,-1,-1):
+            if self.open[i][0]==name:del self.open[i:];break
+pages=dist.parent
+count=0
+for html in pages.rglob('index.html'):
+    parser=HeaderShape()
+    parser.feed(html.read_text())
+    assert all(parser.matches),html
+    count+=len(parser.matches)
+assert count>600,count
+(out/'css-binding.json').write_text(json.dumps({'file':asset.name,'original':sha256(raw).hexdigest(),'control':sha256(asset.read_bytes()).hexdigest(),'exactChanges':2,'old':old,'new':new,'compiledDocHeadersChecked':count,'scope':'Only two built stylesheet selectors changed. Phase observer matches the previous no-extra-getter diagnostic. Direct-child relationship checked in built docs and original case limits retained.'},indent=2)+'\n')

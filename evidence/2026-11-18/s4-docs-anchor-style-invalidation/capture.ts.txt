@@ -1,0 +1,51 @@
+      const layoutTrace = await browser.newBrowserCDPSession();
+      const layoutTraceComplete = new Promise<{stream?: string; dataLossOccurred?: boolean}>(
+        resolve => layoutTrace.once('Tracing.tracingComplete', resolve)
+      );
+      const traceCategories = 'devtools.timeline,blink.user_timing,disabled-by-default-devtools.timeline.invalidationTracking';
+      const traceReceipt = {
+        categories: traceCategories, triggerMs: 0, beginMs: 0, requestedEndMs: 0,
+        traceBytes: 0, eof: false, dataLoss: null as boolean | null
+      };
+      let startTrace: Promise<void> | undefined;
+      let collectTrace: Promise<void> | undefined;
+      let traceTimer: ReturnType<typeof setTimeout> | undefined;
+      let closedTrace = false;
+      const endLayoutTrace = () => (collectTrace ??= (async () => {
+        traceReceipt.requestedEndMs = performance.now();
+        await layoutTrace.send('Tracing.end');
+        const { stream, dataLossOccurred } = await layoutTraceComplete;
+        traceReceipt.dataLoss = dataLossOccurred ?? null;
+        if (!stream) return;
+        const { open } = await import('node:fs/promises');
+        const file = await open(process.env.PROTO_UI_RUNTIME_EVIDENCE_DIR + '/layout-trace.json', 'w');
+        try {
+          while (!traceReceipt.eof && traceReceipt.traceBytes < 96 * 1024 * 1024) {
+            const chunk = await layoutTrace.send('IO.read', { handle: stream, size: 1048576 });
+            const bytes = Buffer.from(chunk.data, chunk.base64Encoded ? 'base64' : 'utf8');
+            await file.writeFile(bytes);
+            traceReceipt.eof = chunk.eof;
+            traceReceipt.traceBytes += bytes.length;
+          }
+        } finally {
+          await file.close();
+          await layoutTrace.send('IO.close', { handle: stream });
+        }
+      })().catch(error => { console.info('[S4 lease window error]', String(error)); }));
+      const onTraceTrigger = (message: { text(): string }) => {
+        if (startTrace || message.text() !== '[S4 lease trace start]') return;
+        traceReceipt.triggerMs = performance.now();
+        startTrace = (async () => {
+          await layoutTrace.send('Tracing.start', {
+            categories: traceCategories, transferMode: 'ReturnAsStream', streamFormat: 'json'
+          });
+          traceReceipt.beginMs = performance.now();
+          if (!closedTrace) traceTimer = setTimeout(() => { void endLayoutTrace(); }, 2_200);
+        })().catch(error => { console.info('[S4 lease trace start error]', String(error)); });
+      };
+      page.on('console', onTraceTrigger);
+      const finishLayoutTrace = async () => {
+        closedTrace = true;
+        await startTrace;
+        if (traceReceipt.beginMs) await endLayoutTrace();
+      };
