@@ -1,0 +1,1036 @@
+{
+  "first": {
+    "head": "8f0025d11481cc0b1269ed41972abf33382cdb74",
+    "assetBinding": {
+      "assets": {
+        "previewer-client.DzwZ4_zG.js": {
+          "original": "e8adced792c9b25129dad9bf30bd4a83e8c4afe7b587239ce3719bc15c39e77f",
+          "observed": "b82bf9b40758b605e7c6537e8cee3c7461243edc5396bd0ba64c5d00d69a43be"
+        },
+        "projection-materializer.D_t7RkeF.js": {
+          "original": "9fbc002467406c978531cdb0377fb45fb948454f875bf872e14efcd35511c58c",
+          "observed": "5463a45b4fec118ba8700b12ca64d309978b2d936e327e7879c06da0b8de9367"
+        },
+        "demo-bootstrap-2-3-2-live-region.demo.B1Lw0vIl.js": {
+          "original": "406ddef34471d6197563c036937b3355079c78150b17acccce38797b2c730ce7",
+          "observed": "bd6e76aa5225bc0225cfd69df88cbace8c0b07225955ade47205dff4e8fa1ece"
+        },
+        "live-region-demo.shared.B2lg47Gw.js": {
+          "original": "fd8ef904cdb2f4de658782d9a1dbfb3d3f1b1ce86cb09de617a165f919662c00",
+          "observed": "42e712bad5c6551250f53f998d64028075194f50ea03d6bda5a4ab3ef391ba9a"
+        }
+      },
+      "scope": "Exact emitted observer taps around the four Live Region runtime phases, two mapped assets, and the original registry import boundary. Original promises, action order, readiness predicate, search scope and deadlines remain."
+    },
+    "assetsRestored": true,
+    "readinessTimeoutMs": 60000,
+    "outerCaseMs": 150000,
+    "originalChineseFailed": 1,
+    "englishFiltered": 1,
+    "timingsMs": {
+      "lastResourceEnd": 29949.89999985695,
+      "recipeExecutionStart": 39520.299999952316,
+      "servedToBody": 9570.400000095367,
+      "wcPrototypeWait": 11963.299999952316,
+      "wcRender": 13.899999856948853
+    },
+    "lastDeliveredPredicate": {
+      "timeOrigin": 1794974675394.7,
+      "pageMs": 44717.59999990463,
+      "dateNow": 1794974720112,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-aoelr9c6u1",
+        "index": 664,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-bootstrap-2-3-2-form",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-aoelr9c6u1",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      }
+    },
+    "events": [
+      {
+        "stage": "resource-observed",
+        "pageMs": 11640.200000047684,
+        "timeOrigin": 1794974675394.7,
+        "asset": "live-region-demo.shared.B2lg47Gw.js",
+        "requestStart": 8889.200000047684,
+        "responseEnd": 8896.099999904633,
+        "transferSize": 1090,
+        "receivedNodeMs": 12486.750875
+      },
+      {
+        "stage": "shared-module-enter",
+        "pageMs": 15698.899999856949,
+        "timeOrigin": 1794974675394.7,
+        "receivedNodeMs": 16545.225416
+      },
+      {
+        "stage": "shared-module-exit",
+        "pageMs": 15699,
+        "timeOrigin": 1794974675394.7,
+        "receivedNodeMs": 16545.358291
+      },
+      {
+        "stage": "begin",
+        "pageMs": 29946.299999952316,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "wc",
+        "owner": "pp-dhlabowj4rd",
+        "hostChildren": 1,
+        "receivedNodeMs": 30792.637875
+      },
+      {
+        "stage": "recipe-begin",
+        "pageMs": 29946.39999985695,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "wc",
+        "owner": "pp-dhlabowj4rd",
+        "hostChildren": 0,
+        "receivedNodeMs": 30792.752291
+      },
+      {
+        "stage": "begin",
+        "pageMs": 29947.099999904633,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "react",
+        "owner": "pp-72jz7f5ms7m",
+        "hostChildren": 1,
+        "receivedNodeMs": 30793.203916
+      },
+      {
+        "stage": "recipe-begin",
+        "pageMs": 29947.200000047684,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "react",
+        "owner": "pp-72jz7f5ms7m",
+        "hostChildren": 0,
+        "receivedNodeMs": 30793.2695
+      },
+      {
+        "stage": "begin",
+        "pageMs": 29947.299999952316,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "vue",
+        "owner": "pp-ja1j2w3qe8",
+        "hostChildren": 1,
+        "receivedNodeMs": 30793.36675
+      },
+      {
+        "stage": "recipe-begin",
+        "pageMs": 29947.39999985695,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "vue",
+        "owner": "pp-ja1j2w3qe8",
+        "hostChildren": 0,
+        "receivedNodeMs": 30793.443916
+      },
+      {
+        "stage": "begin",
+        "pageMs": 29947.5,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "vue2",
+        "owner": "pp-t1zwgew8qxo",
+        "hostChildren": 1,
+        "receivedNodeMs": 30793.533833
+      },
+      {
+        "stage": "recipe-begin",
+        "pageMs": 29947.599999904633,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "vue2",
+        "owner": "pp-t1zwgew8qxo",
+        "hostChildren": 0,
+        "receivedNodeMs": 30793.617291
+      },
+      {
+        "stage": "native-import-begin",
+        "pageMs": 29953.5,
+        "timeOrigin": 1794974675394.7,
+        "receivedNodeMs": 30799.769791
+      },
+      {
+        "stage": "resource-observed",
+        "pageMs": 32994.299999952316,
+        "timeOrigin": 1794974675394.7,
+        "asset": "demo-bootstrap-2-3-2-live-region.demo.B1Lw0vIl.js",
+        "requestStart": 29947,
+        "responseEnd": 29949.89999985695,
+        "transferSize": 686,
+        "receivedNodeMs": 33840.589166
+      },
+      {
+        "stage": "recipe-module-enter",
+        "pageMs": 39520.299999952316,
+        "timeOrigin": 1794974675394.7,
+        "receivedNodeMs": 40366.595958
+      },
+      {
+        "stage": "recipe-module-exit",
+        "pageMs": 39520.39999985695,
+        "timeOrigin": 1794974675394.7,
+        "receivedNodeMs": 40366.711833
+      },
+      {
+        "stage": "recipe-return",
+        "pageMs": 39520.5,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "wc",
+        "owner": "pp-dhlabowj4rd",
+        "hostChildren": 0,
+        "receivedNodeMs": 40366.734833
+      },
+      {
+        "stage": "prototypes-begin",
+        "pageMs": 39522.299999952316,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "wc",
+        "owner": "pp-dhlabowj4rd",
+        "hostChildren": 0,
+        "ids": ["bootstrap-2-3-2-live-region-root", "bootstrap-2-3-2-button"],
+        "receivedNodeMs": 40368.598458
+      },
+      {
+        "stage": "recipe-return",
+        "pageMs": 39522.39999985695,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "react",
+        "owner": "pp-72jz7f5ms7m",
+        "hostChildren": 0,
+        "receivedNodeMs": 40368.677458
+      },
+      {
+        "stage": "prototypes-begin",
+        "pageMs": 39522.39999985695,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "react",
+        "owner": "pp-72jz7f5ms7m",
+        "hostChildren": 0,
+        "ids": ["bootstrap-2-3-2-live-region-root", "bootstrap-2-3-2-button"],
+        "receivedNodeMs": 40368.778625
+      },
+      {
+        "stage": "recipe-return",
+        "pageMs": 39522.5,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "vue",
+        "owner": "pp-ja1j2w3qe8",
+        "hostChildren": 0,
+        "receivedNodeMs": 40368.796291
+      },
+      {
+        "stage": "prototypes-begin",
+        "pageMs": 39522.5,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "vue",
+        "owner": "pp-ja1j2w3qe8",
+        "hostChildren": 0,
+        "ids": ["bootstrap-2-3-2-live-region-root", "bootstrap-2-3-2-button"],
+        "receivedNodeMs": 40368.810791
+      },
+      {
+        "stage": "recipe-return",
+        "pageMs": 39522.5,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "vue2",
+        "owner": "pp-t1zwgew8qxo",
+        "hostChildren": 0,
+        "receivedNodeMs": 40368.824833
+      },
+      {
+        "stage": "prototypes-begin",
+        "pageMs": 39522.59999990463,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "vue2",
+        "owner": "pp-t1zwgew8qxo",
+        "hostChildren": 0,
+        "ids": ["bootstrap-2-3-2-live-region-root", "bootstrap-2-3-2-button"],
+        "receivedNodeMs": 40368.836416
+      },
+      {
+        "stage": "prototypes-return",
+        "pageMs": 51485.59999990463,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "wc",
+        "owner": "pp-dhlabowj4rd",
+        "hostChildren": 0,
+        "receivedNodeMs": 52332.189625
+      },
+      {
+        "stage": "render-begin",
+        "pageMs": 51485.700000047684,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "wc",
+        "owner": "pp-dhlabowj4rd",
+        "hostChildren": 0,
+        "receivedNodeMs": 52332.248291
+      },
+      {
+        "stage": "prototypes-return",
+        "pageMs": 51496.299999952316,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "react",
+        "owner": "pp-72jz7f5ms7m",
+        "hostChildren": 0,
+        "receivedNodeMs": 52342.677083
+      },
+      {
+        "stage": "render-begin",
+        "pageMs": 51496.299999952316,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "react",
+        "owner": "pp-72jz7f5ms7m",
+        "hostChildren": 0,
+        "receivedNodeMs": 52342.715333
+      },
+      {
+        "stage": "prototypes-return",
+        "pageMs": 51496.39999985695,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "vue",
+        "owner": "pp-ja1j2w3qe8",
+        "hostChildren": 0,
+        "receivedNodeMs": 52342.789125
+      },
+      {
+        "stage": "render-begin",
+        "pageMs": 51496.39999985695,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "vue",
+        "owner": "pp-ja1j2w3qe8",
+        "hostChildren": 0,
+        "receivedNodeMs": 52342.803333
+      },
+      {
+        "stage": "prototypes-return",
+        "pageMs": 51496.5,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "vue2",
+        "owner": "pp-t1zwgew8qxo",
+        "hostChildren": 0,
+        "receivedNodeMs": 52342.816875
+      },
+      {
+        "stage": "render-begin",
+        "pageMs": 51496.5,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "vue2",
+        "owner": "pp-t1zwgew8qxo",
+        "hostChildren": 0,
+        "receivedNodeMs": 52342.828708
+      },
+      {
+        "stage": "render-return",
+        "pageMs": 51499.59999990463,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "wc",
+        "owner": "pp-dhlabowj4rd",
+        "hostChildren": 1,
+        "receivedNodeMs": 52345.775666
+      },
+      {
+        "stage": "surface-ready",
+        "pageMs": 51540,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "wc",
+        "owner": "pp-dhlabowj4rd",
+        "hostChildren": 1,
+        "receivedNodeMs": 52386.313916
+      },
+      {
+        "stage": "render-return",
+        "pageMs": 51993.200000047684,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "vue",
+        "owner": "pp-ja1j2w3qe8",
+        "hostChildren": 1,
+        "receivedNodeMs": 52839.610041
+      },
+      {
+        "stage": "render-return",
+        "pageMs": 52000.09999990463,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "vue2",
+        "owner": "pp-t1zwgew8qxo",
+        "hostChildren": 1,
+        "receivedNodeMs": 52846.494541
+      },
+      {
+        "stage": "render-return",
+        "pageMs": 52182.39999985695,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "react",
+        "owner": "pp-72jz7f5ms7m",
+        "hostChildren": 1,
+        "receivedNodeMs": 53028.803625
+      },
+      {
+        "stage": "surface-ready",
+        "pageMs": 52199.700000047684,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "vue",
+        "owner": "pp-ja1j2w3qe8",
+        "hostChildren": 1,
+        "receivedNodeMs": 53046.075791
+      },
+      {
+        "stage": "surface-ready",
+        "pageMs": 52208.89999985695,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "vue2",
+        "owner": "pp-t1zwgew8qxo",
+        "hostChildren": 1,
+        "receivedNodeMs": 53055.19425
+      },
+      {
+        "stage": "surface-ready",
+        "pageMs": 52613.09999990463,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "react",
+        "owner": "pp-72jz7f5ms7m",
+        "hostChildren": 1,
+        "receivedNodeMs": 53459.483125
+      },
+      {
+        "stage": "publish",
+        "pageMs": 52939.299999952316,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "wc",
+        "owner": "pp-dhlabowj4rd",
+        "hostChildren": 1,
+        "receivedNodeMs": 53785.57275
+      },
+      {
+        "stage": "publish",
+        "pageMs": 52940.09999990463,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "vue",
+        "owner": "pp-ja1j2w3qe8",
+        "hostChildren": 1,
+        "receivedNodeMs": 53786.120958
+      },
+      {
+        "stage": "publish",
+        "pageMs": 52940.200000047684,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "vue2",
+        "owner": "pp-t1zwgew8qxo",
+        "hostChildren": 1,
+        "receivedNodeMs": 53786.289458
+      },
+      {
+        "stage": "publish",
+        "pageMs": 52941.09999990463,
+        "timeOrigin": 1794974675394.7,
+        "runtime": "react",
+        "owner": "pp-72jz7f5ms7m",
+        "hostChildren": 1,
+        "receivedNodeMs": 53787.205125
+      }
+    ]
+  },
+  "second": {
+    "head": "8f0025d11481cc0b1269ed41972abf33382cdb74",
+    "assets": {
+      "assets": {
+        "previewer-client.DzwZ4_zG.js": {
+          "original": "e8adced792c9b25129dad9bf30bd4a83e8c4afe7b587239ce3719bc15c39e77f",
+          "observed": "71a86a3aecea24c13caff7b89eff3d24bbfcfb62d4c00191eaf48f090c4729a1"
+        },
+        "projection-materializer.D_t7RkeF.js": {
+          "original": "9fbc002467406c978531cdb0377fb45fb948454f875bf872e14efcd35511c58c",
+          "observed": "5463a45b4fec118ba8700b12ca64d309978b2d936e327e7879c06da0b8de9367"
+        },
+        "demo-bootstrap-2-3-2-live-region.demo.B1Lw0vIl.js": {
+          "original": "406ddef34471d6197563c036937b3355079c78150b17acccce38797b2c730ce7",
+          "observed": "bd6e76aa5225bc0225cfd69df88cbace8c0b07225955ade47205dff4e8fa1ece"
+        },
+        "live-region-demo.shared.B2lg47Gw.js": {
+          "original": "fd8ef904cdb2f4de658782d9a1dbfb3d3f1b1ce86cb09de617a165f919662c00",
+          "observed": "42e712bad5c6551250f53f998d64028075194f50ea03d6bda5a4ab3ef391ba9a"
+        },
+        "prototype-modules.o0miyDEA.js": {
+          "original": "672dd10dddd2af726a8271e7e6acbd1986da235ea5d952f888b73731861c03bd",
+          "observed": "75bbceb2fb62b22e1d7656a64c92f2fbf894c2229cbeabe4b5c9e97ba217fb26"
+        },
+        "index.DNkyzqLk.js": {
+          "original": "29f87a50bf6552a9e004c906d69809e5d90e66730d3cb3b16e233c38228b23cf",
+          "observed": "e73d4df1d143c972aa1ef17cdf0429def1c529ee485326cce6f63ecac6fb92cd"
+        },
+        "index.DbuQX8zP.js": {
+          "original": "8a625b96cf9b3e2c62356269474eb09f7b777b42e7ab71cf3e02f1cc7a4a4373",
+          "observed": "32472eaf81030ed696ca74af3138b7ca2c1b83ca69e2095c03d9bdf1b4a1dec2"
+        }
+      },
+      "scope": "Exact emitted observer taps around the four Live Region runtime phases, the two exact Prototype loader and native module boundaries, mapped asset responses, and the original recipe registry import boundary. Original promises, action order, readiness predicate, search scope and deadlines remain."
+    },
+    "originalBytesRestored": true,
+    "originalChineseFailed": 1,
+    "englishFiltered": 1,
+    "load": "Separate phase diagnostic. The independently launched Agent Operations test worker was live at start; do not compare elapsed timings as a controlled benchmark.\nELAPSED  %CPU STAT\n  07:51   7.1 R",
+    "lastDeliveredPredicate": {
+      "timeOrigin": 1794975457941.4,
+      "pageMs": 45745.90000009537,
+      "dateNow": 1794975503687,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-wb0ls5graqo",
+        "index": 640,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-bootstrap-2-3-2-drawer",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-wb0ls5graqo",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      }
+    },
+    "events": [
+      {
+        "stage": "resource-observed",
+        "pageMs": 5946.799999952316,
+        "timeOrigin": 1794975457941.4,
+        "asset": "site-shadcn-controls.DZNAQyYW.js",
+        "requestStart": 124.10000014305115,
+        "responseEnd": 208,
+        "transferSize": 235190,
+        "receivedNodeMs": 7334.721459
+      },
+      {
+        "stage": "resource-observed",
+        "pageMs": 5946.900000095367,
+        "timeOrigin": 1794975457941.4,
+        "asset": "paint.Dporulws.js",
+        "requestStart": 228.70000004768372,
+        "responseEnd": 238.10000014305115,
+        "transferSize": 959,
+        "receivedNodeMs": 7334.886084
+      },
+      {
+        "stage": "resource-observed",
+        "pageMs": 5946.900000095367,
+        "timeOrigin": 1794975457941.4,
+        "asset": "index.C3ab8M-V.js",
+        "requestStart": 519.7999999523163,
+        "responseEnd": 529.1000001430511,
+        "transferSize": 1184,
+        "receivedNodeMs": 7334.922167
+      },
+      {
+        "stage": "prototype-loader-begin",
+        "proto": "bootstrap-2-3-2-button",
+        "asset": "index.DbuQX8zP.js",
+        "pageMs": 6461.299999952316,
+        "timeOrigin": 1794975457941.4,
+        "receivedNodeMs": 7849.208375
+      },
+      {
+        "stage": "prototype-native-import-begin",
+        "proto": "bootstrap-2-3-2-button",
+        "asset": "index.DbuQX8zP.js",
+        "pageMs": 6461.799999952316,
+        "timeOrigin": 1794975457941.4,
+        "receivedNodeMs": 7849.581292
+      },
+      {
+        "stage": "resource-observed",
+        "pageMs": 7105.400000095367,
+        "timeOrigin": 1794975457941.4,
+        "asset": "index.DbuQX8zP.js",
+        "requestStart": 6463.700000047684,
+        "responseEnd": 6470.5,
+        "transferSize": 1451,
+        "receivedNodeMs": 8493.457834
+      },
+      {
+        "stage": "prototype-module-enter",
+        "proto": "bootstrap-2-3-2-button",
+        "asset": "index.DbuQX8zP.js",
+        "pageMs": 10987.5,
+        "timeOrigin": 1794975457941.4,
+        "receivedNodeMs": 12375.818625
+      },
+      {
+        "stage": "prototype-module-exit",
+        "proto": "bootstrap-2-3-2-button",
+        "asset": "index.DbuQX8zP.js",
+        "pageMs": 10987.600000143051,
+        "timeOrigin": 1794975457941.4,
+        "receivedNodeMs": 12375.875792
+      },
+      {
+        "stage": "prototype-loader-return",
+        "proto": "bootstrap-2-3-2-button",
+        "asset": "index.DbuQX8zP.js",
+        "pageMs": 10987.700000047684,
+        "timeOrigin": 1794975457941.4,
+        "receivedNodeMs": 12375.942167
+      },
+      {
+        "stage": "resource-observed",
+        "pageMs": 12680.5,
+        "timeOrigin": 1794975457941.4,
+        "asset": "live-region-demo.shared.B2lg47Gw.js",
+        "requestStart": 9899.200000047684,
+        "responseEnd": 9903.100000143051,
+        "transferSize": 1090,
+        "receivedNodeMs": 14068.3745
+      },
+      {
+        "stage": "shared-module-enter",
+        "pageMs": 17226.700000047684,
+        "timeOrigin": 1794975457941.4,
+        "receivedNodeMs": 18614.429625
+      },
+      {
+        "stage": "shared-module-exit",
+        "pageMs": 17226.700000047684,
+        "timeOrigin": 1794975457941.4,
+        "receivedNodeMs": 18614.522917
+      },
+      {
+        "stage": "begin",
+        "pageMs": 34076,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "wc",
+        "owner": "pp-dhlabowj4rd",
+        "hostChildren": 1,
+        "receivedNodeMs": 35464.059375
+      },
+      {
+        "stage": "recipe-begin",
+        "pageMs": 34076.200000047684,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "wc",
+        "owner": "pp-dhlabowj4rd",
+        "hostChildren": 0,
+        "receivedNodeMs": 35464.283292
+      },
+      {
+        "stage": "begin",
+        "pageMs": 34076.90000009537,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "react",
+        "owner": "pp-72jz7f5ms7m",
+        "hostChildren": 1,
+        "receivedNodeMs": 35464.6605
+      },
+      {
+        "stage": "recipe-begin",
+        "pageMs": 34076.90000009537,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "react",
+        "owner": "pp-72jz7f5ms7m",
+        "hostChildren": 0,
+        "receivedNodeMs": 35464.7125
+      },
+      {
+        "stage": "begin",
+        "pageMs": 34077.200000047684,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "vue",
+        "owner": "pp-ja1j2w3qe8",
+        "hostChildren": 1,
+        "receivedNodeMs": 35464.794959
+      },
+      {
+        "stage": "recipe-begin",
+        "pageMs": 34077.200000047684,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "vue",
+        "owner": "pp-ja1j2w3qe8",
+        "hostChildren": 0,
+        "receivedNodeMs": 35464.894417
+      },
+      {
+        "stage": "begin",
+        "pageMs": 34077.299999952316,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "vue2",
+        "owner": "pp-t1zwgew8qxo",
+        "hostChildren": 1,
+        "receivedNodeMs": 35464.991084
+      },
+      {
+        "stage": "recipe-begin",
+        "pageMs": 34077.40000009537,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "vue2",
+        "owner": "pp-t1zwgew8qxo",
+        "hostChildren": 0,
+        "receivedNodeMs": 35465.038209
+      },
+      {
+        "stage": "native-import-begin",
+        "pageMs": 34083.799999952316,
+        "timeOrigin": 1794975457941.4,
+        "receivedNodeMs": 35471.665625
+      },
+      {
+        "stage": "resource-observed",
+        "pageMs": 37489.200000047684,
+        "timeOrigin": 1794975457941.4,
+        "asset": "demo-bootstrap-2-3-2-live-region.demo.B1Lw0vIl.js",
+        "requestStart": 34076.799999952316,
+        "responseEnd": 34079.5,
+        "transferSize": 686,
+        "receivedNodeMs": 38877.136834
+      },
+      {
+        "stage": "recipe-module-enter",
+        "pageMs": 45412.10000014305,
+        "timeOrigin": 1794975457941.4,
+        "receivedNodeMs": 46800.0295
+      },
+      {
+        "stage": "recipe-module-exit",
+        "pageMs": 45412.200000047684,
+        "timeOrigin": 1794975457941.4,
+        "receivedNodeMs": 46800.090875
+      },
+      {
+        "stage": "recipe-return",
+        "pageMs": 45412.200000047684,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "wc",
+        "owner": "pp-dhlabowj4rd",
+        "hostChildren": 0,
+        "receivedNodeMs": 46800.125667
+      },
+      {
+        "stage": "prototypes-begin",
+        "pageMs": 45414.40000009537,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "wc",
+        "owner": "pp-dhlabowj4rd",
+        "hostChildren": 0,
+        "ids": ["bootstrap-2-3-2-live-region-root", "bootstrap-2-3-2-button"],
+        "receivedNodeMs": 46802.724417
+      },
+      {
+        "stage": "recipe-return",
+        "pageMs": 45414.5,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "react",
+        "owner": "pp-72jz7f5ms7m",
+        "hostChildren": 0,
+        "receivedNodeMs": 46802.772417
+      },
+      {
+        "stage": "prototypes-begin",
+        "pageMs": 45414.5,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "react",
+        "owner": "pp-72jz7f5ms7m",
+        "hostChildren": 0,
+        "ids": ["bootstrap-2-3-2-live-region-root", "bootstrap-2-3-2-button"],
+        "receivedNodeMs": 46802.795667
+      },
+      {
+        "stage": "recipe-return",
+        "pageMs": 45414.5,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "vue",
+        "owner": "pp-ja1j2w3qe8",
+        "hostChildren": 0,
+        "receivedNodeMs": 46802.994375
+      },
+      {
+        "stage": "prototypes-begin",
+        "pageMs": 45414.60000014305,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "vue",
+        "owner": "pp-ja1j2w3qe8",
+        "hostChildren": 0,
+        "ids": ["bootstrap-2-3-2-live-region-root", "bootstrap-2-3-2-button"],
+        "receivedNodeMs": 46803.0285
+      },
+      {
+        "stage": "recipe-return",
+        "pageMs": 45414.60000014305,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "vue2",
+        "owner": "pp-t1zwgew8qxo",
+        "hostChildren": 0,
+        "receivedNodeMs": 46803.053542
+      },
+      {
+        "stage": "prototypes-begin",
+        "pageMs": 45414.60000014305,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "vue2",
+        "owner": "pp-t1zwgew8qxo",
+        "hostChildren": 0,
+        "ids": ["bootstrap-2-3-2-live-region-root", "bootstrap-2-3-2-button"],
+        "receivedNodeMs": 46803.067834
+      },
+      {
+        "stage": "prototype-loader-begin",
+        "proto": "bootstrap-2-3-2-live-region-root",
+        "asset": "index.DNkyzqLk.js",
+        "pageMs": 45414.60000014305,
+        "timeOrigin": 1794975457941.4,
+        "receivedNodeMs": 46803.088542
+      },
+      {
+        "stage": "prototype-native-import-begin",
+        "proto": "bootstrap-2-3-2-live-region-root",
+        "asset": "index.DNkyzqLk.js",
+        "pageMs": 45416.200000047684,
+        "timeOrigin": 1794975457941.4,
+        "receivedNodeMs": 46803.888875
+      },
+      {
+        "stage": "resource-observed",
+        "pageMs": 46686.90000009537,
+        "timeOrigin": 1794975457941.4,
+        "asset": "index.DNkyzqLk.js",
+        "requestStart": 45415.5,
+        "responseEnd": 45417.90000009537,
+        "transferSize": 999,
+        "receivedNodeMs": 48074.753292
+      },
+      {
+        "stage": "prototype-module-enter",
+        "proto": "bootstrap-2-3-2-live-region-root",
+        "asset": "index.DNkyzqLk.js",
+        "pageMs": 59907.60000014305,
+        "timeOrigin": 1794975457941.4,
+        "receivedNodeMs": 61296.455917
+      },
+      {
+        "stage": "prototype-module-exit",
+        "proto": "bootstrap-2-3-2-live-region-root",
+        "asset": "index.DNkyzqLk.js",
+        "pageMs": 59907.799999952316,
+        "timeOrigin": 1794975457941.4,
+        "receivedNodeMs": 61296.801584
+      },
+      {
+        "stage": "prototype-loader-return",
+        "proto": "bootstrap-2-3-2-live-region-root",
+        "asset": "index.DNkyzqLk.js",
+        "pageMs": 59907.799999952316,
+        "timeOrigin": 1794975457941.4,
+        "receivedNodeMs": 61296.854417
+      },
+      {
+        "stage": "prototypes-return",
+        "pageMs": 59907.799999952316,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "wc",
+        "owner": "pp-dhlabowj4rd",
+        "hostChildren": 0,
+        "receivedNodeMs": 61296.87475
+      },
+      {
+        "stage": "render-begin",
+        "pageMs": 59907.799999952316,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "wc",
+        "owner": "pp-dhlabowj4rd",
+        "hostChildren": 0,
+        "receivedNodeMs": 61296.889417
+      },
+      {
+        "stage": "prototypes-return",
+        "pageMs": 59919.5,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "react",
+        "owner": "pp-72jz7f5ms7m",
+        "hostChildren": 0,
+        "receivedNodeMs": 61307.564125
+      },
+      {
+        "stage": "render-begin",
+        "pageMs": 59919.60000014305,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "react",
+        "owner": "pp-72jz7f5ms7m",
+        "hostChildren": 0,
+        "receivedNodeMs": 61307.61075
+      },
+      {
+        "stage": "prototypes-return",
+        "pageMs": 59919.700000047684,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "vue",
+        "owner": "pp-ja1j2w3qe8",
+        "hostChildren": 0,
+        "receivedNodeMs": 61307.695917
+      },
+      {
+        "stage": "render-begin",
+        "pageMs": 59919.700000047684,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "vue",
+        "owner": "pp-ja1j2w3qe8",
+        "hostChildren": 0,
+        "receivedNodeMs": 61307.711792
+      },
+      {
+        "stage": "prototypes-return",
+        "pageMs": 59919.799999952316,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "vue2",
+        "owner": "pp-t1zwgew8qxo",
+        "hostChildren": 0,
+        "receivedNodeMs": 61307.724042
+      },
+      {
+        "stage": "render-begin",
+        "pageMs": 59919.799999952316,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "vue2",
+        "owner": "pp-t1zwgew8qxo",
+        "hostChildren": 0,
+        "receivedNodeMs": 61307.744084
+      },
+      {
+        "stage": "render-return",
+        "pageMs": 59923.200000047684,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "wc",
+        "owner": "pp-dhlabowj4rd",
+        "hostChildren": 1,
+        "receivedNodeMs": 61310.917542
+      },
+      {
+        "stage": "surface-ready",
+        "pageMs": 59972,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "wc",
+        "owner": "pp-dhlabowj4rd",
+        "hostChildren": 1,
+        "receivedNodeMs": 61359.862875
+      },
+      {
+        "stage": "render-return",
+        "pageMs": 60432.40000009537,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "vue",
+        "owner": "pp-ja1j2w3qe8",
+        "hostChildren": 1,
+        "receivedNodeMs": 61820.39025
+      },
+      {
+        "stage": "render-return",
+        "pageMs": 60440.40000009537,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "vue2",
+        "owner": "pp-t1zwgew8qxo",
+        "hostChildren": 1,
+        "receivedNodeMs": 61828.235334
+      },
+      {
+        "stage": "render-return",
+        "pageMs": 60638.299999952316,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "react",
+        "owner": "pp-72jz7f5ms7m",
+        "hostChildren": 1,
+        "receivedNodeMs": 62026.24
+      },
+      {
+        "stage": "surface-ready",
+        "pageMs": 60657.90000009537,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "vue",
+        "owner": "pp-ja1j2w3qe8",
+        "hostChildren": 1,
+        "receivedNodeMs": 62045.716167
+      },
+      {
+        "stage": "surface-ready",
+        "pageMs": 60669.90000009537,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "vue2",
+        "owner": "pp-t1zwgew8qxo",
+        "hostChildren": 1,
+        "receivedNodeMs": 62057.820792
+      },
+      {
+        "stage": "surface-ready",
+        "pageMs": 61107.700000047684,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "react",
+        "owner": "pp-72jz7f5ms7m",
+        "hostChildren": 1,
+        "receivedNodeMs": 62495.704125
+      },
+      {
+        "stage": "publish",
+        "pageMs": 61502.5,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "wc",
+        "owner": "pp-dhlabowj4rd",
+        "hostChildren": 1,
+        "receivedNodeMs": 62890.323042
+      },
+      {
+        "stage": "publish",
+        "pageMs": 61503.299999952316,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "vue",
+        "owner": "pp-ja1j2w3qe8",
+        "hostChildren": 1,
+        "receivedNodeMs": 62890.97275
+      },
+      {
+        "stage": "publish",
+        "pageMs": 61503.40000009537,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "vue2",
+        "owner": "pp-t1zwgew8qxo",
+        "hostChildren": 1,
+        "receivedNodeMs": 62891.073625
+      },
+      {
+        "stage": "publish",
+        "pageMs": 61504.299999952316,
+        "timeOrigin": 1794975457941.4,
+        "runtime": "react",
+        "owner": "pp-72jz7f5ms7m",
+        "hostChildren": 1,
+        "receivedNodeMs": 62891.947125
+      }
+    ]
+  },
+  "prototypeViteMapping": {
+    "bootstrap-2-3-2-live-region-root": {
+      "entry": "index.DNkyzqLk.js",
+      "indices": [27, 2, 8],
+      "modules": ["index.DNkyzqLk.js", "site-shadcn-controls.DZNAQyYW.js", "index.C3ab8M-V.js"],
+      "fn": "a",
+      "export": "liveRegionRoot"
+    },
+    "bootstrap-2-3-2-button": {
+      "entry": "index.DbuQX8zP.js",
+      "indices": [345, 2, 32],
+      "modules": ["index.DbuQX8zP.js", "site-shadcn-controls.DZNAQyYW.js", "paint.Dporulws.js"],
+      "fn": "e",
+      "export": "default"
+    }
+  }
+}
