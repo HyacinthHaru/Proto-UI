@@ -1,0 +1,646 @@
+{
+  "source": {
+    "head": "12b4b5ecc037f3f9fc2c501e157496f7d8fd91c4",
+    "tree": "d42e85307ab23166e2e3efdd22cd1a88ee69b5f7",
+    "main": "534caf4a241f7f7ef49b7b073662ad982e938c91"
+  },
+  "sameFixtureWithOriginalSource": {
+    "numPassedTests": 4,
+    "numFailedTests": 12,
+    "numPendingTests": 280
+  },
+  "sameFixtureWithCandidate": {
+    "numPassedTests": 16,
+    "numFailedTests": 0,
+    "numPendingTests": 280
+  },
+  "focused": {
+    "numPassedTests": 338,
+    "numFailedTests": 0,
+    "numPendingTests": 0
+  },
+  "focusedFiles": 13,
+  "packed": {
+    "preview-browser": {
+      "numPassedTests": 15,
+      "numFailedTests": 0,
+      "numPendingTests": 9
+    },
+    "code-grammar": {
+      "numPassedTests": 3,
+      "numFailedTests": 0,
+      "numPendingTests": 23
+    },
+    "copy-commands": {
+      "numPassedTests": 1,
+      "numFailedTests": 0,
+      "numPendingTests": 14
+    },
+    "scroll-chain": {
+      "numPassedTests": 2,
+      "numFailedTests": 0,
+      "numPendingTests": 4
+    },
+    "table": {
+      "numPassedTests": 5,
+      "numFailedTests": 0,
+      "numPendingTests": 0
+    },
+    "accordion": {
+      "numPassedTests": 4,
+      "numFailedTests": 0,
+      "numPendingTests": 29
+    },
+    "field": {
+      "numPassedTests": 4,
+      "numFailedTests": 0,
+      "numPendingTests": 21
+    }
+  },
+  "packedHeaderWidths": [320, 390],
+  "nativeSourceChromeABBA": {
+    "parent": "534caf4a241f7f7ef49b7b073662ad982e938c91",
+    "head": "12b4b5ecc037f3f9fc2c501e157496f7d8fd91c4",
+    "browser": "156.0.8078.79",
+    "overriddenSourceInputs": [
+      "packages/adapters/base/src/events/web-event-router.ts",
+      "packages/adapters/web-component/src/adapt.ts"
+    ],
+    "stockBundleSha256": "0f418c6d141a800f889d5e48ff411e62b198f67dbece6f3003a62574097a8f4e",
+    "candidateBundleSha256": "98c7494041be762b5d08727a8df96e70cf5a34a525032506f8f8c4a2a332a809",
+    "graphInputs": 366,
+    "inputBoundary": "Trusted native keyboard input. The press arm explicitly probes zero-detail clicks before and after key release.",
+    "rows": [
+      {
+        "arm": "stock",
+        "kind": "host",
+        "input": "Enter",
+        "events": [
+          ["capture keydown", "Enter", true],
+          ["host-root", "Enter", true],
+          ["host-global", "Enter", true],
+          ["capture keyup", "Enter", true]
+        ],
+        "registrations": {
+          "root": 2,
+          "window": 2
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "host",
+        "input": "Space",
+        "events": [
+          ["capture keydown", " ", true],
+          ["host-root", " ", true],
+          ["host-global", " ", true],
+          ["capture keyup", " ", true]
+        ],
+        "registrations": {
+          "root": 2,
+          "window": 2
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "root",
+        "input": "Enter",
+        "events": [
+          ["capture keydown", "Enter", true],
+          ["host-root", "Enter", true],
+          ["root"],
+          ["host-global", "Enter", true],
+          ["capture keyup", "Enter", true]
+        ],
+        "registrations": {
+          "root": 2,
+          "window": 2
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "root",
+        "input": "Space",
+        "events": [
+          ["capture keydown", " ", true],
+          ["host-root", " ", true],
+          ["root"],
+          ["host-global", " ", true],
+          ["capture keyup", " ", true]
+        ],
+        "registrations": {
+          "root": 2,
+          "window": 2
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "global",
+        "input": "Enter",
+        "events": [
+          ["capture keydown", "Enter", true],
+          ["host-root", "Enter", true],
+          ["global"],
+          ["host-global", "Enter", true],
+          ["capture keyup", "Enter", true]
+        ],
+        "registrations": {
+          "root": 2,
+          "window": 2
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "global",
+        "input": "Space",
+        "events": [
+          ["capture keydown", " ", true],
+          ["host-root", " ", true],
+          ["global"],
+          ["host-global", " ", true],
+          ["capture keyup", " ", true]
+        ],
+        "registrations": {
+          "root": 2,
+          "window": 2
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "press",
+        "input": "Enter",
+        "events": [
+          ["capture keydown", "Enter", true],
+          ["press"],
+          ["host-root", "Enter", true],
+          ["host-global", "Enter", true],
+          ["capture keyup", "Enter", true],
+          ["press"]
+        ],
+        "registrations": {
+          "root": 2,
+          "window": 2
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "press",
+        "input": "Space",
+        "events": [
+          ["capture keydown", " ", true],
+          ["press"],
+          ["host-root", " ", true],
+          ["host-global", " ", true],
+          ["capture keyup", " ", true],
+          ["press"]
+        ],
+        "registrations": {
+          "root": 2,
+          "window": 2
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "host",
+        "input": "Enter",
+        "events": [
+          ["capture keydown", "Enter", true],
+          ["host-root", "Enter", true],
+          ["host-global", "Enter", true],
+          ["capture keyup", "Enter", true]
+        ],
+        "registrations": {
+          "root": 1,
+          "window": 1
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "host",
+        "input": "Space",
+        "events": [
+          ["capture keydown", " ", true],
+          ["host-root", " ", true],
+          ["host-global", " ", true],
+          ["capture keyup", " ", true]
+        ],
+        "registrations": {
+          "root": 1,
+          "window": 1
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "root",
+        "input": "Enter",
+        "events": [
+          ["capture keydown", "Enter", true],
+          ["host-root", "Enter", true],
+          ["root"],
+          ["host-global", "Enter", true],
+          ["capture keyup", "Enter", true]
+        ],
+        "registrations": {
+          "root": 1,
+          "window": 2
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "root",
+        "input": "Space",
+        "events": [
+          ["capture keydown", " ", true],
+          ["host-root", " ", true],
+          ["root"],
+          ["host-global", " ", true],
+          ["capture keyup", " ", true]
+        ],
+        "registrations": {
+          "root": 1,
+          "window": 2
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "global",
+        "input": "Enter",
+        "events": [
+          ["capture keydown", "Enter", true],
+          ["host-root", "Enter", true],
+          ["global"],
+          ["host-global", "Enter", true],
+          ["capture keyup", "Enter", true]
+        ],
+        "registrations": {
+          "root": 1,
+          "window": 2
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "global",
+        "input": "Space",
+        "events": [
+          ["capture keydown", " ", true],
+          ["host-root", " ", true],
+          ["global"],
+          ["host-global", " ", true],
+          ["capture keyup", " ", true]
+        ],
+        "registrations": {
+          "root": 1,
+          "window": 2
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "press",
+        "input": "Enter",
+        "events": [
+          ["capture keydown", "Enter", true],
+          ["press"],
+          ["host-root", "Enter", true],
+          ["host-global", "Enter", true],
+          ["capture keyup", "Enter", true],
+          ["press"]
+        ],
+        "registrations": {
+          "root": 2,
+          "window": 2
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "press",
+        "input": "Space",
+        "events": [
+          ["capture keydown", " ", true],
+          ["press"],
+          ["host-root", " ", true],
+          ["host-global", " ", true],
+          ["capture keyup", " ", true],
+          ["press"]
+        ],
+        "registrations": {
+          "root": 2,
+          "window": 2
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "host",
+        "input": "Enter",
+        "events": [
+          ["capture keydown", "Enter", true],
+          ["host-root", "Enter", true],
+          ["host-global", "Enter", true],
+          ["capture keyup", "Enter", true]
+        ],
+        "registrations": {
+          "root": 1,
+          "window": 1
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "host",
+        "input": "Space",
+        "events": [
+          ["capture keydown", " ", true],
+          ["host-root", " ", true],
+          ["host-global", " ", true],
+          ["capture keyup", " ", true]
+        ],
+        "registrations": {
+          "root": 1,
+          "window": 1
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "root",
+        "input": "Enter",
+        "events": [
+          ["capture keydown", "Enter", true],
+          ["host-root", "Enter", true],
+          ["root"],
+          ["host-global", "Enter", true],
+          ["capture keyup", "Enter", true]
+        ],
+        "registrations": {
+          "root": 1,
+          "window": 2
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "root",
+        "input": "Space",
+        "events": [
+          ["capture keydown", " ", true],
+          ["host-root", " ", true],
+          ["root"],
+          ["host-global", " ", true],
+          ["capture keyup", " ", true]
+        ],
+        "registrations": {
+          "root": 1,
+          "window": 2
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "global",
+        "input": "Enter",
+        "events": [
+          ["capture keydown", "Enter", true],
+          ["host-root", "Enter", true],
+          ["global"],
+          ["host-global", "Enter", true],
+          ["capture keyup", "Enter", true]
+        ],
+        "registrations": {
+          "root": 1,
+          "window": 2
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "global",
+        "input": "Space",
+        "events": [
+          ["capture keydown", " ", true],
+          ["host-root", " ", true],
+          ["global"],
+          ["host-global", " ", true],
+          ["capture keyup", " ", true]
+        ],
+        "registrations": {
+          "root": 1,
+          "window": 2
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "press",
+        "input": "Enter",
+        "events": [
+          ["capture keydown", "Enter", true],
+          ["press"],
+          ["host-root", "Enter", true],
+          ["host-global", "Enter", true],
+          ["capture keyup", "Enter", true],
+          ["press"]
+        ],
+        "registrations": {
+          "root": 2,
+          "window": 2
+        }
+      },
+      {
+        "arm": "candidate",
+        "kind": "press",
+        "input": "Space",
+        "events": [
+          ["capture keydown", " ", true],
+          ["press"],
+          ["host-root", " ", true],
+          ["host-global", " ", true],
+          ["capture keyup", " ", true],
+          ["press"]
+        ],
+        "registrations": {
+          "root": 2,
+          "window": 2
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "host",
+        "input": "Enter",
+        "events": [
+          ["capture keydown", "Enter", true],
+          ["host-root", "Enter", true],
+          ["host-global", "Enter", true],
+          ["capture keyup", "Enter", true]
+        ],
+        "registrations": {
+          "root": 2,
+          "window": 2
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "host",
+        "input": "Space",
+        "events": [
+          ["capture keydown", " ", true],
+          ["host-root", " ", true],
+          ["host-global", " ", true],
+          ["capture keyup", " ", true]
+        ],
+        "registrations": {
+          "root": 2,
+          "window": 2
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "root",
+        "input": "Enter",
+        "events": [
+          ["capture keydown", "Enter", true],
+          ["host-root", "Enter", true],
+          ["root"],
+          ["host-global", "Enter", true],
+          ["capture keyup", "Enter", true]
+        ],
+        "registrations": {
+          "root": 2,
+          "window": 2
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "root",
+        "input": "Space",
+        "events": [
+          ["capture keydown", " ", true],
+          ["host-root", " ", true],
+          ["root"],
+          ["host-global", " ", true],
+          ["capture keyup", " ", true]
+        ],
+        "registrations": {
+          "root": 2,
+          "window": 2
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "global",
+        "input": "Enter",
+        "events": [
+          ["capture keydown", "Enter", true],
+          ["host-root", "Enter", true],
+          ["global"],
+          ["host-global", "Enter", true],
+          ["capture keyup", "Enter", true]
+        ],
+        "registrations": {
+          "root": 2,
+          "window": 2
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "global",
+        "input": "Space",
+        "events": [
+          ["capture keydown", " ", true],
+          ["host-root", " ", true],
+          ["global"],
+          ["host-global", " ", true],
+          ["capture keyup", " ", true]
+        ],
+        "registrations": {
+          "root": 2,
+          "window": 2
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "press",
+        "input": "Enter",
+        "events": [
+          ["capture keydown", "Enter", true],
+          ["press"],
+          ["host-root", "Enter", true],
+          ["host-global", "Enter", true],
+          ["capture keyup", "Enter", true],
+          ["press"]
+        ],
+        "registrations": {
+          "root": 2,
+          "window": 2
+        }
+      },
+      {
+        "arm": "stock",
+        "kind": "press",
+        "input": "Space",
+        "events": [
+          ["capture keydown", " ", true],
+          ["press"],
+          ["host-root", " ", true],
+          ["host-global", " ", true],
+          ["capture keyup", " ", true],
+          ["press"]
+        ],
+        "registrations": {
+          "root": 2,
+          "window": 2
+        }
+      }
+    ]
+  },
+  "additionalSelectParentComparison": {
+    "main": "534caf4a241f7f7ef49b7b073662ad982e938c91",
+    "candidate": "12b4b5ecc037f3f9fc2c501e157496f7d8fd91c4",
+    "fixtureBlob": "c8882c6e3a3f16e4f68c8d499b080488de7eb472",
+    "selector": "bootstrap-2-3-2/(wc|react|vue|vue2)/light: full selection flow",
+    "allFourMatched": true,
+    "matchedOffscreenBetaFailures": 3,
+    "cases": [
+      {
+        "name": "bootstrap-2-3-2/react/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "main": {
+          "status": "passed",
+          "failure": null
+        },
+        "candidate": {
+          "status": "passed",
+          "failure": null
+        },
+        "matched": true
+      },
+      {
+        "name": "bootstrap-2-3-2/vue/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "main": {
+          "status": "failed",
+          "failure": "click-outside-viewport-at-controlled-Beta"
+        },
+        "candidate": {
+          "status": "failed",
+          "failure": "click-outside-viewport-at-controlled-Beta"
+        },
+        "matched": true
+      },
+      {
+        "name": "bootstrap-2-3-2/vue2/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "main": {
+          "status": "failed",
+          "failure": "click-outside-viewport-at-controlled-Beta"
+        },
+        "candidate": {
+          "status": "failed",
+          "failure": "click-outside-viewport-at-controlled-Beta"
+        },
+        "matched": true
+      },
+      {
+        "name": "bootstrap-2-3-2/wc/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "main": {
+          "status": "failed",
+          "failure": "click-outside-viewport-at-controlled-Beta"
+        },
+        "candidate": {
+          "status": "failed",
+          "failure": "click-outside-viewport-at-controlled-Beta"
+        },
+        "matched": true
+      }
+    ]
+  }
+}
