@@ -1,0 +1,230 @@
+{
+  "head": "42206d7e28d66c029e35e9dee39cb3afe6e65101",
+  "tree": "e0f6c1b7d3af31609f721fc8dcb266130b7be886",
+  "distHashes": {
+    "zh-cn/index.html": "03387fd67a22139deed2892488e5a4f3a0360a97247ef3dc43a92cf95a0206c1",
+    "zh-cn/ui-libraries/shadcn/button/index.html": "092e35c6852bb29e30fd1096c7115efbf57dab6265c89ceebe25bf797cee8fdf",
+    "zh-cn/ui-libraries/brutalist/components/button/index.html": "c804fadc3153d26a33587edb3ee8dea930ee5065eb7ff1756d2bb8586cac4307"
+  },
+  "sourceCodeExamples": 9,
+  "renderedCodeExamples": 9,
+  "packedHeaderExit": 0,
+  "previewBrowserExit": 0,
+  "selector": "uses real family Popover Triggers|uses the same mobile shell|retains (shadcn|brutalist) preference owners|compact (shadcn|brutalist)|live available region|keeps Runtime Tabs outside",
+  "reports": [
+    {
+      "file": "src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+      "cases": [
+        {
+          "title": "shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "brutalist/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "brutalist/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "brutalist/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "brutalist/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "file": "src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+      "cases": [
+        {
+          "title": "Homepage end-to-end dogfood boundary switches every registered homepage group through real adapters, preserving native anchors and theme",
+          "status": "skipped"
+        },
+        {
+          "title": "Homepage end-to-end dogfood boundary keeps native navigation available without JavaScript and does not overflow mobile",
+          "status": "skipped"
+        },
+        {
+          "title": "Homepage end-to-end dogfood boundary retains saved React across cold library routes and exercises actual family chrome",
+          "status": "skipped"
+        },
+        {
+          "title": "Homepage end-to-end dogfood boundary reveals current articles through native shadow slots and preserves viewport handback",
+          "status": "skipped"
+        },
+        {
+          "title": "Homepage end-to-end dogfood boundary uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence",
+          "status": "passed"
+        },
+        {
+          "title": "Homepage end-to-end dogfood boundary uses the same mobile shell on documentation with independent global navigation and contents",
+          "status": "passed"
+        },
+        {
+          "title": "compact shadcn preferences stay usable at 200% text, RTL and breakpoint moves",
+          "status": "passed"
+        },
+        {
+          "title": "compact brutalist preferences stay usable at 200% text, RTL and breakpoint moves",
+          "status": "passed"
+        },
+        {
+          "title": "retains shadcn preference owners and portals through real breakpoint reconnects",
+          "status": "passed"
+        },
+        {
+          "title": "retains brutalist preference owners and portals through real breakpoint reconnects",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "file": "src/content/docs/zh-cn/runtime-preview-surface.browser.test.ts",
+      "cases": [
+        {
+          "title": "RuntimeBox single actual Prototype surface keeps Runtime Tabs outside the canvas and the demonstrated Select popup usable at 390px",
+          "status": "passed"
+        },
+        {
+          "title": "RuntimeBox single actual Prototype surface covers the generic Base path and keeps its demonstrated command operable",
+          "status": "skipped"
+        },
+        {
+          "title": "RuntimeBox single actual Prototype surface wc: preserves forward/backward generated shell and slot Selection endpoints",
+          "status": "skipped"
+        },
+        {
+          "title": "RuntimeBox single actual Prototype surface react: preserves forward/backward generated shell and slot Selection endpoints",
+          "status": "skipped"
+        },
+        {
+          "title": "RuntimeBox single actual Prototype surface vue: preserves forward/backward generated shell and slot Selection endpoints",
+          "status": "skipped"
+        },
+        {
+          "title": "RuntimeBox single actual Prototype surface vue2: preserves forward/backward generated shell and slot Selection endpoints",
+          "status": "skipped"
+        }
+      ]
+    }
+  ],
+  "headerFrames": {
+    "head": "42206d7e28d66c029e35e9dee39cb3afe6e65101",
+    "browser": "156.0.8078.79",
+    "scope": "First animation frame control on the exact static Astro preview. Geometry reads can force layout.",
+    "results": [
+      {
+        "width": 320,
+        "samples": [
+          {
+            "phase": "family mutation delivery",
+            "at": 1599.5999999046326,
+            "family": "brutalist",
+            "generation": "2",
+            "top": 61,
+            "bottom": 545,
+            "left": 8,
+            "right": 312,
+            "width": 304,
+            "headerBottom": 56,
+            "hidden": false,
+            "position": "61px"
+          },
+          {
+            "phase": "first animation frame",
+            "at": 1727.1999998092651,
+            "family": "brutalist",
+            "generation": "2",
+            "top": 61,
+            "bottom": 545,
+            "left": 8,
+            "right": 312,
+            "width": 304,
+            "headerBottom": 56,
+            "hidden": false,
+            "position": "61px"
+          },
+          {
+            "phase": "second animation frame",
+            "at": 1746.3999998569489,
+            "family": "brutalist",
+            "generation": "2",
+            "top": 61,
+            "bottom": 545,
+            "left": 8,
+            "right": 312,
+            "width": 304,
+            "headerBottom": 56,
+            "hidden": false,
+            "position": "61px"
+          }
+        ],
+        "trusted": true
+      },
+      {
+        "width": 390,
+        "samples": [
+          {
+            "phase": "family mutation delivery",
+            "at": 1550.5,
+            "family": "brutalist",
+            "generation": "2",
+            "top": 61,
+            "bottom": 545,
+            "left": 8,
+            "right": 382,
+            "width": 374,
+            "headerBottom": 56,
+            "hidden": false,
+            "position": "61px"
+          },
+          {
+            "phase": "first animation frame",
+            "at": 1677.8999998569489,
+            "family": "brutalist",
+            "generation": "2",
+            "top": 61,
+            "bottom": 545,
+            "left": 8,
+            "right": 382,
+            "width": 374,
+            "headerBottom": 56,
+            "hidden": false,
+            "position": "61px"
+          },
+          {
+            "phase": "second animation frame",
+            "at": 1697,
+            "family": "brutalist",
+            "generation": "2",
+            "top": 61,
+            "bottom": 545,
+            "left": 8,
+            "right": 382,
+            "width": 374,
+            "headerBottom": 56,
+            "hidden": false,
+            "position": "61px"
+          }
+        ],
+        "trusted": true
+      }
+    ]
+  }
+}

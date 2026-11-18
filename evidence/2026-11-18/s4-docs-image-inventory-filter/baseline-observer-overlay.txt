@@ -1,0 +1,29 @@
+from pathlib import Path
+import hashlib,sys,json
+q,d=map(Path,sys.argv[1:]);p,=d.glob('DocumentationImagePreview.*.js')
+s=p.read_text()
+start='r.some(st)&&B(),A()'
+assert s.count(start)==1
+observed="""
+const start=performance.now();
+const counters=globalThis.__s4MediaInventory??={batches:0,scans:0,previewOnlyScans:0,scanMs:0,matchMs:0,records:0};
+counters.batches++;counters.records+=r.length;
+const relevant=r.filter(st);
+counters.matchMs+=performance.now()-start;
+if(relevant.length){
+  if(relevant.every(record=>{
+    const boundary=record.target.closest('[data-doc-flow], [data-previewer-id], [data-prototype-previewer]');
+    return boundary&&!boundary.hasAttribute('data-doc-flow');
+  })) counters.previewOnlyScans++;
+  counters.scans++;
+  const readStart=performance.now();
+  B();
+  counters.scanMs+=performance.now()-readStart;
+}
+if(counters.batches===1||counters.batches%64===0)console.info('[S4 docs media inventory]',JSON.stringify({pageMs:performance.now(),...counters}));
+A();
+"""
+new=s.replace(start,observed)
+p.write_text(new)
+sha=lambda s:hashlib.sha256(s.encode()).hexdigest()
+(q/'binding.json').write_text(json.dumps({'asset':p.name,'original':sha(s),'observed':sha(new),'scope':'Counts classifier-relevant mutation batches originating entirely inside nearest preview owner. Uses filter instead of short circuit for diagnostics; measured scan call only, application scan decision/order unchanged.'},indent=2)+'\n')

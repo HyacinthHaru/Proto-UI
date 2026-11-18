@@ -1,0 +1,126 @@
+diff --git a/apps/www/src/components/documentation-image-preview.test.ts b/apps/www/src/components/documentation-image-preview.test.ts
+index 9ef88e0ec..7561d150b 100644
+--- a/apps/www/src/components/documentation-image-preview.test.ts
++++ b/apps/www/src/components/documentation-image-preview.test.ts
+@@ -177,6 +177,60 @@ describe('documentation image viewer PUI integration', () => {
+     await vi.waitFor(() => expect(diagram.querySelector('[data-docs-image-trigger]')).toBeNull());
+     expect(diagram.querySelector('path')).toBe(path);
+   });
++  it('leaves previewer SVG updates out of the article inventory until its owner marker is removed', async () => {
++    await fixture();
++    const flow = document.querySelector('[data-doc-flow]')!;
++    const preview = document.createElement('div');
++    preview.setAttribute('data-previewer-id', 'interactive-example');
++    preview.innerHTML =
++      '<svg viewBox="0 0 20 20" aria-label="Example"><path d="M0 0L20 20"/></svg>';
++    flow.append(preview);
++    await (
++      window as unknown as { happyDOM: { waitUntilComplete(): Promise<void> } }
++    ).happyDOM.waitUntilComplete();
++    const queries = vi.spyOn(document, 'querySelectorAll');
++    const delivered = new Promise<void>((resolve) => {
++      const observer = new MutationObserver(() => {
++        observer.disconnect();
++        resolve();
++      });
++      observer.observe(preview, { attributes: true, childList: true, subtree: true });
++    });
++    preview.querySelector('path')!.setAttribute('d', 'M0 0L15 15');
++    await delivered;
++    await settle();
++    expect(queries).not.toHaveBeenCalledWith('[data-doc-flow]');
++    expect(preview.querySelector('[data-docs-image-trigger]')).toBeNull();
++
++    preview.removeAttribute('data-previewer-id');
++    await vi.waitFor(() =>
++      expect(preview.querySelector('[data-docs-image-trigger]')).not.toBeNull()
++    );
++  });
++  it('reconciles an article scope that is added or removed inside a previewer', async () => {
++    await fixture();
++    const preview = document.createElement('div');
++    preview.setAttribute('data-prototype-previewer', '');
++    const article = document.createElement('article');
++    article.innerHTML = '<img src="/diagram.png" alt="Article diagram">';
++    preview.append(article);
++    document.querySelector('[data-doc-flow]')!.append(preview);
++    await settle();
++    expect(article.querySelector('[data-docs-image-trigger]')).toBeNull();
++
++    article.setAttribute('data-doc-flow', '');
++    await vi.waitFor(() =>
++      expect(article.querySelector('[data-docs-image-trigger]')).not.toBeNull()
++    );
++    article.querySelector('img')!.setAttribute('alt', '');
++    await vi.waitFor(() => expect(article.querySelector('[data-docs-image-trigger]')).toBeNull());
++    article.querySelector('img')!.setAttribute('alt', 'Updated article diagram');
++    await vi.waitFor(() =>
++      expect(article.querySelector('[data-docs-image-trigger]')).not.toBeNull()
++    );
++    article.removeAttribute('data-doc-flow');
++    await vi.waitFor(() => expect(article.querySelector('[data-docs-image-trigger]')).toBeNull());
++  });
+   it('provides the preview action name through PUI-owned content naming', async () => {
+     const { trigger } = await fixture();
+     expect(trigger.textContent).toContain('Enlarge image:');
+diff --git a/apps/www/src/components/documentation-image-preview.ts b/apps/www/src/components/documentation-image-preview.ts
+index 6e97f6df0..e0d3ad9fb 100644
+--- a/apps/www/src/components/documentation-image-preview.ts
++++ b/apps/www/src/components/documentation-image-preview.ts
+@@ -25,6 +25,8 @@ type Enhancement = {
+ 
+ const PREVIEW_MEDIA = 'img, svg';
+ const PREVIEW_SOURCE = 'img, svg, picture, source, figcaption';
++const INVENTORY_OWNER = '[data-doc-flow], [data-docs-image-trigger]';
++const PREVIEW_BOUNDARY = '[data-doc-flow], [data-previewer-id], [data-prototype-previewer]';
+ const PREVIEW_ADMISSION_ATTRIBUTES = new Set([
+   'aria-hidden',
+   'hidden',
+@@ -64,6 +66,33 @@ function affectsPreviewInventory(record: MutationRecord): boolean {
+   );
+ }
+ 
++function isExcludedPreviewMutation(record: MutationRecord): boolean {
++  const attribute = record.attributeName;
++  if (
++    attribute === 'data-doc-flow' ||
++    attribute === 'data-docs-image-trigger' ||
++    attribute === 'data-previewer-id' ||
++    attribute === 'data-prototype-previewer'
++  )
++    return false;
++  const target = record.target as Element;
++  const boundary = target.closest(PREVIEW_BOUNDARY);
++  if (!boundary || boundary.hasAttribute('data-doc-flow')) return false;
++
++  // A nested article may still admit its own images. Retain scans for it and
++  // for owned triggers that may need cleanup after removal or relocation.
++  if (target.matches(INVENTORY_OWNER) || target.querySelector(INVENTORY_OWNER)) return false;
++  for (const node of record.removedNodes) {
++    if (
++      node.nodeType === 1 &&
++      ((node as Element).matches(INVENTORY_OWNER) ||
++        (node as Element).querySelector(INVENTORY_OWNER))
++    )
++      return false;
++  }
++  return true;
++}
++
+ /** Media selection/loading is application data. PUI owns modal presence,
+  * dismissal, keyboard activation, focus scope/restoration and transition clocks.
+  */
+@@ -427,7 +456,12 @@ export function mountDocumentationImagePreview(host: HTMLElement): () => void {
+   createDialog();
+   scan();
+   const contentObserver = new MutationObserver((records) => {
+-    if (records.some(affectsPreviewInventory)) scan();
++    if (
++      records.some(
++        (record) => affectsPreviewInventory(record) && !isExcludedPreviewMutation(record)
++      )
++    )
++      scan();
+     geometry();
+   });
+   for (const body of doc.querySelectorAll('[data-doc-flow]'))

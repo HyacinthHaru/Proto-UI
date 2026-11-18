@@ -1,0 +1,4670 @@
+{
+  "mainCandidate": {
+    "identity": {
+      "head": "42206d7e28d66c029e35e9dee39cb3afe6e65101",
+      "base": "0f0955a9d624e0ef5e250f56a0eaa0fc52bbfb53",
+      "tree": "e0f6c1b7d3af31609f721fc8dcb266130b7be886",
+      "source": "ffd372aceabd51d2756c3dd0ee1338f1d9072cb0",
+      "files": {
+        "apps/www/src/components/documentation-image-preview.ts": "1bbc87aa3c4554c36c13a5ed7e9886f694bef108e3af9deff4a64e17838ee2aa",
+        "apps/www/src/components/documentation-image-preview.test.ts": "6ccf1ac2c2bbf27b648f63e9b2846d46677e872c8292073cce98b669b356496c"
+      },
+      "signature": "G"
+    },
+    "environment": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+    "packageBuilds": 47,
+    "websitePages": 685,
+    "manifestExit": 0,
+    "budgetCheck": {
+      "exit": 0,
+      "passed": 3,
+      "advisory": 6
+    },
+    "workspaceTypesExit": 0,
+    "previewRoots": {
+      "zh-cn": {
+        "bytes": 1862390,
+        "sha256": "a948d78b061f3dd1a86ffa64426ae0e55f7baaafb65826861adf23509dc1bbbc",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914074,
+        "sha256": "1d4c57a6608f974bd0aa38484148b8b07de5052808b5537c38d806ccdf9690d0",
+        "previews": 1268
+      }
+    },
+    "focusedParentImplementation": {
+      "passed": 29,
+      "failed": 2,
+      "filtered": 0,
+      "files": [
+        {
+          "file": "src/components/documentation-image-preview.test.ts",
+          "cases": [
+            {
+              "title": "documentation image native hit probe uses the shared interior even when the source center is below the contained image",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image native hit probe rejects disjoint rectangles and edge-only contact instead of inventing a hit",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image native hit probe rejects missing or invalid painted area",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration composes a public Base Button thumbnail without family variants or moving hover feedback",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration supplies a supported Brutalist close variant rather than ghost falling back to solid",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration enhances eligible images only and restores authored structure on disposal",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration uses one native media source read when admitting an image",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration keeps HTML style changes out of the media inventory scan",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration skips inventory reads for unrelated content and still responds to admission changes",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration revalidates SVG admission when a descendant gains inline style",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration leaves previewer SVG updates out of the article inventory until its owner marker is removed",
+              "status": "failed"
+            },
+            {
+              "title": "documentation image viewer PUI integration reconciles an article scope that is added or removed inside a previewer",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration provides the preview action name through PUI-owned content naming",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration does not erase the prototype-owned focus-ring shadow with unlayered thumbnail CSS",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration opens through Button semantic activation, closes through Dialog, restores focus and reopens the contain presentation",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration ignores stale image events after a newer source and cleans up repeated remounts",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration sets CORS/referrer policy before the new source request starts",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration revalidates new owner boundaries before activation and removes stale controls without losing new links",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration removes a trigger when the original becomes hidden",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration removes a trigger when the original becomes inert",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration removes a trigger when the original becomes contenteditable",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration replaces actual family facades after a family change and removes portals on navigation",
+              "status": "passed"
+            },
+            {
+              "title": "validates the controlled public Surface duration instead of accepting arbitrary CSS",
+              "status": "passed"
+            },
+            {
+              "title": "public Text error presentation with native live semantics shadcn: mounts the real Text atom inside the original status paragraph",
+              "status": "passed"
+            },
+            {
+              "title": "public Text error presentation with native live semantics brutalist: mounts the real Text atom inside the original status paragraph",
+              "status": "passed"
+            }
+          ]
+        },
+        {
+          "file": "src/components/documentation-image-zoom.test.ts",
+          "cases": [
+            {
+              "title": "borderless image presentation / maintainer request #796 prevents mask pointer defaults while Content remains the outside-close owner",
+              "status": "passed"
+            },
+            {
+              "title": "borderless image presentation / maintainer request #796 composes public Base Dialog and Surface without an original-size toolbar",
+              "status": "passed"
+            },
+            {
+              "title": "borderless image presentation / maintainer request #796 keeps the source in place but suppresses its duplicate while present, then restores it",
+              "status": "passed"
+            },
+            {
+              "title": "borderless image presentation / maintainer request #796 retains the current source through interrupted close/reopen and restores it on route cleanup",
+              "status": "passed"
+            },
+            {
+              "title": "borderless image presentation / maintainer request #796 uses the safe fade fallback when the source is removed before closing",
+              "status": "failed"
+            },
+            {
+              "title": "borderless image presentation / maintainer request #796 does not recover an invalid return rectangle merely because focus scrolls the source back",
+              "status": "passed"
+            }
+          ]
+        }
+      ]
+    },
+    "focusedCandidate": {
+      "passed": 30,
+      "failed": 1,
+      "filtered": 0,
+      "files": [
+        {
+          "file": "src/components/documentation-image-preview.test.ts",
+          "cases": [
+            {
+              "title": "documentation image native hit probe uses the shared interior even when the source center is below the contained image",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image native hit probe rejects disjoint rectangles and edge-only contact instead of inventing a hit",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image native hit probe rejects missing or invalid painted area",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration composes a public Base Button thumbnail without family variants or moving hover feedback",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration supplies a supported Brutalist close variant rather than ghost falling back to solid",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration enhances eligible images only and restores authored structure on disposal",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration uses one native media source read when admitting an image",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration keeps HTML style changes out of the media inventory scan",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration skips inventory reads for unrelated content and still responds to admission changes",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration revalidates SVG admission when a descendant gains inline style",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration leaves previewer SVG updates out of the article inventory until its owner marker is removed",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration reconciles an article scope that is added or removed inside a previewer",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration provides the preview action name through PUI-owned content naming",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration does not erase the prototype-owned focus-ring shadow with unlayered thumbnail CSS",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration opens through Button semantic activation, closes through Dialog, restores focus and reopens the contain presentation",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration ignores stale image events after a newer source and cleans up repeated remounts",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration sets CORS/referrer policy before the new source request starts",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration revalidates new owner boundaries before activation and removes stale controls without losing new links",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration removes a trigger when the original becomes hidden",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration removes a trigger when the original becomes inert",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration removes a trigger when the original becomes contenteditable",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration replaces actual family facades after a family change and removes portals on navigation",
+              "status": "passed"
+            },
+            {
+              "title": "validates the controlled public Surface duration instead of accepting arbitrary CSS",
+              "status": "passed"
+            },
+            {
+              "title": "public Text error presentation with native live semantics shadcn: mounts the real Text atom inside the original status paragraph",
+              "status": "passed"
+            },
+            {
+              "title": "public Text error presentation with native live semantics brutalist: mounts the real Text atom inside the original status paragraph",
+              "status": "passed"
+            }
+          ]
+        },
+        {
+          "file": "src/components/documentation-image-zoom.test.ts",
+          "cases": [
+            {
+              "title": "borderless image presentation / maintainer request #796 prevents mask pointer defaults while Content remains the outside-close owner",
+              "status": "passed"
+            },
+            {
+              "title": "borderless image presentation / maintainer request #796 composes public Base Dialog and Surface without an original-size toolbar",
+              "status": "passed"
+            },
+            {
+              "title": "borderless image presentation / maintainer request #796 keeps the source in place but suppresses its duplicate while present, then restores it",
+              "status": "passed"
+            },
+            {
+              "title": "borderless image presentation / maintainer request #796 retains the current source through interrupted close/reopen and restores it on route cleanup",
+              "status": "passed"
+            },
+            {
+              "title": "borderless image presentation / maintainer request #796 uses the safe fade fallback when the source is removed before closing",
+              "status": "failed"
+            },
+            {
+              "title": "borderless image presentation / maintainer request #796 does not recover an invalid return rectangle merely because focus scrolls the source back",
+              "status": "passed"
+            }
+          ]
+        }
+      ]
+    },
+    "implementationControl": {
+      "parentImplementationSHA256": "f404732aae9830832165a820877d209082befe0aac3f4f64290b1e22129d2c85",
+      "candidateImplementationSHA256": "1bbc87aa3c4554c36c13a5ed7e9886f694bef108e3af9deff4a64e17838ee2aa",
+      "scope": "Only the observer implementation was replaced by the exact parent Git blob. Candidate regression tests retained. Candidate implementation restored after the check."
+    },
+    "nativeMedia": {
+      "passed": 2,
+      "failed": 0,
+      "filtered": 22,
+      "files": [
+        {
+          "file": "src/components/documentation-image-preview.browser.test.ts",
+          "cases": [
+            {
+              "title": "automatic documentation image preview in real Chromium 320px light shadcn: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium 320px light brutalist: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium 320px dark shadcn: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium 320px dark brutalist: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium 390px light shadcn: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium 390px light brutalist: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium 390px dark shadcn: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium 390px dark brutalist: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium 1280px light shadcn: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium 1280px light brutalist: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium 1280px dark shadcn: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium 1280px dark brutalist: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium 390px real intermediate frames follow linear forward/reverse motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium 1280px real intermediate frames follow linear forward/reverse motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium reverses a native interrupted close and safely handles resized, offscreen or removed sources",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium preserves source alt and action name while open, leaving and restored without background input leakage",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium preserves authored MDX picture/alt/caption, safe SVG, links and error recovery",
+              "status": "passed"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium migrates the actual zh-cn whitepaper viewer at 1280px light",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium migrates the actual zh-cn whitepaper viewer at 390px dark",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium migrates the actual en whitepaper viewer at 1280px dark",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium migrates the actual en whitepaper viewer at 390px light",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium preserves actual cross-origin image referrer and credential requests",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium keeps keyboard focus visible without adding an image frame in forced colors",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium honors reduced motion and preserves no-JavaScript media/link content",
+              "status": "passed"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "integrated": {
+    "identity": {
+      "head": "ffd372aceabd51d2756c3dd0ee1338f1d9072cb0",
+      "parent": "83c7dfc3277041dfeaf21a7db69afff51afb0ec6",
+      "tree": "94aebcb5fe0ecc6cec26d480d208bb66674f1b04",
+      "files": {
+        "apps/www/src/components/documentation-image-preview.ts": "1bbc87aa3c4554c36c13a5ed7e9886f694bef108e3af9deff4a64e17838ee2aa",
+        "apps/www/src/components/documentation-image-preview.test.ts": "6ccf1ac2c2bbf27b648f63e9b2846d46677e872c8292073cce98b669b356496c"
+      },
+      "signature": "G"
+    },
+    "environment": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+    "focusedBefore": {
+      "passed": 24,
+      "failed": 1,
+      "filtered": 0,
+      "files": [
+        {
+          "file": "src/components/documentation-image-preview.test.ts",
+          "cases": [
+            {
+              "title": "documentation image native hit probe uses the shared interior even when the source center is below the contained image",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image native hit probe rejects disjoint rectangles and edge-only contact instead of inventing a hit",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image native hit probe rejects missing or invalid painted area",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration composes a public Base Button thumbnail without family variants or moving hover feedback",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration supplies a supported Brutalist close variant rather than ghost falling back to solid",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration enhances eligible images only and restores authored structure on disposal",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration uses one native media source read when admitting an image",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration keeps HTML style changes out of the media inventory scan",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration skips inventory reads for unrelated content and still responds to admission changes",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration revalidates SVG admission when a descendant gains inline style",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration leaves previewer SVG updates out of the article inventory until its owner marker is removed",
+              "status": "failed"
+            },
+            {
+              "title": "documentation image viewer PUI integration reconciles an article scope that is added or removed inside a previewer",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration provides the preview action name through PUI-owned content naming",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration does not erase the prototype-owned focus-ring shadow with unlayered thumbnail CSS",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration opens through Button semantic activation, closes through Dialog, restores focus and reopens the contain presentation",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration ignores stale image events after a newer source and cleans up repeated remounts",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration sets CORS/referrer policy before the new source request starts",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration revalidates new owner boundaries before activation and removes stale controls without losing new links",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration removes a trigger when the original becomes hidden",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration removes a trigger when the original becomes inert",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration removes a trigger when the original becomes contenteditable",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration replaces actual family facades after a family change and removes portals on navigation",
+              "status": "passed"
+            },
+            {
+              "title": "validates the controlled public Surface duration instead of accepting arbitrary CSS",
+              "status": "passed"
+            },
+            {
+              "title": "public Text error presentation with native live semantics shadcn: mounts the real Text atom inside the original status paragraph",
+              "status": "passed"
+            },
+            {
+              "title": "public Text error presentation with native live semantics brutalist: mounts the real Text atom inside the original status paragraph",
+              "status": "passed"
+            }
+          ]
+        }
+      ]
+    },
+    "focusedAfter": {
+      "passed": 31,
+      "failed": 0,
+      "filtered": 0,
+      "files": [
+        {
+          "file": "src/components/documentation-image-preview.test.ts",
+          "cases": [
+            {
+              "title": "documentation image native hit probe uses the shared interior even when the source center is below the contained image",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image native hit probe rejects disjoint rectangles and edge-only contact instead of inventing a hit",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image native hit probe rejects missing or invalid painted area",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration composes a public Base Button thumbnail without family variants or moving hover feedback",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration supplies a supported Brutalist close variant rather than ghost falling back to solid",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration enhances eligible images only and restores authored structure on disposal",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration uses one native media source read when admitting an image",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration keeps HTML style changes out of the media inventory scan",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration skips inventory reads for unrelated content and still responds to admission changes",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration revalidates SVG admission when a descendant gains inline style",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration leaves previewer SVG updates out of the article inventory until its owner marker is removed",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration reconciles an article scope that is added or removed inside a previewer",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration provides the preview action name through PUI-owned content naming",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration does not erase the prototype-owned focus-ring shadow with unlayered thumbnail CSS",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration opens through Button semantic activation, closes through Dialog, restores focus and reopens the contain presentation",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration ignores stale image events after a newer source and cleans up repeated remounts",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration sets CORS/referrer policy before the new source request starts",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration revalidates new owner boundaries before activation and removes stale controls without losing new links",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration removes a trigger when the original becomes hidden",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration removes a trigger when the original becomes inert",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration removes a trigger when the original becomes contenteditable",
+              "status": "passed"
+            },
+            {
+              "title": "documentation image viewer PUI integration replaces actual family facades after a family change and removes portals on navigation",
+              "status": "passed"
+            },
+            {
+              "title": "validates the controlled public Surface duration instead of accepting arbitrary CSS",
+              "status": "passed"
+            },
+            {
+              "title": "public Text error presentation with native live semantics shadcn: mounts the real Text atom inside the original status paragraph",
+              "status": "passed"
+            },
+            {
+              "title": "public Text error presentation with native live semantics brutalist: mounts the real Text atom inside the original status paragraph",
+              "status": "passed"
+            }
+          ]
+        },
+        {
+          "file": "src/components/documentation-image-zoom.test.ts",
+          "cases": [
+            {
+              "title": "borderless image presentation / maintainer request #796 prevents mask pointer defaults while Content remains the outside-close owner",
+              "status": "passed"
+            },
+            {
+              "title": "borderless image presentation / maintainer request #796 composes public Base Dialog and Surface without an original-size toolbar",
+              "status": "passed"
+            },
+            {
+              "title": "borderless image presentation / maintainer request #796 keeps the source in place but suppresses its duplicate while present, then restores it",
+              "status": "passed"
+            },
+            {
+              "title": "borderless image presentation / maintainer request #796 retains the current source through interrupted close/reopen and restores it on route cleanup",
+              "status": "passed"
+            },
+            {
+              "title": "borderless image presentation / maintainer request #796 uses the safe fade fallback when the source is removed before closing",
+              "status": "passed"
+            },
+            {
+              "title": "borderless image presentation / maintainer request #796 does not recover an invalid return rectangle merely because focus scrolls the source back",
+              "status": "passed"
+            }
+          ]
+        }
+      ]
+    },
+    "nativeMedia": {
+      "passed": 2,
+      "failed": 0,
+      "filtered": 22,
+      "files": [
+        {
+          "file": "src/components/documentation-image-preview.browser.test.ts",
+          "cases": [
+            {
+              "title": "automatic documentation image preview in real Chromium 320px light shadcn: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium 320px light brutalist: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium 320px dark shadcn: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium 320px dark brutalist: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium 390px light shadcn: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium 390px light brutalist: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium 390px dark shadcn: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium 390px dark brutalist: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium 1280px light shadcn: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium 1280px light brutalist: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium 1280px dark shadcn: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium 1280px dark brutalist: borderless raster contain, keyboard, focus and linear motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium 390px real intermediate frames follow linear forward/reverse motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium 1280px real intermediate frames follow linear forward/reverse motion",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium reverses a native interrupted close and safely handles resized, offscreen or removed sources",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium preserves source alt and action name while open, leaving and restored without background input leakage",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium preserves authored MDX picture/alt/caption, safe SVG, links and error recovery",
+              "status": "passed"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium migrates the actual zh-cn whitepaper viewer at 1280px light",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium migrates the actual zh-cn whitepaper viewer at 390px dark",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium migrates the actual en whitepaper viewer at 1280px dark",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium migrates the actual en whitepaper viewer at 390px light",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium preserves actual cross-origin image referrer and credential requests",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium keeps keyboard focus visible without adding an image frame in forced colors",
+              "status": "skipped"
+            },
+            {
+              "title": "automatic documentation image preview in real Chromium honors reduced motion and preserves no-JavaScript media/link content",
+              "status": "passed"
+            }
+          ]
+        }
+      ]
+    },
+    "untouchedOriginalReadinessRun": {
+      "passed": 0,
+      "failed": 1,
+      "filtered": 1,
+      "files": [
+        {
+          "file": "src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts",
+          "cases": [
+            {
+              "title": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+              "status": "failed"
+            },
+            {
+              "title": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+              "status": "skipped"
+            }
+          ]
+        }
+      ]
+    },
+    "previewRoots": {
+      "zh-cn": {
+        "bytes": 1862535,
+        "sha256": "a74baa97f52045cfbb661a505e4ba56b4e7076b532478ec169761771536faf51",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914127,
+        "sha256": "468a84b1dc36c60f9a25d9e3eb912827a552905727739f60ea7415c02ffc82c2",
+        "previews": 1268
+      }
+    },
+    "unchangedLimitsMs": {
+      "readiness": 60000,
+      "case": 150000
+    }
+  },
+  "browserCensus": {
+    "scope": "Separate selected Chinese production-page runs with 1,268 preview roots and artifact-only diagnostics. Comparison at an equal number of delivered mutation batches. Underlying records, clocks and scheduling differed. These runs do not measure end-to-end page readiness gains.",
+    "before": {
+      "source": ["83c7dfc3277041dfeaf21a7db69afff51afb0ec6"],
+      "buildAsset": {
+        "asset": "DocumentationImagePreview.astro_astro_type_script_index_0_lang.B5Pm12zl.js",
+        "original": "8d51949a05fd8cf7bdd36b6ee07ccca4c9cc8b90aac71db1ce156032ff930da0",
+        "observed": "707e32bb971af318fac08a48373c647241c93af7748b9b2e0248ae29d7fd259c",
+        "scope": "Counts classifier-relevant mutation batches originating entirely inside nearest preview owner. Uses filter instead of short circuit for diagnostics; measured scan call only, application scan decision/order unchanged."
+      },
+      "series": [
+        {
+          "pageMs": 521.9000000953674,
+          "batches": 1,
+          "scans": 1,
+          "previewOnlyScans": 0,
+          "scanMs": 0.2999999523162842,
+          "matchMs": 0.09999990463256836,
+          "records": 23
+        },
+        {
+          "pageMs": 2415.5999999046326,
+          "batches": 64,
+          "scans": 2,
+          "previewOnlyScans": 0,
+          "scanMs": 0.7999999523162842,
+          "matchMs": 0.8000001907348633,
+          "records": 1358
+        },
+        {
+          "pageMs": 3963.2000000476837,
+          "batches": 128,
+          "scans": 3,
+          "previewOnlyScans": 0,
+          "scanMs": 1.2999999523162842,
+          "matchMs": 1.3000004291534424,
+          "records": 2590
+        },
+        {
+          "pageMs": 3964.0999999046326,
+          "batches": 192,
+          "scans": 3,
+          "previewOnlyScans": 0,
+          "scanMs": 1.2999999523162842,
+          "matchMs": 1.4000003337860107,
+          "records": 2846
+        },
+        {
+          "pageMs": 4924.099999904633,
+          "batches": 256,
+          "scans": 6,
+          "previewOnlyScans": 0,
+          "scanMs": 2.5999999046325684,
+          "matchMs": 2.299999952316284,
+          "records": 4766
+        },
+        {
+          "pageMs": 5915.5,
+          "batches": 320,
+          "scans": 18,
+          "previewOnlyScans": 1,
+          "scanMs": 7.600000381469727,
+          "matchMs": 9.799999952316284,
+          "records": 29413
+        },
+        {
+          "pageMs": 6302.599999904633,
+          "batches": 384,
+          "scans": 24,
+          "previewOnlyScans": 7,
+          "scanMs": 11.000000238418579,
+          "matchMs": 15.499999523162842,
+          "records": 37695
+        },
+        {
+          "pageMs": 6699.400000095367,
+          "batches": 448,
+          "scans": 28,
+          "previewOnlyScans": 11,
+          "scanMs": 13.800000190734863,
+          "matchMs": 19.700000286102295,
+          "records": 41625
+        },
+        {
+          "pageMs": 7450.799999952316,
+          "batches": 512,
+          "scans": 31,
+          "previewOnlyScans": 14,
+          "scanMs": 16.59999990463257,
+          "matchMs": 28.90000009536743,
+          "records": 51863
+        },
+        {
+          "pageMs": 7491.799999952316,
+          "batches": 576,
+          "scans": 35,
+          "previewOnlyScans": 18,
+          "scanMs": 19.300000190734863,
+          "matchMs": 29.799999952316284,
+          "records": 53150
+        },
+        {
+          "pageMs": 7512.5,
+          "batches": 640,
+          "scans": 35,
+          "previewOnlyScans": 18,
+          "scanMs": 19.300000190734863,
+          "matchMs": 30.199999570846558,
+          "records": 53416
+        },
+        {
+          "pageMs": 7529.599999904633,
+          "batches": 704,
+          "scans": 35,
+          "previewOnlyScans": 18,
+          "scanMs": 19.300000190734863,
+          "matchMs": 30.5,
+          "records": 53601
+        },
+        {
+          "pageMs": 7546.099999904633,
+          "batches": 768,
+          "scans": 35,
+          "previewOnlyScans": 18,
+          "scanMs": 19.300000190734863,
+          "matchMs": 30.90000033378601,
+          "records": 53792
+        },
+        {
+          "pageMs": 8465.400000095367,
+          "batches": 832,
+          "scans": 41,
+          "previewOnlyScans": 24,
+          "scanMs": 24.699999809265137,
+          "matchMs": 38.8000009059906,
+          "records": 62628
+        },
+        {
+          "pageMs": 8546.200000047684,
+          "batches": 896,
+          "scans": 42,
+          "previewOnlyScans": 25,
+          "scanMs": 25.399999856948853,
+          "matchMs": 38.90000081062317,
+          "records": 62909
+        },
+        {
+          "pageMs": 8558.099999904633,
+          "batches": 960,
+          "scans": 42,
+          "previewOnlyScans": 25,
+          "scanMs": 25.399999856948853,
+          "matchMs": 38.90000081062317,
+          "records": 63005
+        },
+        {
+          "pageMs": 8561.400000095367,
+          "batches": 1024,
+          "scans": 47,
+          "previewOnlyScans": 30,
+          "scanMs": 28.299999952316284,
+          "matchMs": 39.00000071525574,
+          "records": 63069
+        },
+        {
+          "pageMs": 8561.799999952316,
+          "batches": 1088,
+          "scans": 47,
+          "previewOnlyScans": 30,
+          "scanMs": 28.299999952316284,
+          "matchMs": 39.00000071525574,
+          "records": 63133
+        },
+        {
+          "pageMs": 8562,
+          "batches": 1152,
+          "scans": 47,
+          "previewOnlyScans": 30,
+          "scanMs": 28.299999952316284,
+          "matchMs": 39.20000076293945,
+          "records": 63197
+        },
+        {
+          "pageMs": 8570.799999952316,
+          "batches": 1216,
+          "scans": 47,
+          "previewOnlyScans": 30,
+          "scanMs": 28.299999952316284,
+          "matchMs": 39.30000066757202,
+          "records": 63269
+        },
+        {
+          "pageMs": 8571,
+          "batches": 1280,
+          "scans": 47,
+          "previewOnlyScans": 30,
+          "scanMs": 28.299999952316284,
+          "matchMs": 39.40000081062317,
+          "records": 63333
+        },
+        {
+          "pageMs": 8571.400000095367,
+          "batches": 1344,
+          "scans": 47,
+          "previewOnlyScans": 30,
+          "scanMs": 28.299999952316284,
+          "matchMs": 39.50000071525574,
+          "records": 63397
+        },
+        {
+          "pageMs": 8571.700000047684,
+          "batches": 1408,
+          "scans": 47,
+          "previewOnlyScans": 30,
+          "scanMs": 28.299999952316284,
+          "matchMs": 39.600000619888306,
+          "records": 63461
+        },
+        {
+          "pageMs": 8572,
+          "batches": 1472,
+          "scans": 47,
+          "previewOnlyScans": 30,
+          "scanMs": 28.299999952316284,
+          "matchMs": 39.80000066757202,
+          "records": 63525
+        },
+        {
+          "pageMs": 8620.599999904633,
+          "batches": 1536,
+          "scans": 51,
+          "previewOnlyScans": 34,
+          "scanMs": 31.199999809265137,
+          "matchMs": 41.00000047683716,
+          "records": 64670
+        },
+        {
+          "pageMs": 8651.200000047684,
+          "batches": 1600,
+          "scans": 51,
+          "previewOnlyScans": 34,
+          "scanMs": 31.199999809265137,
+          "matchMs": 42.600000858306885,
+          "records": 65041
+        },
+        {
+          "pageMs": 8679.200000047684,
+          "batches": 1664,
+          "scans": 51,
+          "previewOnlyScans": 34,
+          "scanMs": 31.199999809265137,
+          "matchMs": 42.8000009059906,
+          "records": 65279
+        },
+        {
+          "pageMs": 8705.400000095367,
+          "batches": 1728,
+          "scans": 51,
+          "previewOnlyScans": 34,
+          "scanMs": 31.199999809265137,
+          "matchMs": 43.000001192092896,
+          "records": 65525
+        },
+        {
+          "pageMs": 8835.700000047684,
+          "batches": 1792,
+          "scans": 52,
+          "previewOnlyScans": 35,
+          "scanMs": 32.09999990463257,
+          "matchMs": 44.500000953674316,
+          "records": 66661
+        },
+        {
+          "pageMs": 8912.599999904633,
+          "batches": 1856,
+          "scans": 54,
+          "previewOnlyScans": 37,
+          "scanMs": 33.799999952316284,
+          "matchMs": 44.80000066757202,
+          "records": 66915
+        },
+        {
+          "pageMs": 8989.200000047684,
+          "batches": 1920,
+          "scans": 55,
+          "previewOnlyScans": 38,
+          "scanMs": 34.59999990463257,
+          "matchMs": 45.100001096725464,
+          "records": 67176
+        },
+        {
+          "pageMs": 9161.400000095367,
+          "batches": 1984,
+          "scans": 55,
+          "previewOnlyScans": 38,
+          "scanMs": 34.59999990463257,
+          "matchMs": 46.600001096725464,
+          "records": 68475
+        },
+        {
+          "pageMs": 9185.700000047684,
+          "batches": 2048,
+          "scans": 55,
+          "previewOnlyScans": 38,
+          "scanMs": 34.59999990463257,
+          "matchMs": 47.00000071525574,
+          "records": 68634
+        },
+        {
+          "pageMs": 9340.799999952316,
+          "batches": 2112,
+          "scans": 55,
+          "previewOnlyScans": 38,
+          "scanMs": 34.59999990463257,
+          "matchMs": 48.00000071525574,
+          "records": 69660
+        },
+        {
+          "pageMs": 10280.200000047684,
+          "batches": 2176,
+          "scans": 58,
+          "previewOnlyScans": 41,
+          "scanMs": 38.299999713897705,
+          "matchMs": 57.000001192092896,
+          "records": 79138
+        },
+        {
+          "pageMs": 10424,
+          "batches": 2240,
+          "scans": 58,
+          "previewOnlyScans": 41,
+          "scanMs": 38.299999713897705,
+          "matchMs": 59.000001192092896,
+          "records": 80769
+        },
+        {
+          "pageMs": 10476.400000095367,
+          "batches": 2304,
+          "scans": 58,
+          "previewOnlyScans": 41,
+          "scanMs": 38.299999713897705,
+          "matchMs": 59.500001192092896,
+          "records": 81234
+        },
+        {
+          "pageMs": 10482.400000095367,
+          "batches": 2368,
+          "scans": 58,
+          "previewOnlyScans": 41,
+          "scanMs": 38.299999713897705,
+          "matchMs": 59.80000114440918,
+          "records": 81358
+        },
+        {
+          "pageMs": 10482.900000095367,
+          "batches": 2432,
+          "scans": 58,
+          "previewOnlyScans": 41,
+          "scanMs": 38.299999713897705,
+          "matchMs": 60.000000953674316,
+          "records": 81422
+        },
+        {
+          "pageMs": 10514.700000047684,
+          "batches": 2496,
+          "scans": 60,
+          "previewOnlyScans": 43,
+          "scanMs": 40.299999475479126,
+          "matchMs": 60.80000114440918,
+          "records": 82336
+        },
+        {
+          "pageMs": 10529.099999904633,
+          "batches": 2560,
+          "scans": 60,
+          "previewOnlyScans": 43,
+          "scanMs": 40.299999475479126,
+          "matchMs": 61.10000133514404,
+          "records": 82592
+        },
+        {
+          "pageMs": 10531.299999952316,
+          "batches": 2624,
+          "scans": 60,
+          "previewOnlyScans": 43,
+          "scanMs": 40.299999475479126,
+          "matchMs": 61.20000123977661,
+          "records": 82663
+        },
+        {
+          "pageMs": 10543.200000047684,
+          "batches": 2688,
+          "scans": 60,
+          "previewOnlyScans": 43,
+          "scanMs": 40.299999475479126,
+          "matchMs": 61.30000114440918,
+          "records": 82802
+        },
+        {
+          "pageMs": 10558.099999904633,
+          "batches": 2752,
+          "scans": 60,
+          "previewOnlyScans": 43,
+          "scanMs": 40.299999475479126,
+          "matchMs": 61.500001192092896,
+          "records": 83077
+        },
+        {
+          "pageMs": 10563,
+          "batches": 2816,
+          "scans": 60,
+          "previewOnlyScans": 43,
+          "scanMs": 40.299999475479126,
+          "matchMs": 61.80000114440918,
+          "records": 83174
+        },
+        {
+          "pageMs": 10591.900000095367,
+          "batches": 2880,
+          "scans": 65,
+          "previewOnlyScans": 48,
+          "scanMs": 44.59999942779541,
+          "matchMs": 62.000001430511475,
+          "records": 83414
+        },
+        {
+          "pageMs": 10620.599999904633,
+          "batches": 2944,
+          "scans": 65,
+          "previewOnlyScans": 48,
+          "scanMs": 44.59999942779541,
+          "matchMs": 62.10000133514404,
+          "records": 83611
+        },
+        {
+          "pageMs": 10638.099999904633,
+          "batches": 3008,
+          "scans": 65,
+          "previewOnlyScans": 48,
+          "scanMs": 44.59999942779541,
+          "matchMs": 62.80000162124634,
+          "records": 83820
+        },
+        {
+          "pageMs": 10655.099999904633,
+          "batches": 3072,
+          "scans": 65,
+          "previewOnlyScans": 48,
+          "scanMs": 44.59999942779541,
+          "matchMs": 62.80000162124634,
+          "records": 83961
+        },
+        {
+          "pageMs": 10679.900000095367,
+          "batches": 3136,
+          "scans": 65,
+          "previewOnlyScans": 48,
+          "scanMs": 44.59999942779541,
+          "matchMs": 63.000001430511475,
+          "records": 84190
+        },
+        {
+          "pageMs": 10862.599999904633,
+          "batches": 3200,
+          "scans": 66,
+          "previewOnlyScans": 49,
+          "scanMs": 45.99999928474426,
+          "matchMs": 64.50000166893005,
+          "records": 85357
+        },
+        {
+          "pageMs": 10904.299999952316,
+          "batches": 3264,
+          "scans": 66,
+          "previewOnlyScans": 49,
+          "scanMs": 45.99999928474426,
+          "matchMs": 64.80000185966492,
+          "records": 85618
+        },
+        {
+          "pageMs": 11132.900000095367,
+          "batches": 3328,
+          "scans": 67,
+          "previewOnlyScans": 50,
+          "scanMs": 47.29999923706055,
+          "matchMs": 67.00000286102295,
+          "records": 88098
+        },
+        {
+          "pageMs": 11201.099999904633,
+          "batches": 3392,
+          "scans": 68,
+          "previewOnlyScans": 51,
+          "scanMs": 48.399999380111694,
+          "matchMs": 67.30000281333923,
+          "records": 88313
+        },
+        {
+          "pageMs": 11270.099999904633,
+          "batches": 3456,
+          "scans": 69,
+          "previewOnlyScans": 52,
+          "scanMs": 49.399999380111694,
+          "matchMs": 67.80000305175781,
+          "records": 88527
+        },
+        {
+          "pageMs": 11329.200000047684,
+          "batches": 3520,
+          "scans": 69,
+          "previewOnlyScans": 52,
+          "scanMs": 49.399999380111694,
+          "matchMs": 68.30000305175781,
+          "records": 88722
+        },
+        {
+          "pageMs": 11413.599999904633,
+          "batches": 3584,
+          "scans": 69,
+          "previewOnlyScans": 52,
+          "scanMs": 49.399999380111694,
+          "matchMs": 68.80000281333923,
+          "records": 89227
+        },
+        {
+          "pageMs": 11652.099999904633,
+          "batches": 3648,
+          "scans": 70,
+          "previewOnlyScans": 53,
+          "scanMs": 50.899999380111694,
+          "matchMs": 70.10000252723694,
+          "records": 90164
+        },
+        {
+          "pageMs": 11762.200000047684,
+          "batches": 3712,
+          "scans": 70,
+          "previewOnlyScans": 53,
+          "scanMs": 50.899999380111694,
+          "matchMs": 70.70000290870667,
+          "records": 90794
+        },
+        {
+          "pageMs": 12438.200000047684,
+          "batches": 3776,
+          "scans": 76,
+          "previewOnlyScans": 59,
+          "scanMs": 60.1999990940094,
+          "matchMs": 74.6000030040741,
+          "records": 94608
+        },
+        {
+          "pageMs": 12633.599999904633,
+          "batches": 3840,
+          "scans": 82,
+          "previewOnlyScans": 65,
+          "scanMs": 67.79999923706055,
+          "matchMs": 75.6000030040741,
+          "records": 96103
+        },
+        {
+          "pageMs": 12687.400000095367,
+          "batches": 3904,
+          "scans": 88,
+          "previewOnlyScans": 71,
+          "scanMs": 75.6999990940094,
+          "matchMs": 75.80000305175781,
+          "records": 96482
+        },
+        {
+          "pageMs": 12880.799999952316,
+          "batches": 3968,
+          "scans": 89,
+          "previewOnlyScans": 72,
+          "scanMs": 76.99999904632568,
+          "matchMs": 77.4000027179718,
+          "records": 97960
+        },
+        {
+          "pageMs": 13044.099999904633,
+          "batches": 4032,
+          "scans": 89,
+          "previewOnlyScans": 72,
+          "scanMs": 76.99999904632568,
+          "matchMs": 79.40000319480896,
+          "records": 99961
+        },
+        {
+          "pageMs": 13113.200000047684,
+          "batches": 4096,
+          "scans": 91,
+          "previewOnlyScans": 74,
+          "scanMs": 80.1999990940094,
+          "matchMs": 79.50000309944153,
+          "records": 100159
+        },
+        {
+          "pageMs": 13308.200000047684,
+          "batches": 4160,
+          "scans": 95,
+          "previewOnlyScans": 78,
+          "scanMs": 87.79999923706055,
+          "matchMs": 81.40000247955322,
+          "records": 101990
+        },
+        {
+          "pageMs": 16743,
+          "batches": 4224,
+          "scans": 102,
+          "previewOnlyScans": 85,
+          "scanMs": 101.79999995231628,
+          "matchMs": 100.00000214576721,
+          "records": 123454
+        },
+        {
+          "pageMs": 16788.799999952316,
+          "batches": 4288,
+          "scans": 106,
+          "previewOnlyScans": 89,
+          "scanMs": 107.99999976158142,
+          "matchMs": 100.20000219345093,
+          "records": 123669
+        },
+        {
+          "pageMs": 17076.700000047684,
+          "batches": 4352,
+          "scans": 124,
+          "previewOnlyScans": 107,
+          "scanMs": 141.09999871253967,
+          "matchMs": 103.00000262260437,
+          "records": 126394
+        },
+        {
+          "pageMs": 17077.700000047684,
+          "batches": 4416,
+          "scans": 124,
+          "previewOnlyScans": 107,
+          "scanMs": 141.09999871253967,
+          "matchMs": 103.20000290870667,
+          "records": 126458
+        },
+        {
+          "pageMs": 17078.400000095367,
+          "batches": 4480,
+          "scans": 124,
+          "previewOnlyScans": 107,
+          "scanMs": 141.09999871253967,
+          "matchMs": 103.30000305175781,
+          "records": 126522
+        },
+        {
+          "pageMs": 17079.299999952316,
+          "batches": 4544,
+          "scans": 124,
+          "previewOnlyScans": 107,
+          "scanMs": 141.09999871253967,
+          "matchMs": 103.30000305175781,
+          "records": 126586
+        },
+        {
+          "pageMs": 17080.099999904633,
+          "batches": 4608,
+          "scans": 124,
+          "previewOnlyScans": 107,
+          "scanMs": 141.09999871253967,
+          "matchMs": 103.30000305175781,
+          "records": 126650
+        },
+        {
+          "pageMs": 17147.799999952316,
+          "batches": 4672,
+          "scans": 127,
+          "previewOnlyScans": 110,
+          "scanMs": 147.7999985218048,
+          "matchMs": 104.30000329017639,
+          "records": 127861
+        },
+        {
+          "pageMs": 17148.700000047684,
+          "batches": 4736,
+          "scans": 127,
+          "previewOnlyScans": 110,
+          "scanMs": 147.7999985218048,
+          "matchMs": 104.30000329017639,
+          "records": 127925
+        },
+        {
+          "pageMs": 17149.599999904633,
+          "batches": 4800,
+          "scans": 127,
+          "previewOnlyScans": 110,
+          "scanMs": 147.7999985218048,
+          "matchMs": 104.6000030040741,
+          "records": 127989
+        },
+        {
+          "pageMs": 17150.400000095367,
+          "batches": 4864,
+          "scans": 127,
+          "previewOnlyScans": 110,
+          "scanMs": 147.7999985218048,
+          "matchMs": 104.70000290870667,
+          "records": 128053
+        },
+        {
+          "pageMs": 17151.200000047684,
+          "batches": 4928,
+          "scans": 127,
+          "previewOnlyScans": 110,
+          "scanMs": 147.7999985218048,
+          "matchMs": 104.80000281333923,
+          "records": 128117
+        },
+        {
+          "pageMs": 17795.5,
+          "batches": 4992,
+          "scans": 139,
+          "previewOnlyScans": 122,
+          "scanMs": 173.0999984741211,
+          "matchMs": 119.00000309944153,
+          "records": 141117
+        },
+        {
+          "pageMs": 18118.400000095367,
+          "batches": 5056,
+          "scans": 145,
+          "previewOnlyScans": 128,
+          "scanMs": 187.2999987602234,
+          "matchMs": 124.10000205039978,
+          "records": 146324
+        },
+        {
+          "pageMs": 18520.599999904633,
+          "batches": 5120,
+          "scans": 147,
+          "previewOnlyScans": 130,
+          "scanMs": 191.4999988079071,
+          "matchMs": 126.70000171661377,
+          "records": 148823
+        },
+        {
+          "pageMs": 18755.200000047684,
+          "batches": 5184,
+          "scans": 147,
+          "previewOnlyScans": 130,
+          "scanMs": 191.4999988079071,
+          "matchMs": 127.90000176429749,
+          "records": 150357
+        },
+        {
+          "pageMs": 18809.599999904633,
+          "batches": 5248,
+          "scans": 148,
+          "previewOnlyScans": 131,
+          "scanMs": 193.59999895095825,
+          "matchMs": 128.00000190734863,
+          "records": 150688
+        },
+        {
+          "pageMs": 19583,
+          "batches": 5312,
+          "scans": 148,
+          "previewOnlyScans": 131,
+          "scanMs": 193.59999895095825,
+          "matchMs": 132.10000228881836,
+          "records": 155166
+        },
+        {
+          "pageMs": 19788.900000095367,
+          "batches": 5376,
+          "scans": 157,
+          "previewOnlyScans": 140,
+          "scanMs": 211.1999990940094,
+          "matchMs": 133.2000024318695,
+          "records": 156066
+        },
+        {
+          "pageMs": 19805.799999952316,
+          "batches": 5440,
+          "scans": 157,
+          "previewOnlyScans": 140,
+          "scanMs": 211.1999990940094,
+          "matchMs": 133.30000233650208,
+          "records": 156144
+        },
+        {
+          "pageMs": 20175.099999904633,
+          "batches": 5504,
+          "scans": 171,
+          "previewOnlyScans": 154,
+          "scanMs": 238.0999994277954,
+          "matchMs": 134.70000219345093,
+          "records": 157674
+        },
+        {
+          "pageMs": 20342.5,
+          "batches": 5568,
+          "scans": 176,
+          "previewOnlyScans": 159,
+          "scanMs": 250.79999923706055,
+          "matchMs": 135.50000190734863,
+          "records": 158666
+        },
+        {
+          "pageMs": 20373.5,
+          "batches": 5632,
+          "scans": 176,
+          "previewOnlyScans": 159,
+          "scanMs": 250.79999923706055,
+          "matchMs": 135.9000015258789,
+          "records": 158845
+        },
+        {
+          "pageMs": 20578.099999904633,
+          "batches": 5696,
+          "scans": 178,
+          "previewOnlyScans": 161,
+          "scanMs": 255.39999914169312,
+          "matchMs": 138.00000166893005,
+          "records": 160380
+        },
+        {
+          "pageMs": 20747.799999952316,
+          "batches": 5760,
+          "scans": 182,
+          "previewOnlyScans": 165,
+          "scanMs": 266.1999990940094,
+          "matchMs": 139.50000190734863,
+          "records": 161736
+        },
+        {
+          "pageMs": 22507.5,
+          "batches": 5824,
+          "scans": 189,
+          "previewOnlyScans": 172,
+          "scanMs": 285.3999993801117,
+          "matchMs": 144.9000015258789,
+          "records": 167236
+        },
+        {
+          "pageMs": 22830.5,
+          "batches": 5888,
+          "scans": 196,
+          "previewOnlyScans": 179,
+          "scanMs": 300.99999952316284,
+          "matchMs": 146.50000166893005,
+          "records": 168718
+        },
+        {
+          "pageMs": 22886.599999904633,
+          "batches": 5952,
+          "scans": 200,
+          "previewOnlyScans": 183,
+          "scanMs": 310.2999994754791,
+          "matchMs": 147.20000171661377,
+          "records": 169381
+        },
+        {
+          "pageMs": 22917,
+          "batches": 6016,
+          "scans": 202,
+          "previewOnlyScans": 185,
+          "scanMs": 314.69999957084656,
+          "matchMs": 147.50000166893005,
+          "records": 169470
+        },
+        {
+          "pageMs": 23176.599999904633,
+          "batches": 6080,
+          "scans": 206,
+          "previewOnlyScans": 189,
+          "scanMs": 326.4999997615814,
+          "matchMs": 148.90000176429749,
+          "records": 170645
+        },
+        {
+          "pageMs": 24313.299999952316,
+          "batches": 6144,
+          "scans": 219,
+          "previewOnlyScans": 202,
+          "scanMs": 368.400000333786,
+          "matchMs": 153.00000190734863,
+          "records": 175004
+        },
+        {
+          "pageMs": 24509.900000095367,
+          "batches": 6208,
+          "scans": 235,
+          "previewOnlyScans": 218,
+          "scanMs": 408.2000005245209,
+          "matchMs": 154.2000024318695,
+          "records": 175757
+        },
+        {
+          "pageMs": 25292.400000095367,
+          "batches": 6272,
+          "scans": 243,
+          "previewOnlyScans": 226,
+          "scanMs": 471.6000006198883,
+          "matchMs": 174.10000252723694,
+          "records": 180427
+        },
+        {
+          "pageMs": 25385.5,
+          "batches": 6336,
+          "scans": 247,
+          "previewOnlyScans": 230,
+          "scanMs": 485.7000005245209,
+          "matchMs": 174.70000219345093,
+          "records": 180645
+        },
+        {
+          "pageMs": 25873,
+          "batches": 6400,
+          "scans": 254,
+          "previewOnlyScans": 237,
+          "scanMs": 511.30000019073486,
+          "matchMs": 176.80000233650208,
+          "records": 182214
+        },
+        {
+          "pageMs": 25928.700000047684,
+          "batches": 6464,
+          "scans": 256,
+          "previewOnlyScans": 239,
+          "scanMs": 516.900000333786,
+          "matchMs": 177.2000024318695,
+          "records": 182569
+        },
+        {
+          "pageMs": 25993.799999952316,
+          "batches": 6528,
+          "scans": 260,
+          "previewOnlyScans": 243,
+          "scanMs": 528.5000004768372,
+          "matchMs": 177.30000233650208,
+          "records": 182840
+        },
+        {
+          "pageMs": 26062,
+          "batches": 6592,
+          "scans": 264,
+          "previewOnlyScans": 247,
+          "scanMs": 540.4000005722046,
+          "matchMs": 177.60000276565552,
+          "records": 182971
+        },
+        {
+          "pageMs": 26265.599999904633,
+          "batches": 6656,
+          "scans": 268,
+          "previewOnlyScans": 251,
+          "scanMs": 553.8000004291534,
+          "matchMs": 178.40000247955322,
+          "records": 183656
+        },
+        {
+          "pageMs": 26983.799999952316,
+          "batches": 6720,
+          "scans": 280,
+          "previewOnlyScans": 263,
+          "scanMs": 594.8000004291534,
+          "matchMs": 180.90000224113464,
+          "records": 185509
+        },
+        {
+          "pageMs": 27078.200000047684,
+          "batches": 6784,
+          "scans": 281,
+          "previewOnlyScans": 264,
+          "scanMs": 598.1000003814697,
+          "matchMs": 181.60000276565552,
+          "records": 186015
+        },
+        {
+          "pageMs": 27535.5,
+          "batches": 6848,
+          "scans": 281,
+          "previewOnlyScans": 264,
+          "scanMs": 598.1000003814697,
+          "matchMs": 183.00000262260437,
+          "records": 186996
+        },
+        {
+          "pageMs": 30223,
+          "batches": 6912,
+          "scans": 285,
+          "previewOnlyScans": 268,
+          "scanMs": 610.8000001907349,
+          "matchMs": 188.5000021457672,
+          "records": 192458
+        },
+        {
+          "pageMs": 30541.400000095367,
+          "batches": 6976,
+          "scans": 286,
+          "previewOnlyScans": 269,
+          "scanMs": 615.4000000953674,
+          "matchMs": 190.0000023841858,
+          "records": 193451
+        },
+        {
+          "pageMs": 30608.099999904633,
+          "batches": 7040,
+          "scans": 288,
+          "previewOnlyScans": 271,
+          "scanMs": 622.6999998092651,
+          "matchMs": 190.20000219345093,
+          "records": 193758
+        },
+        {
+          "pageMs": 30697.299999952316,
+          "batches": 7104,
+          "scans": 288,
+          "previewOnlyScans": 271,
+          "scanMs": 622.6999998092651,
+          "matchMs": 190.3000020980835,
+          "records": 193927
+        },
+        {
+          "pageMs": 31004.700000047684,
+          "batches": 7168,
+          "scans": 297,
+          "previewOnlyScans": 280,
+          "scanMs": 654.5,
+          "matchMs": 191.50000190734863,
+          "records": 194953
+        },
+        {
+          "pageMs": 31344.099999904633,
+          "batches": 7232,
+          "scans": 297,
+          "previewOnlyScans": 280,
+          "scanMs": 654.5,
+          "matchMs": 193.20000219345093,
+          "records": 196043
+        },
+        {
+          "pageMs": 31982.900000095367,
+          "batches": 7296,
+          "scans": 297,
+          "previewOnlyScans": 280,
+          "scanMs": 654.5,
+          "matchMs": 196.30000233650208,
+          "records": 199256
+        },
+        {
+          "pageMs": 32226.799999952316,
+          "batches": 7360,
+          "scans": 297,
+          "previewOnlyScans": 280,
+          "scanMs": 654.5,
+          "matchMs": 197.70000219345093,
+          "records": 200583
+        },
+        {
+          "pageMs": 32360.799999952316,
+          "batches": 7424,
+          "scans": 297,
+          "previewOnlyScans": 280,
+          "scanMs": 654.5,
+          "matchMs": 198.70000171661377,
+          "records": 201706
+        },
+        {
+          "pageMs": 32552.400000095367,
+          "batches": 7488,
+          "scans": 297,
+          "previewOnlyScans": 280,
+          "scanMs": 654.5,
+          "matchMs": 199.60000205039978,
+          "records": 202491
+        },
+        {
+          "pageMs": 32744.900000095367,
+          "batches": 7552,
+          "scans": 297,
+          "previewOnlyScans": 280,
+          "scanMs": 654.5,
+          "matchMs": 200.5000021457672,
+          "records": 203085
+        },
+        {
+          "pageMs": 33075.700000047684,
+          "batches": 7616,
+          "scans": 299,
+          "previewOnlyScans": 282,
+          "scanMs": 662.2000000476837,
+          "matchMs": 202.1000018119812,
+          "records": 204291
+        },
+        {
+          "pageMs": 33489.200000047684,
+          "batches": 7680,
+          "scans": 299,
+          "previewOnlyScans": 282,
+          "scanMs": 662.2000000476837,
+          "matchMs": 203.90000247955322,
+          "records": 205384
+        },
+        {
+          "pageMs": 34291.09999990463,
+          "batches": 7744,
+          "scans": 299,
+          "previewOnlyScans": 282,
+          "scanMs": 662.2000000476837,
+          "matchMs": 206.10000252723694,
+          "records": 207668
+        },
+        {
+          "pageMs": 35173.59999990463,
+          "batches": 7808,
+          "scans": 299,
+          "previewOnlyScans": 282,
+          "scanMs": 662.2000000476837,
+          "matchMs": 209.6000030040741,
+          "records": 211003
+        },
+        {
+          "pageMs": 35348.40000009537,
+          "batches": 7872,
+          "scans": 299,
+          "previewOnlyScans": 282,
+          "scanMs": 662.2000000476837,
+          "matchMs": 210.50000309944153,
+          "records": 211599
+        },
+        {
+          "pageMs": 35407.90000009537,
+          "batches": 7936,
+          "scans": 299,
+          "previewOnlyScans": 282,
+          "scanMs": 662.2000000476837,
+          "matchMs": 210.90000343322754,
+          "records": 211762
+        },
+        {
+          "pageMs": 35673,
+          "batches": 8000,
+          "scans": 299,
+          "previewOnlyScans": 282,
+          "scanMs": 662.2000000476837,
+          "matchMs": 212.30000352859497,
+          "records": 213011
+        },
+        {
+          "pageMs": 35923.299999952316,
+          "batches": 8064,
+          "scans": 299,
+          "previewOnlyScans": 282,
+          "scanMs": 662.2000000476837,
+          "matchMs": 213.6000039577484,
+          "records": 214083
+        },
+        {
+          "pageMs": 36164.09999990463,
+          "batches": 8128,
+          "scans": 299,
+          "previewOnlyScans": 282,
+          "scanMs": 662.2000000476837,
+          "matchMs": 215.2000036239624,
+          "records": 215168
+        },
+        {
+          "pageMs": 36427.59999990463,
+          "batches": 8192,
+          "scans": 299,
+          "previewOnlyScans": 282,
+          "scanMs": 662.2000000476837,
+          "matchMs": 217.10000324249268,
+          "records": 217146
+        },
+        {
+          "pageMs": 36543.5,
+          "batches": 8256,
+          "scans": 300,
+          "previewOnlyScans": 283,
+          "scanMs": 666.5,
+          "matchMs": 217.70000338554382,
+          "records": 217471
+        },
+        {
+          "pageMs": 36739,
+          "batches": 8320,
+          "scans": 306,
+          "previewOnlyScans": 289,
+          "scanMs": 691.5000002384186,
+          "matchMs": 218.40000319480896,
+          "records": 218177
+        },
+        {
+          "pageMs": 36964.59999990463,
+          "batches": 8384,
+          "scans": 312,
+          "previewOnlyScans": 295,
+          "scanMs": 714.6000001430511,
+          "matchMs": 219.6000030040741,
+          "records": 219147
+        },
+        {
+          "pageMs": 37355.799999952316,
+          "batches": 8448,
+          "scans": 312,
+          "previewOnlyScans": 295,
+          "scanMs": 714.6000001430511,
+          "matchMs": 220.70000338554382,
+          "records": 220063
+        },
+        {
+          "pageMs": 38623.5,
+          "batches": 8512,
+          "scans": 314,
+          "previewOnlyScans": 297,
+          "scanMs": 722.900000333786,
+          "matchMs": 224.10000252723694,
+          "records": 223761
+        },
+        {
+          "pageMs": 38766.299999952316,
+          "batches": 8576,
+          "scans": 314,
+          "previewOnlyScans": 297,
+          "scanMs": 722.900000333786,
+          "matchMs": 225.30000233650208,
+          "records": 225397
+        },
+        {
+          "pageMs": 38820,
+          "batches": 8640,
+          "scans": 314,
+          "previewOnlyScans": 297,
+          "scanMs": 722.900000333786,
+          "matchMs": 225.70000195503235,
+          "records": 225530
+        },
+        {
+          "pageMs": 41242.799999952316,
+          "batches": 8704,
+          "scans": 324,
+          "previewOnlyScans": 307,
+          "scanMs": 768.1000006198883,
+          "matchMs": 235.50000166893005,
+          "records": 237156
+        },
+        {
+          "pageMs": 41620.59999990463,
+          "batches": 8768,
+          "scans": 328,
+          "previewOnlyScans": 311,
+          "scanMs": 784.1000008583069,
+          "matchMs": 237.50000143051147,
+          "records": 238925
+        },
+        {
+          "pageMs": 41621.90000009537,
+          "batches": 8832,
+          "scans": 328,
+          "previewOnlyScans": 311,
+          "scanMs": 784.1000008583069,
+          "matchMs": 237.7000012397766,
+          "records": 238989
+        },
+        {
+          "pageMs": 41690.700000047684,
+          "batches": 8896,
+          "scans": 331,
+          "previewOnlyScans": 314,
+          "scanMs": 797.8000004291534,
+          "matchMs": 238.30000138282776,
+          "records": 239769
+        },
+        {
+          "pageMs": 42203.40000009537,
+          "batches": 8960,
+          "scans": 332,
+          "previewOnlyScans": 315,
+          "scanMs": 802.2000002861023,
+          "matchMs": 240.20000195503235,
+          "records": 241497
+        },
+        {
+          "pageMs": 42738.700000047684,
+          "batches": 9024,
+          "scans": 332,
+          "previewOnlyScans": 315,
+          "scanMs": 802.2000002861023,
+          "matchMs": 242.70000171661377,
+          "records": 243762
+        },
+        {
+          "pageMs": 43013.59999990463,
+          "batches": 9088,
+          "scans": 333,
+          "previewOnlyScans": 316,
+          "scanMs": 806.9000000953674,
+          "matchMs": 245.00000190734863,
+          "records": 246624
+        },
+        {
+          "pageMs": 43213.200000047684,
+          "batches": 9152,
+          "scans": 337,
+          "previewOnlyScans": 320,
+          "scanMs": 822.9000000953674,
+          "matchMs": 246.30000257492065,
+          "records": 247559
+        },
+        {
+          "pageMs": 44445.59999990463,
+          "batches": 9216,
+          "scans": 342,
+          "previewOnlyScans": 325,
+          "scanMs": 841.7999999523163,
+          "matchMs": 249.9000027179718,
+          "records": 251885
+        },
+        {
+          "pageMs": 44864.299999952316,
+          "batches": 9280,
+          "scans": 349,
+          "previewOnlyScans": 332,
+          "scanMs": 873.9000000953674,
+          "matchMs": 251.70000290870667,
+          "records": 253301
+        },
+        {
+          "pageMs": 44881.90000009537,
+          "batches": 9344,
+          "scans": 349,
+          "previewOnlyScans": 332,
+          "scanMs": 873.9000000953674,
+          "matchMs": 251.80000281333923,
+          "records": 253379
+        },
+        {
+          "pageMs": 45191.200000047684,
+          "batches": 9408,
+          "scans": 360,
+          "previewOnlyScans": 343,
+          "scanMs": 923.400000333786,
+          "matchMs": 253.10000252723694,
+          "records": 254238
+        },
+        {
+          "pageMs": 45768.09999990463,
+          "batches": 9472,
+          "scans": 366,
+          "previewOnlyScans": 349,
+          "scanMs": 948.8000004291534,
+          "matchMs": 254.80000257492065,
+          "records": 255597
+        },
+        {
+          "pageMs": 46139.90000009537,
+          "batches": 9536,
+          "scans": 373,
+          "previewOnlyScans": 356,
+          "scanMs": 982.5000004768372,
+          "matchMs": 256.20000290870667,
+          "records": 257066
+        },
+        {
+          "pageMs": 46394.40000009537,
+          "batches": 9600,
+          "scans": 381,
+          "previewOnlyScans": 364,
+          "scanMs": 1028.300000667572,
+          "matchMs": 257.6000030040741,
+          "records": 257813
+        },
+        {
+          "pageMs": 46475,
+          "batches": 9664,
+          "scans": 385,
+          "previewOnlyScans": 368,
+          "scanMs": 1047.6000006198883,
+          "matchMs": 257.9000029563904,
+          "records": 258112
+        },
+        {
+          "pageMs": 51037.40000009537,
+          "batches": 9728,
+          "scans": 409,
+          "previewOnlyScans": 392,
+          "scanMs": 1158.6000003814697,
+          "matchMs": 268.00000262260437,
+          "records": 268052
+        },
+        {
+          "pageMs": 51108.90000009537,
+          "batches": 9792,
+          "scans": 413,
+          "previewOnlyScans": 396,
+          "scanMs": 1177.400000333786,
+          "matchMs": 268.9000024795532,
+          "records": 268710
+        },
+        {
+          "pageMs": 51154.200000047684,
+          "batches": 9856,
+          "scans": 415,
+          "previewOnlyScans": 398,
+          "scanMs": 1188.2000002861023,
+          "matchMs": 269.2000026702881,
+          "records": 268795
+        },
+        {
+          "pageMs": 51735.299999952316,
+          "batches": 9920,
+          "scans": 415,
+          "previewOnlyScans": 398,
+          "scanMs": 1188.2000002861023,
+          "matchMs": 270.4000029563904,
+          "records": 269884
+        },
+        {
+          "pageMs": 53778.59999990463,
+          "batches": 9984,
+          "scans": 427,
+          "previewOnlyScans": 410,
+          "scanMs": 1251.7000002861023,
+          "matchMs": 275.10000348091125,
+          "records": 274170
+        },
+        {
+          "pageMs": 53906.799999952316,
+          "batches": 10048,
+          "scans": 427,
+          "previewOnlyScans": 410,
+          "scanMs": 1251.7000002861023,
+          "matchMs": 275.7000033855438,
+          "records": 274683
+        },
+        {
+          "pageMs": 54055.799999952316,
+          "batches": 10112,
+          "scans": 431,
+          "previewOnlyScans": 414,
+          "scanMs": 1270.6000006198883,
+          "matchMs": 276.3000030517578,
+          "records": 275020
+        },
+        {
+          "pageMs": 54249.700000047684,
+          "batches": 10176,
+          "scans": 431,
+          "previewOnlyScans": 414,
+          "scanMs": 1270.6000006198883,
+          "matchMs": 277.20000314712524,
+          "records": 275737
+        },
+        {
+          "pageMs": 56924.59999990463,
+          "batches": 10240,
+          "scans": 445,
+          "previewOnlyScans": 428,
+          "scanMs": 1342.0000009536743,
+          "matchMs": 282.9000029563904,
+          "records": 281246
+        },
+        {
+          "pageMs": 56967.200000047684,
+          "batches": 10304,
+          "scans": 445,
+          "previewOnlyScans": 428,
+          "scanMs": 1342.0000009536743,
+          "matchMs": 283.20000290870667,
+          "records": 281405
+        },
+        {
+          "pageMs": 57028.59999990463,
+          "batches": 10368,
+          "scans": 449,
+          "previewOnlyScans": 432,
+          "scanMs": 1361.4000010490417,
+          "matchMs": 283.7000026702881,
+          "records": 281990
+        },
+        {
+          "pageMs": 57180.40000009537,
+          "batches": 10432,
+          "scans": 451,
+          "previewOnlyScans": 434,
+          "scanMs": 1371.500001192093,
+          "matchMs": 284.3000030517578,
+          "records": 282323
+        },
+        {
+          "pageMs": 57468.09999990463,
+          "batches": 10496,
+          "scans": 453,
+          "previewOnlyScans": 436,
+          "scanMs": 1382.1000010967255,
+          "matchMs": 285.00000286102295,
+          "records": 283028
+        },
+        {
+          "pageMs": 57751.299999952316,
+          "batches": 10560,
+          "scans": 459,
+          "previewOnlyScans": 442,
+          "scanMs": 1416.9000010490417,
+          "matchMs": 285.8000030517578,
+          "records": 283762
+        },
+        {
+          "pageMs": 58944,
+          "batches": 10624,
+          "scans": 472,
+          "previewOnlyScans": 455,
+          "scanMs": 1488.5000007152557,
+          "matchMs": 291.1000030040741,
+          "records": 289406
+        },
+        {
+          "pageMs": 59199.09999990463,
+          "batches": 10688,
+          "scans": 483,
+          "previewOnlyScans": 466,
+          "scanMs": 1542.2000007629395,
+          "matchMs": 292.10000371932983,
+          "records": 290144
+        },
+        {
+          "pageMs": 59325.40000009537,
+          "batches": 10752,
+          "scans": 490,
+          "previewOnlyScans": 473,
+          "scanMs": 1576.0000007152557,
+          "matchMs": 292.5000035762787,
+          "records": 290452
+        },
+        {
+          "pageMs": 59388.09999990463,
+          "batches": 10816,
+          "scans": 490,
+          "previewOnlyScans": 473,
+          "scanMs": 1576.0000007152557,
+          "matchMs": 292.8000032901764,
+          "records": 290740
+        },
+        {
+          "pageMs": 59738,
+          "batches": 10880,
+          "scans": 490,
+          "previewOnlyScans": 473,
+          "scanMs": 1576.0000007152557,
+          "matchMs": 293.3000032901764,
+          "records": 291189
+        },
+        {
+          "pageMs": 60029.5,
+          "batches": 10944,
+          "scans": 491,
+          "previewOnlyScans": 474,
+          "scanMs": 1581.9000005722046,
+          "matchMs": 293.90000319480896,
+          "records": 291819
+        },
+        {
+          "pageMs": 60351.299999952316,
+          "batches": 11008,
+          "scans": 496,
+          "previewOnlyScans": 479,
+          "scanMs": 1609.2000007629395,
+          "matchMs": 294.9000029563904,
+          "records": 292640
+        },
+        {
+          "pageMs": 60679.700000047684,
+          "batches": 11072,
+          "scans": 503,
+          "previewOnlyScans": 486,
+          "scanMs": 1648.9000010490417,
+          "matchMs": 295.90000224113464,
+          "records": 293690
+        },
+        {
+          "pageMs": 60928.40000009537,
+          "batches": 11136,
+          "scans": 506,
+          "previewOnlyScans": 489,
+          "scanMs": 1667.1000010967255,
+          "matchMs": 296.90000200271606,
+          "records": 294400
+        },
+        {
+          "pageMs": 61337.200000047684,
+          "batches": 11200,
+          "scans": 506,
+          "previewOnlyScans": 489,
+          "scanMs": 1667.1000010967255,
+          "matchMs": 298.3000023365021,
+          "records": 295368
+        },
+        {
+          "pageMs": 62089.299999952316,
+          "batches": 11264,
+          "scans": 506,
+          "previewOnlyScans": 489,
+          "scanMs": 1667.1000010967255,
+          "matchMs": 300.80000257492065,
+          "records": 297690
+        },
+        {
+          "pageMs": 62188.09999990463,
+          "batches": 11328,
+          "scans": 506,
+          "previewOnlyScans": 489,
+          "scanMs": 1667.1000010967255,
+          "matchMs": 301.50000190734863,
+          "records": 298035
+        },
+        {
+          "pageMs": 62718,
+          "batches": 11392,
+          "scans": 506,
+          "previewOnlyScans": 489,
+          "scanMs": 1667.1000010967255,
+          "matchMs": 302.9000017642975,
+          "records": 299262
+        },
+        {
+          "pageMs": 64222,
+          "batches": 11456,
+          "scans": 506,
+          "previewOnlyScans": 489,
+          "scanMs": 1667.1000010967255,
+          "matchMs": 305.8000018596649,
+          "records": 301736
+        },
+        {
+          "pageMs": 64687.90000009537,
+          "batches": 11520,
+          "scans": 506,
+          "previewOnlyScans": 489,
+          "scanMs": 1667.1000010967255,
+          "matchMs": 307.4000015258789,
+          "records": 302861
+        },
+        {
+          "pageMs": 64953.200000047684,
+          "batches": 11584,
+          "scans": 506,
+          "previewOnlyScans": 489,
+          "scanMs": 1667.1000010967255,
+          "matchMs": 308.20000171661377,
+          "records": 303643
+        },
+        {
+          "pageMs": 65325.200000047684,
+          "batches": 11648,
+          "scans": 506,
+          "previewOnlyScans": 489,
+          "scanMs": 1667.1000010967255,
+          "matchMs": 310.10000133514404,
+          "records": 305632
+        },
+        {
+          "pageMs": 65583.5,
+          "batches": 11712,
+          "scans": 506,
+          "previewOnlyScans": 489,
+          "scanMs": 1667.1000010967255,
+          "matchMs": 310.9000015258789,
+          "records": 306004
+        },
+        {
+          "pageMs": 65890.70000004768,
+          "batches": 11776,
+          "scans": 506,
+          "previewOnlyScans": 489,
+          "scanMs": 1667.1000010967255,
+          "matchMs": 312.4000012874603,
+          "records": 306888
+        },
+        {
+          "pageMs": 66223.29999995232,
+          "batches": 11840,
+          "scans": 506,
+          "previewOnlyScans": 489,
+          "scanMs": 1667.1000010967255,
+          "matchMs": 313.6000008583069,
+          "records": 307729
+        },
+        {
+          "pageMs": 66478.40000009537,
+          "batches": 11904,
+          "scans": 506,
+          "previewOnlyScans": 489,
+          "scanMs": 1667.1000010967255,
+          "matchMs": 315.40000009536743,
+          "records": 309336
+        },
+        {
+          "pageMs": 66706.79999995232,
+          "batches": 11968,
+          "scans": 506,
+          "previewOnlyScans": 489,
+          "scanMs": 1667.1000010967255,
+          "matchMs": 316.400000333786,
+          "records": 309783
+        },
+        {
+          "pageMs": 67140.59999990463,
+          "batches": 12032,
+          "scans": 506,
+          "previewOnlyScans": 489,
+          "scanMs": 1667.1000010967255,
+          "matchMs": 317.40000081062317,
+          "records": 310633
+        }
+      ],
+      "comparison": {
+        "pageMs": 67140.59999990463,
+        "batches": 12032,
+        "scans": 506,
+        "previewOnlyScans": 489,
+        "scanMs": 1667.1000010967255,
+        "matchMs": 317.40000081062317,
+        "records": 310633
+      },
+      "nativeReport": {
+        "passed": 0,
+        "failed": 1,
+        "filtered": 1,
+        "files": [
+          {
+            "file": "src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts",
+            "cases": [
+              {
+                "title": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+                "status": "failed"
+              },
+              {
+                "title": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+                "status": "skipped"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "after": {
+      "source": [
+        "ffd372aceabd51d2756c3dd0ee1338f1d9072cb0",
+        "94aebcb5fe0ecc6cec26d480d208bb66674f1b04"
+      ],
+      "buildAsset": {
+        "asset": "DocumentationImagePreview.astro_astro_type_script_index_0_lang.B5wDjVvL.js",
+        "original": "a5558258bb9bb643ab5cda28bd0069982fe908f55c19069110aa4c3b9203c972",
+        "observed": "97ba455305be79ed92191f8699cea07d8ead82208ac72a1cc2e616874916dec3",
+        "scope": "Calls exact emitted candidate predicates, counts their per-delivery consequence, and measures scan time. Filter replaces short-circuit for observation only; scan decision/order unchanged."
+      },
+      "series": [
+        {
+          "pageMs": 432.90000009536743,
+          "batches": 1,
+          "scans": 1,
+          "previewOnlyScans": 0,
+          "excludedBatches": 0,
+          "scanMs": 0.40000009536743164,
+          "matchMs": 0,
+          "records": 23
+        },
+        {
+          "pageMs": 2354.7000000476837,
+          "batches": 64,
+          "scans": 2,
+          "previewOnlyScans": 0,
+          "excludedBatches": 0,
+          "scanMs": 1.1000001430511475,
+          "matchMs": 0.6000003814697266,
+          "records": 1358
+        },
+        {
+          "pageMs": 3984.5,
+          "batches": 128,
+          "scans": 3,
+          "previewOnlyScans": 0,
+          "excludedBatches": 0,
+          "scanMs": 1.500000238418579,
+          "matchMs": 1.200000286102295,
+          "records": 2590
+        },
+        {
+          "pageMs": 3985.4000000953674,
+          "batches": 192,
+          "scans": 3,
+          "previewOnlyScans": 0,
+          "excludedBatches": 0,
+          "scanMs": 1.500000238418579,
+          "matchMs": 1.3000004291534424,
+          "records": 2846
+        },
+        {
+          "pageMs": 4946.599999904633,
+          "batches": 256,
+          "scans": 6,
+          "previewOnlyScans": 0,
+          "excludedBatches": 0,
+          "scanMs": 2.8000001907348633,
+          "matchMs": 2.1000003814697266,
+          "records": 4766
+        },
+        {
+          "pageMs": 5926.099999904633,
+          "batches": 320,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 2,
+          "scanMs": 7.200000762939453,
+          "matchMs": 9.300000429153442,
+          "records": 29872
+        },
+        {
+          "pageMs": 6261.599999904633,
+          "batches": 384,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 8,
+          "scanMs": 7.200000762939453,
+          "matchMs": 14.799998998641968,
+          "records": 37681
+        },
+        {
+          "pageMs": 6682,
+          "batches": 448,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 12,
+          "scanMs": 7.200000762939453,
+          "matchMs": 18.79999852180481,
+          "records": 41644
+        },
+        {
+          "pageMs": 7439.299999952316,
+          "batches": 512,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 15,
+          "scanMs": 7.200000762939453,
+          "matchMs": 28.799997806549072,
+          "records": 52337
+        },
+        {
+          "pageMs": 7479.099999904633,
+          "batches": 576,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 19,
+          "scanMs": 7.200000762939453,
+          "matchMs": 29.999997854232788,
+          "records": 53574
+        },
+        {
+          "pageMs": 7495.299999952316,
+          "batches": 640,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 19,
+          "scanMs": 7.200000762939453,
+          "matchMs": 30.599997758865356,
+          "records": 53890
+        },
+        {
+          "pageMs": 7515,
+          "batches": 704,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 19,
+          "scanMs": 7.200000762939453,
+          "matchMs": 30.599997758865356,
+          "records": 54080
+        },
+        {
+          "pageMs": 7532.400000095367,
+          "batches": 768,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 19,
+          "scanMs": 7.200000762939453,
+          "matchMs": 30.799997568130493,
+          "records": 54271
+        },
+        {
+          "pageMs": 8291.299999952316,
+          "batches": 832,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 23,
+          "scanMs": 7.200000762939453,
+          "matchMs": 38.89999771118164,
+          "records": 63040
+        },
+        {
+          "pageMs": 8380,
+          "batches": 896,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 25,
+          "scanMs": 7.200000762939453,
+          "matchMs": 39.29999756813049,
+          "records": 63455
+        },
+        {
+          "pageMs": 8448.299999952316,
+          "batches": 960,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 26,
+          "scanMs": 7.200000762939453,
+          "matchMs": 39.49999761581421,
+          "records": 63705
+        },
+        {
+          "pageMs": 8448.700000047684,
+          "batches": 1024,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 31,
+          "scanMs": 7.200000762939453,
+          "matchMs": 39.49999761581421,
+          "records": 63769
+        },
+        {
+          "pageMs": 8449,
+          "batches": 1088,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 31,
+          "scanMs": 7.200000762939453,
+          "matchMs": 39.599997758865356,
+          "records": 63833
+        },
+        {
+          "pageMs": 8449.400000095367,
+          "batches": 1152,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 31,
+          "scanMs": 7.200000762939453,
+          "matchMs": 39.599997758865356,
+          "records": 63897
+        },
+        {
+          "pageMs": 8449.700000047684,
+          "batches": 1216,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 31,
+          "scanMs": 7.200000762939453,
+          "matchMs": 39.699997663497925,
+          "records": 63961
+        },
+        {
+          "pageMs": 8458.099999904633,
+          "batches": 1280,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 31,
+          "scanMs": 7.200000762939453,
+          "matchMs": 39.699997663497925,
+          "records": 64033
+        },
+        {
+          "pageMs": 8458.400000095367,
+          "batches": 1344,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 31,
+          "scanMs": 7.200000762939453,
+          "matchMs": 39.699997663497925,
+          "records": 64097
+        },
+        {
+          "pageMs": 8458.700000047684,
+          "batches": 1408,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 31,
+          "scanMs": 7.200000762939453,
+          "matchMs": 39.79999756813049,
+          "records": 64161
+        },
+        {
+          "pageMs": 8459,
+          "batches": 1472,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 31,
+          "scanMs": 7.200000762939453,
+          "matchMs": 39.89999747276306,
+          "records": 64225
+        },
+        {
+          "pageMs": 8459.200000047684,
+          "batches": 1536,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 31,
+          "scanMs": 7.200000762939453,
+          "matchMs": 39.89999747276306,
+          "records": 64289
+        },
+        {
+          "pageMs": 8514.599999904633,
+          "batches": 1600,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 35,
+          "scanMs": 7.200000762939453,
+          "matchMs": 41.199997425079346,
+          "records": 65434
+        },
+        {
+          "pageMs": 8551.700000047684,
+          "batches": 1664,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 35,
+          "scanMs": 7.200000762939453,
+          "matchMs": 41.79999756813049,
+          "records": 65806
+        },
+        {
+          "pageMs": 8590.799999952316,
+          "batches": 1728,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 35,
+          "scanMs": 7.200000762939453,
+          "matchMs": 41.99999761581421,
+          "records": 66043
+        },
+        {
+          "pageMs": 8617.700000047684,
+          "batches": 1792,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 35,
+          "scanMs": 7.200000762939453,
+          "matchMs": 42.299997329711914,
+          "records": 66290
+        },
+        {
+          "pageMs": 8789,
+          "batches": 1856,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 36,
+          "scanMs": 7.200000762939453,
+          "matchMs": 44.39999771118164,
+          "records": 67903
+        },
+        {
+          "pageMs": 8841.900000095367,
+          "batches": 1920,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 38,
+          "scanMs": 7.200000762939453,
+          "matchMs": 44.99999785423279,
+          "records": 68108
+        },
+        {
+          "pageMs": 8919.200000047684,
+          "batches": 1984,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 39,
+          "scanMs": 7.200000762939453,
+          "matchMs": 45.599998235702515,
+          "records": 68389
+        },
+        {
+          "pageMs": 8972.799999952316,
+          "batches": 2048,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 39,
+          "scanMs": 7.200000762939453,
+          "matchMs": 45.999998331069946,
+          "records": 68626
+        },
+        {
+          "pageMs": 9113.200000047684,
+          "batches": 2112,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 39,
+          "scanMs": 7.200000762939453,
+          "matchMs": 47.19999814033508,
+          "records": 69698
+        },
+        {
+          "pageMs": 10034.5,
+          "batches": 2176,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 42,
+          "scanMs": 7.200000762939453,
+          "matchMs": 55.89999794960022,
+          "records": 79173
+        },
+        {
+          "pageMs": 10190.900000095367,
+          "batches": 2240,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 42,
+          "scanMs": 7.200000762939453,
+          "matchMs": 57.79999852180481,
+          "records": 80691
+        },
+        {
+          "pageMs": 10202.599999904633,
+          "batches": 2304,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 42,
+          "scanMs": 7.200000762939453,
+          "matchMs": 58.19999861717224,
+          "records": 80808
+        },
+        {
+          "pageMs": 10203.099999904633,
+          "batches": 2368,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 42,
+          "scanMs": 7.200000762939453,
+          "matchMs": 58.19999861717224,
+          "records": 80872
+        },
+        {
+          "pageMs": 10221.099999904633,
+          "batches": 2432,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 44,
+          "scanMs": 7.200000762939453,
+          "matchMs": 58.89999866485596,
+          "records": 81654
+        },
+        {
+          "pageMs": 10235,
+          "batches": 2496,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 44,
+          "scanMs": 7.200000762939453,
+          "matchMs": 59.19999885559082,
+          "records": 81830
+        },
+        {
+          "pageMs": 10251.299999952316,
+          "batches": 2560,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 44,
+          "scanMs": 7.200000762939453,
+          "matchMs": 59.69999861717224,
+          "records": 82174
+        },
+        {
+          "pageMs": 10256.700000047684,
+          "batches": 2624,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 44,
+          "scanMs": 7.200000762939453,
+          "matchMs": 59.899998903274536,
+          "records": 82252
+        },
+        {
+          "pageMs": 10268.700000047684,
+          "batches": 2688,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 44,
+          "scanMs": 7.200000762939453,
+          "matchMs": 60.19999885559082,
+          "records": 82391
+        },
+        {
+          "pageMs": 10278.700000047684,
+          "batches": 2752,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 44,
+          "scanMs": 7.200000762939453,
+          "matchMs": 60.399998903274536,
+          "records": 82655
+        },
+        {
+          "pageMs": 10288.700000047684,
+          "batches": 2816,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 49,
+          "scanMs": 7.200000762939453,
+          "matchMs": 60.499999046325684,
+          "records": 82814
+        },
+        {
+          "pageMs": 10316.299999952316,
+          "batches": 2880,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 49,
+          "scanMs": 7.200000762939453,
+          "matchMs": 60.79999899864197,
+          "records": 83007
+        },
+        {
+          "pageMs": 10333.400000095367,
+          "batches": 2944,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 49,
+          "scanMs": 7.200000762939453,
+          "matchMs": 60.999999046325684,
+          "records": 83204
+        },
+        {
+          "pageMs": 10347.200000047684,
+          "batches": 3008,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 49,
+          "scanMs": 7.200000762939453,
+          "matchMs": 61.09999895095825,
+          "records": 83416
+        },
+        {
+          "pageMs": 10363.700000047684,
+          "batches": 3072,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 49,
+          "scanMs": 7.200000762939453,
+          "matchMs": 61.399998903274536,
+          "records": 83566
+        },
+        {
+          "pageMs": 10394.400000095367,
+          "batches": 3136,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 49,
+          "scanMs": 7.200000762939453,
+          "matchMs": 61.899998903274536,
+          "records": 83842
+        },
+        {
+          "pageMs": 10572.5,
+          "batches": 3200,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 50,
+          "scanMs": 7.200000762939453,
+          "matchMs": 63.399998903274536,
+          "records": 85558
+        },
+        {
+          "pageMs": 10617.400000095367,
+          "batches": 3264,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 50,
+          "scanMs": 7.200000762939453,
+          "matchMs": 63.59999895095825,
+          "records": 85804
+        },
+        {
+          "pageMs": 10860.700000047684,
+          "batches": 3328,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 52,
+          "scanMs": 7.200000762939453,
+          "matchMs": 65.99999904632568,
+          "records": 88290
+        },
+        {
+          "pageMs": 10919.5,
+          "batches": 3392,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 53,
+          "scanMs": 7.200000762939453,
+          "matchMs": 66.19999885559082,
+          "records": 88501
+        },
+        {
+          "pageMs": 10983.299999952316,
+          "batches": 3456,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 53,
+          "scanMs": 7.200000762939453,
+          "matchMs": 66.49999856948853,
+          "records": 88716
+        },
+        {
+          "pageMs": 11038.099999904633,
+          "batches": 3520,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 53,
+          "scanMs": 7.200000762939453,
+          "matchMs": 66.5999984741211,
+          "records": 88917
+        },
+        {
+          "pageMs": 11075.299999952316,
+          "batches": 3584,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 53,
+          "scanMs": 7.200000762939453,
+          "matchMs": 66.69999837875366,
+          "records": 89085
+        },
+        {
+          "pageMs": 11262.700000047684,
+          "batches": 3648,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 53,
+          "scanMs": 7.200000762939453,
+          "matchMs": 67.79999852180481,
+          "records": 89891
+        },
+        {
+          "pageMs": 11367.400000095367,
+          "batches": 3712,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 54,
+          "scanMs": 7.200000762939453,
+          "matchMs": 68.49999833106995,
+          "records": 90856
+        },
+        {
+          "pageMs": 12036.099999904633,
+          "batches": 3776,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 61,
+          "scanMs": 7.200000762939453,
+          "matchMs": 73.29999828338623,
+          "records": 94629
+        },
+        {
+          "pageMs": 12216.299999952316,
+          "batches": 3840,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 66,
+          "scanMs": 7.200000762939453,
+          "matchMs": 74.79999780654907,
+          "records": 96104
+        },
+        {
+          "pageMs": 12270.599999904633,
+          "batches": 3904,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 73,
+          "scanMs": 7.200000762939453,
+          "matchMs": 75.59999775886536,
+          "records": 96584
+        },
+        {
+          "pageMs": 15839.700000047684,
+          "batches": 3968,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 79,
+          "scanMs": 7.200000762939453,
+          "matchMs": 95.3999969959259,
+          "records": 118645
+        },
+        {
+          "pageMs": 16100.700000047684,
+          "batches": 4032,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 87,
+          "scanMs": 7.200000762939453,
+          "matchMs": 98.19999742507935,
+          "records": 121524
+        },
+        {
+          "pageMs": 16150.299999952316,
+          "batches": 4096,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 89,
+          "scanMs": 7.200000762939453,
+          "matchMs": 98.69999742507935,
+          "records": 121756
+        },
+        {
+          "pageMs": 16151.099999904633,
+          "batches": 4160,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 89,
+          "scanMs": 7.200000762939453,
+          "matchMs": 98.89999723434448,
+          "records": 121820
+        },
+        {
+          "pageMs": 16151.900000095367,
+          "batches": 4224,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 89,
+          "scanMs": 7.200000762939453,
+          "matchMs": 98.89999723434448,
+          "records": 121884
+        },
+        {
+          "pageMs": 16152.799999952316,
+          "batches": 4288,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 89,
+          "scanMs": 7.200000762939453,
+          "matchMs": 98.89999723434448,
+          "records": 121948
+        },
+        {
+          "pageMs": 16153.599999904633,
+          "batches": 4352,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 89,
+          "scanMs": 7.200000762939453,
+          "matchMs": 98.89999723434448,
+          "records": 122012
+        },
+        {
+          "pageMs": 16197.900000095367,
+          "batches": 4416,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 92,
+          "scanMs": 7.200000762939453,
+          "matchMs": 99.69999718666077,
+          "records": 122803
+        },
+        {
+          "pageMs": 16198.799999952316,
+          "batches": 4480,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 92,
+          "scanMs": 7.200000762939453,
+          "matchMs": 99.69999718666077,
+          "records": 122867
+        },
+        {
+          "pageMs": 16199.599999904633,
+          "batches": 4544,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 92,
+          "scanMs": 7.200000762939453,
+          "matchMs": 99.79999709129333,
+          "records": 122931
+        },
+        {
+          "pageMs": 16200.400000095367,
+          "batches": 4608,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 92,
+          "scanMs": 7.200000762939453,
+          "matchMs": 99.79999709129333,
+          "records": 122995
+        },
+        {
+          "pageMs": 16213.400000095367,
+          "batches": 4672,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 93,
+          "scanMs": 7.200000762939453,
+          "matchMs": 99.89999723434448,
+          "records": 123066
+        },
+        {
+          "pageMs": 16385,
+          "batches": 4736,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 99,
+          "scanMs": 7.200000762939453,
+          "matchMs": 101.99999690055847,
+          "records": 125174
+        },
+        {
+          "pageMs": 16562.400000095367,
+          "batches": 4800,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 106,
+          "scanMs": 7.200000762939453,
+          "matchMs": 103.59999680519104,
+          "records": 126695
+        },
+        {
+          "pageMs": 16803,
+          "batches": 4864,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 110,
+          "scanMs": 7.200000762939453,
+          "matchMs": 107.89999651908875,
+          "records": 130573
+        },
+        {
+          "pageMs": 16864.099999904633,
+          "batches": 4928,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 114,
+          "scanMs": 7.200000762939453,
+          "matchMs": 108.39999651908875,
+          "records": 130884
+        },
+        {
+          "pageMs": 17275.299999952316,
+          "batches": 4992,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 122,
+          "scanMs": 7.200000762939453,
+          "matchMs": 119.0999960899353,
+          "records": 140802
+        },
+        {
+          "pageMs": 17707.200000047684,
+          "batches": 5056,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 138,
+          "scanMs": 7.200000762939453,
+          "matchMs": 121.29999613761902,
+          "records": 142733
+        },
+        {
+          "pageMs": 17979.799999952316,
+          "batches": 5120,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 139,
+          "scanMs": 7.200000762939453,
+          "matchMs": 125.69999575614929,
+          "records": 147523
+        },
+        {
+          "pageMs": 18800.299999952316,
+          "batches": 5184,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 140,
+          "scanMs": 7.200000762939453,
+          "matchMs": 129.99999618530273,
+          "records": 152559
+        },
+        {
+          "pageMs": 18840.599999904633,
+          "batches": 5248,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 140,
+          "scanMs": 7.200000762939453,
+          "matchMs": 130.29999613761902,
+          "records": 152801
+        },
+        {
+          "pageMs": 19225.599999904633,
+          "batches": 5312,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 140,
+          "scanMs": 7.200000762939453,
+          "matchMs": 132.69999647140503,
+          "records": 155199
+        },
+        {
+          "pageMs": 19235.599999904633,
+          "batches": 5376,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 140,
+          "scanMs": 7.200000762939453,
+          "matchMs": 132.7999963760376,
+          "records": 155277
+        },
+        {
+          "pageMs": 19381.700000047684,
+          "batches": 5440,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 155,
+          "scanMs": 7.200000762939453,
+          "matchMs": 133.4999966621399,
+          "records": 156207
+        },
+        {
+          "pageMs": 19632,
+          "batches": 5504,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 155,
+          "scanMs": 7.200000762939453,
+          "matchMs": 134.59999680519104,
+          "records": 157326
+        },
+        {
+          "pageMs": 19996.599999904633,
+          "batches": 5568,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 161,
+          "scanMs": 7.200000762939453,
+          "matchMs": 137.1999969482422,
+          "records": 160462
+        },
+        {
+          "pageMs": 20037.400000095367,
+          "batches": 5632,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 161,
+          "scanMs": 7.200000762939453,
+          "matchMs": 137.5999972820282,
+          "records": 160627
+        },
+        {
+          "pageMs": 21683.200000047684,
+          "batches": 5696,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 168,
+          "scanMs": 7.200000762939453,
+          "matchMs": 143.39999771118164,
+          "records": 166392
+        },
+        {
+          "pageMs": 21709,
+          "batches": 5760,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 169,
+          "scanMs": 7.200000762939453,
+          "matchMs": 143.79999780654907,
+          "records": 166639
+        },
+        {
+          "pageMs": 21852.299999952316,
+          "batches": 5824,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 176,
+          "scanMs": 7.200000762939453,
+          "matchMs": 144.69999814033508,
+          "records": 167590
+        },
+        {
+          "pageMs": 22000,
+          "batches": 5888,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 176,
+          "scanMs": 7.200000762939453,
+          "matchMs": 145.29999780654907,
+          "records": 168186
+        },
+        {
+          "pageMs": 22046.799999952316,
+          "batches": 5952,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 180,
+          "scanMs": 7.200000762939453,
+          "matchMs": 145.9999976158142,
+          "records": 168849
+        },
+        {
+          "pageMs": 22229.700000047684,
+          "batches": 6016,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 186,
+          "scanMs": 7.200000762939453,
+          "matchMs": 147.19999742507935,
+          "records": 169815
+        },
+        {
+          "pageMs": 23211.099999904633,
+          "batches": 6080,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 195,
+          "scanMs": 7.200000762939453,
+          "matchMs": 151.29999661445618,
+          "records": 173715
+        },
+        {
+          "pageMs": 23386.599999904633,
+          "batches": 6144,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 204,
+          "scanMs": 7.200000762939453,
+          "matchMs": 152.39999675750732,
+          "records": 174718
+        },
+        {
+          "pageMs": 23405.900000095367,
+          "batches": 6208,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 207,
+          "scanMs": 7.200000762939453,
+          "matchMs": 152.59999680519104,
+          "records": 174822
+        },
+        {
+          "pageMs": 24079.299999952316,
+          "batches": 6272,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 218,
+          "scanMs": 7.200000762939453,
+          "matchMs": 158.89999675750732,
+          "records": 179915
+        },
+        {
+          "pageMs": 24185.900000095367,
+          "batches": 6336,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 231,
+          "scanMs": 7.200000762939453,
+          "matchMs": 159.6999967098236,
+          "records": 180414
+        },
+        {
+          "pageMs": 24521.099999904633,
+          "batches": 6400,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 235,
+          "scanMs": 7.200000762939453,
+          "matchMs": 161.4999966621399,
+          "records": 181813
+        },
+        {
+          "pageMs": 24561.200000047684,
+          "batches": 6464,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 239,
+          "scanMs": 7.200000762939453,
+          "matchMs": 161.69999647140503,
+          "records": 182116
+        },
+        {
+          "pageMs": 24590.200000047684,
+          "batches": 6528,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 241,
+          "scanMs": 7.200000762939453,
+          "matchMs": 162.29999709129333,
+          "records": 182366
+        },
+        {
+          "pageMs": 25111.799999952316,
+          "batches": 6592,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 256,
+          "scanMs": 7.200000762939453,
+          "matchMs": 163.6999969482422,
+          "records": 183682
+        },
+        {
+          "pageMs": 25220.5,
+          "batches": 6656,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 258,
+          "scanMs": 7.200000762939453,
+          "matchMs": 164.1999969482422,
+          "records": 184250
+        },
+        {
+          "pageMs": 25417.799999952316,
+          "batches": 6720,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 264,
+          "scanMs": 7.200000762939453,
+          "matchMs": 165.29999709129333,
+          "records": 185337
+        },
+        {
+          "pageMs": 25685.099999904633,
+          "batches": 6784,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 266,
+          "scanMs": 7.200000762939453,
+          "matchMs": 166.39999651908875,
+          "records": 186090
+        },
+        {
+          "pageMs": 25943.200000047684,
+          "batches": 6848,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 266,
+          "scanMs": 7.200000762939453,
+          "matchMs": 167.3999960422516,
+          "records": 186628
+        },
+        {
+          "pageMs": 28427.5,
+          "batches": 6912,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 268,
+          "scanMs": 7.200000762939453,
+          "matchMs": 172.79999613761902,
+          "records": 192046
+        },
+        {
+          "pageMs": 28639.5,
+          "batches": 6976,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 268,
+          "scanMs": 7.200000762939453,
+          "matchMs": 173.19999647140503,
+          "records": 192576
+        },
+        {
+          "pageMs": 28674,
+          "batches": 7040,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 268,
+          "scanMs": 7.200000762939453,
+          "matchMs": 173.59999656677246,
+          "records": 192845
+        },
+        {
+          "pageMs": 29017.400000095367,
+          "batches": 7104,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 278,
+          "scanMs": 7.200000762939453,
+          "matchMs": 175.39999723434448,
+          "records": 194080
+        },
+        {
+          "pageMs": 29354.900000095367,
+          "batches": 7168,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 278,
+          "scanMs": 7.200000762939453,
+          "matchMs": 177.0999972820282,
+          "records": 195187
+        },
+        {
+          "pageMs": 29969.900000095367,
+          "batches": 7232,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 278,
+          "scanMs": 7.200000762939453,
+          "matchMs": 180.29999828338623,
+          "records": 198465
+        },
+        {
+          "pageMs": 30043.099999904633,
+          "batches": 7296,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 278,
+          "scanMs": 7.200000762939453,
+          "matchMs": 180.3999981880188,
+          "records": 198727
+        },
+        {
+          "pageMs": 30355.599999904633,
+          "batches": 7360,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 278,
+          "scanMs": 7.200000762939453,
+          "matchMs": 182.59999823570251,
+          "records": 201060
+        },
+        {
+          "pageMs": 30563.099999904633,
+          "batches": 7424,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 278,
+          "scanMs": 7.200000762939453,
+          "matchMs": 183.99999809265137,
+          "records": 201964
+        },
+        {
+          "pageMs": 30633.200000047684,
+          "batches": 7488,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 278,
+          "scanMs": 7.200000762939453,
+          "matchMs": 184.3999981880188,
+          "records": 202358
+        },
+        {
+          "pageMs": 30913.200000047684,
+          "batches": 7552,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 280,
+          "scanMs": 7.200000762939453,
+          "matchMs": 185.29999804496765,
+          "records": 203367
+        },
+        {
+          "pageMs": 31234.400000095367,
+          "batches": 7616,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 280,
+          "scanMs": 7.200000762939453,
+          "matchMs": 186.19999885559082,
+          "records": 204253
+        },
+        {
+          "pageMs": 31417.700000047684,
+          "batches": 7680,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 282,
+          "scanMs": 7.200000762939453,
+          "matchMs": 186.99999856948853,
+          "records": 204871
+        },
+        {
+          "pageMs": 32933.299999952316,
+          "batches": 7744,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 282,
+          "scanMs": 7.200000762939453,
+          "matchMs": 191.9999978542328,
+          "records": 210321
+        },
+        {
+          "pageMs": 32986.299999952316,
+          "batches": 7808,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 282,
+          "scanMs": 7.200000762939453,
+          "matchMs": 192.49999809265137,
+          "records": 210487
+        },
+        {
+          "pageMs": 33133,
+          "batches": 7872,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 282,
+          "scanMs": 7.200000762939453,
+          "matchMs": 193.29999780654907,
+          "records": 211024
+        },
+        {
+          "pageMs": 33323.59999990463,
+          "batches": 7936,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 282,
+          "scanMs": 7.200000762939453,
+          "matchMs": 194.39999794960022,
+          "records": 211727
+        },
+        {
+          "pageMs": 33641.299999952316,
+          "batches": 8000,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 282,
+          "scanMs": 7.200000762939453,
+          "matchMs": 195.79999780654907,
+          "records": 213330
+        },
+        {
+          "pageMs": 33723.40000009537,
+          "batches": 8064,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 282,
+          "scanMs": 7.200000762939453,
+          "matchMs": 196.1999979019165,
+          "records": 213606
+        },
+        {
+          "pageMs": 33968,
+          "batches": 8128,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 282,
+          "scanMs": 7.200000762939453,
+          "matchMs": 197.8999981880188,
+          "records": 214636
+        },
+        {
+          "pageMs": 34216.700000047684,
+          "batches": 8192,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 282,
+          "scanMs": 7.200000762939453,
+          "matchMs": 199.59999895095825,
+          "records": 216567
+        },
+        {
+          "pageMs": 34502.799999952316,
+          "batches": 8256,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 289,
+          "scanMs": 7.200000762939453,
+          "matchMs": 201.19999861717224,
+          "records": 217984
+        },
+        {
+          "pageMs": 34582.299999952316,
+          "batches": 8320,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 291,
+          "scanMs": 7.200000762939453,
+          "matchMs": 201.59999871253967,
+          "records": 218312
+        },
+        {
+          "pageMs": 34935.40000009537,
+          "batches": 8384,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 291,
+          "scanMs": 7.200000762939453,
+          "matchMs": 203.09999918937683,
+          "records": 219203
+        },
+        {
+          "pageMs": 36008.200000047684,
+          "batches": 8448,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 295,
+          "scanMs": 7.200000762939453,
+          "matchMs": 206.29999923706055,
+          "records": 222297
+        },
+        {
+          "pageMs": 36302.59999990463,
+          "batches": 8512,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 297,
+          "scanMs": 7.200000762939453,
+          "matchMs": 208.5999984741211,
+          "records": 224414
+        },
+        {
+          "pageMs": 36333.40000009537,
+          "batches": 8576,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 297,
+          "scanMs": 7.200000762939453,
+          "matchMs": 208.89999866485596,
+          "records": 224768
+        },
+        {
+          "pageMs": 38519.299999952316,
+          "batches": 8640,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 312,
+          "scanMs": 7.200000762939453,
+          "matchMs": 217.89999866485596,
+          "records": 235022
+        },
+        {
+          "pageMs": 38972.700000047684,
+          "batches": 8704,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 320,
+          "scanMs": 7.200000762939453,
+          "matchMs": 220.8999981880188,
+          "records": 238147
+        },
+        {
+          "pageMs": 39005,
+          "batches": 8768,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 320,
+          "scanMs": 7.200000762939453,
+          "matchMs": 221.09999823570251,
+          "records": 238279
+        },
+        {
+          "pageMs": 39056.200000047684,
+          "batches": 8832,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 323,
+          "scanMs": 7.200000762939453,
+          "matchMs": 221.8999981880188,
+          "records": 239059
+        },
+        {
+          "pageMs": 39057.40000009537,
+          "batches": 8896,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 323,
+          "scanMs": 7.200000762939453,
+          "matchMs": 221.8999981880188,
+          "records": 239123
+        },
+        {
+          "pageMs": 39877.299999952316,
+          "batches": 8960,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 324,
+          "scanMs": 7.200000762939453,
+          "matchMs": 224.59999871253967,
+          "records": 241512
+        },
+        {
+          "pageMs": 40098.09999990463,
+          "batches": 9024,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 325,
+          "scanMs": 7.200000762939453,
+          "matchMs": 226.2999987602234,
+          "records": 243170
+        },
+        {
+          "pageMs": 40398.40000009537,
+          "batches": 9088,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 325,
+          "scanMs": 7.200000762939453,
+          "matchMs": 229.2999985218048,
+          "records": 246440
+        },
+        {
+          "pageMs": 41571,
+          "batches": 9152,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 325,
+          "scanMs": 7.200000762939453,
+          "matchMs": 233.5999984741211,
+          "records": 250979
+        },
+        {
+          "pageMs": 41981.200000047684,
+          "batches": 9216,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 333,
+          "scanMs": 7.200000762939453,
+          "matchMs": 235.5999984741211,
+          "records": 252535
+        },
+        {
+          "pageMs": 41998.40000009537,
+          "batches": 9280,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 333,
+          "scanMs": 7.200000762939453,
+          "matchMs": 235.69999837875366,
+          "records": 252613
+        },
+        {
+          "pageMs": 42153.5,
+          "batches": 9344,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 337,
+          "scanMs": 7.200000762939453,
+          "matchMs": 236.69999837875366,
+          "records": 253230
+        },
+        {
+          "pageMs": 42687.700000047684,
+          "batches": 9408,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 346,
+          "scanMs": 7.200000762939453,
+          "matchMs": 238.49999833106995,
+          "records": 254673
+        },
+        {
+          "pageMs": 42782.90000009537,
+          "batches": 9472,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 350,
+          "scanMs": 7.200000762939453,
+          "matchMs": 238.79999828338623,
+          "records": 254958
+        },
+        {
+          "pageMs": 43078.799999952316,
+          "batches": 9536,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 357,
+          "scanMs": 7.200000762939453,
+          "matchMs": 240.39999794960022,
+          "records": 256407
+        },
+        {
+          "pageMs": 46625.799999952316,
+          "batches": 9600,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 381,
+          "scanMs": 7.200000762939453,
+          "matchMs": 250.1999979019165,
+          "records": 265361
+        },
+        {
+          "pageMs": 46707.200000047684,
+          "batches": 9664,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 388,
+          "scanMs": 7.200000762939453,
+          "matchMs": 250.6999979019165,
+          "records": 265962
+        },
+        {
+          "pageMs": 47141.799999952316,
+          "batches": 9728,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 390,
+          "scanMs": 7.200000762939453,
+          "matchMs": 251.9999978542328,
+          "records": 267200
+        },
+        {
+          "pageMs": 47190.59999990463,
+          "batches": 9792,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 394,
+          "scanMs": 7.200000762939453,
+          "matchMs": 252.69999814033508,
+          "records": 267858
+        },
+        {
+          "pageMs": 49736.700000047684,
+          "batches": 9856,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 404,
+          "scanMs": 7.200000762939453,
+          "matchMs": 257.09999799728394,
+          "records": 271914
+        },
+        {
+          "pageMs": 49933.799999952316,
+          "batches": 9920,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 410,
+          "scanMs": 7.200000762939453,
+          "matchMs": 257.8999981880188,
+          "records": 272568
+        },
+        {
+          "pageMs": 50352.59999990463,
+          "batches": 9984,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 414,
+          "scanMs": 7.200000762939453,
+          "matchMs": 258.5999982357025,
+          "records": 273126
+        },
+        {
+          "pageMs": 50598.799999952316,
+          "batches": 10048,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 415,
+          "scanMs": 7.200000762939453,
+          "matchMs": 259.4999976158142,
+          "records": 274060
+        },
+        {
+          "pageMs": 50874.5,
+          "batches": 10112,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 415,
+          "scanMs": 7.200000762939453,
+          "matchMs": 260.09999775886536,
+          "records": 274621
+        },
+        {
+          "pageMs": 53284.59999990463,
+          "batches": 10176,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 423,
+          "scanMs": 7.200000762939453,
+          "matchMs": 264.8999981880188,
+          "records": 278901
+        },
+        {
+          "pageMs": 53625.90000009537,
+          "batches": 10240,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 428,
+          "scanMs": 7.200000762939453,
+          "matchMs": 267.3999981880188,
+          "records": 280877
+        },
+        {
+          "pageMs": 53627.299999952316,
+          "batches": 10304,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 428,
+          "scanMs": 7.200000762939453,
+          "matchMs": 267.3999981880188,
+          "records": 280941
+        },
+        {
+          "pageMs": 53669.09999990463,
+          "batches": 10368,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 432,
+          "scanMs": 7.200000762939453,
+          "matchMs": 267.99999833106995,
+          "records": 281526
+        },
+        {
+          "pageMs": 53876.09999990463,
+          "batches": 10432,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 436,
+          "scanMs": 7.200000762939453,
+          "matchMs": 268.6999981403351,
+          "records": 282105
+        },
+        {
+          "pageMs": 53978.700000047684,
+          "batches": 10496,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 436,
+          "scanMs": 7.200000762939453,
+          "matchMs": 269.1999981403351,
+          "records": 282457
+        },
+        {
+          "pageMs": 54321.299999952316,
+          "batches": 10560,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 453,
+          "scanMs": 7.200000762939453,
+          "matchMs": 272.3999981880188,
+          "records": 284111
+        },
+        {
+          "pageMs": 55147.700000047684,
+          "batches": 10624,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 473,
+          "scanMs": 7.200000762939453,
+          "matchMs": 277.3999979496002,
+          "records": 288709
+        },
+        {
+          "pageMs": 55622.299999952316,
+          "batches": 10688,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 473,
+          "scanMs": 7.200000762939453,
+          "matchMs": 278.99999809265137,
+          "records": 289914
+        },
+        {
+          "pageMs": 55659.700000047684,
+          "batches": 10752,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 473,
+          "scanMs": 7.200000762939453,
+          "matchMs": 278.99999809265137,
+          "records": 290014
+        },
+        {
+          "pageMs": 55699,
+          "batches": 10816,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 473,
+          "scanMs": 7.200000762939453,
+          "matchMs": 279.29999804496765,
+          "records": 290291
+        },
+        {
+          "pageMs": 55938.700000047684,
+          "batches": 10880,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 474,
+          "scanMs": 7.200000762939453,
+          "matchMs": 280.0999975204468,
+          "records": 290856
+        },
+        {
+          "pageMs": 56181,
+          "batches": 10944,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 474,
+          "scanMs": 7.200000762939453,
+          "matchMs": 281.0999972820282,
+          "records": 291654
+        },
+        {
+          "pageMs": 56458,
+          "batches": 11008,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 474,
+          "scanMs": 7.200000762939453,
+          "matchMs": 282.49999713897705,
+          "records": 292697
+        },
+        {
+          "pageMs": 56674.700000047684,
+          "batches": 11072,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 488,
+          "scanMs": 7.200000762939453,
+          "matchMs": 283.3999972343445,
+          "records": 293254
+        },
+        {
+          "pageMs": 56943.5,
+          "batches": 11136,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 489,
+          "scanMs": 7.200000762939453,
+          "matchMs": 284.1999976634979,
+          "records": 293962
+        },
+        {
+          "pageMs": 57419.90000009537,
+          "batches": 11200,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 489,
+          "scanMs": 7.200000762939453,
+          "matchMs": 285.39999747276306,
+          "records": 294921
+        },
+        {
+          "pageMs": 57898.700000047684,
+          "batches": 11264,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 489,
+          "scanMs": 7.200000762939453,
+          "matchMs": 287.49999713897705,
+          "records": 296933
+        },
+        {
+          "pageMs": 58317.700000047684,
+          "batches": 11328,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 489,
+          "scanMs": 7.200000762939453,
+          "matchMs": 288.99999737739563,
+          "records": 298144
+        },
+        {
+          "pageMs": 59781.59999990463,
+          "batches": 11392,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 489,
+          "scanMs": 7.200000762939453,
+          "matchMs": 292.0999972820282,
+          "records": 300811
+        },
+        {
+          "pageMs": 60064.09999990463,
+          "batches": 11456,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 489,
+          "scanMs": 7.200000762939453,
+          "matchMs": 293.3999972343445,
+          "records": 301821
+        },
+        {
+          "pageMs": 60140.799999952316,
+          "batches": 11520,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 489,
+          "scanMs": 7.200000762939453,
+          "matchMs": 293.49999737739563,
+          "records": 302026
+        },
+        {
+          "pageMs": 60439.200000047684,
+          "batches": 11584,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 489,
+          "scanMs": 7.200000762939453,
+          "matchMs": 295.2999978065491,
+          "records": 303337
+        },
+        {
+          "pageMs": 60681.09999990463,
+          "batches": 11648,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 489,
+          "scanMs": 7.200000762939453,
+          "matchMs": 297.29999804496765,
+          "records": 304773
+        },
+        {
+          "pageMs": 60942.5,
+          "batches": 11712,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 489,
+          "scanMs": 7.200000762939453,
+          "matchMs": 297.99999809265137,
+          "records": 305166
+        },
+        {
+          "pageMs": 61402.40000009537,
+          "batches": 11776,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 489,
+          "scanMs": 7.200000762939453,
+          "matchMs": 299.99999833106995,
+          "records": 306474
+        },
+        {
+          "pageMs": 61642.700000047684,
+          "batches": 11840,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 489,
+          "scanMs": 7.200000762939453,
+          "matchMs": 300.9999985694885,
+          "records": 307125
+        },
+        {
+          "pageMs": 61942.799999952316,
+          "batches": 11904,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 489,
+          "scanMs": 7.200000762939453,
+          "matchMs": 302.7999987602234,
+          "records": 308807
+        },
+        {
+          "pageMs": 62318.40000009537,
+          "batches": 11968,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 489,
+          "scanMs": 7.200000762939453,
+          "matchMs": 303.6999988555908,
+          "records": 309579
+        },
+        {
+          "pageMs": 63901,
+          "batches": 12032,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 495,
+          "scanMs": 7.200000762939453,
+          "matchMs": 308.79999899864197,
+          "records": 312979
+        },
+        {
+          "pageMs": 67277.70000004768,
+          "batches": 12096,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 506,
+          "scanMs": 7.200000762939453,
+          "matchMs": 326.99999952316284,
+          "records": 324237
+        },
+        {
+          "pageMs": 67330.20000004768,
+          "batches": 12160,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 510,
+          "scanMs": 7.200000762939453,
+          "matchMs": 327.7999997138977,
+          "records": 324605
+        },
+        {
+          "pageMs": 67636.5,
+          "batches": 12224,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 520,
+          "scanMs": 7.200000762939453,
+          "matchMs": 331.2000002861023,
+          "records": 327307
+        },
+        {
+          "pageMs": 67667.70000004768,
+          "batches": 12288,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 520,
+          "scanMs": 7.200000762939453,
+          "matchMs": 331.2000002861023,
+          "records": 327461
+        },
+        {
+          "pageMs": 67731.79999995232,
+          "batches": 12352,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 523,
+          "scanMs": 7.200000762939453,
+          "matchMs": 332.3000009059906,
+          "records": 328250
+        },
+        {
+          "pageMs": 67733.29999995232,
+          "batches": 12416,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 523,
+          "scanMs": 7.200000762939453,
+          "matchMs": 332.40000104904175,
+          "records": 328314
+        },
+        {
+          "pageMs": 68016.40000009537,
+          "batches": 12480,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 527,
+          "scanMs": 7.200000762939453,
+          "matchMs": 334.2000014781952,
+          "records": 329280
+        },
+        {
+          "pageMs": 68481.5,
+          "batches": 12544,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 529,
+          "scanMs": 7.200000762939453,
+          "matchMs": 335.60000109672546,
+          "records": 330326
+        },
+        {
+          "pageMs": 69851,
+          "batches": 12608,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 529,
+          "scanMs": 7.200000762939453,
+          "matchMs": 338.4000012874603,
+          "records": 332819
+        },
+        {
+          "pageMs": 70102.90000009537,
+          "batches": 12672,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 533,
+          "scanMs": 7.200000762939453,
+          "matchMs": 339.20000171661377,
+          "records": 333489
+        },
+        {
+          "pageMs": 70470.40000009537,
+          "batches": 12736,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 538,
+          "scanMs": 7.200000762939453,
+          "matchMs": 342.80000162124634,
+          "records": 336656
+        },
+        {
+          "pageMs": 70850.59999990463,
+          "batches": 12800,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 538,
+          "scanMs": 7.200000762939453,
+          "matchMs": 345.1000018119812,
+          "records": 338799
+        },
+        {
+          "pageMs": 71176.5,
+          "batches": 12864,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 543,
+          "scanMs": 7.200000762939453,
+          "matchMs": 346.2000014781952,
+          "records": 339740
+        },
+        {
+          "pageMs": 71585.59999990463,
+          "batches": 12928,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 579,
+          "scanMs": 7.200000762939453,
+          "matchMs": 348.1000018119812,
+          "records": 340682
+        },
+        {
+          "pageMs": 72808.20000004768,
+          "batches": 12992,
+          "scans": 17,
+          "previewOnlyScans": 0,
+          "excludedBatches": 581,
+          "scanMs": 7.200000762939453,
+          "matchMs": 350.6000015735626,
+          "records": 342851
+        }
+      ],
+      "comparison": {
+        "pageMs": 63901,
+        "batches": 12032,
+        "scans": 17,
+        "previewOnlyScans": 0,
+        "excludedBatches": 495,
+        "scanMs": 7.200000762939453,
+        "matchMs": 308.79999899864197,
+        "records": 312979
+      },
+      "nativeReport": {
+        "passed": 0,
+        "failed": 1,
+        "filtered": 1,
+        "files": [
+          {
+            "file": "src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts",
+            "cases": [
+              {
+                "title": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+                "status": "failed"
+              },
+              {
+                "title": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+                "status": "skipped"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+# Documentation image inventory
+
+The page-wide article scan now skips qualifying media mutations owned solely by an excluded interactive preview. Changing ownership markers, mutations under a nested article flow and detached inventory owners still trigger revalidation.
+
+The comparison used the original production Chinese Demo Matrix with 1,268 preview roots, pinned Chrome 156.0.8078.79 and Node 24.21.0. At 12,032 delivered observer callbacks, the prior implementation called the document inventory scan 506 times for 1667.1ms cumulatively. The candidate called it 17 times for 7.2ms cumulatively. Separate browser runs produced different record counts and wall clocks. The two temporary emitted asset overlays report the observer decision and call duration, with eager classification in place of short circuit for observation. The unchanged 60-second Chinese readiness step still timed out. The English case was filtered and the outer 150-second case limit remained unchanged.
+
+On the main-based source, the two focused files show 30 passes and one failure. Replacing just the candidate implementation with the exact parent blob retains candidate tests and gives 29 passes with two failures. The new excluded-preview assertion fails with the parent implementation. The adjacent removed-source fade case fails both ways with an exposed callable invoked after terminal disposal. The separate integrated candidate has 31 focused passes across the same two files.
+
+The independent main-based production build includes 47 packages and 685 site pages. Type and manifest checks exit successfully. The budget check reports three passes and six existing advisory results. Two selected original image preview browser cases pass on both product builds. Twenty-two image browser cases were filtered. The screenshot records the actual modal rendering of an admitted inline SVG on the main-based build.
+
+The same main-based production build also passes 15 selected Contents, Homepage, Dialog available-space and RuntimeBox browser cases. Nine cases were filtered. The maintained narrow Header probe passes at 320px and 390px. All nine source CodeExample blocks in the tested Shadcn Button article are present in the built page. The original browser assertions and per-case deadlines were retained.
