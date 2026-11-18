@@ -1,0 +1,498 @@
+{
+  "parent": "bcc9dd4b75e410cf858886a7058f4ec21c9cae1b",
+  "head": "edf7a617d93149e37541313b2ad457507bdcc31d",
+  "browser": "156.0.8078.79",
+  "overriddenSourceInputs": [
+    "packages/adapters/base/src/events/web-event-router.ts",
+    "packages/adapters/web-component/src/adapt.ts",
+    "packages/modules/event/src/create.ts",
+    "packages/modules/event/src/impl.ts",
+    "packages/modules/event/src/types.ts"
+  ],
+  "stockBundleSha256": "37a89d768e90c72be5e673dece3f9808965243148f7a6e59b22657922743db3f",
+  "candidateBundleSha256": "37146b0024c5e1330aa83615fc5aeea791c57269ffb9dd9d30df6a757bb8de20",
+  "graphInputs": 389,
+  "pressControl": "Trusted keydown and keyup on a non-activating focusable element, with explicit zero-detail click probes before and after release.",
+  "rows": [
+    {
+      "arm": "stock",
+      "kind": "host",
+      "input": "Enter",
+      "events": [
+        ["capture keydown", "Enter", true],
+        ["capture keyup", "Enter", true],
+        ["host", "Enter", true]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "stock",
+      "kind": "host",
+      "input": "Space",
+      "events": [
+        ["capture keydown", " ", true],
+        ["capture keyup", " ", true],
+        ["host", " ", true]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "stock",
+      "kind": "root",
+      "input": "Enter",
+      "events": [
+        ["capture keydown", "Enter", true],
+        ["capture keyup", "Enter", true],
+        ["root key.up"],
+        ["host", "Enter", true]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "stock",
+      "kind": "root",
+      "input": "Space",
+      "events": [
+        ["capture keydown", " ", true],
+        ["capture keyup", " ", true],
+        ["root key.up"],
+        ["host", " ", true]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "stock",
+      "kind": "global",
+      "input": "Enter",
+      "events": [
+        ["capture keydown", "Enter", true],
+        ["capture keyup", "Enter", true],
+        ["global", "Enter"],
+        ["host", "Enter", true]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "stock",
+      "kind": "global",
+      "input": "Space",
+      "events": [
+        ["capture keydown", " ", true],
+        ["capture keyup", " ", true],
+        ["global", " "],
+        ["host", " ", true]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "stock",
+      "kind": "press",
+      "input": "Enter",
+      "events": [
+        ["capture keydown", "Enter", true],
+        ["root press.commit"],
+        ["capture keyup", "Enter", true],
+        ["host", "Enter", true],
+        ["root press.commit"]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "stock",
+      "kind": "press",
+      "input": "Space",
+      "events": [
+        ["capture keydown", " ", true],
+        ["root press.commit"],
+        ["capture keyup", " ", true],
+        ["host", " ", true],
+        ["root press.commit"]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "stock",
+      "kind": "trigger",
+      "input": "Enter",
+      "events": [
+        ["capture keydown", "Enter", true],
+        ["capture keyup", "Enter", true],
+        ["host", "Enter", true],
+        ["root key.up"]
+      ],
+      "registrations": 3
+    },
+    {
+      "arm": "stock",
+      "kind": "trigger",
+      "input": "Space",
+      "events": [
+        ["capture keydown", " ", true],
+        ["capture keyup", " ", true],
+        ["host", " ", true],
+        ["root key.up"]
+      ],
+      "registrations": 3
+    },
+    {
+      "arm": "candidate",
+      "kind": "host",
+      "input": "Enter",
+      "events": [
+        ["capture keydown", "Enter", true],
+        ["capture keyup", "Enter", true],
+        ["host", "Enter", true]
+      ],
+      "registrations": 1
+    },
+    {
+      "arm": "candidate",
+      "kind": "host",
+      "input": "Space",
+      "events": [
+        ["capture keydown", " ", true],
+        ["capture keyup", " ", true],
+        ["host", " ", true]
+      ],
+      "registrations": 1
+    },
+    {
+      "arm": "candidate",
+      "kind": "root",
+      "input": "Enter",
+      "events": [
+        ["capture keydown", "Enter", true],
+        ["capture keyup", "Enter", true],
+        ["root key.up"],
+        ["host", "Enter", true]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "candidate",
+      "kind": "root",
+      "input": "Space",
+      "events": [
+        ["capture keydown", " ", true],
+        ["capture keyup", " ", true],
+        ["root key.up"],
+        ["host", " ", true]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "candidate",
+      "kind": "global",
+      "input": "Enter",
+      "events": [
+        ["capture keydown", "Enter", true],
+        ["capture keyup", "Enter", true],
+        ["global", "Enter"],
+        ["host", "Enter", true]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "candidate",
+      "kind": "global",
+      "input": "Space",
+      "events": [
+        ["capture keydown", " ", true],
+        ["capture keyup", " ", true],
+        ["global", " "],
+        ["host", " ", true]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "candidate",
+      "kind": "press",
+      "input": "Enter",
+      "events": [
+        ["capture keydown", "Enter", true],
+        ["root press.commit"],
+        ["capture keyup", "Enter", true],
+        ["host", "Enter", true],
+        ["root press.commit"]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "candidate",
+      "kind": "press",
+      "input": "Space",
+      "events": [
+        ["capture keydown", " ", true],
+        ["root press.commit"],
+        ["capture keyup", " ", true],
+        ["host", " ", true],
+        ["root press.commit"]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "candidate",
+      "kind": "trigger",
+      "input": "Enter",
+      "events": [
+        ["capture keydown", "Enter", true],
+        ["capture keyup", "Enter", true],
+        ["host", "Enter", true],
+        ["root key.up"]
+      ],
+      "registrations": 3
+    },
+    {
+      "arm": "candidate",
+      "kind": "trigger",
+      "input": "Space",
+      "events": [
+        ["capture keydown", " ", true],
+        ["capture keyup", " ", true],
+        ["host", " ", true],
+        ["root key.up"]
+      ],
+      "registrations": 3
+    },
+    {
+      "arm": "candidate",
+      "kind": "host",
+      "input": "Enter",
+      "events": [
+        ["capture keydown", "Enter", true],
+        ["capture keyup", "Enter", true],
+        ["host", "Enter", true]
+      ],
+      "registrations": 1
+    },
+    {
+      "arm": "candidate",
+      "kind": "host",
+      "input": "Space",
+      "events": [
+        ["capture keydown", " ", true],
+        ["capture keyup", " ", true],
+        ["host", " ", true]
+      ],
+      "registrations": 1
+    },
+    {
+      "arm": "candidate",
+      "kind": "root",
+      "input": "Enter",
+      "events": [
+        ["capture keydown", "Enter", true],
+        ["capture keyup", "Enter", true],
+        ["root key.up"],
+        ["host", "Enter", true]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "candidate",
+      "kind": "root",
+      "input": "Space",
+      "events": [
+        ["capture keydown", " ", true],
+        ["capture keyup", " ", true],
+        ["root key.up"],
+        ["host", " ", true]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "candidate",
+      "kind": "global",
+      "input": "Enter",
+      "events": [
+        ["capture keydown", "Enter", true],
+        ["capture keyup", "Enter", true],
+        ["global", "Enter"],
+        ["host", "Enter", true]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "candidate",
+      "kind": "global",
+      "input": "Space",
+      "events": [
+        ["capture keydown", " ", true],
+        ["capture keyup", " ", true],
+        ["global", " "],
+        ["host", " ", true]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "candidate",
+      "kind": "press",
+      "input": "Enter",
+      "events": [
+        ["capture keydown", "Enter", true],
+        ["root press.commit"],
+        ["capture keyup", "Enter", true],
+        ["host", "Enter", true],
+        ["root press.commit"]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "candidate",
+      "kind": "press",
+      "input": "Space",
+      "events": [
+        ["capture keydown", " ", true],
+        ["root press.commit"],
+        ["capture keyup", " ", true],
+        ["host", " ", true],
+        ["root press.commit"]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "candidate",
+      "kind": "trigger",
+      "input": "Enter",
+      "events": [
+        ["capture keydown", "Enter", true],
+        ["capture keyup", "Enter", true],
+        ["host", "Enter", true],
+        ["root key.up"]
+      ],
+      "registrations": 3
+    },
+    {
+      "arm": "candidate",
+      "kind": "trigger",
+      "input": "Space",
+      "events": [
+        ["capture keydown", " ", true],
+        ["capture keyup", " ", true],
+        ["host", " ", true],
+        ["root key.up"]
+      ],
+      "registrations": 3
+    },
+    {
+      "arm": "stock",
+      "kind": "host",
+      "input": "Enter",
+      "events": [
+        ["capture keydown", "Enter", true],
+        ["capture keyup", "Enter", true],
+        ["host", "Enter", true]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "stock",
+      "kind": "host",
+      "input": "Space",
+      "events": [
+        ["capture keydown", " ", true],
+        ["capture keyup", " ", true],
+        ["host", " ", true]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "stock",
+      "kind": "root",
+      "input": "Enter",
+      "events": [
+        ["capture keydown", "Enter", true],
+        ["capture keyup", "Enter", true],
+        ["root key.up"],
+        ["host", "Enter", true]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "stock",
+      "kind": "root",
+      "input": "Space",
+      "events": [
+        ["capture keydown", " ", true],
+        ["capture keyup", " ", true],
+        ["root key.up"],
+        ["host", " ", true]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "stock",
+      "kind": "global",
+      "input": "Enter",
+      "events": [
+        ["capture keydown", "Enter", true],
+        ["capture keyup", "Enter", true],
+        ["global", "Enter"],
+        ["host", "Enter", true]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "stock",
+      "kind": "global",
+      "input": "Space",
+      "events": [
+        ["capture keydown", " ", true],
+        ["capture keyup", " ", true],
+        ["global", " "],
+        ["host", " ", true]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "stock",
+      "kind": "press",
+      "input": "Enter",
+      "events": [
+        ["capture keydown", "Enter", true],
+        ["root press.commit"],
+        ["capture keyup", "Enter", true],
+        ["host", "Enter", true],
+        ["root press.commit"]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "stock",
+      "kind": "press",
+      "input": "Space",
+      "events": [
+        ["capture keydown", " ", true],
+        ["root press.commit"],
+        ["capture keyup", " ", true],
+        ["host", " ", true],
+        ["root press.commit"]
+      ],
+      "registrations": 2
+    },
+    {
+      "arm": "stock",
+      "kind": "trigger",
+      "input": "Enter",
+      "events": [
+        ["capture keydown", "Enter", true],
+        ["capture keyup", "Enter", true],
+        ["host", "Enter", true],
+        ["root key.up"]
+      ],
+      "registrations": 3
+    },
+    {
+      "arm": "stock",
+      "kind": "trigger",
+      "input": "Space",
+      "events": [
+        ["capture keydown", " ", true],
+        ["capture keyup", " ", true],
+        ["host", " ", true],
+        ["root key.up"]
+      ],
+      "registrations": 3
+    }
+  ]
+}

@@ -1,0 +1,300 @@
+{
+  "exact": {
+    "head": "edf7a617d93149e37541313b2ad457507bdcc31d",
+    "tree": "2a31bcd51a690ec353d83ad539b957cea9f53d37",
+    "parent": "bcc9dd4b75e410cf858886a7058f4ec21c9cae1b"
+  },
+  "focused": {
+    "suites": 91,
+    "passed": 1666,
+    "failed": 0
+  },
+  "builtPackages": 47,
+  "builtPages": 685,
+  "selectedSiteAndAdapter": {
+    "preview-browser": {
+      "passed": 11,
+      "failed": 4,
+      "filtered": 9
+    },
+    "code-grammar": {
+      "passed": 3,
+      "failed": 0,
+      "filtered": 23
+    },
+    "copy-commands": {
+      "passed": 1,
+      "failed": 0,
+      "filtered": 14
+    },
+    "scroll-chain": {
+      "passed": 2,
+      "failed": 0,
+      "filtered": 4
+    },
+    "wc-shadow": {
+      "passed": 153,
+      "failed": 0,
+      "filtered": 0
+    },
+    "projection-scope": {
+      "passed": 5,
+      "failed": 0,
+      "filtered": 0
+    },
+    "codeexample": {
+      "passed": 12,
+      "failed": 0,
+      "filtered": 14
+    },
+    "docs-columns": {
+      "passed": 10,
+      "failed": 0,
+      "filtered": 0
+    },
+    "liquid-optics": {
+      "passed": 1,
+      "failed": 2,
+      "filtered": 1
+    }
+  },
+  "headerFirstFrames": [320, 390],
+  "matrix": {
+    "zh-cn": {
+      "bytes": 1862415,
+      "sha256": "e8d2ea87a2bbd8baf4a9b3b8cac14f1f7ea782c213dcb3fde3b59c4583c33ebb",
+      "previews": 1268
+    },
+    "en": {
+      "bytes": 1914042,
+      "sha256": "0670a3826621e9751c2a0839753ad4485685ad0c3c5841b749377b518bf72894",
+      "previews": 1268
+    }
+  },
+  "pairedPackedBaseline": {
+    "dialog": {
+      "parent": {
+        "head": "bcc9dd4b75e410cf858886a7058f4ec21c9cae1b",
+        "browser": "156.0.8078.79",
+        "passed": 11,
+        "failed": 4,
+        "errors": {
+          "shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close": "AssertionError: expected false to be true // Object.is equality",
+          "shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close": "AssertionError: expected false to be true // Object.is equality",
+          "shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close": "AssertionError: expected false to be true // Object.is equality",
+          "shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close": "AssertionError: expected false to be true // Object.is equality"
+        },
+        "misses": {
+          "shadcn-wc-320-unbroken-font200-action-1": {
+            "width": 160,
+            "height": 1338,
+            "contentLeft": 32,
+            "contentRight": 288,
+            "hit": false
+          },
+          "shadcn-react-320-unbroken-font200-action-1": {
+            "width": 160,
+            "height": 1338,
+            "contentLeft": 32,
+            "contentRight": 288,
+            "hit": false
+          },
+          "shadcn-vue-320-unbroken-font200-action-1": {
+            "width": 160,
+            "height": 1338,
+            "contentLeft": 32,
+            "contentRight": 288,
+            "hit": false
+          },
+          "shadcn-vue2-320-unbroken-font200-action-1": {
+            "width": 160,
+            "height": 1338,
+            "contentLeft": 32,
+            "contentRight": 288,
+            "hit": false
+          }
+        }
+      },
+      "candidate": {
+        "head": "edf7a617d93149e37541313b2ad457507bdcc31d",
+        "browser": "156.0.8078.79",
+        "passed": 11,
+        "failed": 4,
+        "errors": {
+          "shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close": "AssertionError: expected false to be true // Object.is equality",
+          "shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close": "AssertionError: expected false to be true // Object.is equality",
+          "shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close": "AssertionError: expected false to be true // Object.is equality",
+          "shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close": "AssertionError: expected false to be true // Object.is equality"
+        },
+        "misses": {
+          "shadcn-wc-320-unbroken-font200-action-1": {
+            "width": 160,
+            "height": 1338,
+            "contentLeft": 32,
+            "contentRight": 288,
+            "hit": false
+          },
+          "shadcn-react-320-unbroken-font200-action-1": {
+            "width": 160,
+            "height": 1338,
+            "contentLeft": 32,
+            "contentRight": 288,
+            "hit": false
+          },
+          "shadcn-vue-320-unbroken-font200-action-1": {
+            "width": 160,
+            "height": 1338,
+            "contentLeft": 32,
+            "contentRight": 288,
+            "hit": false
+          },
+          "shadcn-vue2-320-unbroken-font200-action-1": {
+            "width": 160,
+            "height": 1338,
+            "contentLeft": 32,
+            "contentRight": 288,
+            "hit": false
+          }
+        }
+      }
+    },
+    "liquid": {
+      "sameFailures": {
+        "V2 optical paint through four real Web Adapter runtimes light: visible dynamic source, optical pixels, motion, input and revocation": "page.waitForFunction: Timeout 20000ms exceeded.",
+        "V2 optical paint through four real Web Adapter runtimes dark: visible dynamic source, optical pixels, motion, input and revocation": "page.waitForFunction: Timeout 20000ms exceeded."
+      }
+    },
+    "s4": {
+      "dialog-parent-baseline": {
+        "zh-cn: native Light/split/mixed acceptance": "Error: Test timed out in 150000ms.",
+        "en: native Light/split/mixed acceptance": "Error: Test timed out in 150000ms."
+      },
+      "combined": {
+        "zh-cn: native Light/split/mixed acceptance": "Error: Test timed out in 150000ms.",
+        "en: native Light/split/mixed acceptance": "Error: Test timed out in 150000ms."
+      }
+    }
+  },
+  "s4": {
+    "readinessMs": 60000,
+    "caseMs": 150000,
+    "tests": [
+      {
+        "test": "zh-cn: native Light/split/mixed acceptance",
+        "status": "failed",
+        "durationMs": 150525.96945899999,
+        "failure": ["Error: Test timed out in 150000ms."]
+      },
+      {
+        "test": "en: native Light/split/mixed acceptance",
+        "status": "failed",
+        "durationMs": 150523.38975000003,
+        "failure": ["Error: Test timed out in 150000ms."]
+      }
+    ]
+  },
+  "packageBudget": [
+    {
+      "entry": "lucide/icons/x",
+      "status": "PASS",
+      "gzip": 2879,
+      "ceiling": 3000
+    },
+    {
+      "entry": "lucide root",
+      "status": "PASS",
+      "gzip": 637306,
+      "ceiling": 700000
+    },
+    {
+      "entry": "core root",
+      "status": "ADVISORY",
+      "gzip": 11378,
+      "ceiling": 7600
+    },
+    {
+      "entry": "runtime root",
+      "status": "ADVISORY",
+      "gzip": 100296,
+      "ceiling": 78500
+    },
+    {
+      "entry": "adapter-react root",
+      "status": "ADVISORY",
+      "gzip": 162800,
+      "ceiling": 106000
+    },
+    {
+      "entry": "adapter-vue root",
+      "status": "ADVISORY",
+      "gzip": 161507,
+      "ceiling": 106000
+    },
+    {
+      "entry": "adapter-web-component root",
+      "status": "ADVISORY",
+      "gzip": 191448,
+      "ceiling": 132000
+    },
+    {
+      "entry": "prototypes-base/button",
+      "status": "PASS",
+      "gzip": 5274,
+      "ceiling": 6000
+    },
+    {
+      "entry": "prototypes-shadcn/button",
+      "status": "ADVISORY",
+      "gzip": 7812,
+      "ceiling": 7000
+    }
+  ],
+  "publicDocsSourceComparison": {
+    "predecessor": {
+      "head": "70c96f0d5833a7e4ebb1a9571db422f9b1844cbc",
+      "receiptSha256": "9112ca47b78d90cfdd65707aafc17220530ef59a93d8d7609462cacd02dd1680",
+      "observedPrefixCalls": 225280,
+      "observedPageMs": 70216.90000009537,
+      "targets": {
+        "Window": {
+          "keyup": 9424,
+          "pointerdown": 9424,
+          "relative": 1.0
+        },
+        "OtherEventTarget": {
+          "keyup": 3845,
+          "pointerdown": 3845,
+          "relative": 1.0
+        }
+      },
+      "routerSampleWeightMs": 3938.743,
+      "profileSpanMs": 55403.439
+    },
+    "candidate": {
+      "head": "ea9f88987b5803cba89eb21bdbf363c0570d2cb7",
+      "receiptSha256": "4ae371111f373685cb5b9271d452b671fae3db08e10677ee264e87c64a554112",
+      "observedPrefixCalls": 221184,
+      "observedPageMs": 73385.40000009537,
+      "targets": {
+        "Window": {
+          "keyup": 4773,
+          "pointerdown": 9583,
+          "relative": 0.4980694980694981
+        },
+        "OtherEventTarget": {
+          "keyup": 1735,
+          "pointerdown": 3871,
+          "relative": 0.4482045982950142
+        }
+      },
+      "routerSampleWeightMs": 3453.04,
+      "profileSpanMs": 54803.563
+    },
+    "interpretation": "Per-target native registrations in bounded observed prefixes of independent original S4 diagnostics. Pointerdown is a within-prefix router reference. No end-to-end duration, deadline snapshot, unique-listener or absolute savings inference."
+  },
+  "runtimeVersions": {
+    "node": "24.21.0",
+    "pnpm": "10.32.1",
+    "chrome": "156.0.8078.79"
+  }
+}
