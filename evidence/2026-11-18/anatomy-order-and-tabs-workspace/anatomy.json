@@ -1,0 +1,90 @@
+{
+  "source": {
+    "head": "d977985a7401e391c0c3c2a516edb65c8b07c30e",
+    "tree": "c926621592094872df62bfbbd896becdb39497cb",
+    "base": "3a537056b14bc8fd143d67ff63a55b2334981690"
+  },
+  "newRegressionOnBaseline": {
+    "passed": 0,
+    "failed": 1,
+    "expectedDeliveries": 1,
+    "actualDeliveries": 0,
+    "rawSha256": "8ef014b39d07123768dae0f8cf2d66b2df14fbed400ab3edcc59bcddf2d32940"
+  },
+  "native": {
+    "head": "d977985a7401e391c0c3c2a516edb65c8b07c30e",
+    "parent": "3a537056b14bc8fd143d67ff63a55b2334981690",
+    "chrome": "156.0.8078.79",
+    "scopedInputs": {
+      "parent": {
+        "blob": "7bad38ae39ba729c351ab89d8782fb9a36a534c4acbb09e21f18beaff2f7112d",
+        "bundle": "7fa729795fc62828715b4cc39297b54226e36ebf165608304e06629d6be4d9d3",
+        "inputs": 57
+      },
+      "candidate": {
+        "blob": "02cab36f5a650758036ddc438a1a509d93fb626d966b2dc5590b78c93b6f4b42",
+        "bundle": "61a04f4c8c04b600c11fbb8aa485f5e1fd7081da50191767c9eb40574fe85831",
+        "inputs": 57
+      }
+    },
+    "rows": [
+      {
+        "kind": "parent",
+        "before": 2,
+        "after": 4,
+        "reads": 2,
+        "firstRound": [0, 0],
+        "firstVersions": [0, 0],
+        "secondRound": [1, 1],
+        "secondVersions": [1, 1]
+      },
+      {
+        "kind": "candidate",
+        "before": 2,
+        "after": 4,
+        "reads": 2,
+        "firstRound": [0, 1],
+        "firstVersions": [0, 1],
+        "secondRound": [1, 1],
+        "secondVersions": [1, 1]
+      },
+      {
+        "kind": "candidate",
+        "before": 2,
+        "after": 4,
+        "reads": 2,
+        "firstRound": [0, 1],
+        "firstVersions": [0, 1],
+        "secondRound": [1, 1],
+        "secondVersions": [1, 1]
+      },
+      {
+        "kind": "parent",
+        "before": 2,
+        "after": 4,
+        "reads": 2,
+        "firstRound": [0, 0],
+        "firstVersions": [0, 0],
+        "secondRound": [1, 1],
+        "secondVersions": [1, 1]
+      }
+    ]
+  },
+  "focused": {
+    "passed": 500,
+    "failed": 0,
+    "unselected": 0,
+    "sha256": "f4e51058ec522adb1fbd71298cacf6fac2088f1d6e5261b495b531e352913d29"
+  },
+  "packageBuild": {
+    "built": 5,
+    "publicTotal": 47,
+    "exit": 0,
+    "rawSha256": "3cba471514c4db0d94bac978e5277d1a9c23c46a58be0875a88fe59ee345b156"
+  },
+  "publicManifests": {
+    "exit": 0,
+    "rawSha256": "639f95cbabf1dda9b50cd9b8770cf1cfa8b42dbbd7f536f4da5dc6bf2015565f"
+  },
+  "nativeProbeSha256": "a025a6e0744350de9b77cfd46776b04174c8e00f610b18f3f1eeca6509cdaebb"
+}

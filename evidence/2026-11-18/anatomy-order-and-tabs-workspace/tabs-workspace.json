@@ -1,0 +1,43 @@
+{
+  "source": {
+    "head": "093801ceaa1609fd3f36bd2681cb73fff7498745",
+    "tree": "38de270dd6217ae8d51642a89bb54dc8c995e0f8",
+    "base": "3a537056b14bc8fd143d67ff63a55b2334981690"
+  },
+  "unpreparedTypecheck": {
+    "errorCount": 3,
+    "rawSha256": "19c080c9d29023ed01aa50719658fe6b939892ddbc365913a0b120a1dbc2b969"
+  },
+  "preparedTypecheck": {
+    "errorCount": 1,
+    "code": "TS2307",
+    "file": "apps/www/src/content/docs/demo_components/tabs/demo-shadcn-tabs-preset.shared.ts",
+    "line": 2,
+    "column": 31,
+    "exit": 2,
+    "rawSha256": "837c983f7d1f2bd2f7c43afebb2652ce8b5bc642e9e8745b2b4eac4940a465f2"
+  },
+  "exactCandidateWorkspaceTypes": {
+    "exit": 0,
+    "rawSha256": "56091c67999bb551fd295dc2215f97b532013ac1ceda727f124efd05346d3e78"
+  },
+  "wcPreview": {
+    "passed": 7,
+    "failed": 0,
+    "unselected": 0,
+    "sha256": "b0b484e9a4fd211badb9f080824789390c385e955ec25b744524e2981b17a70a"
+  },
+  "emittedEquivalence": {
+    "file": "apps/www/src/content/docs/demo_components/tabs/demo-shadcn-tabs-preset.shared.ts",
+    "baseline": "3a537056b14bc8fd143d67ff63a55b2334981690",
+    "head": "093801ceaa1609fd3f36bd2681cb73fff7498745",
+    "emittedBytes": 1921,
+    "sha256": "aede523b1fce9d1b9648e5db103cade702d9f750f94b290cc4e2a0108946ed27"
+  },
+  "authoredImportChain": [
+    "packages/adapters/web-component/test/previewer.demo-renderer.test.ts",
+    "apps/www/src/content/docs/demo_components/tabs/demo-shadcn-tabs-preset-new-york-v4.demo.ts",
+    "apps/www/src/content/docs/demo_components/tabs/demo-shadcn-tabs-preset.shared.ts",
+    "apps/www/src/components/PrototypePreviewer/demo-types.ts"
+  ]
+}
