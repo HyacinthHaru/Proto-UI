@@ -1,0 +1,375 @@
+{
+  "chrome": "156.0.8078.79",
+  "host": "macOS",
+  "unchangedOriginalAssertions": true,
+  "comparison": {
+    "parent": {
+      "head": "b5e41dd601d67ba48cb5d030811f93394893116d",
+      "cases": {
+        "wc/shadcn": {
+          "status": "failed",
+          "cjkAssertion": true
+        },
+        "wc/brutalist": {
+          "status": "passed",
+          "cjkAssertion": false
+        },
+        "react/shadcn": {
+          "status": "failed",
+          "cjkAssertion": true
+        },
+        "react/brutalist": {
+          "status": "passed",
+          "cjkAssertion": false
+        },
+        "vue/shadcn": {
+          "status": "failed",
+          "cjkAssertion": true
+        },
+        "vue/brutalist": {
+          "status": "passed",
+          "cjkAssertion": false
+        },
+        "vue2/shadcn": {
+          "status": "failed",
+          "cjkAssertion": true
+        },
+        "vue2/brutalist": {
+          "status": "passed",
+          "cjkAssertion": false
+        }
+      },
+      "fonts": {
+        "native-wc-shadcn": {
+          "latin": [
+            {
+              "familyName": "Geist",
+              "postScriptName": "Geist-Regular",
+              "isCustomFont": true,
+              "glyphCount": 25
+            }
+          ],
+          "cjk": [
+            {
+              "familyName": "PingFang SC",
+              "postScriptName": "PingFangSC-Regular",
+              "isCustomFont": false,
+              "glyphCount": 9
+            }
+          ]
+        },
+        "native-wc-brutalist": {
+          "latin": [
+            {
+              "familyName": "DM Sans 9pt",
+              "postScriptName": "DMSans-9ptRegular_opsz100000_wght1F40000",
+              "isCustomFont": true,
+              "glyphCount": 25
+            }
+          ],
+          "cjk": [
+            {
+              "familyName": "PingFang SC",
+              "postScriptName": "PingFangSC-Medium",
+              "isCustomFont": false,
+              "glyphCount": 9
+            }
+          ]
+        },
+        "native-react-shadcn": {
+          "latin": [
+            {
+              "familyName": "Geist",
+              "postScriptName": "Geist-Regular",
+              "isCustomFont": true,
+              "glyphCount": 25
+            }
+          ],
+          "cjk": [
+            {
+              "familyName": "PingFang SC",
+              "postScriptName": "PingFangSC-Regular",
+              "isCustomFont": false,
+              "glyphCount": 9
+            }
+          ]
+        },
+        "native-react-brutalist": {
+          "latin": [
+            {
+              "familyName": "DM Sans 9pt",
+              "postScriptName": "DMSans-9ptRegular_opsz100000_wght1F40000",
+              "isCustomFont": true,
+              "glyphCount": 25
+            }
+          ],
+          "cjk": [
+            {
+              "familyName": "PingFang SC",
+              "postScriptName": "PingFangSC-Medium",
+              "isCustomFont": false,
+              "glyphCount": 9
+            }
+          ]
+        },
+        "native-vue-shadcn": {
+          "latin": [
+            {
+              "familyName": "Geist",
+              "postScriptName": "Geist-Regular",
+              "isCustomFont": true,
+              "glyphCount": 25
+            }
+          ],
+          "cjk": [
+            {
+              "familyName": "PingFang SC",
+              "postScriptName": "PingFangSC-Regular",
+              "isCustomFont": false,
+              "glyphCount": 9
+            }
+          ]
+        },
+        "native-vue-brutalist": {
+          "latin": [
+            {
+              "familyName": "DM Sans 9pt",
+              "postScriptName": "DMSans-9ptRegular_opsz100000_wght1F40000",
+              "isCustomFont": true,
+              "glyphCount": 25
+            }
+          ],
+          "cjk": [
+            {
+              "familyName": "PingFang SC",
+              "postScriptName": "PingFangSC-Medium",
+              "isCustomFont": false,
+              "glyphCount": 9
+            }
+          ]
+        },
+        "native-vue2-shadcn": {
+          "latin": [
+            {
+              "familyName": "Geist",
+              "postScriptName": "Geist-Regular",
+              "isCustomFont": true,
+              "glyphCount": 25
+            }
+          ],
+          "cjk": [
+            {
+              "familyName": "PingFang SC",
+              "postScriptName": "PingFangSC-Regular",
+              "isCustomFont": false,
+              "glyphCount": 9
+            }
+          ]
+        },
+        "native-vue2-brutalist": {
+          "latin": [
+            {
+              "familyName": "DM Sans 9pt",
+              "postScriptName": "DMSans-9ptRegular_opsz100000_wght1F40000",
+              "isCustomFont": true,
+              "glyphCount": 25
+            }
+          ],
+          "cjk": [
+            {
+              "familyName": "PingFang SC",
+              "postScriptName": "PingFangSC-Medium",
+              "isCustomFont": false,
+              "glyphCount": 9
+            }
+          ]
+        }
+      },
+      "reportSha256": "faf986a642b48efc6891de05868c2a400b4e48907a8dbe3a53de4424ade32467"
+    },
+    "candidate": {
+      "head": "186218c5239050da04ea462ba00cd85ace6b9e8a",
+      "cases": {
+        "wc/shadcn": {
+          "status": "failed",
+          "cjkAssertion": true
+        },
+        "wc/brutalist": {
+          "status": "passed",
+          "cjkAssertion": false
+        },
+        "react/shadcn": {
+          "status": "failed",
+          "cjkAssertion": true
+        },
+        "react/brutalist": {
+          "status": "passed",
+          "cjkAssertion": false
+        },
+        "vue/shadcn": {
+          "status": "failed",
+          "cjkAssertion": true
+        },
+        "vue/brutalist": {
+          "status": "passed",
+          "cjkAssertion": false
+        },
+        "vue2/shadcn": {
+          "status": "failed",
+          "cjkAssertion": true
+        },
+        "vue2/brutalist": {
+          "status": "passed",
+          "cjkAssertion": false
+        }
+      },
+      "fonts": {
+        "native-wc-shadcn": {
+          "latin": [
+            {
+              "familyName": "Geist",
+              "postScriptName": "Geist-Regular",
+              "isCustomFont": true,
+              "glyphCount": 25
+            }
+          ],
+          "cjk": [
+            {
+              "familyName": "PingFang SC",
+              "postScriptName": "PingFangSC-Regular",
+              "isCustomFont": false,
+              "glyphCount": 9
+            }
+          ]
+        },
+        "native-wc-brutalist": {
+          "latin": [
+            {
+              "familyName": "DM Sans 9pt",
+              "postScriptName": "DMSans-9ptRegular_opsz100000_wght1F40000",
+              "isCustomFont": true,
+              "glyphCount": 25
+            }
+          ],
+          "cjk": [
+            {
+              "familyName": "PingFang SC",
+              "postScriptName": "PingFangSC-Medium",
+              "isCustomFont": false,
+              "glyphCount": 9
+            }
+          ]
+        },
+        "native-react-shadcn": {
+          "latin": [
+            {
+              "familyName": "Geist",
+              "postScriptName": "Geist-Regular",
+              "isCustomFont": true,
+              "glyphCount": 25
+            }
+          ],
+          "cjk": [
+            {
+              "familyName": "PingFang SC",
+              "postScriptName": "PingFangSC-Regular",
+              "isCustomFont": false,
+              "glyphCount": 9
+            }
+          ]
+        },
+        "native-react-brutalist": {
+          "latin": [
+            {
+              "familyName": "DM Sans 9pt",
+              "postScriptName": "DMSans-9ptRegular_opsz100000_wght1F40000",
+              "isCustomFont": true,
+              "glyphCount": 25
+            }
+          ],
+          "cjk": [
+            {
+              "familyName": "PingFang SC",
+              "postScriptName": "PingFangSC-Medium",
+              "isCustomFont": false,
+              "glyphCount": 9
+            }
+          ]
+        },
+        "native-vue-shadcn": {
+          "latin": [
+            {
+              "familyName": "Geist",
+              "postScriptName": "Geist-Regular",
+              "isCustomFont": true,
+              "glyphCount": 25
+            }
+          ],
+          "cjk": [
+            {
+              "familyName": "PingFang SC",
+              "postScriptName": "PingFangSC-Regular",
+              "isCustomFont": false,
+              "glyphCount": 9
+            }
+          ]
+        },
+        "native-vue-brutalist": {
+          "latin": [
+            {
+              "familyName": "DM Sans 9pt",
+              "postScriptName": "DMSans-9ptRegular_opsz100000_wght1F40000",
+              "isCustomFont": true,
+              "glyphCount": 25
+            }
+          ],
+          "cjk": [
+            {
+              "familyName": "PingFang SC",
+              "postScriptName": "PingFangSC-Medium",
+              "isCustomFont": false,
+              "glyphCount": 9
+            }
+          ]
+        },
+        "native-vue2-shadcn": {
+          "latin": [
+            {
+              "familyName": "Geist",
+              "postScriptName": "Geist-Regular",
+              "isCustomFont": true,
+              "glyphCount": 25
+            }
+          ],
+          "cjk": [
+            {
+              "familyName": "PingFang SC",
+              "postScriptName": "PingFangSC-Regular",
+              "isCustomFont": false,
+              "glyphCount": 9
+            }
+          ]
+        },
+        "native-vue2-brutalist": {
+          "latin": [
+            {
+              "familyName": "DM Sans 9pt",
+              "postScriptName": "DMSans-9ptRegular_opsz100000_wght1F40000",
+              "isCustomFont": true,
+              "glyphCount": 25
+            }
+          ],
+          "cjk": [
+            {
+              "familyName": "PingFang SC",
+              "postScriptName": "PingFangSC-Medium",
+              "isCustomFont": false,
+              "glyphCount": 9
+            }
+          ]
+        }
+      },
+      "reportSha256": "2173d70a38c43123c1a0817ea736a599be2adad44fb742c004993296a3cd3bca"
+    }
+  }
+}

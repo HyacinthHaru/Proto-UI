@@ -1,0 +1,144 @@
+{
+  "standalone": {
+    "head": "186218c5239050da04ea462ba00cd85ace6b9e8a",
+    "tree": "ea46ee862a042f30a834f86a29dee0c568295bb7",
+    "main": "b5e41dd601d67ba48cb5d030811f93394893116d",
+    "red": {
+      "passed": 40,
+      "failed": 1,
+      "skipped": 0,
+      "reportSha256": "e25085a654a6a58993b5e3dd5068ebcc476afb0b4daf22a58ab3b11b7c57163e"
+    },
+    "focused": {
+      "passed": 215,
+      "failed": 0,
+      "skipped": 0,
+      "reportSha256": "eca0d82dbfe8f43b18b2f235b9dcbda79f52e3ebccfbe91f4ed0496a1cc1a9f5"
+    },
+    "originalTypographyOnMac": {
+      "passed": 4,
+      "failed": 4,
+      "skipped": 25,
+      "reportSha256": "2173d70a38c43123c1a0817ea736a599be2adad44fb742c004993296a3cd3bca"
+    },
+    "packagesBuilt": 47,
+    "pagesBuilt": 685,
+    "types": "pass",
+    "manifests": "pass",
+    "finfBudgetCommand": "pass"
+  },
+  "combined": {
+    "head": "9d10b95c274e6ef6257de58a2b729ceccc4caafd",
+    "tree": "ee561141f2d161fc37ccf85ee0900c687e0a6836",
+    "packagesBuilt": 47,
+    "pagesBuilt": 685,
+    "scope": {
+      "focused": {
+        "passed": 898,
+        "failed": 0,
+        "skipped": 0,
+        "reportSha256": "1d615deb601c395482c6c995cfcf953356853a53d849da7be294600a1cd4146a"
+      },
+      "preview-browser": {
+        "passed": 15,
+        "failed": 0,
+        "skipped": 9,
+        "reportSha256": "bb1162fa5bd0be08367807bbc5a4c480291377ddb3d9114fbafdb539dd2758d8"
+      },
+      "code-grammar": {
+        "passed": 3,
+        "failed": 0,
+        "skipped": 23,
+        "reportSha256": "cdf2aa0ad4c84e33e777146bd32d53dc820dc976b8e91f2adbdaec3d11aeae39"
+      },
+      "copy-commands": {
+        "passed": 1,
+        "failed": 0,
+        "skipped": 14,
+        "reportSha256": "1ad9225aa27b9b93b4a7c614d861055dffdf29c0a0866a32a183caf78883b80a"
+      },
+      "scroll-chain": {
+        "passed": 2,
+        "failed": 0,
+        "skipped": 4,
+        "reportSha256": "73c8509a77413e06e55e3cda7cfc06f80e0ce61e7969f9e835c7684da56cbe0a"
+      },
+      "wc-shadow": {
+        "passed": 165,
+        "failed": 0,
+        "skipped": 0,
+        "reportSha256": "69b932c45f1499ff9219ea9b2da37a052646089712db6dc4012ab95dbdf0506d"
+      },
+      "projection-scope": {
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0,
+        "reportSha256": "a5f15150488ea48f3dc02d544609f7a8f1f3718d571112c184543ac26af3069d"
+      },
+      "codeexample": {
+        "passed": 12,
+        "failed": 0,
+        "skipped": 14,
+        "reportSha256": "a96e0837c232fb99c7930010d1c417c44ae0b2f100a4d11fb0a8e8c8a24b88b9"
+      },
+      "docs-columns": {
+        "passed": 10,
+        "failed": 0,
+        "skipped": 0,
+        "reportSha256": "a1b7e60b334ce03256f5c1ed7e65c8a387b4ddae81275fb6276513ef1de1d826"
+      },
+      "liquid-optics": {
+        "passed": 3,
+        "failed": 0,
+        "skipped": 1,
+        "reportSha256": "2e6c51371db4a51759e780e9bce392ced057cc5e4b1c648a36d5bf4556a467f4"
+      }
+    },
+    "originalMatrix": {
+      "zh-cn": {
+        "bytes": 1862479,
+        "sha256": "3584ae3154d13960b7459ca947175866a9709a423dfb40207caa87e338351c40",
+        "previews": 1268
+      },
+      "en": {
+        "bytes": 1914051,
+        "sha256": "d6e0f27f6f9e618bb580aed4022d46d008773133747bc317669a1af8735376d8",
+        "previews": 1268
+      }
+    },
+    "shadcnButtonDocCodeExamples": 9,
+    "s4": {
+      "readinessMs": 60000,
+      "caseMs": 150000,
+      "outcome": "both locale readiness timeouts before Dialog",
+      "report": {
+        "passed": 0,
+        "failed": 2,
+        "skipped": 0,
+        "reportSha256": "41078d65878a1082daeeadbe07ca3cdfdf88b33164532054b9126b02adeaa5aa"
+      }
+    }
+  },
+  "retirementCensus": {
+    "binding": {
+      "head": "c24218a584df7711b3dca15024d5b2c329396040",
+      "asset": "site-typography.BSrjCL9c.js",
+      "stockSha256": "a3f81dcb595e39497f82fcb30b9fef2b755a5fbd65948dd0b335fc64cff1f56c",
+      "observedSha256": "6d2fd0a07c5dfc2e2092cdd8bb542ae63c8a11c3a0b132c958d91d0fda018a2b",
+      "runnerStockSha256": "e6590db342bddc56b37fa367ce6b1cc519130cdb201e06e8d14061569d5e0317",
+      "runnerObservedSha256": "ed13ea56c9fd8059d56f8105bfe3ff8108b004b3238c16ffe93e439db4b44a1e"
+    },
+    "locale": "zh-cn",
+    "samples": [
+      {
+        "pageMs": 5369.700000047684,
+        "timeOrigin": 1795012028495,
+        "batches": 1,
+        "carriers": 405,
+        "alreadyHome": 405,
+        "orderedBatches": 1,
+        "orderedCarriers": 405
+      }
+    ]
+  }
+}

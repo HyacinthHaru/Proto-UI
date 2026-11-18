@@ -1,0 +1,107 @@
+{
+  "head": "c24218a584df7711b3dca15024d5b2c329396040",
+  "chrome": "156.0.8078.79",
+  "stockSha256": "a3f81dcb595e39497f82fcb30b9fef2b755a5fbd65948dd0b335fc64cff1f56c",
+  "oneAssetCandidateSha256": "e382096b4a2018d1b014b606b2a3c81cefc41b28d53c7ce3aaf2345a1da8be56",
+  "unchangedProductionDependencies": true,
+  "rows": [
+    {
+      "arm": "stock",
+      "reordered": false,
+      "before": [0, 1],
+      "reconnects": 2,
+      "appends": [
+        [1, 0],
+        [0, 1]
+      ],
+      "batchRemoved": true,
+      "activeSourcePreserved": true,
+      "disposedSourcePreserved": true
+    },
+    {
+      "arm": "candidate",
+      "reordered": false,
+      "before": [0, 1],
+      "reconnects": 0,
+      "appends": [],
+      "batchRemoved": true,
+      "activeSourcePreserved": true,
+      "disposedSourcePreserved": true
+    },
+    {
+      "arm": "candidate",
+      "reordered": false,
+      "before": [0, 1],
+      "reconnects": 0,
+      "appends": [],
+      "batchRemoved": true,
+      "activeSourcePreserved": true,
+      "disposedSourcePreserved": true
+    },
+    {
+      "arm": "stock",
+      "reordered": false,
+      "before": [0, 1],
+      "reconnects": 2,
+      "appends": [
+        [1, 0],
+        [0, 1]
+      ],
+      "batchRemoved": true,
+      "activeSourcePreserved": true,
+      "disposedSourcePreserved": true
+    },
+    {
+      "arm": "stock",
+      "reordered": true,
+      "before": [1, 0],
+      "reconnects": 2,
+      "appends": [
+        [1, 0],
+        [0, 1]
+      ],
+      "batchRemoved": true,
+      "activeSourcePreserved": true,
+      "disposedSourcePreserved": true
+    },
+    {
+      "arm": "candidate",
+      "reordered": true,
+      "before": [1, 0],
+      "reconnects": 2,
+      "appends": [
+        [1, 0],
+        [0, 1]
+      ],
+      "batchRemoved": true,
+      "activeSourcePreserved": true,
+      "disposedSourcePreserved": true
+    },
+    {
+      "arm": "candidate",
+      "reordered": true,
+      "before": [1, 0],
+      "reconnects": 2,
+      "appends": [
+        [1, 0],
+        [0, 1]
+      ],
+      "batchRemoved": true,
+      "activeSourcePreserved": true,
+      "disposedSourcePreserved": true
+    },
+    {
+      "arm": "stock",
+      "reordered": true,
+      "before": [1, 0],
+      "reconnects": 2,
+      "appends": [
+        [1, 0],
+        [0, 1]
+      ],
+      "batchRemoved": true,
+      "activeSourcePreserved": true,
+      "disposedSourcePreserved": true
+    }
+  ]
+}
