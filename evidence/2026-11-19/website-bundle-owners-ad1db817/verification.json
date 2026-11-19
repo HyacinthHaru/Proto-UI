@@ -1,0 +1,352 @@
+{
+  "head": "ad1db8170aa7abc0ba56e08427f2e3e9076f4efa",
+  "tree": "8cbf90f33d39acc52e59931178fd2482ac23ac1a",
+  "base": "21af3bec014503e68782a6f1f3756aec2bb987cd",
+  "changedFileSHA256": {
+    "scripts/coverage-matrices/check-website-production-bundle.mjs": "8297cd458a26157dada82340486dfc078487ac825d717387f48a0beae762be8c",
+    "scripts/coverage-matrices/test/check-website-production-bundle.test.mjs": "740ce065d7be633e64d12e388a4cfffeb86d6dcbc773e073579b2b1b19ed03d5"
+  },
+  "fixtureChecks": {
+    "original": {
+      "tests": 1774,
+      "pass": 1774,
+      "fail": 0,
+      "skipped": 0
+    },
+    "testFirst": {
+      "tests": 1858,
+      "pass": 450,
+      "fail": 1408,
+      "skipped": 0
+    },
+    "candidate": {
+      "tests": 1858,
+      "pass": 1858,
+      "fail": 0,
+      "skipped": 0
+    }
+  },
+  "productionBundle": {
+    "head": "ad1db8170aa7abc0ba56e08427f2e3e9076f4efa",
+    "tree": "8cbf90f33d39acc52e59931178fd2482ac23ac1a",
+    "base": "21af3bec014503e68782a6f1f3756aec2bb987cd",
+    "originalFindings": 53,
+    "findingsNamingWcHelpers": 51,
+    "original": {
+      "label": "main build under updated verifier",
+      "sha256": "8ca640d0344ec243f6a3f0c06fce9a0a5e3ac6bcf3fb0e4b112137378f2a145a",
+      "chunkCount": 2568,
+      "moduleCount": 5818,
+      "helpers": [
+        {
+          "id": "packages/adapters/base/src/events/keyboard-press-owner.ts",
+          "chunk": "_astro/site-shadcn-controls.mtUUBAVe.js",
+          "bridge": "apps/www/src/components/site-shadcn-controls.ts",
+          "incoming": [
+            {
+              "id": "packages/adapters/base/src/events/web-event-router.ts",
+              "field": "imports"
+            },
+            {
+              "id": "packages/adapters/base/src/platform/instance-tree.ts",
+              "field": "imports"
+            }
+          ],
+          "imports": [],
+          "dynamicImports": [],
+          "sourceSHA256": "a70e36a04f4dc38acc62b7c25623a63f3346e4dcf96786c486f6679df2f65ce4"
+        },
+        {
+          "id": "packages/adapters/base/src/events/pointer-sample.ts",
+          "chunk": "_astro/site-shadcn-controls.mtUUBAVe.js",
+          "bridge": "apps/www/src/components/site-shadcn-controls.ts",
+          "incoming": [
+            {
+              "id": "packages/adapters/base/src/events/web-event-router.ts",
+              "field": "imports"
+            },
+            {
+              "id": "packages/adapters/base/src/gestures/web-move-click-arbitration.ts",
+              "field": "imports"
+            },
+            {
+              "id": "packages/adapters/base/src/gestures/web-move-gesture-host.ts",
+              "field": "imports"
+            }
+          ],
+          "imports": [],
+          "dynamicImports": [],
+          "sourceSHA256": "940874ff556c42ff318fb3f72879634692b8cf3ba2d06388b7c6610d390afccb"
+        }
+      ],
+      "routes": [
+        {
+          "facade": "apps/www/src/pages/en/test/button-boundaries/[runtime].astro?astro&type=script&index=0&lang.ts",
+          "sourceSHA256": "97531dbc66369986afce937bb09044b3b1d8c7f5d6527dc8ab19d7815499bddd",
+          "renderer": "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+          "runtimeModules": [
+            {
+              "id": "apps/www/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "chunk": "_astro/react-runtime.CnFi_1hm.js",
+              "isDynamicEntry": true
+            },
+            {
+              "id": "apps/www/src/components/PrototypePreviewer/runtimes/vue-runtime.ts",
+              "chunk": "_astro/vue-runtime.NzTEnv7T.js",
+              "isDynamicEntry": true
+            },
+            {
+              "id": "apps/www/src/components/PrototypePreviewer/runtimes/vue2-runtime.ts",
+              "chunk": "_astro/vue2-runtime.8lkayur-.js",
+              "isDynamicEntry": true
+            }
+          ]
+        },
+        {
+          "facade": "apps/www/src/pages/en/test/command-no-addon.astro?astro&type=script&index=0&lang.ts",
+          "sourceSHA256": "72a8d7770b353fca2083a4c28e40dd6862b120b54e9887be7d3d0a0835887477",
+          "renderer": "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+          "runtimeModules": [
+            {
+              "id": "apps/www/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "chunk": "_astro/react-runtime.CnFi_1hm.js",
+              "isDynamicEntry": true
+            },
+            {
+              "id": "apps/www/src/components/PrototypePreviewer/runtimes/vue-runtime.ts",
+              "chunk": "_astro/vue-runtime.NzTEnv7T.js",
+              "isDynamicEntry": true
+            },
+            {
+              "id": "apps/www/src/components/PrototypePreviewer/runtimes/vue2-runtime.ts",
+              "chunk": "_astro/vue2-runtime.8lkayur-.js",
+              "isDynamicEntry": true
+            }
+          ]
+        }
+      ],
+      "findings": [
+        "Website shell entry `apps/www/src/pages/en/test/liquid-tint-stage-diagnostic.astro?astro&type=script&index=0&lang.ts` statically reaches forbidden React/Vue module(s) or Proto UI Adapter module(s): packages/adapters/base/src/material/contact-profile.ts, packages/adapters/base/src/material/liquidgl-kernel.generated.ts, packages/adapters/base/src/material/program.ts, packages/adapters/base/src/material/style-tint-profile.ts, packages/adapters/base/src/material/style.ts",
+        "Website shell entry `apps/www/src/pages/en/test/liquid-visible-refraction-diagnostic.astro?astro&type=script&index=0&lang.ts` statically reaches forbidden React/Vue module(s) or Proto UI Adapter module(s): packages/adapters/base/src/material/contact-profile.ts, packages/adapters/base/src/material/liquidgl-kernel.generated.ts, packages/adapters/base/src/material/program.ts, packages/adapters/base/src/material/style-tint-profile.ts, packages/adapters/base/src/material/style.ts"
+      ]
+    },
+    "candidate": {
+      "label": "signed candidate build",
+      "sha256": "24fcb8b6669bc741323f444e8f41d500a43dcf9523b85c1aebf07bd3d441f754",
+      "chunkCount": 2568,
+      "moduleCount": 5818,
+      "helpers": [
+        {
+          "id": "packages/adapters/base/src/events/keyboard-press-owner.ts",
+          "chunk": "_astro/site-shadcn-controls.D3e1bnle.js",
+          "bridge": "apps/www/src/components/site-shadcn-controls.ts",
+          "incoming": [
+            {
+              "id": "packages/adapters/base/src/events/web-event-router.ts",
+              "field": "imports"
+            },
+            {
+              "id": "packages/adapters/base/src/platform/instance-tree.ts",
+              "field": "imports"
+            }
+          ],
+          "imports": [],
+          "dynamicImports": [],
+          "sourceSHA256": "a70e36a04f4dc38acc62b7c25623a63f3346e4dcf96786c486f6679df2f65ce4"
+        },
+        {
+          "id": "packages/adapters/base/src/events/pointer-sample.ts",
+          "chunk": "_astro/site-shadcn-controls.D3e1bnle.js",
+          "bridge": "apps/www/src/components/site-shadcn-controls.ts",
+          "incoming": [
+            {
+              "id": "packages/adapters/base/src/events/web-event-router.ts",
+              "field": "imports"
+            },
+            {
+              "id": "packages/adapters/base/src/gestures/web-move-click-arbitration.ts",
+              "field": "imports"
+            },
+            {
+              "id": "packages/adapters/base/src/gestures/web-move-gesture-host.ts",
+              "field": "imports"
+            }
+          ],
+          "imports": [],
+          "dynamicImports": [],
+          "sourceSHA256": "940874ff556c42ff318fb3f72879634692b8cf3ba2d06388b7c6610d390afccb"
+        }
+      ],
+      "routes": [
+        {
+          "facade": "apps/www/src/pages/en/test/button-boundaries/[runtime].astro?astro&type=script&index=0&lang.ts",
+          "sourceSHA256": "97531dbc66369986afce937bb09044b3b1d8c7f5d6527dc8ab19d7815499bddd",
+          "renderer": "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+          "runtimeModules": [
+            {
+              "id": "apps/www/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "chunk": "_astro/react-runtime.CPawaNsP.js",
+              "isDynamicEntry": true
+            },
+            {
+              "id": "apps/www/src/components/PrototypePreviewer/runtimes/vue-runtime.ts",
+              "chunk": "_astro/vue-runtime.DmUsrDfe.js",
+              "isDynamicEntry": true
+            },
+            {
+              "id": "apps/www/src/components/PrototypePreviewer/runtimes/vue2-runtime.ts",
+              "chunk": "_astro/vue2-runtime.ZGgwfSpP.js",
+              "isDynamicEntry": true
+            }
+          ]
+        },
+        {
+          "facade": "apps/www/src/pages/en/test/command-no-addon.astro?astro&type=script&index=0&lang.ts",
+          "sourceSHA256": "72a8d7770b353fca2083a4c28e40dd6862b120b54e9887be7d3d0a0835887477",
+          "renderer": "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+          "runtimeModules": [
+            {
+              "id": "apps/www/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "chunk": "_astro/react-runtime.CPawaNsP.js",
+              "isDynamicEntry": true
+            },
+            {
+              "id": "apps/www/src/components/PrototypePreviewer/runtimes/vue-runtime.ts",
+              "chunk": "_astro/vue-runtime.DmUsrDfe.js",
+              "isDynamicEntry": true
+            },
+            {
+              "id": "apps/www/src/components/PrototypePreviewer/runtimes/vue2-runtime.ts",
+              "chunk": "_astro/vue2-runtime.ZGgwfSpP.js",
+              "isDynamicEntry": true
+            }
+          ]
+        }
+      ],
+      "findings": [
+        "Website shell entry `apps/www/src/pages/en/test/liquid-tint-stage-diagnostic.astro?astro&type=script&index=0&lang.ts` statically reaches forbidden React/Vue module(s) or Proto UI Adapter module(s): packages/adapters/base/src/material/contact-profile.ts, packages/adapters/base/src/material/liquidgl-kernel.generated.ts, packages/adapters/base/src/material/program.ts, packages/adapters/base/src/material/style-tint-profile.ts, packages/adapters/base/src/material/style.ts",
+        "Website shell entry `apps/www/src/pages/en/test/liquid-visible-refraction-diagnostic.astro?astro&type=script&index=0&lang.ts` statically reaches forbidden React/Vue module(s) or Proto UI Adapter module(s): packages/adapters/base/src/material/contact-profile.ts, packages/adapters/base/src/material/liquidgl-kernel.generated.ts, packages/adapters/base/src/material/program.ts, packages/adapters/base/src/material/style-tint-profile.ts, packages/adapters/base/src/material/style.ts"
+      ]
+    },
+    "existingBootstrapPr": {
+      "label": "existing PR #1577 build",
+      "sha256": "f3fbca1a50b314d2fe22799e434a4908f81e7e6e0eb30b8524cb8cb4768c7828",
+      "chunkCount": 2562,
+      "moduleCount": 5818,
+      "helpers": [
+        {
+          "id": "packages/adapters/base/src/events/keyboard-press-owner.ts",
+          "chunk": "_astro/site-shadcn-controls.C-95RsE5.js",
+          "bridge": "apps/www/src/components/site-shadcn-controls.ts",
+          "incoming": [
+            {
+              "id": "packages/adapters/base/src/events/web-event-router.ts",
+              "field": "imports"
+            },
+            {
+              "id": "packages/adapters/base/src/platform/instance-tree.ts",
+              "field": "imports"
+            }
+          ],
+          "imports": [],
+          "dynamicImports": [],
+          "sourceSHA256": "a70e36a04f4dc38acc62b7c25623a63f3346e4dcf96786c486f6679df2f65ce4"
+        },
+        {
+          "id": "packages/adapters/base/src/events/pointer-sample.ts",
+          "chunk": "_astro/site-shadcn-controls.C-95RsE5.js",
+          "bridge": "apps/www/src/components/site-shadcn-controls.ts",
+          "incoming": [
+            {
+              "id": "packages/adapters/base/src/events/web-event-router.ts",
+              "field": "imports"
+            },
+            {
+              "id": "packages/adapters/base/src/gestures/web-move-click-arbitration.ts",
+              "field": "imports"
+            },
+            {
+              "id": "packages/adapters/base/src/gestures/web-move-gesture-host.ts",
+              "field": "imports"
+            }
+          ],
+          "imports": [],
+          "dynamicImports": [],
+          "sourceSHA256": "940874ff556c42ff318fb3f72879634692b8cf3ba2d06388b7c6610d390afccb"
+        }
+      ],
+      "routes": [
+        {
+          "facade": "apps/www/src/pages/en/test/button-boundaries/[runtime].astro?astro&type=script&index=0&lang.ts",
+          "sourceSHA256": "97531dbc66369986afce937bb09044b3b1d8c7f5d6527dc8ab19d7815499bddd",
+          "renderer": "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+          "runtimeModules": [
+            {
+              "id": "apps/www/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "chunk": "_astro/react-runtime.CJz7Kwk0.js",
+              "isDynamicEntry": true
+            },
+            {
+              "id": "apps/www/src/components/PrototypePreviewer/runtimes/vue-runtime.ts",
+              "chunk": "_astro/vue-runtime.D420va54.js",
+              "isDynamicEntry": true
+            },
+            {
+              "id": "apps/www/src/components/PrototypePreviewer/runtimes/vue2-runtime.ts",
+              "chunk": "_astro/vue2-runtime.DomV6AGa.js",
+              "isDynamicEntry": true
+            }
+          ]
+        },
+        {
+          "facade": "apps/www/src/pages/en/test/command-no-addon.astro?astro&type=script&index=0&lang.ts",
+          "sourceSHA256": "72a8d7770b353fca2083a4c28e40dd6862b120b54e9887be7d3d0a0835887477",
+          "renderer": "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+          "runtimeModules": [
+            {
+              "id": "apps/www/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "chunk": "_astro/react-runtime.CJz7Kwk0.js",
+              "isDynamicEntry": true
+            },
+            {
+              "id": "apps/www/src/components/PrototypePreviewer/runtimes/vue-runtime.ts",
+              "chunk": "_astro/vue-runtime.D420va54.js",
+              "isDynamicEntry": true
+            },
+            {
+              "id": "apps/www/src/components/PrototypePreviewer/runtimes/vue2-runtime.ts",
+              "chunk": "_astro/vue2-runtime.DomV6AGa.js",
+              "isDynamicEntry": true
+            }
+          ]
+        }
+      ],
+      "findings": [
+        "Website shell entry `apps/www/src/pages/en/test/liquid-tint-stage-diagnostic.astro?astro&type=script&index=0&lang.ts` statically reaches forbidden React/Vue module(s) or Proto UI Adapter module(s): packages/adapters/base/src/material/contact-profile.ts, packages/adapters/base/src/material/liquidgl-kernel.generated.ts, packages/adapters/base/src/material/program.ts, packages/adapters/base/src/material/style-tint-profile.ts, packages/adapters/base/src/material/style.ts",
+        "Website shell entry `apps/www/src/pages/en/test/liquid-visible-refraction-diagnostic.astro?astro&type=script&index=0&lang.ts` statically reaches forbidden React/Vue module(s) or Proto UI Adapter module(s): packages/adapters/base/src/material/contact-profile.ts, packages/adapters/base/src/material/liquidgl-kernel.generated.ts, packages/adapters/base/src/material/program.ts, packages/adapters/base/src/material/style-tint-profile.ts, packages/adapters/base/src/material/style.ts"
+      ]
+    }
+  },
+  "buildGraphEquivalentByOwnersAndEdges": true,
+  "sourceCoverage": {
+    "controlExit": 1,
+    "candidateExit": 1,
+    "controlFindings": 1183,
+    "candidateFindings": 1183,
+    "identicalIssueLines": true
+  },
+  "searchComposition": {
+    "testedHead": "ad1db8170aa7abc0ba56e08427f2e3e9076f4efa",
+    "base": "21af3bec014503e68782a6f1f3756aec2bb987cd",
+    "authorPR": 1534,
+    "prHead": "f03c6f8a170306a2c739765e465200cdcb059d39",
+    "originalBlob": "3f84dc99b87ee2de4566d44b1a1523663311155d",
+    "testedBlob": "8440b37e10753e4b035dbdf6618329cabd5fc481",
+    "unitPass": 10,
+    "unitFail": 0,
+    "astroFiles": 1243,
+    "astroErrors": 0,
+    "astroWarnings": 0,
+    "astroHints": 31
+  }
+}
