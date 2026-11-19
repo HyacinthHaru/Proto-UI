@@ -1,0 +1,88 @@
+{
+  "source": {
+    "head": "4def607269ccf1f23e7bff1a807009908dd5d369",
+    "tree": "152e382c68533cba0cbf31b055147b59fe46da35",
+    "fix": "0b89f4ab918c28b9ed72167b833ae4627d0ac7e8",
+    "fixTree": "bbf468e4e27202bdac9abd5637f2279788b344f8",
+    "previous": "00f240c0b7fb15a8853af5ed8c654968cc768dd5",
+    "main": "21af3bec014503e68782a6f1f3756aec2bb987cd",
+    "composedHead": "90888187757b5f9913309c27c790c4bc2c3e1c4b",
+    "composedTree": "fea6ea64ecad410ad9d24a27c59ed39fa2ac576c"
+  },
+  "review": 4600847700,
+  "fileFixtureSHA256": "6ad553901bf7316b89a119d1e649d0b2df6d41ccfcfc979f76f9876509a52e97",
+  "fileBaseline": {
+    "files": 1,
+    "passed": 1,
+    "failed": 2,
+    "filtered": 177
+  },
+  "fileCases": {
+    "files": 1,
+    "passed": 3,
+    "failed": 0,
+    "filtered": 177
+  },
+  "integration": {
+    "files": 1,
+    "passed": 59,
+    "failed": 2,
+    "filtered": 0
+  },
+  "knownTextBaseline": {
+    "resolved": [
+      "Shadow closeout native boundaries preserves caller file membership through split publication (mutate the assigned list)",
+      "Shadow closeout native boundaries preserves caller file membership through split publication (replace selection)"
+    ],
+    "samePriorTextSelectionFailures": {
+      "Shadow closeout native boundaries validates caller text selection through late split publication (mutation='text data', nested=false, kind='text')": "AssertionError: expected '' to be 'aller' // Object.is equality",
+      "Shadow closeout native boundaries validates caller text selection through late split publication (mutation='text replacement', nested=true, kind='text')": "AssertionError: expected '' to be 'aller' // Object.is equality"
+    }
+  },
+  "knownIntegrationBaseline": {
+    "matchingTestsPassed": 59,
+    "samePriorFailures": {
+      "draft owned decoration through actual WC / Rule / feedback preserves caller state across a split connection reaction (text content)": "AssertionError: expected 'Reset' to be 'Caller text' // Object.is equality",
+      "draft owned decoration through actual WC / Rule / feedback preserves caller state across a split connection reaction (nested text replacement)": "AssertionError: expected Text{ \u2026(20) } to be Text{ \u2026(20) } // Object.is equality"
+    },
+    "fileCasesPassed": 3
+  },
+  "composedChecks": {
+    "workspaceTypes": "passed",
+    "publicPackages": 47,
+    "builtPages": 685,
+    "s4": {
+      "files": 1,
+      "passed": 0,
+      "failed": 2,
+      "filtered": 0
+    },
+    "cases": [
+      {
+        "name": "zh-cn: native Light/split/mixed acceptance",
+        "status": "failed",
+        "failure": "page.waitForFunction: Timeout 60000ms exceeded."
+      },
+      {
+        "name": "en: native Light/split/mixed acceptance",
+        "status": "failed",
+        "failure": "page.waitForFunction: Timeout 60000ms exceeded."
+      }
+    ],
+    "previewsPerLocale": 1268,
+    "readinessMs": 60000,
+    "caseMs": 150000,
+    "pageErrorsPriorComposition": {
+      "zh-cn": {
+        "[feedback] owned-decoration unsupported by this adapter": 18
+      },
+      "en": {
+        "[feedback] owned-decoration unsupported by this adapter": 18
+      }
+    },
+    "pageErrorsCurrentComposition": {
+      "zh-cn": {},
+      "en": {}
+    }
+  }
+}
