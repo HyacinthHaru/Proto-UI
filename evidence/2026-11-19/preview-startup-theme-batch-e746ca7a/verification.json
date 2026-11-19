@@ -1,0 +1,231 @@
+{
+  "source": {
+    "head": "e746ca7a8cc5b0b5a5d44d0007e8eb912613a79f",
+    "tree": "ad0b086afacd2cba14ce2935b1fa2c98341c5010",
+    "main": "21af3bec014503e68782a6f1f3756aec2bb987cd",
+    "authoredHead": "9fb5a33f7c619867085222ae875ec56aade2355f",
+    "authoredTree": "164ff4d6d9d7be577c10b72f4bcd6c32e9984ff2",
+    "initialBase": "af43d613171fe18a8acf61fe3fbffec5610f67a1",
+    "composedHead": "2209fa5c28447773a1681071147aca6c1e27fb00",
+    "composedTree": "50bbf4f5a28c1dfbf4c2eda3d51b30a1021b4a0c"
+  },
+  "focused": {
+    "files": 7,
+    "passed": 182
+  },
+  "verification": {
+    "workspaceTypes": "passed",
+    "packages": 47,
+    "manifests": 47,
+    "buildSummary": "15:53:22 [build] 683 page(s) built in 23.92s",
+    "packed": {
+      "preview-browser": {
+        "passed": 15,
+        "failed": 0
+      },
+      "code-grammar": {
+        "passed": 3,
+        "failed": 0
+      },
+      "copy-commands": {
+        "passed": 1,
+        "failed": 0
+      },
+      "scroll-chain": {
+        "passed": 2,
+        "failed": 0
+      },
+      "table": {
+        "passed": 5,
+        "failed": 0
+      },
+      "accordion": {
+        "passed": 4,
+        "failed": 0
+      },
+      "field": {
+        "passed": 4,
+        "failed": 0
+      }
+    },
+    "retainedCodeExamples": 9,
+    "selectComparator": {
+      "candidate": "9fb5a33f7c619867085222ae875ec56aade2355f",
+      "pristineComparator": "534caf4a241f7f7ef49b7b073662ad982e938c91",
+      "relation": "Same Bootstrap browser fixture and product source across 534caf4a and candidate main parent af43d613. The actual current main delta is workflow and evidence contract only.",
+      "sameFourCaseOutcomesAndFirstFailures": true,
+      "cases": [
+        {
+          "name": "actual Bootstrap/Liquid Select input, layout and source-bound paint bootstrap-2-3-2/wc/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+          "status": "failed",
+          "ifRed": {
+            "firstLine": "locator.click: Timeout 30000ms exceeded.",
+            "outsideViewport": true,
+            "selectorLine": true
+          }
+        },
+        {
+          "name": "actual Bootstrap/Liquid Select input, layout and source-bound paint bootstrap-2-3-2/react/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+          "status": "passed",
+          "ifRed": null
+        },
+        {
+          "name": "actual Bootstrap/Liquid Select input, layout and source-bound paint bootstrap-2-3-2/vue/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+          "status": "failed",
+          "ifRed": {
+            "firstLine": "locator.click: Timeout 30000ms exceeded.",
+            "outsideViewport": true,
+            "selectorLine": true
+          }
+        },
+        {
+          "name": "actual Bootstrap/Liquid Select input, layout and source-bound paint bootstrap-2-3-2/vue2/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+          "status": "failed",
+          "ifRed": {
+            "firstLine": "locator.click: Timeout 30000ms exceeded.",
+            "outsideViewport": true,
+            "selectorLine": true
+          }
+        }
+      ]
+    },
+    "nativeLateCSSOM": {
+      "product": "9fb5a33f7c619867085222ae875ec56aade2355f",
+      "browser": "156.0.8078.79",
+      "errors": [],
+      "capture": {
+        "radiusSamples": [".625rem", ".625rem", "17px"],
+        "inserted": {
+          "atSampleCount": 2,
+          "observedRadius": "17px",
+          "loading": true
+        },
+        "ready": {
+          "runtime": "wc",
+          "loading": false,
+          "rootRadius": "17px",
+          "shellRadius": "17px",
+          "shellBackground": "rgb(13, 29, 47)"
+        }
+      },
+      "result": "passed"
+    },
+    "packedHeaderExit": 0,
+    "calendarOnAuthoredHead": {
+      "browser": "156.0.8078.79",
+      "hostClock": "2026-10-10T12:00:00Z",
+      "initial": {
+        "focused": true,
+        "scrollTop": 3008,
+        "scrollHeight": 3232,
+        "clientHeight": 224,
+        "documentScrollY": 1717,
+        "currentVisible": true,
+        "viewport": {
+          "x": 626.890625,
+          "y": 640.5,
+          "width": 144,
+          "height": 224
+        }
+      },
+      "optionCount": 101,
+      "wheel": -560,
+      "afterWheel": {
+        "focused": false,
+        "scrollTop": 2448,
+        "scrollHeight": 3232,
+        "clientHeight": 224,
+        "documentScrollY": 1717,
+        "currentVisible": false,
+        "viewport": {
+          "x": 626.890625,
+          "y": 640.5,
+          "width": 144,
+          "height": 224
+        }
+      },
+      "result": "passed",
+      "pageErrors": []
+    },
+    "resyncBrowserAssets": {
+      "before": 2620,
+      "after": 2620,
+      "byteEqual": 2620,
+      "removed": [],
+      "added": [],
+      "modified": [],
+      "completeIdentity": true
+    }
+  },
+  "originalS4": {
+    "previewers": {
+      "zh-cn": 1268,
+      "en": 1268
+    },
+    "failed": 2,
+    "filtered": 0,
+    "failureFirstLines": [
+      "page.waitForFunction: Timeout 60000ms exceeded.",
+      "page.waitForFunction: Timeout 60000ms exceeded."
+    ],
+    "deadlinesMs": {
+      "readiness": 60000,
+      "outerCase": 150000
+    }
+  },
+  "sourceBoundTiming": {
+    "head": "2209fa5c28447773a1681071147aca6c1e27fb00",
+    "originalStem": "1df88dd0fa4a9a1438e990da9df42dc819c3f981",
+    "checkpoint": 1944,
+    "unbatched": {
+      "pageMs": 48686.89999985695,
+      "readyReads": 541,
+      "readyFirstTokenSumMs": 805.400000333786,
+      "readyFirstTokenPerReadMs": 1.4887245847204917,
+      "initialWatchReads": 641,
+      "initialWatchFirstTokenSumMs": 1026.099998474121,
+      "pairedValues": {
+        "same": 541,
+        "different": 0
+      }
+    },
+    "batched": {
+      "pageMs": 43948.799999952316,
+      "readyReads": 541,
+      "readyFirstTokenSumMs": 21.899999618530273,
+      "readyFirstTokenPerReadMs": 0.04048059079210772,
+      "initialWatchReads": 639,
+      "initialWatchFirstTokenSumMs": 903.6000006198883,
+      "pairedValues": {
+        "same": 539,
+        "different": 0
+      }
+    },
+    "largestObservedSourceBatch": {
+      "kind": "source-batch",
+      "batches": 24,
+      "reads": 607,
+      "largest": 129,
+      "maximumMs": 4.5,
+      "samples": 18,
+      "runMs": 2.5,
+      "pageMs": 58023.799999952316
+    },
+    "rawProfileExit": 1,
+    "wrapperExit": 1,
+    "failureFirstLines": ["page.waitForFunction: Timeout 60000ms exceeded."],
+    "scope": "English original 1268. Same sampled read instrumentation. Two read-only emitted-asset observers plus console forwarding. Values are delivered per-phase sample observations and cannot determine the critical path.",
+    "restoredAssets": [
+      {
+        "asset": "projection-theme.539w51GM.js",
+        "originalSHA256": "7b87bfbd90f67b3e7e97a2302608a9191053deea2761ab88c18fb8e98d2f284b",
+        "instrumentedSHA256": "d66d19921872c0d1a69e62e36d2d10df0221f357f89b048a5cd8bbe3837a8f40"
+      },
+      {
+        "asset": "previewer-client.CeayE0tr.js",
+        "originalSHA256": "f6a20dab893e801940d742262be86a04570669805c094684efa7d43c1180ad7f",
+        "instrumentedSHA256": "e9983561e3ad94794e97244fbdcd30696b453ea8fcd20822df968b908618465b"
+      }
+    ]
+  }
+}

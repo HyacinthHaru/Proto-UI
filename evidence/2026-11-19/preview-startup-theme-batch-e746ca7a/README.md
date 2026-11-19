@@ -1,0 +1,9 @@
+# Preview startup theme reads
+
+The initial generic Previewer publication groups current scope reads into one document task before appearance writes resume. It samples each scope independently, retains the original fresh watcher read, and keeps the immediate path for subsequent switches.
+
+All 182 focused cases passed. The new integration test observes the loading gate at the scheduled read, checks current theme delivery, and confirms a later switch uses the immediate path. On the exact packed candidate e746ca7a8cc5b0b5a5d44d0007e8eb912613a79f, all 34 selected preview cases passed. This signed head combines the original patch 9fb5a33f7c619867085222ae875ec56aade2355f with main 21af3bec014503e68782a6f1f3756aec2bb987cd, which updates the public package import smoke helper. The package build and manifests covered 47 public packages, workspace types passed, and the ordinary site built 683 pages. All 2620 emitted JavaScript and CSS assets matched across the main sync. The extra four Bootstrap Select controls matched their known pristine comparator outcomes. React passed and the other three reached the existing off-viewport Beta click deadline.
+
+An actual Chrome control on the original authored head changes an already adopted stylesheet immediately after the second theme read. The third read observes the resulting 17px radius and the published shell exposes that radius and the requested background. The measured source profile exercises the signed composed tree 2209fa5c28447773a1681071147aca6c1e27fb00 and uses the retained fresh watcher.
+
+The Bilingual Demo Matrix retains 1,268 roots for each locale and the original 60-second readiness and 150-second case limits. Both original locale cases reached their readiness deadline. The timing data reports delivered CSS read samples and batch sizes under the recorded browser workload.
