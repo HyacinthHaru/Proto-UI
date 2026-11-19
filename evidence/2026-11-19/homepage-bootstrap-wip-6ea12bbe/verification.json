@@ -1,0 +1,219 @@
+{
+  "head": "6ea12bbea3c388978d83f2abcda72794cc1e2e6c",
+  "tree": "89c7319ba08ec7774795df46a21d7f4b141fb2db",
+  "base": "21af3bec014503e68782a6f1f3756aec2bb987cd",
+  "paths": [
+    "apps/www/src/components/Homepage/homepage-runtime-client.test.ts",
+    "apps/www/src/components/PrototypePreviewer/home-demo-client.test.ts"
+  ],
+  "baseline": {
+    "passed": 72,
+    "failed": 1
+  },
+  "candidate": {
+    "passed": 72,
+    "failed": 0
+  },
+  "packageBuilds": 47,
+  "packageManifests": 47,
+  "sitePages": 683,
+  "workspaceTypes": "pass",
+  "packedPages": {
+    "en": "c40ea1cf52865b6f998858127aae3a4b150b320fa06b178f363f8df1ff1c3534",
+    "zh-cn": "abcebc53ca9ed352d221f8f3c806b882199733f0443b839e93d301fdf6064922"
+  },
+  "native": {
+    "head": "6ea12bbea3c388978d83f2abcda72794cc1e2e6c",
+    "tree": "89c7319ba08ec7774795df46a21d7f4b141fb2db",
+    "chrome": "156.0.8078.79",
+    "scope": "Packed bilingual homepage WIP family selection and runtime handoff",
+    "rows": [
+      {
+        "locale": "en",
+        "headerFamily": "bootstrap-2-3-2",
+        "galleryFamily": "bootstrap-2-3-2",
+        "runtime": "wc",
+        "generation": 2,
+        "component": "website-component-gallery",
+        "cards": [
+          "controls",
+          "workspace-command",
+          "workspace-analytics",
+          "workspace-progress",
+          "preferences",
+          "workspace-help",
+          "editor",
+          "hover",
+          "overlays",
+          "choices"
+        ],
+        "bootstrapRoots": 170,
+        "unrelatedFamilyRoots": []
+      },
+      {
+        "locale": "en",
+        "headerFamily": "bootstrap-2-3-2",
+        "galleryFamily": "bootstrap-2-3-2",
+        "runtime": "react",
+        "generation": 3,
+        "component": "website-component-gallery",
+        "cards": [
+          "controls",
+          "workspace-command",
+          "workspace-analytics",
+          "workspace-progress",
+          "preferences",
+          "workspace-help",
+          "editor",
+          "hover",
+          "overlays",
+          "choices"
+        ],
+        "bootstrapRoots": 163,
+        "unrelatedFamilyRoots": []
+      },
+      {
+        "locale": "en",
+        "headerFamily": "bootstrap-2-3-2",
+        "galleryFamily": "bootstrap-2-3-2",
+        "runtime": "vue",
+        "generation": 4,
+        "component": "website-component-gallery",
+        "cards": [
+          "controls",
+          "workspace-command",
+          "workspace-analytics",
+          "workspace-progress",
+          "preferences",
+          "workspace-help",
+          "editor",
+          "hover",
+          "overlays",
+          "choices"
+        ],
+        "bootstrapRoots": 163,
+        "unrelatedFamilyRoots": []
+      },
+      {
+        "locale": "en",
+        "headerFamily": "bootstrap-2-3-2",
+        "galleryFamily": "bootstrap-2-3-2",
+        "runtime": "vue2",
+        "generation": 5,
+        "component": "website-component-gallery",
+        "cards": [
+          "controls",
+          "workspace-command",
+          "workspace-analytics",
+          "workspace-progress",
+          "preferences",
+          "workspace-help",
+          "editor",
+          "hover",
+          "overlays",
+          "choices"
+        ],
+        "bootstrapRoots": 163,
+        "unrelatedFamilyRoots": []
+      },
+      {
+        "locale": "zh-cn",
+        "headerFamily": "bootstrap-2-3-2",
+        "galleryFamily": "bootstrap-2-3-2",
+        "runtime": "wc",
+        "generation": 2,
+        "component": "website-component-gallery",
+        "cards": [
+          "controls",
+          "workspace-command",
+          "workspace-analytics",
+          "workspace-progress",
+          "preferences",
+          "workspace-help",
+          "editor",
+          "hover",
+          "overlays",
+          "choices"
+        ],
+        "bootstrapRoots": 170,
+        "unrelatedFamilyRoots": []
+      },
+      {
+        "locale": "zh-cn",
+        "headerFamily": "bootstrap-2-3-2",
+        "galleryFamily": "bootstrap-2-3-2",
+        "runtime": "react",
+        "generation": 3,
+        "component": "website-component-gallery",
+        "cards": [
+          "controls",
+          "workspace-command",
+          "workspace-analytics",
+          "workspace-progress",
+          "preferences",
+          "workspace-help",
+          "editor",
+          "hover",
+          "overlays",
+          "choices"
+        ],
+        "bootstrapRoots": 163,
+        "unrelatedFamilyRoots": []
+      },
+      {
+        "locale": "zh-cn",
+        "headerFamily": "bootstrap-2-3-2",
+        "galleryFamily": "bootstrap-2-3-2",
+        "runtime": "vue",
+        "generation": 4,
+        "component": "website-component-gallery",
+        "cards": [
+          "controls",
+          "workspace-command",
+          "workspace-analytics",
+          "workspace-progress",
+          "preferences",
+          "workspace-help",
+          "editor",
+          "hover",
+          "overlays",
+          "choices"
+        ],
+        "bootstrapRoots": 163,
+        "unrelatedFamilyRoots": []
+      },
+      {
+        "locale": "zh-cn",
+        "headerFamily": "bootstrap-2-3-2",
+        "galleryFamily": "bootstrap-2-3-2",
+        "runtime": "vue2",
+        "generation": 5,
+        "component": "website-component-gallery",
+        "cards": [
+          "controls",
+          "workspace-command",
+          "workspace-analytics",
+          "workspace-progress",
+          "preferences",
+          "workspace-help",
+          "editor",
+          "hover",
+          "overlays",
+          "choices"
+        ],
+        "bootstrapRoots": 163,
+        "unrelatedFamilyRoots": []
+      }
+    ],
+    "images": [
+      {
+        "filename": "homepage-bootstrap-wip-en.png",
+        "sha256": "cdfa2fb8d59a5ab13e9a59cbc7d24c8f452a0b740a2e14b9e9b3e226a19ccf3f"
+      },
+      {
+        "filename": "homepage-bootstrap-wip-zh-cn.png",
+        "sha256": "c5c8693f4b67022e517ab09a7471210aaba76e6394c7bbfa1da93417adaeabba"
+      }
+    ]
+  }
+}
