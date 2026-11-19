@@ -1,0 +1,114 @@
+{
+  "source": "2209fa5c28447773a1681071147aca6c1e27fb00",
+  "scope": "English original S4 with two observed WC previewers. The second arm overrides only batch dispatch in the built control. Both retain the original 60-second readiness and 150-second case limit.",
+  "arms": {
+    "task": {
+      "results": {
+        "demo-shadcn-tree": {
+          "phasePageMs": {
+            "demo-request": 19188.400000095367,
+            "demo-ready": 30408.400000095367,
+            "prototypes-request": 30408.5,
+            "prototypes-ready": 34153.40000009537,
+            "render-request": 34153.5,
+            "render-return": 34178.09999990463,
+            "shell-ready": 34233.5,
+            "theme-enqueue": 34233.59999990463,
+            "theme-sample": 41658.59999990463,
+            "appearance-start": 41659.59999990463,
+            "appearance-return": 41662,
+            "startup-ungated": 41662.09999990463
+          },
+          "themeQueueMs": 7425.0,
+          "appearanceApplyMs": 2.4
+        },
+        "demo-bootstrap-2-3-2-async-region": {
+          "phasePageMs": {
+            "demo-request": 21851.200000047684,
+            "demo-ready": 30969.400000095367,
+            "prototypes-request": 30969.5,
+            "prototypes-ready": 35578.299999952316,
+            "render-request": 35578.299999952316,
+            "render-return": 35585.799999952316,
+            "shell-ready": 35611.799999952316,
+            "theme-enqueue": 35611.90000009537,
+            "theme-sample": 41658.90000009537,
+            "appearance-start": 41659.700000047684,
+            "appearance-return": 41674.90000009537,
+            "startup-ungated": 41675
+          },
+          "themeQueueMs": 6047.0,
+          "appearanceApplyMs": 15.2
+        }
+      },
+      "failureFirstLines": ["page.waitForFunction: Timeout 60000ms exceeded."],
+      "restorationExit": 1,
+      "assetBindings": [
+        {
+          "asset": "projection-theme.539w51GM.js",
+          "originalSHA256": "7b87bfbd90f67b3e7e97a2302608a9191053deea2761ab88c18fb8e98d2f284b",
+          "instrumentedSHA256": "7b87bfbd90f67b3e7e97a2302608a9191053deea2761ab88c18fb8e98d2f284b"
+        },
+        {
+          "asset": "previewer-client.CeayE0tr.js",
+          "originalSHA256": "f6a20dab893e801940d742262be86a04570669805c094684efa7d43c1180ad7f",
+          "instrumentedSHA256": "294edbfedac01ec4d871ca1db6d798269d60b56db64a2e2ef204b06cb65ba544"
+        }
+      ]
+    },
+    "microtask": {
+      "results": {
+        "demo-shadcn-tree": {
+          "phasePageMs": {
+            "demo-request": 19198.89999985695,
+            "demo-ready": 30856.39999985695,
+            "prototypes-request": 30858.200000047684,
+            "prototypes-ready": 34697.799999952316,
+            "render-request": 34697.89999985695,
+            "render-return": 34723.799999952316,
+            "shell-ready": 34780.299999952316,
+            "theme-enqueue": 34780.39999985695,
+            "theme-sample": 34780.39999985695,
+            "appearance-start": 34783.700000047684,
+            "appearance-return": 34783.700000047684,
+            "startup-ungated": 34783.89999985695
+          },
+          "themeQueueMs": 0.0,
+          "appearanceApplyMs": 0.0
+        },
+        "demo-bootstrap-2-3-2-async-region": {
+          "phasePageMs": {
+            "demo-request": 21931.299999952316,
+            "demo-ready": 31321.299999952316,
+            "prototypes-request": 31321.39999985695,
+            "prototypes-ready": 36151.09999990463,
+            "render-request": 36151.200000047684,
+            "render-return": 36158.89999985695,
+            "shell-ready": 36185.89999985695,
+            "theme-enqueue": 36186,
+            "theme-sample": 36186.09999990463,
+            "appearance-start": 36188.200000047684,
+            "appearance-return": 36188.299999952316,
+            "startup-ungated": 36188.5
+          },
+          "themeQueueMs": 0.1,
+          "appearanceApplyMs": 0.1
+        }
+      },
+      "failureFirstLines": ["page.waitForFunction: Timeout 60000ms exceeded."],
+      "restorationExit": 1,
+      "assetBindings": [
+        {
+          "asset": "projection-theme.539w51GM.js",
+          "originalSHA256": "7b87bfbd90f67b3e7e97a2302608a9191053deea2761ab88c18fb8e98d2f284b",
+          "instrumentedSHA256": "94ab14cb1eec6158a0985b5e981dcc292e62b5aeab2f87159353dc93317c6c5c"
+        },
+        {
+          "asset": "previewer-client.CeayE0tr.js",
+          "originalSHA256": "f6a20dab893e801940d742262be86a04570669805c094684efa7d43c1180ad7f",
+          "instrumentedSHA256": "294edbfedac01ec4d871ca1db6d798269d60b56db64a2e2ef204b06cb65ba544"
+        }
+      ]
+    }
+  }
+}
