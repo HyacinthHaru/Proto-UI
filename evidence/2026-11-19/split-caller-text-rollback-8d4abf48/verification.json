@@ -1,0 +1,391 @@
+{
+  "source": {
+    "head": "8d4abf48a82756a8a7c1d85684a3dcc06df1149b",
+    "tree": "ab30a9f081464164b2b703496b0c0cb0a4a8204f",
+    "previous": "4def607269ccf1f23e7bff1a807009908dd5d369",
+    "composedHead": "3fc2a509fb131ddee3bf0de5cbc6028046579822",
+    "composedTree": "0c6438c1c5983b600afdea81b9ae4b14e07b63a5"
+  },
+  "priorObservations": {
+    "nativeSelection": [
+      {
+        "mutation": "unchanged",
+        "nested": false,
+        "kind": "text",
+        "selectedBefore": true,
+        "reaction": true,
+        "selectedAtReaction": true,
+        "errors": [],
+        "errorNames": [],
+        "retained": true,
+        "textRetained": true,
+        "elementChildren": [false, false],
+        "childCount": 0,
+        "hasTextOrControl": true,
+        "adoptedOwner": false,
+        "adoptedParent": false,
+        "foreignChildren": 0,
+        "adoptionSelectionRetained": false,
+        "selectionOwned": true,
+        "selectionOffsets": [1, 6],
+        "selectedAfter": true,
+        "text": "Caller text",
+        "projectedText": "Caller text",
+        "selectedText": "aller",
+        "diagnostic": {
+          "hostConnected": true,
+          "shadowChildren": ["style", "div"],
+          "slotCount": 1,
+          "logicalRange": "aller",
+          "hostHeight": 22
+        }
+      },
+      {
+        "mutation": "text data",
+        "nested": false,
+        "kind": "text",
+        "selectedBefore": true,
+        "reaction": true,
+        "selectedAtReaction": true,
+        "errors": ["Uncaught Error: [WC Adapter] decoration caller projection changed"],
+        "errorNames": ["Error"],
+        "retained": true,
+        "textRetained": true,
+        "elementChildren": [false, false],
+        "childCount": 0,
+        "hasTextOrControl": true,
+        "adoptedOwner": false,
+        "adoptedParent": false,
+        "foreignChildren": 0,
+        "adoptionSelectionRetained": false,
+        "selectionOwned": true,
+        "selectionOffsets": [1, 6],
+        "selectedAfter": true,
+        "text": "Caller text",
+        "projectedText": "Caller text",
+        "selectedText": "",
+        "diagnostic": {
+          "hostConnected": true,
+          "shadowChildren": [],
+          "slotCount": 0,
+          "logicalRange": "aller",
+          "hostHeight": 22
+        }
+      },
+      {
+        "mutation": "unchanged",
+        "nested": true,
+        "kind": "text",
+        "selectedBefore": true,
+        "reaction": true,
+        "selectedAtReaction": true,
+        "errors": [],
+        "errorNames": [],
+        "retained": true,
+        "textRetained": true,
+        "elementChildren": [false, false],
+        "childCount": 1,
+        "hasTextOrControl": true,
+        "adoptedOwner": false,
+        "adoptedParent": false,
+        "foreignChildren": 0,
+        "adoptionSelectionRetained": false,
+        "selectionOwned": true,
+        "selectionOffsets": [1, 6],
+        "selectedAfter": true,
+        "text": "Caller text",
+        "projectedText": "Caller text",
+        "selectedText": "aller",
+        "diagnostic": {
+          "hostConnected": true,
+          "shadowChildren": ["style", "div"],
+          "slotCount": 1,
+          "logicalRange": "aller",
+          "hostHeight": 22
+        }
+      },
+      {
+        "mutation": "text replacement",
+        "nested": true,
+        "kind": "text",
+        "selectedBefore": true,
+        "reaction": true,
+        "selectedAtReaction": true,
+        "errors": ["Uncaught Error: [WC Adapter] decoration caller projection changed"],
+        "errorNames": ["Error"],
+        "retained": true,
+        "textRetained": true,
+        "elementChildren": [false, false],
+        "childCount": 1,
+        "hasTextOrControl": true,
+        "adoptedOwner": false,
+        "adoptedParent": false,
+        "foreignChildren": 0,
+        "adoptionSelectionRetained": false,
+        "selectionOwned": true,
+        "selectionOffsets": [1, 6],
+        "selectedAfter": true,
+        "text": "Caller text",
+        "projectedText": "Caller text",
+        "selectedText": "",
+        "diagnostic": {
+          "hostConnected": true,
+          "shadowChildren": [],
+          "slotCount": 0,
+          "logicalRange": "aller",
+          "hostHeight": 22
+        }
+      },
+      {
+        "mutation": "adopt text",
+        "nested": true,
+        "kind": "text",
+        "selectedBefore": true,
+        "reaction": true,
+        "selectedAtReaction": true,
+        "errors": ["Uncaught Error: [WC Adapter] decoration caller projection changed"],
+        "errorNames": ["Error"],
+        "retained": true,
+        "textRetained": false,
+        "elementChildren": [false, false],
+        "childCount": 0,
+        "hasTextOrControl": false,
+        "adoptedOwner": true,
+        "adoptedParent": true,
+        "foreignChildren": 1,
+        "adoptionSelectionRetained": true,
+        "selectionOwned": true,
+        "selectionOffsets": [0, 0],
+        "selectedAfter": false,
+        "text": "Foreign text",
+        "projectedText": "",
+        "selectedText": "",
+        "diagnostic": {
+          "hostConnected": true,
+          "shadowChildren": [],
+          "slotCount": 0,
+          "logicalRange": "",
+          "hostHeight": 22
+        }
+      },
+      {
+        "mutation": "unchanged",
+        "nested": true,
+        "kind": "element",
+        "selectedBefore": true,
+        "reaction": true,
+        "selectedAtReaction": true,
+        "errors": [],
+        "errorNames": [],
+        "retained": true,
+        "textRetained": true,
+        "elementChildren": [true, true],
+        "childCount": 2,
+        "hasTextOrControl": false,
+        "adoptedOwner": false,
+        "adoptedParent": false,
+        "foreignChildren": 0,
+        "adoptionSelectionRetained": false,
+        "selectionOwned": true,
+        "selectionOffsets": [0, 2],
+        "selectedAfter": true,
+        "text": null,
+        "projectedText": "",
+        "selectedText": "\n",
+        "diagnostic": {
+          "hostConnected": true,
+          "shadowChildren": ["style", "div"],
+          "slotCount": 1,
+          "logicalRange": "",
+          "hostHeight": 44
+        }
+      },
+      {
+        "mutation": "replace children",
+        "nested": true,
+        "kind": "element",
+        "selectedBefore": true,
+        "reaction": true,
+        "selectedAtReaction": true,
+        "errors": ["Uncaught Error: [WC Adapter] decoration caller projection changed"],
+        "errorNames": ["Error"],
+        "retained": true,
+        "textRetained": true,
+        "elementChildren": [true, true],
+        "childCount": 2,
+        "hasTextOrControl": false,
+        "adoptedOwner": false,
+        "adoptedParent": false,
+        "foreignChildren": 0,
+        "adoptionSelectionRetained": false,
+        "selectionOwned": true,
+        "selectionOffsets": [0, 2],
+        "selectedAfter": true,
+        "text": null,
+        "projectedText": "",
+        "selectedText": "",
+        "diagnostic": {
+          "hostConnected": true,
+          "shadowChildren": [],
+          "slotCount": 0,
+          "logicalRange": "",
+          "hostHeight": 22
+        }
+      },
+      {
+        "mutation": "adopt child",
+        "nested": true,
+        "kind": "element",
+        "selectedBefore": true,
+        "reaction": true,
+        "selectedAtReaction": true,
+        "errors": ["Uncaught Error: [WC Adapter] decoration caller projection changed"],
+        "errorNames": ["Error"],
+        "retained": true,
+        "textRetained": true,
+        "elementChildren": [true, false],
+        "childCount": 1,
+        "hasTextOrControl": false,
+        "adoptedOwner": true,
+        "adoptedParent": true,
+        "foreignChildren": 1,
+        "adoptionSelectionRetained": true,
+        "selectionOwned": true,
+        "selectionOffsets": [0, 1],
+        "selectedAfter": false,
+        "text": null,
+        "projectedText": "",
+        "selectedText": "",
+        "diagnostic": {
+          "hostConnected": true,
+          "shadowChildren": [],
+          "slotCount": 0,
+          "logicalRange": "",
+          "hostHeight": 22
+        }
+      }
+    ],
+    "fixtureTreeWalker": [
+      {
+        "mutation": "text content",
+        "visited": [],
+        "originalSeen": false,
+        "rendered": true,
+        "data": "Reset",
+        "current": "Reset"
+      },
+      {
+        "mutation": "nested text replacement",
+        "visited": [],
+        "originalSeen": false,
+        "rendered": false,
+        "data": "Caller text",
+        "current": "Reset"
+      },
+      {
+        "mutation": "foreign text adoption",
+        "visited": [],
+        "originalSeen": false,
+        "rendered": false,
+        "data": "Foreign text",
+        "current": ""
+      }
+    ]
+  },
+  "red": {
+    "files": 1,
+    "passed": 19,
+    "failed": 3,
+    "filtered": 159
+  },
+  "native": {
+    "files": 1,
+    "passed": 181,
+    "failed": 0,
+    "filtered": 0
+  },
+  "integration": {
+    "files": 1,
+    "passed": 61,
+    "failed": 0,
+    "filtered": 0
+  },
+  "testSHA256": "16f657042a0ff5133585ee7cbc441219b132169ea3a3dd0fbf4c02a913242443",
+  "standalone": {
+    "packageBuilds": 47,
+    "manifests": 47,
+    "workspaceTypes": "passed",
+    "catalog": "passed"
+  },
+  "composed": {
+    "packageBuilds": 47,
+    "builtPages": 685,
+    "workspaceTypes": "passed",
+    "packed": {
+      "preview-browser": {
+        "files": 3,
+        "passed": 15,
+        "failed": 0,
+        "filtered": 9
+      },
+      "code-grammar": {
+        "files": 1,
+        "passed": 3,
+        "failed": 0,
+        "filtered": 23
+      },
+      "copy-commands": {
+        "files": 1,
+        "passed": 1,
+        "failed": 0,
+        "filtered": 14
+      },
+      "scroll-chain": {
+        "files": 1,
+        "passed": 2,
+        "failed": 0,
+        "filtered": 4
+      },
+      "table": {
+        "files": 1,
+        "passed": 5,
+        "failed": 0,
+        "filtered": 0
+      },
+      "accordion": {
+        "files": 1,
+        "passed": 4,
+        "failed": 0,
+        "filtered": 29
+      },
+      "field": {
+        "files": 1,
+        "passed": 4,
+        "failed": 0,
+        "filtered": 21
+      }
+    },
+    "retainedCodeExamples": 9,
+    "s4Cases": [
+      {
+        "name": "zh-cn: native Light/split/mixed acceptance",
+        "status": "failed",
+        "failure": "page.waitForFunction: Timeout 60000ms exceeded."
+      },
+      {
+        "name": "en: native Light/split/mixed acceptance",
+        "status": "failed",
+        "failure": "page.waitForFunction: Timeout 60000ms exceeded."
+      }
+    ],
+    "s4PageErrors": {
+      "zh-cn": {},
+      "en": {}
+    },
+    "s4PreviewsByLocale": {
+      "zh-cn": 1268,
+      "en": 1268
+    },
+    "s4DeadlinesMs": [60000, 150000]
+  }
+}
