@@ -1,0 +1,310 @@
+{
+  "head": "6351e5145b00ca5684b9246146cfa223c65ed4d2",
+  "tree": "4c3ad0b6ec5284d7b0c29930f0584c23adf74a09",
+  "base": "21af3bec014503e68782a6f1f3756aec2bb987cd",
+  "paths": [
+    "apps/www/src/content/docs/en/ui-libraries/shadcn/button.mdx",
+    "apps/www/src/content/docs/en/ui-libraries/shadcn/style-scope.mdx",
+    "apps/www/src/content/docs/zh-cn/ui-libraries/shadcn/button.mdx",
+    "apps/www/src/content/docs/zh-cn/ui-libraries/shadcn/style-scope.mdx",
+    "apps/www/test/shadcn-rhea-demo-policy.test.ts"
+  ],
+  "demoIdsPerLocale": 73,
+  "ordinaryRheaDemos": 68,
+  "focused": 122,
+  "baselineComparison": {
+    "baselinePassed": 221,
+    "baselineFailed": 18,
+    "candidatePassed": 228,
+    "candidateFailed": 16,
+    "resolved": [
+      [
+        "shadcn-rhea-demo-policy.test.ts",
+        "ordinary Shadcn documentation demo policy Button/wc: displayed source explicitly declares the same profile",
+        "AssertionError: demo-button: expected 0 to be greater than 0"
+      ],
+      [
+        "shadcn-rhea-demo-policy.test.ts",
+        "ordinary Shadcn documentation demo policy covers every actual Shadcn page demo ID, not a selected subset",
+        "AssertionError: en/button.mdx: expected '---\\ntitle: \\'Button\\'\\ndesp: \\'Proto\u2026' to contain 'Shadcn Rhea'"
+      ]
+    ],
+    "remaining": [
+      [
+        "canonical-motion-palette.test.ts",
+        "canonical palette with real Switch and Web Component lifecycle (DOM harness) preserves the same owner across a same-tick move and checks the new ancestor theme, shadow=false",
+        "AssertionError: expected [] to deeply equal [ +0, +0 ]"
+      ],
+      [
+        "canonical-motion-palette.test.ts",
+        "canonical palette with real Switch and Web Component lifecycle (DOM harness) preserves the same owner across a same-tick move and checks the new ancestor theme, shadow=true",
+        "AssertionError: expected [] to deeply equal [ +0, +0 ]"
+      ],
+      [
+        "canonical-motion-palette.test.ts",
+        "canonical palette with real Switch and Web Component lifecycle (DOM harness) rejects a real connected theme override after reattach without reusing canonical colors",
+        "TypeError: Cannot read properties of undefined (reading 'source')"
+      ],
+      [
+        "canonical-motion-palette.test.ts",
+        "canonical palette with real Switch and Web Component lifecycle (DOM harness) retires an async detached view and freshly binds on reattach, shadow=false",
+        "AssertionError: expected [] to have a length of 2 but got +0"
+      ],
+      [
+        "canonical-motion-palette.test.ts",
+        "canonical palette with real Switch and Web Component lifecycle (DOM harness) retires an async detached view and freshly binds on reattach, shadow=true",
+        "AssertionError: expected [] to have a length of 2 but got +0"
+      ],
+      [
+        "checkbox-group-registration.test.ts",
+        "Checkbox Group actual DemoSpec registration shadcn loads only real family checkbox-group atoms",
+        "AssertionError: expected [ 'shadcn-checkbox-group-all', \u2026(3) ] to deeply equal [ 'shadcn-checkbox-group-all', \u2026(2) ]"
+      ],
+      [
+        "dropdown-recipe-examples.test.ts",
+        "Dropdown recipe WC source-host rendering demo-shadcn-dropdown-inset: renders fixed SVGs, live menu parts and their bounded props",
+        "AssertionError: expected [ 'py-1', 'text-xs', \u2026(3) ] to include 'pl-8'"
+      ],
+      [
+        "dropdown-recipe-examples.test.ts",
+        "bounded public Shadcn Dropdown recipes demo-shadcn-dropdown-destructive: keeps a static literal recipe without simulated menu parts or Web behavior",
+        "AssertionError: expected 'import { withShadcnRheaDemo } from \\'\u2026' to match /^export default \\{/"
+      ],
+      [
+        "dropdown-recipe-examples.test.ts",
+        "bounded public Shadcn Dropdown recipes demo-shadcn-dropdown-inset: keeps a static literal recipe without simulated menu parts or Web behavior",
+        "AssertionError: expected 'import { withShadcnRheaDemo } from \\'\u2026' to match /^import type \\{ DemoSpec \\}/"
+      ],
+      [
+        "fieldset-registration.test.ts",
+        "Fieldset actual DemoSpec registration shadcn loads only real family fieldset atoms",
+        "AssertionError: expected [ 'shadcn-field-control', \u2026(7) ] to deeply equal [ 'shadcn-field-control', \u2026(6) ]"
+      ],
+      [
+        "home-demo-client.test.ts",
+        "Homepage Prototype projection scope rejects an initial partial bootstrap-2-3-2 family before mutating the SSR mount, allowing corrected re-init",
+        "AssertionError: expected [Function] to throw an error"
+      ],
+      [
+        "homepage-presentation.test.ts",
+        "Homepage presentation source boundaries shows the task without conceptual headings, metadata or styled wrapper surfaces",
+        "AssertionError: expected '---\\nimport HomepageGhostCard from \\'\u2026' to contain 'grid-template-columns: repeat(5, minm\u2026'"
+      ],
+      [
+        "select-public-parts.test.ts",
+        "website public Shadcn Select compositions declares complete static AdapterSelect parts without a Shadcn positioning override",
+        "AssertionError: expected '---\\nimport { resolveSiteLibraryFamil\u2026' to match /family === 'shadcn' \\? \\(\\s*<wc-shadc\u2026/"
+      ],
+      [
+        "select-public-parts.test.ts",
+        "website public Shadcn Select compositions declares complete static LanguageSelect parts without a Shadcn positioning override",
+        "AssertionError: expected '---\\nimport { resolveSiteLibraryFamil\u2026' to match /family === 'shadcn' \\? \\(\\s*<wc-shadc\u2026/"
+      ],
+      [
+        "text-registration.test.ts",
+        "Text actual DemoSpec registration shadcn loads only real family text atoms",
+        "AssertionError: expected [ 'shadcn-style-scope', \u2026(1) ] to deeply equal [ 'shadcn-text-root' ]"
+      ],
+      [
+        "toast-registration.test.ts",
+        "Toast actual DemoSpec registration shadcn loads only real family toast atoms",
+        "AssertionError: expected [ 'shadcn-button', \u2026(7) ] to deeply equal [ 'shadcn-button', \u2026(6) ]"
+      ]
+    ],
+    "new": []
+  },
+  "packageBuilds": 47,
+  "packageManifests": 47,
+  "sitePages": 683,
+  "workspaceTypes": "pass",
+  "packedPages": {
+    "en": "052be5ec200c9d709e163d4e005ec8ecce3302913a8954d849d9d9aec19dd762",
+    "zh-cn": "ed936d4825259bb8e2cb133f57b19b0e00c21de2fa6c036b3fef6cd26e7ed3d0"
+  },
+  "native": {
+    "head": "6351e5145b00ca5684b9246146cfa223c65ed4d2",
+    "tree": "4c3ad0b6ec5284d7b0c29930f0584c23adf74a09",
+    "chrome": "156.0.8078.79",
+    "scope": "Packed two-locale documentation. Code file selection and preview observation, no application installation.",
+    "rows": [
+      {
+        "locale": "en",
+        "route": "/en/ui-libraries/shadcn/button/",
+        "preview": {
+          "tag": "wc-shadcn-button",
+          "height": 32,
+          "minHeight": "auto",
+          "label": "Default"
+        },
+        "files": [
+          {
+            "id": "demo-button",
+            "htmlSHA256": "0e5096fa5d57549f73d73756660cd23277f1231246b8694b9e0ab04fcade6702",
+            "selectedFileRelationshipMatches": false
+          },
+          {
+            "id": "demo-button-variants",
+            "htmlSHA256": "4d40780b21d1215a028bdb25aa26d60c966ea30bfd1597722d8cf01557db5a8d",
+            "selectedFileRelationshipMatches": false
+          },
+          {
+            "id": "demo-button-default",
+            "htmlSHA256": "fcb98154f43070c6d959a2a6aa65c580ed5763b3bb6c786eaa2ce60e7c57247f",
+            "selectedFileRelationshipMatches": false
+          },
+          {
+            "id": "demo-button-secondary",
+            "htmlSHA256": "1d95ea5b24ff5daeed19b4dd5d1c7fa2fefb34e8d7f28ceea4662b13bedbde2a",
+            "selectedFileRelationshipMatches": false
+          },
+          {
+            "id": "demo-button-outline",
+            "htmlSHA256": "1df8862dff6140869d25aadcee159136c67ab8d56ea4a9c7a82e7f7212f616ef",
+            "selectedFileRelationshipMatches": false
+          },
+          {
+            "id": "demo-button-ghost",
+            "htmlSHA256": "d2ba159ca69c76ce8f7fb8b3fc5f95b930b195b4ed70037d374114f85ab20109",
+            "selectedFileRelationshipMatches": false
+          },
+          {
+            "id": "demo-button-destructive",
+            "htmlSHA256": "ca804435a21ee6e313beb1e2a116fc8d21d967c420863518403ece383faa2ffc",
+            "selectedFileRelationshipMatches": false
+          },
+          {
+            "id": "demo-button-sizes",
+            "htmlSHA256": "49185cbdbf3d444e5f1d82833cbe3078679bc4cc4c2eb5349ff62936679df739",
+            "selectedFileRelationshipMatches": false
+          },
+          {
+            "id": "demo-button-disabled",
+            "htmlSHA256": "0b097665ddd1f251f3f8e74960bfb46dff12222227e17e35f5485595c3ce18a3",
+            "selectedFileRelationshipMatches": false
+          }
+        ],
+        "externalOriginsDenied": [],
+        "snapshot": {
+          "filename": "button-rhea-code-en.png",
+          "sha256": "94e7fa9e6e0edcc2901db83b7ad0fa4a2c7c5745540203ec77ea73d9a0b13a6a"
+        }
+      },
+      {
+        "locale": "zh-cn",
+        "route": "/zh-cn/ui-libraries/shadcn/button/",
+        "preview": {
+          "tag": "wc-shadcn-button",
+          "height": 32,
+          "minHeight": "auto",
+          "label": "Default"
+        },
+        "files": [
+          {
+            "id": "demo-button",
+            "htmlSHA256": "0e5096fa5d57549f73d73756660cd23277f1231246b8694b9e0ab04fcade6702",
+            "selectedFileRelationshipMatches": false
+          },
+          {
+            "id": "demo-button-variants",
+            "htmlSHA256": "4d40780b21d1215a028bdb25aa26d60c966ea30bfd1597722d8cf01557db5a8d",
+            "selectedFileRelationshipMatches": false
+          },
+          {
+            "id": "demo-button-default",
+            "htmlSHA256": "fcb98154f43070c6d959a2a6aa65c580ed5763b3bb6c786eaa2ce60e7c57247f",
+            "selectedFileRelationshipMatches": false
+          },
+          {
+            "id": "demo-button-secondary",
+            "htmlSHA256": "1d95ea5b24ff5daeed19b4dd5d1c7fa2fefb34e8d7f28ceea4662b13bedbde2a",
+            "selectedFileRelationshipMatches": false
+          },
+          {
+            "id": "demo-button-outline",
+            "htmlSHA256": "1df8862dff6140869d25aadcee159136c67ab8d56ea4a9c7a82e7f7212f616ef",
+            "selectedFileRelationshipMatches": false
+          },
+          {
+            "id": "demo-button-ghost",
+            "htmlSHA256": "d2ba159ca69c76ce8f7fb8b3fc5f95b930b195b4ed70037d374114f85ab20109",
+            "selectedFileRelationshipMatches": false
+          },
+          {
+            "id": "demo-button-destructive",
+            "htmlSHA256": "ca804435a21ee6e313beb1e2a116fc8d21d967c420863518403ece383faa2ffc",
+            "selectedFileRelationshipMatches": false
+          },
+          {
+            "id": "demo-button-sizes",
+            "htmlSHA256": "49185cbdbf3d444e5f1d82833cbe3078679bc4cc4c2eb5349ff62936679df739",
+            "selectedFileRelationshipMatches": false
+          },
+          {
+            "id": "demo-button-disabled",
+            "htmlSHA256": "0b097665ddd1f251f3f8e74960bfb46dff12222227e17e35f5485595c3ce18a3",
+            "selectedFileRelationshipMatches": false
+          }
+        ],
+        "externalOriginsDenied": [],
+        "snapshot": {
+          "filename": "button-rhea-code-zh-cn.png",
+          "sha256": "7cf62abafe5b921c4b703ff8dd77ec6dccf928a75c19a3bbf011ac88fc1620d6"
+        }
+      }
+    ]
+  },
+  "existingTreeRelationship": {
+    "head": "6351e5145b00ca5684b9246146cfa223c65ed4d2",
+    "id": "demo-button",
+    "locale": "en",
+    "panelId": "code-example-ljnplebqvc8-0-file-panel-2",
+    "tree": {
+      "items": [
+        {
+          "path": "src/main.ts",
+          "index": "0",
+          "id": "code-example-ljnplebqvc8-0-file-tab-0-tree",
+          "controls": "code-example-ljnplebqvc8-0-file-panel-0",
+          "selected": "false"
+        },
+        {
+          "path": "src/button-demo.css",
+          "index": "1",
+          "id": "code-example-ljnplebqvc8-0-file-tab-2-tree",
+          "controls": "code-example-ljnplebqvc8-0-file-panel-1",
+          "selected": "false"
+        },
+        {
+          "path": "index.html",
+          "index": "2",
+          "id": "code-example-ljnplebqvc8-0-file-tab-1-tree",
+          "controls": "code-example-ljnplebqvc8-0-file-panel-2",
+          "selected": "true"
+        }
+      ],
+      "panels": [
+        {
+          "title": "src/main.ts",
+          "id": "code-example-ljnplebqvc8-0-file-panel-0",
+          "index": "0",
+          "hidden": true,
+          "labelledBy": "code-example-ljnplebqvc8-0-file-tab-0-tree"
+        },
+        {
+          "title": "index.html",
+          "id": "code-example-ljnplebqvc8-0-file-panel-1",
+          "index": "1",
+          "hidden": false,
+          "labelledBy": "code-example-ljnplebqvc8-0-file-tab-2-tree"
+        },
+        {
+          "title": "src/button-demo.css",
+          "id": "code-example-ljnplebqvc8-0-file-panel-2",
+          "index": "2",
+          "hidden": true,
+          "labelledBy": "code-example-ljnplebqvc8-0-file-tab-1-tree"
+        }
+      ]
+    }
+  }
+}
