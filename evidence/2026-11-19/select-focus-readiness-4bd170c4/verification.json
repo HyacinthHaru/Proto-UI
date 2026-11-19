@@ -1,0 +1,159 @@
+{
+  "source": {
+    "head": "4bd170c423b7bdf94ca78567daaaa85e747196b9",
+    "tree": "b74f861687c7bba006fd3829fdff3ad06b4d31bc",
+    "fix": "3a299bfcbcb071990c769eb4696e7098adfec6f9",
+    "fixTree": "98678d9e043f0fffede09c388493e3f691075690",
+    "previous": "453d3693df367f97128557bae1143564840cc5c3",
+    "main": "af43d613171fe18a8acf61fe3fbffec5610f67a1"
+  },
+  "review": 4624985316,
+  "red": {
+    "files": 1,
+    "passed": 7,
+    "failed": 5,
+    "filtered": 57
+  },
+  "redFailures": [
+    {
+      "title": "'base' Select popper host focus scroll policy readmits a successor after automatic entry completes through host readiness",
+      "firstLine": "AssertionError: expected <body>\u2026(2)</body> to be <base-select-item \u2026(10)>\u2026(1)</base-select-item> // Object.is equality"
+    },
+    {
+      "title": "'shadcn' Select popper host focus scroll policy readmits a successor after automatic entry completes through host readiness",
+      "firstLine": "AssertionError: expected <body>\u2026(2)</body> to be <shadcn-select-item \u2026(11)>\u2026(2)</shadcn-select-item> // Object.is equality"
+    },
+    {
+      "title": "'shadcn' Select popper host focus scroll policy keeps a newer external owner when a pending automatic entry would retry",
+      "firstLine": "AssertionError: expected \"focus\" to be called once, but got 2 times"
+    },
+    {
+      "title": "'brutalist' Select popper host focus scroll policy readmits a successor after automatic entry completes through host readiness",
+      "firstLine": "AssertionError: expected <body>\u2026(2)</body> to be <brutalist-select-item \u2026(11)>\u2026(2)</brutalist-select-item> // Object.is equality"
+    },
+    {
+      "title": "'brutalist' Select popper host focus scroll policy keeps a newer external owner when a pending automatic entry would retry",
+      "firstLine": "AssertionError: expected \"focus\" to be called once, but got 2 times"
+    }
+  ],
+  "green": {
+    "files": 6,
+    "passed": 151,
+    "failed": 0,
+    "filtered": 0
+  },
+  "fixtureSHA256": "88d4a0ce911d8887fcd4dea9b74ed9b0f5317d665105be630dec63a888d101e3",
+  "packed": {
+    "preview-browser": {
+      "files": 3,
+      "passed": 15,
+      "failed": 0,
+      "filtered": 9
+    },
+    "code-grammar": {
+      "files": 1,
+      "passed": 3,
+      "failed": 0,
+      "filtered": 23
+    },
+    "copy-commands": {
+      "files": 1,
+      "passed": 1,
+      "failed": 0,
+      "filtered": 14
+    },
+    "scroll-chain": {
+      "files": 1,
+      "passed": 2,
+      "failed": 0,
+      "filtered": 4
+    },
+    "table": {
+      "files": 1,
+      "passed": 5,
+      "failed": 0,
+      "filtered": 0
+    },
+    "accordion": {
+      "files": 1,
+      "passed": 4,
+      "failed": 0,
+      "filtered": 29
+    },
+    "field": {
+      "files": 1,
+      "passed": 4,
+      "failed": 0,
+      "filtered": 21
+    },
+    "select": {
+      "files": 1,
+      "passed": 4,
+      "failed": 0,
+      "filtered": 20
+    }
+  },
+  "packedReceipt": {
+    "head": "4bd170c423b7bdf94ca78567daaaa85e747196b9",
+    "tree": "b74f861687c7bba006fd3829fdff3ad06b4d31bc",
+    "distHashes": {
+      "zh-cn/index.html": "c59e86a0d48ecd6bf0d79a0535c72fde4a51ab67653c6a83da09467c7a694e94",
+      "zh-cn/ui-libraries/shadcn/button/index.html": "31c800ed23a3fd73555556bcf2c76de5fb1a659c634223d04814dcad264b71ce",
+      "zh-cn/ui-libraries/brutalist/components/button/index.html": "1c52b582039589f58823a90f800435b80440743c8f93b36a8329572e16865cbb"
+    },
+    "sourceCodeExamples": 9,
+    "renderedCodeExamples": 9,
+    "packedHeaderExit": 0,
+    "previewBrowserExit": 0,
+    "codeGrammarExit": 0,
+    "copyCommandsExit": 0,
+    "scrollChainExit": 0,
+    "tableExit": 0,
+    "accordionExit": 0,
+    "fieldExit": 0,
+    "selectExit": 0,
+    "calendarConsumerExit": 0,
+    "selector": "uses real family Popover Triggers|uses the same mobile shell|retains (shadcn|brutalist) preference owners|compact (shadcn|brutalist)|live available region|keeps Runtime Tabs outside"
+  },
+  "calendar": {
+    "browser": "156.0.8078.79",
+    "hostClock": "2026-10-10T12:00:00Z",
+    "initial": {
+      "focused": true,
+      "scrollTop": 3008,
+      "scrollHeight": 3232,
+      "clientHeight": 224,
+      "documentScrollY": 1717,
+      "currentVisible": true,
+      "viewport": {
+        "x": 626.890625,
+        "y": 640.5,
+        "width": 144,
+        "height": 224
+      }
+    },
+    "optionCount": 101,
+    "wheel": -560,
+    "afterWheel": {
+      "focused": false,
+      "scrollTop": 2448,
+      "scrollHeight": 3232,
+      "clientHeight": 224,
+      "documentScrollY": 1717,
+      "currentVisible": false,
+      "viewport": {
+        "x": 626.890625,
+        "y": 640.5,
+        "width": 144,
+        "height": 224
+      }
+    },
+    "result": "passed",
+    "pageErrors": []
+  },
+  "publicPackages": 47,
+  "buildSummary": "15:20:35 [build] 683 page(s) built in 28.12s",
+  "workspaceTypesAfterStyleGeneration": "passed",
+  "workingTreeSetupControl": "Workspace tsc initially ran before ignored stylesheet generation and failed on missing generated JS. The existing style generator ran before the successful exact-head check.",
+  "nativeBootstrapCaptureSHA256": "a89f419c3925e6675163db1e6948afe5b4b6b8004316f93c182920b879b34d00"
+}
