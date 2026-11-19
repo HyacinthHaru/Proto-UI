@@ -1,0 +1,410 @@
+{
+  "source": {
+    "head": "69341bf399b80e2acaaa45e3450570bc7fc15f53",
+    "tree": "8ea7619c172a2a0bc8e99fdc7a9e59d203f21511",
+    "parents": ["21af3bec014503e68782a6f1f3756aec2bb987cd"]
+  },
+  "composedSource": {
+    "head": "058d02c1880b681148bb36077bdeb691f0732d49",
+    "tree": "fde0acdc33031915d3285719a0132a3844ff48e1",
+    "parents": [
+      "3fc2a509fb131ddee3bf0de5cbc6028046579822",
+      "69341bf399b80e2acaaa45e3450570bc7fc15f53"
+    ]
+  },
+  "paths": ["packages/modules/a11y/src/web.ts", "packages/modules/a11y/test/web-reference.test.ts"],
+  "authority": ["C-A11Y-0001-O", "C-A11Y-0001-P", "C-A11Y-PART-RELATIONSHIP-0001"],
+  "sourceVerification": {
+    "matchedRed": {
+      "numPassedTests": 64,
+      "numFailedTests": 1,
+      "numPendingTests": 0,
+      "numPassedTestSuites": 4
+    },
+    "focusedGreen": {
+      "numPassedTests": 200,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "numPassedTestSuites": 31
+    },
+    "sourceNativeChromium": {
+      "chrome": "156.0.8078.79",
+      "beforeSHA256": "a2681b6e92d432c9c5972d6ddcc0518541a102c0c609b8b0903a5ca4bbc4fd76",
+      "afterSHA256": "21e12d4fd38a29bc0b82eecfdb6ef7f8d580228ad6807d7ba3478b4cf1f0c719",
+      "rows": [
+        {
+          "arm": "before",
+          "shadow": false,
+          "before": "observed-target",
+          "unrelatedReads": 2,
+          "afterUnrelated": "observed-target",
+          "colliding": null,
+          "recovered": "observed-target",
+          "moved": null,
+          "returned": "observed-target",
+          "sourceHasId": false
+        },
+        {
+          "arm": "before",
+          "shadow": true,
+          "before": "observed-target",
+          "unrelatedReads": 2,
+          "afterUnrelated": "observed-target",
+          "colliding": null,
+          "recovered": "observed-target",
+          "moved": null,
+          "returned": "observed-target",
+          "sourceHasId": false
+        },
+        {
+          "arm": "after",
+          "shadow": false,
+          "before": "observed-target",
+          "unrelatedReads": 0,
+          "afterUnrelated": "observed-target",
+          "colliding": null,
+          "recovered": "observed-target",
+          "moved": null,
+          "returned": "observed-target",
+          "sourceHasId": false
+        },
+        {
+          "arm": "after",
+          "shadow": true,
+          "before": "observed-target",
+          "unrelatedReads": 0,
+          "afterUnrelated": "observed-target",
+          "colliding": null,
+          "recovered": "observed-target",
+          "moved": null,
+          "returned": "observed-target",
+          "sourceHasId": false
+        },
+        {
+          "arm": "after",
+          "shadow": false,
+          "before": "observed-target",
+          "unrelatedReads": 0,
+          "afterUnrelated": "observed-target",
+          "colliding": null,
+          "recovered": "observed-target",
+          "moved": null,
+          "returned": "observed-target",
+          "sourceHasId": false
+        },
+        {
+          "arm": "after",
+          "shadow": true,
+          "before": "observed-target",
+          "unrelatedReads": 0,
+          "afterUnrelated": "observed-target",
+          "colliding": null,
+          "recovered": "observed-target",
+          "moved": null,
+          "returned": "observed-target",
+          "sourceHasId": false
+        },
+        {
+          "arm": "before",
+          "shadow": false,
+          "before": "observed-target",
+          "unrelatedReads": 2,
+          "afterUnrelated": "observed-target",
+          "colliding": null,
+          "recovered": "observed-target",
+          "moved": null,
+          "returned": "observed-target",
+          "sourceHasId": false
+        },
+        {
+          "arm": "before",
+          "shadow": true,
+          "before": "observed-target",
+          "unrelatedReads": 2,
+          "afterUnrelated": "observed-target",
+          "colliding": null,
+          "recovered": "observed-target",
+          "moved": null,
+          "returned": "observed-target",
+          "sourceHasId": false
+        }
+      ]
+    },
+    "packageBuilds": 47,
+    "manifests": 47,
+    "workspaceTypes": "pass",
+    "localFinfMeasurements": [
+      "PASS lucide/icons/x: 2879 / 3000 gzip bytes; overBudget=0; minified=8695 sha256=da30ebe409a83a09d2569fe2a47880a133fcbe4d554d93ea305795356c4fccdb",
+      "PASS lucide root: 637306 / 700000 gzip bytes; overBudget=0; minified=4087403 sha256=eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c",
+      "ADVISORY core root: 11378 / 7600 gzip bytes; overBudget=3778; minified=35782 sha256=0e3c868d3ef719af46085b83881b15787a94acbaf893566ceae4047ceff72b44",
+      "ADVISORY runtime root: 100583 / 78500 gzip bytes; overBudget=22083; minified=388362 sha256=c7ca823c556d400fa05abd87e3f0ad59b0fb1366eefb6a35c0a642340c4ea5cc",
+      "ADVISORY adapter-react root: 163068 / 106000 gzip bytes; overBudget=57068; minified=575389 sha256=1e79eb5c6e20de520628026cf0660dec8c9a15a041e66d5f35d350192fe2ed09",
+      "ADVISORY adapter-vue root: 161760 / 106000 gzip bytes; overBudget=55760; minified=570632 sha256=c0df3ec212e9c8b859b79dd1e7f9abd8cc90fc8bd249a261c2f06331fc1b5c48",
+      "ADVISORY adapter-web-component root: 191691 / 132000 gzip bytes; overBudget=59691; minified=660153 sha256=58671975f892940f5dd68e9413f2e174a73bd37704a5cedaef3dca1b9d94f901",
+      "PASS prototypes-base/button: 5274 / 6000 gzip bytes; overBudget=0; minified=18158 sha256=6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67",
+      "ADVISORY prototypes-shadcn/button: 7812 / 7000 gzip bytes; overBudget=812; minified=34533 sha256=14c8420ae3b34a6371ad380a685153b92d89bcdc23fc1ab734581eeddd7ae301"
+    ]
+  },
+  "packedVerification": {
+    "caseCounts": {
+      "preview-browser": 15,
+      "scroll-chain": 2,
+      "copy-commands": 1,
+      "code-grammar": 3,
+      "table": 5,
+      "accordion": 4,
+      "field": 4
+    },
+    "header": "320px and 390px",
+    "renderedCodeExamples": 9,
+    "receipt": {
+      "head": "058d02c1880b681148bb36077bdeb691f0732d49",
+      "tree": "fde0acdc33031915d3285719a0132a3844ff48e1",
+      "distHashes": {
+        "zh-cn/index.html": "5f15aa2c6d94884578fb611669eaa28f9c1c2052d940dc7c32aa6352c2d3385e",
+        "zh-cn/ui-libraries/shadcn/button/index.html": "9168f059bf71afd36b7ab8a00421c845f7a4d6023be54b7ff7e0b83a23f7e4a5",
+        "zh-cn/ui-libraries/brutalist/components/button/index.html": "4f0134406e470c3fc425518e5c67c68fd02d2de1038966b1c2b533e6fa1b95f8"
+      },
+      "sourceCodeExamples": 9,
+      "renderedCodeExamples": 9,
+      "packedHeaderExit": 0,
+      "previewBrowserExit": 0,
+      "codeGrammarExit": 0,
+      "copyCommandsExit": 0,
+      "scrollChainExit": 0,
+      "tableExit": 0,
+      "accordionExit": 0,
+      "fieldExit": 0,
+      "selector": "uses real family Popover Triggers|uses the same mobile shell|retains (shadcn|brutalist) preference owners|compact (shadcn|brutalist)|live available region|keeps Runtime Tabs outside"
+    }
+  },
+  "originalS4": {
+    "counts": {
+      "numPassedTests": 0,
+      "numFailedTests": 2,
+      "numPendingTests": 0,
+      "numPassedTestSuites": 0
+    },
+    "verdicts": [
+      {
+        "title": "zh-cn: native Light/split/mixed acceptance",
+        "result": "failed",
+        "primaryFailure": "page.waitForFunction: Timeout 60000ms exceeded."
+      },
+      {
+        "title": "en: native Light/split/mixed acceptance",
+        "result": "failed",
+        "primaryFailure": "page.waitForFunction: Timeout 60000ms exceeded."
+      }
+    ],
+    "actualPageErrorCounts": {
+      "zh-cn": 0,
+      "en": 0
+    },
+    "previewCount": {
+      "zh-cn": 1268,
+      "en": 1268
+    },
+    "deadlineMs": {
+      "readiness": 60000,
+      "case": 150000
+    }
+  },
+  "earlierExactDiagnostic": {
+    "head": "3fc2a509fb131ddee3bf0de5cbc6028046579822",
+    "traceSHA256": "13da589c9f6287bff59ba51284079b35e7dce115730f9ab40e69f2b9721e1f3f",
+    "mappedResourceCount": 11,
+    "result": "failed",
+    "failure": "page.waitForFunction: Timeout 60000ms exceeded.",
+    "phases": {
+      "demo-brutalist-checkbox-group": {
+        "entry": "demo-brutalist-checkbox-group.demo.w-p8eH1d.js",
+        "networkToRendererFinishMs": 2362.965,
+        "rendererFinishToBodyMs": 3719.111,
+        "splitWindowCategories": {
+          "toRendererResourceFinish": {
+            "tasks": 1070.588,
+            "microtaskCheckpoints": 1290.256,
+            "layoutAndStyle": 385.866,
+            "functions": 1181.965,
+            "moduleEvaluate": 0.433,
+            "moduleParseCompile": 0.065
+          },
+          "afterRendererResourceFinish": {
+            "tasks": 1158.502,
+            "microtaskCheckpoints": 2556.034,
+            "layoutAndStyle": 457.948,
+            "functions": 1741.983,
+            "moduleEvaluate": 0.887,
+            "moduleParseCompile": 0.151
+          }
+        }
+      },
+      "brutalist-checkbox-group-root": {
+        "entry": "index.CBCn-Fjl.js",
+        "networkToRendererFinishMs": 1023.79,
+        "rendererFinishToBodyMs": 9889.242,
+        "splitWindowCategories": {
+          "toRendererResourceFinish": {
+            "tasks": 585.898,
+            "microtaskCheckpoints": 435.582,
+            "layoutAndStyle": 170.404,
+            "functions": 552.461,
+            "moduleEvaluate": 0.197,
+            "moduleParseCompile": 0.066
+          },
+          "afterRendererResourceFinish": {
+            "tasks": 2477.119,
+            "microtaskCheckpoints": 7406.269,
+            "layoutAndStyle": 984.722,
+            "functions": 4575.964,
+            "moduleEvaluate": 0.727,
+            "moduleParseCompile": 0.26
+          }
+        }
+      }
+    }
+  },
+  "packedObserverOperationCounts": {
+    "commonCheckpoint": 4096,
+    "arms": {
+      "before": {
+        "product": "3fc2a509fb131ddee3bf0de5cbc6028046579822",
+        "tree": "0c6438c1c5983b600afdea81b9ae4b14e07b63a5",
+        "boundAsset": {
+          "arm": "before",
+          "file": "site-shadcn-controls.BqwNi7o1.js",
+          "originalSHA256": "5308d5ee8470bcbb2944b3851a67486df9ef5d88f1a1c5ec71b324b19dd0f885",
+          "instrumentedSHA256": "e5dd5cc6d1086b87d61e65e76bfe7c2fad0d92596f7e59bc304bf4d12376df39"
+        },
+        "result": "failed",
+        "primaryFailure": "page.waitForFunction: Timeout 60000ms exceeded.",
+        "checkpoints": {
+          "256": {
+            "batches": 256,
+            "mutationRecords": 3493,
+            "ownerVisits": 7305,
+            "fullPasses": 256,
+            "refVisits": 7305,
+            "pageMs": 5107.799999952316,
+            "timeOrigin": 1795080764989.2
+          },
+          "512": {
+            "batches": 512,
+            "mutationRecords": 4474,
+            "ownerVisits": 17321,
+            "fullPasses": 512,
+            "refVisits": 17321,
+            "pageMs": 5452.700000047684,
+            "timeOrigin": 1795080764989.2
+          },
+          "1024": {
+            "batches": 1024,
+            "mutationRecords": 7741,
+            "ownerVisits": 87264,
+            "fullPasses": 1024,
+            "refVisits": 87264,
+            "pageMs": 7184.599999904633,
+            "timeOrigin": 1795080764989.2
+          },
+          "2048": {
+            "batches": 2048,
+            "mutationRecords": 16150,
+            "ownerVisits": 395810,
+            "fullPasses": 2048,
+            "refVisits": 395810,
+            "pageMs": 16658.200000047684,
+            "timeOrigin": 1795080764989.2
+          },
+          "4096": {
+            "batches": 4096,
+            "mutationRecords": 30216,
+            "ownerVisits": 1882233,
+            "fullPasses": 4096,
+            "refVisits": 1882233,
+            "pageMs": 52924.700000047684,
+            "timeOrigin": 1795080764989.2
+          }
+        },
+        "common": {
+          "batches": 4096,
+          "mutationRecords": 30216,
+          "ownerVisits": 1882233,
+          "fullPasses": 4096,
+          "refVisits": 1882233,
+          "pageMs": 52924.700000047684,
+          "timeOrigin": 1795080764989.2
+        }
+      },
+      "after": {
+        "product": "058d02c1880b681148bb36077bdeb691f0732d49",
+        "tree": "fde0acdc33031915d3285719a0132a3844ff48e1",
+        "boundAsset": {
+          "arm": "after",
+          "file": "site-shadcn-controls.C2VHeT-U.js",
+          "originalSHA256": "a9b3bb46866447252d6af98dfbc1dd5a7e1b46b583099edbcb2f305ed86388c6",
+          "instrumentedSHA256": "9fae70788a880f955de3e9d981b2443f78b3c89215b1ba693a781333ebb8c604"
+        },
+        "result": "failed",
+        "primaryFailure": "page.waitForFunction: Timeout 60000ms exceeded.",
+        "checkpoints": {
+          "256": {
+            "batches": 256,
+            "mutationRecords": 3493,
+            "ownerVisits": 7305,
+            "fullPasses": 9,
+            "refVisits": 318,
+            "pageMs": 5562.5,
+            "timeOrigin": 1795080839289.1
+          },
+          "512": {
+            "batches": 512,
+            "mutationRecords": 4316,
+            "ownerVisits": 17289,
+            "fullPasses": 21,
+            "refVisits": 786,
+            "pageMs": 5772.799999952316,
+            "timeOrigin": 1795080839289.1
+          },
+          "1024": {
+            "batches": 1024,
+            "mutationRecords": 8063,
+            "ownerVisits": 67073,
+            "fullPasses": 210,
+            "refVisits": 16275,
+            "pageMs": 8210.700000047684,
+            "timeOrigin": 1795080839289.1
+          },
+          "2048": {
+            "batches": 2048,
+            "mutationRecords": 16267,
+            "ownerVisits": 358279,
+            "fullPasses": 593,
+            "refVisits": 135554,
+            "pageMs": 17871.400000095367,
+            "timeOrigin": 1795080839289.1
+          },
+          "4096": {
+            "batches": 4096,
+            "mutationRecords": 30358,
+            "ownerVisits": 1878975,
+            "fullPasses": 1348,
+            "refVisits": 690748,
+            "pageMs": 57517.40000009537,
+            "timeOrigin": 1795080839289.1
+          }
+        },
+        "common": {
+          "batches": 4096,
+          "mutationRecords": 30358,
+          "ownerVisits": 1878975,
+          "fullPasses": 1348,
+          "refVisits": 690748,
+          "pageMs": 57517.40000009537,
+          "timeOrigin": 1795080839289.1
+        }
+      }
+    },
+    "scope": "Two independent English 1268-preview runs, original 60s readiness and 150s case deadline. The Chinese case is filtered in each profiling arm. This counts calls and references, including different underlying mutations and renderer schedules."
+  }
+}
