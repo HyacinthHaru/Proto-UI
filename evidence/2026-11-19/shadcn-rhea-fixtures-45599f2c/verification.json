@@ -1,0 +1,474 @@
+{
+  "head": "45599f2c153db54538555434940325268681f5a5",
+  "tree": "a1a22bdfc55d203e37941e8643ac077c8b4978e8",
+  "base": "21af3bec014503e68782a6f1f3756aec2bb987cd",
+  "testPaths": [
+    "apps/www/src/components/PrototypePreviewer/checkbox-group-registration.test.ts",
+    "apps/www/src/components/PrototypePreviewer/dropdown-recipe-examples.test.ts",
+    "apps/www/src/components/PrototypePreviewer/fieldset-registration.test.ts",
+    "apps/www/src/components/PrototypePreviewer/text-registration.test.ts",
+    "apps/www/src/components/PrototypePreviewer/toast-registration.test.ts"
+  ],
+  "baselineComparison": {
+    "baselinePassed": 221,
+    "baselineFailed": 18,
+    "candidatePassed": 228,
+    "candidateFailed": 11,
+    "resolved": [
+      [
+        "checkbox-group-registration.test.ts",
+        "Checkbox Group actual DemoSpec registration shadcn loads only real family checkbox-group atoms",
+        "AssertionError: expected [ 'shadcn-checkbox-group-all', \u2026(3) ] to deeply equal [ 'shadcn-checkbox-group-all', \u2026(2) ]"
+      ],
+      [
+        "dropdown-recipe-examples.test.ts",
+        "Dropdown recipe WC source-host rendering demo-shadcn-dropdown-inset: renders fixed SVGs, live menu parts and their bounded props",
+        "AssertionError: expected [ 'py-1', 'text-xs', \u2026(3) ] to include 'pl-8'"
+      ],
+      [
+        "dropdown-recipe-examples.test.ts",
+        "bounded public Shadcn Dropdown recipes demo-shadcn-dropdown-destructive: keeps a static literal recipe without simulated menu parts or Web behavior",
+        "AssertionError: expected 'import { withShadcnRheaDemo } from \\'\u2026' to match /^export default \\{/"
+      ],
+      [
+        "dropdown-recipe-examples.test.ts",
+        "bounded public Shadcn Dropdown recipes demo-shadcn-dropdown-inset: keeps a static literal recipe without simulated menu parts or Web behavior",
+        "AssertionError: expected 'import { withShadcnRheaDemo } from \\'\u2026' to match /^import type \\{ DemoSpec \\}/"
+      ],
+      [
+        "fieldset-registration.test.ts",
+        "Fieldset actual DemoSpec registration shadcn loads only real family fieldset atoms",
+        "AssertionError: expected [ 'shadcn-field-control', \u2026(7) ] to deeply equal [ 'shadcn-field-control', \u2026(6) ]"
+      ],
+      [
+        "text-registration.test.ts",
+        "Text actual DemoSpec registration shadcn loads only real family text atoms",
+        "AssertionError: expected [ 'shadcn-style-scope', \u2026(1) ] to deeply equal [ 'shadcn-text-root' ]"
+      ],
+      [
+        "toast-registration.test.ts",
+        "Toast actual DemoSpec registration shadcn loads only real family toast atoms",
+        "AssertionError: expected [ 'shadcn-button', \u2026(7) ] to deeply equal [ 'shadcn-button', \u2026(6) ]"
+      ]
+    ],
+    "remaining": [
+      [
+        "canonical-motion-palette.test.ts",
+        "canonical palette with real Switch and Web Component lifecycle (DOM harness) preserves the same owner across a same-tick move and checks the new ancestor theme, shadow=false",
+        "AssertionError: expected [] to deeply equal [ +0, +0 ]"
+      ],
+      [
+        "canonical-motion-palette.test.ts",
+        "canonical palette with real Switch and Web Component lifecycle (DOM harness) preserves the same owner across a same-tick move and checks the new ancestor theme, shadow=true",
+        "AssertionError: expected [] to deeply equal [ +0, +0 ]"
+      ],
+      [
+        "canonical-motion-palette.test.ts",
+        "canonical palette with real Switch and Web Component lifecycle (DOM harness) rejects a real connected theme override after reattach without reusing canonical colors",
+        "TypeError: Cannot read properties of undefined (reading 'source')"
+      ],
+      [
+        "canonical-motion-palette.test.ts",
+        "canonical palette with real Switch and Web Component lifecycle (DOM harness) retires an async detached view and freshly binds on reattach, shadow=false",
+        "AssertionError: expected [] to have a length of 2 but got +0"
+      ],
+      [
+        "canonical-motion-palette.test.ts",
+        "canonical palette with real Switch and Web Component lifecycle (DOM harness) retires an async detached view and freshly binds on reattach, shadow=true",
+        "AssertionError: expected [] to have a length of 2 but got +0"
+      ],
+      [
+        "home-demo-client.test.ts",
+        "Homepage Prototype projection scope rejects an initial partial bootstrap-2-3-2 family before mutating the SSR mount, allowing corrected re-init",
+        "AssertionError: expected [Function] to throw an error"
+      ],
+      [
+        "homepage-presentation.test.ts",
+        "Homepage presentation source boundaries shows the task without conceptual headings, metadata or styled wrapper surfaces",
+        "AssertionError: expected '---\\nimport HomepageGhostCard from \\'\u2026' to contain 'grid-template-columns: repeat(5, minm\u2026'"
+      ],
+      [
+        "select-public-parts.test.ts",
+        "website public Shadcn Select compositions declares complete static AdapterSelect parts without a Shadcn positioning override",
+        "AssertionError: expected '---\\nimport { resolveSiteLibraryFamil\u2026' to match /family === 'shadcn' \\? \\(\\s*<wc-shadc\u2026/"
+      ],
+      [
+        "select-public-parts.test.ts",
+        "website public Shadcn Select compositions declares complete static LanguageSelect parts without a Shadcn positioning override",
+        "AssertionError: expected '---\\nimport { resolveSiteLibraryFamil\u2026' to match /family === 'shadcn' \\? \\(\\s*<wc-shadc\u2026/"
+      ],
+      [
+        "shadcn-rhea-demo-policy.test.ts",
+        "ordinary Shadcn documentation demo policy Button/wc: displayed source explicitly declares the same profile",
+        "AssertionError: demo-button: expected 0 to be greater than 0"
+      ],
+      [
+        "shadcn-rhea-demo-policy.test.ts",
+        "ordinary Shadcn documentation demo policy covers every actual Shadcn page demo ID, not a selected subset",
+        "AssertionError: en/button.mdx: expected '---\\ntitle: \\'Button\\'\\ndesp: \\'Proto\u2026' to contain 'Shadcn Rhea'"
+      ]
+    ],
+    "new": []
+  },
+  "packageBuilds": 47,
+  "packageManifests": 47,
+  "sitePages": 683,
+  "workspaceTypes": "pass",
+  "native": {
+    "head": "45599f2c153db54538555434940325268681f5a5",
+    "tree": "a1a22bdfc55d203e37941e8643ac077c8b4978e8",
+    "chrome": "156.0.8078.79",
+    "scope": "Native local packed WC Shadcn Rhea inset smoke",
+    "observations": [
+      {
+        "direction": "ltr",
+        "enabled": true,
+        "observed": {
+          "actions-label": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 24,
+            "textX": 631.6875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "more-label": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 24,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "paste": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "rename": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "copy": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 655.6875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": {
+              "width": 16,
+              "height": 16,
+              "viewBox": "0 0 24 24",
+              "paths": ["M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"],
+              "shapes": 2
+            }
+          },
+          "copyMinusPasteTextPx": 4
+        }
+      },
+      {
+        "direction": "ltr",
+        "enabled": false,
+        "observed": {
+          "actions-label": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 24,
+            "textX": 631.6875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "more-label": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 24,
+            "textX": 631.6875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "paste": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 631.6875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "rename": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 631.6875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          }
+        }
+      },
+      {
+        "direction": "ltr",
+        "enabled": true,
+        "observed": {
+          "actions-label": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 24,
+            "textX": 631.6875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "more-label": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 24,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "paste": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "rename": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          }
+        },
+        "externalOriginsDenied": []
+      },
+      {
+        "direction": "rtl",
+        "enabled": true,
+        "observed": {
+          "actions-label": {
+            "x": 488.3125,
+            "width": 120,
+            "height": 24,
+            "textX": 558.046875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "rtl",
+            "rem": 16,
+            "icon": null
+          },
+          "more-label": {
+            "x": 488.3125,
+            "width": 120,
+            "height": 24,
+            "textX": 526.953125,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "rtl",
+            "rem": 16,
+            "icon": null
+          },
+          "paste": {
+            "x": 488.3125,
+            "width": 120,
+            "height": 32,
+            "textX": 564.46875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "rtl",
+            "rem": 16,
+            "icon": null
+          },
+          "rename": {
+            "x": 488.3125,
+            "width": 120,
+            "height": 32,
+            "textX": 548.1875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "rtl",
+            "rem": 16,
+            "icon": null
+          },
+          "copy": {
+            "x": 488.3125,
+            "width": 120,
+            "height": 32,
+            "textX": 542.734375,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "rtl",
+            "rem": 16,
+            "icon": {
+              "width": 16,
+              "height": 16,
+              "viewBox": "0 0 24 24",
+              "paths": ["M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"],
+              "shapes": 2
+            }
+          },
+          "copyMinusPasteTextPx": -21.734375
+        }
+      },
+      {
+        "direction": "rtl",
+        "enabled": false,
+        "observed": {
+          "actions-label": {
+            "x": 488.3125,
+            "width": 120,
+            "height": 24,
+            "textX": 558.046875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "rtl",
+            "rem": 16,
+            "icon": null
+          },
+          "more-label": {
+            "x": 488.3125,
+            "width": 120,
+            "height": 24,
+            "textX": 526.953125,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "rtl",
+            "rem": 16,
+            "icon": null
+          },
+          "paste": {
+            "x": 488.3125,
+            "width": 120,
+            "height": 32,
+            "textX": 564.46875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "rtl",
+            "rem": 16,
+            "icon": null
+          },
+          "rename": {
+            "x": 488.3125,
+            "width": 120,
+            "height": 32,
+            "textX": 548.1875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "rtl",
+            "rem": 16,
+            "icon": null
+          }
+        }
+      },
+      {
+        "direction": "rtl",
+        "enabled": true,
+        "observed": {
+          "actions-label": {
+            "x": 488.3125,
+            "width": 120,
+            "height": 24,
+            "textX": 558.046875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "rtl",
+            "rem": 16,
+            "icon": null
+          },
+          "more-label": {
+            "x": 488.3125,
+            "width": 120,
+            "height": 24,
+            "textX": 526.953125,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "rtl",
+            "rem": 16,
+            "icon": null
+          },
+          "paste": {
+            "x": 488.3125,
+            "width": 120,
+            "height": 32,
+            "textX": 564.46875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "rtl",
+            "rem": 16,
+            "icon": null
+          },
+          "rename": {
+            "x": 488.3125,
+            "width": 120,
+            "height": 32,
+            "textX": 548.1875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "rtl",
+            "rem": 16,
+            "icon": null
+          }
+        },
+        "externalOriginsDenied": []
+      }
+    ],
+    "pics": [
+      {
+        "filename": "rhea-dropdown-ltr.png",
+        "sha256": "dad12ad6f55822ba7c525899e28469a0134c316544681137f89a776ca23b08d1"
+      },
+      {
+        "filename": "rhea-dropdown-rtl.png",
+        "sha256": "2cb04e138cb1adf4cb8b97491c88334e7c6d0490195987e28bec1f894fcd3972"
+      }
+    ]
+  },
+  "packedRouteSHA256": "5eef238c0e16605930392763c05f03937cf7e0750cfc6fb3b84a5f7603b9a5cd"
+}
