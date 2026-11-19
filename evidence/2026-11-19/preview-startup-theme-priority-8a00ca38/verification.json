@@ -1,0 +1,283 @@
+{
+  "source": {
+    "head": "8a00ca38a49dfddce82e6d91b6257e869e74e360",
+    "tree": "ad58bd23221902cc7cf2b6df47ccf4fb1a80bfc5",
+    "previous": "e746ca7a8cc5b0b5a5d44d0007e8eb912613a79f",
+    "composedHead": "a649b78d9d5c6677a8dff5a6f34b924720ea93d1",
+    "composedTree": "5355ac506c9752bd72909d6c375d1760806c8736"
+  },
+  "red": {
+    "files": 1,
+    "passed": 0,
+    "failed": 3,
+    "filtered": 15
+  },
+  "green": {
+    "files": 7,
+    "passed": 185,
+    "failed": 0,
+    "filtered": 0
+  },
+  "fixtureSHA256": "95b8c78c40715171b1b7985ba14b32edc317d1a8ba9a07427cb83283dfe6bacb",
+  "verified": {
+    "workspaceTypes": "passed",
+    "packageSourceInputs": "unchanged versus previous tested head",
+    "buildSummary": "16:12:54 [build] 683 page(s) built in 24.71s",
+    "packed": {
+      "preview-browser": {
+        "files": 3,
+        "passed": 15,
+        "failed": 0,
+        "filtered": 9
+      },
+      "code-grammar": {
+        "files": 1,
+        "passed": 3,
+        "failed": 0,
+        "filtered": 23
+      },
+      "copy-commands": {
+        "files": 1,
+        "passed": 1,
+        "failed": 0,
+        "filtered": 14
+      },
+      "scroll-chain": {
+        "files": 1,
+        "passed": 2,
+        "failed": 0,
+        "filtered": 4
+      },
+      "table": {
+        "files": 1,
+        "passed": 5,
+        "failed": 0,
+        "filtered": 0
+      },
+      "accordion": {
+        "files": 1,
+        "passed": 4,
+        "failed": 0,
+        "filtered": 29
+      },
+      "field": {
+        "files": 1,
+        "passed": 4,
+        "failed": 0,
+        "filtered": 21
+      }
+    },
+    "retainedCodeExamples": 9,
+    "packedHeaderExit": 0,
+    "nativeLateCSSOM": {
+      "priority": {
+        "product": "8a00ca38a49dfddce82e6d91b6257e869e74e360",
+        "browser": "156.0.8078.79",
+        "mode": "priority",
+        "errors": [],
+        "capture": {
+          "radiusSamples": [".625rem", ".625rem", "17px"],
+          "inserted": {
+            "atSampleCount": 2,
+            "observedRadius": "17px",
+            "loading": true
+          },
+          "ready": {
+            "runtime": "wc",
+            "loading": false,
+            "rootRadius": "17px",
+            "shellRadius": "17px",
+            "shellBackground": "rgb(13, 29, 47)"
+          },
+          "priorities": ["user-blocking"],
+          "schedulerAvailable": true
+        },
+        "result": "passed"
+      },
+      "fallback": {
+        "product": "8a00ca38a49dfddce82e6d91b6257e869e74e360",
+        "browser": "156.0.8078.79",
+        "mode": "fallback",
+        "errors": [],
+        "capture": {
+          "radiusSamples": [".625rem", ".625rem", "17px"],
+          "inserted": {
+            "atSampleCount": 2,
+            "observedRadius": "17px",
+            "loading": true
+          },
+          "ready": {
+            "runtime": "wc",
+            "loading": false,
+            "rootRadius": "17px",
+            "shellRadius": "17px",
+            "shellBackground": "rgb(13, 29, 47)"
+          },
+          "priorities": [],
+          "schedulerAvailable": true
+        },
+        "result": "passed"
+      }
+    }
+  },
+  "originalS4": {
+    "summary": {
+      "files": 1,
+      "passed": 0,
+      "failed": 2,
+      "filtered": 0
+    },
+    "cases": [
+      {
+        "name": "zh-cn: native Light/split/mixed acceptance",
+        "status": "failed",
+        "firstFailure": "page.waitForFunction: Timeout 60000ms exceeded."
+      },
+      {
+        "name": "en: native Light/split/mixed acceptance",
+        "status": "failed",
+        "firstFailure": "page.waitForFunction: Timeout 60000ms exceeded."
+      }
+    ],
+    "previews": {
+      "zh-cn": 1268,
+      "en": 1268
+    },
+    "readinessDeadlineMs": 60000,
+    "caseDeadlineMs": 150000
+  },
+  "schedulerControl": {
+    "matchedThemeReadCheckpoint": 1944,
+    "pageScope": "original English S4, 1268 previews. 60s readiness/150s case timeout.",
+    "measurement": "Delivered samples from separate runs on the same environment. The sample sums do not determine full startup latency or its causal path.",
+    "arms": {
+      "unbatched": {
+        "head": "1df88dd0fa4a9a1438e990da9df42dc819c3f981",
+        "readyReads": 541,
+        "firstTokenMs": 805.4,
+        "pageMs": 48686.9,
+        "lastBatch": null,
+        "failure": ["Error: Test timed out in 150000ms."],
+        "restoredAssets": [
+          {
+            "asset": "projection-theme.DzFgjIGA.js",
+            "originalSHA256": "55dcadfef6db6c53f28c363b91fd0b2b0ffa4079192fc627f7c092fa3ad37c67",
+            "instrumentedSHA256": "b11d09e4a27f12ccd94870346ee5d7f55d478429faab1d5de71c969fcbdfca0c"
+          },
+          {
+            "asset": "previewer-client.CS6pYItE.js",
+            "originalSHA256": "5a9474ecf79bfc4d758ca108a5227762c0604eed06d913780989eb3f1605a477",
+            "instrumentedSHA256": "ec70a38f24a193867144df38114f65fbf7d8aa9beacb4eedceff7a4f73e508c8"
+          }
+        ]
+      },
+      "timer": {
+        "head": "2209fa5c28447773a1681071147aca6c1e27fb00",
+        "readyReads": 541,
+        "firstTokenMs": 21.9,
+        "pageMs": 43948.8,
+        "lastBatch": {
+          "kind": "source-batch",
+          "batches": 24,
+          "reads": 607,
+          "largest": 129,
+          "maximumMs": 4.5,
+          "samples": 18,
+          "runMs": 2.5,
+          "pageMs": 58023.799999952316
+        },
+        "failure": ["page.waitForFunction: Timeout 60000ms exceeded."],
+        "restoredAssets": [
+          {
+            "asset": "projection-theme.539w51GM.js",
+            "originalSHA256": "7b87bfbd90f67b3e7e97a2302608a9191053deea2761ab88c18fb8e98d2f284b",
+            "instrumentedSHA256": "d66d19921872c0d1a69e62e36d2d10df0221f357f89b048a5cd8bbe3837a8f40"
+          },
+          {
+            "asset": "previewer-client.CeayE0tr.js",
+            "originalSHA256": "f6a20dab893e801940d742262be86a04570669805c094684efa7d43c1180ad7f",
+            "instrumentedSHA256": "e9983561e3ad94794e97244fbdcd30696b453ea8fcd20822df968b908618465b"
+          }
+        ]
+      },
+      "microtask": {
+        "head": "2209fa5c28447773a1681071147aca6c1e27fb00",
+        "readyReads": 541,
+        "firstTokenMs": 684.1,
+        "pageMs": 42820.6,
+        "lastBatch": {
+          "kind": "source-batch",
+          "batches": 648,
+          "reads": 673,
+          "largest": 9,
+          "maximumMs": 24.40000009536743,
+          "samples": 1,
+          "runMs": 3.700000047683716,
+          "pageMs": 69664.10000014305
+        },
+        "failure": ["page.waitForFunction: Timeout 60000ms exceeded."],
+        "restoredAssets": [
+          {
+            "asset": "projection-theme.539w51GM.js",
+            "originalSHA256": "7b87bfbd90f67b3e7e97a2302608a9191053deea2761ab88c18fb8e98d2f284b",
+            "instrumentedSHA256": "7fab55b5371f566661534a003a46cde3ffceb03cb0e2410a0bb1edd881138687"
+          },
+          {
+            "asset": "previewer-client.CeayE0tr.js",
+            "originalSHA256": "f6a20dab893e801940d742262be86a04570669805c094684efa7d43c1180ad7f",
+            "instrumentedSHA256": "e9983561e3ad94794e97244fbdcd30696b453ea8fcd20822df968b908618465b"
+          }
+        ]
+      },
+      "priority": {
+        "head": "2209fa5c28447773a1681071147aca6c1e27fb00",
+        "readyReads": 541,
+        "firstTokenMs": 67.1,
+        "pageMs": 43332.3,
+        "lastBatch": {
+          "kind": "source-batch",
+          "batches": 200,
+          "reads": 664,
+          "largest": 73,
+          "maximumMs": 3.700000047683716,
+          "samples": 3,
+          "runMs": 0.20000004768371582,
+          "pageMs": 69140
+        },
+        "failure": ["page.waitForFunction: Timeout 60000ms exceeded."],
+        "restoredAssets": [
+          {
+            "asset": "projection-theme.539w51GM.js",
+            "originalSHA256": "7b87bfbd90f67b3e7e97a2302608a9191053deea2761ab88c18fb8e98d2f284b",
+            "instrumentedSHA256": "8c760c5687073f7fd54905b14eeb18f586a6fb4c4e2a494c3b1d155309deafb9"
+          },
+          {
+            "asset": "previewer-client.CeayE0tr.js",
+            "originalSHA256": "f6a20dab893e801940d742262be86a04570669805c094684efa7d43c1180ad7f",
+            "instrumentedSHA256": "44ac5cdebf101c594da3a157f298415ab11c4c9ef4faf9787f92ab30a338b3d8"
+          }
+        ],
+        "owners": {
+          "demo-shadcn-tree": {
+            "phases": {
+              "theme-enqueue": 34389.60000014305,
+              "theme-sample": 34477.90000009537,
+              "appearance-start": 34478.10000014305,
+              "appearance-return": 34478.299999952316
+            },
+            "queueMs": 88.3
+          },
+          "demo-bootstrap-2-3-2-async-region": {
+            "phases": {
+              "theme-enqueue": 35813.700000047684,
+              "theme-sample": 35813.799999952316,
+              "appearance-start": 35815.799999952316,
+              "appearance-return": 35815.90000009537
+            },
+            "queueMs": 0.1
+          }
+        }
+      }
+    }
+  }
+}
