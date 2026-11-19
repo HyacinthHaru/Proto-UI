@@ -1,0 +1,2504 @@
+{
+  "head": "04c65303ed4c5a9c8bdd00604757deee825db66f",
+  "tree": "1d88e2433b904d0f4cd8673b76a6d81b625e22c4",
+  "base": "21af3bec014503e68782a6f1f3756aec2bb987cd",
+  "previous": "30c12dcb0121fa34c1cdc9600a0731c835aa09d5",
+  "testPaths": [
+    "apps/www/src/content/docs/zh-cn/finf-dropdown-recipe-evidence.test.ts",
+    "apps/www/src/content/docs/zh-cn/finf-dropdown-recipe-evidence.ts",
+    "apps/www/src/content/docs/zh-cn/finf-dropdown-recipes.browser.test.ts",
+    "spec/tests/T-SHADCN-DROPDOWN-MENU-ITEM-0001.yaml",
+    "spec/tests/T-SHADCN-DROPDOWN-MENU-LABEL-0001.yaml"
+  ],
+  "focused": {
+    "before": 15,
+    "after": 16
+  },
+  "workspaceTypes": "pass",
+  "specAuthoring": "pass",
+  "legacyMixedFrameFailure": {
+    "repeat": 3,
+    "recipe": "inset",
+    "profile": "new-york-v4",
+    "runtime": "react",
+    "scheme": "light",
+    "errors": [],
+    "external": [],
+    "observations": [],
+    "result": "failed",
+    "stage": "inset-initial",
+    "initialGeometry": {
+      "copy": {
+        "x": 648.6875,
+        "width": 125.609375,
+        "height": 32,
+        "textX": 680.6875,
+        "paddingLeft": 8,
+        "paddingRight": 8,
+        "direction": "ltr",
+        "rem": 16,
+        "icon": {
+          "width": 16,
+          "height": 16,
+          "viewBox": "0 0 24 24",
+          "paths": ["M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"],
+          "shapes": 2
+        }
+      },
+      "paste": {
+        "x": 651.8277587890625,
+        "width": 119.32891845703125,
+        "height": 30.39996337890625,
+        "textX": 682.227783203125,
+        "paddingLeft": 32,
+        "paddingRight": 8,
+        "direction": "ltr",
+        "rem": 16,
+        "icon": null
+      },
+      "over": {
+        "x": 651.8277587890625,
+        "width": 119.32891845703125,
+        "height": 30.39996337890625,
+        "textX": 682.227783203125,
+        "paddingLeft": 32,
+        "paddingRight": 8,
+        "direction": "ltr",
+        "rem": 16,
+        "icon": null
+      },
+      "rename": {
+        "x": 651.8277587890625,
+        "width": 119.32891845703125,
+        "height": 30.4000244140625,
+        "textX": 682.227783203125,
+        "paddingLeft": 32,
+        "paddingRight": 8,
+        "direction": "ltr",
+        "rem": 16,
+        "icon": null
+      },
+      "fontStatus": "loaded",
+      "menu": {
+        "className": "pui-owner-demo-27",
+        "transform": "matrix(0.95, 0, 0, 0.95, 0, -8)"
+      }
+    },
+    "failure": "AssertionError [ERR_ASSERTION]: Expected -1.540283203125 near 0"
+  },
+  "localNative": {
+    "head": "04c65303ed4c5a9c8bdd00604757deee825db66f",
+    "tree": "1d88e2433b904d0f4cd8673b76a6d81b625e22c4",
+    "chrome": "156.0.8078.79",
+    "scope": "Independent local source-server probe using the actual hosted-test fixture helper. Does not execute the Actions-only test.",
+    "rows": [
+      {
+        "recipe": "destructive",
+        "profile": "new-york-v4",
+        "runtime": "wc",
+        "scheme": "light",
+        "repeat": 0,
+        "errors": [],
+        "external": [],
+        "observations": [
+          {
+            "rest": [0, 0, 0, 0],
+            "focus": [226, 0, 10, 26],
+            "pressed": [226, 0, 10, 26]
+          }
+        ],
+        "result": "passed",
+        "stage": "legacy-destructive"
+      },
+      {
+        "recipe": "destructive",
+        "profile": "new-york-v4",
+        "runtime": "wc",
+        "scheme": "dark",
+        "repeat": 0,
+        "errors": [],
+        "external": [],
+        "observations": [
+          {
+            "rest": [0, 0, 0, 0],
+            "focus": [255, 100, 105, 51],
+            "pressed": [255, 100, 105, 51]
+          }
+        ],
+        "result": "passed",
+        "stage": "legacy-destructive"
+      },
+      {
+        "recipe": "destructive",
+        "profile": "new-york-v4",
+        "runtime": "react",
+        "scheme": "light",
+        "repeat": 0,
+        "errors": [],
+        "external": [],
+        "observations": [
+          {
+            "rest": [0, 0, 0, 0],
+            "focus": [226, 0, 10, 26],
+            "pressed": [226, 0, 10, 26]
+          }
+        ],
+        "result": "passed",
+        "stage": "legacy-destructive"
+      },
+      {
+        "recipe": "destructive",
+        "profile": "new-york-v4",
+        "runtime": "react",
+        "scheme": "dark",
+        "repeat": 0,
+        "errors": [],
+        "external": [],
+        "observations": [
+          {
+            "rest": [0, 0, 0, 0],
+            "focus": [255, 100, 105, 51],
+            "pressed": [255, 100, 105, 51]
+          }
+        ],
+        "result": "passed",
+        "stage": "legacy-destructive"
+      },
+      {
+        "recipe": "destructive",
+        "profile": "new-york-v4",
+        "runtime": "vue",
+        "scheme": "light",
+        "repeat": 0,
+        "errors": [],
+        "external": [],
+        "observations": [
+          {
+            "rest": [0, 0, 0, 0],
+            "focus": [226, 0, 10, 26],
+            "pressed": [226, 0, 10, 26]
+          }
+        ],
+        "result": "passed",
+        "stage": "legacy-destructive"
+      },
+      {
+        "recipe": "destructive",
+        "profile": "new-york-v4",
+        "runtime": "vue",
+        "scheme": "dark",
+        "repeat": 0,
+        "errors": [],
+        "external": [],
+        "observations": [
+          {
+            "rest": [0, 0, 0, 0],
+            "focus": [255, 100, 105, 51],
+            "pressed": [255, 100, 105, 51]
+          }
+        ],
+        "result": "passed",
+        "stage": "legacy-destructive"
+      },
+      {
+        "recipe": "destructive",
+        "profile": "new-york-v4",
+        "runtime": "vue2",
+        "scheme": "light",
+        "repeat": 0,
+        "errors": [],
+        "external": [],
+        "observations": [
+          {
+            "rest": [0, 0, 0, 0],
+            "focus": [226, 0, 10, 26],
+            "pressed": [226, 0, 10, 26]
+          }
+        ],
+        "result": "passed",
+        "stage": "legacy-destructive"
+      },
+      {
+        "recipe": "destructive",
+        "profile": "new-york-v4",
+        "runtime": "vue2",
+        "scheme": "dark",
+        "repeat": 0,
+        "errors": [],
+        "external": [],
+        "observations": [
+          {
+            "rest": [0, 0, 0, 0],
+            "focus": [255, 100, 105, 51],
+            "pressed": [255, 100, 105, 51]
+          }
+        ],
+        "result": "passed",
+        "stage": "legacy-destructive"
+      },
+      {
+        "recipe": "inset",
+        "profile": "new-york-v4",
+        "runtime": "wc",
+        "scheme": "light",
+        "repeat": 0,
+        "errors": [],
+        "external": [],
+        "observations": [
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          }
+        ],
+        "result": "passed",
+        "stage": "inset-rtl",
+        "initialGeometry": {
+          "copy": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": {
+              "width": 16,
+              "height": 16,
+              "viewBox": "0 0 24 24",
+              "paths": ["M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"],
+              "shapes": 2
+            }
+          },
+          "paste": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "over": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "rename": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          }
+        }
+      },
+      {
+        "recipe": "inset",
+        "profile": "new-york-v4",
+        "runtime": "wc",
+        "scheme": "dark",
+        "repeat": 0,
+        "errors": [],
+        "external": [],
+        "observations": [
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          }
+        ],
+        "result": "passed",
+        "stage": "inset-rtl",
+        "initialGeometry": {
+          "copy": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": {
+              "width": 16,
+              "height": 16,
+              "viewBox": "0 0 24 24",
+              "paths": ["M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"],
+              "shapes": 2
+            }
+          },
+          "paste": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "over": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "rename": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          }
+        }
+      },
+      {
+        "recipe": "inset",
+        "profile": "new-york-v4",
+        "runtime": "react",
+        "scheme": "light",
+        "repeat": 0,
+        "errors": [],
+        "external": [],
+        "observations": [
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          }
+        ],
+        "result": "passed",
+        "stage": "inset-rtl",
+        "initialGeometry": {
+          "copy": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": {
+              "width": 16,
+              "height": 16,
+              "viewBox": "0 0 24 24",
+              "paths": ["M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"],
+              "shapes": 2
+            }
+          },
+          "paste": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "over": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "rename": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          }
+        }
+      },
+      {
+        "recipe": "inset",
+        "profile": "new-york-v4",
+        "runtime": "react",
+        "scheme": "dark",
+        "repeat": 0,
+        "errors": [],
+        "external": [],
+        "observations": [
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          }
+        ],
+        "result": "passed",
+        "stage": "inset-rtl",
+        "initialGeometry": {
+          "copy": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": {
+              "width": 16,
+              "height": 16,
+              "viewBox": "0 0 24 24",
+              "paths": ["M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"],
+              "shapes": 2
+            }
+          },
+          "paste": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "over": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "rename": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          }
+        }
+      },
+      {
+        "recipe": "inset",
+        "profile": "new-york-v4",
+        "runtime": "vue",
+        "scheme": "light",
+        "repeat": 0,
+        "errors": [],
+        "external": [],
+        "observations": [
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          }
+        ],
+        "result": "passed",
+        "stage": "inset-rtl",
+        "initialGeometry": {
+          "copy": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": {
+              "width": 16,
+              "height": 16,
+              "viewBox": "0 0 24 24",
+              "paths": ["M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"],
+              "shapes": 2
+            }
+          },
+          "paste": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "over": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "rename": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          }
+        }
+      },
+      {
+        "recipe": "inset",
+        "profile": "new-york-v4",
+        "runtime": "vue",
+        "scheme": "dark",
+        "repeat": 0,
+        "errors": [],
+        "external": [],
+        "observations": [
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          }
+        ],
+        "result": "passed",
+        "stage": "inset-rtl",
+        "initialGeometry": {
+          "copy": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": {
+              "width": 16,
+              "height": 16,
+              "viewBox": "0 0 24 24",
+              "paths": ["M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"],
+              "shapes": 2
+            }
+          },
+          "paste": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "over": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "rename": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          }
+        }
+      },
+      {
+        "recipe": "inset",
+        "profile": "new-york-v4",
+        "runtime": "vue2",
+        "scheme": "light",
+        "repeat": 0,
+        "errors": [],
+        "external": [],
+        "observations": [
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          }
+        ],
+        "result": "passed",
+        "stage": "inset-rtl",
+        "initialGeometry": {
+          "copy": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": {
+              "width": 16,
+              "height": 16,
+              "viewBox": "0 0 24 24",
+              "paths": ["M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"],
+              "shapes": 2
+            }
+          },
+          "paste": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "over": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "rename": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          }
+        }
+      },
+      {
+        "recipe": "inset",
+        "profile": "new-york-v4",
+        "runtime": "vue2",
+        "scheme": "dark",
+        "repeat": 0,
+        "errors": [],
+        "external": [],
+        "observations": [
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          }
+        ],
+        "result": "passed",
+        "stage": "inset-rtl",
+        "initialGeometry": {
+          "copy": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": {
+              "width": 16,
+              "height": 16,
+              "viewBox": "0 0 24 24",
+              "paths": ["M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"],
+              "shapes": 2
+            }
+          },
+          "paste": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "over": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "rename": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          }
+        }
+      },
+      {
+        "recipe": "inset",
+        "profile": "rhea",
+        "runtime": "wc",
+        "scheme": "light",
+        "repeat": 0,
+        "errors": [],
+        "external": [],
+        "observations": [
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          }
+        ],
+        "result": "passed",
+        "stage": "inset-rtl",
+        "initialGeometry": {
+          "copy": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 655.6875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": {
+              "width": 16,
+              "height": 16,
+              "viewBox": "0 0 24 24",
+              "paths": ["M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"],
+              "shapes": 2
+            }
+          },
+          "paste": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "over": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 24,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "rename": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          }
+        }
+      },
+      {
+        "recipe": "inset",
+        "profile": "rhea",
+        "runtime": "wc",
+        "scheme": "dark",
+        "repeat": 0,
+        "errors": [],
+        "external": [],
+        "observations": [
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          }
+        ],
+        "result": "passed",
+        "stage": "inset-rtl",
+        "initialGeometry": {
+          "copy": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 655.6875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": {
+              "width": 16,
+              "height": 16,
+              "viewBox": "0 0 24 24",
+              "paths": ["M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"],
+              "shapes": 2
+            }
+          },
+          "paste": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "over": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 24,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "rename": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          }
+        }
+      },
+      {
+        "recipe": "inset",
+        "profile": "rhea",
+        "runtime": "react",
+        "scheme": "light",
+        "repeat": 0,
+        "errors": [],
+        "external": [],
+        "observations": [
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          }
+        ],
+        "result": "passed",
+        "stage": "inset-rtl",
+        "initialGeometry": {
+          "copy": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 655.6875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": {
+              "width": 16,
+              "height": 16,
+              "viewBox": "0 0 24 24",
+              "paths": ["M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"],
+              "shapes": 2
+            }
+          },
+          "paste": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "over": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 24,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "rename": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          }
+        }
+      },
+      {
+        "recipe": "inset",
+        "profile": "rhea",
+        "runtime": "react",
+        "scheme": "dark",
+        "repeat": 0,
+        "errors": [],
+        "external": [],
+        "observations": [
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          }
+        ],
+        "result": "passed",
+        "stage": "inset-rtl",
+        "initialGeometry": {
+          "copy": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 655.6875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": {
+              "width": 16,
+              "height": 16,
+              "viewBox": "0 0 24 24",
+              "paths": ["M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"],
+              "shapes": 2
+            }
+          },
+          "paste": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "over": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 24,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "rename": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          }
+        }
+      },
+      {
+        "recipe": "inset",
+        "profile": "rhea",
+        "runtime": "vue",
+        "scheme": "light",
+        "repeat": 0,
+        "errors": [],
+        "external": [],
+        "observations": [
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          }
+        ],
+        "result": "passed",
+        "stage": "inset-rtl",
+        "initialGeometry": {
+          "copy": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 655.6875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": {
+              "width": 16,
+              "height": 16,
+              "viewBox": "0 0 24 24",
+              "paths": ["M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"],
+              "shapes": 2
+            }
+          },
+          "paste": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "over": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 24,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "rename": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          }
+        }
+      },
+      {
+        "recipe": "inset",
+        "profile": "rhea",
+        "runtime": "vue",
+        "scheme": "dark",
+        "repeat": 0,
+        "errors": [],
+        "external": [],
+        "observations": [
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          }
+        ],
+        "result": "passed",
+        "stage": "inset-rtl",
+        "initialGeometry": {
+          "copy": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 655.6875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": {
+              "width": 16,
+              "height": 16,
+              "viewBox": "0 0 24 24",
+              "paths": ["M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"],
+              "shapes": 2
+            }
+          },
+          "paste": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "over": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 24,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "rename": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          }
+        }
+      },
+      {
+        "recipe": "inset",
+        "profile": "rhea",
+        "runtime": "vue2",
+        "scheme": "light",
+        "repeat": 0,
+        "errors": [],
+        "external": [],
+        "observations": [
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          }
+        ],
+        "result": "passed",
+        "stage": "inset-rtl",
+        "initialGeometry": {
+          "copy": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 655.6875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": {
+              "width": 16,
+              "height": 16,
+              "viewBox": "0 0 24 24",
+              "paths": ["M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"],
+              "shapes": 2
+            }
+          },
+          "paste": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "over": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 24,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "rename": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          }
+        }
+      },
+      {
+        "recipe": "inset",
+        "profile": "rhea",
+        "runtime": "vue2",
+        "scheme": "dark",
+        "repeat": 0,
+        "errors": [],
+        "external": [],
+        "observations": [
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 28,
+              "paste": 28,
+              "rename": 28
+            }
+          }
+        ],
+        "result": "passed",
+        "stage": "inset-rtl",
+        "initialGeometry": {
+          "copy": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 655.6875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": {
+              "width": 16,
+              "height": 16,
+              "viewBox": "0 0 24 24",
+              "paths": ["M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"],
+              "shapes": 2
+            }
+          },
+          "paste": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "over": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 24,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "rename": {
+            "x": 623.6875,
+            "width": 120,
+            "height": 32,
+            "textX": 651.6875,
+            "paddingLeft": 28,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          }
+        }
+      },
+      {
+        "recipe": "inset",
+        "profile": "new-york-v4",
+        "runtime": "react",
+        "scheme": "light",
+        "repeat": 1,
+        "errors": [],
+        "external": [],
+        "observations": [
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          }
+        ],
+        "result": "passed",
+        "stage": "inset-rtl",
+        "initialGeometry": {
+          "copy": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": {
+              "width": 16,
+              "height": 16,
+              "viewBox": "0 0 24 24",
+              "paths": ["M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"],
+              "shapes": 2
+            }
+          },
+          "paste": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "over": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "rename": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          }
+        }
+      },
+      {
+        "recipe": "inset",
+        "profile": "new-york-v4",
+        "runtime": "react",
+        "scheme": "light",
+        "repeat": 2,
+        "errors": [],
+        "external": [],
+        "observations": [
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          }
+        ],
+        "result": "passed",
+        "stage": "inset-rtl",
+        "initialGeometry": {
+          "copy": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": {
+              "width": 16,
+              "height": 16,
+              "viewBox": "0 0 24 24",
+              "paths": ["M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"],
+              "shapes": 2
+            }
+          },
+          "paste": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "over": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "rename": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          }
+        }
+      },
+      {
+        "recipe": "inset",
+        "profile": "new-york-v4",
+        "runtime": "react",
+        "scheme": "light",
+        "repeat": 3,
+        "errors": [],
+        "external": [],
+        "observations": [
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "ltr",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": false,
+            "paddingLeft": {
+              "more-label": 8,
+              "paste": 8,
+              "rename": 8
+            }
+          },
+          {
+            "direction": "rtl",
+            "enabled": true,
+            "paddingLeft": {
+              "more-label": 32,
+              "paste": 32,
+              "rename": 32
+            }
+          }
+        ],
+        "result": "passed",
+        "stage": "inset-rtl",
+        "initialGeometry": {
+          "copy": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": {
+              "width": 16,
+              "height": 16,
+              "viewBox": "0 0 24 24",
+              "paths": ["M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"],
+              "shapes": 2
+            }
+          },
+          "paste": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "over": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          },
+          "rename": {
+            "x": 648.6875,
+            "width": 125.609375,
+            "height": 32,
+            "textX": 680.6875,
+            "paddingLeft": 32,
+            "paddingRight": 8,
+            "direction": "ltr",
+            "rem": 16,
+            "icon": null
+          }
+        }
+      }
+    ]
+  },
+  "localProbeSHA256": "b4c9dce7db9f9656b8f743f45f76905ececefb96be17bd8a355dae3d6b27e0ef",
+  "officialWorkflow": "planned"
+}

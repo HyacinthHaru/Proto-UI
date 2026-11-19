@@ -1,0 +1,192 @@
+import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import { createRequire } from 'node:module';
+import { writeFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
+
+const output=process.argv[2];
+const path=(filename)=>pathToFileURL(resolve('apps/www/src/content/docs/zh-cn',filename)).href;
+const { startServer, stopServer, selectRuntime, applyColorScheme, RUNTIMES, COLOR_SCHEMES } =
+  await import(path('browser-harness.ts'));
+const { dropdownEvidenceRecipes, dropdownInsetRem, dropdownFixtureSelector, dropdownPreviewSelector,
+  observeDropdownItem, channelsClose, observeDropdownGeometry, observeDropdownGeometries, hasNamedDropdownGroup } =
+  await import(path('finf-dropdown-recipe-evidence.ts'));
+const { chromium }=createRequire(resolve('apps/www/package.json'))('playwright-core');
+const git=(...args)=>execFileSync('git',args,{encoding:'utf8'}).trim();
+assert.equal(git('status','--porcelain'),'');
+const head=git('rev-parse','HEAD'),tree=git('rev-parse','HEAD^{tree}');
+const route='/en/ui-libraries/shadcn/dropdown-menu/';
+const rows=[];
+let browser;
+async function until(sample,accept) {
+  const deadline=Date.now()+10_000;
+  let value;
+  do {
+    value=await sample();
+    if(accept(value))return value;
+    await new Promise(resolve=>setTimeout(resolve,50));
+  } while(Date.now()<deadline);
+  throw Error('Observed unexpected state: '+JSON.stringify(value));
+}
+const near=(a,b,tolerance=0.0005)=>assert.ok(Math.abs(a-b)<tolerance,`Expected ${a} near ${b}`);
+async function openMenu(page,trigger){
+  await trigger.click();
+  await until(()=>trigger.getAttribute('aria-expanded'),v=>v==='true');
+  const id=await trigger.getAttribute('aria-controls');
+  assert.ok(id);
+  const menu=page.locator(`[id=${JSON.stringify(id)}][role="menu"]`);
+  await menu.waitFor({state:'visible'});
+  await until(()=>menu.evaluate(el=>{
+    const style=getComputedStyle(el);
+    return style.opacity==='1'&&['none','matrix(1, 0, 0, 1, 0, 0)'].includes(style.transform)&&
+      el.getAnimations().every(animation=>animation.playState==='finished');
+  }),Boolean);
+  return menu;
+}
+try{
+  const origin=await startServer(route);
+  assert.equal(new URL(origin).hostname,'127.0.0.1');
+  browser=await chromium.launch({executablePath:process.env.CHROME_PATH,headless:true});
+  const cases=dropdownEvidenceRecipes.flatMap(({recipe,profile})=>
+    RUNTIMES.flatMap(runtime=>COLOR_SCHEMES.map(scheme=>({recipe,profile,runtime,scheme,repeat:0})))
+  );
+  for(const repeat of [1,2,3]) cases.push({
+    recipe:'inset',profile:'new-york-v4',runtime:'react',scheme:'light',repeat
+  });
+  for(const {recipe,profile,runtime,scheme,repeat} of cases){
+        const row={recipe,profile,runtime,scheme,repeat,errors:[],external:[],observations:[],result:'failed'};
+        rows.push(row);
+        const context=await browser.newContext({viewport:{width:1280,height:1000},colorScheme:scheme,reducedMotion:'reduce'});
+        const page=await context.newPage();
+        const denied=new Set();
+        row.stage='navigate';
+        let fixture;
+        const watchdog=setTimeout(()=>void context.close().catch(()=>{}),80_000);
+        try{
+          page.setDefaultTimeout(15_000);
+          page.setDefaultNavigationTimeout(30_000);
+          page.on('pageerror',error=>row.errors.push(error.message));
+          await context.route('**/*',req=>{
+            const url=new URL(req.request().url());
+            if(url.origin===origin)return req.continue();
+            denied.add(url.origin);
+            return req.abort();
+          });
+          assert.equal((await page.goto(origin+route,{waitUntil:'domcontentloaded'})).status(),200);
+          let previewer=page.locator(dropdownPreviewSelector(recipe));
+          assert.equal(await previewer.count(),1);
+          await previewer.scrollIntoViewIfNeeded();
+          row.stage='runtime-selection';
+          await selectRuntime(page,previewer,runtime,'[data-demo-ref="trigger"]',1);
+          await applyColorScheme(page,scheme);
+          if(profile==='new-york-v4'){
+            row.stage='new-york-mount';
+            fixture=await page.evaluateHandle(async({recipe,runtime})=>{
+              const browserImport=new Function('url','return import(url)');
+              const {mountNewYorkDropdownFixture}=await browserImport('/src/content/docs/zh-cn/finf-dropdown-recipe-evidence.ts');
+              return mountNewYorkDropdownFixture(recipe,runtime);
+            },{recipe,runtime});
+            assert.deepEqual(await fixture.evaluate(({publicProfile,fixtureProfile})=>[publicProfile,fixtureProfile]),['rhea','new-york-v4']);
+            previewer=page.locator(dropdownFixtureSelector(recipe));
+          }
+          const trigger=previewer.locator('[data-demo-ref="trigger"]');
+          await trigger.waitFor({state:'visible'});
+          row.stage='open';
+          let menu=await openMenu(page,trigger);
+          const ref=name=>menu.locator(`[data-demo-ref="${name}"]`);
+          const close=async()=>{
+            await page.keyboard.press('Escape');
+            await until(()=>trigger.getAttribute('aria-expanded'),v=>v==='false');
+            await until(()=>trigger.evaluate(el=>el===document.activeElement),Boolean);
+          };
+          if(recipe==='destructive'){
+            row.stage='legacy-destructive';
+            assert.equal(await menu.getByRole('menuitem').count(),5);
+            const item=ref('delete');
+            const percent=scheme==='dark'?20:10;
+            const palette=async()=>until(()=>observeDropdownItem(item,percent),v=>
+              channelsClose(v.backgroundRgba,v.expectedBackgroundRgba) &&
+              channelsClose(v.foregroundRgba,v.expectedForegroundRgba)
+            );
+            const rest=await until(()=>observeDropdownItem(item,0),v=>
+              v.backgroundRgba[3]===0 && channelsClose(v.foregroundRgba,v.expectedForegroundRgba)
+            );
+            await until(()=>ref('edit').evaluate(el=>el===document.activeElement),Boolean);
+            for(let i=0;i<3;i++)await page.keyboard.press('ArrowDown');
+            await until(()=>item.evaluate(el=>el===document.activeElement),Boolean);
+            const focus=await palette();
+            await item.hover();
+            await page.mouse.down();
+            await until(()=>item.getAttribute('data-pressed'),v=>v!==null);
+            const pressed=await palette();
+            await page.mouse.move(0,0);
+            await page.mouse.up();
+            await close();
+            row.observations.push({rest:rest.backgroundRgba,focus:focus.backgroundRgba,pressed:pressed.backgroundRgba});
+          }else{
+            row.stage='inset-initial';
+            assert.equal(await menu.getByRole('menuitem').count(),4);
+            const {parts}=await until(
+              ()=>observeDropdownGeometries(menu,['copy','cut','more-label','paste','rename']),
+              layout=>layout.settled && (layout.parts.copy.icon?.shapes??0)>0 && (layout.parts.cut.icon?.shapes??0)>0
+            );
+            const {copy,cut,paste,'more-label':over,rename}=parts;
+            for(const [glyph,fragment] of [[copy.icon,'M4 16'],[cut.icon,'M8.12 8.12']]){
+              assert.equal(glyph.width,16);
+              assert.equal(glyph.height,16);
+              assert.equal(glyph.viewBox,'0 0 24 24');
+              assert.ok(glyph.paths.join('|').includes(fragment));
+            }
+            row.initialGeometry={copy,paste,over,rename};
+            assert.ok(copy.textX!==null&&paste.textX!==null&&over.textX!==null&&rename.textX!==null);
+            near(over.paddingLeft/over.rem,dropdownInsetRem[profile]);
+            if(profile==='new-york-v4')near(copy.textX-paste.textX,0,0.5);
+            else {
+              near(copy.x,paste.x);
+              near(copy.textX-paste.textX,copy.paddingLeft+copy.icon.width+copy.rem*0.5-paste.paddingLeft);
+            }
+            near(over.textX-rename.textX,0,0.5);
+            for(const [group,label] of [['actions-group','actions-label'],['more-group','more-label']])
+              assert.ok(hasNamedDropdownGroup(await ref(group).getAttribute('role'),await ref(group).getAttribute('aria-labelledby'),await ref(label).getAttribute('id')));
+            await close();
+            for(const direction of ['ltr','rtl']){
+              row.stage=`inset-${direction}`;
+              await previewer.evaluate((el,dir)=>el.setAttribute('dir',dir),direction);
+              await until(()=>trigger.evaluate(el=>getComputedStyle(el).direction),v=>v===direction);
+              for(const [step,enabled] of [true,false,true].entries()){
+                if(step>0)await previewer.locator('[data-demo-ref="toggle-inset"]').click();
+                menu=await openMenu(page,trigger);
+                await until(()=>menu.evaluate(el=>getComputedStyle(el).direction),v=>v===direction);
+                const observed={};
+                for(const name of ['more-label','paste','rename']){
+                  const rem=enabled?dropdownInsetRem[profile]:0.5;
+                  const g=await until(()=>observeDropdownGeometry(ref(name)),v=>Math.abs(v.paddingLeft/v.rem-rem)<0.0005);
+                  near(g.paddingRight/g.rem,0.5);
+                  assert.equal(g.direction,direction);
+                  observed[name]=g.paddingLeft;
+                }
+                row.observations.push({direction,enabled,paddingLeft:observed});
+                await close();
+              }
+            }
+          }
+          if(fixture){await fixture.evaluate(view=>view.destroy());await fixture.dispose();fixture=undefined;}
+          assert.deepEqual(row.errors,[]);
+          row.result='passed';
+        }catch(error){row.failure=String(error);}
+        finally{
+          clearTimeout(watchdog);
+          await fixture?.evaluate(view=>view.destroy()).catch(error=>row.errors.push(String(error)));
+          row.external=[...denied];
+          await context.close();
+          console.log(JSON.stringify({recipe,profile,runtime,scheme,result:row.result,stage:row.stage,failure:row.failure}));
+          writeFileSync(resolve(output,'native-profile-counters.json'),JSON.stringify({head,tree,chrome:browser.version(),
+            scope:'Independent local source-server probe using the actual hosted-test fixture helper. Does not execute the Actions-only test.',rows},null,2)+'\n');
+        }
+      }
+}finally{
+  try{await browser?.close();}finally{await stopServer();}
+}
+assert.equal(rows.length,27);
+assert.equal(rows.filter(row=>row.result==='passed').length,27);
