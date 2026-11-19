@@ -1,0 +1,715 @@
+{
+  "head": "63a2b593bdda3267d6c91f58f40f1d1e634331d7",
+  "tree": "db46ee528763dae458b176b06f5c133f65f3261a",
+  "base": "21af3bec014503e68782a6f1f3756aec2bb987cd",
+  "paths": [
+    "apps/www/src/components/code-example-tree.test.ts",
+    "apps/www/src/components/code-example-tree.ts",
+    "apps/www/src/components/code-file-browser-client.test.ts",
+    "apps/www/src/components/code-file-browser-client.ts"
+  ],
+  "focused": 70,
+  "regressionsReproduced": 3,
+  "publicPackageBuilds": 47,
+  "manifestChecks": 47,
+  "sitePages": 683,
+  "workspaceTypes": "pass",
+  "previousPackedMismatch": {
+    "head": "6351e5145b00ca5684b9246146cfa223c65ed4d2",
+    "id": "demo-button",
+    "locale": "en",
+    "panelId": "code-example-ljnplebqvc8-0-file-panel-2",
+    "tree": {
+      "items": [
+        {
+          "path": "src/main.ts",
+          "index": "0",
+          "id": "code-example-ljnplebqvc8-0-file-tab-0-tree",
+          "controls": "code-example-ljnplebqvc8-0-file-panel-0",
+          "selected": "false"
+        },
+        {
+          "path": "src/button-demo.css",
+          "index": "1",
+          "id": "code-example-ljnplebqvc8-0-file-tab-2-tree",
+          "controls": "code-example-ljnplebqvc8-0-file-panel-1",
+          "selected": "false"
+        },
+        {
+          "path": "index.html",
+          "index": "2",
+          "id": "code-example-ljnplebqvc8-0-file-tab-1-tree",
+          "controls": "code-example-ljnplebqvc8-0-file-panel-2",
+          "selected": "true"
+        }
+      ],
+      "panels": [
+        {
+          "title": "src/main.ts",
+          "id": "code-example-ljnplebqvc8-0-file-panel-0",
+          "index": "0",
+          "hidden": true,
+          "labelledBy": "code-example-ljnplebqvc8-0-file-tab-0-tree"
+        },
+        {
+          "title": "index.html",
+          "id": "code-example-ljnplebqvc8-0-file-panel-1",
+          "index": "1",
+          "hidden": false,
+          "labelledBy": "code-example-ljnplebqvc8-0-file-tab-2-tree"
+        },
+        {
+          "title": "src/button-demo.css",
+          "id": "code-example-ljnplebqvc8-0-file-panel-2",
+          "index": "2",
+          "hidden": true,
+          "labelledBy": "code-example-ljnplebqvc8-0-file-tab-1-tree"
+        }
+      ]
+    }
+  },
+  "candidatePacked": {
+    "head": "63a2b593bdda3267d6c91f58f40f1d1e634331d7",
+    "tree": "db46ee528763dae458b176b06f5c133f65f3261a",
+    "chrome": "156.0.8078.79",
+    "scope": "Packed Button CodeExample and Quick Start standalone file browser",
+    "reports": [
+      {
+        "locale": "en",
+        "buttons": [
+          {
+            "index": 0,
+            "links": [
+              {
+                "path": "src/main.ts",
+                "controls": "code-example-kwflc410oin-0-file-panel-0",
+                "itemId": "code-example-kwflc410oin-0-file-tab-0-tree",
+                "title": "src/main.ts",
+                "labelledBy": "code-example-kwflc410oin-0-file-tab-0-tree",
+                "scoped": true
+              },
+              {
+                "path": "src/button-demo.css",
+                "controls": "code-example-kwflc410oin-0-file-panel-2",
+                "itemId": "code-example-kwflc410oin-0-file-tab-2-tree",
+                "title": "src/button-demo.css",
+                "labelledBy": "code-example-kwflc410oin-0-file-tab-2-tree",
+                "scoped": true
+              },
+              {
+                "path": "index.html",
+                "controls": "code-example-kwflc410oin-0-file-panel-1",
+                "itemId": "code-example-kwflc410oin-0-file-tab-1-tree",
+                "title": "index.html",
+                "labelledBy": "code-example-kwflc410oin-0-file-tab-1-tree",
+                "scoped": true
+              }
+            ],
+            "selected": "index.html",
+            "sourceSHA256": "0e5096fa5d57549f73d73756660cd23277f1231246b8694b9e0ab04fcade6702"
+          },
+          {
+            "index": 1,
+            "links": [
+              {
+                "path": "src/main.ts",
+                "controls": "code-example-y9agbd2cpo-0-file-panel-0",
+                "itemId": "code-example-y9agbd2cpo-0-file-tab-0-tree",
+                "title": "src/main.ts",
+                "labelledBy": "code-example-y9agbd2cpo-0-file-tab-0-tree",
+                "scoped": true
+              },
+              {
+                "path": "src/button-demo.css",
+                "controls": "code-example-y9agbd2cpo-0-file-panel-2",
+                "itemId": "code-example-y9agbd2cpo-0-file-tab-2-tree",
+                "title": "src/button-demo.css",
+                "labelledBy": "code-example-y9agbd2cpo-0-file-tab-2-tree",
+                "scoped": true
+              },
+              {
+                "path": "index.html",
+                "controls": "code-example-y9agbd2cpo-0-file-panel-1",
+                "itemId": "code-example-y9agbd2cpo-0-file-tab-1-tree",
+                "title": "index.html",
+                "labelledBy": "code-example-y9agbd2cpo-0-file-tab-1-tree",
+                "scoped": true
+              }
+            ],
+            "selected": "index.html",
+            "sourceSHA256": "4d40780b21d1215a028bdb25aa26d60c966ea30bfd1597722d8cf01557db5a8d"
+          },
+          {
+            "index": 2,
+            "links": [
+              {
+                "path": "src/main.ts",
+                "controls": "code-example-c2ugyw2yk7t-0-file-panel-0",
+                "itemId": "code-example-c2ugyw2yk7t-0-file-tab-0-tree",
+                "title": "src/main.ts",
+                "labelledBy": "code-example-c2ugyw2yk7t-0-file-tab-0-tree",
+                "scoped": true
+              },
+              {
+                "path": "src/button-demo.css",
+                "controls": "code-example-c2ugyw2yk7t-0-file-panel-2",
+                "itemId": "code-example-c2ugyw2yk7t-0-file-tab-2-tree",
+                "title": "src/button-demo.css",
+                "labelledBy": "code-example-c2ugyw2yk7t-0-file-tab-2-tree",
+                "scoped": true
+              },
+              {
+                "path": "index.html",
+                "controls": "code-example-c2ugyw2yk7t-0-file-panel-1",
+                "itemId": "code-example-c2ugyw2yk7t-0-file-tab-1-tree",
+                "title": "index.html",
+                "labelledBy": "code-example-c2ugyw2yk7t-0-file-tab-1-tree",
+                "scoped": true
+              }
+            ],
+            "selected": "index.html",
+            "sourceSHA256": "fcb98154f43070c6d959a2a6aa65c580ed5763b3bb6c786eaa2ce60e7c57247f"
+          },
+          {
+            "index": 3,
+            "links": [
+              {
+                "path": "src/main.ts",
+                "controls": "code-example-agk0wzighp-0-file-panel-0",
+                "itemId": "code-example-agk0wzighp-0-file-tab-0-tree",
+                "title": "src/main.ts",
+                "labelledBy": "code-example-agk0wzighp-0-file-tab-0-tree",
+                "scoped": true
+              },
+              {
+                "path": "src/button-demo.css",
+                "controls": "code-example-agk0wzighp-0-file-panel-2",
+                "itemId": "code-example-agk0wzighp-0-file-tab-2-tree",
+                "title": "src/button-demo.css",
+                "labelledBy": "code-example-agk0wzighp-0-file-tab-2-tree",
+                "scoped": true
+              },
+              {
+                "path": "index.html",
+                "controls": "code-example-agk0wzighp-0-file-panel-1",
+                "itemId": "code-example-agk0wzighp-0-file-tab-1-tree",
+                "title": "index.html",
+                "labelledBy": "code-example-agk0wzighp-0-file-tab-1-tree",
+                "scoped": true
+              }
+            ],
+            "selected": "index.html",
+            "sourceSHA256": "1d95ea5b24ff5daeed19b4dd5d1c7fa2fefb34e8d7f28ceea4662b13bedbde2a"
+          },
+          {
+            "index": 4,
+            "links": [
+              {
+                "path": "src/main.ts",
+                "controls": "code-example-iv54z3r4hq-0-file-panel-0",
+                "itemId": "code-example-iv54z3r4hq-0-file-tab-0-tree",
+                "title": "src/main.ts",
+                "labelledBy": "code-example-iv54z3r4hq-0-file-tab-0-tree",
+                "scoped": true
+              },
+              {
+                "path": "src/button-demo.css",
+                "controls": "code-example-iv54z3r4hq-0-file-panel-2",
+                "itemId": "code-example-iv54z3r4hq-0-file-tab-2-tree",
+                "title": "src/button-demo.css",
+                "labelledBy": "code-example-iv54z3r4hq-0-file-tab-2-tree",
+                "scoped": true
+              },
+              {
+                "path": "index.html",
+                "controls": "code-example-iv54z3r4hq-0-file-panel-1",
+                "itemId": "code-example-iv54z3r4hq-0-file-tab-1-tree",
+                "title": "index.html",
+                "labelledBy": "code-example-iv54z3r4hq-0-file-tab-1-tree",
+                "scoped": true
+              }
+            ],
+            "selected": "index.html",
+            "sourceSHA256": "1df8862dff6140869d25aadcee159136c67ab8d56ea4a9c7a82e7f7212f616ef"
+          },
+          {
+            "index": 5,
+            "links": [
+              {
+                "path": "src/main.ts",
+                "controls": "code-example-2itgus347rs-0-file-panel-0",
+                "itemId": "code-example-2itgus347rs-0-file-tab-0-tree",
+                "title": "src/main.ts",
+                "labelledBy": "code-example-2itgus347rs-0-file-tab-0-tree",
+                "scoped": true
+              },
+              {
+                "path": "src/button-demo.css",
+                "controls": "code-example-2itgus347rs-0-file-panel-2",
+                "itemId": "code-example-2itgus347rs-0-file-tab-2-tree",
+                "title": "src/button-demo.css",
+                "labelledBy": "code-example-2itgus347rs-0-file-tab-2-tree",
+                "scoped": true
+              },
+              {
+                "path": "index.html",
+                "controls": "code-example-2itgus347rs-0-file-panel-1",
+                "itemId": "code-example-2itgus347rs-0-file-tab-1-tree",
+                "title": "index.html",
+                "labelledBy": "code-example-2itgus347rs-0-file-tab-1-tree",
+                "scoped": true
+              }
+            ],
+            "selected": "index.html",
+            "sourceSHA256": "d2ba159ca69c76ce8f7fb8b3fc5f95b930b195b4ed70037d374114f85ab20109"
+          },
+          {
+            "index": 6,
+            "links": [
+              {
+                "path": "src/main.ts",
+                "controls": "code-example-h7wa5g8sfoe-0-file-panel-0",
+                "itemId": "code-example-h7wa5g8sfoe-0-file-tab-0-tree",
+                "title": "src/main.ts",
+                "labelledBy": "code-example-h7wa5g8sfoe-0-file-tab-0-tree",
+                "scoped": true
+              },
+              {
+                "path": "src/button-demo.css",
+                "controls": "code-example-h7wa5g8sfoe-0-file-panel-2",
+                "itemId": "code-example-h7wa5g8sfoe-0-file-tab-2-tree",
+                "title": "src/button-demo.css",
+                "labelledBy": "code-example-h7wa5g8sfoe-0-file-tab-2-tree",
+                "scoped": true
+              },
+              {
+                "path": "index.html",
+                "controls": "code-example-h7wa5g8sfoe-0-file-panel-1",
+                "itemId": "code-example-h7wa5g8sfoe-0-file-tab-1-tree",
+                "title": "index.html",
+                "labelledBy": "code-example-h7wa5g8sfoe-0-file-tab-1-tree",
+                "scoped": true
+              }
+            ],
+            "selected": "index.html",
+            "sourceSHA256": "ca804435a21ee6e313beb1e2a116fc8d21d967c420863518403ece383faa2ffc"
+          },
+          {
+            "index": 7,
+            "links": [
+              {
+                "path": "src/main.ts",
+                "controls": "code-example-yzawfbweay-0-file-panel-0",
+                "itemId": "code-example-yzawfbweay-0-file-tab-0-tree",
+                "title": "src/main.ts",
+                "labelledBy": "code-example-yzawfbweay-0-file-tab-0-tree",
+                "scoped": true
+              },
+              {
+                "path": "src/button-demo.css",
+                "controls": "code-example-yzawfbweay-0-file-panel-2",
+                "itemId": "code-example-yzawfbweay-0-file-tab-2-tree",
+                "title": "src/button-demo.css",
+                "labelledBy": "code-example-yzawfbweay-0-file-tab-2-tree",
+                "scoped": true
+              },
+              {
+                "path": "index.html",
+                "controls": "code-example-yzawfbweay-0-file-panel-1",
+                "itemId": "code-example-yzawfbweay-0-file-tab-1-tree",
+                "title": "index.html",
+                "labelledBy": "code-example-yzawfbweay-0-file-tab-1-tree",
+                "scoped": true
+              }
+            ],
+            "selected": "index.html",
+            "sourceSHA256": "49185cbdbf3d444e5f1d82833cbe3078679bc4cc4c2eb5349ff62936679df739"
+          },
+          {
+            "index": 8,
+            "links": [
+              {
+                "path": "src/main.ts",
+                "controls": "code-example-qkm3wnxbrtb-0-file-panel-0",
+                "itemId": "code-example-qkm3wnxbrtb-0-file-tab-0-tree",
+                "title": "src/main.ts",
+                "labelledBy": "code-example-qkm3wnxbrtb-0-file-tab-0-tree",
+                "scoped": true
+              },
+              {
+                "path": "src/button-demo.css",
+                "controls": "code-example-qkm3wnxbrtb-0-file-panel-2",
+                "itemId": "code-example-qkm3wnxbrtb-0-file-tab-2-tree",
+                "title": "src/button-demo.css",
+                "labelledBy": "code-example-qkm3wnxbrtb-0-file-tab-2-tree",
+                "scoped": true
+              },
+              {
+                "path": "index.html",
+                "controls": "code-example-qkm3wnxbrtb-0-file-panel-1",
+                "itemId": "code-example-qkm3wnxbrtb-0-file-tab-1-tree",
+                "title": "index.html",
+                "labelledBy": "code-example-qkm3wnxbrtb-0-file-tab-1-tree",
+                "scoped": true
+              }
+            ],
+            "selected": "index.html",
+            "sourceSHA256": "0b097665ddd1f251f3f8e74960bfb46dff12222227e17e35f5485595c3ce18a3"
+          }
+        ],
+        "standalone": [
+          {
+            "path": "proto-ui/config.json",
+            "controls": "cli-init-generated-file-panel-0",
+            "itemId": "cli-init-generated-file-tab-0-tree",
+            "title": "proto-ui/config.json",
+            "labelledBy": "cli-init-generated-file-tab-0-tree",
+            "scoped": true
+          },
+          {
+            "path": "src/styles/proto-ui-style.css",
+            "controls": "cli-init-generated-file-panel-1",
+            "itemId": "cli-init-generated-file-tab-1-tree",
+            "title": "src/styles/proto-ui-style.css",
+            "labelledBy": "cli-init-generated-file-tab-1-tree",
+            "scoped": true
+          },
+          {
+            "path": "src/styles/proto-ui-tokens.generated.css",
+            "controls": "cli-init-generated-file-panel-2",
+            "itemId": "cli-init-generated-file-tab-2-tree",
+            "title": "src/styles/proto-ui-tokens.generated.css",
+            "labelledBy": "cli-init-generated-file-tab-2-tree",
+            "scoped": true
+          },
+          {
+            "path": "src/styles/shadcn-theme.css",
+            "controls": "cli-init-generated-file-panel-3",
+            "itemId": "cli-init-generated-file-tab-3-tree",
+            "title": "src/styles/shadcn-theme.css",
+            "labelledBy": "cli-init-generated-file-tab-3-tree",
+            "scoped": true
+          }
+        ]
+      },
+      {
+        "locale": "zh-cn",
+        "buttons": [
+          {
+            "index": 0,
+            "links": [
+              {
+                "path": "src/main.ts",
+                "controls": "code-example-79h7npjcpzn-0-file-panel-0",
+                "itemId": "code-example-79h7npjcpzn-0-file-tab-0-tree",
+                "title": "src/main.ts",
+                "labelledBy": "code-example-79h7npjcpzn-0-file-tab-0-tree",
+                "scoped": true
+              },
+              {
+                "path": "src/button-demo.css",
+                "controls": "code-example-79h7npjcpzn-0-file-panel-2",
+                "itemId": "code-example-79h7npjcpzn-0-file-tab-2-tree",
+                "title": "src/button-demo.css",
+                "labelledBy": "code-example-79h7npjcpzn-0-file-tab-2-tree",
+                "scoped": true
+              },
+              {
+                "path": "index.html",
+                "controls": "code-example-79h7npjcpzn-0-file-panel-1",
+                "itemId": "code-example-79h7npjcpzn-0-file-tab-1-tree",
+                "title": "index.html",
+                "labelledBy": "code-example-79h7npjcpzn-0-file-tab-1-tree",
+                "scoped": true
+              }
+            ],
+            "selected": "index.html",
+            "sourceSHA256": "0e5096fa5d57549f73d73756660cd23277f1231246b8694b9e0ab04fcade6702"
+          },
+          {
+            "index": 1,
+            "links": [
+              {
+                "path": "src/main.ts",
+                "controls": "code-example-zzl1dkk82ve-0-file-panel-0",
+                "itemId": "code-example-zzl1dkk82ve-0-file-tab-0-tree",
+                "title": "src/main.ts",
+                "labelledBy": "code-example-zzl1dkk82ve-0-file-tab-0-tree",
+                "scoped": true
+              },
+              {
+                "path": "src/button-demo.css",
+                "controls": "code-example-zzl1dkk82ve-0-file-panel-2",
+                "itemId": "code-example-zzl1dkk82ve-0-file-tab-2-tree",
+                "title": "src/button-demo.css",
+                "labelledBy": "code-example-zzl1dkk82ve-0-file-tab-2-tree",
+                "scoped": true
+              },
+              {
+                "path": "index.html",
+                "controls": "code-example-zzl1dkk82ve-0-file-panel-1",
+                "itemId": "code-example-zzl1dkk82ve-0-file-tab-1-tree",
+                "title": "index.html",
+                "labelledBy": "code-example-zzl1dkk82ve-0-file-tab-1-tree",
+                "scoped": true
+              }
+            ],
+            "selected": "index.html",
+            "sourceSHA256": "4d40780b21d1215a028bdb25aa26d60c966ea30bfd1597722d8cf01557db5a8d"
+          },
+          {
+            "index": 2,
+            "links": [
+              {
+                "path": "src/main.ts",
+                "controls": "code-example-7dtdl5855ps-0-file-panel-0",
+                "itemId": "code-example-7dtdl5855ps-0-file-tab-0-tree",
+                "title": "src/main.ts",
+                "labelledBy": "code-example-7dtdl5855ps-0-file-tab-0-tree",
+                "scoped": true
+              },
+              {
+                "path": "src/button-demo.css",
+                "controls": "code-example-7dtdl5855ps-0-file-panel-2",
+                "itemId": "code-example-7dtdl5855ps-0-file-tab-2-tree",
+                "title": "src/button-demo.css",
+                "labelledBy": "code-example-7dtdl5855ps-0-file-tab-2-tree",
+                "scoped": true
+              },
+              {
+                "path": "index.html",
+                "controls": "code-example-7dtdl5855ps-0-file-panel-1",
+                "itemId": "code-example-7dtdl5855ps-0-file-tab-1-tree",
+                "title": "index.html",
+                "labelledBy": "code-example-7dtdl5855ps-0-file-tab-1-tree",
+                "scoped": true
+              }
+            ],
+            "selected": "index.html",
+            "sourceSHA256": "fcb98154f43070c6d959a2a6aa65c580ed5763b3bb6c786eaa2ce60e7c57247f"
+          },
+          {
+            "index": 3,
+            "links": [
+              {
+                "path": "src/main.ts",
+                "controls": "code-example-cmz4wayb758-0-file-panel-0",
+                "itemId": "code-example-cmz4wayb758-0-file-tab-0-tree",
+                "title": "src/main.ts",
+                "labelledBy": "code-example-cmz4wayb758-0-file-tab-0-tree",
+                "scoped": true
+              },
+              {
+                "path": "src/button-demo.css",
+                "controls": "code-example-cmz4wayb758-0-file-panel-2",
+                "itemId": "code-example-cmz4wayb758-0-file-tab-2-tree",
+                "title": "src/button-demo.css",
+                "labelledBy": "code-example-cmz4wayb758-0-file-tab-2-tree",
+                "scoped": true
+              },
+              {
+                "path": "index.html",
+                "controls": "code-example-cmz4wayb758-0-file-panel-1",
+                "itemId": "code-example-cmz4wayb758-0-file-tab-1-tree",
+                "title": "index.html",
+                "labelledBy": "code-example-cmz4wayb758-0-file-tab-1-tree",
+                "scoped": true
+              }
+            ],
+            "selected": "index.html",
+            "sourceSHA256": "1d95ea5b24ff5daeed19b4dd5d1c7fa2fefb34e8d7f28ceea4662b13bedbde2a"
+          },
+          {
+            "index": 4,
+            "links": [
+              {
+                "path": "src/main.ts",
+                "controls": "code-example-wlksimb1t-0-file-panel-0",
+                "itemId": "code-example-wlksimb1t-0-file-tab-0-tree",
+                "title": "src/main.ts",
+                "labelledBy": "code-example-wlksimb1t-0-file-tab-0-tree",
+                "scoped": true
+              },
+              {
+                "path": "src/button-demo.css",
+                "controls": "code-example-wlksimb1t-0-file-panel-2",
+                "itemId": "code-example-wlksimb1t-0-file-tab-2-tree",
+                "title": "src/button-demo.css",
+                "labelledBy": "code-example-wlksimb1t-0-file-tab-2-tree",
+                "scoped": true
+              },
+              {
+                "path": "index.html",
+                "controls": "code-example-wlksimb1t-0-file-panel-1",
+                "itemId": "code-example-wlksimb1t-0-file-tab-1-tree",
+                "title": "index.html",
+                "labelledBy": "code-example-wlksimb1t-0-file-tab-1-tree",
+                "scoped": true
+              }
+            ],
+            "selected": "index.html",
+            "sourceSHA256": "1df8862dff6140869d25aadcee159136c67ab8d56ea4a9c7a82e7f7212f616ef"
+          },
+          {
+            "index": 5,
+            "links": [
+              {
+                "path": "src/main.ts",
+                "controls": "code-example-2ohvgmskrds-0-file-panel-0",
+                "itemId": "code-example-2ohvgmskrds-0-file-tab-0-tree",
+                "title": "src/main.ts",
+                "labelledBy": "code-example-2ohvgmskrds-0-file-tab-0-tree",
+                "scoped": true
+              },
+              {
+                "path": "src/button-demo.css",
+                "controls": "code-example-2ohvgmskrds-0-file-panel-2",
+                "itemId": "code-example-2ohvgmskrds-0-file-tab-2-tree",
+                "title": "src/button-demo.css",
+                "labelledBy": "code-example-2ohvgmskrds-0-file-tab-2-tree",
+                "scoped": true
+              },
+              {
+                "path": "index.html",
+                "controls": "code-example-2ohvgmskrds-0-file-panel-1",
+                "itemId": "code-example-2ohvgmskrds-0-file-tab-1-tree",
+                "title": "index.html",
+                "labelledBy": "code-example-2ohvgmskrds-0-file-tab-1-tree",
+                "scoped": true
+              }
+            ],
+            "selected": "index.html",
+            "sourceSHA256": "d2ba159ca69c76ce8f7fb8b3fc5f95b930b195b4ed70037d374114f85ab20109"
+          },
+          {
+            "index": 6,
+            "links": [
+              {
+                "path": "src/main.ts",
+                "controls": "code-example-sa5goholw8k-0-file-panel-0",
+                "itemId": "code-example-sa5goholw8k-0-file-tab-0-tree",
+                "title": "src/main.ts",
+                "labelledBy": "code-example-sa5goholw8k-0-file-tab-0-tree",
+                "scoped": true
+              },
+              {
+                "path": "src/button-demo.css",
+                "controls": "code-example-sa5goholw8k-0-file-panel-2",
+                "itemId": "code-example-sa5goholw8k-0-file-tab-2-tree",
+                "title": "src/button-demo.css",
+                "labelledBy": "code-example-sa5goholw8k-0-file-tab-2-tree",
+                "scoped": true
+              },
+              {
+                "path": "index.html",
+                "controls": "code-example-sa5goholw8k-0-file-panel-1",
+                "itemId": "code-example-sa5goholw8k-0-file-tab-1-tree",
+                "title": "index.html",
+                "labelledBy": "code-example-sa5goholw8k-0-file-tab-1-tree",
+                "scoped": true
+              }
+            ],
+            "selected": "index.html",
+            "sourceSHA256": "ca804435a21ee6e313beb1e2a116fc8d21d967c420863518403ece383faa2ffc"
+          },
+          {
+            "index": 7,
+            "links": [
+              {
+                "path": "src/main.ts",
+                "controls": "code-example-nju1ycqsuad-0-file-panel-0",
+                "itemId": "code-example-nju1ycqsuad-0-file-tab-0-tree",
+                "title": "src/main.ts",
+                "labelledBy": "code-example-nju1ycqsuad-0-file-tab-0-tree",
+                "scoped": true
+              },
+              {
+                "path": "src/button-demo.css",
+                "controls": "code-example-nju1ycqsuad-0-file-panel-2",
+                "itemId": "code-example-nju1ycqsuad-0-file-tab-2-tree",
+                "title": "src/button-demo.css",
+                "labelledBy": "code-example-nju1ycqsuad-0-file-tab-2-tree",
+                "scoped": true
+              },
+              {
+                "path": "index.html",
+                "controls": "code-example-nju1ycqsuad-0-file-panel-1",
+                "itemId": "code-example-nju1ycqsuad-0-file-tab-1-tree",
+                "title": "index.html",
+                "labelledBy": "code-example-nju1ycqsuad-0-file-tab-1-tree",
+                "scoped": true
+              }
+            ],
+            "selected": "index.html",
+            "sourceSHA256": "49185cbdbf3d444e5f1d82833cbe3078679bc4cc4c2eb5349ff62936679df739"
+          },
+          {
+            "index": 8,
+            "links": [
+              {
+                "path": "src/main.ts",
+                "controls": "code-example-v03ydluhy8-0-file-panel-0",
+                "itemId": "code-example-v03ydluhy8-0-file-tab-0-tree",
+                "title": "src/main.ts",
+                "labelledBy": "code-example-v03ydluhy8-0-file-tab-0-tree",
+                "scoped": true
+              },
+              {
+                "path": "src/button-demo.css",
+                "controls": "code-example-v03ydluhy8-0-file-panel-2",
+                "itemId": "code-example-v03ydluhy8-0-file-tab-2-tree",
+                "title": "src/button-demo.css",
+                "labelledBy": "code-example-v03ydluhy8-0-file-tab-2-tree",
+                "scoped": true
+              },
+              {
+                "path": "index.html",
+                "controls": "code-example-v03ydluhy8-0-file-panel-1",
+                "itemId": "code-example-v03ydluhy8-0-file-tab-1-tree",
+                "title": "index.html",
+                "labelledBy": "code-example-v03ydluhy8-0-file-tab-1-tree",
+                "scoped": true
+              }
+            ],
+            "selected": "index.html",
+            "sourceSHA256": "0b097665ddd1f251f3f8e74960bfb46dff12222227e17e35f5485595c3ce18a3"
+          }
+        ],
+        "standalone": [
+          {
+            "path": "proto-ui/config.json",
+            "controls": "cli-init-generated-file-panel-0",
+            "itemId": "cli-init-generated-file-tab-0-tree",
+            "title": "proto-ui/config.json",
+            "labelledBy": "cli-init-generated-file-tab-0-tree",
+            "scoped": true
+          },
+          {
+            "path": "src/styles/proto-ui-style.css",
+            "controls": "cli-init-generated-file-panel-1",
+            "itemId": "cli-init-generated-file-tab-1-tree",
+            "title": "src/styles/proto-ui-style.css",
+            "labelledBy": "cli-init-generated-file-tab-1-tree",
+            "scoped": true
+          },
+          {
+            "path": "src/styles/proto-ui-tokens.generated.css",
+            "controls": "cli-init-generated-file-panel-2",
+            "itemId": "cli-init-generated-file-tab-2-tree",
+            "title": "src/styles/proto-ui-tokens.generated.css",
+            "labelledBy": "cli-init-generated-file-tab-2-tree",
+            "scoped": true
+          },
+          {
+            "path": "src/styles/shadcn-theme.css",
+            "controls": "cli-init-generated-file-panel-3",
+            "itemId": "cli-init-generated-file-tab-3-tree",
+            "title": "src/styles/shadcn-theme.css",
+            "labelledBy": "cli-init-generated-file-tab-3-tree",
+            "scoped": true
+          }
+        ]
+      }
+    ]
+  }
+}
