@@ -1,0 +1,3712 @@
+{
+  "head": "37a4999352892c6ba2721ce4caed0dcf630976d0",
+  "tree": "4f6410c4bcdf13b52205b6457fb35caf35f6d219",
+  "base": "ea4637c2787763b6f1d05806718564414f8dc7ca",
+  "changedSourceSHA256": {
+    "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.test.ts": "8eab48362fad07a54edf5a8cede4915763100108ed72ed11e73c958cb2aea6f1",
+    "packages/cli/src/services/proto-style-css.ts": "a0c6f6c0924e0aaa37e5089bb4d1603c56e60d66af570f1d38a6412676376c33",
+    "packages/cli/test/shadow-split-style.test.ts": "6eef2e54f71c59a640449ee3e4556fa1fdbf03f1510d66f31b0821945963085d",
+    "packages/prototypes/shadcn/src/switch/root-visual.ts": "9573d7a9882e1ac3a2de527dd32273517b669d663c5b25c503eb8b34bbdeb2e1",
+    "packages/prototypes/shadcn/test/switch-motion.browser.test.ts": "4285f4fbe2656597acb37ce394be039c405f837ac0a492d65812ad45ec3ba262"
+  },
+  "reproducedOn": "21af3bec014503e68782a6f1f3756aec2bb987cd",
+  "initialSignedCandidate": "1a81a78fa9081acf31630983ad9f6cf80a287680",
+  "initialWorkspaceTypeFailure": "TS7006 in native fixture. Type the Thumb as HTMLElement on the new base.",
+  "baselinePalette": {
+    "passed": 12,
+    "failed": 5,
+    "filtered": 0,
+    "files": 1,
+    "failures": [
+      {
+        "name": "retires an async detached view and freshly binds on reattach, shadow=false",
+        "message": "AssertionError: expected [] to have a length of 2 but got +0"
+      },
+      {
+        "name": "retires an async detached view and freshly binds on reattach, shadow=true",
+        "message": "AssertionError: expected [] to have a length of 2 but got +0"
+      },
+      {
+        "name": "rejects a real connected theme override after reattach without reusing canonical colors",
+        "message": "TypeError: Cannot read properties of undefined (reading 'source')"
+      },
+      {
+        "name": "preserves the same owner across a same-tick move and checks the new ancestor theme, shadow=false",
+        "message": "AssertionError: expected [] to deeply equal [ +0, +0 ]"
+      },
+      {
+        "name": "preserves the same owner across a same-tick move and checks the new ancestor theme, shadow=true",
+        "message": "AssertionError: expected [] to deeply equal [ +0, +0 ]"
+      }
+    ]
+  },
+  "baselineSwitch": {
+    "passed": 4,
+    "failed": 8,
+    "filtered": 0,
+    "files": 1,
+    "failures": [
+      {
+        "name": "document root 16px records actual consumer motion and activation",
+        "message": "AssertionError: expected '' not to be '' // Object.is equality"
+      },
+      {
+        "name": "document root 32px records actual consumer motion and activation",
+        "message": "AssertionError: expected '' not to be '' // Object.is equality"
+      },
+      {
+        "name": "shadow root 16px records actual consumer motion and activation",
+        "message": "AssertionError: expected '' not to be '' // Object.is equality"
+      },
+      {
+        "name": "shadow root 32px records actual consumer motion and activation",
+        "message": "AssertionError: expected '' not to be '' // Object.is equality"
+      },
+      {
+        "name": "document root 16px records actual consumer motion and activation",
+        "message": "AssertionError: expected '' not to be '' // Object.is equality"
+      },
+      {
+        "name": "document root 32px records actual consumer motion and activation",
+        "message": "AssertionError: expected '' not to be '' // Object.is equality"
+      },
+      {
+        "name": "shadow root 16px records actual consumer motion and activation",
+        "message": "AssertionError: expected '' not to be '' // Object.is equality"
+      },
+      {
+        "name": "shadow root 32px records actual consumer motion and activation",
+        "message": "AssertionError: expected '' not to be '' // Object.is equality"
+      }
+    ]
+  },
+  "baselineSplitCss": {
+    "passed": 0,
+    "failed": 1,
+    "filtered": 13,
+    "files": 1,
+    "failures": [
+      {
+        "name": "settles both split transform owners in generated reduced-motion overrides",
+        "message": "AssertionError: expected '@media (prefers-reduced-motion: reduc…' to contain ':where(:host([data-pui-color-scheme=\\…'"
+      }
+    ]
+  },
+  "signedSource": {
+    "passed": 213,
+    "failed": 0,
+    "filtered": 0,
+    "files": 9,
+    "failures": []
+  },
+  "signedSwitch": {
+    "passed": 12,
+    "failed": 0,
+    "filtered": 0,
+    "files": 1,
+    "failures": []
+  },
+  "signedResidentNative": {
+    "passed": 2,
+    "failed": 0,
+    "filtered": 0,
+    "files": 1,
+    "failures": []
+  },
+  "nativeIntermediateDiagnostic": [
+    {
+      "scope": "document",
+      "beforeImplementation": {
+        "stage": "reduced",
+        "rgba": [221, 221, 221, 255],
+        "now": 3606.5,
+        "checked": true,
+        "root": {
+          "x": 148,
+          "y": 214.4375,
+          "width": 32,
+          "height": 18.390625
+        },
+        "thumb": {
+          "x": 163,
+          "y": 215.625,
+          "width": 16,
+          "height": 16
+        },
+        "color": "oklab(0.898218 -0.00000885718 0.0000210199)",
+        "translate": "none",
+        "transform": "none",
+        "radius": "9999px",
+        "inlineColor": "",
+        "rootTransitions": ["background-color"],
+        "thumbTransitions": [],
+        "reducedMotion": true,
+        "transitionStyles": [
+          {
+            "property": "all",
+            "duration": "0.15s",
+            "inline": ""
+          },
+          {
+            "property": "all",
+            "duration": "0.15s",
+            "inline": ""
+          },
+          {
+            "property": "none",
+            "duration": "0.15s",
+            "inline": ""
+          },
+          {
+            "property": "none",
+            "duration": "0.15s",
+            "inline": ""
+          }
+        ],
+        "paletteBindings": 0,
+        "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-8 h-[1.15rem] bg-primary",
+        "diagnostics": []
+      },
+      "firstHostRuleAttempt": {
+        "stage": "reduced",
+        "rgba": [23, 23, 23, 255],
+        "now": 3656.699999809265,
+        "checked": true,
+        "root": {
+          "x": 148,
+          "y": 214.4375,
+          "width": 32,
+          "height": 18.390625
+        },
+        "thumb": {
+          "x": 163,
+          "y": 215.625,
+          "width": 16,
+          "height": 16
+        },
+        "color": "lab(7.78201 -0.0000149012 0)",
+        "translate": "none",
+        "transform": "none",
+        "radius": "9999px",
+        "inlineColor": "",
+        "rootTransitions": [],
+        "thumbTransitions": [],
+        "reducedMotion": true,
+        "transitionStyles": [
+          {
+            "property": "none",
+            "duration": "0.15s",
+            "inline": ""
+          },
+          {
+            "property": "none",
+            "duration": "0.15s",
+            "inline": ""
+          },
+          {
+            "property": "none",
+            "duration": "0.15s",
+            "inline": ""
+          },
+          {
+            "property": "none",
+            "duration": "0.15s",
+            "inline": ""
+          }
+        ],
+        "paletteBindings": 0,
+        "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-none duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-8 h-[1.15rem] bg-primary",
+        "diagnostics": []
+      }
+    },
+    {
+      "scope": "shadow",
+      "beforeImplementation": {
+        "stage": "reduced",
+        "rgba": [221, 221, 221, 255],
+        "now": 3542.600000143051,
+        "checked": true,
+        "root": {
+          "x": 148,
+          "y": 214.4375,
+          "width": 32,
+          "height": 18.390625
+        },
+        "thumb": {
+          "x": 149.4640655517578,
+          "y": 215.625,
+          "width": 16,
+          "height": 16
+        },
+        "color": "oklab(0.898231 -0.00000885731 0.0000210202)",
+        "translate": "none",
+        "transform": "none",
+        "radius": "9999px",
+        "inlineColor": "",
+        "rootTransitions": ["background-color"],
+        "thumbTransitions": ["transform"],
+        "reducedMotion": true,
+        "transitionStyles": [
+          {
+            "property": "all",
+            "duration": "0.15s",
+            "inline": ""
+          },
+          {
+            "property": "all",
+            "duration": "0.15s",
+            "inline": ""
+          },
+          {
+            "property": "transform, translate, scale, rotate",
+            "duration": "0.15s",
+            "inline": ""
+          },
+          {
+            "property": "none",
+            "duration": "0.15s",
+            "inline": ""
+          }
+        ],
+        "paletteBindings": 0,
+        "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-primary",
+        "diagnostics": []
+      },
+      "firstHostRuleAttempt": {
+        "stage": "reduced",
+        "rgba": [23, 23, 23, 255],
+        "now": 3550.699999809265,
+        "checked": true,
+        "root": {
+          "x": 148,
+          "y": 214.4375,
+          "width": 32,
+          "height": 18.390625
+        },
+        "thumb": {
+          "x": 151.4687042236328,
+          "y": 215.625,
+          "width": 16,
+          "height": 16
+        },
+        "color": "lab(7.78201 -0.0000149012 0)",
+        "translate": "none",
+        "transform": "none",
+        "radius": "9999px",
+        "inlineColor": "",
+        "rootTransitions": [],
+        "thumbTransitions": ["transform"],
+        "reducedMotion": true,
+        "transitionStyles": [
+          {
+            "property": "none",
+            "duration": "0.15s",
+            "inline": ""
+          },
+          {
+            "property": "none",
+            "duration": "0.15s",
+            "inline": ""
+          },
+          {
+            "property": "transform, translate, scale, rotate",
+            "duration": "0.15s",
+            "inline": ""
+          },
+          {
+            "property": "none",
+            "duration": "0.15s",
+            "inline": ""
+          }
+        ],
+        "paletteBindings": 0,
+        "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-none duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-primary",
+        "diagnostics": []
+      }
+    }
+  ],
+  "signedPublicSwitchSamples": [
+    {
+      "scope": "document",
+      "size": "default",
+      "rootFontPx": 16,
+      "travelPx": 14,
+      "chrome": "156.0.8078.79",
+      "stages": {
+        "initial": {
+          "stage": "initial",
+          "rgba": [229, 229, 229, 255],
+          "now": 300.60000014305115,
+          "checked": false,
+          "root": {
+            "x": 148,
+            "y": 214.4375,
+            "width": 32,
+            "height": 18.390625
+          },
+          "thumb": {
+            "x": 149,
+            "y": 215.625,
+            "width": 16,
+            "height": 16
+          },
+          "color": "lab(90.952 0 -0.0000119209)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": false,
+          "transitionStyles": [
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-8 h-[1.15rem] bg-input",
+          "diagnostics": []
+        },
+        "forward-midpoint": {
+          "stage": "forward-midpoint",
+          "rgba": [188, 188, 188, 255],
+          "now": 1255.7999999523163,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 214.4375,
+            "width": 32,
+            "height": 18.390625
+          },
+          "thumb": {
+            "x": 151.4509735107422,
+            "y": 215.625,
+            "width": 16,
+            "height": 16
+          },
+          "color": "oklab(0.796473 -0.0000078623 0.0000186368)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": ["background-color"],
+          "thumbTransitions": ["transform", "transform"],
+          "reducedMotion": false,
+          "transitionStyles": [
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-8 h-[1.15rem] bg-primary",
+          "diagnostics": []
+        },
+        "reverse": {
+          "stage": "reverse",
+          "before": {
+            "rgba": [188, 188, 188, 255],
+            "now": 1259.6000001430511,
+            "checked": true,
+            "root": {
+              "x": 148,
+              "y": 214.4375,
+              "width": 32,
+              "height": 18.390625
+            },
+            "thumb": {
+              "x": 151.4509735107422,
+              "y": 215.625,
+              "width": 16,
+              "height": 16
+            },
+            "color": "oklab(0.796473 -0.0000078623 0.0000186368)",
+            "translate": "none",
+            "transform": "none",
+            "radius": "9999px",
+            "inlineColor": "",
+            "rootTransitions": ["background-color"],
+            "thumbTransitions": ["transform", "transform"],
+            "reducedMotion": false,
+            "transitionStyles": [
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              }
+            ],
+            "paletteBindings": 0,
+            "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-8 h-[1.15rem] bg-primary",
+            "diagnostics": []
+          },
+          "after": {
+            "rgba": [188, 188, 188, 255],
+            "now": 1261.9000000953674,
+            "checked": false,
+            "root": {
+              "x": 148,
+              "y": 214.4375,
+              "width": 32,
+              "height": 18.390625
+            },
+            "thumb": {
+              "x": 151.4509735107422,
+              "y": 215.625,
+              "width": 16,
+              "height": 16
+            },
+            "color": "oklab(0.796473 -0.0000078623 0.0000186368)",
+            "translate": "none",
+            "transform": "none",
+            "radius": "9999px",
+            "inlineColor": "",
+            "rootTransitions": ["background-color"],
+            "thumbTransitions": ["transform", "transform"],
+            "reducedMotion": false,
+            "transitionStyles": [
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              }
+            ],
+            "paletteBindings": 0,
+            "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-8 h-[1.15rem] bg-input",
+            "diagnostics": []
+          }
+        },
+        "settled": {
+          "stage": "settled",
+          "rgba": [23, 23, 23, 255],
+          "now": 1493.9000000953674,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 214.4375,
+            "width": 32,
+            "height": 18.390625
+          },
+          "thumb": {
+            "x": 163,
+            "y": 215.625,
+            "width": 16,
+            "height": 16
+          },
+          "color": "lab(7.78201 -0.0000149012 0)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": false,
+          "transitionStyles": [
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-8 h-[1.15rem] bg-primary",
+          "diagnostics": []
+        },
+        "reduced": {
+          "stage": "reduced",
+          "rgba": [23, 23, 23, 255],
+          "now": 3551.7999999523163,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 214.4375,
+            "width": 32,
+            "height": 18.390625
+          },
+          "thumb": {
+            "x": 163,
+            "y": 215.625,
+            "width": 16,
+            "height": 16
+          },
+          "color": "lab(7.78201 -0.0000149012 0)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": true,
+          "transitionStyles": [
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-none duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-8 h-[1.15rem] bg-primary",
+          "diagnostics": []
+        },
+        "reopen": {
+          "stage": "reopen",
+          "rgba": [23, 23, 23, 255],
+          "now": 3687,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 214.4375,
+            "width": 32,
+            "height": 18.390625
+          },
+          "thumb": {
+            "x": 163,
+            "y": 215.625,
+            "width": 16,
+            "height": 16
+          },
+          "color": "lab(7.78201 -0.0000149012 0)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": true,
+          "transitionStyles": [
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-none duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-8 h-[1.15rem] bg-primary cursor-not-allowed opacity-50 pointer-events-none",
+          "diagnostics": []
+        },
+        "next-target-source-mismatch": {
+          "stage": "next-target-source-mismatch",
+          "rgba": [10, 20, 30, 255],
+          "now": 3978.7999999523163,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 214.4375,
+            "width": 32,
+            "height": 18.390625
+          },
+          "thumb": {
+            "x": 163,
+            "y": 215.625,
+            "width": 16,
+            "height": 16
+          },
+          "color": "rgb(10, 20, 30)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": true,
+          "transitionStyles": [
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-none duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-8 h-[1.15rem] bg-primary",
+          "diagnostics": []
+        }
+      },
+      "nativeTraceSha256": "15138a4af19fbb2eebf2698fdcdc414decae3184dbd9a3b7735ab593824f9f87"
+    },
+    {
+      "scope": "document",
+      "size": "default",
+      "rootFontPx": 32,
+      "travelPx": 30,
+      "chrome": "156.0.8078.79",
+      "stages": {
+        "initial": {
+          "stage": "initial",
+          "rgba": [229, 229, 229, 255],
+          "now": 267.40000009536743,
+          "checked": false,
+          "root": {
+            "x": 148,
+            "y": 280.875,
+            "width": 64,
+            "height": 36.796875
+          },
+          "thumb": {
+            "x": 149,
+            "y": 283.265625,
+            "width": 32,
+            "height": 32
+          },
+          "color": "lab(90.952 0 -0.0000119209)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": false,
+          "transitionStyles": [
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-8 h-[1.15rem] bg-input",
+          "diagnostics": []
+        },
+        "forward-midpoint": {
+          "stage": "forward-midpoint",
+          "rgba": [188, 188, 188, 255],
+          "now": 1210.1000001430511,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 280.875,
+            "width": 64,
+            "height": 36.796875
+          },
+          "thumb": {
+            "x": 154.2541046142578,
+            "y": 283.265625,
+            "width": 32,
+            "height": 32
+          },
+          "color": "oklab(0.796425 -0.00000786182 0.0000186357)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": ["background-color"],
+          "thumbTransitions": ["transform", "transform"],
+          "reducedMotion": false,
+          "transitionStyles": [
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-8 h-[1.15rem] bg-primary",
+          "diagnostics": []
+        },
+        "reverse": {
+          "stage": "reverse",
+          "before": {
+            "rgba": [188, 188, 188, 255],
+            "now": 1213.2999999523163,
+            "checked": true,
+            "root": {
+              "x": 148,
+              "y": 280.875,
+              "width": 64,
+              "height": 36.796875
+            },
+            "thumb": {
+              "x": 154.2541046142578,
+              "y": 283.265625,
+              "width": 32,
+              "height": 32
+            },
+            "color": "oklab(0.796425 -0.00000786182 0.0000186357)",
+            "translate": "none",
+            "transform": "none",
+            "radius": "9999px",
+            "inlineColor": "",
+            "rootTransitions": ["background-color"],
+            "thumbTransitions": ["transform", "transform"],
+            "reducedMotion": false,
+            "transitionStyles": [
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              }
+            ],
+            "paletteBindings": 0,
+            "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-8 h-[1.15rem] bg-primary",
+            "diagnostics": []
+          },
+          "after": {
+            "rgba": [188, 188, 188, 255],
+            "now": 1215.5,
+            "checked": false,
+            "root": {
+              "x": 148,
+              "y": 280.875,
+              "width": 64,
+              "height": 36.796875
+            },
+            "thumb": {
+              "x": 154.2541046142578,
+              "y": 283.265625,
+              "width": 32,
+              "height": 32
+            },
+            "color": "oklab(0.796425 -0.00000786182 0.0000186357)",
+            "translate": "none",
+            "transform": "none",
+            "radius": "9999px",
+            "inlineColor": "",
+            "rootTransitions": ["background-color"],
+            "thumbTransitions": ["transform", "transform"],
+            "reducedMotion": false,
+            "transitionStyles": [
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              }
+            ],
+            "paletteBindings": 0,
+            "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-8 h-[1.15rem] bg-input",
+            "diagnostics": []
+          }
+        },
+        "settled": {
+          "stage": "settled",
+          "rgba": [23, 23, 23, 255],
+          "now": 1446.7999999523163,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 280.875,
+            "width": 64,
+            "height": 36.796875
+          },
+          "thumb": {
+            "x": 179,
+            "y": 283.265625,
+            "width": 32,
+            "height": 32
+          },
+          "color": "lab(7.78201 -0.0000149012 0)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": false,
+          "transitionStyles": [
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-8 h-[1.15rem] bg-primary",
+          "diagnostics": []
+        },
+        "reduced": {
+          "stage": "reduced",
+          "rgba": [23, 23, 23, 255],
+          "now": 3510.100000143051,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 280.875,
+            "width": 64,
+            "height": 36.796875
+          },
+          "thumb": {
+            "x": 179,
+            "y": 283.265625,
+            "width": 32,
+            "height": 32
+          },
+          "color": "lab(7.78201 -0.0000149012 0)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": true,
+          "transitionStyles": [
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-none duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-8 h-[1.15rem] bg-primary",
+          "diagnostics": []
+        },
+        "reopen": {
+          "stage": "reopen",
+          "rgba": [23, 23, 23, 255],
+          "now": 3638.5,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 280.875,
+            "width": 64,
+            "height": 36.796875
+          },
+          "thumb": {
+            "x": 179,
+            "y": 283.265625,
+            "width": 32,
+            "height": 32
+          },
+          "color": "lab(7.78201 -0.0000149012 0)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": true,
+          "transitionStyles": [
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-none duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-8 h-[1.15rem] bg-primary cursor-not-allowed opacity-50 pointer-events-none",
+          "diagnostics": []
+        },
+        "next-target-source-mismatch": {
+          "stage": "next-target-source-mismatch",
+          "rgba": [10, 20, 30, 255],
+          "now": 3937.600000143051,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 280.875,
+            "width": 64,
+            "height": 36.796875
+          },
+          "thumb": {
+            "x": 179,
+            "y": 283.265625,
+            "width": 32,
+            "height": 32
+          },
+          "color": "rgb(10, 20, 30)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": true,
+          "transitionStyles": [
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-none duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-8 h-[1.15rem] bg-primary",
+          "diagnostics": []
+        }
+      },
+      "nativeTraceSha256": "3ace85b7d4ae9922a0fa7e1d0ea740bf89ded50e1c427042a3bbb5ba5ee4be83"
+    },
+    {
+      "scope": "document",
+      "size": "sm",
+      "rootFontPx": 16,
+      "travelPx": 10,
+      "chrome": "156.0.8078.79",
+      "stages": {
+        "initial": {
+          "stage": "initial",
+          "rgba": [229, 229, 229, 255],
+          "now": 264.5,
+          "checked": false,
+          "root": {
+            "x": 148,
+            "y": 214.4375,
+            "width": 24,
+            "height": 14
+          },
+          "thumb": {
+            "x": 149,
+            "y": 215.4375,
+            "width": 12,
+            "height": 12
+          },
+          "color": "lab(90.952 0 -0.0000119209)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": false,
+          "transitionStyles": [
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-6 h-3.5 bg-input",
+          "diagnostics": []
+        },
+        "forward-midpoint": {
+          "stage": "forward-midpoint",
+          "rgba": [188, 188, 188, 255],
+          "now": 1229.2999999523163,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 214.4375,
+            "width": 24,
+            "height": 14
+          },
+          "thumb": {
+            "x": 150.75299072265625,
+            "y": 215.4375,
+            "width": 12,
+            "height": 12
+          },
+          "color": "oklab(0.796309 -0.00000786069 0.000018633)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": ["background-color"],
+          "thumbTransitions": ["transform", "transform"],
+          "reducedMotion": false,
+          "transitionStyles": [
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-6 h-3.5 bg-primary",
+          "diagnostics": []
+        },
+        "reverse": {
+          "stage": "reverse",
+          "before": {
+            "rgba": [188, 188, 188, 255],
+            "now": 1232.2999999523163,
+            "checked": true,
+            "root": {
+              "x": 148,
+              "y": 214.4375,
+              "width": 24,
+              "height": 14
+            },
+            "thumb": {
+              "x": 150.75299072265625,
+              "y": 215.4375,
+              "width": 12,
+              "height": 12
+            },
+            "color": "oklab(0.796309 -0.00000786069 0.000018633)",
+            "translate": "none",
+            "transform": "none",
+            "radius": "9999px",
+            "inlineColor": "",
+            "rootTransitions": ["background-color"],
+            "thumbTransitions": ["transform", "transform"],
+            "reducedMotion": false,
+            "transitionStyles": [
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              }
+            ],
+            "paletteBindings": 0,
+            "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-6 h-3.5 bg-primary",
+            "diagnostics": []
+          },
+          "after": {
+            "rgba": [188, 188, 188, 255],
+            "now": 1234.7999999523163,
+            "checked": false,
+            "root": {
+              "x": 148,
+              "y": 214.4375,
+              "width": 24,
+              "height": 14
+            },
+            "thumb": {
+              "x": 150.75299072265625,
+              "y": 215.4375,
+              "width": 12,
+              "height": 12
+            },
+            "color": "oklab(0.796309 -0.00000786069 0.000018633)",
+            "translate": "none",
+            "transform": "none",
+            "radius": "9999px",
+            "inlineColor": "",
+            "rootTransitions": ["background-color"],
+            "thumbTransitions": ["transform", "transform"],
+            "reducedMotion": false,
+            "transitionStyles": [
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              }
+            ],
+            "paletteBindings": 0,
+            "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-6 h-3.5 bg-input",
+            "diagnostics": []
+          }
+        },
+        "settled": {
+          "stage": "settled",
+          "rgba": [23, 23, 23, 255],
+          "now": 1466.2000000476837,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 214.4375,
+            "width": 24,
+            "height": 14
+          },
+          "thumb": {
+            "x": 159,
+            "y": 215.4375,
+            "width": 12,
+            "height": 12
+          },
+          "color": "lab(7.78201 -0.0000149012 0)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": false,
+          "transitionStyles": [
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-6 h-3.5 bg-primary",
+          "diagnostics": []
+        },
+        "reduced": {
+          "stage": "reduced",
+          "rgba": [23, 23, 23, 255],
+          "now": 3519.5,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 214.4375,
+            "width": 24,
+            "height": 14
+          },
+          "thumb": {
+            "x": 159,
+            "y": 215.4375,
+            "width": 12,
+            "height": 12
+          },
+          "color": "lab(7.78201 -0.0000149012 0)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": true,
+          "transitionStyles": [
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-none duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-6 h-3.5 bg-primary",
+          "diagnostics": []
+        },
+        "reopen": {
+          "stage": "reopen",
+          "rgba": [23, 23, 23, 255],
+          "now": 3638.9000000953674,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 214.4375,
+            "width": 24,
+            "height": 14
+          },
+          "thumb": {
+            "x": 159,
+            "y": 215.4375,
+            "width": 12,
+            "height": 12
+          },
+          "color": "lab(7.78201 -0.0000149012 0)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": true,
+          "transitionStyles": [
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-none duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-6 h-3.5 bg-primary cursor-not-allowed opacity-50 pointer-events-none",
+          "diagnostics": []
+        },
+        "next-target-source-mismatch": {
+          "stage": "next-target-source-mismatch",
+          "rgba": [10, 20, 30, 255],
+          "now": 3937.0999999046326,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 214.4375,
+            "width": 24,
+            "height": 14
+          },
+          "thumb": {
+            "x": 159,
+            "y": 215.4375,
+            "width": 12,
+            "height": 12
+          },
+          "color": "rgb(10, 20, 30)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": true,
+          "transitionStyles": [
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-none duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-6 h-3.5 bg-primary",
+          "diagnostics": []
+        }
+      },
+      "nativeTraceSha256": "e44bba76752ad26caefde95817a5530d96d0150142cd460836092988c40732f7"
+    },
+    {
+      "scope": "document",
+      "size": "sm",
+      "rootFontPx": 32,
+      "travelPx": 22,
+      "chrome": "156.0.8078.79",
+      "stages": {
+        "initial": {
+          "stage": "initial",
+          "rgba": [229, 229, 229, 255],
+          "now": 269.40000009536743,
+          "checked": false,
+          "root": {
+            "x": 148,
+            "y": 280.875,
+            "width": 48,
+            "height": 28
+          },
+          "thumb": {
+            "x": 149,
+            "y": 282.875,
+            "width": 24,
+            "height": 24
+          },
+          "color": "lab(90.952 0 -0.0000119209)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": false,
+          "transitionStyles": [
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-6 h-3.5 bg-input",
+          "diagnostics": []
+        },
+        "forward-midpoint": {
+          "stage": "forward-midpoint",
+          "rgba": [188, 188, 188, 255],
+          "now": 1232.1000001430511,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 280.875,
+            "width": 48,
+            "height": 28
+          },
+          "thumb": {
+            "x": 152.87374877929688,
+            "y": 282.875,
+            "width": 24,
+            "height": 24
+          },
+          "color": "oklab(0.795749 -0.00000785522 0.0000186199)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": ["background-color"],
+          "thumbTransitions": ["transform", "transform"],
+          "reducedMotion": false,
+          "transitionStyles": [
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-6 h-3.5 bg-primary",
+          "diagnostics": []
+        },
+        "reverse": {
+          "stage": "reverse",
+          "before": {
+            "rgba": [188, 188, 188, 255],
+            "now": 1235.5,
+            "checked": true,
+            "root": {
+              "x": 148,
+              "y": 280.875,
+              "width": 48,
+              "height": 28
+            },
+            "thumb": {
+              "x": 152.87374877929688,
+              "y": 282.875,
+              "width": 24,
+              "height": 24
+            },
+            "color": "oklab(0.795749 -0.00000785522 0.0000186199)",
+            "translate": "none",
+            "transform": "none",
+            "radius": "9999px",
+            "inlineColor": "",
+            "rootTransitions": ["background-color"],
+            "thumbTransitions": ["transform", "transform"],
+            "reducedMotion": false,
+            "transitionStyles": [
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              }
+            ],
+            "paletteBindings": 0,
+            "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-6 h-3.5 bg-primary",
+            "diagnostics": []
+          },
+          "after": {
+            "rgba": [188, 188, 188, 255],
+            "now": 1238.4000000953674,
+            "checked": false,
+            "root": {
+              "x": 148,
+              "y": 280.875,
+              "width": 48,
+              "height": 28
+            },
+            "thumb": {
+              "x": 152.87374877929688,
+              "y": 282.875,
+              "width": 24,
+              "height": 24
+            },
+            "color": "oklab(0.795749 -0.00000785522 0.0000186199)",
+            "translate": "none",
+            "transform": "none",
+            "radius": "9999px",
+            "inlineColor": "",
+            "rootTransitions": ["background-color"],
+            "thumbTransitions": ["transform", "transform"],
+            "reducedMotion": false,
+            "transitionStyles": [
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              }
+            ],
+            "paletteBindings": 0,
+            "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-6 h-3.5 bg-input",
+            "diagnostics": []
+          }
+        },
+        "settled": {
+          "stage": "settled",
+          "rgba": [23, 23, 23, 255],
+          "now": 1473,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 280.875,
+            "width": 48,
+            "height": 28
+          },
+          "thumb": {
+            "x": 171,
+            "y": 282.875,
+            "width": 24,
+            "height": 24
+          },
+          "color": "lab(7.78201 -0.0000149012 0)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": false,
+          "transitionStyles": [
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-6 h-3.5 bg-primary",
+          "diagnostics": []
+        },
+        "reduced": {
+          "stage": "reduced",
+          "rgba": [23, 23, 23, 255],
+          "now": 3523.7000000476837,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 280.875,
+            "width": 48,
+            "height": 28
+          },
+          "thumb": {
+            "x": 171,
+            "y": 282.875,
+            "width": 24,
+            "height": 24
+          },
+          "color": "lab(7.78201 -0.0000149012 0)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": true,
+          "transitionStyles": [
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-none duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-6 h-3.5 bg-primary",
+          "diagnostics": []
+        },
+        "reopen": {
+          "stage": "reopen",
+          "rgba": [23, 23, 23, 255],
+          "now": 3657.800000190735,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 280.875,
+            "width": 48,
+            "height": 28
+          },
+          "thumb": {
+            "x": 171,
+            "y": 282.875,
+            "width": 24,
+            "height": 24
+          },
+          "color": "lab(7.78201 -0.0000149012 0)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": true,
+          "transitionStyles": [
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-none duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-6 h-3.5 bg-primary cursor-not-allowed opacity-50 pointer-events-none",
+          "diagnostics": []
+        },
+        "next-target-source-mismatch": {
+          "stage": "next-target-source-mismatch",
+          "rgba": [10, 20, 30, 255],
+          "now": 3956.7000000476837,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 280.875,
+            "width": 48,
+            "height": 28
+          },
+          "thumb": {
+            "x": 171,
+            "y": 282.875,
+            "width": 24,
+            "height": 24
+          },
+          "color": "rgb(10, 20, 30)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": true,
+          "transitionStyles": [
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer relative inline-flex shrink-0 items-center p-0 outline-none select-none transition-none duration-150 ease-in-out rounded-full border border-transparent shadow-xs w-6 h-3.5 bg-primary",
+          "diagnostics": []
+        }
+      },
+      "nativeTraceSha256": "daed193476382483fa1e78df715d73ef9b59b1f5d5de34e41e32279ab32e38d2"
+    },
+    {
+      "scope": "shadow",
+      "size": "default",
+      "rootFontPx": 16,
+      "travelPx": 14,
+      "chrome": "156.0.8078.79",
+      "stages": {
+        "initial": {
+          "stage": "initial",
+          "rgba": [229, 229, 229, 255],
+          "now": 290.60000014305115,
+          "checked": false,
+          "root": {
+            "x": 148,
+            "y": 214.4375,
+            "width": 32,
+            "height": 18.390625
+          },
+          "thumb": {
+            "x": 149,
+            "y": 215.625,
+            "width": 16,
+            "height": 16
+          },
+          "color": "lab(90.952 0 -0.0000119209)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": false,
+          "transitionStyles": [
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-input",
+          "diagnostics": []
+        },
+        "forward-midpoint": {
+          "stage": "forward-midpoint",
+          "rgba": [188, 188, 188, 255],
+          "now": 1243.7000000476837,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 214.4375,
+            "width": 32,
+            "height": 18.390625
+          },
+          "thumb": {
+            "x": 151.45643615722656,
+            "y": 215.625,
+            "width": 16,
+            "height": 16
+          },
+          "color": "oklab(0.796194 -0.00000785956 0.0000186303)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": ["background-color"],
+          "thumbTransitions": ["transform"],
+          "reducedMotion": false,
+          "transitionStyles": [
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-primary",
+          "diagnostics": []
+        },
+        "reverse": {
+          "stage": "reverse",
+          "before": {
+            "rgba": [188, 188, 188, 255],
+            "now": 1246.5,
+            "checked": true,
+            "root": {
+              "x": 148,
+              "y": 214.4375,
+              "width": 32,
+              "height": 18.390625
+            },
+            "thumb": {
+              "x": 151.45643615722656,
+              "y": 215.625,
+              "width": 16,
+              "height": 16
+            },
+            "color": "oklab(0.796194 -0.00000785956 0.0000186303)",
+            "translate": "none",
+            "transform": "none",
+            "radius": "9999px",
+            "inlineColor": "",
+            "rootTransitions": ["background-color"],
+            "thumbTransitions": ["transform"],
+            "reducedMotion": false,
+            "transitionStyles": [
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              }
+            ],
+            "paletteBindings": 0,
+            "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-primary",
+            "diagnostics": []
+          },
+          "after": {
+            "rgba": [188, 188, 188, 255],
+            "now": 1250.5,
+            "checked": false,
+            "root": {
+              "x": 148,
+              "y": 214.4375,
+              "width": 32,
+              "height": 18.390625
+            },
+            "thumb": {
+              "x": 151.45643615722656,
+              "y": 215.625,
+              "width": 16,
+              "height": 16
+            },
+            "color": "oklab(0.796194 -0.00000785956 0.0000186303)",
+            "translate": "none",
+            "transform": "none",
+            "radius": "9999px",
+            "inlineColor": "",
+            "rootTransitions": ["background-color"],
+            "thumbTransitions": ["transform"],
+            "reducedMotion": false,
+            "transitionStyles": [
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              }
+            ],
+            "paletteBindings": 0,
+            "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-input",
+            "diagnostics": []
+          }
+        },
+        "settled": {
+          "stage": "settled",
+          "rgba": [23, 23, 23, 255],
+          "now": 1483.1000001430511,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 214.4375,
+            "width": 32,
+            "height": 18.390625
+          },
+          "thumb": {
+            "x": 163,
+            "y": 215.625,
+            "width": 16,
+            "height": 16
+          },
+          "color": "lab(7.78201 -0.0000149012 0)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": false,
+          "transitionStyles": [
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-primary",
+          "diagnostics": []
+        },
+        "reduced": {
+          "stage": "reduced",
+          "rgba": [23, 23, 23, 255],
+          "now": 3545,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 214.4375,
+            "width": 32,
+            "height": 18.390625
+          },
+          "thumb": {
+            "x": 163,
+            "y": 215.625,
+            "width": 16,
+            "height": 16
+          },
+          "color": "lab(7.78201 -0.0000149012 0)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": true,
+          "transitionStyles": [
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-none duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-primary",
+          "diagnostics": []
+        },
+        "reopen": {
+          "stage": "reopen",
+          "rgba": [23, 23, 23, 255],
+          "now": 3661.7000000476837,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 214.4375,
+            "width": 32,
+            "height": 18.390625
+          },
+          "thumb": {
+            "x": 163,
+            "y": 215.625,
+            "width": 16,
+            "height": 16
+          },
+          "color": "lab(7.78201 -0.0000149012 0)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": true,
+          "transitionStyles": [
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-none duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-primary cursor-not-allowed opacity-50",
+          "diagnostics": []
+        },
+        "next-target-source-mismatch": {
+          "stage": "next-target-source-mismatch",
+          "rgba": [10, 20, 30, 255],
+          "now": 3948.5,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 214.4375,
+            "width": 32,
+            "height": 18.390625
+          },
+          "thumb": {
+            "x": 163,
+            "y": 215.625,
+            "width": 16,
+            "height": 16
+          },
+          "color": "rgb(10, 20, 30)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": true,
+          "transitionStyles": [
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-none duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-primary",
+          "diagnostics": []
+        }
+      },
+      "nativeTraceSha256": "df9dc848965c9b6ea5107022ce6fca0dbe8f05373d9729818af250036e3c0ac1"
+    },
+    {
+      "scope": "shadow",
+      "size": "default",
+      "rootFontPx": 32,
+      "travelPx": 30,
+      "chrome": "156.0.8078.79",
+      "stages": {
+        "initial": {
+          "stage": "initial",
+          "rgba": [229, 229, 229, 255],
+          "now": 290.2999999523163,
+          "checked": false,
+          "root": {
+            "x": 148,
+            "y": 280.875,
+            "width": 64,
+            "height": 36.796875
+          },
+          "thumb": {
+            "x": 149,
+            "y": 283.265625,
+            "width": 32,
+            "height": 32
+          },
+          "color": "lab(90.952 0 -0.0000119209)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": false,
+          "transitionStyles": [
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-input",
+          "diagnostics": []
+        },
+        "forward-midpoint": {
+          "stage": "forward-midpoint",
+          "rgba": [188, 188, 188, 255],
+          "now": 1229,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 280.875,
+            "width": 64,
+            "height": 36.796875
+          },
+          "thumb": {
+            "x": 154.2698516845703,
+            "y": 283.265625,
+            "width": 32,
+            "height": 32
+          },
+          "color": "oklab(0.796049 -0.00000785815 0.0000186269)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": ["background-color"],
+          "thumbTransitions": ["transform"],
+          "reducedMotion": false,
+          "transitionStyles": [
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-primary",
+          "diagnostics": []
+        },
+        "reverse": {
+          "stage": "reverse",
+          "before": {
+            "rgba": [188, 188, 188, 255],
+            "now": 1232.7999999523163,
+            "checked": true,
+            "root": {
+              "x": 148,
+              "y": 280.875,
+              "width": 64,
+              "height": 36.796875
+            },
+            "thumb": {
+              "x": 154.2698516845703,
+              "y": 283.265625,
+              "width": 32,
+              "height": 32
+            },
+            "color": "oklab(0.796049 -0.00000785815 0.0000186269)",
+            "translate": "none",
+            "transform": "none",
+            "radius": "9999px",
+            "inlineColor": "",
+            "rootTransitions": ["background-color"],
+            "thumbTransitions": ["transform"],
+            "reducedMotion": false,
+            "transitionStyles": [
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              }
+            ],
+            "paletteBindings": 0,
+            "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-primary",
+            "diagnostics": []
+          },
+          "after": {
+            "rgba": [188, 188, 188, 255],
+            "now": 1237.7000000476837,
+            "checked": false,
+            "root": {
+              "x": 148,
+              "y": 280.875,
+              "width": 64,
+              "height": 36.796875
+            },
+            "thumb": {
+              "x": 154.2698516845703,
+              "y": 283.265625,
+              "width": 32,
+              "height": 32
+            },
+            "color": "oklab(0.796049 -0.00000785815 0.0000186269)",
+            "translate": "none",
+            "transform": "none",
+            "radius": "9999px",
+            "inlineColor": "",
+            "rootTransitions": ["background-color"],
+            "thumbTransitions": ["transform"],
+            "reducedMotion": false,
+            "transitionStyles": [
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              }
+            ],
+            "paletteBindings": 0,
+            "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-input",
+            "diagnostics": []
+          }
+        },
+        "settled": {
+          "stage": "settled",
+          "rgba": [23, 23, 23, 255],
+          "now": 1470.5999999046326,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 280.875,
+            "width": 64,
+            "height": 36.796875
+          },
+          "thumb": {
+            "x": 179,
+            "y": 283.265625,
+            "width": 32,
+            "height": 32
+          },
+          "color": "lab(7.78201 -0.0000149012 0)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": false,
+          "transitionStyles": [
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-primary",
+          "diagnostics": []
+        },
+        "reduced": {
+          "stage": "reduced",
+          "rgba": [23, 23, 23, 255],
+          "now": 3516.5999999046326,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 280.875,
+            "width": 64,
+            "height": 36.796875
+          },
+          "thumb": {
+            "x": 179,
+            "y": 283.265625,
+            "width": 32,
+            "height": 32
+          },
+          "color": "lab(7.78201 -0.0000149012 0)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": true,
+          "transitionStyles": [
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-none duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-primary",
+          "diagnostics": []
+        },
+        "reopen": {
+          "stage": "reopen",
+          "rgba": [23, 23, 23, 255],
+          "now": 3631.2999999523163,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 280.875,
+            "width": 64,
+            "height": 36.796875
+          },
+          "thumb": {
+            "x": 179,
+            "y": 283.265625,
+            "width": 32,
+            "height": 32
+          },
+          "color": "lab(7.78201 -0.0000149012 0)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": true,
+          "transitionStyles": [
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-none duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-primary cursor-not-allowed opacity-50",
+          "diagnostics": []
+        },
+        "next-target-source-mismatch": {
+          "stage": "next-target-source-mismatch",
+          "rgba": [10, 20, 30, 255],
+          "now": 3918.5,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 280.875,
+            "width": 64,
+            "height": 36.796875
+          },
+          "thumb": {
+            "x": 179,
+            "y": 283.265625,
+            "width": 32,
+            "height": 32
+          },
+          "color": "rgb(10, 20, 30)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": true,
+          "transitionStyles": [
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-none duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-primary",
+          "diagnostics": []
+        }
+      },
+      "nativeTraceSha256": "0fd859370f2335ce29dc0de62d0c94a49749d136ebe95688e83a0f3295ac62fb"
+    },
+    {
+      "scope": "shadow",
+      "size": "sm",
+      "rootFontPx": 16,
+      "travelPx": 10,
+      "chrome": "156.0.8078.79",
+      "stages": {
+        "initial": {
+          "stage": "initial",
+          "rgba": [229, 229, 229, 255],
+          "now": 285,
+          "checked": false,
+          "root": {
+            "x": 148,
+            "y": 214.4375,
+            "width": 24,
+            "height": 14
+          },
+          "thumb": {
+            "x": 149,
+            "y": 215.4375,
+            "width": 12,
+            "height": 12
+          },
+          "color": "lab(90.952 0 -0.0000119209)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": false,
+          "transitionStyles": [
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-input",
+          "diagnostics": []
+        },
+        "forward-midpoint": {
+          "stage": "forward-midpoint",
+          "rgba": [188, 188, 188, 255],
+          "now": 1268.7999999523163,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 214.4375,
+            "width": 24,
+            "height": 14
+          },
+          "thumb": {
+            "x": 150.75137329101562,
+            "y": 215.4375,
+            "width": 12,
+            "height": 12
+          },
+          "color": "oklab(0.796425 -0.00000786182 0.0000186357)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": ["background-color"],
+          "thumbTransitions": ["transform"],
+          "reducedMotion": false,
+          "transitionStyles": [
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-primary",
+          "diagnostics": []
+        },
+        "reverse": {
+          "stage": "reverse",
+          "before": {
+            "rgba": [188, 188, 188, 255],
+            "now": 1272.1999998092651,
+            "checked": true,
+            "root": {
+              "x": 148,
+              "y": 214.4375,
+              "width": 24,
+              "height": 14
+            },
+            "thumb": {
+              "x": 150.75137329101562,
+              "y": 215.4375,
+              "width": 12,
+              "height": 12
+            },
+            "color": "oklab(0.796425 -0.00000786182 0.0000186357)",
+            "translate": "none",
+            "transform": "none",
+            "radius": "9999px",
+            "inlineColor": "",
+            "rootTransitions": ["background-color"],
+            "thumbTransitions": ["transform"],
+            "reducedMotion": false,
+            "transitionStyles": [
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              }
+            ],
+            "paletteBindings": 0,
+            "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-primary",
+            "diagnostics": []
+          },
+          "after": {
+            "rgba": [188, 188, 188, 255],
+            "now": 1277.1999998092651,
+            "checked": false,
+            "root": {
+              "x": 148,
+              "y": 214.4375,
+              "width": 24,
+              "height": 14
+            },
+            "thumb": {
+              "x": 150.75137329101562,
+              "y": 215.4375,
+              "width": 12,
+              "height": 12
+            },
+            "color": "oklab(0.796425 -0.00000786182 0.0000186357)",
+            "translate": "none",
+            "transform": "none",
+            "radius": "9999px",
+            "inlineColor": "",
+            "rootTransitions": ["background-color"],
+            "thumbTransitions": ["transform"],
+            "reducedMotion": false,
+            "transitionStyles": [
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              }
+            ],
+            "paletteBindings": 0,
+            "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-input",
+            "diagnostics": []
+          }
+        },
+        "settled": {
+          "stage": "settled",
+          "rgba": [23, 23, 23, 255],
+          "now": 1513.1999998092651,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 214.4375,
+            "width": 24,
+            "height": 14
+          },
+          "thumb": {
+            "x": 159,
+            "y": 215.4375,
+            "width": 12,
+            "height": 12
+          },
+          "color": "lab(7.78201 -0.0000149012 0)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": false,
+          "transitionStyles": [
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-primary",
+          "diagnostics": []
+        },
+        "reduced": {
+          "stage": "reduced",
+          "rgba": [23, 23, 23, 255],
+          "now": 3569.399999856949,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 214.4375,
+            "width": 24,
+            "height": 14
+          },
+          "thumb": {
+            "x": 159,
+            "y": 215.4375,
+            "width": 12,
+            "height": 12
+          },
+          "color": "lab(7.78201 -0.0000149012 0)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": true,
+          "transitionStyles": [
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-none duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-primary",
+          "diagnostics": []
+        },
+        "reopen": {
+          "stage": "reopen",
+          "rgba": [23, 23, 23, 255],
+          "now": 3687.0999999046326,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 214.4375,
+            "width": 24,
+            "height": 14
+          },
+          "thumb": {
+            "x": 159,
+            "y": 215.4375,
+            "width": 12,
+            "height": 12
+          },
+          "color": "lab(7.78201 -0.0000149012 0)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": true,
+          "transitionStyles": [
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-none duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-primary cursor-not-allowed opacity-50",
+          "diagnostics": []
+        },
+        "next-target-source-mismatch": {
+          "stage": "next-target-source-mismatch",
+          "rgba": [10, 20, 30, 255],
+          "now": 3978.199999809265,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 214.4375,
+            "width": 24,
+            "height": 14
+          },
+          "thumb": {
+            "x": 159,
+            "y": 215.4375,
+            "width": 12,
+            "height": 12
+          },
+          "color": "rgb(10, 20, 30)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": true,
+          "transitionStyles": [
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-none duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-primary",
+          "diagnostics": []
+        }
+      },
+      "nativeTraceSha256": "98f76c0056974e6b34c156e286aa6dc050419e953389280f2f57343f2fb6e8cb"
+    },
+    {
+      "scope": "shadow",
+      "size": "sm",
+      "rootFontPx": 32,
+      "travelPx": 22,
+      "chrome": "156.0.8078.79",
+      "stages": {
+        "initial": {
+          "stage": "initial",
+          "rgba": [229, 229, 229, 255],
+          "now": 285.89999985694885,
+          "checked": false,
+          "root": {
+            "x": 148,
+            "y": 280.875,
+            "width": 48,
+            "height": 28
+          },
+          "thumb": {
+            "x": 149,
+            "y": 282.875,
+            "width": 24,
+            "height": 24
+          },
+          "color": "lab(90.952 0 -0.0000119209)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": false,
+          "transitionStyles": [
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-input",
+          "diagnostics": []
+        },
+        "forward-midpoint": {
+          "stage": "forward-midpoint",
+          "rgba": [188, 188, 188, 255],
+          "now": 1248.5,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 280.875,
+            "width": 48,
+            "height": 28
+          },
+          "thumb": {
+            "x": 152.85952758789062,
+            "y": 282.875,
+            "width": 24,
+            "height": 24
+          },
+          "color": "oklab(0.796213 -0.00000785975 0.0000186307)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": ["background-color"],
+          "thumbTransitions": ["transform"],
+          "reducedMotion": false,
+          "transitionStyles": [
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-primary",
+          "diagnostics": []
+        },
+        "reverse": {
+          "stage": "reverse",
+          "before": {
+            "rgba": [188, 188, 188, 255],
+            "now": 1251.2999999523163,
+            "checked": true,
+            "root": {
+              "x": 148,
+              "y": 280.875,
+              "width": 48,
+              "height": 28
+            },
+            "thumb": {
+              "x": 152.85952758789062,
+              "y": 282.875,
+              "width": 24,
+              "height": 24
+            },
+            "color": "oklab(0.796213 -0.00000785975 0.0000186307)",
+            "translate": "none",
+            "transform": "none",
+            "radius": "9999px",
+            "inlineColor": "",
+            "rootTransitions": ["background-color"],
+            "thumbTransitions": ["transform"],
+            "reducedMotion": false,
+            "transitionStyles": [
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              }
+            ],
+            "paletteBindings": 0,
+            "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-primary",
+            "diagnostics": []
+          },
+          "after": {
+            "rgba": [188, 188, 188, 255],
+            "now": 1255.5999999046326,
+            "checked": false,
+            "root": {
+              "x": 148,
+              "y": 280.875,
+              "width": 48,
+              "height": 28
+            },
+            "thumb": {
+              "x": 152.85952758789062,
+              "y": 282.875,
+              "width": 24,
+              "height": 24
+            },
+            "color": "oklab(0.796213 -0.00000785975 0.0000186307)",
+            "translate": "none",
+            "transform": "none",
+            "radius": "9999px",
+            "inlineColor": "",
+            "rootTransitions": ["background-color"],
+            "thumbTransitions": ["transform"],
+            "reducedMotion": false,
+            "transitionStyles": [
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "all",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              },
+              {
+                "property": "transform, translate, scale, rotate",
+                "duration": "0.15s",
+                "inline": ""
+              }
+            ],
+            "paletteBindings": 0,
+            "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-input",
+            "diagnostics": []
+          }
+        },
+        "settled": {
+          "stage": "settled",
+          "rgba": [23, 23, 23, 255],
+          "now": 1490.3999998569489,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 280.875,
+            "width": 48,
+            "height": 28
+          },
+          "thumb": {
+            "x": 171,
+            "y": 282.875,
+            "width": 24,
+            "height": 24
+          },
+          "color": "lab(7.78201 -0.0000149012 0)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": false,
+          "transitionStyles": [
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "all",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "transform, translate, scale, rotate",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-all duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-primary",
+          "diagnostics": []
+        },
+        "reduced": {
+          "stage": "reduced",
+          "rgba": [23, 23, 23, 255],
+          "now": 3543.199999809265,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 280.875,
+            "width": 48,
+            "height": 28
+          },
+          "thumb": {
+            "x": 171,
+            "y": 282.875,
+            "width": 24,
+            "height": 24
+          },
+          "color": "lab(7.78201 -0.0000149012 0)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": true,
+          "transitionStyles": [
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-none duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-primary",
+          "diagnostics": []
+        },
+        "reopen": {
+          "stage": "reopen",
+          "rgba": [23, 23, 23, 255],
+          "now": 3666.5999999046326,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 280.875,
+            "width": 48,
+            "height": 28
+          },
+          "thumb": {
+            "x": 171,
+            "y": 282.875,
+            "width": 24,
+            "height": 24
+          },
+          "color": "lab(7.78201 -0.0000149012 0)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": true,
+          "transitionStyles": [
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-none duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-primary cursor-not-allowed opacity-50",
+          "diagnostics": []
+        },
+        "next-target-source-mismatch": {
+          "stage": "next-target-source-mismatch",
+          "rgba": [10, 20, 30, 255],
+          "now": 3952.899999856949,
+          "checked": true,
+          "root": {
+            "x": 148,
+            "y": 280.875,
+            "width": 48,
+            "height": 28
+          },
+          "thumb": {
+            "x": 171,
+            "y": 282.875,
+            "width": 24,
+            "height": 24
+          },
+          "color": "rgb(10, 20, 30)",
+          "translate": "none",
+          "transform": "none",
+          "radius": "9999px",
+          "inlineColor": "",
+          "rootTransitions": [],
+          "thumbTransitions": [],
+          "reducedMotion": true,
+          "transitionStyles": [
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            },
+            {
+              "property": "none",
+              "duration": "0.15s",
+              "inline": ""
+            }
+          ],
+          "paletteBindings": 0,
+          "tokens": "peer inline-flex items-center p-0 outline-none select-none transition-none duration-150 ease-in-out rounded-full border border-transparent shadow-xs bg-primary",
+          "diagnostics": []
+        }
+      },
+      "nativeTraceSha256": "e39cb243c1903663cf224098704cfa69638d7a2df2922b03c79c9c6949917b02"
+    }
+  ],
+  "builds": {
+    "publicPackages": 47,
+    "manifests": 47,
+    "sitePages": 683,
+    "workspaceTypesExit": 0,
+    "stylePresetsExit": 0,
+    "budgetRows": [
+      "PASS lucide/icons/x: 2879 / 3000 gzip bytes; overBudget=0; minified=8695 sha256=da30ebe409a83a09d2569fe2a47880a133fcbe4d554d93ea305795356c4fccdb",
+      "PASS lucide root: 637306 / 700000 gzip bytes; overBudget=0; minified=4087403 sha256=eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c",
+      "ADVISORY core root: 11378 / 7600 gzip bytes; overBudget=3778; minified=35782 sha256=0e3c868d3ef719af46085b83881b15787a94acbaf893566ceae4047ceff72b44",
+      "ADVISORY runtime root: 100312 / 78500 gzip bytes; overBudget=21812; minified=387805 sha256=30748b5a07a248a2d6dd9828ed459061f7e05817023f0d6c0c162b4b19df90a0",
+      "ADVISORY adapter-react root: 162813 / 106000 gzip bytes; overBudget=56813; minified=574817 sha256=276757557d38434f5d286dba85fc1e279d4bf80b00e28c2338628d3d5c624977",
+      "ADVISORY adapter-vue root: 161520 / 106000 gzip bytes; overBudget=55520; minified=570046 sha256=2cdd9a4ff1a8c6ca17622345984e73e8b045e32adafd4be7d1b9cfb354ebc737",
+      "ADVISORY adapter-web-component root: 191462 / 132000 gzip bytes; overBudget=59462; minified=659649 sha256=81a893000c05c3aa57a81a6a83f715a174fe2899e3427f5c191e46ba3a293168",
+      "PASS prototypes-base/button: 5274 / 6000 gzip bytes; overBudget=0; minified=18158 sha256=6c1567b5fbd8bff9277c6ab5c482b43b1d2bca138593ea6e12d9a82390114e67",
+      "ADVISORY prototypes-shadcn/button: 7812 / 7000 gzip bytes; overBudget=812; minified=34533 sha256=14c8420ae3b34a6371ad380a685153b92d89bcdc23fc1ab734581eeddd7ae301"
+    ]
+  },
+  "inheritedAstro": {
+    "exit": 1,
+    "errors": [
+      "src/components/site-search-commands.disposal.test.ts:158:49 - error ts(7006): Parameter 'listener' implicitly has an 'any' type.",
+      "src/components/site-search-commands.disposal.test.ts:158:29 - error ts(2339): Property 'mockImplementation' does not exist on type 'never'."
+    ]
+  },
+  "imageSha256": {
+    "switch-document-default-16-settled.png": "f9decee92263ac90e569e1afdcceb43dfa7ac7d19573358ce303977530e904aa",
+    "switch-shadow-default-16-settled.png": "f9decee92263ac90e569e1afdcceb43dfa7ac7d19573358ce303977530e904aa",
+    "switch-shadow-sm-32-settled.png": "b64d37cbcd834341209eb3aca1d4fa9fab586de0c70798ccd4b2faca36b23239"
+  }
+}
